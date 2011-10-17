@@ -13,34 +13,27 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Router
+ * @package    Zend_Mvc
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-/**
- * @namespace
- */
-namespace Zend\Mvc\Router\Http;
-
-use Zend\Stdlib\RequestDescription as Request,
-    Zend\Mvc\Router\Route as BaseRoute;
+namespace Zend\Mvc;
 
 /**
- * Part route interface.
+ * Interface for bootstraps
  * 
- * @package    Zend_Router
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @package   Zend_Mvc
+ * @copyright Copyright (C) 2005-2011, Zend Technologies, Inc.
+ * @license   New BSD {@link http://framework.zend.com/license}
  */
-interface Route extends BaseRoute
+interface Bootstrapper
 {
     /**
-     * Match a given request at a given path offset.
+     * Bootstrap an application
      * 
-     * @param  Request $request
-     * @param  integer $pathOffset
-     * @return RouteMatch
+     * @param  AppContext $application 
+     * @return void
      */
-    public function match(Request $request, $pathOffset = null);
+    public function bootstrap(AppContext $application);
 }

@@ -31,7 +31,7 @@ use Traversable,
     Zend\Mvc\Router\Route;
 
 /**
- * Regex route.
+ * Hostname route.
  *
  * @package    Zend_Mvc_Router
  * @subpackage Http
@@ -39,15 +39,22 @@ use Traversable,
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @see        http://manuals.rubyonrails.com/read/chapter/65
  */
-class Regex implements Route
+class Hostname implements Route
 {
     /**
-     * Regex to match.
-     * 
-     * @var string
+     * Route to match.
+     *
+     * @var array
      */
-    protected $regex;
+    protected $route;
 
+    /**
+     * Constraints for parameters.
+     * 
+     * @var array
+     */
+    protected $constraints;
+    
     /**
      * Default values.
      *
@@ -56,27 +63,18 @@ class Regex implements Route
     protected $defaults;
 
     /**
-     * Specification for URL assembly.
-     *
-     * Parameters accepting subsitutions should be denoted as "%key%"
+     * Create a new hostname route.
      * 
-     * @var string
-     */
-    protected $spec;
-    
-    /**
-     * Create a new regex route.
-     * 
-     * @param  string $regex
-     * @param  string $spec
+     * @param  string $route
+     * @param  array  $constraints
      * @param  array  $defaults 
      * @return void
      */
-    public function __construct($regex, $spec, array $defaults = array())
+    public function __construct($route, array $constraints = array(), array $defaults = array())
     {
-        $this->regex    = $regex;
-        $this->spec     = $spec;
-        $this->defaults = $defaults;
+        $this->route       = explode('.', $route);
+        $this->constraints = $constraints;
+        $this->defaults    = $defaults;
     }
     
     /**
@@ -97,19 +95,19 @@ class Regex implements Route
             $options = IteratorToArray::convert($options);
         }
 
-        if (!isset($options['regex'])) {
-            throw new Exception\InvalidArgumentException('Missing "regex" in options array');
-        }
-        
-        if (!isset($options['spec'])) {
-            throw new Exception\InvalidArgumentException('Missing "spec" in options array');
+        if (!isset($options['route'])) {
+            throw new Exception\InvalidArgumentException('Missing "route" in options array');
         }
 
+        if (!isset($options['constraints'])) {
+            $options['constraints'] = array();
+        }
+        
         if (!isset($options['defaults'])) {
             $options['defaults'] = array();
         }
 
-        return new static($options['regex'], $options['spec'], $options['defaults']);
+        return new static($options['route'], $options['constraints'], $options['defaults']);
     }
 
     /**
@@ -119,34 +117,33 @@ class Regex implements Route
      * @param  Request $request
      * @return RouteMatch
      */
-    public function match(Request $request, $pathOffset = null)
+    public function match(Request $request)
     {
         if (!method_exists($request, 'uri')) {
             return null;
         }
 
-        $uri  = $request->uri();
-        $path = $uri->getPath();
+        $uri      = $request->uri();
+        $hostname = explode('.', $uri->getHost());
+        $params   = array();
 
-        if ($pathOffset !== null) {
-            $result = preg_match('(\G' . $this->regex . ')', $path, $matches, null, $pathOffset);
-        } else {
-            $result = preg_match('(^' . $this->regex . '$)', $path, $matches);
-        }
-
-        if (!$result) {
+        if (count($hostname) !== count($this->route)) {
             return null;
         }
         
-        $matchedLength = strlen($matches[0]);
-
-        foreach ($matches as $key => $value) {
-            if (is_numeric($key) || is_int($key)) {
-                unset($matches[$key]);
+        foreach ($this->route as $index => $routePart) {
+            if (preg_match('(^:(?<name>.+)$)', $routePart, $matches)) {
+                if (isset($this->constraints[$matches['name']]) && !preg_match('(^' . $this->constraints[$matches['name']] . '$)', $hostname[$index])) {
+                    return null;
+                }
+                
+                $params[$matches['name']] = $hostname[$index];
+            } elseif ($hostname[$index] !== $routePart) {
+                return null;
             }
         }
-
-        return new RouteMatch(array_merge($this->defaults, $matches), $matchedLength);
+        
+        return new RouteMatch(array_merge($this->defaults, $params));
     }
 
     /**
@@ -159,17 +156,25 @@ class Regex implements Route
      */
     public function assemble(array $params = array(), array $options = array())
     {
-        $url    = $this->spec;
-        $params = array_merge($this->defaults, $params);
-        
-        foreach ($params as $key => $value) {
-            $spec = '%' . $key . '%';
+        if (isset($options['uri'])) {
+            $parts = array();
             
-            if (strstr($url, $spec) !== false) {
-                $url = str_replace($spec, urlencode($value), $url);
+            foreach ($this->route as $index => $routePart) {
+                if (preg_match('(^:(?<name>.+)$)', $routePart, $matches)) {
+                    if (!isset($params[$matches['name']])) {
+                        throw new Exception\InvalidArgumentException(sprintf('Missing parameter "%s"', $matches['name']));
+                    }
+                    
+                    $parts[] = $params[$matches['name']];
+                } else {
+                    $parts[] = $routePart;
+                }
             }
+            
+            $options['uri']->setHost(implode('.', $parts));
         }
         
-        return $url;
+        // A hostname does not contribute to the path, thus nothing is returned.
+        return '';
     }
 }
