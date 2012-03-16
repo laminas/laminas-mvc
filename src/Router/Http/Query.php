@@ -24,13 +24,15 @@
  */
 namespace Zend\Mvc\Router\Http;
 
+use Zend\Mvc\Router\Http\RouteMatch;
+
 use Traversable,
     Zend\Stdlib\ArrayUtils,
     Zend\Stdlib\RequestDescription as Request,
     Zend\Mvc\Router\Exception;
 
 /**
- * Regex route.
+ * Query route.
  *
  * @package    Zend_Mvc_Router
  * @subpackage Http
@@ -38,30 +40,15 @@ use Traversable,
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @see        http://manuals.rubyonrails.com/read/chapter/65
  */
-class Regex implements Route
+class Query implements Route
 {
-    /**
-     * Regex to match.
-     * 
-     * @var string
-     */
-    protected $regex;
-
+    
     /**
      * Default values.
-     *
+     * 
      * @var array
      */
     protected $defaults;
-
-    /**
-     * Specification for URL assembly.
-     *
-     * Parameters accepting subsitutions should be denoted as "%key%"
-     * 
-     * @var string
-     */
-    protected $spec;
     
     /**
      * List of assembled parameters.
@@ -69,19 +56,15 @@ class Regex implements Route
      * @var array
      */
     protected $assembledParams = array();
-    
+
     /**
-     * Create a new regex route.
+     * Create a new wildcard route.
      * 
-     * @param  string $regex
-     * @param  string $spec
-     * @param  array  $defaults 
+     * @param  array  $defaults
      * @return void
      */
-    public function __construct($regex, $spec, array $defaults = array())
+    public function __construct(array $defaults = array())
     {
-        $this->regex    = $regex;
-        $this->spec     = $spec;
         $this->defaults = $defaults;
     }
     
@@ -100,19 +83,12 @@ class Regex implements Route
             throw new Exception\InvalidArgumentException(__METHOD__ . ' expects an array or Traversable set of options');
         }
 
-        if (!isset($options['regex'])) {
-            throw new Exception\InvalidArgumentException('Missing "regex" in options array');
-        }
         
-        if (!isset($options['spec'])) {
-            throw new Exception\InvalidArgumentException('Missing "spec" in options array');
-        }
-
         if (!isset($options['defaults'])) {
             $options['defaults'] = array();
         }
 
-        return new static($options['regex'], $options['spec'], $options['defaults']);
+        return new static($options['defaults']);
     }
 
     /**
@@ -124,61 +100,37 @@ class Regex implements Route
      */
     public function match(Request $request, $pathOffset = null)
     {
-        if (!method_exists($request, 'uri')) {
-            return null;
-        }
-
-        $uri  = $request->uri();
-        $path = $uri->getPath();
-
-        if ($pathOffset !== null) {
-            $result = preg_match('(\G' . $this->regex . ')', $path, $matches, null, $pathOffset);
-        } else {
-            $result = preg_match('(^' . $this->regex . '$)', $path, $matches);
-        }
-
-        if (!$result) {
-            return null;
-        }
+        $matches = array();
         
-        $matchedLength = strlen($matches[0]);
-
-        foreach ($matches as $key => $value) {
-            if (is_numeric($key) || is_int($key)) {
-                unset($matches[$key]);
-            } else {
-                $matches[$key] = urldecode($matches[$key]);
-            }
+        foreach($_GET as $key=>$value) {
+            $matches[urldecode($key)] = urldecode($value);
+            
         }
 
-        return new RouteMatch(array_merge($this->defaults, $matches), $matchedLength);
+        return new RouteMatch(array_merge($this->defaults, $matches));
     }
 
     /**
      * assemble(): Defined by Route interface.
-     *
      * @see    Route::assemble()
+     *
      * @param  array $params
      * @param  array $options
      * @return mixed
      */
     public function assemble(array $params = array(), array $options = array())
     {
-        $url                   = $this->spec;
-        $mergedParams          = array_merge($this->defaults, $params);
-        $this->assembledParams = array();
-        
-        foreach ($mergedParams as $key => $value) {
-            $spec = '%' . $key . '%';
-            
-            if (strpos($url, $spec) !== false) {
-                $url = str_replace($spec, urlencode($value), $url);
-                
+        $mergedParams = array_merge($this->defaults, $params);
+
+        if (count($mergedParams)) {
+            foreach ($mergedParams as $key => $value) {
                 $this->assembledParams[] = $key;
             }
+            
+            return '?' . str_replace('+', '%20', http_build_query($mergedParams));
         }
         
-        return $url;
+        return null;
     }
     
     /**
