@@ -24,13 +24,15 @@
  */
 namespace Zend\Mvc\Router\Http;
 
+use Zend\Mvc\Router\Http\RouteMatch;
+
 use Traversable,
     Zend\Stdlib\ArrayUtils,
     Zend\Stdlib\RequestDescription as Request,
     Zend\Mvc\Router\Exception;
 
 /**
- * Wildcard route.
+ * Query route.
  *
  * @package    Zend_Mvc_Router
  * @subpackage Http
@@ -38,21 +40,8 @@ use Traversable,
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @see        http://manuals.rubyonrails.com/read/chapter/65
  */
-class Wildcard implements Route
+class Query implements Route
 {
-    /**
-     * Delimiter between keys and values.
-     *
-     * @var string
-     */
-    protected $keyValueDelimiter;
-
-    /**
-     * Delimtier before parameters.
-     *
-     * @var array
-     */
-    protected $paramDelimiter;
 
     /**
      * Default values.
@@ -71,24 +60,20 @@ class Wildcard implements Route
     /**
      * Create a new wildcard route.
      *
-     * @param  string $keyValueDelimiter
-     * @param  string $paramDelimiter
-     * @param  array  $defaults
+     * @param array $defaults
      */
-    public function __construct($keyValueDelimiter = '/', $paramDelimiter = '/', array $defaults = array())
+    public function __construct(array $defaults = array())
     {
-        $this->keyValueDelimiter = $keyValueDelimiter;
-        $this->paramDelimiter    = $paramDelimiter;
-        $this->defaults          = $defaults;
+        $this->defaults = $defaults;
     }
 
     /**
      * factory(): defined by Route interface.
      *
      * @see    Route::factory()
-     * @param  array|Traversable $options
+     * @param  array|\Traversable $options
      * @throws \Zend\Mvc\Router\Exception\InvalidArgumentException
-     * @return Wildcard
+     * @return Query
      */
     public static function factory($options = array())
     {
@@ -98,19 +83,12 @@ class Wildcard implements Route
             throw new Exception\InvalidArgumentException(__METHOD__ . ' expects an array or Traversable set of options');
         }
 
-        if (!isset($options['key_value_delimiter'])) {
-            $options['key_value_delimiter'] = '/';
-        }
-
-        if (!isset($options['param_delimiter'])) {
-            $options['param_delimiter'] = '/';
-        }
 
         if (!isset($options['defaults'])) {
             $options['defaults'] = array();
         }
 
-        return new static($options['key_value_delimiter'], $options['param_delimiter'], $options['defaults']);
+        return new static($options['defaults']);
     }
 
     /**
@@ -123,72 +101,37 @@ class Wildcard implements Route
      */
     public function match(Request $request, $pathOffset = null)
     {
-        if (!method_exists($request, 'uri')) {
-            return null;
-        }
-
-        $uri  = $request->uri();
-        $path = $uri->getPath();
-
-        if ($pathOffset !== null) {
-            $path = substr($path, $pathOffset);
-        }
-
         $matches = array();
-        $params  = explode($this->paramDelimiter, $path);
 
-        if (count($params) > 1 && ($params[0] !== '' || end($params) === '')) {
-            return null;
+        foreach($_GET as $key=>$value) {
+            $matches[urldecode($key)] = urldecode($value);
+
         }
 
-        if ($this->keyValueDelimiter === $this->paramDelimiter) {
-            $count = count($params);
-
-            for ($i = 1; $i < $count; $i += 2) {
-                if (isset($params[$i + 1])) {
-                    $matches[urldecode($params[$i])] = urldecode($params[$i + 1]);
-                }
-            }
-        } else {
-            array_shift($params);
-
-            foreach ($params as $param) {
-                $param = explode($this->keyValueDelimiter, $param, 2);
-
-                if (isset($param[1])) {
-                    $matches[urldecode($param[0])] = urldecode($param[1]);
-                }
-            }
-        }
-
-        return new RouteMatch(array_merge($this->defaults, $matches), strlen($path));
+        return new RouteMatch(array_merge($this->defaults, $matches));
     }
 
     /**
      * assemble(): Defined by Route interface.
-     *
      * @see    Route::assemble()
+     *
      * @param  array $params
      * @param  array $options
      * @return mixed
      */
     public function assemble(array $params = array(), array $options = array())
     {
-        $elements              = array();
-        $mergedParams          = array_merge($this->defaults, $params);
-        $this->assembledParams = array();
+        $mergedParams = array_merge($this->defaults, $params);
 
-        if ($mergedParams) {
+        if (count($mergedParams)) {
             foreach ($mergedParams as $key => $value) {
-                $elements[] = urlencode($key) . $this->keyValueDelimiter . urlencode($value);
-
                 $this->assembledParams[] = $key;
             }
 
-            return $this->paramDelimiter . implode($this->paramDelimiter, $elements);
+            return '?' . str_replace('+', '%20', http_build_query($mergedParams));
         }
 
-        return '';
+        return null;
     }
 
     /**
