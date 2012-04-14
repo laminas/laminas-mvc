@@ -21,13 +21,15 @@
 
 namespace Zend\Mvc\Router\Http;
 
+use Zend\Mvc\Router\Http\RouteMatch;
+
 use Traversable,
     Zend\Stdlib\ArrayUtils,
     Zend\Stdlib\RequestDescription as Request,
     Zend\Mvc\Router\Exception;
 
 /**
- * Literal route.
+ * Query route.
  *
  * @package    Zend_Mvc_Router
  * @subpackage Http
@@ -35,14 +37,8 @@ use Traversable,
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @see        http://manuals.rubyonrails.com/read/chapter/65
  */
-class Literal implements Route
+class Query implements Route
 {
-    /**
-     * Route to match.
-     *
-     * @var string
-     */
-    protected $route;
 
     /**
      * Default values.
@@ -52,14 +48,19 @@ class Literal implements Route
     protected $defaults;
 
     /**
-     * Create a new literal route.
+     * List of assembled parameters.
      *
-     * @param  string $route
-     * @param  array  $defaults
+     * @var array
      */
-    public function __construct($route, array $defaults = array())
+    protected $assembledParams = array();
+
+    /**
+     * Create a new wildcard route.
+     *
+     * @param array $defaults
+     */
+    public function __construct(array $defaults = array())
     {
-        $this->route    = $route;
         $this->defaults = $defaults;
     }
 
@@ -69,7 +70,7 @@ class Literal implements Route
      * @see    Route::factory()
      * @param  array|\Traversable $options
      * @throws \Zend\Mvc\Router\Exception\InvalidArgumentException
-     * @return Literal
+     * @return Query
      */
     public static function factory($options = array())
     {
@@ -79,62 +80,55 @@ class Literal implements Route
             throw new Exception\InvalidArgumentException(__METHOD__ . ' expects an array or Traversable set of options');
         }
 
-        if (!isset($options['route'])) {
-            throw new Exception\InvalidArgumentException('Missing "route" in options array');
-        }
 
         if (!isset($options['defaults'])) {
             $options['defaults'] = array();
         }
 
-        return new static($options['route'], $options['defaults']);
+        return new static($options['defaults']);
     }
 
     /**
      * match(): defined by Route interface.
      *
      * @see    Route::match()
-     * @param  Request  $request
+     * @param  Request $request
      * @param  int|null $pathOffset
-     * @return RouteMatch|null
+     * @return RouteMatch
      */
     public function match(Request $request, $pathOffset = null)
     {
-        if (!method_exists($request, 'uri')) {
-            return null;
+        $matches = array();
+
+        foreach($_GET as $key => $value) {
+            $matches[urldecode($key)] = urldecode($value);
+
         }
 
-        $uri  = $request->uri();
-        $path = $uri->getPath();
-
-        if ($pathOffset !== null) {
-            if ($pathOffset >= 0 && strlen($path) >= $pathOffset) {
-                if (strpos($path, $this->route, $pathOffset) === $pathOffset) {
-                    return new RouteMatch($this->defaults, strlen($this->route));
-                }
-            }
-
-            return null;
-        }
-
-        if ($path === $this->route) {
-            return new RouteMatch($this->defaults, strlen($this->route));
-        }
-
-        return null;
+        return new RouteMatch(array_merge($this->defaults, $matches));
     }
 
     /**
      * assemble(): Defined by Route interface.
-     *
      * @see    Route::assemble()
+     *
      * @param  array $params
      * @param  array $options
      * @return mixed
      */
     public function assemble(array $params = array(), array $options = array())
     {
-        return $this->route;
+        $mergedParams = array_merge($this->defaults, $params);
+
+        if (count($mergedParams)) {
+            foreach ($mergedParams as $key => $value) {
+                $this->assembledParams[] = $key;
+            }
+
+            return '?' . str_replace('+', '%20', http_build_query($mergedParams));
+        }
+
+        return null;
     }
 
     /**
@@ -145,6 +139,6 @@ class Literal implements Route
      */
     public function getAssembledParams()
     {
-        return array();
+        return $this->assembledParams;
     }
 }

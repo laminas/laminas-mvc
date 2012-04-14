@@ -24,33 +24,34 @@ namespace Zend\Mvc\View;
 use Zend\EventManager\EventCollection as Events,
     Zend\EventManager\ListenerAggregate,
     Zend\Mvc\MvcEvent,
-    Zend\Stdlib\IsAssocArray,
+    Zend\Stdlib\ArrayUtils,
     Zend\View\Model\ViewModel;
 
-class CreateViewModelFromArrayListener implements ListenerAggregate
+class CreateViewModelListener implements ListenerAggregate
 {
     /**
      * Listeners we've registered
-     * 
+     *
      * @var array
      */
     protected $listeners = array();
 
     /**
      * Attach listeners
-     * 
-     * @param  Events $events 
+     *
+     * @param  Events $events
      * @return void
      */
     public function attach(Events $events)
     {
-        $this->listeners[] = $events->attach('dispatch', array($this, 'createViewModelFromArray'), -80);
+        $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH, array($this, 'createViewModelFromArray'), -80);
+        $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH, array($this, 'createViewModelFromNull'), -80);
     }
 
     /**
      * Detach listeners
-     * 
-     * @param  Events $events 
+     *
+     * @param  Events $events
      * @return void
      */
     public function detach(Events $events)
@@ -65,17 +66,34 @@ class CreateViewModelFromArrayListener implements ListenerAggregate
     /**
      * Inspect the result, and cast it to a ViewModel if an assoc array is detected
      *
-     * @param  MvcEvent $e 
+     * @param  MvcEvent $e
      * @return void
      */
     public function createViewModelFromArray(MvcEvent $e)
     {
         $result = $e->getResult();
-        if (!IsAssocArray::test($result, true)) {
+        if (!ArrayUtils::hasStringKeys($result, true)) {
             return;
         }
 
         $model = new ViewModel($result);
+        $e->setResult($model);
+    }
+
+    /**
+     * Inspect the result, and cast it to a ViewModel if null is detected
+     *
+     * @param MvcEvent $e
+     * @return void
+    */
+    public function createViewModelFromNull(MvcEvent $e)
+    {
+        $result = $e->getResult();
+        if (null !== $result) {
+            return;
+        }
+
+        $model = new ViewModel;
         $e->setResult($model);
     }
 }
