@@ -20,45 +20,46 @@
 
 namespace Zend\Mvc\Router;
 
+use Zend\Stdlib\RequestInterface as Request;
+
 /**
+ * RouteInterface interface.
+ *
  * @package    Zend_Mvc_Router
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface RouteStack extends Route
+interface RouteInterface
 {
     /**
-     * Add a route to the stack.
+     * Priority used for route stacks.
      *
-     * @param  string  $name
-     * @param  mixed   $route
-     * @param  integer $priority
-     * @return RouteStack
+     * @var integer
+     * public $priority;
      */
-    public function addRoute($name, $route, $priority = null);
 
     /**
-     * Add multiple routes to the stack.
+     * Create a new route with given options.
      *
-     * @param  array|\Traversable $routes
-     * @return RouteStack
+     * @param  array|\Traversable $options
+     * @return void
      */
-    public function addRoutes($routes);
+    public static function factory($options = array());
 
     /**
-     * Remove a route from the stack.
+     * Match a given request.
      *
-     * @param  string $name
-     * @return RouteStack
+     * @param  Request $request
+     * @return RouteMatch
      */
-    public function removeRoute($name);
+    public function match(Request $request);
 
     /**
-     * Remove all routes from the stack and set new ones.
+     * Assemble the route.
      *
-     * @param  array|\Traversable $routes
-     * @return RouteStack
+     * @param  array $params
+     * @param  array $options
+     * @return mixed
      */
-    public function setRoutes($routes);
+    public function assemble(array $params = array(), array $options = array());
 }
-

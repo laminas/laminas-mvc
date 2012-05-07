@@ -2,9 +2,9 @@
 
 namespace Zend\Mvc;
 
-use Zend\EventManager\EventDescription as Event;
+use Zend\EventManager\EventInterface as Event;
 
-interface InjectApplicationEvent
+interface InjectApplicationEventInterface
 {
     public function setEvent(Event $event);
     public function getEvent();
