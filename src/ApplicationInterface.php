@@ -3,25 +3,19 @@
 namespace Zend\Mvc;
 
 use Zend\Di\Locator,
-    Zend\EventManager\EventCollection,
-    Zend\Stdlib\RequestDescription as Request,
-    Zend\Stdlib\ResponseDescription as Response;
+    Zend\EventManager\EventManagerAwareInterface,
+    Zend\EventManager\EventManagerAware,
+    Zend\EventManager\EventsCapableInterface,
+    Zend\Stdlib\RequestInterface as Request,
+    Zend\Stdlib\ResponseInterface as Response;
 
-interface AppContext
+interface ApplicationInterface extends EventManagerAwareInterface, EventsCapableInterface
 {
-    /**
-     * Set the event manager instance used by this context
-     * 
-     * @param  EventCollection $events 
-     * @return AppContext
-     */
-    public function setEventManager(EventCollection $events);
-
     /**
      * Set a service locator/DI object
      *
      * @param  Locator $locator 
-     * @return AppContext
+     * @return ApplicationInterface
      */
     public function setLocator(Locator $locator);
 
@@ -29,7 +23,7 @@ interface AppContext
      * Set request object that will be consumed
      * 
      * @param  Request $request 
-     * @return AppContext
+     * @return ApplicationInterface
      */
     public function setRequest(Request $request);
 
@@ -37,7 +31,7 @@ interface AppContext
      * Set response object that will be returned
      * 
      * @param  Response $request 
-     * @return AppContext
+     * @return ApplicationInterface
      */
     public function setResponse(Response $response);
 
@@ -46,51 +40,42 @@ interface AppContext
      *
      * A router should return a metadata object containing a controller key.
      * 
-     * @param  Router\RouteStack $router 
-     * @return AppContext
+     * @param  Router\RouteStackInterface $router
+     * @return ApplicationInterface
      */
-    public function setRouter(Router\RouteStack $router);
+    public function setRouter(Router\RouteStackInterface $router);
 
     /**
      * Get the locator object
-     * 
+     *
      * @return Locator
      */
     public function getLocator();
 
     /**
      * Get the request object
-     * 
+     *
      * @return Request
      */
     public function getRequest();
 
     /**
      * Get the response object
-     * 
+     *
      * @return Response
      */
     public function getResponse();
 
     /**
      * Get the router object
-     * 
+     *
      * @return Router
      */
     public function getRouter();
 
     /**
-     * Retrieve the event manager
-     *
-     * Lazy-loads an EventManager instance if none registered.
-     * 
-     * @return EventCollection
-     */
-    public function events();
-
-    /**
      * Run the application
-     * 
+     *
      * @return \Zend\Http\Response
      */
     public function run();
