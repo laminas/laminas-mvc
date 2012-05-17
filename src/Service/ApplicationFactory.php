@@ -14,47 +14,37 @@
  *
  * @category   Zend
  * @package    Zend_Mvc
+ * @subpackage Service
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace Zend\Mvc;
+namespace Zend\Mvc\Service;
 
-use Zend\EventManager\EventsCapableInterface;
+use Zend\Mvc\Application;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * @category   Zend
  * @package    Zend_Mvc
+ * @subpackage Service
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface ApplicationInterface extends EventsCapableInterface
+class ApplicationFactory implements FactoryInterface
 {
     /**
-     * Get the locator object
+     * Create the Application service
      *
-     * @return \Zend\ServiceManager\ServiceLocatorInterface
+     * Creates a Zend\Mvc\Application service, passing it the configuration 
+     * service and the service manager instance.
+     * 
+     * @param  ServiceLocatorInterface $serviceLocator 
+     * @return Application
      */
-    public function getServiceManager();
-
-    /**
-     * Get the request object
-     *
-     * @return Request
-     */
-    public function getRequest();
-
-    /**
-     * Get the response object
-     *
-     * @return Response
-     */
-    public function getResponse();
-
-    /**
-     * Run the application
-     *
-     * @return \Zend\Http\Response
-     */
-    public function run();
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        return new Application($serviceLocator->get('Configuration'), $serviceLocator);
+    }
 }
