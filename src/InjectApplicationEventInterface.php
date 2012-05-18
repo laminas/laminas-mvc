@@ -20,20 +20,28 @@
 
 namespace Zend\Mvc;
 
+use Zend\EventManager\EventInterface as Event;
+
 /**
- * Interface for bootstraps
- * 
- * @package   Zend_Mvc
- * @copyright Copyright (C) 2005-2011, Zend Technologies, Inc.
- * @license   New BSD {@link http://framework.zend.com/license}
+ * @category   Zend
+ * @package    Zend_Mvc
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface Bootstrapper
+interface InjectApplicationEventInterface
 {
     /**
-     * Bootstrap an application
+     * Compose an Event
      * 
-     * @param  AppContext $application 
+     * @param  Event $event 
      * @return void
      */
-    public function bootstrap(AppContext $application);
+    public function setEvent(Event $event);
+
+    /**
+     * Retrieve the composed event
+     * 
+     * @return Event
+     */
+    public function getEvent();
 }

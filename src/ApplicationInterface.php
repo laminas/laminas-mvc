@@ -13,53 +13,48 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Mvc_Router
+ * @package    Zend_Mvc
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace Zend\Mvc\Router;
+namespace Zend\Mvc;
 
-use Zend\Stdlib\RequestDescription as Request;
+use Zend\EventManager\EventsCapableInterface;
 
 /**
- * Route interface.
- *
- * @package    Zend_Mvc_Router
+ * @category   Zend
+ * @package    Zend_Mvc
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface Route
+interface ApplicationInterface extends EventsCapableInterface
 {
     /**
-     * Priority used for route stacks.
+     * Get the locator object
      *
-     * @var integer
-     * public $priority;
+     * @return \Zend\ServiceManager\ServiceLocatorInterface
      */
+    public function getServiceManager();
 
     /**
-     * Create a new route with given options.
+     * Get the request object
      *
-     * @param  array|\Traversable $options
-     * @return void
+     * @return Request
      */
-    public static function factory($options = array());
+    public function getRequest();
 
     /**
-     * Match a given request.
+     * Get the response object
      *
-     * @param  Request $request
-     * @return RouteMatch
+     * @return Response
      */
-    public function match(Request $request);
+    public function getResponse();
 
     /**
-     * Assemble the route.
+     * Run the application
      *
-     * @param  array $params
-     * @param  array $options
-     * @return mixed
+     * @return \Zend\Http\Response
      */
-    public function assemble(array $params = array(), array $options = array());
+    public function run();
 }
