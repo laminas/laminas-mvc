@@ -14,47 +14,45 @@
  *
  * @category   Zend
  * @package    Zend_Mvc
+ * @subpackage Service
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace Zend\Mvc;
+namespace Zend\Mvc\Service;
 
-use Zend\EventManager\EventsCapableInterface;
+use Zend\EventManager\EventManager;
+use Zend\EventManager\SharedEventManager;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * @category   Zend
  * @package    Zend_Mvc
+ * @subpackage Service
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface ApplicationInterface extends EventsCapableInterface
+class EventManagerFactory implements FactoryInterface
 {
     /**
-     * Get the locator object
+     * Create an EventManager instance
      *
-     * @return \Zend\ServiceManager\ServiceLocatorInterface
+     * Creates a new EventManager instance, seeding it with a shared instance
+     * of SharedEventManager.
+     * 
+     * @param  ServiceLocatorInterface $serviceLocator 
+     * @return EventManager
      */
-    public function getServiceManager();
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        static $sharedEventManager = null;
+        if (!$sharedEventManager) {
+            $sharedEventManager = new SharedEventManager();
+        }
 
-    /**
-     * Get the request object
-     *
-     * @return Request
-     */
-    public function getRequest();
-
-    /**
-     * Get the response object
-     *
-     * @return Response
-     */
-    public function getResponse();
-
-    /**
-     * Run the application
-     *
-     * @return \Zend\Http\Response
-     */
-    public function run();
+        $em = new EventManager();
+        $em->setSharedManager($sharedEventManager);
+        return $em;
+    }
 }
