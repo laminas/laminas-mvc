@@ -19,11 +19,11 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
 namespace Zend\Mvc\Service;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\View\Strategy\FeedStrategy;
 
 /**
  * @category   Zend
@@ -32,26 +32,23 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class ConfigurationFactory implements FactoryInterface
+class ViewFeedStrategyFactory implements FactoryInterface
 {
     /**
-     * Create the application configuration service
+     * Create and return the JSON view strategy
      *
-     * Retrieves the Module Manager from the service locator, and executes 
-     * {@link Zend\ModuleManager\ModuleManager::loadModules()}.
-     *
-     * It then retrieves the config listener from the module manager, and from
-     * that the merged configuration.
+     * Retrieves the ViewFeedRenderer service from the service locator, and
+     * injects it into the constructor for the feed strategy.
      * 
+     * It then attaches the strategy to the View service, at a priority of 100.
+     *
      * @param  ServiceLocatorInterface $serviceLocator 
-     * @return array|\Traversable
+     * @return FeedStrategy
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $mm           = $serviceLocator->get('ModuleManager');
-        $mm->loadModules();
-        $moduleParams = $mm->getEvent()->getParams();
-        $config       = $moduleParams['configListener']->getMergedConfig(false);
-        return $config;
+        $feedRenderer = $serviceLocator->get('ViewFeedRenderer');
+        $feedStrategy = new FeedStrategy($feedRenderer);
+        return $feedStrategy;
     }
 }
