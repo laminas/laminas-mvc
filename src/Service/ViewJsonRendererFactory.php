@@ -14,47 +14,36 @@
  *
  * @category   Zend
  * @package    Zend_Mvc
+ * @subpackage Service
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace Zend\Mvc;
+namespace Zend\Mvc\Service;
 
-use Zend\EventManager\EventsCapableInterface;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\View\Renderer\JsonRenderer;
 
 /**
  * @category   Zend
  * @package    Zend_Mvc
+ * @subpackage Service
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface ApplicationInterface extends EventsCapableInterface
+class ViewJsonRendererFactory implements FactoryInterface
 {
     /**
-     * Get the locator object
+     * Create and return the JSON view renderer
      *
-     * @return \Zend\ServiceManager\ServiceLocatorInterface
+     * @param  ServiceLocatorInterface $serviceLocator 
+     * @return JsonStrategy
      */
-    public function getServiceManager();
-
-    /**
-     * Get the request object
-     *
-     * @return Request
-     */
-    public function getRequest();
-
-    /**
-     * Get the response object
-     *
-     * @return Response
-     */
-    public function getResponse();
-
-    /**
-     * Run the application
-     *
-     * @return \Zend\Http\Response
-     */
-    public function run();
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        $jsonRenderer = new JsonRenderer();
+        return $jsonRenderer;
+    }
 }
+

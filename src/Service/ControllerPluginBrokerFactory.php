@@ -14,47 +14,37 @@
  *
  * @category   Zend
  * @package    Zend_Mvc
+ * @subpackage Service
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace Zend\Mvc;
+namespace Zend\Mvc\Service;
 
-use Zend\EventManager\EventsCapableInterface;
+use Zend\Mvc\Controller\PluginBroker as ControllerPluginBroker;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * @category   Zend
  * @package    Zend_Mvc
+ * @subpackage Service
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface ApplicationInterface extends EventsCapableInterface
+class ControllerPluginBrokerFactory implements FactoryInterface
 {
     /**
-     * Get the locator object
-     *
-     * @return \Zend\ServiceManager\ServiceLocatorInterface
+     * Create and return the MVC controller plugin broker
+     * 
+     * @param  ServiceLocatorInterface $serviceLocator 
+     * @return ControllerPluginBroker
      */
-    public function getServiceManager();
-
-    /**
-     * Get the request object
-     *
-     * @return Request
-     */
-    public function getRequest();
-
-    /**
-     * Get the response object
-     *
-     * @return Response
-     */
-    public function getResponse();
-
-    /**
-     * Run the application
-     *
-     * @return \Zend\Http\Response
-     */
-    public function run();
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        $broker = new ControllerPluginBroker();
+        $broker->setClassLoader($serviceLocator->get('ControllerPluginLoader'));
+        $broker->setServiceLocator($serviceLocator);
+        return $broker;
+    }
 }

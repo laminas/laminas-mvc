@@ -14,47 +14,41 @@
  *
  * @category   Zend
  * @package    Zend_Mvc
+ * @subpackage Service
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace Zend\Mvc;
+namespace Zend\Mvc\Service;
 
-use Zend\EventManager\EventsCapableInterface;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\View\Strategy\JsonStrategy;
 
 /**
  * @category   Zend
  * @package    Zend_Mvc
+ * @subpackage Service
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface ApplicationInterface extends EventsCapableInterface
+class ViewJsonStrategyFactory implements FactoryInterface
 {
     /**
-     * Get the locator object
+     * Create and return the JSON view strategy
      *
-     * @return \Zend\ServiceManager\ServiceLocatorInterface
-     */
-    public function getServiceManager();
-
-    /**
-     * Get the request object
+     * Retrieves the ViewJsonRenderer service from the service locator, and
+     * injects it into the constructor for the JSON strategy.
+     * 
+     * It then attaches the strategy to the View service, at a priority of 100.
      *
-     * @return Request
+     * @param  ServiceLocatorInterface $serviceLocator 
+     * @return JsonStrategy
      */
-    public function getRequest();
-
-    /**
-     * Get the response object
-     *
-     * @return Response
-     */
-    public function getResponse();
-
-    /**
-     * Run the application
-     *
-     * @return \Zend\Http\Response
-     */
-    public function run();
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        $jsonRenderer = $serviceLocator->get('ViewJsonRenderer');
+        $jsonStrategy = new JsonStrategy($jsonRenderer);
+        return $jsonStrategy;
+    }
 }
