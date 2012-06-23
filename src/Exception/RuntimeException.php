@@ -14,26 +14,19 @@
  *
  * @category   Zend
  * @package    Zend_Mvc
+ * @subpackage Exception
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace Zend\Mvc;
+namespace Zend\Mvc\Exception;
 
 /**
- * Interface for bootstraps
- * 
- * @package   Zend_Mvc
- * @copyright Copyright (C) 2005-2011, Zend Technologies, Inc.
- * @license   New BSD {@link http://framework.zend.com/license}
+ * @category   Zend
+ * @package    Zend_Mvc
+ * @subpackage Exception
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface Bootstrapper
-{
-    /**
-     * Bootstrap an application
-     * 
-     * @param  AppContext $application 
-     * @return void
-     */
-    public function bootstrap(AppContext $application);
-}
+class RuntimeException extends \RuntimeException implements ExceptionInterface
+{}
