@@ -13,35 +13,31 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Mvc
- * @subpackage Controller
+ * @package    Zend_Mvc_Router
+ * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace Zend\Mvc\Controller;
+namespace ZendTest\Mvc\Router;
 
-use Zend\Loader\PluginClassLoader;
+use Zend\Mvc\Router\RoutePluginManager,
+    PHPUnit_Framework_TestCase as TestCase;
 
 /**
  * @category   Zend
- * @package    Zend_Mvc
- * @subpackage Controller
+ * @package    Zend_Mvc_Router
+ * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @group      Zend_Router
  */
-class PluginLoader extends PluginClassLoader
+class RoutePluginManagerTest extends TestCase
 {
-    /**
-     * @var array Pre-aliased plugins
-     */
-    protected $plugins = array(
-        'flash_messenger' => 'Zend\Mvc\Controller\Plugin\FlashMessenger',
-        'flashmessenger'  => 'Zend\Mvc\Controller\Plugin\FlashMessenger',
-        'forward'         => 'Zend\Mvc\Controller\Plugin\Forward',
-        'layout'          => 'Zend\Mvc\Controller\Plugin\Layout',
-        'params'          => 'Zend\Mvc\Controller\Plugin\Params',
-        'redirect'        => 'Zend\Mvc\Controller\Plugin\Redirect',
-        'url'             => 'Zend\Mvc\Controller\Plugin\Url',
-    );
+    public function testLoadNonExistentRoute()
+    {
+        $routes = new RoutePluginManager();
+        $this->setExpectedException('Zend\ServiceManager\Exception\ServiceNotFoundException');
+        $routes->get('foo');
+    }
 }
