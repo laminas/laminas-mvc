@@ -14,37 +14,36 @@
  *
  * @category   Zend
  * @package    Zend_Mvc
- * @subpackage Service
+ * @subpackage Controller
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace Zend\Mvc\Service;
+namespace Zend\Mvc\Controller\Plugin;
 
-use Zend\Mvc\Controller\PluginBroker as ControllerPluginBroker;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\Stdlib\DispatchableInterface as Dispatchable;
 
 /**
  * @category   Zend
  * @package    Zend_Mvc
- * @subpackage Service
+ * @subpackage Controller
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class ControllerPluginBrokerFactory implements FactoryInterface
+interface PluginInterface
 {
     /**
-     * Create and return the MVC controller plugin broker
-     * 
-     * @param  ServiceLocatorInterface $serviceLocator 
-     * @return ControllerPluginBroker
+     * Set the current controller instance
+     *
+     * @param  Dispatchable $controller
+     * @return void
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        $broker = new ControllerPluginBroker();
-        $broker->setClassLoader($serviceLocator->get('ControllerPluginLoader'));
-        $broker->setServiceLocator($serviceLocator);
-        return $broker;
-    }
+    public function setController(Dispatchable $controller);
+
+    /**
+     * Get the current controller instance
+     *
+     * @return null|Dispatchable
+     */
+    public function getController();
 }

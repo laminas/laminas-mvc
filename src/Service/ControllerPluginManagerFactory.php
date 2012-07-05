@@ -21,9 +21,13 @@
 
 namespace Zend\Mvc\Service;
 
-use Zend\Mvc\Controller\PluginLoader as ControllerPluginLoader;
+use Zend\Mvc\Controller\PluginManager as ControllerPluginManager;
+use Zend\Mvc\Exception;
+use Zend\ServiceManager\ConfigurationInterface;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\ServiceManager;
+use Zend\ServiceManager\ServiceManagerAwareInterface;
 
 /**
  * @category   Zend
@@ -32,24 +36,18 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class ControllerPluginLoaderFactory implements FactoryInterface
+class ControllerPluginManagerFactory implements FactoryInterface
 {
     /**
-     * Create and return the MVC controller plugin loader
+     * Create and return the MVC controller plugin manager
      *
-     * If the "map" subkey of the "controller" key of the configuration service
-     * is set, uses that to initialize the loader.
-     * 
-     * @param  ServiceLocatorInterface $serviceLocator 
-     * @return ControllerPluginLoader
+     * @param  ServiceLocatorInterface $serviceLocator
+     * @return ControllerPluginManager
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $config = $serviceLocator->get('Configuration');
-        $map    = (isset($config['controller']) && isset($config['controller']['map'])) 
-                ? $config['controller']['map']
-                : array();
-        $loader = new ControllerPluginLoader($map);
-        return $loader;
+        $plugins = new ControllerPluginManager();
+        $plugins->setServiceLocator($serviceLocator);
+        return $plugins;
     }
 }

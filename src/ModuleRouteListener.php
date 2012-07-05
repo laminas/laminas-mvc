@@ -29,8 +29,11 @@ use Zend\EventManager\ListenerAggregateInterface;
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class RouteListener implements ListenerAggregateInterface
+class ModuleRouteListener implements ListenerAggregateInterface
 {
+    const MODULE_NAMESPACE    = '__NAMESPACE__';
+    const ORIGINAL_CONTROLLER = '__CONTROLLER__';
+
     /**
      * @var \Zend\Stdlib\CallbackHandler[]
      */
@@ -42,9 +45,9 @@ class RouteListener implements ListenerAggregateInterface
      * @param  EventManagerInterface $events 
      * @return void
      */
-    public function attach(EventManagerInterface $events)
+    public function attach(EventManagerInterface $events, $priority = 1)
     {
-        $this->listeners[] = $events->attach(MvcEvent::EVENT_ROUTE, array($this, 'onRoute'));
+        $this->listeners[] = $events->attach(MvcEvent::EVENT_ROUTE, array($this, 'onRoute'), $priority);
     }
 
     /**
@@ -63,36 +66,47 @@ class RouteListener implements ListenerAggregateInterface
     }
 
     /**
-     * Listen to the "route" event and attempt to route the request
+     * Listen to the "route" event and determine if the module namespace should
+     * be prepended to the controller name.
      *
-     * If no matches are returned, triggers "dispatch.error" in order to
-     * create a 404 response.
-     *
-     * Seeds the event with the route match on completion.
+     * If the route match contains a parameter key matching the MODULE_NAMESPACE 
+     * constant, that value will be prepended, with a namespace separator, to 
+     * the matched controller parameter.
      * 
      * @param  MvcEvent $e 
-     * @return null|Router\RouteMatch
+     * @return null
      */
     public function onRoute($e)
     {
-        $target     = $e->getTarget();
-        $request    = $e->getRequest();
-        $router     = $e->getRouter();
-        $routeMatch = $router->match($request);
-
-        if (!$routeMatch instanceof Router\RouteMatch) {
-            $e->setError($target::ERROR_ROUTER_NO_MATCH);
-
-            $results = $target->getEventManager()->trigger(MvcEvent::EVENT_DISPATCH_ERROR, $e);
-            if (count($results)) {
-                $return  = $results->last();
-            } else {
-                $return = $e->getParams();
-            }
-            return $return;
+        $matches = $e->getRouteMatch();
+        if (!$matches instanceof Router\RouteMatch) {
+            // Can't do anything without a route match
+            return;
         }
 
-        $e->setRouteMatch($routeMatch);
-        return $routeMatch;
+        $module = $matches->getParam(self::MODULE_NAMESPACE, false);
+        if (!$module) {
+            // No module namespace found; nothing to do
+            return;
+        }
+
+        $controller = $matches->getParam('controller', false);
+        if (!$controller) {
+            // no controller matched, nothing to do
+            return;
+        }
+
+        // Ensure the module namespace has not already been applied
+        if (0 === strpos($controller, $module)) {
+            return;
+        }
+
+        // Keep the originally matched controller name around
+        $matches->setParam(self::ORIGINAL_CONTROLLER, $controller);
+
+        // Prepend the controllername with the module, and replace it in the 
+        // matches
+        $controller = $module . '\\' . $controller;
+        $matches->setParam('controller', $controller);
     }
 }

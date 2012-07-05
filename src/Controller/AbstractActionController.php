@@ -26,8 +26,6 @@ use Zend\EventManager\EventInterface as Event;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\EventManagerAwareInterface;
 use Zend\Http\PhpEnvironment\Response as HttpResponse;
-use Zend\Loader\Broker;
-use Zend\Loader\Pluggable;
 use Zend\Mvc\Exception;
 use Zend\Mvc\InjectApplicationEventInterface;
 use Zend\Mvc\MvcEvent;
@@ -47,19 +45,18 @@ use Zend\View\Model\ViewModel;
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class ActionController implements 
+abstract class AbstractActionController implements
     Dispatchable, 
     EventManagerAwareInterface, 
     InjectApplicationEventInterface, 
-    ServiceLocatorAwareInterface, 
-    Pluggable
+    ServiceLocatorAwareInterface
 {
     //use \Zend\EventManager\ProvidesEvents;
 
-    protected $broker;
     protected $event;
     protected $events;
     protected $locator;
+    protected $plugins;
     protected $request;
     protected $response;
 
@@ -115,7 +112,7 @@ abstract class ActionController implements
           ->setResponse($response)
           ->setTarget($this);
 
-        $result = $this->events()->trigger(MvcEvent::EVENT_DISPATCH, $e, function($test) {
+        $result = $this->getEventManager()->trigger(MvcEvent::EVENT_DISPATCH, $e, function($test) {
             return ($test instanceof Response);
         });
 
@@ -183,7 +180,7 @@ abstract class ActionController implements
      * Set the event manager instance used by this context
      *
      * @param  EventManagerInterface $events
-     * @return ActionController
+     * @return AbstractActionController
      */
     public function setEventManager(EventManagerInterface $events)
     {
@@ -205,7 +202,7 @@ abstract class ActionController implements
      *
      * @return EventManagerInterface
      */
-    public function events()
+    public function getEventManager()
     {
         if (!$this->events instanceof EventManagerInterface) {
             $this->setEventManager(new EventManager());
@@ -269,33 +266,30 @@ abstract class ActionController implements
     }
 
     /**
-     * Get plugin broker instance
+     * Get plugin manager
      *
-     * @return Zend\Loader\Broker
+     * @return PluginManager
      */
-    public function getBroker()
+    public function getPluginManager()
     {
-        if (!$this->broker) {
-            $this->setBroker(new PluginBroker());
+        if (!$this->plugins) {
+            $this->setPluginManager(new PluginManager());
         }
-        return $this->broker;
+        return $this->plugins;
     }
 
     /**
-     * Set plugin broker instance
+     * Set plugin manager
      *
-     * @param  string|Broker $broker Plugin broker to load plugins
-     * @return Zend\Loader\Pluggable
+     * @param  string|PluginManager $plugins 
+     * @return ActionController
      * @throws Exception\InvalidArgumentException
      */
-    public function setBroker($broker)
+    public function setPluginManager(PluginManager $plugins)
     {
-        if (!$broker instanceof Broker) {
-            throw new Exception\InvalidArgumentException('Broker must implement Zend\Loader\Broker');
-        }
-        $this->broker = $broker;
-        if (method_exists($broker, 'setController')) {
-            $this->broker->setController($this);
+        $this->plugins = $plugins;
+        if (method_exists($plugins, 'setController')) {
+            $this->plugins->setController($this);
         }
         return $this;
     }
@@ -309,7 +303,7 @@ abstract class ActionController implements
      */
     public function plugin($name, array $options = null)
     {
-        return $this->getBroker()->load($name, $options);
+        return $this->getPluginManager()->get($name, $options);
     }
 
     /**
@@ -338,7 +332,7 @@ abstract class ActionController implements
      */
     protected function attachDefaultListeners()
     {
-        $events = $this->events();
+        $events = $this->getEventManager();
         $events->attach(MvcEvent::EVENT_DISPATCH, array($this, 'execute'));
     }
 
