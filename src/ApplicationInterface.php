@@ -13,55 +13,48 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Mvc_Router
+ * @package    Zend_Mvc
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-/**
- * @namespace
- */
-namespace Zend\Mvc\Router;
+namespace Zend\Mvc;
+
+use Zend\EventManager\EventsCapableInterface;
 
 /**
- * @package    Zend_Mvc_Router
+ * @category   Zend
+ * @package    Zend_Mvc
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface RouteStack extends Route
+interface ApplicationInterface extends EventsCapableInterface
 {
     /**
-     * Add a route to the stack.
-     * 
-     * @param  string  $name
-     * @param  mixed   $route
-     * @param  integer $priority
-     * @return RouteStack
+     * Get the locator object
+     *
+     * @return \Zend\ServiceManager\ServiceLocatorInterface
      */
-    public function addRoute($name, $route, $priority = null);
+    public function getServiceManager();
 
     /**
-     * Add multiple routes to the stack.
-     * 
-     * @param  array|Traversable $routes
-     * @return RouteStack
+     * Get the request object
+     *
+     * @return Request
      */
-    public function addRoutes($routes);
+    public function getRequest();
 
     /**
-     * Remove a route from the stack.
-     * 
-     * @param  string $name
-     * @return RouteStack
+     * Get the response object
+     *
+     * @return Response
      */
-    public function removeRoute($name);
+    public function getResponse();
 
     /**
-     * Remove all routes from the stack and set new ones.
-     * 
-     * @param  array|Traversable $routes
-     * @return RouteStack
+     * Run the application
+     *
+     * @return \Zend\Http\Response
      */
-    public function setRoutes($routes);
+    public function run();
 }
-

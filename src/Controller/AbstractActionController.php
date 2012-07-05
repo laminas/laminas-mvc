@@ -1,34 +1,62 @@
 <?php
+/**
+ * Zend Framework
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://framework.zend.com/license/new-bsd
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@zend.com so we can send you a copy immediately.
+ *
+ * @category   Zend
+ * @package    Zend_Mvc
+ * @subpackage Controller
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ */
 
 namespace Zend\Mvc\Controller;
 
-use Zend\Di\Locator,
-    Zend\EventManager\EventCollection,
-    Zend\EventManager\EventDescription as Event,
-    Zend\EventManager\EventManager,
-    Zend\Http\PhpEnvironment\Response as HttpResponse,
-    Zend\Loader\Broker,
-    Zend\Loader\Pluggable,
-    Zend\Mvc\Exception,
-    Zend\Mvc\InjectApplicationEvent,
-    Zend\Mvc\LocatorAware,
-    Zend\Mvc\MvcEvent,
-    Zend\Stdlib\Dispatchable,
-    Zend\Stdlib\RequestDescription as Request,
-    Zend\Stdlib\ResponseDescription as Response,
-    Zend\View\Model\ViewModel;
+use Zend\EventManager\EventManagerInterface;
+use Zend\EventManager\EventInterface as Event;
+use Zend\EventManager\EventManager;
+use Zend\EventManager\EventManagerAwareInterface;
+use Zend\Http\PhpEnvironment\Response as HttpResponse;
+use Zend\Mvc\Exception;
+use Zend\Mvc\InjectApplicationEventInterface;
+use Zend\Mvc\MvcEvent;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\Stdlib\DispatchableInterface as Dispatchable;
+use Zend\Stdlib\RequestInterface as Request;
+use Zend\Stdlib\ResponseInterface as Response;
+use Zend\View\Model\ViewModel;
 
 /**
  * Basic action controller
+ *
+ * @category   Zend
+ * @package    Zend_Mvc
+ * @subpackage Controller
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class ActionController implements Dispatchable, InjectApplicationEvent, LocatorAware, Pluggable
+abstract class AbstractActionController implements
+    Dispatchable, 
+    EventManagerAwareInterface, 
+    InjectApplicationEventInterface, 
+    ServiceLocatorAwareInterface
 {
     //use \Zend\EventManager\ProvidesEvents;
 
-    protected $broker;
     protected $event;
     protected $events;
     protected $locator;
+    protected $plugins;
     protected $request;
     protected $response;
 
@@ -84,7 +112,7 @@ abstract class ActionController implements Dispatchable, InjectApplicationEvent,
           ->setResponse($response)
           ->setTarget($this);
 
-        $result = $this->events()->trigger('dispatch', $e, function($test) {
+        $result = $this->getEventManager()->trigger(MvcEvent::EVENT_DISPATCH, $e, function($test) {
             return ($test instanceof Response);
         });
 
@@ -99,6 +127,7 @@ abstract class ActionController implements Dispatchable, InjectApplicationEvent,
      *
      * @param  MvcEvent $e
      * @return mixed
+     * @throws Exception\DomainException
      */
     public function execute(MvcEvent $e)
     {
@@ -108,7 +137,7 @@ abstract class ActionController implements Dispatchable, InjectApplicationEvent,
              * @todo Determine requirements for when route match is missing.
              *       Potentially allow pulling directly from request metadata?
              */
-            throw new \DomainException('Missing route matches; unsure how to retrieve action');
+            throw new Exception\DomainException('Missing route matches; unsure how to retrieve action');
         }
 
         $action = $routeMatch->getParam('action', 'not-found');
@@ -150,12 +179,19 @@ abstract class ActionController implements Dispatchable, InjectApplicationEvent,
     /**
      * Set the event manager instance used by this context
      *
-     * @param  EventCollection $events
-     * @return AppContext
+     * @param  EventManagerInterface $events
+     * @return AbstractActionController
      */
-    public function setEventManager(EventCollection $events)
+    public function setEventManager(EventManagerInterface $events)
     {
+        $events->setIdentifiers(array(
+            'Zend\Stdlib\DispatchableInterface',
+            __CLASS__,
+            get_called_class(),
+            substr(get_called_class(), 0, strpos(get_called_class(), '\\'))
+        ));
         $this->events = $events;
+        $this->attachDefaultListeners();
         return $this;
     }
 
@@ -164,17 +200,12 @@ abstract class ActionController implements Dispatchable, InjectApplicationEvent,
      *
      * Lazy-loads an EventManager instance if none registered.
      *
-     * @return EventCollection
+     * @return EventManagerInterface
      */
-    public function events()
+    public function getEventManager()
     {
-        if (!$this->events instanceof EventCollection) {
-            $this->setEventManager(new EventManager(array(
-                'Zend\Stdlib\Dispatchable',
-                __CLASS__,
-                get_called_class()
-            )));
-            $this->attachDefaultListeners();
+        if (!$this->events instanceof EventManagerInterface) {
+            $this->setEventManager(new EventManager());
         }
         return $this->events;
     }
@@ -216,10 +247,10 @@ abstract class ActionController implements Dispatchable, InjectApplicationEvent,
     /**
      * Set locator instance
      *
-     * @param  Locator $locator
+     * @param  ServiceLocatorInterface $locator
      * @return void
      */
-    public function setLocator(Locator $locator)
+    public function setServiceLocator(ServiceLocatorInterface $locator)
     {
         $this->locator = $locator;
     }
@@ -227,40 +258,38 @@ abstract class ActionController implements Dispatchable, InjectApplicationEvent,
     /**
      * Retrieve locator instance
      *
-     * @return Locator
+     * @return ServiceLocatorInterface
      */
-    public function getLocator()
+    public function getServiceLocator()
     {
         return $this->locator;
     }
 
     /**
-     * Get plugin broker instance
+     * Get plugin manager
      *
-     * @return Zend\Loader\Broker
+     * @return PluginManager
      */
-    public function getBroker()
+    public function getPluginManager()
     {
-        if (!$this->broker) {
-            $this->setBroker(new PluginBroker());
+        if (!$this->plugins) {
+            $this->setPluginManager(new PluginManager());
         }
-        return $this->broker;
+        return $this->plugins;
     }
 
     /**
-     * Set plugin broker instance
+     * Set plugin manager
      *
-     * @param  string|Broker $broker Plugin broker to load plugins
-     * @return Zend\Loader\Pluggable
+     * @param  string|PluginManager $plugins 
+     * @return ActionController
+     * @throws Exception\InvalidArgumentException
      */
-    public function setBroker($broker)
+    public function setPluginManager(PluginManager $plugins)
     {
-        if (!$broker instanceof Broker) {
-            throw new Exception\InvalidArgumentException('Broker must implement Zend\Loader\Broker');
-        }
-        $this->broker = $broker;
-        if (method_exists($broker, 'setController')) {
-            $this->broker->setController($this);
+        $this->plugins = $plugins;
+        if (method_exists($plugins, 'setController')) {
+            $this->plugins->setController($this);
         }
         return $this;
     }
@@ -268,13 +297,13 @@ abstract class ActionController implements Dispatchable, InjectApplicationEvent,
     /**
      * Get plugin instance
      *
-     * @param  string     $plugin  Name of plugin to return
+     * @param  string     $name    Name of plugin to return
      * @param  null|array $options Options to pass to plugin constructor (if not already instantiated)
      * @return mixed
      */
     public function plugin($name, array $options = null)
     {
-        return $this->getBroker()->load($name, $options);
+        return $this->getPluginManager()->get($name, $options);
     }
 
     /**
@@ -282,9 +311,9 @@ abstract class ActionController implements Dispatchable, InjectApplicationEvent,
      *
      * If the plugin is a functor, call it, passing the parameters provided.
      * Otherwise, return the plugin instance.
-     * 
-     * @param  string $method 
-     * @param  array $params 
+     *
+     * @param  string $method
+     * @param  array $params
      * @return mixed
      */
     public function __call($method, array $params)
@@ -303,8 +332,8 @@ abstract class ActionController implements Dispatchable, InjectApplicationEvent,
      */
     protected function attachDefaultListeners()
     {
-        $events = $this->events();
-        $events->attach('dispatch', array($this, 'execute'));
+        $events = $this->getEventManager();
+        $events->attach(MvcEvent::EVENT_DISPATCH, array($this, 'execute'));
     }
 
     /**

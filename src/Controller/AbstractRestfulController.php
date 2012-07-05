@@ -1,33 +1,85 @@
 <?php
+/**
+ * Zend Framework
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://framework.zend.com/license/new-bsd
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@zend.com so we can send you a copy immediately.
+ *
+ * @category   Zend
+ * @package    Zend_Mvc
+ * @subpackage Controller
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ */
 
 namespace Zend\Mvc\Controller;
 
-use Zend\Di\Locator,
-    Zend\EventManager\EventCollection,
-    Zend\EventManager\EventDescription as Event,
-    Zend\EventManager\EventManager,
-    Zend\Http\Request as HttpRequest,
-    Zend\Http\PhpEnvironment\Response as HttpResponse,
-    Zend\Loader\Broker,
-    Zend\Loader\Pluggable,
-    Zend\Stdlib\Dispatchable,
-    Zend\Stdlib\RequestDescription as Request,
-    Zend\Stdlib\ResponseDescription as Response,
-    Zend\Mvc\Exception,
-    Zend\Mvc\InjectApplicationEvent,
-    Zend\Mvc\LocatorAware,
-    Zend\Mvc\MvcEvent;
+use Zend\EventManager\EventManagerInterface;
+use Zend\EventManager\EventInterface as Event;
+use Zend\EventManager\EventManager;
+use Zend\EventManager\EventManagerAwareInterface;
+use Zend\Http\Request as HttpRequest;
+use Zend\Http\PhpEnvironment\Response as HttpResponse;
+use Zend\Mvc\Exception;
+use Zend\Mvc\InjectApplicationEventInterface;
+use Zend\Mvc\MvcEvent;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\Stdlib\DispatchableInterface as Dispatchable;
+use Zend\Stdlib\RequestInterface as Request;
+use Zend\Stdlib\ResponseInterface as Response;
 
 /**
  * Abstract RESTful controller
+ *
+ * @category   Zend
+ * @package    Zend_Mvc
+ * @subpackage Controller
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class RestfulController implements Dispatchable, InjectApplicationEvent, LocatorAware, Pluggable
+abstract class AbstractRestfulController implements
+    Dispatchable,
+    EventManagerAwareInterface,
+    InjectApplicationEventInterface,
+    ServiceLocatorAwareInterface
 {
-    protected $broker;
+    /**
+     * @var PluginManager
+     */
+    protected $plugins;
+
+    /**
+     * @var Request
+     */
     protected $request;
+
+    /**
+     * @var Response
+     */
     protected $response;
+
+    /**
+     * @var Event
+     */
     protected $event;
+
+    /**
+     * @var EventManagerInterface
+     */
     protected $events;
+
+    /**
+     * @var ServiceLocatorInterface
+     */
+    protected $locator;
 
     /**
      * Return list of resources
@@ -91,11 +143,12 @@ abstract class RestfulController implements Dispatchable, InjectApplicationEvent
      * @param  Request $request
      * @param  null|Response $response
      * @return mixed|Response
+     * @throws Exception\InvalidArgumentException
      */
     public function dispatch(Request $request, Response $response = null)
     {
         if (!$request instanceof HttpRequest) {
-            throw new \InvalidArgumentException('Expected an HTTP request');
+            throw new Exception\InvalidArgumentException('Expected an HTTP request');
         }
         $this->request = $request;
         if (!$response) {
@@ -108,7 +161,7 @@ abstract class RestfulController implements Dispatchable, InjectApplicationEvent
           ->setResponse($response)
           ->setTarget($this);
 
-        $result = $this->events()->trigger('dispatch', $e, function($test) {
+        $result = $this->getEventManager()->trigger(MvcEvent::EVENT_DISPATCH, $e, function($test) {
             return ($test instanceof Response);
         });
         if ($result->stopped()) {
@@ -143,39 +196,47 @@ abstract class RestfulController implements Dispatchable, InjectApplicationEvent
             switch (strtolower($request->getMethod())) {
                 case 'get':
                     if (null !== $id = $routeMatch->getParam('id')) {
+                        $action = 'get';
                         $return = $this->get($id);
                         break;
                     }
-                    if (null !== $id = $request->query()->get('id')) {
+                    if (null !== $id = $request->getQuery()->get('id')) {
+                        $action = 'get';
                         $return = $this->get($id);
                         break;
                     }
+                    $action = 'getList';
                     $return = $this->getList();
                     break;
                 case 'post':
-                    $return = $this->create($request->post()->toArray());
+                    $action = 'create';
+                    $return = $this->create($request->getPost()->toArray());
                     break;
                 case 'put':
                     if (null === $id = $routeMatch->getParam('id')) {
-                        if (!($id = $request->query()->get('id', false))) {
+                        if (!($id = $request->getQuery()->get('id', false))) {
                             throw new \DomainException('Missing identifier');
                         }
                     }
                     $content = $request->getContent();
                     parse_str($content, $parsedParams);
+                    $action = 'update';
                     $return = $this->update($id, $parsedParams);
                     break;
                 case 'delete':
                     if (null === $id = $routeMatch->getParam('id')) {
-                        if (!($id = $request->query()->get('id', false))) {
+                        if (!($id = $request->getQuery()->get('id', false))) {
                             throw new \DomainException('Missing identifier');
                         }
                     }
+                    $action = 'delete';
                     $return = $this->delete($id);
                     break;
                 default:
                     throw new \DomainException('Invalid HTTP method!');
             }
+
+            $routeMatch->setParam('action', $action);
         }
 
         // Emit post-dispatch signal, passing:
@@ -193,7 +254,7 @@ abstract class RestfulController implements Dispatchable, InjectApplicationEvent
     public function getRequest()
     {
         if (!$this->request) {
-            $this->setRequest(new HttpRequest());
+            $this->request = new HttpRequest();
         }
         return $this->request;
     }
@@ -206,7 +267,7 @@ abstract class RestfulController implements Dispatchable, InjectApplicationEvent
     public function getResponse()
     {
         if (!$this->response) {
-            $this->setResponse(new HttpResponse());
+            $this->response = new HttpResponse();
         }
         return $this->response;
     }
@@ -214,12 +275,18 @@ abstract class RestfulController implements Dispatchable, InjectApplicationEvent
     /**
      * Set the event manager instance used by this context
      *
-     * @param  EventCollection $events
-     * @return AppContext
+     * @param  EventManagerInterface $events
+     * @return AbstractRestfulController
      */
-    public function setEventManager(EventCollection $events)
+    public function setEventManager(EventManagerInterface $events)
     {
+        $events->setIdentifiers(array(
+            'Zend\Stdlib\DispatchableInterface',
+            __CLASS__,
+            get_called_class()
+        ));
         $this->events = $events;
+        $this->attachDefaultListeners();
         return $this;
     }
 
@@ -228,17 +295,12 @@ abstract class RestfulController implements Dispatchable, InjectApplicationEvent
      *
      * Lazy-loads an EventManager instance if none registered.
      *
-     * @return EventCollection
+     * @return EventManagerInterface
      */
-    public function events()
+    public function getEventManager()
     {
         if (!$this->events) {
-            $this->setEventManager(new EventManager(array(
-                'Zend\Stdlib\Dispatchable',
-                __CLASS__,
-                get_called_class(),
-            )));
-            $this->attachDefaultListeners();
+            $this->setEventManager(new EventManager());
         }
         return $this->events;
     }
@@ -267,7 +329,7 @@ abstract class RestfulController implements Dispatchable, InjectApplicationEvent
      *
      * Will create a new MvcEvent if none provided.
      *
-     * @return Event
+     * @return MvcEvent
      */
     public function getEvent()
     {
@@ -280,10 +342,10 @@ abstract class RestfulController implements Dispatchable, InjectApplicationEvent
     /**
      * Set locator instance
      *
-     * @param  Locator $locator
+     * @param  ServiceLocatorInterface $locator
      * @return void
      */
-    public function setLocator(Locator $locator)
+    public function setServiceLocator(ServiceLocatorInterface $locator)
     {
         $this->locator = $locator;
     }
@@ -291,40 +353,38 @@ abstract class RestfulController implements Dispatchable, InjectApplicationEvent
     /**
      * Retrieve locator instance
      *
-     * @return Locator
+     * @return ServiceLocatorInterface
      */
-    public function getLocator()
+    public function getServiceLocator()
     {
         return $this->locator;
     }
 
     /**
-     * Get plugin broker instance
+     * Get plugin manager
      *
-     * @return Zend\Loader\Broker
+     * @return PluginManager
      */
-    public function getBroker()
+    public function getPluginManager()
     {
-        if (!$this->broker) {
-            $this->setBroker(new PluginBroker());
+        if (!$this->plugins) {
+            $this->setPluginManager(new PluginManager());
         }
-        return $this->broker;
+        return $this->plugins;
     }
 
     /**
-     * Set plugin broker instance
+     * Set plugin manager
      *
-     * @param  string|Broker $broker Plugin broker to load plugins
-     * @return Zend\Loader\Pluggable
+     * @param  string|PluginManager $plugins 
+     * @return RestfulController
+     * @throws Exception\InvalidArgumentException
      */
-    public function setBroker($broker)
+    public function setPluginManager(PluginManager $plugins)
     {
-        if (!$broker instanceof Broker) {
-            throw new Exception\InvalidArgumentException('Broker must implement Zend\Loader\Broker');
-        }
-        $this->broker = $broker;
-        if (method_exists($broker, 'setController')) {
-            $this->broker->setController($this);
+        $this->plugins = $plugins;
+        if (method_exists($plugins, 'setController')) {
+            $this->plugins->setController($this);
         }
         return $this;
     }
@@ -332,13 +392,13 @@ abstract class RestfulController implements Dispatchable, InjectApplicationEvent
     /**
      * Get plugin instance
      *
-     * @param  string     $plugin  Name of plugin to return
+     * @param  string     $name    Name of plugin to return
      * @param  null|array $options Options to pass to plugin constructor (if not already instantiated)
      * @return mixed
      */
     public function plugin($name, array $options = null)
     {
-        return $this->getBroker()->load($name, $options);
+        return $this->getPluginManager()->get($name, $options);
     }
 
     /**
@@ -346,9 +406,9 @@ abstract class RestfulController implements Dispatchable, InjectApplicationEvent
      *
      * If the plugin is a functor, call it, passing the parameters provided.
      * Otherwise, return the plugin instance.
-     * 
-     * @param  string $method 
-     * @param  array $params 
+     *
+     * @param  string $method
+     * @param  array $params
      * @return mixed
      */
     public function __call($method, $params)
@@ -367,8 +427,8 @@ abstract class RestfulController implements Dispatchable, InjectApplicationEvent
      */
     protected function attachDefaultListeners()
     {
-        $events = $this->events();
-        $events->attach('dispatch', array($this, 'execute'));
+        $events = $this->getEventManager();
+        $events->attach(MvcEvent::EVENT_DISPATCH, array($this, 'execute'));
     }
 
     /**

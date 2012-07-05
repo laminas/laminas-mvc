@@ -13,20 +13,40 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Mvc_Router
+ * @package    Zend_Mvc
+ * @subpackage Service
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-/**
- * @namespace
- */
-namespace Zend\Mvc\Router;
+namespace Zend\Mvc\Service;
+
+use Zend\EventManager\EventManager;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * @package    Zend_Mvc_Router
+ * @category   Zend
+ * @package    Zend_Mvc
+ * @subpackage Service
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface Exception
-{}
+class EventManagerFactory implements FactoryInterface
+{
+    /**
+     * Create an EventManager instance
+     *
+     * Creates a new EventManager instance, seeding it with a shared instance
+     * of SharedEventManager.
+     * 
+     * @param  ServiceLocatorInterface $serviceLocator 
+     * @return EventManager
+     */
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        $em = new EventManager();
+        $em->setSharedManager($serviceLocator->get('SharedEventManager'));
+        return $em;
+    }
+}

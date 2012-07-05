@@ -13,31 +13,37 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Mvc_Router
+ * @package    Zend_Mvc
+ * @subpackage Service
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-/**
- * @namespace
- */
-namespace Zend\Mvc\Router\Http;
+namespace Zend\Mvc\Service;
 
-use Zend\Mvc\Router\Route as BaseRoute;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\View\Renderer\FeedRenderer;
 
 /**
- * Tree specific route interface.
- * 
- * @package    Zend_Mvc_Router
+ * @category   Zend
+ * @package    Zend_Mvc
+ * @subpackage Service
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface Route extends BaseRoute
+class ViewFeedRendererFactory implements FactoryInterface
 {
     /**
-     * Get a list of parameters used while assembling.
-     * 
-     * @return array
+     * Create and return the feed view renderer
+     *
+     * @param  ServiceLocatorInterface $serviceLocator 
+     * @return FeedRenderer
      */
-    public function getAssembledParams();
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        $feedRenderer = new FeedRenderer();
+        return $feedRenderer;
+    }
 }
+
