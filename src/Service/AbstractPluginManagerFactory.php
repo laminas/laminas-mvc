@@ -21,7 +21,8 @@
 
 namespace Zend\Mvc\Service;
 
-use Zend\Mvc\Controller\PluginLoader as ControllerPluginLoader;
+use Zend\ServiceManager\Di\DiAbstractServiceFactory;
+use Zend\ServiceManager\Di\DiServiceInitializer;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -32,24 +33,33 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class ControllerPluginLoaderFactory implements FactoryInterface
+abstract class AbstractPluginManagerFactory implements FactoryInterface
 {
+    const PLUGIN_MANAGER_CLASS = 'AbstractPluginManager';
+
     /**
-     * Create and return the MVC controller plugin loader
+     * Create and return a plugin manager.
+     * Classes that extend this should provide a valid class for
+     * the PLUGIN_MANGER_CLASS constant.
      *
-     * If the "map" subkey of the "controller" key of the configuration service
-     * is set, uses that to initialize the loader.
-     * 
-     * @param  ServiceLocatorInterface $serviceLocator 
-     * @return ControllerPluginLoader
+     * @param  ServiceLocatorInterface $serviceLocator
+     * @return AbstractPluginManager
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $config = $serviceLocator->get('Configuration');
-        $map    = (isset($config['controller']) && isset($config['controller']['map'])) 
-                ? $config['controller']['map']
-                : array();
-        $loader = new ControllerPluginLoader($map);
-        return $loader;
+        $pluginManagerClass = static::PLUGIN_MANAGER_CLASS;
+        $plugins = new $pluginManagerClass;
+        $plugins->setServiceLocator($serviceLocator);
+        $configuration    = $serviceLocator->get('Configuration');
+        if (isset($configuration['di']) && $serviceLocator->has('Di')) {
+            $di = $serviceLocator->get('Di');
+            $plugins->addAbstractFactory(
+                new DiAbstractServiceFactory($di, DiAbstractServiceFactory::USE_SL_BEFORE_DI)
+            );
+            $plugins->addInitializer(
+                new DiServiceInitializer($di, $serviceLocator)
+            );
+        }
+        return $plugins;
     }
 }

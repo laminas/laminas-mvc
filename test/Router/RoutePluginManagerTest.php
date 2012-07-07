@@ -14,21 +14,30 @@
  *
  * @category   Zend
  * @package    Zend_Mvc_Router
- * @subpackage Exception
+ * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace Zend\Mvc\Router\Exception;
+namespace ZendTest\Mvc\Router;
 
-use Zend\Mvc\Exception;
+use Zend\Mvc\Router\RoutePluginManager,
+    PHPUnit_Framework_TestCase as TestCase;
 
 /**
+ * @category   Zend
  * @package    Zend_Mvc_Router
- * @subpackage Exception
+ * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @group      Zend_Router
  */
-class RuntimeException extends Exception\RuntimeException implements ExceptionInterface
+class RoutePluginManagerTest extends TestCase
 {
+    public function testLoadNonExistentRoute()
+    {
+        $routes = new RoutePluginManager();
+        $this->setExpectedException('Zend\ServiceManager\Exception\ServiceNotFoundException');
+        $routes->get('foo');
+    }
 }

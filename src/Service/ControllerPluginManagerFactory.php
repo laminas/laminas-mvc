@@ -13,22 +13,36 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Mvc_Router
- * @subpackage Exception
+ * @package    Zend_Mvc
+ * @subpackage Service
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace Zend\Mvc\Router\Exception;
+namespace Zend\Mvc\Service;
 
-use Zend\Mvc\Exception;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * @package    Zend_Mvc_Router
- * @subpackage Exception
+ * @category   Zend
+ * @package    Zend_Mvc
+ * @subpackage Service
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class RuntimeException extends Exception\RuntimeException implements ExceptionInterface
+class ControllerPluginManagerFactory extends AbstractPluginManagerFactory
 {
+    const PLUGIN_MANAGER_CLASS = 'Zend\Mvc\Controller\PluginManager';
+
+    /**
+     * Create and return the MVC controller plugin manager
+     *
+     * @param  ServiceLocatorInterface $serviceLocator
+     * @return ControllerPluginManager
+     */
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        $plugins = parent::createService($serviceLocator);
+        return $plugins;
+    }
 }
