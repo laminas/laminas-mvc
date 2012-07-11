@@ -15,6 +15,6 @@ namespace Zend\Mvc\Exception;
  * @package    Zend_Mvc
  * @subpackage Exception
  */
-class MissingLocatorException extends RuntimeException
+class InvalidPluginException extends \Exception implements ExceptionInterface
 {
 }

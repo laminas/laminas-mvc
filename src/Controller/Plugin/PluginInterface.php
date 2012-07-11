@@ -8,28 +8,29 @@
  * @package   Zend_Mvc
  */
 
-namespace Zend\Mvc;
+namespace Zend\Mvc\Controller\Plugin;
 
-use Zend\EventManager\EventInterface as Event;
+use Zend\Stdlib\DispatchableInterface as Dispatchable;
 
 /**
  * @category   Zend
  * @package    Zend_Mvc
+ * @subpackage Controller
  */
-interface InjectApplicationEventInterface
+interface PluginInterface
 {
     /**
-     * Compose an Event
-     * 
-     * @param  Event $event 
+     * Set the current controller instance
+     *
+     * @param  Dispatchable $controller
      * @return void
      */
-    public function setEvent(Event $event);
+    public function setController(Dispatchable $controller);
 
     /**
-     * Retrieve the composed event
-     * 
-     * @return Event
+     * Get the current controller instance
+     *
+     * @return null|Dispatchable
      */
-    public function getEvent();
+    public function getController();
 }
