@@ -8,10 +8,21 @@
  * @package   Zend_Mvc
  */
 
-namespace Zend\Mvc\View\Console;
+namespace ZendTest\Mvc\Controller\Plugin\TestAsset;
 
-use Zend\EventManager\ListenerAggregateInterface;
-use Zend\Mvc\View\Http\InjectViewModelListener as HttpInjectViewModelListener;
+use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 
-class InjectViewModelListener extends HttpInjectViewModelListener implements ListenerAggregateInterface
-{}
+class SamplePluginWithConstructor extends AbstractPlugin
+{
+    protected $bar;
+
+    public function __construct($bar = 'baz')
+    {
+        $this->bar = $bar;
+    }
+
+    public function getBar()
+    {
+        return $this->bar;
+    }
+}
