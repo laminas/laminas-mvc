@@ -9,7 +9,7 @@
     "homepage": "https://github.com/zendframework/zend-mvc",
     "autoload": {
         "psr-4": {
-            "Zend\\Mvc": "src/"
+            "Zend\\Mvc\\": "src/"
         }
     },
     "require": {
