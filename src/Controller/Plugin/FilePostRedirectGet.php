@@ -11,6 +11,7 @@
 
 namespace Zend\Mvc\Controller\Plugin;
 
+use Zend\Form\Form;
 use Zend\Mvc\Exception\RuntimeException;
 use Zend\Session\Container;
 
@@ -21,26 +22,44 @@ use Zend\Session\Container;
  * @package Zend_Mvc
  * @subpackage Controller
  */
-class PostRedirectGet extends AbstractPlugin
+class FilePostRedirectGet extends AbstractPlugin
 {
     /**
      * @var Container
      */
     protected $sessionContainer;
 
-    public function __invoke($redirect = null, $redirectToUrl = false)
+    public function __invoke($form, $redirect = null, $redirectToUrl = false)
     {
         $controller = $this->getController();
         $request    = $controller->getRequest();
         $container  = $this->getSessionContainer();
 
         if ($request->isPost()) {
-            $container->post = $request->getPost()->toArray();
+            $post = array_merge(
+                $request->getPost()->toArray(),
+                $request->getFiles()->toArray()
+            );
+            $container->post = $post;
+
+            $form->setData($post);
+            if (!$form->isValid()) {
+                $container->errors = $form->getMessages();
+            }
+
             return $this->redirect($redirect, $redirectToUrl);
         } else {
-            if ($container->post !== null) {
-                $post = $container->post;
+            if (null !== $container->post) {
+                $post   = $container->post;
+                $errors = $container->errors;
                 unset($container->post);
+                unset($container->errors);
+
+                $form->setData($post);
+                if (null !== $errors) {
+                    $form->setMessages($errors);
+                }
+
                 return $post;
             }
 
@@ -51,8 +70,8 @@ class PostRedirectGet extends AbstractPlugin
     protected function getSessionContainer()
     {
         if (!isset($this->sessionContainer)) {
-            $this->sessionContainer = new Container('prg_post1');
-            $this->sessionContainer->setExpirationHops(1, 'post');
+            $this->sessionContainer = new Container('file_prg_post1');
+            $this->sessionContainer->setExpirationHops(1, array('post', 'errors'));
         }
         return $this->sessionContainer;
     }
