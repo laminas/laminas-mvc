@@ -1,14 +1,22 @@
 <?php
+/**
+ * Zend Framework (http://framework.zend.com/)
+ *
+ * @link      http://github.com/zendframework/zf2 for the canonical source repository
+ * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @package   Zend_Mvc
+ */
 
 namespace ZendTest\Mvc\Controller;
 
-use PHPUnit_Framework_TestCase as TestCase,
-    stdClass,
-    Zend\EventManager\SharedEventManager,
-    Zend\Http\Request,
-    Zend\Http\Response,
-    Zend\Mvc\MvcEvent,
-    Zend\Mvc\Router\RouteMatch;
+use PHPUnit_Framework_TestCase as TestCase;
+use stdClass;
+use Zend\EventManager\SharedEventManager;
+use Zend\Http\Request;
+use Zend\Http\Response;
+use Zend\Mvc\MvcEvent;
+use Zend\Mvc\Router\RouteMatch;
 
 class RestfulControllerTest extends TestCase
 {

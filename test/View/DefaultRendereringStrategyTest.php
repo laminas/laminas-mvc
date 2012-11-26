@@ -1,52 +1,35 @@
 <?php
 /**
- * Zend Framework
+ * Zend Framework (http://framework.zend.com/)
  *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://framework.zend.com/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@zend.com so we can send you a copy immediately.
- *
- * @category   Zend
- * @package    Zend_Mvc
- * @subpackage UnitTest
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @link      http://github.com/zendframework/zf2 for the canonical source repository
+ * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @package   Zend_Mvc
  */
 
 namespace ZendTest\Mvc\View;
 
-use PHPUnit_Framework_TestCase as TestCase,
-    ReflectionClass,
-    stdClass,
-    Zend\EventManager\Event,
-    Zend\EventManager\EventManager,
-    Zend\Http\Request,
-    Zend\Http\Response,
-    Zend\Mvc\Application,
-    Zend\Mvc\MvcEvent,
-    Zend\Mvc\View\DefaultRenderingStrategy,
-    Zend\View\Helper\Placeholder\Registry as PlaceholderRegistry,
-    Zend\View\Model\ModelInterface as Model,
-    Zend\View\Renderer\FeedRenderer,
-    Zend\View\Renderer\JsonRenderer,
-    Zend\View\Renderer\PhpRenderer,
-    Zend\View\Resolver\TemplateMapResolver,
-    Zend\View\View,
-    Zend\View\ViewEvent,
-    Zend\View\Model\ViewModel;
+use PHPUnit_Framework_TestCase as TestCase;
+use Zend\EventManager\Event;
+use Zend\EventManager\EventManager;
+use Zend\Http\Request;
+use Zend\Http\Response;
+use Zend\Mvc\Application;
+use Zend\Mvc\MvcEvent;
+use Zend\Mvc\View\Http\DefaultRenderingStrategy;
+use Zend\ServiceManager\ServiceManager;
+use Zend\View\Model\ModelInterface as Model;
+use Zend\View\Renderer\PhpRenderer;
+use Zend\View\View;
+use Zend\View\Model\ViewModel;
+use Zend\View\Resolver\TemplateMapResolver;
+use Zend\View\Strategy\PhpRendererStrategy;
 
 /**
  * @category   Zend
  * @package    Zend_Mvc
  * @subpackage UnitTest
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class DefaultRenderingStrategyTest extends TestCase
 {
@@ -142,5 +125,46 @@ class DefaultRenderingStrategyTest extends TestCase
 
         $result = $this->strategy->render($this->event);
         $this->assertSame($this->response, $result);
+    }
+
+    public function testTriggersRenderErrorEventInCaseOfRenderingException()
+    {
+        $resolver = new TemplateMapResolver();
+        $resolver->add('exception', __DIR__ . '/_files/exception.phtml');
+        $this->renderer->setResolver($resolver);
+        $strategy = new PhpRendererStrategy($this->renderer);
+        $this->view->getEventManager()->attach($strategy);
+
+        $model = new ViewModel();
+        $model->setTemplate('exception');
+        $this->event->setViewModel($model);
+
+        $services = new ServiceManager();
+        $services->setService('Request', $this->request);
+        $services->setService('Response', $this->response);
+        $services->setInvokableClass('SharedEventManager', 'Zend\EventManager\SharedEventManager');
+        $services->setFactory('EventManager', function ($services) {
+            $sharedEvents = $services->get('SharedEventManager');
+            $events = new EventManager();
+            $events->setSharedManager($sharedEvents);
+            return $events;
+        }, false);
+
+        $application = new Application(array(), $services);
+        $this->event->setApplication($application);
+
+        $test = (object) array('flag' => false);
+        $application->getEventManager()->attach('render.error', function ($e) use ($test) {
+            $test->flag      = true;
+            $test->error     = $e->getError();
+            $test->exception = $e->getParam('exception');
+        });
+
+        $this->strategy->render($this->event);
+
+        $this->assertTrue($test->flag);
+        $this->assertEquals(Application::ERROR_EXCEPTION, $test->error);
+        $this->assertInstanceOf('Exception', $test->exception);
+        $this->assertContains('script', $test->exception->getMessage());
     }
 }

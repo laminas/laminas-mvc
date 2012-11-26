@@ -1,11 +1,20 @@
 <?php
+/**
+ * Zend Framework (http://framework.zend.com/)
+ *
+ * @link      http://github.com/zendframework/zf2 for the canonical source repository
+ * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @package   Zend_Mvc
+ */
+
 namespace ZendTest\Mvc\Router\Http;
 
-use PHPUnit_Framework_TestCase as TestCase,
-    Zend\Http\Request,
-    Zend\Stdlib\Request as BaseRequest,
-    Zend\Mvc\Router\Http\Segment,
-    ZendTest\Mvc\Router\FactoryTester;
+use PHPUnit_Framework_TestCase as TestCase;
+use Zend\Http\Request;
+use Zend\Stdlib\Request as BaseRequest;
+use Zend\Mvc\Router\Http\Segment;
+use ZendTest\Mvc\Router\FactoryTester;
 
 class SegmentTest extends TestCase
 {
@@ -102,6 +111,12 @@ class SegmentTest extends TestCase
                 null,
                 array('foo' => 'bar', 'bar' => 'baz')
             ),
+            'optional-group-within-optional-group-is-ignored' => array(
+                new Segment('/:foo[/:bar[/:baz]]', array(), array('bar' => 'baz', 'baz' => 'bat')),
+                '/bar',
+                null,
+                array('foo' => 'bar', 'bar' => 'baz', 'baz' => 'bat')
+            ),
             'non-standard-delimiter-before-parameter' => array(
                 new Segment('/foo-:bar'),
                 '/foo-baz',
@@ -134,9 +149,21 @@ class SegmentTest extends TestCase
             ),
             'url-encoded-parameters-are-decoded' => array(
                 new Segment('/:foo'),
-                '/foo+bar',
+                '/foo%20bar',
                 null,
                 array('foo' => 'foo bar')
+            ),
+            'urlencode-flaws-corrected' => array(
+                new Segment('/:foo'),
+                "/!$&'()*,-.:;=@_~+",
+                null,
+                array('foo' => "!$&'()*,-.:;=@_~+")
+            ),
+            'empty-matches-are-replaced-with-defaults' => array(
+                new Segment('/foo[/:bar]/baz-:baz', array(), array('bar' => 'bar')),
+                '/foo/baz-baz',
+                null,
+                array('bar' => 'bar', 'baz' => 'baz')
             ),
         );
     }
@@ -283,5 +310,31 @@ class SegmentTest extends TestCase
                 'constraints' => array('foo' => 'bar')
             )
         );
+    }
+
+    public function testRawDecode()
+    {
+        // verify all characters which don't absolutely require encoding pass through match unchanged
+        // this includes every character other than #, %, / and ?
+        $raw = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789`-=[]\\;\',.~!@$^&*()_+{}|:"<>';
+        $request = new Request();
+        $request->setUri('http://example.com/' . $raw);
+        $route   = new Segment('/:foo');
+        $match   = $route->match($request);
+
+        $this->assertSame($raw, $match->getParam('foo'));
+    }
+
+    public function testEncodedDecode()
+    {
+        // every character
+        $in  = '%61%62%63%64%65%66%67%68%69%6a%6b%6c%6d%6e%6f%70%71%72%73%74%75%76%77%78%79%7a%41%42%43%44%45%46%47%48%49%4a%4b%4c%4d%4e%4f%50%51%52%53%54%55%56%57%58%59%5a%30%31%32%33%34%35%36%37%38%39%60%2d%3d%5b%5d%5c%3b%27%2c%2e%2f%7e%21%40%23%24%25%5e%26%2a%28%29%5f%2b%7b%7d%7c%3a%22%3c%3e%3f';
+        $out = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789`-=[]\\;\',./~!@#$%^&*()_+{}|:"<>?';
+        $request = new Request();
+        $request->setUri('http://example.com/' . $in);
+        $route   = new Segment('/:foo');
+        $match   = $route->match($request);
+
+        $this->assertSame($out, $match->getParam('foo'));
     }
 }

@@ -1,39 +1,27 @@
 <?php
 /**
- * Zend Framework
+ * Zend Framework (http://framework.zend.com/)
  *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://framework.zend.com/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@zend.com so we can send you a copy immediately.
- *
- * @category   Zend
- * @package    Zend_Mvc
- * @subpackage UnitTest
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @link      http://github.com/zendframework/zf2 for the canonical source repository
+ * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @package   Zend_Mvc
  */
 
 namespace ZendTest\Mvc\View;
 
-use PHPUnit_Framework_TestCase as TestCase,
-    Zend\EventManager\EventManager,
-    Zend\Mvc\MvcEvent,
-    Zend\Mvc\Router\RouteMatch,
-    Zend\Mvc\View\InjectTemplateListener,
-    Zend\View\Model\ViewModel;
+use PHPUnit_Framework_TestCase as TestCase;
+use Zend\EventManager\EventManager;
+use Zend\Mvc\ModuleRouteListener;
+use Zend\Mvc\MvcEvent;
+use Zend\Mvc\Router\RouteMatch;
+use Zend\Mvc\View\Http\InjectTemplateListener;
+use Zend\View\Model\ViewModel;
 
 /**
  * @category   Zend
  * @package    Zend_Mvc
  * @subpackage UnitTest
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class InjectTemplateListenerTest extends TestCase
 {
@@ -113,6 +101,34 @@ class InjectTemplateListenerTest extends TestCase
         $this->listener->injectTemplate($this->event);
 
         $this->assertEquals('custom', $model->getTemplate());
+    }
+
+    public function testMapsSubNamespaceToSubDirectoryWithControllerFromRouteMatch()
+    {
+        $this->routeMatch->setParam(ModuleRouteListener::MODULE_NAMESPACE, 'Aj\Controller\SweetAppleAcres\Reports');
+        $this->routeMatch->setParam('controller', 'CiderSales');
+        $this->routeMatch->setParam('action', 'PinkiePieRevenue');
+
+        $model = new ViewModel();
+        $this->event->setResult($model);
+        $this->listener->injectTemplate($this->event);
+
+        $this->assertEquals('sweet-apple-acres/reports/cider-sales/pinkie-pie-revenue', $model->getTemplate());
+    }
+
+    public function testMapsSubNamespaceToSubDirectoryWithControllerFromEventTarget()
+    {
+        $this->routeMatch->setParam(ModuleRouteListener::MODULE_NAMESPACE, 'ZendTest\Mvc\Controller\TestAsset');
+        $this->routeMatch->setParam('action', 'test');
+
+        $myViewModel  = new ViewModel();
+        $myController = new \ZendTest\Mvc\Controller\TestAsset\SampleController();
+
+        $this->event->setTarget($myController);
+        $this->event->setResult($myViewModel);
+        $this->listener->injectTemplate($this->event);
+
+        $this->assertEquals('zend-test/controller/test-asset/sample/test', $myViewModel->getTemplate());
     }
 
     public function testAttachesListenerAtExpectedPriority()

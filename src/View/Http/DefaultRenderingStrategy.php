@@ -1,28 +1,18 @@
 <?php
 /**
- * Zend Framework
+ * Zend Framework (http://framework.zend.com/)
  *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://framework.zend.com/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@zend.com so we can send you a copy immediately.
- *
- * @category   Zend
- * @package    Zend_Mvc
- * @subpackage View
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @link      http://github.com/zendframework/zf2 for the canonical source repository
+ * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @package   Zend_Mvc
  */
 
-namespace Zend\Mvc\View;
+namespace Zend\Mvc\View\Http;
 
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
+use Zend\Mvc\Application;
 use Zend\Mvc\MvcEvent;
 use Zend\Stdlib\ResponseInterface as Response;
 use Zend\View\Model\ModelInterface as ViewModel;
@@ -32,8 +22,6 @@ use Zend\View\View;
  * @category   Zend
  * @package    Zend_Mvc
  * @subpackage View
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class DefaultRenderingStrategy implements ListenerAggregateInterface
 {
@@ -138,7 +126,16 @@ class DefaultRenderingStrategy implements ListenerAggregateInterface
         $view = $this->view;
         $view->setRequest($request);
         $view->setResponse($response);
-        $view->render($viewModel);
+
+        try {
+            $view->render($viewModel);
+        } catch(\Exception $ex) {
+            $application = $e->getApplication();
+            $events      = $application->getEventManager();
+            $e->setError(Application::ERROR_EXCEPTION)
+              ->setParam('exception', $ex);
+            $events->trigger(MvcEvent::EVENT_RENDER_ERROR, $e);
+        }
 
         return $response;
     }

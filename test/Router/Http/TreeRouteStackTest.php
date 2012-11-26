@@ -1,15 +1,24 @@
 <?php
+/**
+ * Zend Framework (http://framework.zend.com/)
+ *
+ * @link      http://github.com/zendframework/zf2 for the canonical source repository
+ * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @package   Zend_Mvc
+ */
+
 namespace ZendTest\Mvc\Router\Http;
 
-use PHPUnit_Framework_TestCase as TestCase,
-    ArrayIterator,
-    Zend\Http\Request as Request,
-    Zend\Http\PhpEnvironment\Request as PhpRequest,
-    Zend\Stdlib\Request as BaseRequest,
-    Zend\Uri\Http as HttpUri,
-    Zend\Mvc\Router\Http\TreeRouteStack,
-    Zend\Mvc\Router\Http\Hostname,
-    ZendTest\Mvc\Router\FactoryTester;
+use PHPUnit_Framework_TestCase as TestCase;
+use ArrayIterator;
+use Zend\Http\Request as Request;
+use Zend\Http\PhpEnvironment\Request as PhpRequest;
+use Zend\Stdlib\Request as BaseRequest;
+use Zend\Uri\Http as HttpUri;
+use Zend\Mvc\Router\Http\TreeRouteStack;
+use Zend\Mvc\Router\Http\Hostname;
+use ZendTest\Mvc\Router\FactoryTester;
 
 class TreeRouteStackTest extends TestCase
 {
@@ -94,7 +103,7 @@ class TreeRouteStackTest extends TestCase
         $stack = new TreeRouteStack();
 
         $stack->addRoute('foo', new TestAsset\DummyRoute());
-        $this->assertEquals('http://example.com:8080', $stack->assemble(array(), array('name' => 'foo', 'force_canonical' => true)));
+        $this->assertEquals('http://example.com:8080/', $stack->assemble(array(), array('name' => 'foo', 'force_canonical' => true)));
     }
 
     public function testAssembleCanonicalUriWithRequestUri()
@@ -104,7 +113,7 @@ class TreeRouteStackTest extends TestCase
         $stack->setRequestUri($uri);
 
         $stack->addRoute('foo', new TestAsset\DummyRoute());
-        $this->assertEquals('http://example.com:8080', $stack->assemble(array(), array('name' => 'foo', 'force_canonical' => true)));
+        $this->assertEquals('http://example.com:8080/', $stack->assemble(array(), array('name' => 'foo', 'force_canonical' => true)));
     }
 
     public function testAssembleCanonicalUriWithGivenUri()
@@ -113,7 +122,7 @@ class TreeRouteStackTest extends TestCase
         $stack = new TreeRouteStack();
 
         $stack->addRoute('foo', new TestAsset\DummyRoute());
-        $this->assertEquals('http://example.com:8080', $stack->assemble(array(), array('name' => 'foo', 'uri' => $uri, 'force_canonical' => true)));
+        $this->assertEquals('http://example.com:8080/', $stack->assemble(array(), array('name' => 'foo', 'uri' => $uri, 'force_canonical' => true)));
     }
 
     public function testAssembleCanonicalUriWithHostnameRoute()
@@ -123,7 +132,7 @@ class TreeRouteStackTest extends TestCase
         $uri   = new HttpUri();
         $uri->setScheme('http');
 
-        $this->assertEquals('http://example.com', $stack->assemble(array(), array('name' => 'foo', 'uri' => $uri)));
+        $this->assertEquals('http://example.com/', $stack->assemble(array(), array('name' => 'foo', 'uri' => $uri)));
     }
 
     public function testAssembleCanonicalUriWithHostnameRouteWithoutScheme()
@@ -133,7 +142,7 @@ class TreeRouteStackTest extends TestCase
         $stack->addRoute('foo', new Hostname('example.com'));
         $uri   = new HttpUri();
 
-        $this->assertEquals('http://example.com', $stack->assemble(array(), array('name' => 'foo', 'uri' => $uri)));
+        $this->assertEquals('http://example.com/', $stack->assemble(array(), array('name' => 'foo', 'uri' => $uri)));
     }
 
     public function testAssembleCanonicalUriWithHostnameRouteAndRequestUriWithoutScheme()
@@ -144,7 +153,7 @@ class TreeRouteStackTest extends TestCase
         $stack->setRequestUri($uri);
         $stack->addRoute('foo', new Hostname('example.com'));
 
-        $this->assertEquals('http://example.com', $stack->assemble(array(), array('name' => 'foo')));
+        $this->assertEquals('http://example.com/', $stack->assemble(array(), array('name' => 'foo')));
     }
 
     public function testAssembleCanonicalUriWithHostnameRouteAndQueryRoute()
@@ -154,7 +163,7 @@ class TreeRouteStackTest extends TestCase
         $stack = new TreeRouteStack();
         $stack->setRequestUri($uri);
         $stack->addRoute(
-        	'foo',
+            'foo',
             array(
                 'type' => 'Hostname',
                 'options' => array(
@@ -186,7 +195,7 @@ class TreeRouteStackTest extends TestCase
         $stack = new TreeRouteStack();
         $stack->setRequestUri($uri);
         $stack->addRoute(
-        	'index',
+            'index',
             array(
                 'type' => 'Literal',
                 'options' => array(
@@ -319,4 +328,3 @@ class TreeRouteStackTest extends TestCase
         );
     }
 }
-

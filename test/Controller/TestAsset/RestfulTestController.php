@@ -1,4 +1,12 @@
 <?php
+/**
+ * Zend Framework (http://framework.zend.com/)
+ *
+ * @link      http://github.com/zendframework/zf2 for the canonical source repository
+ * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @package   Zend_Mvc
+ */
 
 namespace ZendTest\Mvc\Controller\TestAsset;
 
@@ -11,7 +19,7 @@ class RestfulTestController extends AbstractRestfulController
 
     /**
      * Return list of resources
-     * 
+     *
      * @return mixed
      */
     public function getList()
@@ -21,8 +29,8 @@ class RestfulTestController extends AbstractRestfulController
 
     /**
      * Return single resource
-     * 
-     * @param  mixed $id 
+     *
+     * @param  mixed $id
      * @return mixed
      */
     public function get($id)
@@ -32,8 +40,8 @@ class RestfulTestController extends AbstractRestfulController
 
     /**
      * Create a new resource
-     * 
-     * @param  mixed $data 
+     *
+     * @param  mixed $data
      * @return mixed
      */
     public function create($data)
@@ -43,9 +51,9 @@ class RestfulTestController extends AbstractRestfulController
 
     /**
      * Update an existing resource
-     * 
-     * @param  mixed $id 
-     * @param  mixed $data 
+     *
+     * @param  mixed $id
+     * @param  mixed $data
      * @return mixed
      */
     public function update($id, $data)
@@ -56,8 +64,8 @@ class RestfulTestController extends AbstractRestfulController
 
     /**
      * Delete an existing resource
-     * 
-     * @param  mixed $id 
+     *
+     * @param  mixed $id
      * @return mixed
      */
     public function delete($id)

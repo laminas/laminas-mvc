@@ -1,25 +1,14 @@
 <?php
 /**
- * Zend Framework
+ * Zend Framework (http://framework.zend.com/)
  *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://framework.zend.com/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@zend.com so we can send you a copy immediately.
- *
- * @category   Zend
- * @package    Zend_Mvc
- * @subpackage View
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @link      http://github.com/zendframework/zf2 for the canonical source repository
+ * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @package   Zend_Mvc
  */
 
-namespace Zend\Mvc\View;
+namespace Zend\Mvc\View\Http;
 
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
@@ -33,8 +22,6 @@ use Zend\View\Model\ViewModel;
  * @category   Zend
  * @package    Zend_Mvc
  * @subpackage View
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class RouteNotFoundStrategy implements ListenerAggregateInterface
 {
@@ -218,8 +205,20 @@ class RouteNotFoundStrategy implements ListenerAggregateInterface
             return;
         }
 
-        $model = new ViewModel();
-        $model->setVariable('message', 'Page not found.');
+        if (!$vars instanceof ViewModel) {
+            $model = new ViewModel();
+            if (is_string($vars)) {
+                $model->setVariable('message', $vars);
+            } else {
+                $model->setVariable('message', 'Page not found.');
+            }
+        } else {
+            $model = $vars;
+            if ($model->getVariable('message') === null) {
+                $model->setVariable('message', 'Page not found.');
+            }
+        }
+
         $model->setTemplate($this->getNotFoundTemplate());
 
         // If displaying reasons, inject the reason
@@ -242,10 +241,9 @@ class RouteNotFoundStrategy implements ListenerAggregateInterface
      * Application::ERROR_CONTROLLER_CANNOT_DISPATCH.
      *
      * @param  ViewModel $model
-     * @param  MvcEvent $e
      * @return void
      */
-    protected function injectNotFoundReason($model)
+    protected function injectNotFoundReason(ViewModel $model)
     {
         if (!$this->displayNotFoundReason()) {
             return;

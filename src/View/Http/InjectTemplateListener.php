@@ -1,31 +1,20 @@
 <?php
 /**
- * Zend Framework
+ * Zend Framework (http://framework.zend.com/)
  *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://framework.zend.com/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@zend.com so we can send you a copy immediately.
- *
- * @category   Zend
- * @package    Zend_Mvc
- * @subpackage View
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @link      http://github.com/zendframework/zf2 for the canonical source repository
+ * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @package   Zend_Mvc
  */
 
-namespace Zend\Mvc\View;
+namespace Zend\Mvc\View\Http;
 
 use Zend\EventManager\EventManagerInterface as Events;
 use Zend\EventManager\ListenerAggregateInterface;
 use Zend\Filter\Word\CamelCaseToDash as CamelCaseToDashFilter;
 use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router\RouteMatch;
+use Zend\Mvc\ModuleRouteListener;
 use Zend\View\Model\ModelInterface as ViewModel;
 
 class InjectTemplateListener implements ListenerAggregateInterface
@@ -101,9 +90,21 @@ class InjectTemplateListener implements ListenerAggregateInterface
         }
 
         $module     = $this->deriveModuleNamespace($controller);
-        $controller = $this->deriveControllerClass($controller);
 
+        if ($namespace = $routeMatch->getParam(ModuleRouteListener::MODULE_NAMESPACE)) {
+            $controllerSubNs = $this->deriveControllerSubNamespace($namespace);
+            if (!empty($controllerSubNs)) {
+                if (!empty($module)) {
+                    $module .= '/' . $controllerSubNs;
+                } else {
+                    $module = $controllerSubNs;
+                }
+            }
+        }
+
+        $controller = $this->deriveControllerClass($controller);
         $template   = $this->inflectName($module);
+
         if (!empty($template)) {
             $template .= '/';
         }
@@ -133,8 +134,8 @@ class InjectTemplateListener implements ListenerAggregateInterface
 
     /**
      * Determine the top-level namespace of the controller
-     * 
-     * @param  string $controller 
+     *
+     * @param  string $controller
      * @return string
      */
     protected function deriveModuleNamespace($controller)
@@ -144,6 +145,25 @@ class InjectTemplateListener implements ListenerAggregateInterface
         }
         $module = substr($controller, 0, strpos($controller, '\\'));
         return $module;
+    }
+
+    /**
+     * @param $namespace
+     * @return string
+     */
+    protected function deriveControllerSubNamespace($namespace)
+    {
+        if (!strstr($namespace, '\\')) {
+            return '';
+        }
+        $nsArray = explode('\\', $namespace);
+
+        // Remove the first two elements representing the module and controller directory.
+        $subNsArray = array_slice($nsArray, 2);
+        if (empty($subNsArray)) {
+            return '';
+        }
+        return implode('/', $subNsArray);
     }
 
     /**

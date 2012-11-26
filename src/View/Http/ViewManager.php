@@ -1,43 +1,28 @@
 <?php
 /**
- * Zend Framework
+ * Zend Framework (http://framework.zend.com/)
  *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://framework.zend.com/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@zend.com so we can send you a copy immediately.
- *
- * @category   Zend
- * @package    Zend_Mvc
- * @subpackage View
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @link      http://github.com/zendframework/zf2 for the canonical source repository
+ * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @package   Zend_Mvc
  */
 
-namespace Zend\Mvc\View;
+namespace Zend\Mvc\View\Http;
 
 use ArrayAccess;
 use Traversable;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
-use Zend\Mvc\ApplicationInterface;
 use Zend\Mvc\Exception;
 use Zend\Mvc\MvcEvent;
-use Zend\ServiceManager\ConfigurationInterface;
+use Zend\Mvc\View\SendResponseListener;
 use Zend\ServiceManager\ServiceManager;
-use Zend\Stdlib\ArrayUtils;
 use Zend\View\HelperPluginManager as ViewHelperManager;
 use Zend\View\Renderer\PhpRenderer as ViewPhpRenderer;
 use Zend\View\Resolver as ViewResolver;
 use Zend\View\Strategy\PhpRendererStrategy;
 use Zend\View\View;
-use Zend\View\Helper as ViewHelper;
-use Zend\Mvc\Router\RouteMatch;
 
 /**
  * Prepares the view layer
@@ -56,16 +41,14 @@ use Zend\Mvc\Router\RouteMatch;
  * - ViewRenderer (also aliased to Zend\View\Renderer\PhpRenderer and RendererInterface)
  * - ViewPhpRendererStrategy (also aliased to Zend\View\Strategy\PhpRendererStrategy)
  * - View (also aliased to Zend\View\View)
- * - DefaultRenderingStrategy (also aliased to Zend\Mvc\View\DefaultRenderingStrategy)
- * - ExceptionStrategy (also aliased to Zend\Mvc\View\ExceptionStrategy)
- * - RouteNotFoundStrategy (also aliased to Zend\Mvc\View\RouteNotFoundStrategy and 404Strategy)
+ * - DefaultRenderingStrategy (also aliased to Zend\Mvc\View\Http\DefaultRenderingStrategy)
+ * - ExceptionStrategy (also aliased to Zend\Mvc\View\Http\ExceptionStrategy)
+ * - RouteNotFoundStrategy (also aliased to Zend\Mvc\View\Http\RouteNotFoundStrategy and 404Strategy)
  * - ViewModel
  *
  * @category   Zend
  * @package    Zend_Mvc
  * @subpackage View
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class ViewManager implements ListenerAggregateInterface
 {
@@ -135,7 +118,7 @@ class ViewManager implements ListenerAggregateInterface
     {
         $application  = $event->getApplication();
         $services     = $application->getServiceManager();
-        $config       = $services->get('Configuration');
+        $config       = $services->get('Config');
         $events       = $application->getEventManager();
         $sharedEvents = $events->getSharedManager();
 
@@ -151,6 +134,7 @@ class ViewManager implements ListenerAggregateInterface
         $createViewModelListener = new CreateViewModelListener();
         $injectTemplateListener  = new InjectTemplateListener();
         $injectViewModelListener = new InjectViewModelListener();
+        $sendResponseListener    = new SendResponseListener();
 
         $this->registerMvcRenderingStrategies($events);
         $this->registerViewStrategies();
@@ -158,7 +142,9 @@ class ViewManager implements ListenerAggregateInterface
         $events->attach($routeNotFoundStrategy);
         $events->attach($exceptionStrategy);
         $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($injectViewModelListener, 'injectViewModel'), -100);
+        $events->attach(MvcEvent::EVENT_RENDER_ERROR, array($injectViewModelListener, 'injectViewModel'), -100);
         $events->attach($mvcRenderingStrategy);
+        $events->attach($sendResponseListener);
 
         $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($createViewModelListener, 'createViewModelFromArray'), -80);
         $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($routeNotFoundStrategy, 'prepareNotFoundViewModel'), -90);
@@ -184,39 +170,13 @@ class ViewManager implements ListenerAggregateInterface
     /**
      * Instantiates and configures the renderer's resolver
      *
-     * @return ViewAggregateResolver
+     * @return ViewResolver\ResolverInterface
      */
     public function getResolver()
     {
-        if ($this->resolver) {
-            return $this->resolver;
+        if (null === $this->resolver) {
+            $this->resolver = $this->services->get('ViewResolver');
         }
-
-        $map = array();
-        if (isset($this->config['template_map'])) {
-            $map = $this->config['template_map'];
-        }
-        $templateMapResolver = new ViewResolver\TemplateMapResolver($map);
-
-        $stack = array();
-        if (isset($this->config['template_path_stack'])) {
-            $stack = $this->config['template_path_stack'];
-        }
-        $templatePathStack = new ViewResolver\TemplatePathStack();
-        $templatePathStack->addPaths($stack);
-
-        $this->resolver = new ViewResolver\AggregateResolver();
-        $this->resolver->attach($templateMapResolver);
-        $this->resolver->attach($templatePathStack);
-
-        $this->services->setService('ViewTemplateMapResolver', $templateMapResolver);
-        $this->services->setService('ViewTemplatePathStack', $templatePathStack);
-        $this->services->setService('ViewResolver', $this->resolver);
-
-        $this->services->setAlias('Zend\View\Resolver\TemplateMapResolver', 'ViewTemplateMapResolver');
-        $this->services->setAlias('Zend\View\Resolver\TemplatePathStack', 'ViewTemplatePathStack');
-        $this->services->setAlias('Zend\View\Resolver\AggregateResolver', 'ViewResolver');
-        $this->services->setAlias('Zend\View\Resolver\ResolverInterface', 'ViewResolver');
 
         return $this->resolver;
     }
@@ -319,6 +279,7 @@ class ViewManager implements ListenerAggregateInterface
 
         $this->services->setService('DefaultRenderingStrategy', $this->mvcRenderingStrategy);
         $this->services->setAlias('Zend\Mvc\View\DefaultRenderingStrategy', 'DefaultRenderingStrategy');
+        $this->services->setAlias('Zend\Mvc\View\Http\DefaultRenderingStrategy', 'DefaultRenderingStrategy');
 
         return $this->mvcRenderingStrategy;
     }
@@ -351,6 +312,7 @@ class ViewManager implements ListenerAggregateInterface
 
         $this->services->setService('ExceptionStrategy', $this->exceptionStrategy);
         $this->services->setAlias('Zend\Mvc\View\ExceptionStrategy', 'ExceptionStrategy');
+        $this->services->setAlias('Zend\Mvc\View\Http\ExceptionStrategy', 'ExceptionStrategy');
 
         return $this->exceptionStrategy;
     }
@@ -368,9 +330,13 @@ class ViewManager implements ListenerAggregateInterface
 
         $this->routeNotFoundStrategy = new RouteNotFoundStrategy();
 
+        $displayExceptions     = false;
         $displayNotFoundReason = false;
         $notFoundTemplate      = '404';
 
+        if (isset($this->config['display_exceptions'])) {
+            $displayExceptions = $this->config['display_exceptions'];
+        }
         if (isset($this->config['display_not_found_reason'])) {
             $displayNotFoundReason = $this->config['display_not_found_reason'];
         }
@@ -378,11 +344,13 @@ class ViewManager implements ListenerAggregateInterface
             $notFoundTemplate = $this->config['not_found_template'];
         }
 
+        $this->routeNotFoundStrategy->setDisplayExceptions($displayExceptions);
         $this->routeNotFoundStrategy->setDisplayNotFoundReason($displayNotFoundReason);
         $this->routeNotFoundStrategy->setNotFoundTemplate($notFoundTemplate);
 
         $this->services->setService('RouteNotFoundStrategy', $this->routeNotFoundStrategy);
         $this->services->setAlias('Zend\Mvc\View\RouteNotFoundStrategy', 'RouteNotFoundStrategy');
+        $this->services->setAlias('Zend\Mvc\View\Http\RouteNotFoundStrategy', 'RouteNotFoundStrategy');
         $this->services->setAlias('404Strategy', 'RouteNotFoundStrategy');
 
         return $this->routeNotFoundStrategy;
@@ -391,7 +359,7 @@ class ViewManager implements ListenerAggregateInterface
     /**
      * Configures the MvcEvent view model to ensure it has the template injected
      *
-     * @return \Zend\Mvc\View\Model\ModelInterface
+     * @return \Zend\View\Model\ModelInterface
      */
     public function getViewModel()
     {
@@ -409,7 +377,7 @@ class ViewManager implements ListenerAggregateInterface
      * Register additional mvc rendering strategies
      *
      * If there is a "mvc_strategies" key of the view manager configuration, loop
-     * through it. Pull each as a service fromt the service manager, and, if it
+     * through it. Pull each as a service from the service manager, and, if it
      * is a ListenerAggregate, attach it to the view, at priority 100. This
      * latter allows each to trigger before the default mvc rendering strategy,
      * and for them to trigger in the order they are registered.

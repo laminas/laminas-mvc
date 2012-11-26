@@ -1,47 +1,73 @@
 <?php
 /**
- * Zend Framework
+ * Zend Framework (http://framework.zend.com/)
  *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://framework.zend.com/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@zend.com so we can send you a copy immediately.
- *
- * @category   Zend
- * @package    Zend_Mvc
- * @subpackage UnitTest
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @link      http://github.com/zendframework/zf2 for the canonical source repository
+ * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @package   Zend_Mvc
  */
 
 namespace ZendTest\Mvc\View;
 
-use PHPUnit_Framework_TestCase as TestCase,
-    Zend\EventManager\EventManager,
-    Zend\Http\Request,
-    Zend\Http\Response,
-    Zend\Mvc\Application,
-    Zend\Mvc\MvcEvent,
-    Zend\Mvc\View\RouteNotFoundStrategy,
-    Zend\View\Model\ViewModel;
+use PHPUnit_Framework_TestCase as TestCase;
+use Zend\EventManager\EventManager;
+use Zend\Http\Response;
+use Zend\Mvc\Application;
+use Zend\Mvc\MvcEvent;
+use Zend\Mvc\View\Http\RouteNotFoundStrategy;
+use Zend\View\Model\ViewModel;
 
 /**
  * @category   Zend
  * @package    Zend_Mvc
  * @subpackage UnitTest
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class RouteNotFoundStrategyTest extends TestCase
 {
     public function setUp()
     {
         $this->strategy = new RouteNotFoundStrategy();
+    }
+
+    public function notFoundResponseProvider()
+    {
+        return array(
+            array('bar', 'assertEquals'),
+            array(null,  'assertTrue'),
+            array(new ViewModel(array('message' => 'bar')), 'assertEquals'),
+            array(new ViewModel(),  'assertTrue'),
+        );
+    }
+
+    /**
+     * @dataProvider notFoundResponseProvider
+     */
+    public function testLeavesReturnedMessageIntact($result, $assertion)
+    {
+        $response = new Response();
+        $event    = new MvcEvent();
+        $response->setStatusCode(404);
+        $event->setResponse($response);
+
+        $event->setResult($result);
+        $this->strategy->prepareNotFoundViewModel($event);
+
+        $viewModel = $event->getResult();
+        $this->assertInstanceOf('Zend\View\Model\ModelInterface', $viewModel);
+
+        $variables = $viewModel->getVariables();
+        switch ($assertion) {
+            case 'assertEquals':
+                // Testing if we returned a message in the result
+                $this->assertEquals('bar', $variables['message']);
+                break;
+            case 'assertTrue':
+                // Testing if no message was returned in the result; in that
+                // case, default message is used from strategy
+                $this->assertTrue(isset($variables['message']));
+                break;
+        }
     }
 
     public function test404ErrorsInject404ResponseStatusCode()
@@ -76,6 +102,7 @@ class RouteNotFoundStrategyTest extends TestCase
             $this->strategy->setDisplayNotFoundReason($allow);
             foreach ($errors as $key => $error) {
                 $response->setStatusCode(200);
+                $event->setResult(null);
                 $event->setError($error);
                 $this->strategy->detectNotFoundError($event);
                 $this->strategy->prepareNotFoundViewModel($event);
@@ -164,6 +191,7 @@ class RouteNotFoundStrategyTest extends TestCase
         foreach (array(true, false) as $allow) {
             $this->strategy->setDisplayNotFoundReason($allow);
             $response->setStatusCode(404);
+            $event->setResult(null);
             $event->setResponse($response);
             $this->strategy->prepareNotFoundViewModel($event);
             $model = $event->getResult();
@@ -188,6 +216,7 @@ class RouteNotFoundStrategyTest extends TestCase
         foreach (array(true, false) as $allow) {
             $this->strategy->setDisplayExceptions($allow);
             $response->setStatusCode(404);
+            $event->setResult(null);
             $event->setResponse($response);
             $this->strategy->prepareNotFoundViewModel($event);
             $model = $event->getResult();
@@ -215,6 +244,7 @@ class RouteNotFoundStrategyTest extends TestCase
             foreach (array(true, false) as $allow) {
                 $this->strategy->$method($allow);
                 $response->setStatusCode(404);
+                $event->setResult(null);
                 $event->setResponse($response);
                 $this->strategy->prepareNotFoundViewModel($event);
                 $model = $event->getResult();
