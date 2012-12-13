@@ -10,10 +10,7 @@
 
 namespace Zend\Mvc\Service;
 
-use Zend\Http\PhpEnvironment\Request as HttpRequest;
-use Zend\Console\Request as ConsoleRequest;
-use Zend\Console\Console;
-use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ConfigInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
@@ -21,20 +18,19 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * @package    Zend_Mvc
  * @subpackage Service
  */
-class RequestFactory implements FactoryInterface
+class FilterManagerFactory extends AbstractPluginManagerFactory
 {
+    const PLUGIN_MANAGER_CLASS = 'Zend\Filter\FilterPluginManager';
+
     /**
-     * Create and return a request instance, according to current environment.
+     * Create and return the filter plugin manager
      *
      * @param  ServiceLocatorInterface $serviceLocator
-     * @return ConsoleRequest|HttpRequest
+     * @return FilterPluginManager
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        if (Console::isConsole()) {
-            return new ConsoleRequest();
-        }
-
-        return new HttpRequest();
+        $plugins = parent::createService($serviceLocator);
+        return $plugins;
     }
 }

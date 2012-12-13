@@ -10,31 +10,33 @@
 
 namespace Zend\Mvc\Service;
 
-use Zend\Http\PhpEnvironment\Request as HttpRequest;
-use Zend\Console\Request as ConsoleRequest;
-use Zend\Console\Console;
+use Zend\ServiceManager\Di\DiServiceInitializer;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\ServiceManager;
 
 /**
  * @category   Zend
  * @package    Zend_Mvc
  * @subpackage Service
  */
-class RequestFactory implements FactoryInterface
+class DiServiceInitializerFactory implements FactoryInterface
 {
     /**
-     * Create and return a request instance, according to current environment.
+     * Class responsible for instantiating a DiServiceInitializer
      *
      * @param  ServiceLocatorInterface $serviceLocator
-     * @return ConsoleRequest|HttpRequest
+     * @return DiServiceInitializer
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        if (Console::isConsole()) {
-            return new ConsoleRequest();
+        $initializer = new DiServiceInitializer($serviceLocator->get('Di'), $serviceLocator);
+
+        if ($serviceLocator instanceof ServiceManager) {
+            /* @var $serviceLocator ServiceManager */
+            $serviceLocator->addInitializer($initializer);
         }
 
-        return new HttpRequest();
+        return $initializer;
     }
 }
