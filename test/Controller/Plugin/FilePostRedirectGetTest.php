@@ -12,8 +12,10 @@
 namespace ZendTest\Mvc\Controller\Plugin;
 
 use PHPUnit_Framework_TestCase as TestCase;
+use Zend\Form\Form;
 use Zend\Http\Request;
 use Zend\Http\Response;
+use Zend\InputFilter\InputFilter;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Router\Http\Literal as LiteralRoute;
 use Zend\Mvc\Router\Http\Segment as SegmentRoute;
@@ -28,8 +30,9 @@ use ZendTest\Session\TestAsset\TestManager as SessionManager;
  * @package    Zend_Mvc
  * @subpackage UnitTests
  */
-class PostRedirectGetTest extends TestCase
+class FilePostRedirectGetTest extends TestCase
 {
+    public $form;
     public $controller;
     public $event;
     public $request;
@@ -37,6 +40,8 @@ class PostRedirectGetTest extends TestCase
 
     public function setUp()
     {
+        $this->form = new Form();
+
         $router = new SimpleRouteStack;
         $router->addRoute('home', LiteralRoute::factory(array(
             'route'    => '/',
@@ -71,7 +76,7 @@ class PostRedirectGetTest extends TestCase
     public function testReturnsFalseOnIntialGet()
     {
         $result    = $this->controller->dispatch($this->request, $this->response);
-        $prgResult = $this->controller->prg('home');
+        $prgResult = $this->controller->fileprg($this->form, 'home');
 
         $this->assertFalse($prgResult);
     }
@@ -83,8 +88,8 @@ class PostRedirectGetTest extends TestCase
             'postval1' => 'value'
         )));
 
-        $result         = $this->controller->dispatch($this->request, $this->response);
-        $prgResultUrl   = $this->controller->prg('/test/getPage', true);
+        $this->controller->dispatch($this->request, $this->response);
+        $prgResultUrl = $this->controller->fileprg($this->form, '/test/getPage', true);
 
         $this->assertInstanceOf('Zend\Http\Response', $prgResultUrl);
         $this->assertTrue($prgResultUrl->getHeaders()->has('Location'));
@@ -99,44 +104,13 @@ class PostRedirectGetTest extends TestCase
             'postval1' => 'value1'
         )));
 
-        $result         = $this->controller->dispatch($this->request, $this->response);
-        $prgResultRoute = $this->controller->prg('home');
+        $this->controller->dispatch($this->request, $this->response);
+        $prgResultRoute = $this->controller->fileprg($this->form, 'home');
 
         $this->assertInstanceOf('Zend\Http\Response', $prgResultRoute);
         $this->assertTrue($prgResultRoute->getHeaders()->has('Location'));
         $this->assertEquals('/', $prgResultRoute->getHeaders()->get('Location')->getUri());
         $this->assertEquals(303, $prgResultRoute->getStatusCode());
-    }
-
-    public function testReturnsPostOnRedirectGet()
-    {
-        $params = array(
-            'postval1' => 'value1'
-        );
-        $this->request->setMethod('POST');
-        $this->request->setPost(new Parameters($params));
-
-        $result         = $this->controller->dispatch($this->request, $this->response);
-        $prgResultRoute = $this->controller->prg('home');
-
-        $this->assertInstanceOf('Zend\Http\Response', $prgResultRoute);
-        $this->assertTrue($prgResultRoute->getHeaders()->has('Location'));
-        $this->assertEquals('/', $prgResultRoute->getHeaders()->get('Location')->getUri());
-        $this->assertEquals(303, $prgResultRoute->getStatusCode());
-
-        // Do GET
-        $this->request = new Request();
-        $this->controller->dispatch($this->request, $this->response);
-        $prgResult = $this->controller->prg('home');
-
-        $this->assertEquals($params, $prgResult);
-
-        // Do GET again to make sure data is empty
-        $this->request = new Request();
-        $this->controller->dispatch($this->request, $this->response);
-        $prgResult = $this->controller->prg('home');
-
-        $this->assertFalse($prgResult);
     }
 
     /**
@@ -152,8 +126,8 @@ class PostRedirectGetTest extends TestCase
             'postval1' => 'value'
         )));
 
-        $result = $this->controller->dispatch($this->request, $this->response);
-        $this->controller->prg('some/route');
+        $this->controller->dispatch($this->request, $this->response);
+        $this->controller->fileprg($this->form, 'some/route');
     }
 
     public function testNullRouteUsesMatchedRouteName()
@@ -165,8 +139,8 @@ class PostRedirectGetTest extends TestCase
             'postval1' => 'value1'
         )));
 
-        $result         = $this->controller->dispatch($this->request, $this->response);
-        $prgResultRoute = $this->controller->prg();
+        $this->controller->dispatch($this->request, $this->response);
+        $prgResultRoute = $this->controller->fileprg($this->form);
 
         $this->assertInstanceOf('Zend\Http\Response', $prgResultRoute);
         $this->assertTrue($prgResultRoute->getHeaders()->has('Location'));
@@ -184,11 +158,82 @@ class PostRedirectGetTest extends TestCase
         )));
 
         $this->controller->dispatch($this->request, $this->response);
-        $prgResultRoute = $this->controller->prg();
+        $prgResultRoute = $this->controller->fileprg($this->form);
 
         $this->assertInstanceOf('Zend\Http\Response', $prgResultRoute);
         $this->assertTrue($prgResultRoute->getHeaders()->has('Location'));
         $this->assertEquals('/foo/1', $prgResultRoute->getHeaders()->get('Location')->getUri());
         $this->assertEquals(303, $prgResultRoute->getStatusCode());
+    }
+
+    public function testReturnsPostOnRedirectGet()
+    {
+        // Do POST
+        $params = array(
+            'postval1' => 'value'
+        );
+        $this->request->setMethod('POST');
+        $this->request->setPost(new Parameters($params));
+
+        $this->form->add(array(
+            'name' => 'postval1'
+        ));
+
+        $this->controller->dispatch($this->request, $this->response);
+        $prgResultUrl = $this->controller->fileprg($this->form, '/test/getPage', true);
+
+        $this->assertInstanceOf('Zend\Http\Response', $prgResultUrl);
+        $this->assertTrue($prgResultUrl->getHeaders()->has('Location'));
+        $this->assertEquals('/test/getPage', $prgResultUrl->getHeaders()->get('Location')->getUri());
+        $this->assertEquals(303, $prgResultUrl->getStatusCode());
+
+        // Do GET
+        $this->request = new Request();
+        $this->controller->dispatch($this->request, $this->response);
+        $prgResult = $this->controller->fileprg($this->form, '/test/getPage', true);
+
+        $this->assertEquals($params, $prgResult);
+        $this->assertEquals($params['postval1'], $this->form->get('postval1')->getValue());
+
+        // Do GET again to make sure data is empty
+        $this->request = new Request();
+        $this->controller->dispatch($this->request, $this->response);
+        $prgResult = $this->controller->fileprg($this->form, '/test/getPage', true);
+
+        $this->assertFalse($prgResult);
+    }
+
+    public function testAppliesFormErrorsOnPostRedirectGet()
+    {
+        // Do POST
+        $params = array();
+        $this->request->setMethod('POST');
+        $this->request->setPost(new Parameters($params));
+
+        $this->form->add(array(
+            'name' => 'postval1'
+        ));
+        $inputFilter = new InputFilter();
+        $inputFilter->add(array(
+            'name'     => 'postval1',
+            'required' => true,
+        ));
+        $this->form->setInputFilter($inputFilter);
+
+        $this->controller->dispatch($this->request, $this->response);
+        $prgResultUrl = $this->controller->fileprg($this->form, '/test/getPage', true);
+        $this->assertInstanceOf('Zend\Http\Response', $prgResultUrl);
+        $this->assertTrue($prgResultUrl->getHeaders()->has('Location'));
+        $this->assertEquals('/test/getPage', $prgResultUrl->getHeaders()->get('Location')->getUri());
+        $this->assertEquals(303, $prgResultUrl->getStatusCode());
+
+        // Do GET
+        $this->request = new Request();
+        $this->controller->dispatch($this->request, $this->response);
+        $prgResult = $this->controller->fileprg($this->form, '/test/getPage', true);
+        $messages  = $this->form->getMessages();
+
+        $this->assertEquals($params, $prgResult);
+        $this->assertNotEmpty($messages['postval1']['isEmpty']);
     }
 }
