@@ -23,8 +23,8 @@
         "zendframework/zend-modulemanager": "self.version",
         "zendframework/zend-http": "self.version",
         "zendframework/zend-uri": "self.version",
-        "zendframework/zend-view": "self.version",
-        "zendframework/zend-text": "self.version"
+        "zendframework/zend-text": "self.version",
+        "zendframework/zend-view": "self.version"
     },
     "require-dev": {
         "zendframework/zend-authentication": "self.version",
