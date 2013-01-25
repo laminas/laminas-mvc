@@ -1,22 +1,29 @@
 <?php
+/**
+ * Zend Framework (http://framework.zend.com/)
+ *
+ * @link      http://github.com/zendframework/zf2 for the canonical source repository
+ * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @package   Zend_Mvc
+ */
+
 namespace ZendTest\Mvc\Router\Http;
 
-use ArrayObject,
-    PHPUnit_Framework_TestCase as TestCase,
-    Zend\Http\Request as Request,
-    Zend\Stdlib\Request as BaseRequest,
-    Zend\Mvc\Router\RouteBroker,
-    Zend\Mvc\Router\Http\Part,
-    ZendTest\Mvc\Router\FactoryTester;
+use ArrayObject;
+use PHPUnit_Framework_TestCase as TestCase;
+use Zend\Http\Request as Request;
+use Zend\Stdlib\Request as BaseRequest;
+use Zend\Mvc\Router\RoutePluginManager;
+use Zend\Mvc\Router\Http\Part;
+use ZendTest\Mvc\Router\FactoryTester;
 
 class PartTest extends TestCase
 {
     public static function getRoute()
     {
-        $routeBroker = new RouteBroker();
-        $routeBroker->getClassLoader()->registerPlugins(array(
-            'part' => 'Zend\Mvc\Router\Http\Part'
-        ));
+        $routePlugins = new RoutePluginManager();
+        $routePlugins->setInvokableClass('part', 'Zend\Mvc\Router\Http\Part');
 
         return new Part(
             array(
@@ -29,7 +36,7 @@ class PartTest extends TestCase
                 )
             ),
             true,
-            $routeBroker,
+            $routePlugins,
             array(
                 'bar' => array(
                     'type'    => 'Zend\Mvc\Router\Http\Literal',
@@ -88,6 +95,43 @@ class PartTest extends TestCase
         );
     }
 
+    public static function getRouteAlternative()
+    {
+        $routePlugins = new RoutePluginManager();
+        $routePlugins->setInvokableClass('part', 'Zend\Mvc\Router\Http\Part');
+
+        return new Part(
+            array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/[:controller[/:action]]',
+                    'defaults' => array(
+                        'controller' => 'fo-fo',
+                        'action' => 'index'
+                    )
+                )
+            ),
+            true,
+            $routePlugins,
+            array(
+                'wildcard' => array(
+                    'type' => 'Zend\Mvc\Router\Http\Wildcard',
+                    'options' => array(
+                        'key_value_delimiter' => '/',
+                        'param_delimiter' => '/'
+                    )
+                ),
+                'query' => array(
+                    'type' => 'Zend\Mvc\Router\Http\Query',
+                    'options' => array(
+                        'key_value_delimiter' => '=',
+                        'param_delimiter' => '&'
+                    )
+                )
+            )
+        );
+    }
+
     public static function routeProvider()
     {
         return array(
@@ -115,14 +159,14 @@ class PartTest extends TestCase
             'offset-does-not-enable-partial-matching' => array(
                 self::getRoute(),
                 '/foo/foo',
-                0,
+                null,
                 null,
                 null
             ),
             'offset-does-not-enable-partial-matching-in-child' => array(
                 self::getRoute(),
                 '/foo/bar/baz',
-                0,
+                null,
                 null,
                 null
             ),
@@ -168,6 +212,37 @@ class PartTest extends TestCase
                 'bat/optional',
                 array('foo' => 'bar')
             ),
+            'simple-match' => array(
+                self::getRouteAlternative(),
+                '/',
+                null,
+                null,
+                array(
+                    'controller' => 'fo-fo',
+                    'action' => 'index'
+                )
+            ),
+            'match-wildcard' => array(
+                self::getRouteAlternative(),
+                '/fo-fo/index/param1/value1',
+                null,
+                'wildcard',
+                array(
+                        'controller' => 'fo-fo',
+                        'action' => 'index',
+                        'param1' => 'value1'
+                )
+            ),
+            'match-query' => array(
+                self::getRouteAlternative(),
+                '/fo-fo/index?param1=value1',
+                0,
+                'query',
+                array(
+                    'controller' => 'fo-fo',
+                    'action' => 'index'
+                )
+            )
         );
     }
 
@@ -236,7 +311,7 @@ class PartTest extends TestCase
     {
         $this->setExpectedException('Zend\Mvc\Router\Exception\InvalidArgumentException', 'Base route may not be a part route');
 
-        $route = new Part(self::getRoute(), true, new RouteBroker());
+        $route = new Part(self::getRoute(), true, new RoutePluginManager());
     }
 
     public function testNoMatchWithoutUriMethod()
@@ -261,12 +336,12 @@ class PartTest extends TestCase
         $tester->testFactory(
             'Zend\Mvc\Router\Http\Part',
             array(
-                'route'        => 'Missing "route" in options array',
-                'route_broker' => 'Missing "route_broker" in options array'
+                'route'         => 'Missing "route" in options array',
+                'route_plugins' => 'Missing "route_plugins" in options array'
             ),
             array(
-                'route'        => new \Zend\Mvc\Router\Http\Literal('/foo'),
-                'route_broker' => new RouteBroker()
+                'route'         => new \Zend\Mvc\Router\Http\Literal('/foo'),
+                'route_plugins' => new RoutePluginManager()
             )
         );
     }
@@ -299,7 +374,7 @@ class PartTest extends TestCase
                     ),
                 ),
             ),
-            'route_broker' => new RouteBroker(),
+            'route_plugins' => new RoutePluginManager(),
             'may_terminate' => true,
             'child_routes'  => $children,
         );
