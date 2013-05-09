@@ -18,11 +18,13 @@
         "zendframework/zend-servicemanager": "self.version",
         "zendframework/zend-form": "self.version",
         "zendframework/zend-stdlib": "self.version",
+        "zendframework/zend-config": "self.version",
         "zendframework/zend-console": "self.version",
         "zendframework/zend-di": "self.version",
         "zendframework/zend-modulemanager": "self.version",
         "zendframework/zend-http": "self.version",
         "zendframework/zend-uri": "self.version",
+        "zendframework/zend-text": "self.version",
         "zendframework/zend-view": "self.version"
     },
     "require-dev": {
@@ -70,8 +72,8 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.4-dev",
-            "dev-develop": "2.5-dev"
+            "dev-master": "2.2-dev",
+            "dev-develop": "2.3-dev"
         }
     },
     "autoload-dev": {
