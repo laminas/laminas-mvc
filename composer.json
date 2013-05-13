@@ -68,7 +68,8 @@
         "zendframework/zend-uri": "Zend\\Uri component",
         "zendframework/zend-validator": "Zend\\Validator component",
         "zendframework/zend-version": "Zend\\Version component",
-        "zendframework/zend-view": "Zend\\View component"
+        "zendframework/zend-view": "Zend\\View component",
+        "zendframework/zend-form": "Zend\\Form component"
     },
     "extra": {
         "branch-alias": {
