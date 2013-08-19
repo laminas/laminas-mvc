@@ -1,6 +1,6 @@
 {
     "name": "zendframework/zend-mvc",
-    "description": " ",
+    "description": "Zend\\Mvc component",
     "license": "BSD-3-Clause",
     "keywords": [
         "zf2",
@@ -13,7 +13,7 @@
         }
     },
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=5.3.23",
         "zendframework/zend-eventmanager": "self.version",
         "zendframework/zend-servicemanager": "self.version",
         "zendframework/zend-form": "self.version",
@@ -60,13 +60,12 @@
         "zendframework/zend-uri": "Zend\\Uri component",
         "zendframework/zend-validator": "Zend\\Validator component",
         "zendframework/zend-version": "Zend\\Version component",
-        "zendframework/zend-view": "Zend\\View component",
-        "zendframework/zend-form": "Zend\\Form component"
+        "zendframework/zend-view": "Zend\\View component"
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.2-dev",
-            "dev-develop": "2.3-dev"
+            "dev-master": "2.4-dev",
+            "dev-develop": "2.5-dev"
         }
     },
     "autoload-dev": {
