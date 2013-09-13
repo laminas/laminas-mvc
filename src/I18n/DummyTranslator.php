@@ -9,9 +9,12 @@
 
 namespace Zend\Mvc\I18n;
 
+use Zend\I18n\Translator\TranslatorInterface;
 use Zend\Validator\Translator\TranslatorInterface as ValidatorTranslatorInterface;
 
-class DummyTranslator implements ValidatorTranslatorInterface
+class DummyTranslator implements
+    TranslatorInterface,
+    ValidatorTranslatorInterface
 {
     /**
      * translate(): defined by ValidatorTranslatorInterface()
@@ -25,5 +28,27 @@ class DummyTranslator implements ValidatorTranslatorInterface
     public function translate($message, $textDomain = 'default', $locale = null)
     {
         return $message;
+    }
+
+    /**
+     * translatePlural(): defined by TranslatorInterface()
+     *
+     * @see    TranslatorInterface::translatePlural()
+     * @param  string                         $singular
+     * @param  string                         $plural
+     * @param  int                            $number
+     * @param  string                         $textDomain
+     * @param  string|null                    $locale
+     * @return string
+     * @throws Exception\OutOfBoundsException
+     */
+    public function translatePlural(
+        $singular,
+        $plural,
+        $number,
+        $textDomain = 'default',
+        $locale = null
+    ) {
+        return ($number === 1 ? $singular : $plural);
     }
 }
