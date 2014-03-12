@@ -13,7 +13,7 @@
         }
     },
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=5.3.23",
         "zendframework/zend-eventmanager": "self.version",
         "zendframework/zend-servicemanager": "self.version",
         "zendframework/zend-form": "self.version",
@@ -37,6 +37,7 @@
         "zendframework/zend-validator": "self.version",
         "zendframework/zend-version": "self.version",
         "zendframework/zend-view": "self.version",
+        "zendframework/zend-form": "self.version",
         "fabpot/php-cs-fixer": "1.7.*",
         "satooshi/php-coveralls": "dev-master",
         "phpunit/PHPUnit": "~4.0"
