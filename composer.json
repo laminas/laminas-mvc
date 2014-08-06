@@ -37,7 +37,6 @@
         "zendframework/zend-validator": "self.version",
         "zendframework/zend-version": "self.version",
         "zendframework/zend-view": "self.version",
-        "zendframework/zend-form": "self.version",
         "fabpot/php-cs-fixer": "1.7.*",
         "satooshi/php-coveralls": "dev-master",
         "phpunit/PHPUnit": "~4.0"
@@ -61,8 +60,7 @@
         "zendframework/zend-uri": "Zend\\Uri component",
         "zendframework/zend-validator": "Zend\\Validator component",
         "zendframework/zend-version": "Zend\\Version component",
-        "zendframework/zend-view": "Zend\\View component",
-        "zendframework/zend-form": "Zend\\Form component"
+        "zendframework/zend-view": "Zend\\View component"
     },
     "extra": {
         "branch-alias": {
