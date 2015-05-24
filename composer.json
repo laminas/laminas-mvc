@@ -62,6 +62,8 @@
         "zendframework/zend-version": "Zend\\Version component",
         "zendframework/zend-view": "Zend\\View component"
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "extra": {
         "branch-alias": {
             "dev-master": "2.4-dev",
