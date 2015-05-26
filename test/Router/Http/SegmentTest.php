@@ -15,21 +15,20 @@ use Zend\I18n\Translator\TextDomain;
 use Zend\I18n\Translator\Translator;
 use Zend\Stdlib\Request as BaseRequest;
 use Zend\Mvc\Router\Http\Segment;
-use ZendTest\I18n\Translator\TestAsset\Loader as TestLoader;
 use ZendTest\Mvc\Router\FactoryTester;
 
 class SegmentTest extends TestCase
 {
-    public static function routeProvider()
+    public function routeProvider()
     {
         $translator = new Translator();
         $translator->setLocale('en-US');
-        $enLoader     = new TestLoader();
-        $deLoader     = new TestLoader();
-        $domainLoader = new TestLoader();
-        $enLoader->textDomain     = new TextDomain(array('fw' => 'framework'));
-        $deLoader->textDomain     = new TextDomain(array('fw' => 'baukasten'));
-        $domainLoader->textDomain = new TextDomain(array('fw' => 'fw-alternative'));
+        $enLoader     = $this->getMock('Zend\I18n\Translator\Loader\FileLoaderInterface');
+        $deLoader     = $this->getMock('Zend\I18n\Translator\Loader\FileLoaderInterface');
+        $domainLoader = $this->getMock('Zend\I18n\Translator\Loader\FileLoaderInterface');
+        $enLoader->expects($this->any())->method('load')->willReturn(new TextDomain(array('fw' => 'framework')));
+        $deLoader->expects($this->any())->method('load')->willReturn(new TextDomain(array('fw' => 'baukasten')));
+        $domainLoader->expects($this->any())->method('load')->willReturn(new TextDomain(array('fw' => 'fw-alternative')));
         $translator->getPluginManager()->setService('test-en',     $enLoader);
         $translator->getPluginManager()->setService('test-de',     $deLoader);
         $translator->getPluginManager()->setService('test-domain', $domainLoader);
