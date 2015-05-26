@@ -16,11 +16,10 @@ use Zend\Mvc\View\Console\DefaultRenderingStrategy;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Stdlib\Response;
 use Zend\View\Model;
-use ZendTest\Console\TestAssets\ConsoleAdapter;
-use ZendTest\ModuleManager\TestAsset\MockApplication;
 
 class DefaultRenderingStrategyTest extends TestCase
 {
+    /** @var DefaultRenderingStrategy */
     protected $strategy;
 
     public function setUp()
@@ -61,12 +60,24 @@ class DefaultRenderingStrategyTest extends TestCase
 
     public function testIgnoresNonConsoleModelNotContainingResultKeyWhenObtainingResult()
     {
+        $console = $this->getMock('Zend\Console\Adapter\AbstractAdapter');
+        $console
+            ->expects($this->any())
+            ->method('encodeText')
+            ->willReturnArgument(0)
+        ;
+
         //Register console service
         $sm = new ServiceManager();
-        $sm->setService('console', new ConsoleAdapter());
+        $sm->setService('console', $console);
 
-        $mockApplication = new MockApplication;
-        $mockApplication->setServiceManager($sm);
+        /** @var \PHPUnit_Framework_MockObject_MockObject|\Zend\Mvc\ApplicationInterface $mockApplication */
+        $mockApplication = $this->getMock('Zend\Mvc\ApplicationInterface');
+        $mockApplication
+            ->expects($this->any())
+            ->method('getServiceManager')
+            ->willReturn($sm)
+        ;
 
         $event    = new MvcEvent();
         $event->setApplication($mockApplication);
