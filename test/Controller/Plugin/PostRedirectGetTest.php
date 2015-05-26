@@ -22,7 +22,6 @@ use Zend\Mvc\Router\Http\TreeRouteStack;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Stdlib\Parameters;
 use ZendTest\Mvc\Controller\TestAsset\SampleController;
-use ZendTest\Session\TestAsset\TestManager as SessionManager;
 
 class PostRedirectGetTest extends TestCase
 {
@@ -65,12 +64,7 @@ class PostRedirectGetTest extends TestCase
         $this->event->setRouteMatch($this->routeMatch);
         $this->event->setRouter($router);
 
-        $this->sessionManager = new SessionManager();
-        $this->sessionManager->destroy();
-
         $this->controller->setEvent($this->event);
-        $plugins = $this->controller->getPluginManager();
-        $plugins->get('flashmessenger')->setSessionManager($this->sessionManager);
     }
 
     public function testReturnsFalseOnIntialGet()

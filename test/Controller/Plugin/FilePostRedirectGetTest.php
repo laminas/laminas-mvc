@@ -25,7 +25,6 @@ use Zend\Mvc\Router\SimpleRouteStack;
 use Zend\Stdlib\Parameters;
 use Zend\Validator\NotEmpty;
 use ZendTest\Mvc\Controller\TestAsset\SampleController;
-use ZendTest\Session\TestAsset\TestManager as SessionManager;
 
 class FilePostRedirectGetTest extends TestCase
 {
@@ -79,11 +78,7 @@ class FilePostRedirectGetTest extends TestCase
         $this->event->setRouteMatch($this->routeMatch);
         $this->event->setRouter($router);
 
-        $this->sessionManager = new SessionManager();
-        $this->sessionManager->destroy();
-
         $this->controller->setEvent($this->event);
-        $this->controller->flashMessenger()->setSessionManager($this->sessionManager);
     }
 
     public function testReturnsFalseOnIntialGet()

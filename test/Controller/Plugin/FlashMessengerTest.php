@@ -10,26 +10,17 @@
 namespace ZendTest\Mvc\Controller\Plugin;
 
 use Zend\Mvc\Controller\Plugin\FlashMessenger;
-use ZendTest\Session\TestAsset\TestManager as SessionManager;
 
 class FlashMessengerTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->session = new SessionManager();
         $this->helper  = new FlashMessenger();
-        $this->helper->setSessionManager($this->session);
-    }
-
-    public function tearDown()
-    {
-        $this->session->getStorage()->clear();
     }
 
     public function seedMessages()
     {
         $helper = new FlashMessenger();
-        $helper->setSessionManager($this->session);
         $helper->addMessage('foo');
         $helper->addMessage('bar');
         $helper->addInfoMessage('bar-info');
@@ -47,9 +38,12 @@ class FlashMessengerTest extends \PHPUnit_Framework_TestCase
 
     public function testSessionManagerIsMutable()
     {
-        $session = new SessionManager();
+        $session = $this->getMock('Zend\Session\ManagerInterface');
+        $currentSessionManager = $this->helper->getSessionManager();
+
         $this->helper->setSessionManager($session);
         $this->assertSame($session, $this->helper->getSessionManager());
+        $this->assertNotSame($currentSessionManager, $this->helper->getSessionManager());
     }
 
     public function testUsesContainerNamedAfterClass()
