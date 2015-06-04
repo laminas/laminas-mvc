@@ -13,7 +13,7 @@
         }
     },
     "require": {
-        "php": ">=5.3.23",
+        "php": ">=5.5",
         "zendframework/zend-eventmanager": "~2.5",
         "zendframework/zend-servicemanager": "~2.5",
         "zendframework/zend-form": "~2.5",

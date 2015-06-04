@@ -596,10 +596,9 @@ class ApplicationTest extends TestCase
             return $testResponse;
         }, 100);
 
-        $self      = $this;
         $triggered = false;
-        $events->attach(MvcEvent::EVENT_FINISH, function ($e) use ($self, $testResponse, &$triggered) {
-            $self->assertSame($testResponse, $e->getResponse());
+        $events->attach(MvcEvent::EVENT_FINISH, function ($e) use ($testResponse, &$triggered) {
+            $this->assertSame($testResponse, $e->getResponse());
             $triggered = true;
         });
 
@@ -622,10 +621,9 @@ class ApplicationTest extends TestCase
             return $testResponse;
         }, 100);
 
-        $self      = $this;
         $triggered = false;
-        $events->attach(MvcEvent::EVENT_FINISH, function ($e) use ($self, $testResponse, &$triggered) {
-            $self->assertSame($testResponse, $e->getResponse());
+        $events->attach(MvcEvent::EVENT_FINISH, function ($e) use ($testResponse, &$triggered) {
+            $this->assertSame($testResponse, $e->getResponse());
             $triggered = true;
         });
 
