@@ -41,7 +41,7 @@ use Zend\Stdlib\ResponseInterface as Response;
  * @method \Zend\Mvc\Controller\Plugin\Redirect redirect()
  * @method \Zend\Mvc\Controller\Plugin\Url url()
  * @method \Zend\View\Model\ConsoleModel createConsoleNotFoundModel()
- * @method \Zend\View\Model\ViewModel createHttpNotFoundModel()
+ * @method \Zend\View\Model\ViewModel createHttpNotFoundModel(Response $response)
  */
 abstract class AbstractController implements
     Dispatchable,
