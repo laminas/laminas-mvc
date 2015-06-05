@@ -61,16 +61,16 @@ class ServiceManagerConfigTest extends TestCase
      */
     public function testCanMergeCustomConfigWithDefaultConfig()
     {
-        $custom = array(
-            'invokables' => array(
+        $custom = [
+            'invokables' => [
                 'foo' => '\stdClass',
-            ),
-            'factories' => array(
+            ],
+            'factories' => [
                 'bar' => function () {
                     return new \stdClass();
                 },
-            ),
-        );
+            ],
+        ];
 
         $config = new ServiceManagerConfig($custom);
         $sm = new ServiceManager();
@@ -86,16 +86,16 @@ class ServiceManagerConfigTest extends TestCase
      */
     public function testCanOverrideDefaultConfigWithCustomConfig()
     {
-        $custom = array(
-            'invokables' => array(
+        $custom = [
+            'invokables' => [
                 'foo' => '\stdClass',
-            ),
-            'factories' => array(
+            ],
+            'factories' => [
                 'ModuleManager' => function () {
                     return new \stdClass();
                 },
-            ),
-        );
+            ],
+        ];
 
         $config = new ServiceManagerConfig($custom);
         $sm = new ServiceManager();
@@ -112,21 +112,21 @@ class ServiceManagerConfigTest extends TestCase
      */
     public function testCanAddDelegators()
     {
-        $config = array(
-            'invokables' => array(
+        $config = [
+            'invokables' => [
                 'foo' => '\stdClass',
-            ),
-            'delegators' => array(
-                'foo' => array(
+            ],
+            'delegators' => [
+                'foo' => [
                     function (ServiceLocatorInterface $serviceLocator, $name, $requestedName, $callback) {
                         $service = $callback();
                         $service->bar = 'baz';
 
                         return $service;
                     },
-                )
-            ),
-        );
+                ]
+            ],
+        ];
 
         $config = new ServiceManagerConfig($config);
         $sm = new ServiceManager();
@@ -150,13 +150,13 @@ class ServiceManagerConfigTest extends TestCase
      */
     public function testCanOverrideServiceManager()
     {
-        $serviceManager = new ServiceManager(new ServiceManagerConfig(array(
-            'factories' => array(
+        $serviceManager = new ServiceManager(new ServiceManagerConfig([
+            'factories' => [
                 'ServiceManager' => function () {
                     return $this;
                 }
-            ),
-        )));
+            ],
+        ]));
 
         $this->assertSame($this, $serviceManager->get('ServiceManager'));
     }
@@ -186,17 +186,17 @@ class ServiceManagerConfigTest extends TestCase
     public function testServiceManagerInitializerCanBeReplaced()
     {
         $instance       = $this->getMock('Zend\ServiceManager\ServiceManagerAwareInterface');
-        $initializer    = $this->getMock('stdClass', array('__invoke'));
-        $serviceManager = new ServiceManager(new ServiceManagerConfig(array(
-            'initializers' => array(
+        $initializer    = $this->getMock('stdClass', ['__invoke']);
+        $serviceManager = new ServiceManager(new ServiceManagerConfig([
+            'initializers' => [
                 'ServiceManagerAwareInitializer' => $initializer
-            ),
-            'factories' => array(
+            ],
+            'factories' => [
                 'service-manager-aware' => function () use ($instance) {
                     return $instance;
                 },
-            ),
-        )));
+            ],
+        ]));
 
         $initializer->expects($this->once())->method('__invoke')->with($instance, $serviceManager);
         $instance->expects($this->never())->method('setServiceManager');
@@ -229,17 +229,17 @@ class ServiceManagerConfigTest extends TestCase
     public function testServiceLocatorInitializerCanBeReplaced()
     {
         $instance       = $this->getMock('Zend\ServiceManager\ServiceLocatorAwareInterface');
-        $initializer    = $this->getMock('stdClass', array('__invoke'));
-        $serviceManager = new ServiceManager(new ServiceManagerConfig(array(
-            'initializers' => array(
+        $initializer    = $this->getMock('stdClass', ['__invoke']);
+        $serviceManager = new ServiceManager(new ServiceManagerConfig([
+            'initializers' => [
                 'ServiceLocatorAwareInitializer' => $initializer
-            ),
-            'factories' => array(
+            ],
+            'factories' => [
                 'service-locator-aware' => function () use ($instance) {
                     return $instance;
                 },
-            ),
-        )));
+            ],
+        ]));
 
         $initializer->expects($this->once())->method('__invoke')->with($instance, $serviceManager);
         $instance->expects($this->never())->method('setServiceLocator');
@@ -253,17 +253,17 @@ class ServiceManagerConfigTest extends TestCase
     public function testEventManagerInitializerCanBeReplaced()
     {
         $instance       = $this->getMock('Zend\EventManager\EventManagerAwareInterface');
-        $initializer    = $this->getMock('stdClass', array('__invoke'));
-        $serviceManager = new ServiceManager(new ServiceManagerConfig(array(
-            'initializers' => array(
+        $initializer    = $this->getMock('stdClass', ['__invoke']);
+        $serviceManager = new ServiceManager(new ServiceManagerConfig([
+            'initializers' => [
                 'EventManagerAwareInitializer' => $initializer
-            ),
-            'factories' => array(
+            ],
+            'factories' => [
                 'event-manager-aware' => function () use ($instance) {
                     return $instance;
                 },
-            ),
-        )));
+            ],
+        ]));
 
         $initializer->expects($this->once())->method('__invoke')->with($instance, $serviceManager);
         $instance->expects($this->never())->method('getEventManager');
