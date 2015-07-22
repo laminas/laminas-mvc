@@ -18,13 +18,6 @@ use Zend\View\Model\ModelInterface as ViewModel;
 class InjectViewModelListener extends AbstractListenerAggregate
 {
     /**
-     * FilterInterface/inflector used to normalize names for use as template identifiers
-     *
-     * @var mixed
-     */
-    protected $inflector;
-
-    /**
      * {@inheritDoc}
      */
     public function attach(Events $events)
