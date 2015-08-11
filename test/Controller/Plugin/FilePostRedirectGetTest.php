@@ -402,6 +402,14 @@ class FilePostRedirectGetTest extends TestCase
 
         $messages = $form->getMessages();
         $this->assertTrue(isset($messages['collection'][1]['text'][NotEmpty::IS_EMPTY]));
-        $this->assertTrue(isset($messages['collection'][1]['file'][NotEmpty::IS_EMPTY]));
+
+        $requiredFound = false;
+        foreach ($messages['collection'][1]['file'] as $message) {
+            if (strpos($message, 'Value is required') === 0) {
+                $requiredFound = true;
+                break;
+            }
+        }
+        $this->assertTrue($requiredFound, '"Required" message was not found in validation failure messages');
     }
 }
