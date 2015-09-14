@@ -10,7 +10,9 @@
 namespace ZendTest\Mvc\View\Console;
 
 use PHPUnit_Framework_TestCase as TestCase;
+use Zend\Console\Adapter\AbstractAdapter;
 use Zend\EventManager\EventManager;
+use Zend\Mvc\ApplicationInterface;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\View\Console\DefaultRenderingStrategy;
 use Zend\ServiceManager\ServiceManager;
@@ -36,6 +38,8 @@ class DefaultRenderingStrategyTest extends TestCase
         $expectedCallback = [$this->strategy, 'render'];
         $expectedPriority = -10000;
         $found            = false;
+
+        /* @var \Zend\Stdlib\CallbackHandler $listener */
         foreach ($listeners as $listener) {
             $callback = $listener->getCallback();
             if ($callback === $expectedCallback) {
@@ -60,24 +64,22 @@ class DefaultRenderingStrategyTest extends TestCase
 
     public function testIgnoresNonConsoleModelNotContainingResultKeyWhenObtainingResult()
     {
-        $console = $this->getMock('Zend\Console\Adapter\AbstractAdapter');
+        $console = $this->getMock(AbstractAdapter::class);
         $console
             ->expects($this->any())
             ->method('encodeText')
-            ->willReturnArgument(0)
-        ;
+            ->willReturnArgument(0);
 
         //Register console service
         $sm = new ServiceManager();
         $sm->setService('console', $console);
 
-        /** @var \PHPUnit_Framework_MockObject_MockObject|\Zend\Mvc\ApplicationInterface $mockApplication */
-        $mockApplication = $this->getMock('Zend\Mvc\ApplicationInterface');
+        /* @var \PHPUnit_Framework_MockObject_MockObject|ApplicationInterface $mockApplication */
+        $mockApplication = $this->getMock(ApplicationInterface::class);
         $mockApplication
             ->expects($this->any())
             ->method('getServiceManager')
-            ->willReturn($sm)
-        ;
+            ->willReturn($sm);
 
         $event    = new MvcEvent();
         $event->setApplication($mockApplication);
@@ -89,5 +91,34 @@ class DefaultRenderingStrategyTest extends TestCase
         $this->strategy->render($event);
         $content = $response->getContent();
         $this->assertNotContains('Page not found', $content);
+    }
+
+    public function testIgnoresNonModel()
+    {
+        $console = $this->getMock(AbstractAdapter::class);
+        $console
+            ->expects($this->any())
+            ->method('encodeText')
+            ->willReturnArgument(0);
+
+        //Register console service
+        $sm = new ServiceManager();
+        $sm->setService('console', $console);
+
+        /* @var \PHPUnit_Framework_MockObject_MockObject|ApplicationInterface $mockApplication */
+        $mockApplication = $this->getMock(ApplicationInterface::class);
+        $mockApplication
+            ->expects($this->any())
+            ->method('getServiceManager')
+            ->willReturn($sm);
+
+        $event    = new MvcEvent();
+        $event->setApplication($mockApplication);
+
+        $model    = true;
+        $response = new Response();
+        $event->setResult($model);
+        $event->setResponse($response);
+        $this->assertSame($response, $this->strategy->render($event));
     }
 }
