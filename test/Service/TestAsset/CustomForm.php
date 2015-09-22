@@ -10,7 +10,7 @@
 namespace ZendTest\Mvc\Service\TestAsset;
 
 use Zend\Form\Form;
-use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
+use Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 class CustomForm extends Form
 {
