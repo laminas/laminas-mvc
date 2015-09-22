@@ -18,7 +18,10 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#29](https://github.com/zendframework/zend-mvc/pull/29) updates the
+  zend-stdlib dependency to reference `>=2.5.0,<2.7.0` to ensure hydrators
+  will work as expected following extraction of hydrators to the zend-hydrator
+  repository.
 
 ## 2.5.2 - 2015-09-14
 
