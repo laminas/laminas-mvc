@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 2.6.0 - 2015-09-22
+
+### Added
+
+- [#30](https://github.com/zendframework/zend-mvc/pull/30) updates the component
+  to use zend-hydrator for hydrator functionality; this provides forward
+  compatibility with zend-hydrator, and backwards compatibility with
+  hydrators from older versions of zend-stdlib.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 2.5.3 - 2015-09-22
 
 ### Added
