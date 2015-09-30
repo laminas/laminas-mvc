@@ -15,9 +15,12 @@ use Zend\Http\Response;
 use Zend\Mvc\Application;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\View\Http\ExceptionStrategy;
+use ZendTest\Mvc\EventManagerIntrospectionTrait;
 
 class ExceptionStrategyTest extends TestCase
 {
+    use EventManagerIntrospectionTrait;
+
     public function setUp()
     {
         $this->strategy = new ExceptionStrategy();
@@ -70,8 +73,8 @@ class ExceptionStrategyTest extends TestCase
     {
         $exception = new \Exception;
         $event     = new MvcEvent();
-        $event->setParam('exception', $exception)
-              ->setError(Application::ERROR_EXCEPTION);
+        $event->setParam('exception', $exception);
+        $event->setError(Application::ERROR_EXCEPTION);
         $this->strategy->prepareExceptionViewModel($event);
 
         $response = $event->getResponse();
@@ -94,8 +97,8 @@ class ExceptionStrategyTest extends TestCase
     {
         $exception = new \Exception;
         $event     = new MvcEvent();
-        $event->setParam('exception', $exception)
-              ->setError('custom_error');
+        $event->setParam('exception', $exception);
+        $event->setError('custom_error');
         $this->strategy->prepareExceptionViewModel($event);
 
         $response = $event->getResponse();
@@ -134,19 +137,18 @@ class ExceptionStrategyTest extends TestCase
     public function testAttachesListenerAtExpectedPriority()
     {
         $events = new EventManager();
-        $events->attachAggregate($this->strategy);
-        $listeners = $events->getListeners(MvcEvent::EVENT_DISPATCH_ERROR);
+        $this->strategy->attach($events);
+        $listeners = $this->getListenersForEvent(MvcEvent::EVENT_DISPATCH_ERROR, $events, true);
 
-        $expectedCallback = [$this->strategy, 'prepareExceptionViewModel'];
+        $expectedListener = [$this->strategy, 'prepareExceptionViewModel'];
         $expectedPriority = 1;
         $found            = false;
-        foreach ($listeners as $listener) {
-            $callback = $listener->getCallback();
-            if ($callback === $expectedCallback) {
-                if ($listener->getMetadatum('priority') == $expectedPriority) {
-                    $found = true;
-                    break;
-                }
+        foreach ($listeners as $priority => $listener) {
+            if ($listener === $expectedListener
+                && $priority === $expectedPriority
+            ) {
+                $found = true;
+                break;
             }
         }
         $this->assertTrue($found, 'Listener not found');
@@ -155,11 +157,11 @@ class ExceptionStrategyTest extends TestCase
     public function testDetachesListeners()
     {
         $events = new EventManager();
-        $events->attachAggregate($this->strategy);
-        $listeners = $events->getListeners(MvcEvent::EVENT_DISPATCH_ERROR);
+        $this->strategy->attach($events);
+        $listeners = iterator_to_array($this->getListenersForEvent(MvcEvent::EVENT_DISPATCH_ERROR, $events));
         $this->assertEquals(1, count($listeners));
-        $events->detachAggregate($this->strategy);
-        $listeners = $events->getListeners(MvcEvent::EVENT_DISPATCH_ERROR);
+        $this->strategy->detach($events);
+        $listeners = iterator_to_array($this->getListenersForEvent(MvcEvent::EVENT_DISPATCH_ERROR, $events));
         $this->assertEquals(0, count($listeners));
     }
 

@@ -15,7 +15,7 @@ use Zend\Mvc\MvcEvent;
 
 class MockSendResponseListener extends AbstractListenerAggregate
 {
-    public function attach(EventManagerInterface $events)
+    public function attach(EventManagerInterface $events, $priority = 1)
     {
         $this->listeners[] = $events->attach(MvcEvent::EVENT_FINISH, array($this, 'sendResponse'), -10000);
     }

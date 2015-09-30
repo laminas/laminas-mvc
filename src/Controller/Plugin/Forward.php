@@ -177,9 +177,9 @@ class Forward extends AbstractPlugin
             $results[$id] = [];
             foreach ($eventArray as $eventName => $classArray) {
                 $results[$id][$eventName] = [];
-                $events = $sharedEvents->getListeners($id, $eventName);
+                $events = $sharedEvents->getListeners([$id], $eventName);
                 foreach ($events as $currentEvent) {
-                    $currentCallback = $currentEvent->getCallback();
+                    $currentCallback = $currentEvent;
 
                     // If we have an array, grab the object
                     if (is_array($currentCallback)) {
@@ -193,7 +193,7 @@ class Forward extends AbstractPlugin
 
                     foreach ($classArray as $class) {
                         if ($currentCallback instanceof $class) {
-                            $sharedEvents->detach($id, $currentEvent);
+                            $sharedEvents->detach($currentEvent, $id);
                             $results[$id][$eventName][] = $currentEvent;
                         }
                     }

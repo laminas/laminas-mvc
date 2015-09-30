@@ -12,8 +12,10 @@ namespace ZendTest\Mvc;
 use ArrayObject;
 use PHPUnit_Framework_TestCase as TestCase;
 use ReflectionObject;
+use ReflectionProperty;
 use stdClass;
 use Zend\Http\PhpEnvironment\Response;
+use Zend\ModuleManager\Listener\ConfigListener;
 use Zend\Mvc\Application;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Router;
@@ -21,9 +23,12 @@ use Zend\Mvc\Service\ServiceManagerConfig;
 use Zend\Mvc\Service\ServiceListenerFactory;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Stdlib\ArrayUtils;
+use Zend\Stdlib\ResponseInterface;
 
 class ApplicationTest extends TestCase
 {
+    use EventManagerIntrospectionTrait;
+
     /**
      * @var ServiceManager
      */
@@ -69,15 +74,13 @@ class ApplicationTest extends TestCase
 
     public function getConfigListener()
     {
-        $manager   = $this->serviceManager->get('ModuleManager');
-        $listeners = $manager->getEventManager()->getListeners('loadModule');
-        foreach ($listeners as $listener) {
-            $callback = $listener->getCallback();
-            if (!is_array($callback)) {
+        $manager = $this->serviceManager->get('ModuleManager');
+        foreach ($this->getListenersForEvent('loadModule', $manager->getEventManager()) as $listener) {
+            if (! is_array($listener)) {
                 continue;
             }
-            $object = array_shift($callback);
-            if (!$object instanceof \Zend\ModuleManager\Listener\ConfigListener) {
+            $object = array_shift($listener);
+            if (! $object instanceof ConfigListener) {
                 continue;
             }
             return $object;
@@ -129,7 +132,7 @@ class ApplicationTest extends TestCase
     public function testEventsAreEmptyAtFirst()
     {
         $events = $this->application->getEventManager();
-        $registeredEvents = $events->getEvents();
+        $registeredEvents = $this->getEventsFromEventManager($events);
         $this->assertEquals([], $registeredEvents);
 
         $sharedEvents = $events->getSharedManager();
@@ -148,12 +151,10 @@ class ApplicationTest extends TestCase
         $listenerService = $this->serviceManager->get($listenerServiceName);
         $this->application->bootstrap($isCustom ? (array) $listenerServiceName : []);
         $events = $this->application->getEventManager();
-        $listeners = $events->getListeners($event);
 
         $foundListener = false;
-        foreach ($listeners as $listener) {
-            $callback = $listener->getCallback();
-            $foundListener = $callback === [$listenerService, $method];
+        foreach ($this->getListenersForEvent($event, $events) as $listener) {
+            $foundListener = $listener === [$listenerService, $method];
             if ($foundListener) {
                 break;
             }
@@ -175,7 +176,7 @@ class ApplicationTest extends TestCase
 
     public function testBootstrapAlwaysRegistersDefaultListeners()
     {
-        $refl = new \ReflectionProperty($this->application, 'defaultListeners');
+        $refl = new ReflectionProperty($this->application, 'defaultListeners');
         $refl->setAccessible(true);
         $defaultListenersNames = $refl->getValue($this->application);
         $defaultListeners = [];
@@ -187,11 +188,12 @@ class ApplicationTest extends TestCase
         $eventManager = $this->application->getEventManager();
 
         $registeredListeners = [];
-        foreach ($eventManager->getEvents() as $event) {
-            $listeners = $eventManager->getListeners($event);
-            foreach ($listeners as $listener) {
-                $callback = $listener->getCallBack();
-                $registeredListeners[] = $callback[0];
+        foreach ($this->getEventsFromEventManager($eventManager) as $event) {
+            foreach ($this->getListenersForEvent($event, $eventManager) as $listener) {
+                if (is_array($listener)) {
+                    $listener = array_shift($listener);
+                }
+                $registeredListeners[] = $listener;
             }
         }
 
@@ -302,7 +304,7 @@ class ApplicationTest extends TestCase
 
         $this->application->run();
         $this->assertArrayHasKey('route-match', $log);
-        $this->assertInstanceOf('Zend\Mvc\Router\RouteMatch', $log['route-match']);
+        $this->assertInstanceOf(Router\RouteMatch::class, $log['route-match']);
     }
 
     public function testAllowsReturningEarlyFromRouting()
@@ -647,7 +649,7 @@ class ApplicationTest extends TestCase
     {
         $this->application->bootstrap();
 
-        $response     = $this->getMock('Zend\Stdlib\ResponseInterface');
+        $response     = $this->getMock(ResponseInterface::class);
         $finishMock   = $this->getMock('stdClass', ['__invoke']);
         $routeMock    = $this->getMock('stdClass', ['__invoke']);
         $dispatchMock = $this->getMock('stdClass', ['__invoke']);
@@ -673,7 +675,7 @@ class ApplicationTest extends TestCase
     {
         $this->application->bootstrap();
 
-        $response     = $this->getMock('Zend\Stdlib\ResponseInterface');
+        $response     = $this->getMock(ResponseInterface::class);
         $errorMock    = $this->getMock('stdClass', ['__invoke']);
         $finishMock   = $this->getMock('stdClass', ['__invoke']);
         $routeMock    = $this->getMock('stdClass', ['__invoke']);
@@ -686,8 +688,9 @@ class ApplicationTest extends TestCase
         }));
         $routeMock->expects($this->once())->method('__invoke')->will($this->returnCallback(function (MvcEvent $event) {
             $event->stopPropagation(true);
+            $event->setName(MvcEvent::EVENT_DISPATCH_ERROR);
             $event->setError(Application::ERROR_ROUTER_NO_MATCH);
-            return $event->getApplication()->getEventManager()->trigger(MvcEvent::EVENT_DISPATCH_ERROR, $event)->last();
+            return $event->getApplication()->getEventManager()->triggerEvent($event)->last();
         }));
         $dispatchMock->expects($this->once())->method('__invoke')->will($this->returnValue($response));
         $finishMock->expects($this->once())->method('__invoke')->will($this->returnCallback(function (MvcEvent $event) {
@@ -740,7 +743,9 @@ class ApplicationTest extends TestCase
             $marker->{$e->getName()} = $e->propagationIsStopped();
             $e->stopPropagation(true);
         };
-        $this->application->getEventManager()->attach($events, $listener);
+        foreach ($events as $event) {
+            $this->application->getEventManager()->attach($event, $listener);
+        }
 
         $this->application->run();
 

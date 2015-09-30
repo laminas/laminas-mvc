@@ -21,10 +21,10 @@ class ControllerManagerTest extends TestCase
 {
     public function setUp()
     {
-        $this->events       = new EventManager();
-        $this->consoleAdapter = new ConsoleAdapter();
         $this->sharedEvents = new SharedEventManager;
-        $this->events->setSharedManager($this->sharedEvents);
+        $this->events       = new EventManager($this->sharedEvents);
+
+        $this->consoleAdapter = new ConsoleAdapter();
 
         $this->plugins  = new ControllerPluginManager();
         $this->services = new ServiceManager();
@@ -63,7 +63,7 @@ class ControllerManagerTest extends TestCase
 
     public function testInjectControllerDependenciesWillNotOverwriteExistingEventManager()
     {
-        $events     = new EventManager();
+        $events     = new EventManager($this->sharedEvents);
         $controller = new TestAsset\SampleController();
         $controller->setEventManager($events);
         $this->controllers->injectControllerDependencies($controller, $this->controllers);

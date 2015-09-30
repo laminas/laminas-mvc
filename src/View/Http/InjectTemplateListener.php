@@ -42,7 +42,7 @@ class InjectTemplateListener extends AbstractListenerAggregate
     /**
      * {@inheritDoc}
      */
-    public function attach(Events $events)
+    public function attach(Events $events, $priority = 1)
     {
         $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH, [$this, 'injectTemplate'], -90);
     }
@@ -136,8 +136,7 @@ class InjectTemplateListener extends AbstractListenerAggregate
         }
 
         foreach ($this->controllerMap as $namespace => $replacement) {
-            if (
-                // Allow disabling rule by setting value to false since config
+            if (// Allow disabling rule by setting value to false since config
                 // merging have no feature to remove entries
                 false == $replacement
                 // Match full class or full namespace

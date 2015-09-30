@@ -18,10 +18,13 @@ use Zend\Mvc\View\Console\DefaultRenderingStrategy;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Stdlib\Response;
 use Zend\View\Model;
+use ZendTest\Mvc\EventManagerIntrospectionTrait;
 
 class DefaultRenderingStrategyTest extends TestCase
 {
-    /** @var DefaultRenderingStrategy */
+    use EventManagerIntrospectionTrait;
+
+    /* @var DefaultRenderingStrategy */
     protected $strategy;
 
     public function setUp()
@@ -32,21 +35,20 @@ class DefaultRenderingStrategyTest extends TestCase
     public function testAttachesRendererAtExpectedPriority()
     {
         $events = new EventManager();
-        $events->attachAggregate($this->strategy);
-        $listeners = $events->getListeners(MvcEvent::EVENT_RENDER);
+        $this->strategy->attach($events);
+        $listeners = $this->getListenersForEvent(MvcEvent::EVENT_RENDER, $events, true);
 
-        $expectedCallback = [$this->strategy, 'render'];
+        $expectedListener = [$this->strategy, 'render'];
         $expectedPriority = -10000;
         $found            = false;
 
         /* @var \Zend\Stdlib\CallbackHandler $listener */
-        foreach ($listeners as $listener) {
-            $callback = $listener->getCallback();
-            if ($callback === $expectedCallback) {
-                if ($listener->getMetadatum('priority') == $expectedPriority) {
-                    $found = true;
-                    break;
-                }
+        foreach ($listeners as $priority => $listener) {
+            if ($listener === $expectedListener
+                && $priority === $expectedPriority
+            ) {
+                $found = true;
+                break;
             }
         }
         $this->assertTrue($found, 'Renderer not found');
@@ -55,11 +57,14 @@ class DefaultRenderingStrategyTest extends TestCase
     public function testCanDetachListenersFromEventManager()
     {
         $events = new EventManager();
-        $events->attachAggregate($this->strategy);
-        $this->assertEquals(1, count($events->getListeners(MvcEvent::EVENT_RENDER)));
+        $this->strategy->attach($events);
 
-        $events->detachAggregate($this->strategy);
-        $this->assertEquals(0, count($events->getListeners(MvcEvent::EVENT_RENDER)));
+        $listeners = iterator_to_array($this->getListenersForEvent(MvcEvent::EVENT_RENDER, $events));
+        $this->assertCount(1, $listeners);
+
+        $this->strategy->detach($events);
+        $listeners = iterator_to_array($this->getListenersForEvent(MvcEvent::EVENT_RENDER, $events));
+        $this->assertCount(0, $listeners);
     }
 
     public function testIgnoresNonConsoleModelNotContainingResultKeyWhenObtainingResult()

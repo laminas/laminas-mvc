@@ -23,9 +23,12 @@ use Zend\View\View;
 use Zend\View\Model\ViewModel;
 use Zend\View\Resolver\TemplateMapResolver;
 use Zend\View\Strategy\PhpRendererStrategy;
+use ZendTest\Mvc\EventManagerIntrospectionTrait;
 
 class DefaultRendereringStrategyTest extends TestCase
 {
+    use EventManagerIntrospectionTrait;
+
     protected $event;
     protected $request;
     protected $response;
@@ -50,22 +53,21 @@ class DefaultRendereringStrategyTest extends TestCase
     public function testAttachesRendererAtExpectedPriority()
     {
         $evm = new EventManager();
-        $evm->attachAggregate($this->strategy);
+        $this->strategy->attach($evm);
         $events = [MvcEvent::EVENT_RENDER, MvcEvent::EVENT_RENDER_ERROR];
 
         foreach ($events as $event) {
-            $listeners = $evm->getListeners($event);
+            $listeners = $this->getListenersForEvent($event, $evm, true);
 
-            $expectedCallback = [$this->strategy, 'render'];
+            $expectedListener = [$this->strategy, 'render'];
             $expectedPriority = -10000;
             $found            = false;
-            foreach ($listeners as $listener) {
-                $callback = $listener->getCallback();
-                if ($callback === $expectedCallback) {
-                    if ($listener->getMetadatum('priority') == $expectedPriority) {
-                        $found = true;
-                        break;
-                    }
+            foreach ($listeners as $priority => $listener) {
+                if ($listener === $expectedListener
+                    && $priority === $expectedPriority
+                ) {
+                    $found = true;
+                    break;
                 }
             }
             $this->assertTrue($found, 'Renderer not found');
@@ -75,11 +77,13 @@ class DefaultRendereringStrategyTest extends TestCase
     public function testCanDetachListenersFromEventManager()
     {
         $events = new EventManager();
-        $events->attachAggregate($this->strategy);
-        $this->assertEquals(1, count($events->getListeners(MvcEvent::EVENT_RENDER)));
+        $this->strategy->attach($events);
+        $listeners = iterator_to_array($this->getListenersForEvent(MvcEvent::EVENT_RENDER, $events));
+        $this->assertCount(1, $listeners);
 
-        $events->detachAggregate($this->strategy);
-        $this->assertEquals(0, count($events->getListeners(MvcEvent::EVENT_RENDER)));
+        $this->strategy->detach($events);
+        $listeners = iterator_to_array($this->getListenersForEvent(MvcEvent::EVENT_RENDER, $events));
+        $this->assertCount(0, $listeners);
     }
 
     public function testWillRenderAlternateStrategyWhenSelected()
@@ -131,7 +135,7 @@ class DefaultRendereringStrategyTest extends TestCase
         $this->renderer->setResolver($resolver);
 
         $strategy = new PhpRendererStrategy($this->renderer);
-        $this->view->getEventManager()->attach($strategy);
+        $strategy->attach($this->view->getEventManager());
 
         $model = new ViewModel();
         $model->setTemplate('exception');
@@ -143,12 +147,11 @@ class DefaultRendereringStrategyTest extends TestCase
         $services->setInvokableClass('SharedEventManager', 'Zend\EventManager\SharedEventManager');
         $services->setFactory('EventManager', function ($services) {
             $sharedEvents = $services->get('SharedEventManager');
-            $events = new EventManager();
-            $events->setSharedManager($sharedEvents);
+            $events = new EventManager($sharedEvents);
             return $events;
         }, false);
 
-        $application = new Application([], $services);
+        $application = new Application([], $services, $services->get('EventManager'), $this->request, $this->response);
         $this->event->setApplication($application);
 
         $test = (object) ['flag' => false];

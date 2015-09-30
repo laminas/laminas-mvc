@@ -79,7 +79,7 @@ class ViewManager extends AbstractListenerAggregate
     /**
      * {@inheritDoc}
      */
-    public function attach(EventManagerInterface $events)
+    public function attach(EventManagerInterface $events, $priority = 1)
     {
         $this->listeners[] = $events->attach(MvcEvent::EVENT_BOOTSTRAP, [$this, 'onBootstrap'], 10000);
     }
@@ -114,11 +114,11 @@ class ViewManager extends AbstractListenerAggregate
         $this->registerMvcRenderingStrategies($events);
         $this->registerViewStrategies();
 
-        $events->attach($routeNotFoundStrategy);
-        $events->attach($exceptionStrategy);
+        $routeNotFoundStrategy->attach($events);
+        $exceptionStrategy->attach($events);
         $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, [$injectViewModelListener, 'injectViewModel'], -100);
         $events->attach(MvcEvent::EVENT_RENDER_ERROR, [$injectViewModelListener, 'injectViewModel'], -100);
-        $events->attach($mvcRenderingStrategy);
+        $mvcRenderingStrategy->attach($events);
 
         $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, [$createViewModelListener, 'createViewModelFromArray'], -80);
         $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, [$routeNotFoundStrategy, 'prepareNotFoundViewModel'], -90);
@@ -215,7 +215,7 @@ class ViewManager extends AbstractListenerAggregate
 
         $this->view = new View();
         $this->view->setEventManager($this->services->get('EventManager'));
-        $this->view->getEventManager()->attach($this->getRendererStrategy());
+        $this->getRendererStrategy()->attach($this->view->getEventManager());
 
         $this->services->setService('View', $this->view);
         $this->services->setAlias('Zend\View\View', 'View');
@@ -384,7 +384,7 @@ class ViewManager extends AbstractListenerAggregate
 
             $listener = $this->services->get($mvcStrategy);
             if ($listener instanceof ListenerAggregateInterface) {
-                $events->attach($listener, 100);
+                $listener->attach($events, 100);
             }
         }
     }
@@ -413,7 +413,8 @@ class ViewManager extends AbstractListenerAggregate
             return;
         }
 
-        $view = $this->getView();
+        $view   = $this->getView();
+        $events = $view->getEventManager();
 
         foreach ($strategies as $strategy) {
             if (!is_string($strategy)) {
@@ -422,7 +423,7 @@ class ViewManager extends AbstractListenerAggregate
 
             $listener = $this->services->get($strategy);
             if ($listener instanceof ListenerAggregateInterface) {
-                $view->getEventManager()->attach($listener, 100);
+                $listener->attach($events, 100);
             }
         }
     }
