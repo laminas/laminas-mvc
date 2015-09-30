@@ -62,10 +62,10 @@ class InjectTemplateListenerFactoryTest extends TestCase
         /* @var $serviceLocator \Zend\ServiceManager\ServiceLocatorInterface|\PHPUnit_Framework_MockObject_MockObject */
         $serviceLocator = $this->getMock('Zend\ServiceManager\ServiceLocatorInterface');
 
-        $serviceLocator->expects($this->any())->method('get')->with('Config')->will($this->returnValue($config));
+        $serviceLocator->expects($this->any())->method('get')->with('config')->will($this->returnValue($config));
 
         $factory  = new InjectTemplateListenerFactory();
-        $listener = $factory->createService($serviceLocator);
+        $listener = $factory($serviceLocator, 'InjectTemplateListener');
 
         $this->assertInstanceOf('Zend\Mvc\View\Http\InjectTemplateListener', $listener);
 

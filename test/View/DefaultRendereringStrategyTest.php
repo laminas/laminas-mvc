@@ -134,15 +134,25 @@ class DefaultRendereringStrategyTest extends TestCase
         $model->setTemplate('exception');
         $this->event->setViewModel($model);
 
-        $services = new ServiceManager();
-        $services->setService('Request', $this->request);
-        $services->setService('Response', $this->response);
-        $services->setInvokableClass('SharedEventManager', 'Zend\EventManager\SharedEventManager');
-        $services->setFactory('EventManager', function ($services) {
-            $sharedEvents = $services->get('SharedEventManager');
-            $events = new EventManager($sharedEvents);
-            return $events;
-        }, false);
+        $services = new ServiceManager([
+            'invokables' => [
+                'SharedEventManager' =>  'Zend\EventManager\SharedEventManager',
+            ],
+            'factories' => [
+                'EventManager' => function ($services, $name, array $options = null) {
+                    $sharedEvents = $services->get('SharedEventManager');
+                    $events = new EventManager($sharedEvents);
+                    return $events;
+                },
+            ],
+            'services' => [
+                'Request'  => $this->request,
+                'Response' => $this->response,
+            ],
+            'shared' => [
+                'EventManager' => false,
+            ],
+        ]);
 
         $application = new Application([], $services, $services->get('EventManager'), $this->request, $this->response);
         $this->event->setApplication($application);

@@ -10,9 +10,10 @@
 namespace ZendTest\Mvc\Service;
 
 use PHPUnit_Framework_TestCase as TestCase;
+use stdClass;
 use Zend\EventManager\EventManager;
 use Zend\Mvc\Service\ServiceManagerConfig;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\InvokableFactory;
 use Zend\ServiceManager\ServiceManager;
 
 /**
@@ -35,9 +36,8 @@ class ServiceManagerConfigTest extends TestCase
      */
     protected function setUp()
     {
-        $this->config = new ServiceManagerConfig();
-        $this->services = new ServiceManager();
-        $this->config->configureServiceManager($this->services);
+        $this->config   = new ServiceManagerConfig();
+        $this->services = $this->config->configureServiceManager(new ServiceManager());
     }
 
     /**
@@ -48,12 +48,14 @@ class ServiceManagerConfigTest extends TestCase
         $events = new EventManager($this->services->get('SharedEventManager'));
         TestAsset\EventManagerAwareObject::$defaultEvents = $events;
 
-        $this->services->setInvokableClass('EventManagerAwareObject', __NAMESPACE__ . '\TestAsset\EventManagerAwareObject');
+        $services = $this->services->withConfig(['invokables' => [
+            'EventManagerAwareObject' => TestAsset\EventManagerAwareObject::class,
+        ]]);
 
-        $instance = $this->services->get('EventManagerAwareObject');
-        $this->assertInstanceOf(__NAMESPACE__ . '\TestAsset\EventManagerAwareObject', $instance);
+        $instance = $services->get('EventManagerAwareObject');
+        $this->assertInstanceOf(TestAsset\EventManagerAwareObject::class, $instance);
         $this->assertSame($events, $instance->getEventManager());
-        $this->assertSame($this->services->get('SharedEventManager'), $events->getSharedManager());
+        $this->assertSame($services->get('SharedEventManager'), $events->getSharedManager());
     }
 
     /**
@@ -63,18 +65,17 @@ class ServiceManagerConfigTest extends TestCase
     {
         $custom = [
             'invokables' => [
-                'foo' => '\stdClass',
+                'foo' => stdClass::class,
             ],
             'factories' => [
                 'bar' => function () {
-                    return new \stdClass();
+                    return new stdClass();
                 },
             ],
         ];
 
         $config = new ServiceManagerConfig($custom);
-        $sm = new ServiceManager();
-        $config->configureServiceManager($sm);
+        $sm = $config->configureServiceManager(new ServiceManager());
 
         $this->assertTrue($sm->has('foo'));
         $this->assertTrue($sm->has('bar'));
@@ -88,23 +89,22 @@ class ServiceManagerConfigTest extends TestCase
     {
         $custom = [
             'invokables' => [
-                'foo' => '\stdClass',
+                'foo' => stdClass::class,
             ],
             'factories' => [
                 'ModuleManager' => function () {
-                    return new \stdClass();
+                    return new stdClass();
                 },
             ],
         ];
 
         $config = new ServiceManagerConfig($custom);
-        $sm = new ServiceManager();
-        $config->configureServiceManager($sm);
+        $sm     = $config->configureServiceManager(new ServiceManager());
 
         $this->assertTrue($sm->has('foo'));
         $this->assertTrue($sm->has('ModuleManager'));
 
-        $this->assertInstanceOf('stdClass', $sm->get('ModuleManager'));
+        $this->assertInstanceOf(stdClass::class, $sm->get('ModuleManager'));
     }
 
     /**
@@ -113,138 +113,28 @@ class ServiceManagerConfigTest extends TestCase
     public function testCanAddDelegators()
     {
         $config = [
-            'invokables' => [
-                'foo' => '\stdClass',
+            'aliases' => [
+                'foo' => stdClass::class,
+            ],
+            'factories' => [
+                stdClass::class => InvokableFactory::class,
             ],
             'delegators' => [
-                'foo' => [
-                    function (ServiceLocatorInterface $serviceLocator, $name, $requestedName, $callback) {
+                stdClass::class => [
+                    function ($container, $name, $callback, array $options = null) {
                         $service = $callback();
                         $service->bar = 'baz';
 
                         return $service;
                     },
-                ]
+                ],
             ],
         ];
 
-        $config = new ServiceManagerConfig($config);
-        $sm = new ServiceManager();
-        $config->configureServiceManager($sm);
-
+        $sm  = new ServiceManager((new ServiceManagerConfig($config))->toArray());
         $std = $sm->get('foo');
-        $this->assertInstanceOf('stdClass', $std);
+        $this->assertInstanceOf(stdClass::class, $std);
         $this->assertEquals('baz', $std->bar);
-    }
-
-    /**
-     * @group 6266
-     */
-    public function testDefinesServiceManagerService()
-    {
-        $this->assertSame($this->services, $this->services->get('ServiceManager'));
-    }
-
-    /**
-     * @group 6266
-     */
-    public function testCanOverrideServiceManager()
-    {
-        $serviceManager = new ServiceManager(new ServiceManagerConfig([
-            'factories' => [
-                'ServiceManager' => function () {
-                    return $this;
-                }
-            ],
-        ]));
-
-        $this->assertSame($this, $serviceManager->get('ServiceManager'));
-    }
-
-    /**
-     * @group 6266
-     */
-    public function testServiceManagerInitializerIsUsedForServiceManagerAwareObjects()
-    {
-        $instance = $this->getMock('Zend\ServiceManager\ServiceManagerAwareInterface');
-
-        $instance->expects($this->once())->method('setServiceManager')->with($this->services);
-
-        $this->services->setFactory(
-            'service-manager-aware',
-            function () use ($instance) {
-                return $instance;
-            }
-        );
-
-        $this->services->get('service-manager-aware');
-    }
-
-    /**
-     * @group 6266
-     */
-    public function testServiceManagerInitializerCanBeReplaced()
-    {
-        $instance       = $this->getMock('Zend\ServiceManager\ServiceManagerAwareInterface');
-        $initializer    = $this->getMock('stdClass', ['__invoke']);
-        $serviceManager = new ServiceManager(new ServiceManagerConfig([
-            'initializers' => [
-                'ServiceManagerAwareInitializer' => $initializer
-            ],
-            'factories' => [
-                'service-manager-aware' => function () use ($instance) {
-                    return $instance;
-                },
-            ],
-        ]));
-
-        $initializer->expects($this->once())->method('__invoke')->with($instance, $serviceManager);
-        $instance->expects($this->never())->method('setServiceManager');
-
-        $serviceManager->get('service-manager-aware');
-    }
-
-    /**
-     * @group 6266
-     */
-    public function testServiceLocatorInitializerIsUsedForServiceLocatorAwareObjects()
-    {
-        $instance = $this->getMock('Zend\ServiceManager\ServiceLocatorAwareInterface');
-
-        $instance->expects($this->once())->method('setServiceLocator')->with($this->services);
-
-        $this->services->setFactory(
-            'service-locator-aware',
-            function () use ($instance) {
-                return $instance;
-            }
-        );
-
-        $this->services->get('service-locator-aware');
-    }
-
-    /**
-     * @group 6266
-     */
-    public function testServiceLocatorInitializerCanBeReplaced()
-    {
-        $instance       = $this->getMock('Zend\ServiceManager\ServiceLocatorAwareInterface');
-        $initializer    = $this->getMock('stdClass', ['__invoke']);
-        $serviceManager = new ServiceManager(new ServiceManagerConfig([
-            'initializers' => [
-                'ServiceLocatorAwareInitializer' => $initializer
-            ],
-            'factories' => [
-                'service-locator-aware' => function () use ($instance) {
-                    return $instance;
-                },
-            ],
-        ]));
-
-        $initializer->expects($this->once())->method('__invoke')->with($instance, $serviceManager);
-        $instance->expects($this->never())->method('setServiceLocator');
-
-        $serviceManager->get('service-locator-aware');
     }
 
     /**
@@ -253,22 +143,23 @@ class ServiceManagerConfigTest extends TestCase
     public function testEventManagerInitializerCanBeReplaced()
     {
         $instance       = $this->getMock('Zend\EventManager\EventManagerAwareInterface');
-        $initializer    = $this->getMock('stdClass', ['__invoke']);
-        $serviceManager = new ServiceManager(new ServiceManagerConfig([
+        $initializer    = $this->getMock(stdClass::class, ['__invoke']);
+        $config         = new ServiceManagerConfig([
             'initializers' => [
-                'EventManagerAwareInitializer' => $initializer
+                'EventManagerAwareInitializer' => $initializer,
             ],
             'factories' => [
-                'event-manager-aware' => function () use ($instance) {
+                'EventManagerAware' => function () use ($instance) {
                     return $instance;
                 },
             ],
-        ]));
+        ]);
+        $serviceManager = $config->configureServiceManager(new ServiceManager());
 
-        $initializer->expects($this->once())->method('__invoke')->with($instance, $serviceManager);
+        $initializer->expects($this->once())->method('__invoke')->with($serviceManager, $instance);
         $instance->expects($this->never())->method('getEventManager');
         $instance->expects($this->never())->method('setEventManager');
 
-        $serviceManager->get('event-manager-aware');
+        $serviceManager->get('EventManagerAware');
     }
 }

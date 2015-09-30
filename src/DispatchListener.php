@@ -12,7 +12,7 @@ namespace Zend\Mvc;
 use ArrayObject;
 use Zend\EventManager\AbstractListenerAggregate;
 use Zend\EventManager\EventManagerInterface;
-use Zend\Mvc\Exception\InvalidControllerException;
+use Zend\ServiceManager\Exception\InvalidServiceException;
 use Zend\Stdlib\ArrayUtils;
 
 /**
@@ -40,6 +40,19 @@ use Zend\Stdlib\ArrayUtils;
 class DispatchListener extends AbstractListenerAggregate
 {
     /**
+     * @var Controller\ControllerManager
+     */
+    private $controllerManager;
+
+    /**
+     * @param Controller\ControllerManager $controllerManager
+     */
+    public function __construct(Controller\ControllerManager $controllerManager)
+    {
+        $this->controllerManager = $controllerManager;
+    }
+
+    /**
      * Attach listeners to an event manager
      *
      * @param  EventManagerInterface $events
@@ -62,20 +75,24 @@ class DispatchListener extends AbstractListenerAggregate
      */
     public function onDispatch(MvcEvent $e)
     {
-        $routeMatch       = $e->getRouteMatch();
-        $controllerName   = $routeMatch->getParam('controller', 'not-found');
-        $application      = $e->getApplication();
-        $events           = $application->getEventManager();
-        $controllerLoader = $application->getServiceManager()->get('ControllerManager');
+        $routeMatch        = $e->getRouteMatch();
+        $controllerName    = $routeMatch instanceof Router\RouteMatch
+            ? $routeMatch->getParam('controller', 'not-found')
+            : 'not-found';
+        $application       = $e->getApplication();
+        $events            = $application->getEventManager();
+        $controllerManager = $this->controllerManager;
 
-        if (!$controllerLoader->has($controllerName)) {
+
+        // Query abstract controllers, too!
+        if (! $controllerManager->has($controllerName, true)) {
             $return = $this->marshalControllerNotFoundEvent($application::ERROR_CONTROLLER_NOT_FOUND, $controllerName, $e, $application);
             return $this->complete($return, $e);
         }
 
         try {
-            $controller = $controllerLoader->get($controllerName);
-        } catch (InvalidControllerException $exception) {
+            $controller = $controllerManager->get($controllerName);
+        } catch (InvalidServiceException $exception) {
             $return = $this->marshalControllerNotFoundEvent($application::ERROR_CONTROLLER_INVALID, $controllerName, $e, $application, $exception);
             return $this->complete($return, $e);
         } catch (\Exception $exception) {

@@ -20,10 +20,10 @@ use Zend\Mvc\Controller\PluginManager;
 use Zend\Mvc\Controller\Plugin\Forward as ForwardPlugin;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Router\RouteMatch;
+use Zend\ServiceManager\ServiceManager;
 use ZendTest\Mvc\Controller\TestAsset\ForwardController;
 use ZendTest\Mvc\Controller\TestAsset\SampleController;
 use ZendTest\Mvc\Controller\TestAsset\UneventfulController;
-use ZendTest\Mvc\TestAsset\Locator;
 
 class ForwardTest extends TestCase
 {
@@ -62,41 +62,44 @@ class ForwardTest extends TestCase
         $routeMatch->setMatchedRouteName('some-route');
         $event->setRouteMatch($routeMatch);
 
-        $services    = new Locator();
-        $plugins     = $this->plugins = new PluginManager();
-        $plugins->setServiceLocator($services);
+        $this->services = $services = new ServiceManager([
+            'aliases' => [
+                'ControllerLoader' => 'ControllerManager',
+            ],
+            'factories' => [
+                'ControllerManager' => function ($services, $name) {
+                    $plugins = $services->get('ControllerPluginManager');
+                    return new ControllerManager($services, ['factories' => [
+                        'forward' => function ($services) use ($plugins) {
+                            $controller = new ForwardController();
+                            $controller->setPluginManager($plugins);
+                            return $controller;
+                        },
+                    ]]);
+                },
+                'ControllerPluginManager' => function ($services, $name) {
+                    return new PluginManager($services);
+                },
+                'EventManager' => function ($services, $name) {
+                    return new EventManager($services->get('SharedEventManager'));
+                },
+                'SharedEventManager' => function ($services, $name) {
+                    return new SharedEventManager();
+                },
+            ],
+            'shared' => [
+                'EventManager' => false,
+            ],
+        ]);
 
-        $controllers = $this->controllers = new ControllerManager();
-        $controllers->setFactory('forward', function () use ($plugins) {
-            $controller = new ForwardController();
-            $controller->setPluginManager($plugins);
-            return $controller;
-        });
-        $controllers->setServiceLocator($services);
-        $controllerLoader = function () use ($controllers) {
-            return $controllers;
-        };
-        $services->add('ControllerLoader', $controllerLoader);
-        $services->add('ControllerManager', $controllerLoader);
-        $services->add('ControllerPluginManager', function () use ($plugins) {
-            return $plugins;
-        });
-        $services->add('Zend\ServiceManager\ServiceLocatorInterface', function () use ($services) {
-            return $services;
-        });
-        $services->add('EventManager', function () use ($eventManager) {
-            return new EventManager($eventManager->getSharedManager());
-        });
-        $services->add('SharedEventManager', function () use ($eventManager) {
-            return $eventManager->getSharedManager();
-        });
+        $this->controllers = $services->get('ControllerManager');
 
+        $plugins = $services->get('ControllerPluginManager');
         $this->controller = new SampleController();
         $this->controller->setEvent($event);
-        $this->controller->setServiceLocator($services);
         $this->controller->setPluginManager($plugins);
 
-        $this->plugin = $this->controller->plugin('forward');
+        $this->plugin = $plugins->get('forward');
     }
 
     public function testPluginWithoutEventAwareControllerRaisesDomainException()
@@ -117,20 +120,66 @@ class ForwardTest extends TestCase
 
     public function testDispatchRaisesDomainExceptionIfDiscoveredControllerIsNotDispatchable()
     {
-        $locator = $this->controller->getServiceLocator();
-        $locator->add('bogus', function () {
-            return new stdClass;
-        });
-        $this->setExpectedException('Zend\ServiceManager\Exception\ServiceNotFoundException');
-        $this->plugin->dispatch('bogus');
+        $controllers = $this->controllers->withConfig(['factories' => [
+            'bogus' => function () {
+                return new stdClass;
+            },
+        ]]);
+        $plugin = new ForwardPlugin($controllers);
+        $plugin->setController($this->controller);
+
+        $this->setExpectedException('Zend\ServiceManager\Exception\InvalidServiceException', 'DispatchableInterface');
+        $plugin->dispatch('bogus');
     }
 
     public function testDispatchRaisesDomainExceptionIfCircular()
     {
+        $event = $this->controller->getEvent();
+
+        $services = new ServiceManager([
+            'aliases' => [
+                'ControllerLoader' => 'ControllerManager',
+            ],
+            'factories' => [
+                'ControllerManager' => function ($services) use ($event) {
+                    $plugins = $services->get('ControllerPluginManager');
+
+                    return new ControllerManager($services, ['factories' => [
+                        'forward' => function ($services) use ($plugins) {
+                            $controller = new ForwardController();
+                            $controller->setPluginManager($plugins);
+                            return $controller;
+                        },
+                        'sample' => function ($services) use ($event, $plugins) {
+                            $controller = new SampleController();
+                            $controller->setEvent($event);
+                            $controller->setPluginManager($plugins);
+                            return $controller;
+                        },
+                    ]]);
+                },
+                'ControllerPluginManager' => function ($services) {
+                    return new PluginManager($services);
+                },
+                'EventManager' => function ($services, $name) {
+                    return new EventManager($services->get('SharedEventManager'));
+                },
+                'SharedEventManager' => function ($services, $name) {
+                    return new SharedEventManager();
+                },
+            ],
+            'shared' => [
+                'EventManager' => false,
+            ],
+        ]);
+
+        $controllers = $services->get('ControllerManager');
+
+        $forward = new ForwardPlugin($controllers);
+        $forward->setController($controllers->get('sample'));
+
         $this->setExpectedException('Zend\Mvc\Exception\DomainException', 'Circular forwarding');
-        $sampleController = $this->controller;
-        $this->controllers->setService('sample', $sampleController);
-        $this->plugin->dispatch('sample', ['action' => 'test-circular']);
+        $forward->dispatch('sample', ['action' => 'test-circular']);
     }
 
     public function testPluginDispatchsRequestedControllerWhenFound()
@@ -145,7 +194,7 @@ class ForwardTest extends TestCase
      */
     public function testNonArrayListenerDoesNotRaiseErrorWhenPluginDispatchsRequestedController()
     {
-        $services = $this->plugins->getServiceLocator();
+        $services = $this->services;
         $events   = $services->get('EventManager');
         $sharedEvents = $this->getMock('Zend\EventManager\SharedEventManagerInterface');
         // @codingStandardsIgnoreStart

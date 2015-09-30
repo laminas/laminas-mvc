@@ -99,8 +99,7 @@ class AbstractControllerTest extends TestCase
             ->with($this->logicalAnd(
                 $this->contains('Zend\\EventManager\\EventManagerAwareInterface'),
                 $this->contains('Zend\\Stdlib\\DispatchableInterface'),
-                $this->contains('Zend\\Mvc\\InjectApplicationEventInterface'),
-                $this->contains('Zend\\ServiceManager\\ServiceLocatorAwareInterface')
+                $this->contains('Zend\\Mvc\\InjectApplicationEventInterface')
             ));
 
         $this->controller->setEventManager($eventManager);

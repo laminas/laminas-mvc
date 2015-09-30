@@ -24,7 +24,7 @@ class ServiceListenerFactoryTest extends TestCase
     }
 
     /**
-     * @expectedException        Zend\Mvc\Exception\InvalidArgumentException
+     * @expectedException        Zend\ServiceManager\Exception\ServiceNotCreatedException
      * @expectedExceptionMessage The value of service_listener_options must be an array, string given.
      */
     public function testInvalidOptionType()
@@ -33,11 +33,11 @@ class ServiceListenerFactoryTest extends TestCase
                  ->method('get')
                  ->will($this->returnValue(['service_listener_options' => 'string']));
 
-        $this->factory->createService($this->sm);
+        $this->factory->__invoke($this->sm, 'ServiceListener');
     }
 
     /**
-     * @expectedException        Zend\Mvc\Exception\InvalidArgumentException
+     * @expectedException        Zend\ServiceManager\Exception\ServiceNotCreatedException
      * @expectedExceptionMessage Invalid service listener options detected, 0 array must contain service_manager key.
      */
     public function testMissingServiceManager()
@@ -51,11 +51,11 @@ class ServiceListenerFactoryTest extends TestCase
                  ->method('get')
                  ->will($this->returnValue($config));
 
-        $this->factory->createService($this->sm);
+        $this->factory->__invoke($this->sm, 'ServiceListener');
     }
 
     /**
-     * @expectedException        Zend\Mvc\Exception\InvalidArgumentException
+     * @expectedException        Zend\ServiceManager\Exception\ServiceNotCreatedException
      * @expectedExceptionMessage Invalid service listener options detected, service_manager must be a string, integer given.
      */
     public function testInvalidTypeServiceManager()
@@ -69,11 +69,11 @@ class ServiceListenerFactoryTest extends TestCase
                  ->method('get')
                  ->will($this->returnValue($config));
 
-        $this->factory->createService($this->sm);
+        $this->factory->__invoke($this->sm, 'ServiceListener');
     }
 
     /**
-     * @expectedException        Zend\Mvc\Exception\InvalidArgumentException
+     * @expectedException        Zend\ServiceManager\Exception\ServiceNotCreatedException
      * @expectedExceptionMessage Invalid service listener options detected, 0 array must contain config_key key.
      */
     public function testMissingConfigKey()
@@ -87,11 +87,11 @@ class ServiceListenerFactoryTest extends TestCase
                  ->method('get')
                  ->will($this->returnValue($config));
 
-        $this->factory->createService($this->sm);
+        $this->factory->__invoke($this->sm, 'ServiceListener');
     }
 
     /**
-     * @expectedException        Zend\Mvc\Exception\InvalidArgumentException
+     * @expectedException        Zend\ServiceManager\Exception\ServiceNotCreatedException
      * @expectedExceptionMessage Invalid service listener options detected, config_key must be a string, integer given.
      */
     public function testInvalidTypeConfigKey()
@@ -105,11 +105,11 @@ class ServiceListenerFactoryTest extends TestCase
                  ->method('get')
                  ->will($this->returnValue($config));
 
-        $this->factory->createService($this->sm);
+        $this->factory->__invoke($this->sm, 'ServiceListener');
     }
 
     /**
-     * @expectedException        Zend\Mvc\Exception\InvalidArgumentException
+     * @expectedException        Zend\ServiceManager\Exception\ServiceNotCreatedException
      * @expectedExceptionMessage Invalid service listener options detected, 0 array must contain interface key.
      */
     public function testMissingInterface()
@@ -123,11 +123,11 @@ class ServiceListenerFactoryTest extends TestCase
                  ->method('get')
                  ->will($this->returnValue($config));
 
-        $this->factory->createService($this->sm);
+        $this->factory->__invoke($this->sm, 'ServiceListener');
     }
 
     /**
-     * @expectedException        Zend\Mvc\Exception\InvalidArgumentException
+     * @expectedException        Zend\ServiceManager\Exception\ServiceNotCreatedException
      * @expectedExceptionMessage Invalid service listener options detected, interface must be a string, integer given.
      */
     public function testInvalidTypeInterface()
@@ -141,11 +141,11 @@ class ServiceListenerFactoryTest extends TestCase
                  ->method('get')
                  ->will($this->returnValue($config));
 
-        $this->factory->createService($this->sm);
+        $this->factory->__invoke($this->sm, 'ServiceListener');
     }
 
     /**
-     * @expectedException        Zend\Mvc\Exception\InvalidArgumentException
+     * @expectedException        Zend\ServiceManager\Exception\ServiceNotCreatedException
      * @expectedExceptionMessage Invalid service listener options detected, 0 array must contain method key.
      */
     public function testMissingMethod()
@@ -159,11 +159,11 @@ class ServiceListenerFactoryTest extends TestCase
                  ->method('get')
                  ->will($this->returnValue($config));
 
-        $this->factory->createService($this->sm);
+        $this->factory->__invoke($this->sm, 'ServiceListener');
     }
 
     /**
-     * @expectedException        Zend\Mvc\Exception\InvalidArgumentException
+     * @expectedException        Zend\ServiceManager\Exception\ServiceNotCreatedException
      * @expectedExceptionMessage Invalid service listener options detected, method must be a string, integer given.
      */
     public function testInvalidTypeMethod()
@@ -177,6 +177,6 @@ class ServiceListenerFactoryTest extends TestCase
                  ->method('get')
                  ->will($this->returnValue($config));
 
-        $this->factory->createService($this->sm);
+        $this->factory->__invoke($this->sm, 'ServiceListener');
     }
 }

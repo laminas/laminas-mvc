@@ -37,6 +37,8 @@ class FilePostRedirectGetTest extends TestCase
 
     public function setUp()
     {
+        $this->markTestIncomplete('Re-enable when zend-form has been updated to zend-servicemanager v3');
+
         $this->form = new Form();
 
         $this->collection = new Collection('links', [

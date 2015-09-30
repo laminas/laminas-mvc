@@ -18,6 +18,7 @@ use Zend\Http\Response;
 use Zend\Mvc\Controller\PluginManager;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Router\RouteMatch;
+use Zend\ServiceManager\ServiceManager;
 
 class ActionControllerTest extends TestCase
 {
@@ -160,11 +161,6 @@ class ActionControllerTest extends TestCase
         $this->assertSame($this->event, $event);
     }
 
-    public function testControllerIsLocatorAware()
-    {
-        $this->assertInstanceOf('Zend\ServiceManager\ServiceLocatorAwareInterface', $this->controller);
-    }
-
     public function testControllerIsEventAware()
     {
         $this->assertInstanceOf('Zend\Mvc\InjectApplicationEventInterface', $this->controller);
@@ -190,7 +186,7 @@ class ActionControllerTest extends TestCase
 
     public function testInjectingPluginManagerSetsControllerWhenPossible()
     {
-        $plugins = new PluginManager();
+        $plugins = new PluginManager(new ServiceManager());
         $this->assertNull($plugins->getController());
         $this->controller->setPluginManager($plugins);
         $this->assertSame($this->controller, $plugins->getController());

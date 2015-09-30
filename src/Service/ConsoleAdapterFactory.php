@@ -9,11 +9,11 @@
 
 namespace Zend\Mvc\Service;
 
+use Interop\Container\ContainerInterface;
 use stdClass;
 use Zend\Console\Adapter\AdapterInterface;
 use Zend\Console\Console;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 class ConsoleAdapterFactory implements FactoryInterface
 {
@@ -35,22 +35,24 @@ class ConsoleAdapterFactory implements FactoryInterface
      *          )
      *      )
      *
-     * @param  ServiceLocatorInterface $serviceLocator
+     * @param  ContainerInterface $container
+     * @param  string $name
+     * @param  null|array $options
      * @return AdapterInterface|stdClass
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $name, array $options = null)
     {
         // First, check if we're actually in a Console environment
-        if (!Console::isConsole()) {
+        if (! Console::isConsole()) {
             // SM factory cannot currently return null, so we return dummy object
             return new stdClass();
         }
 
         // Read app config and determine Console adapter to use
-        $config = $serviceLocator->get('Config');
-        if (!empty($config['console']) && !empty($config['console']['adapter'])) {
+        $config = $container->get('config');
+        if (! empty($config['console']) && ! empty($config['console']['adapter'])) {
             // use the adapter supplied in application config
-            $adapter = $serviceLocator->get($config['console']['adapter']);
+            $adapter = $container->get($config['console']['adapter']);
         } else {
             // try to detect best console adapter
             $adapter = Console::detectBestAdapter();
@@ -58,15 +60,15 @@ class ConsoleAdapterFactory implements FactoryInterface
         }
 
         // check if we have a valid console adapter
-        if (!$adapter instanceof AdapterInterface) {
+        if (! $adapter instanceof AdapterInterface) {
             // SM factory cannot currently return null, so we convert it to dummy object
             return new stdClass();
         }
 
         // Optionally, change Console charset
-        if (!empty($config['console']) && !empty($config['console']['charset'])) {
+        if (! empty($config['console']) && ! empty($config['console']['charset'])) {
             // use the charset supplied in application config
-            $charset = $serviceLocator->get($config['console']['charset']);
+            $charset = $container->get($config['console']['charset']);
             $adapter->setCharset($charset);
         }
 

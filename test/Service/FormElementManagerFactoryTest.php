@@ -9,12 +9,8 @@
 
 namespace ZendTest\Mvc\Service;
 
-use ArrayObject;
 use PHPUnit_Framework_TestCase as TestCase;
 use Zend\Mvc\Service\FormElementManagerFactory;
-use Zend\Mvc\Service\DiFactory;
-use Zend\Mvc\Service\DiAbstractServiceFactoryFactory;
-use Zend\Mvc\Service\DiServiceInitializerFactory;
 use Zend\ServiceManager\Config;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Form\FormElementManager;
@@ -33,15 +29,17 @@ class FormElementManagerFactoryTest extends TestCase
 
     public function setUp()
     {
+        $this->markTestIncomplete('Re-enable once zend-form is migrated to zend-servicemanager v3');
+
         $formElementManagerFactory = new FormElementManagerFactory();
-        $config = new ArrayObject(['di' => []]);
-        $this->services = new ServiceManager();
-        $this->services->setService('Zend\ServiceManager\ServiceLocatorInterface', $this->services);
-        $this->services->setFactory('FormElementManager', $formElementManagerFactory);
-        $this->services->setService('Config', $config);
-        $this->services->setFactory('Di', new DiFactory());
-        $this->services->setFactory('DiAbstractServiceFactory', new DiAbstractServiceFactoryFactory());
-        $this->services->setFactory('DiServiceInitializer', new DiServiceInitializerFactory());
+        $this->services = new ServiceManager([
+            'factories' => [
+                'FormElementManager' => $formElementManagerFactory,
+            ],
+            'services' => [
+                'config' => [],
+            ],
+        ]);
     }
 
     public function testWillGetFormElementManager()
@@ -55,17 +53,5 @@ class FormElementManagerFactoryTest extends TestCase
         $formElementManager = $this->services->get('FormElementManager');
         $form = $formElementManager->get('form');
         $this->assertInstanceof('Zend\Form\Form', $form);
-    }
-
-    public function testWillInstantiateFormFromDiAbstractFactory()
-    {
-        //without DiAbstractFactory
-        $standaloneFormElementManager = new FormElementManager();
-        $this->assertFalse($standaloneFormElementManager->has('ZendTest\Mvc\Service\TestAsset\CustomForm'));
-        //with DiAbstractFactory
-        $formElementManager = $this->services->get('FormElementManager');
-        $this->assertTrue($formElementManager->has('ZendTest\Mvc\Service\TestAsset\CustomForm'));
-        $form = $formElementManager->get('ZendTest\Mvc\Service\TestAsset\CustomForm');
-        $this->assertInstanceof('ZendTest\Mvc\Service\TestAsset\CustomForm', $form);
     }
 }

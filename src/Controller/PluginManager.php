@@ -9,8 +9,8 @@
 
 namespace Zend\Mvc\Controller;
 
-use Zend\Mvc\Exception;
 use Zend\ServiceManager\AbstractPluginManager;
+use Zend\ServiceManager\Factory\InvokableFactory;
 use Zend\Stdlib\DispatchableInterface;
 
 /**
@@ -21,42 +21,62 @@ use Zend\Stdlib\DispatchableInterface;
  */
 class PluginManager extends AbstractPluginManager
 {
-    /**
-     * Default set of plugins factories
-     *
-     * @var array
-     */
-    protected $factories = [
-        'forward'  => 'Zend\Mvc\Controller\Plugin\Service\ForwardFactory',
-        'identity' => 'Zend\Mvc\Controller\Plugin\Service\IdentityFactory',
-    ];
+    protected $instanceOf = Plugin\PluginInterface::class;
 
     /**
-     * Default set of plugins
-     *
-     * @var array
-     */
-    protected $invokableClasses = [
-        'acceptableviewmodelselector' => 'Zend\Mvc\Controller\Plugin\AcceptableViewModelSelector',
-        'filepostredirectget'         => 'Zend\Mvc\Controller\Plugin\FilePostRedirectGet',
-        'flashmessenger'              => 'Zend\Mvc\Controller\Plugin\FlashMessenger',
-        'layout'                      => 'Zend\Mvc\Controller\Plugin\Layout',
-        'params'                      => 'Zend\Mvc\Controller\Plugin\Params',
-        'postredirectget'             => 'Zend\Mvc\Controller\Plugin\PostRedirectGet',
-        'redirect'                    => 'Zend\Mvc\Controller\Plugin\Redirect',
-        'url'                         => 'Zend\Mvc\Controller\Plugin\Url',
-        'createhttpnotfoundmodel'     => 'Zend\Mvc\Controller\Plugin\CreateHttpNotFoundModel',
-        'createconsolenotfoundmodel'  => 'Zend\Mvc\Controller\Plugin\CreateConsoleNotFoundModel',
-    ];
-
-    /**
-     * Default set of plugin aliases
-     *
-     * @var array
+     * @var string[] Default aliases
      */
     protected $aliases = [
-        'prg'     => 'postredirectget',
-        'fileprg' => 'filepostredirectget',
+        'AcceptableViewModelSelector' => Plugin\AcceptableViewModelSelector::class,
+        'acceptableViewModelSelector' => Plugin\AcceptableViewModelSelector::class,
+        'acceptableviewmodelselector' => Plugin\AcceptableViewModelSelector::class,
+        'FilePostRedirectGet'         => Plugin\FilePostRedirectGet::class,
+        'filePostRedirectGet'         => Plugin\FilePostRedirectGet::class,
+        'filepostredirectget'         => Plugin\FilePostRedirectGet::class,
+        'fileprg'                     => Plugin\FilePostRedirectGet::class,
+        'FlashMessenger'              => Plugin\FlashMessenger::class,
+        'flashMessenger'              => Plugin\FlashMessenger::class,
+        'flashmessenger'              => Plugin\FlashMessenger::class,
+        'Forward'                     => Plugin\Forward::class,
+        'forward'                     => Plugin\Forward::class,
+        'Identity'                    => Plugin\Identity::class,
+        'identity'                    => Plugin\Identity::class,
+        'Layout'                      => Plugin\Layout::class,
+        'layout'                      => Plugin\Layout::class,
+        'Params'                      => Plugin\Params::class,
+        'params'                      => Plugin\Params::class,
+        'PostRedirectGet'             => Plugin\PostRedirectGet::class,
+        'postRedirectGet'             => Plugin\PostRedirectGet::class,
+        'postredirectget'             => Plugin\PostRedirectGet::class,
+        'prg'                         => Plugin\PostRedirectGet::class,
+        'Redirect'                    => Plugin\Redirect::class,
+        'redirect'                    => Plugin\Redirect::class,
+        'Url'                         => Plugin\Url::class,
+        'url'                         => Plugin\Url::class,
+        'CreateHttpNotFoundModel'     => Plugin\CreateHttpNotFoundModel::class,
+        'createHttpNotFoundModel'     => Plugin\CreateHttpNotFoundModel::class,
+        'createhttpnotfoundmodel'     => Plugin\CreateHttpNotFoundModel::class,
+        'CreateConsoleNotFoundModel'  => Plugin\CreateConsoleNotFoundModel::class,
+        'createConsoleNotFoundModel'  => Plugin\CreateConsoleNotFoundModel::class,
+        'createconsolenotfoundmodel'  => Plugin\CreateConsoleNotFoundModel::class,
+    ];
+
+    /**
+     * @var string[]|callable[] Default factories
+     */
+    protected $factories = [
+        Plugin\Forward::class                     => Plugin\Service\ForwardFactory::class,
+        Plugin\Identity::class                    => Plugin\Service\IdentityFactory::class,
+        Plugin\AcceptableViewModelSelector::class => InvokableFactory::class,
+        Plugin\FilePostRedirectGet::class         => InvokableFactory::class,
+        Plugin\FlashMessenger::class              => InvokableFactory::class,
+        Plugin\Layout::class                      => InvokableFactory::class,
+        Plugin\Params::class                      => InvokableFactory::class,
+        Plugin\PostRedirectGet::class             => InvokableFactory::class,
+        Plugin\Redirect::class                    => InvokableFactory::class,
+        Plugin\Url::class                         => InvokableFactory::class,
+        Plugin\CreateHttpNotFoundModel::class     => InvokableFactory::class,
+        Plugin\CreateConsoleNotFoundModel::class  => InvokableFactory::class,
     ];
 
     /**
@@ -75,13 +95,11 @@ class PluginManager extends AbstractPluginManager
      * plugin is lost.
      *
      * @param  string $name
-     * @param  mixed  $options
-     * @param  bool   $usePeeringServiceManagers
-     * @return mixed
+     * @return DispatchableInterface
      */
-    public function get($name, $options = [], $usePeeringServiceManagers = true)
+    public function get($name, array $options = null)
     {
-        $plugin = parent::get($name, $options, $usePeeringServiceManagers);
+        $plugin = parent::get($name, $options);
         $this->injectController($plugin);
 
         return $plugin;
@@ -131,28 +149,5 @@ class PluginManager extends AbstractPluginManager
         }
 
         $plugin->setController($controller);
-    }
-
-    /**
-     * Validate the plugin
-     *
-     * Any plugin is considered valid in this context.
-     *
-     * @param  mixed                            $plugin
-     * @return void
-     * @throws Exception\InvalidPluginException
-     */
-    public function validatePlugin($plugin)
-    {
-        if ($plugin instanceof Plugin\PluginInterface) {
-            // we're okay
-            return;
-        }
-
-        throw new Exception\InvalidPluginException(sprintf(
-            'Plugin of type %s is invalid; must implement %s\Plugin\PluginInterface',
-            (is_object($plugin) ? get_class($plugin) : gettype($plugin)),
-            __NAMESPACE__
-        ));
     }
 }

@@ -9,13 +9,10 @@
 
 namespace Zend\Mvc\Controller;
 
+use Interop\Container\ContainerInterface;
 use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\SharedEventManagerInterface;
-use Zend\Mvc\Exception;
 use Zend\ServiceManager\AbstractPluginManager;
-use Zend\ServiceManager\ConfigInterface;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Stdlib\DispatchableInterface;
 
 /**
@@ -25,113 +22,77 @@ use Zend\Stdlib\DispatchableInterface;
  */
 class ControllerManager extends AbstractPluginManager
 {
-    /**
-     * We do not want arbitrary classes instantiated as controllers.
-     *
-     * @var bool
-     */
-    protected $autoAddInvokableClass = false;
+    protected $instanceOf = DispatchableInterface::class;
 
     /**
      * Constructor
      *
-     * After invoking parent constructor, add an initializer to inject the
-     * service manager, event manager, and plugin manager
+     * Injects an initializer for injecting controllers with an
+     * event manager and plugin manager.
      *
-     * @param  null|ConfigInterface $configuration
+     * @param  ContainerInterface $container
+     * @param  array $configuration
      */
-    public function __construct(ConfigInterface $configuration = null)
+    public function __construct(ContainerInterface $container, array $configuration = [])
     {
-        parent::__construct($configuration);
-        // Pushing to bottom of stack to ensure this is done last
-        $this->addInitializer([$this, 'injectControllerDependencies'], false);
+        $this->initializers[] = [$this, 'injectEventManager'];
+        $this->initializers[] = [$this, 'injectConsole'];
+        $this->initializers[] = [$this, 'injectPluginManager'];
+        parent::__construct($container, $configuration);
     }
 
     /**
-     * Inject required dependencies into the controller.
+     * Initializer: inject EventManager instance
      *
-     * @param  DispatchableInterface $controller
-     * @param  ServiceLocatorInterface $serviceLocator
-     * @return void
+     * If we have an event manager composed already, make sure it gets injected
+     * with the shared event manager.
+     *
+     * The AbstractController lazy-instantiates an EM instance, which is why
+     * the shared EM injection needs to happen; the conditional will always
+     * pass.
+     *
+     * @param ContainerInterface $container
+     * @param DispatchableInterface $controller
      */
-    public function injectControllerDependencies($controller, ServiceLocatorInterface $serviceLocator)
+    public function injectEventManager(ContainerInterface $container, $controller)
     {
-        if (!$controller instanceof DispatchableInterface) {
+        if (! $controller instanceof EventManagerAwareInterface) {
             return;
         }
 
-        $parentLocator = $serviceLocator->getServiceLocator();
-
-        if ($controller instanceof ServiceLocatorAwareInterface) {
-            $controller->setServiceLocator($parentLocator->get('Zend\ServiceManager\ServiceLocatorInterface'));
-        }
-
-        if ($controller instanceof EventManagerAwareInterface) {
-            // If we have an event manager composed already, make sure it gets
-            // injected with the shared event manager.
-            // The AbstractController lazy-instantiates an EM instance, which
-            // is why the shared EM injection needs to happen; the conditional
-            // will always pass.
-            $events = $controller->getEventManager();
-            if (! $events || ! $events->getSharedManager() instanceof SharedEventManagerInterface) {
-                $controller->setEventManager($parentLocator->get('EventManager'));
-            }
-        }
-
-        if ($controller instanceof AbstractConsoleController) {
-            $controller->setConsole($parentLocator->get('Console'));
-        }
-
-        if (method_exists($controller, 'setPluginManager')) {
-            $controller->setPluginManager($parentLocator->get('ControllerPluginManager'));
+        $events = $controller->getEventManager();
+        if (! $events || ! $events->getSharedManager() instanceof SharedEventManagerInterface) {
+            $controller->setEventManager($container->get('EventManager'));
         }
     }
 
     /**
-     * Validate the plugin
+     * Initializer: inject Console adapter instance
      *
-     * Ensure we have a dispatchable.
-     *
-     * @param  mixed $plugin
-     * @return true
-     * @throws Exception\InvalidControllerException
+     * @param ContainerInterface $container
+     * @param DispatchableInterface $controller
      */
-    public function validatePlugin($plugin)
+    public function injectConsole(ContainerInterface $container, $controller)
     {
-        if ($plugin instanceof DispatchableInterface) {
-            // we're okay
+        if (! $controller instanceof AbstractConsoleController) {
             return;
         }
 
-        throw new Exception\InvalidControllerException(sprintf(
-            'Controller of type %s is invalid; must implement Zend\Stdlib\DispatchableInterface',
-            (is_object($plugin) ? get_class($plugin) : gettype($plugin))
-        ));
+        $controller->setConsole($container->get('Console'));
     }
 
     /**
-     * Override: do not use peering service managers
+     * Initializer: inject plugin manager
      *
-     * @param  string|array $name
-     * @param  bool         $checkAbstractFactories
-     * @param  bool         $usePeeringServiceManagers
-     * @return bool
+     * @param ContainerInterface $container
+     * @param DispatchableInterface $controller
      */
-    public function has($name, $checkAbstractFactories = true, $usePeeringServiceManagers = false)
+    public function injectPluginManager(ContainerInterface $container, $controller)
     {
-        return parent::has($name, $checkAbstractFactories, $usePeeringServiceManagers);
-    }
+        if (! method_exists($controller, 'setPluginManager')) {
+            return;
+        }
 
-    /**
-     * Override: do not use peering service managers
-     *
-     * @param  string $name
-     * @param  array $options
-     * @param  bool $usePeeringServiceManagers
-     * @return mixed
-     */
-    public function get($name, $options = [], $usePeeringServiceManagers = false)
-    {
-        return parent::get($name, $options, $usePeeringServiceManagers);
+        $controller->setPluginManager($container->get('ControllerPluginManager'));
     }
 }

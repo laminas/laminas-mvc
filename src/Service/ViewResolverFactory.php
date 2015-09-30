@@ -9,8 +9,8 @@
 
 namespace Zend\Mvc\Service;
 
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\View\Resolver as ViewResolver;
 
 class ViewResolverFactory implements FactoryInterface
@@ -21,19 +21,21 @@ class ViewResolverFactory implements FactoryInterface
      * Creates a Zend\View\Resolver\AggregateResolver and attaches the template
      * map resolver and path stack resolver
      *
-     * @param  ServiceLocatorInterface        $serviceLocator
+     * @param  ContainerInterface $container
+     * @param  string $name
+     * @param  null|array $options
      * @return ViewResolver\AggregateResolver
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $name, array $options = null)
     {
         $resolver = new ViewResolver\AggregateResolver();
 
         /* @var $mapResolver \Zend\View\Resolver\ResolverInterface */
-        $mapResolver             = $serviceLocator->get('ViewTemplateMapResolver');
+        $mapResolver             = $container->get('ViewTemplateMapResolver');
         /* @var $pathResolver \Zend\View\Resolver\ResolverInterface */
-        $pathResolver            = $serviceLocator->get('ViewTemplatePathStack');
+        $pathResolver            = $container->get('ViewTemplatePathStack');
         /* @var $prefixPathStackResolver \Zend\View\Resolver\ResolverInterface */
-        $prefixPathStackResolver = $serviceLocator->get('ViewPrefixPathStackResolver');
+        $prefixPathStackResolver = $container->get('ViewPrefixPathStackResolver');
 
         $resolver
             ->attach($mapResolver)

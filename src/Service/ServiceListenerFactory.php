@@ -9,12 +9,13 @@
 
 namespace Zend\Mvc\Service;
 
+use Interop\Container\ContainerInterface;
 use Zend\ModuleManager\Listener\ServiceListener;
 use Zend\ModuleManager\Listener\ServiceListenerInterface;
-use Zend\Mvc\Exception\InvalidArgumentException;
-use Zend\Mvc\Exception\RuntimeException;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\Mvc\View;
+use Zend\ServiceManager\Exception\ServiceNotCreatedException;
+use Zend\ServiceManager\Factory\FactoryInterface;
+use Zend\ServiceManager\Factory\InvokableFactory;
 
 class ServiceListenerFactory implements FactoryInterface
 {
@@ -31,11 +32,11 @@ class ServiceListenerFactory implements FactoryInterface
     /**
      * Default mvc-related service configuration -- can be overridden by modules.
      *
+     * @todo Re-enable form abstract service factory after zend-form updated to servicemanager v3.
      * @var array
      */
     protected $defaultServiceConfig = [
         'invokables' => [
-            'DispatchListener'     => 'Zend\Mvc\DispatchListener',
             'RouteListener'        => 'Zend\Mvc\RouteListener',
             'SendResponseListener' => 'Zend\Mvc\SendResponseListener',
             'ViewJsonRenderer'     => 'Zend\View\Renderer\JsonRenderer',
@@ -43,21 +44,22 @@ class ServiceListenerFactory implements FactoryInterface
         ],
         'factories' => [
             'Application'                    => 'Zend\Mvc\Service\ApplicationFactory',
-            'Config'                         => 'Zend\Mvc\Service\ConfigFactory',
-            'ControllerLoader'               => 'Zend\Mvc\Service\ControllerLoaderFactory',
+            'config'                         => 'Zend\Mvc\Service\ConfigFactory',
+            'ControllerManager'              => 'Zend\Mvc\Service\ControllerManagerFactory',
             'ControllerPluginManager'        => 'Zend\Mvc\Service\ControllerPluginManagerFactory',
             'ConsoleAdapter'                 => 'Zend\Mvc\Service\ConsoleAdapterFactory',
-            'ConsoleRouter'                  => 'Zend\Mvc\Service\RouterFactory',
+            'ConsoleExceptionStrategy'       => ConsoleExceptionStrategyFactory::class,
+            'ConsoleRouter'                  => ConsoleRouterFactory::class,
+            'ConsoleRouteNotFoundStrategy'   => ConsoleRouteNotFoundStrategyFactory::class,
             'ConsoleViewManager'             => 'Zend\Mvc\Service\ConsoleViewManagerFactory',
-            'DependencyInjector'             => 'Zend\Mvc\Service\DiFactory',
-            'DiAbstractServiceFactory'       => 'Zend\Mvc\Service\DiAbstractServiceFactoryFactory',
-            'DiServiceInitializer'           => 'Zend\Mvc\Service\DiServiceInitializerFactory',
-            'DiStrictAbstractServiceFactory' => 'Zend\Mvc\Service\DiStrictAbstractServiceFactoryFactory',
+            'DispatchListener'               => 'Zend\Mvc\Service\DispatchListenerFactory',
             'FilterManager'                  => 'Zend\Mvc\Service\FilterManagerFactory',
             'FormAnnotationBuilder'          => 'Zend\Mvc\Service\FormAnnotationBuilderFactory',
             'FormElementManager'             => 'Zend\Mvc\Service\FormElementManagerFactory',
-            'HttpRouter'                     => 'Zend\Mvc\Service\RouterFactory',
+            'HttpExceptionStrategy'          => HttpExceptionStrategyFactory::class,
             'HttpMethodListener'             => 'Zend\Mvc\Service\HttpMethodListenerFactory',
+            'HttpRouteNotFoundStrategy'      => HttpRouteNotFoundStrategyFactory::class,
+            'HttpRouter'                     => HttpRouterFactory::class,
             'HttpViewManager'                => 'Zend\Mvc\Service\HttpViewManagerFactory',
             'HydratorManager'                => 'Zend\Mvc\Service\HydratorManagerFactory',
             'InjectTemplateListener'         => 'Zend\Mvc\Service\InjectTemplateListenerFactory',
@@ -73,7 +75,9 @@ class ServiceListenerFactory implements FactoryInterface
             'SerializerAdapterManager'       => 'Zend\Mvc\Service\SerializerAdapterPluginManagerFactory',
             'TranslatorPluginManager'        => 'Zend\Mvc\Service\TranslatorPluginManagerFactory',
             'ValidatorManager'               => 'Zend\Mvc\Service\ValidatorManagerFactory',
+            View\Console\DefaultRenderingStrategy::class => InvokableFactory::class,
             'ViewHelperManager'              => 'Zend\Mvc\Service\ViewHelperManagerFactory',
+            View\Http\DefaultRenderingStrategy::class => HttpDefaultRenderingStrategyFactory::class,
             'ViewFeedStrategy'               => 'Zend\Mvc\Service\ViewFeedStrategyFactory',
             'ViewJsonStrategy'               => 'Zend\Mvc\Service\ViewJsonStrategyFactory',
             'ViewManager'                    => 'Zend\Mvc\Service\ViewManagerFactory',
@@ -81,24 +85,35 @@ class ServiceListenerFactory implements FactoryInterface
             'ViewTemplateMapResolver'        => 'Zend\Mvc\Service\ViewTemplateMapResolverFactory',
             'ViewTemplatePathStack'          => 'Zend\Mvc\Service\ViewTemplatePathStackFactory',
             'ViewPrefixPathStackResolver'    => 'Zend\Mvc\Service\ViewPrefixPathStackResolverFactory',
+            'Zend\View\Renderer\PhpRenderer' => ViewPhpRendererFactory::class,
+            'Zend\View\Strategy\PhpRendererStrategy' => ViewPhpRendererStrategyFactory::class,
+            'Zend\View\View'                 => ViewFactory::class,
         ],
         'aliases' => [
-            'Configuration'                              => 'Config',
+            'Config'                                     => 'config',
+            'Configuration'                              => 'config',
+            'configuration'                              => 'config',
             'Console'                                    => 'ConsoleAdapter',
-            'Di'                                         => 'DependencyInjector',
-            'Zend\Di\LocatorInterface'                   => 'DependencyInjector',
+            'ConsoleDefaultRenderingStrategy'            => View\Console\DefaultRenderingStrategy::class,
+            'HttpDefaultRenderingStrategy'               => View\Http\DefaultRenderingStrategy::class,
+            'View'                                       => 'Zend\View\View',
+            'ViewPhpRendererStrategy'                    => 'Zend\View\Strategy\PhpRendererStrategy',
+            'ViewPhpRenderer'                            => 'Zend\View\Renderer\PhpRenderer',
+            'ViewRenderer'                               => 'Zend\View\Renderer\PhpRenderer',
             'Zend\Form\Annotation\FormAnnotationBuilder' => 'FormAnnotationBuilder',
             'Zend\Mvc\Controller\PluginManager'          => 'ControllerPluginManager',
             'Zend\Mvc\View\Http\InjectTemplateListener'  => 'InjectTemplateListener',
+            'Zend\View\Renderer\RendererInterface'       => 'Zend\View\Renderer\PhpRenderer',
             'Zend\View\Resolver\TemplateMapResolver'     => 'ViewTemplateMapResolver',
             'Zend\View\Resolver\TemplatePathStack'       => 'ViewTemplatePathStack',
             'Zend\View\Resolver\AggregateResolver'       => 'ViewResolver',
             'Zend\View\Resolver\ResolverInterface'       => 'ViewResolver',
-            'ControllerManager'                          => 'ControllerLoader',
         ],
+        /*
         'abstract_factories' => [
             'Zend\Form\FormAbstractServiceFactory',
         ],
+         */
     ];
 
     /**
@@ -120,83 +135,125 @@ class ServiceListenerFactory implements FactoryInterface
      *
      * @param  ServiceLocatorInterface  $serviceLocator
      * @return ServiceListener
-     * @throws InvalidArgumentException For invalid configurations.
-     * @throws RuntimeException
+     * @throws ServiceNotCreatedException for invalid ServiceListener service
+     * @throws ServiceNotCreatedException For invalid configurations.
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $configuration   = $serviceLocator->get('ApplicationConfig');
+        $configuration   = $container->get('ApplicationConfig');
 
-        if ($serviceLocator->has('ServiceListenerInterface')) {
-            $serviceListener = $serviceLocator->get('ServiceListenerInterface');
+        $serviceListener = $container->has('ServiceListenerInterface')
+            ? $container->get('ServiceListenerInterface')
+            : new ServiceListener($container, $this->defaultServiceConfig);
 
-            if (!$serviceListener instanceof ServiceListenerInterface) {
-                throw new RuntimeException(
-                    'The service named ServiceListenerInterface must implement ' .
-                    'Zend\ModuleManager\Listener\ServiceListenerInterface'
-                );
-            }
-
-            $serviceListener->setDefaultServiceConfig($this->defaultServiceConfig);
-        } else {
-            $serviceListener = new ServiceListener($serviceLocator, $this->defaultServiceConfig);
+        if (! $serviceListener instanceof ServiceListenerInterface) {
+            throw new ServiceNotCreatedException(
+                'The service named ServiceListenerInterface must implement ' .
+                'Zend\ModuleManager\Listener\ServiceListenerInterface'
+            );
         }
 
         if (isset($configuration['service_listener_options'])) {
-            if (!is_array($configuration['service_listener_options'])) {
-                throw new InvalidArgumentException(sprintf(
-                    'The value of service_listener_options must be an array, %s given.',
-                    gettype($configuration['service_listener_options'])
-                ));
-            }
-
-            foreach ($configuration['service_listener_options'] as $key => $newServiceManager) {
-                if (!isset($newServiceManager['service_manager'])) {
-                    throw new InvalidArgumentException(sprintf(self::MISSING_KEY_ERROR, $key, 'service_manager'));
-                } elseif (!is_string($newServiceManager['service_manager'])) {
-                    throw new InvalidArgumentException(sprintf(
-                        self::VALUE_TYPE_ERROR,
-                        'service_manager',
-                        gettype($newServiceManager['service_manager'])
-                    ));
-                }
-                if (!isset($newServiceManager['config_key'])) {
-                    throw new InvalidArgumentException(sprintf(self::MISSING_KEY_ERROR, $key, 'config_key'));
-                } elseif (!is_string($newServiceManager['config_key'])) {
-                    throw new InvalidArgumentException(sprintf(
-                        self::VALUE_TYPE_ERROR,
-                        'config_key',
-                        gettype($newServiceManager['config_key'])
-                    ));
-                }
-                if (!isset($newServiceManager['interface'])) {
-                    throw new InvalidArgumentException(sprintf(self::MISSING_KEY_ERROR, $key, 'interface'));
-                } elseif (!is_string($newServiceManager['interface'])) {
-                    throw new InvalidArgumentException(sprintf(
-                        self::VALUE_TYPE_ERROR,
-                        'interface',
-                        gettype($newServiceManager['interface'])
-                    ));
-                }
-                if (!isset($newServiceManager['method'])) {
-                    throw new InvalidArgumentException(sprintf(self::MISSING_KEY_ERROR, $key, 'method'));
-                } elseif (!is_string($newServiceManager['method'])) {
-                    throw new InvalidArgumentException(sprintf(
-                        self::VALUE_TYPE_ERROR,
-                        'method',
-                        gettype($newServiceManager['method'])
-                    ));
-                }
-
-                $serviceListener->addServiceManager(
-                    $newServiceManager['service_manager'],
-                    $newServiceManager['config_key'],
-                    $newServiceManager['interface'],
-                    $newServiceManager['method']
-                );
-            }
+            $this->injectServiceListenerOptions($configuration['service_listener_options'], $serviceListener);
         }
 
         return $serviceListener;
+    }
+
+    /**
+     * Validate and inject plugin manager options into the service listener.
+     *
+     * @param array $options
+     * @param ServiceListenerInterface $serviceListener
+     * @throws ServiceListenerInterface for invalid $options types
+     */
+    private function injectServiceListenerOptions($options, ServiceListenerInterface $serviceListener)
+    {
+        if (! is_array($options)) {
+            throw new ServiceNotCreatedException(sprintf(
+                'The value of service_listener_options must be an array, %s given.',
+                (is_object($options) ? get_class($options) : gettype($options))
+            ));
+        }
+
+        foreach ($options as $key => $newServiceManager) {
+            $this->validatePluginManagerOptions($newServiceManager, $key);
+
+            $serviceListener->addServiceManager(
+                $newServiceManager['service_manager'],
+                $newServiceManager['config_key'],
+                $newServiceManager['interface'],
+                $newServiceManager['method']
+            );
+        }
+    }
+
+    /**
+     * Validate the structure and types for plugin manager configuration options.
+     *
+     * Ensures all required keys are present in the expected types.
+     *
+     * @param array $options
+     * @param string $name Plugin manager service name; used for exception messages
+     * @throws ServiceNotCreatedException for any missing configuration options.
+     * @throws ServiceNotCreatedException for configuration options of invalid types.
+     */
+    private function validatePluginManagerOptions($options, $name)
+    {
+        if (! is_array($options)) {
+            throw new ServiceNotCreatedException(sprintf(
+                'Plugin manager configuration for "%s" is invalid; must be an array, received "%s"',
+                $name,
+                (is_object($options) ? get_class($options) : gettype($options))
+            ));
+        }
+
+        if (! isset($options['service_manager'])) {
+            throw new ServiceNotCreatedException(sprintf(self::MISSING_KEY_ERROR, $name, 'service_manager'));
+        }
+
+        if (! is_string($options['service_manager'])) {
+            throw new ServiceNotCreatedException(sprintf(
+                self::VALUE_TYPE_ERROR,
+                'service_manager',
+                gettype($options['service_manager'])
+            ));
+        }
+
+        if (! isset($options['config_key'])) {
+            throw new ServiceNotCreatedException(sprintf(self::MISSING_KEY_ERROR, $name, 'config_key'));
+        }
+
+        if (! is_string($options['config_key'])) {
+            throw new ServiceNotCreatedException(sprintf(
+                self::VALUE_TYPE_ERROR,
+                'config_key',
+                gettype($options['config_key'])
+            ));
+        }
+
+        if (! isset($options['interface'])) {
+            throw new ServiceNotCreatedException(sprintf(self::MISSING_KEY_ERROR, $name, 'interface'));
+        }
+
+        if (! is_string($options['interface'])) {
+            throw new ServiceNotCreatedException(sprintf(
+                self::VALUE_TYPE_ERROR,
+                'interface',
+                gettype($options['interface'])
+            ));
+        }
+
+        if (! isset($options['method'])) {
+            throw new ServiceNotCreatedException(sprintf(self::MISSING_KEY_ERROR, $name, 'method'));
+        }
+
+        if (! is_string($options['method'])) {
+            throw new ServiceNotCreatedException(sprintf(
+                self::VALUE_TYPE_ERROR,
+                'method',
+                gettype($options['method'])
+            ));
+        }
     }
 }
