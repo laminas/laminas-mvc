@@ -294,49 +294,36 @@ class RouteNotFoundStrategyTest extends TestCase
         $this->strategy->attach($events);
 
         foreach ([MvcEvent::EVENT_DISPATCH => -90, MvcEvent::EVENT_DISPATCH_ERROR => 1] as $event => $expectedPriority) {
-            $listeners        = $this->getListenersForEvent($event, $events, true);
-            $expectedListener = [$this->strategy, 'prepareNotFoundViewModel'];
-            $found            = false;
-            foreach ($listeners as $priority => $listener) {
-                if ($listener === $expectedListener
-                    && $priority === $expectedPriority
-                ) {
-                    $found = true;
-                    break;
-                }
-            }
-            $this->assertTrue($found, 'Listener not found');
+            $this->assertListenerAtPriority(
+                [$this->strategy, 'prepareNotFoundViewModel'],
+                $expectedPriority,
+                $event,
+                $events
+            );
         }
 
-        $listeners        = $this->getListenersForEvent(MvcEvent::EVENT_DISPATCH_ERROR, $events, true);
-        $expectedListener = [$this->strategy, 'detectNotFoundError'];
-        $expectedPriority = 1;
-        $found            = false;
-        foreach ($listeners as $priority => $listener) {
-            if ($listener === $expectedListener
-                && $priority === $expectedPriority
-            ) {
-                $found = true;
-                break;
-            }
-        }
-        $this->assertTrue($found, 'Listener not found');
+        $this->assertListenerAtPriority(
+            [$this->strategy, 'detectNotFoundError'],
+            1,
+            $event,
+            $events
+        );
     }
 
     public function testDetachesListeners()
     {
         $events = new EventManager();
         $this->strategy->attach($events);
-        $listeners = iterator_to_array($this->getListenersForEvent(MvcEvent::EVENT_DISPATCH, $events));
+        $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_DISPATCH, $events);
         $this->assertCount(1, $listeners);
-        $listeners = iterator_to_array($this->getListenersForEvent(MvcEvent::EVENT_DISPATCH_ERROR, $events));
+        $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_DISPATCH_ERROR, $events);
         $this->assertCount(2, $listeners);
 
         $this->strategy->detach($events);
 
-        $listeners = iterator_to_array($this->getListenersForEvent(MvcEvent::EVENT_DISPATCH, $events));
+        $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_DISPATCH, $events);
         $this->assertCount(0, $listeners);
-        $listeners = iterator_to_array($this->getListenersForEvent(MvcEvent::EVENT_DISPATCH_ERROR, $events));
+        $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_DISPATCH_ERROR, $events);
         $this->assertCount(0, $listeners);
     }
 }

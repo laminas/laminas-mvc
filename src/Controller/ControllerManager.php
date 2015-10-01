@@ -74,9 +74,7 @@ class ControllerManager extends AbstractPluginManager
             // is why the shared EM injection needs to happen; the conditional
             // will always pass.
             $events = $controller->getEventManager();
-            if (! $events instanceof EventManagerInterface
-                || ! $events->getSharedManager() instanceof SharedEventManagerInterface
-            ) {
+            if (! $events || ! $events->getSharedManager() instanceof SharedEventManagerInterface) {
                 $controller->setEventManager($parentLocator->get('EventManager'));
             }
         }

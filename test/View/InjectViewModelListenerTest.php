@@ -67,32 +67,19 @@ class InjectViewModelListenerTest extends TestCase
     {
         $events = new EventManager();
         $this->listener->attach($events);
-        $listeners = $this->getListenersForEvent(MvcEvent::EVENT_DISPATCH, $events, true);
+        $this->assertListenerAtPriority(
+            [$this->listener, 'injectViewModel'],
+            -100,
+            MvcEvent::EVENT_DISPATCH,
+            $events
+        );
 
-        $expectedListener = [$this->listener, 'injectViewModel'];
-        $expectedPriority = -100;
-        $found            = false;
-        foreach ($listeners as $priority => $listener) {
-            if ($listener === $expectedListener
-                && $priority === $expectedPriority
-            ) {
-                $found = true;
-                break;
-            }
-        }
-        $this->assertTrue($found, 'Listener not found');
-
-        $listeners = $this->getListenersForEvent(MvcEvent::EVENT_DISPATCH_ERROR, $events, true);
-        $found     = false;
-        foreach ($listeners as $listener) {
-            if ($listener === $expectedListener
-                && $priority === $expectedPriority
-            ) {
-                $found = true;
-                break;
-            }
-        }
-        $this->assertTrue($found, 'Listener not found');
+        $this->assertListenerAtPriority(
+            [$this->listener, 'injectViewModel'],
+            -100,
+            MvcEvent::EVENT_DISPATCH_ERROR,
+            $events
+        );
     }
 
     public function testDetachesListeners()
@@ -100,15 +87,15 @@ class InjectViewModelListenerTest extends TestCase
         $events = new EventManager();
         $this->listener->attach($events);
 
-        $listeners = iterator_to_array($this->getListenersForEvent(MvcEvent::EVENT_DISPATCH, $events));
+        $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_DISPATCH, $events);
         $this->assertCount(1, $listeners);
-        $listeners = iterator_to_array($this->getListenersForEvent(MvcEvent::EVENT_DISPATCH_ERROR, $events));
+        $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_DISPATCH_ERROR, $events);
         $this->assertCount(1, $listeners);
 
         $this->listener->detach($events);
-        $listeners = iterator_to_array($this->getListenersForEvent(MvcEvent::EVENT_DISPATCH, $events));
+        $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_DISPATCH, $events);
         $this->assertCount(0, $listeners);
-        $listeners = iterator_to_array($this->getListenersForEvent(MvcEvent::EVENT_DISPATCH_ERROR, $events));
+        $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_DISPATCH_ERROR, $events);
         $this->assertCount(0, $listeners);
     }
 }

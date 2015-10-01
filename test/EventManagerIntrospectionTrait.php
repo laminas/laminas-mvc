@@ -17,7 +17,13 @@ use Zend\EventManager\EventManager;
  */
 trait EventManagerIntrospectionTrait
 {
-    public function getEventsFromEventManager(EventManager $events)
+    /**
+     * Retrieve a list of event names from an event manager.
+     *
+     * @param EventManager $events
+     * @return string[]
+     */
+    private function getEventsFromEventManager(EventManager $events)
     {
         $r = new ReflectionProperty($events, 'events');
         $r->setAccessible(true);
@@ -25,7 +31,25 @@ trait EventManagerIntrospectionTrait
         return array_keys($listeners);
     }
 
-    public function getListenersForEvent($event, EventManager $events, $withPriority = false)
+    /**
+     * Retrieve an interable list of listeners for an event.
+     *
+     * Given an event and an event manager, returns an iterator with the
+     * listeners for that event, in priority order.
+     *
+     * If $withPriority is true, the key values will be the priority at which
+     * the given listener is attached.
+     *
+     * Do not pass $withPriority if you want to cast the iterator to an array,
+     * as many listeners will likely have the same priority, and thus casting
+     * will collapse to the last added.
+     *
+     * @param string $event
+     * @param EventManager $events
+     * @param bool $withPriority
+     * @return \Traversable
+     */
+    private function getListenersForEvent($event, EventManager $events, $withPriority = false)
     {
         $r = new ReflectionProperty($events, 'events');
         $r->setAccessible(true);
@@ -38,6 +62,62 @@ trait EventManagerIntrospectionTrait
         return $this->traverseListeners($listeners[$event], $withPriority);
     }
 
+    /**
+     * Assert that a given listener exists at the specified priority.
+     *
+     * @param callable $expectedListener
+     * @param int $expectedPriority
+     * @param string $event
+     * @param EventManager $events
+     * @param string $message Failure message to use, if any.
+     */
+    private function assertListenerAtPriority(
+        callable $expectedListener,
+        $expectedPriority,
+        $event,
+        EventManager $events,
+        $message = ''
+    ) {
+        $message   = $message ?: sprintf(
+            'Listener not found for event "%s" and priority %d',
+            $event,
+            $expectedPriority
+        );
+        $listeners = $this->getListenersForEvent($event, $events, true);
+        $found     = false;
+        foreach ($listeners as $priority => $listener) {
+            if ($listener === $expectedListener
+                && $priority === $expectedPriority
+            ) {
+                $found = true;
+                break;
+            }
+        }
+        $this->assertTrue($found, $message);
+    }
+
+    /**
+     * Returns an indexed array of listeners for an event.
+     *
+     * Returns an indexed array of listeners for an event, in priority order.
+     * Priority values will not be included; use this only for testing if
+     * specific listeners are present, or for a count of listeners.
+     *
+     * @param string $event
+     * @param EventManager $events
+     * @return callable[]
+     */
+    private function getArrayOfListenersForEvent($event, EventManager $events)
+    {
+        return iterator_to_array($this->getListenersForEvent($event, $events));
+    }
+
+    /**
+     * Generator for traversing listeners in priority order.
+     *
+     * @param array $listeners
+     * @param bool $withPriority When true, yields priority as key.
+     */
     public function traverseListeners(array $queue, $withPriority = false)
     {
         krsort($queue, SORT_NUMERIC);

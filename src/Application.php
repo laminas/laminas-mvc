@@ -365,6 +365,7 @@ class Application implements
 
         $event->setName(MvcEvent::EVENT_FINISH);
         $events->triggerEvent($event);
+
         return $this;
     }
 }

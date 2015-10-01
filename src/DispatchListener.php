@@ -99,8 +99,7 @@ class DispatchListener extends AbstractListenerAggregate
             $e->setControllerClass(get_class($controller));
             $e->setParam('exception', $ex);
 
-            $results = $events->triggerEvent($e);
-            $return  = $results->last();
+            $return = $events->triggerEvent($e)->last();
             if (! $return) {
                 $return = $e->getResult();
             }

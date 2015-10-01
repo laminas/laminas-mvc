@@ -33,33 +33,21 @@ class ExceptionStrategyTest extends TestCase
         $events = new EventManager();
         $this->strategy->attach($events);
 
-        $listeners        = $this->getListenersForEvent(MvcEvent::EVENT_DISPATCH_ERROR, $events, true);
-        $expectedListener = [$this->strategy, 'prepareExceptionViewModel'];
-        $expectedPriority = 1;
-        $found            = false;
-        foreach ($listeners as $priority => $listener) {
-            if ($listener === $expectedListener
-                && $priority === $expectedPriority
-            ) {
-                $found = true;
-                break;
-            }
-        }
-        $this->assertTrue($found, 'MvcEvent::EVENT_DISPATCH_ERROR not found');
+        $this->assertListenerAtPriority(
+            [$this->strategy, 'prepareExceptionViewModel'],
+            1,
+            MvcEvent::EVENT_DISPATCH_ERROR,
+            $events,
+            'MvcEvent::EVENT_DISPATCH_ERROR listener not found'
+        );
 
-        $listeners        = $this->getListenersForEvent(MvcEvent::EVENT_RENDER_ERROR, $events, true);
-        $expectedListener = [$this->strategy, 'prepareExceptionViewModel'];
-        $expectedPriority = 1;
-        $found            = false;
-        foreach ($listeners as $priority => $listener) {
-            if ($listener === $expectedListener
-                && $priority === $expectedPriority
-            ) {
-                $found = true;
-                break;
-            }
-        }
-        $this->assertTrue($found, 'MvcEvent::EVENT_RENDER_ERROR not found');
+        $this->assertListenerAtPriority(
+            [$this->strategy, 'prepareExceptionViewModel'],
+            1,
+            MvcEvent::EVENT_RENDER_ERROR,
+            $events,
+            'MvcEvent::EVENT_RENDER_ERROR listener not found'
+        );
     }
 
     public function testDefaultDisplayExceptions()

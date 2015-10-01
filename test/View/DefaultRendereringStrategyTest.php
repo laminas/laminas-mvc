@@ -57,20 +57,13 @@ class DefaultRendereringStrategyTest extends TestCase
         $events = [MvcEvent::EVENT_RENDER, MvcEvent::EVENT_RENDER_ERROR];
 
         foreach ($events as $event) {
-            $listeners = $this->getListenersForEvent($event, $evm, true);
-
-            $expectedListener = [$this->strategy, 'render'];
-            $expectedPriority = -10000;
-            $found            = false;
-            foreach ($listeners as $priority => $listener) {
-                if ($listener === $expectedListener
-                    && $priority === $expectedPriority
-                ) {
-                    $found = true;
-                    break;
-                }
-            }
-            $this->assertTrue($found, 'Renderer not found');
+            $this->assertListenerAtPriority(
+                [$this->strategy, 'render'],
+                -10000,
+                $event,
+                $evm,
+                'Renderer not found'
+            );
         }
     }
 
@@ -78,11 +71,11 @@ class DefaultRendereringStrategyTest extends TestCase
     {
         $events = new EventManager();
         $this->strategy->attach($events);
-        $listeners = iterator_to_array($this->getListenersForEvent(MvcEvent::EVENT_RENDER, $events));
+        $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_RENDER, $events);
         $this->assertCount(1, $listeners);
 
         $this->strategy->detach($events);
-        $listeners = iterator_to_array($this->getListenersForEvent(MvcEvent::EVENT_RENDER, $events));
+        $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_RENDER, $events);
         $this->assertCount(0, $listeners);
     }
 

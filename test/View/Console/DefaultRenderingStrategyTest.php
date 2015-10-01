@@ -24,7 +24,7 @@ class DefaultRenderingStrategyTest extends TestCase
 {
     use EventManagerIntrospectionTrait;
 
-    /* @var DefaultRenderingStrategy */
+    /** @var DefaultRenderingStrategy */
     protected $strategy;
 
     public function setUp()
@@ -36,22 +36,13 @@ class DefaultRenderingStrategyTest extends TestCase
     {
         $events = new EventManager();
         $this->strategy->attach($events);
-        $listeners = $this->getListenersForEvent(MvcEvent::EVENT_RENDER, $events, true);
-
-        $expectedListener = [$this->strategy, 'render'];
-        $expectedPriority = -10000;
-        $found            = false;
-
-        /* @var \Zend\Stdlib\CallbackHandler $listener */
-        foreach ($listeners as $priority => $listener) {
-            if ($listener === $expectedListener
-                && $priority === $expectedPriority
-            ) {
-                $found = true;
-                break;
-            }
-        }
-        $this->assertTrue($found, 'Renderer not found');
+        $this->assertListenerAtPriority(
+            [$this->strategy, 'render'],
+            -10000,
+            MvcEvent::EVENT_RENDER,
+            $events,
+            'Renderer listener not found'
+        );
     }
 
     public function testCanDetachListenersFromEventManager()
@@ -59,11 +50,11 @@ class DefaultRenderingStrategyTest extends TestCase
         $events = new EventManager();
         $this->strategy->attach($events);
 
-        $listeners = iterator_to_array($this->getListenersForEvent(MvcEvent::EVENT_RENDER, $events));
+        $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_RENDER, $events);
         $this->assertCount(1, $listeners);
 
         $this->strategy->detach($events);
-        $listeners = iterator_to_array($this->getListenersForEvent(MvcEvent::EVENT_RENDER, $events));
+        $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_RENDER, $events);
         $this->assertCount(0, $listeners);
     }
 

@@ -138,30 +138,23 @@ class ExceptionStrategyTest extends TestCase
     {
         $events = new EventManager();
         $this->strategy->attach($events);
-        $listeners = $this->getListenersForEvent(MvcEvent::EVENT_DISPATCH_ERROR, $events, true);
 
-        $expectedListener = [$this->strategy, 'prepareExceptionViewModel'];
-        $expectedPriority = 1;
-        $found            = false;
-        foreach ($listeners as $priority => $listener) {
-            if ($listener === $expectedListener
-                && $priority === $expectedPriority
-            ) {
-                $found = true;
-                break;
-            }
-        }
-        $this->assertTrue($found, 'Listener not found');
+        $this->assertListenerAtPriority(
+            [$this->strategy, 'prepareExceptionViewModel'],
+            1,
+            MvcEvent::EVENT_DISPATCH_ERROR,
+            $events
+        );
     }
 
     public function testDetachesListeners()
     {
         $events = new EventManager();
         $this->strategy->attach($events);
-        $listeners = iterator_to_array($this->getListenersForEvent(MvcEvent::EVENT_DISPATCH_ERROR, $events));
+        $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_DISPATCH_ERROR, $events);
         $this->assertEquals(1, count($listeners));
         $this->strategy->detach($events);
-        $listeners = iterator_to_array($this->getListenersForEvent(MvcEvent::EVENT_DISPATCH_ERROR, $events));
+        $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_DISPATCH_ERROR, $events);
         $this->assertEquals(0, count($listeners));
     }
 

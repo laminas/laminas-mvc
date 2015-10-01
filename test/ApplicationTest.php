@@ -16,6 +16,7 @@ use ReflectionProperty;
 use stdClass;
 use Zend\Http\PhpEnvironment\Response;
 use Zend\ModuleManager\Listener\ConfigListener;
+use Zend\ModuleManager\ModuleEvent;
 use Zend\Mvc\Application;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Router;
@@ -74,17 +75,17 @@ class ApplicationTest extends TestCase
 
     public function getConfigListener()
     {
-        $manager = $this->serviceManager->get('ModuleManager');
-        foreach ($this->getListenersForEvent('loadModule', $manager->getEventManager()) as $listener) {
-            if (! is_array($listener)) {
-                continue;
+        $manager   = $this->serviceManager->get('ModuleManager');
+        $listeners = $this->getArrayOfListenersForEvent(ModuleEvent::EVENT_LOAD_MODULE, $manager->getEventManager());
+        return array_reduce($listeners, function ($found, $listener) {
+            if ($found || ! is_array($listener)) {
+                return $found;
             }
-            $object = array_shift($listener);
-            if (! $object instanceof ConfigListener) {
-                continue;
+            $listener = array_shift($listener);
+            if ($listener instanceof ConfigListener) {
+                return $listener;
             }
-            return $object;
-        }
+        });
     }
 
     public function testRequestIsPopulatedFromServiceManager()
@@ -153,13 +154,8 @@ class ApplicationTest extends TestCase
         $events = $this->application->getEventManager();
 
         $foundListener = false;
-        foreach ($this->getListenersForEvent($event, $events) as $listener) {
-            $foundListener = $listener === [$listenerService, $method];
-            if ($foundListener) {
-                break;
-            }
-        }
-        $this->assertTrue($foundListener);
+        $listeners = $this->getArrayOfListenersForEvent($event, $events);
+        $this->assertContains([$listenerService, $method], $listeners);
     }
 
     public function bootstrapRegistersListenersProvider()

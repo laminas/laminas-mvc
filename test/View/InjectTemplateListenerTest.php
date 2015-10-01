@@ -307,31 +307,23 @@ class InjectTemplateListenerTest extends TestCase
     {
         $events = new EventManager();
         $this->listener->attach($events);
-        $listeners = $this->getListenersForEvent(MvcEvent::EVENT_DISPATCH, $events, true);
-
-        $expectedListener = [$this->listener, 'injectTemplate'];
-        $expectedPriority = -90;
-        $found            = false;
-        foreach ($listeners as $priority => $listener) {
-            if ($listener === $expectedListener
-                && $priority === $expectedPriority
-            ) {
-                $found = true;
-                break;
-            }
-        }
-        $this->assertTrue($found, 'Listener not found');
+        $this->assertListenerAtPriority(
+            [$this->listener, 'injectTemplate'],
+            -90,
+            MvcEvent::EVENT_DISPATCH,
+            $events
+        );
     }
 
     public function testDetachesListeners()
     {
         $events = new EventManager();
         $this->listener->attach($events);
-        $listeners = iterator_to_array($this->getListenersForEvent(MvcEvent::EVENT_DISPATCH, $events, true));
+        $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_DISPATCH, $events);
         $this->assertEquals(1, count($listeners));
 
         $this->listener->detach($events);
-        $listeners = iterator_to_array($this->getListenersForEvent(MvcEvent::EVENT_DISPATCH, $events, true));
+        $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_DISPATCH, $events);
         $this->assertEquals(0, count($listeners));
     }
 
