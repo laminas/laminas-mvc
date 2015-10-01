@@ -10,6 +10,7 @@
 namespace ZendTest\Mvc\Controller;
 
 use PHPUnit_Framework_TestCase as TestCase;
+use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
 use Zend\Mvc\Controller\ControllerManager;
 use Zend\Mvc\Controller\PluginManager;
@@ -20,11 +21,14 @@ class IntegrationTest extends TestCase
     public function setUp()
     {
         $this->plugins      = new PluginManager();
-        $this->sharedEvents = new SharedEventManager();
+        $this->sharedEvents = $sharedEvents = new SharedEventManager();
         $this->services     = new ServiceManager();
         $this->services->setService('ControllerPluginManager', $this->plugins);
         $this->services->setService('SharedEventManager', $this->sharedEvents);
         $this->services->setService('Zend\ServiceManager\ServiceLocatorInterface', $this->services);
+        $this->services->setFactory('EventManager', function ($services) use ($sharedEvents) {
+            return new EventManager($sharedEvents);
+        });
 
         $this->controllers = new ControllerManager();
         $this->controllers->setServiceLocator($this->services);

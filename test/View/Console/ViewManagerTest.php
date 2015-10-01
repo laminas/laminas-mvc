@@ -107,17 +107,18 @@ class ViewManagerTest extends TestCase
      */
     public function testConsoleKeyWillOverrideDisplayExceptionAndDisplayNotFoundReason($config)
     {
-        $eventManager = new EventManager();
-        $eventManager->setSharedManager(new SharedEventManager());
+        $eventManager = new EventManager(new SharedEventManager());
+        $request      = new ConsoleRequest();
+        $response     = new ConsoleResponse();
 
         $this->services->setService('Config', $config);
-        $this->services->setService('Request', new ConsoleRequest());
+        $this->services->setService('Request', $request);
         $this->services->setService('EventManager', $eventManager);
-        $this->services->setService('Response', new ConsoleResponse());
+        $this->services->setService('Response', $response);
 
         $manager = $this->factory->createService($this->services);
 
-        $application = new Application($config, $this->services);
+        $application = new Application($config, $this->services, $eventManager, $request, $response);
 
         $event = new MvcEvent();
         $event->setApplication($application);
@@ -132,17 +133,18 @@ class ViewManagerTest extends TestCase
      */
     public function testConsoleDisplayExceptionIsTrue()
     {
-        $eventManager = new EventManager();
-        $eventManager->setSharedManager(new SharedEventManager());
+        $eventManager = new EventManager(new SharedEventManager());
+        $request      = new ConsoleRequest();
+        $response     = new ConsoleResponse();
 
         $this->services->setService('Config', []);
-        $this->services->setService('Request', new ConsoleRequest());
+        $this->services->setService('Request', $request);
         $this->services->setService('EventManager', $eventManager);
-        $this->services->setService('Response', new ConsoleResponse());
+        $this->services->setService('Response', $response);
 
         $manager = $this->factory->createService($this->services);
 
-        $application = new Application([], $this->services);
+        $application = new Application([], $this->services, $eventManager, $request, $response);
 
         $event = new MvcEvent();
         $event->setApplication($application);

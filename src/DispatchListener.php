@@ -43,9 +43,10 @@ class DispatchListener extends AbstractListenerAggregate
      * Attach listeners to an event manager
      *
      * @param  EventManagerInterface $events
+     * @param  int $priority
      * @return void
      */
-    public function attach(EventManagerInterface $events)
+    public function attach(EventManagerInterface $events, $priority = 1)
     {
         $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH, [$this, 'onDispatch']);
         if (function_exists('zend_monitor_custom_event_ex')) {
@@ -92,12 +93,13 @@ class DispatchListener extends AbstractListenerAggregate
         try {
             $return = $controller->dispatch($request, $response);
         } catch (\Exception $ex) {
-            $e->setError($application::ERROR_EXCEPTION)
-                  ->setController($controllerName)
-                  ->setControllerClass(get_class($controller))
-                  ->setParam('exception', $ex);
-            $results = $events->trigger(MvcEvent::EVENT_DISPATCH_ERROR, $e);
-            $return = $results->last();
+            $e->setName(MvcEvent::EVENT_DISPATCH_ERROR);
+            $e->setError($application::ERROR_EXCEPTION);
+            $e->setController($controllerName);
+            $e->setControllerClass(get_class($controller));
+            $e->setParam('exception', $ex);
+
+            $return = $events->triggerEvent($e)->last();
             if (! $return) {
                 $return = $e->getResult();
             }
@@ -153,15 +155,16 @@ class DispatchListener extends AbstractListenerAggregate
         Application $application,
         \Exception $exception = null
     ) {
-        $event->setError($type)
-              ->setController($controllerName)
-              ->setControllerClass('invalid controller class or alias: ' . $controllerName);
+        $event->setName(MvcEvent::EVENT_DISPATCH_ERROR);
+        $event->setError($type);
+        $event->setController($controllerName);
+        $event->setControllerClass('invalid controller class or alias: ' . $controllerName);
         if ($exception !== null) {
             $event->setParam('exception', $exception);
         }
 
         $events  = $application->getEventManager();
-        $results = $events->trigger(MvcEvent::EVENT_DISPATCH_ERROR, $event);
+        $results = $events->triggerEvent($event);
         $return  = $results->last();
         if (! $return) {
             $return = $event->getResult();
@@ -211,12 +214,13 @@ class DispatchListener extends AbstractListenerAggregate
         Application $application,
         \Exception $exception
     ) {
-        $event->setError($application::ERROR_EXCEPTION)
-              ->setController($controllerName)
-              ->setParam('exception', $exception);
+        $event->setName(MvcEvent::EVENT_DISPATCH_ERROR);
+        $event->setError($application::ERROR_EXCEPTION);
+        $event->setController($controllerName);
+        $event->setParam('exception', $exception);
 
         $events  = $application->getEventManager();
-        $results = $events->trigger(MvcEvent::EVENT_DISPATCH_ERROR, $event);
+        $results = $events->triggerEvent($event);
         $return  = $results->last();
         if (! $return) {
             return $event->getResult();

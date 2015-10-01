@@ -2,11 +2,13 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.7.0 - TBD
+## 3.0.0 - TBD
 
 ### Added
 
-- Nothing.
+- [#31](https://github.com/zendframework/zend-mvc/pull/31) adds three required
+  arguments to the `Zend\Mvc\Application` constructor: an EventManager
+  instance, a Request instance, and a Response instance.
 
 ### Deprecated
 
@@ -17,6 +19,9 @@ All notable changes to this project will be documented in this file, in reverse 
 - Nothing.
 
 ### Fixed
+
+- [#31](https://github.com/zendframework/zend-mvc/pull/31) updates the component
+  to use zend-eventmanager v3.
 
 ## 2.6.1 - TBD
 

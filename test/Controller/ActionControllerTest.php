@@ -11,8 +11,8 @@ namespace ZendTest\Mvc\Controller;
 
 use PHPUnit_Framework_TestCase as TestCase;
 use Zend\Console\Response as ConsoleResponse;
+use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
-use Zend\EventManager\StaticEventManager;
 use Zend\Http\Request;
 use Zend\Http\Response;
 use Zend\Mvc\Controller\PluginManager;
@@ -28,7 +28,6 @@ class ActionControllerTest extends TestCase
 
     public function setUp()
     {
-        StaticEventManager::resetInstance();
         $this->controller = new TestAsset\SampleController();
         $this->request    = new Request();
         $this->response   = null;
@@ -36,6 +35,10 @@ class ActionControllerTest extends TestCase
         $this->event      = new MvcEvent();
         $this->event->setRouteMatch($this->routeMatch);
         $this->controller->setEvent($this->event);
+
+        $this->sharedEvents = new SharedEventManager();
+        $this->events       = new EventManager($this->sharedEvents);
+        $this->controller->setEventManager($this->events);
     }
 
     public function testDispatchInvokesNotFoundActionWhenNoActionPresentInRouteMatch()
@@ -105,11 +108,10 @@ class ActionControllerTest extends TestCase
     {
         $response = new Response();
         $response->setContent('short circuited!');
-        $events = new SharedEventManager();
-        $events->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
+        $sharedEvents = $this->controller->getEventManager()->getSharedManager();
+        $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
             return $response;
         }, 10);
-        $this->controller->getEventManager()->setSharedManager($events);
         $result = $this->controller->dispatch($this->request, $this->response);
         $this->assertSame($response, $result);
     }
@@ -118,11 +120,10 @@ class ActionControllerTest extends TestCase
     {
         $response = new Response();
         $response->setContent('short circuited!');
-        $events = new SharedEventManager();
-        $events->attach('Zend\Mvc\Controller\AbstractActionController', MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
+        $sharedEvents = $this->controller->getEventManager()->getSharedManager();
+        $sharedEvents->attach('Zend\Mvc\Controller\AbstractActionController', MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
             return $response;
         }, 10);
-        $this->controller->getEventManager()->setSharedManager($events);
         $result = $this->controller->dispatch($this->request, $this->response);
         $this->assertSame($response, $result);
     }
@@ -131,11 +132,10 @@ class ActionControllerTest extends TestCase
     {
         $response = new Response();
         $response->setContent('short circuited!');
-        $events = new SharedEventManager();
-        $events->attach(get_class($this->controller), MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
+        $sharedEvents = $this->controller->getEventManager()->getSharedManager();
+        $sharedEvents->attach(get_class($this->controller), MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
             return $response;
         }, 10);
-        $this->controller->getEventManager()->setSharedManager($events);
         $result = $this->controller->dispatch($this->request, $this->response);
         $this->assertSame($response, $result);
     }
@@ -144,11 +144,10 @@ class ActionControllerTest extends TestCase
     {
         $response = new Response();
         $response->setContent('short circuited!');
-        $events = new SharedEventManager();
-        $events->attach('ZendTest\\Mvc\\Controller\\TestAsset\\SampleInterface', MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
+        $sharedEvents = $this->controller->getEventManager()->getSharedManager();
+        $sharedEvents->attach('ZendTest\\Mvc\\Controller\\TestAsset\\SampleInterface', MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
             return $response;
         }, 10);
-        $this->controller->getEventManager()->setSharedManager($events);
         $result = $this->controller->dispatch($this->request, $this->response);
         $this->assertSame($response, $result);
     }
