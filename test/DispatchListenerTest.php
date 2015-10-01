@@ -122,4 +122,44 @@ class DispatchListenerTest extends TestCase
         $this->assertArrayHasKey('error', $log);
         $this->assertSame('error-controller-not-found', $log['error']);
     }
+
+    public function testMiddlewareDispatch()
+    {
+        $request = $this->serviceManager->get('Request');
+        $request->setUri('http://example.local/path');
+
+        $router = $this->serviceManager->get('HttpRouter');
+        $route  = Router\Http\Literal::factory([
+            'route'    => '/path',
+            'defaults' => [
+                'middleware' => function($request, $response) {
+                    $this->assertInstanceOf('Psr\Http\Message\ServerRequestInterface', $request);
+                    $this->assertInstanceOf('Psr\Http\Message\ResponseInterface', $response);
+                    $response->getBody()->write('Test!');
+                    return $response;
+                }
+            ],
+        ]);
+        $router->addRoute('path', $route);
+        $this->application->bootstrap();
+
+        $controllerLoader = $this->serviceManager->get('ControllerLoader');
+        $controllerLoader->addAbstractFactory('ZendTest\Mvc\Controller\TestAsset\ControllerLoaderAbstractFactory');
+
+        $log = [];
+        $this->application->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) use (&$log) {
+            $log['error'] = $e->getError();
+        });
+
+        $this->application->run();
+
+        $event = $this->application->getMvcEvent();
+        $dispatchListener = $this->serviceManager->get('DispatchListener');
+        $return = $dispatchListener->onDispatch($event);
+
+        $this->assertEmpty($log);
+        $this->assertInstanceOf('Zend\Http\Response', $return);
+        $this->assertSame(200, $return->getStatusCode());
+        $this->assertEquals('Test!', $return->getBody());
+    }
 }

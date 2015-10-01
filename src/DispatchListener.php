@@ -14,6 +14,8 @@ use Zend\EventManager\AbstractListenerAggregate;
 use Zend\EventManager\EventManagerInterface;
 use Zend\Mvc\Exception\InvalidControllerException;
 use Zend\Stdlib\ArrayUtils;
+use Zend\Psr7Bridge\Psr7ServerRequest as Psr7Request;
+use Zend\Psr7Bridge\Psr7Response;
 
 /**
  * Default dispatch listener
@@ -61,11 +63,30 @@ class DispatchListener extends AbstractListenerAggregate
      */
     public function onDispatch(MvcEvent $e)
     {
-        $routeMatch       = $e->getRouteMatch();
+        $routeMatch     = $e->getRouteMatch();
+        $request        = $e->getRequest();
+        $application    = $e->getApplication();
+        $response       = $application->getResponse();
+        $serviceManager = $application->getServiceManager();
+
+        // middleware?
+        $middleware = $routeMatch->getParam('middleware', false);
+        if (false !== $middleware) {
+            if (is_string($middleware) && $serviceManager->has($middleware)) {
+                $middleware = $serviceManager->get($middleware);
+            }
+            if (!is_callable($middleware)) {
+                $middleware = is_string($middleware) ? $middleware : get_class($middleware);
+                $return = $this->marshalControllerNotFoundEvent($application::ERROR_MIDDLEWARE_CANNOT_DISPATCH, $middleware, $e, $application);
+                return $this->complete($return, $e);
+            }
+            $return = $middleware(Psr7Request::fromZend($request), Psr7Response::fromZend($response));
+            return $this->complete(Psr7Response::toZend($return), $e);
+        }
+
         $controllerName   = $routeMatch->getParam('controller', 'not-found');
-        $application      = $e->getApplication();
         $events           = $application->getEventManager();
-        $controllerLoader = $application->getServiceManager()->get('ControllerManager');
+        $controllerLoader = $serviceManager->get('ControllerManager');
 
         if (!$controllerLoader->has($controllerName)) {
             $return = $this->marshalControllerNotFoundEvent($application::ERROR_CONTROLLER_NOT_FOUND, $controllerName, $e, $application);
@@ -81,9 +102,6 @@ class DispatchListener extends AbstractListenerAggregate
             $return = $this->marshalBadControllerEvent($controllerName, $e, $application, $exception);
             return $this->complete($return, $e);
         }
-
-        $request  = $e->getRequest();
-        $response = $application->getResponse();
 
         if ($controller instanceof InjectApplicationEventInterface) {
             $controller->setEvent($e);
