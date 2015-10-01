@@ -10,7 +10,6 @@
 namespace Zend\Mvc\Controller;
 
 use Zend\EventManager\EventManagerAwareInterface;
-use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\SharedEventManagerInterface;
 use Zend\Mvc\Exception;
 use Zend\ServiceManager\AbstractPluginManager;
