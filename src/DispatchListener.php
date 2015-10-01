@@ -14,8 +14,6 @@ use Zend\EventManager\AbstractListenerAggregate;
 use Zend\EventManager\EventManagerInterface;
 use Zend\Mvc\Exception\InvalidControllerException;
 use Zend\Stdlib\ArrayUtils;
-use Zend\Psr7Bridge\Psr7ServerRequest as Psr7Request;
-use Zend\Psr7Bridge\Psr7Response;
 
 /**
  * Default dispatch listener
@@ -63,29 +61,10 @@ class DispatchListener extends AbstractListenerAggregate
      */
     public function onDispatch(MvcEvent $e)
     {
-        $routeMatch     = $e->getRouteMatch();
-        $request        = $e->getRequest();
-        $application    = $e->getApplication();
-        $response       = $application->getResponse();
-        $serviceManager = $application->getServiceManager();
-
-        // middleware?
-        $middleware = $routeMatch->getParam('middleware', false);
-        if (false !== $middleware) {
-            if (is_string($middleware) && $serviceManager->has($middleware)) {
-                $middleware = $serviceManager->get($middleware);
-            }
-            if (!is_callable($middleware)) {
-                $middleware = is_string($middleware) ? $middleware : get_class($middleware);
-                $return = $this->marshalControllerNotFoundEvent($application::ERROR_MIDDLEWARE_CANNOT_DISPATCH, $middleware, $e, $application);
-                return $this->complete($return, $e);
-            }
-            $return = $middleware(Psr7Request::fromZend($request), Psr7Response::fromZend($response));
-            return $this->complete(Psr7Response::toZend($return), $e);
-        }
-
+        $routeMatch       = $e->getRouteMatch();
+        $application      = $e->getApplication();
+        $serviceManager   = $application->getServiceManager();
         $controllerName   = $routeMatch->getParam('controller', 'not-found');
-        $events           = $application->getEventManager();
         $controllerLoader = $serviceManager->get('ControllerManager');
 
         if (!$controllerLoader->has($controllerName)) {
@@ -107,6 +86,9 @@ class DispatchListener extends AbstractListenerAggregate
             $controller->setEvent($e);
         }
 
+        $request  = $e->getRequest();
+        $response = $application->getResponse();
+
         try {
             $return = $controller->dispatch($request, $response);
         } catch (\Exception $ex) {
@@ -114,7 +96,7 @@ class DispatchListener extends AbstractListenerAggregate
                   ->setController($controllerName)
                   ->setControllerClass(get_class($controller))
                   ->setParam('exception', $ex);
-            $results = $events->trigger(MvcEvent::EVENT_DISPATCH_ERROR, $e);
+            $results = $application->getEventManager()->trigger(MvcEvent::EVENT_DISPATCH_ERROR, $e);
             $return = $results->last();
             if (! $return) {
                 $return = $e->getResult();

@@ -27,6 +27,7 @@ use Zend\Stdlib\ResponseInterface;
  * - RouteListener
  * - Router
  * - DispatchListener
+ * - MiddlewareListener
  * - ViewManager
  *
  * The most common workflow is:
@@ -53,7 +54,7 @@ class Application implements
     const ERROR_EXCEPTION                  = 'error-exception';
     const ERROR_ROUTER_NO_MATCH            = 'error-router-no-match';
     const ERROR_MIDDLEWARE_CANNOT_DISPATCH = 'error-middleware-cannot-dispatch';
-    
+
     /**
      * @var array
      */
@@ -66,6 +67,7 @@ class Application implements
      */
     protected $defaultListeners = [
         'RouteListener',
+        'MiddlewareListener',
         'DispatchListener',
         'HttpMethodListener',
         'ViewManager',

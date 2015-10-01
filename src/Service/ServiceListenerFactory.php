@@ -36,6 +36,7 @@ class ServiceListenerFactory implements FactoryInterface
     protected $defaultServiceConfig = [
         'invokables' => [
             'DispatchListener'     => 'Zend\Mvc\DispatchListener',
+            'MiddlewareListener'   => 'Zend\Mvc\MiddlewareListener',
             'RouteListener'        => 'Zend\Mvc\RouteListener',
             'SendResponseListener' => 'Zend\Mvc\SendResponseListener',
             'ViewJsonRenderer'     => 'Zend\View\Renderer\JsonRenderer',

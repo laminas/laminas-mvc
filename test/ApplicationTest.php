@@ -166,6 +166,7 @@ class ApplicationTest extends TestCase
         return [
             ['RouteListener', MvcEvent::EVENT_ROUTE, 'onRoute'],
             ['DispatchListener', MvcEvent::EVENT_DISPATCH, 'onDispatch'],
+            ['MiddlewareListener', MvcEvent::EVENT_DISPATCH, 'onDispatch'],
             ['SendResponseListener', MvcEvent::EVENT_FINISH, 'sendResponse'],
             ['ViewManager', MvcEvent::EVENT_BOOTSTRAP, 'onBootstrap'],
             ['HttpMethodListener', MvcEvent::EVENT_ROUTE, 'onRoute'],
