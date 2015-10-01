@@ -1,0 +1,8 @@
+{
+  "title": "zend-mvc: MVC application provider",
+  "content": [
+    {"Intro": "../README.md"},
+    {"Migration Guide": "book/migration.md"}
+  ],
+  "target": "./html"
+}
