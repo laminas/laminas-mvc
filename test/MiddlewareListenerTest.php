@@ -97,15 +97,12 @@ class MiddlewareListenerTest extends TestCase
             $log['error'] = $e->getError();
         });
 
-        $this->application->run();
-
-        $event = $this->application->getMvcEvent();
-        $dispatchListener = $this->serviceManager->get('DispatchListener');
-        $return = $dispatchListener->onDispatch($event);
-
+        $return   = $this->application->run();
+        $response = $return->getResponse();
+        
         $this->assertEmpty($log);
-        $this->assertInstanceOf('Zend\Http\Response', $return);
-        $this->assertSame(200, $return->getStatusCode());
-        $this->assertEquals('Test!', $return->getBody());
+        $this->assertInstanceOf('Zend\Http\Response', $response);
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertEquals('Test!', $response->getBody());
     }
 }

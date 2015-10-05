@@ -25,9 +25,9 @@ class MiddlewareListener extends AbstractListenerAggregate
      * @param  EventManagerInterface $events
      * @return void
      */
-    public function attach(EventManagerInterface $events)
+    public function attach(EventManagerInterface $events, $priority = 1)
     {
-        $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH, [$this, 'onDispatch'], 1000);
+        $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH, [$this, 'onDispatch'], 1);
     }
 
     /**
@@ -61,15 +61,15 @@ class MiddlewareListener extends AbstractListenerAggregate
         try {
             $return = $middleware(Psr7Request::fromZend($request), Psr7Response::fromZend($response));
         } catch (\Exception $ex) {
-          $e->setError($application::ERROR_EXCEPTION)
-            ->setController($middlewareName)
-            ->setControllerClass(get_class($middleware))
-            ->setParam('exception', $ex);
-          $results = $events->trigger(MvcEvent::EVENT_DISPATCH_ERROR, $e);
-          $return = $results->last();
-          if (! $return) {
-              $return = $e->getResult();
-          }
+            $e->setError($application::ERROR_EXCEPTION)
+              ->setController($middlewareName)
+              ->setControllerClass(get_class($middleware))
+              ->setParam('exception', $ex);
+            $results = $events->trigger(MvcEvent::EVENT_DISPATCH_ERROR, $e);
+            $return = $results->last();
+            if (! $return) {
+                $return = $e->getResult();
+            }
         }
 
         if (! $return instanceof \Psr\Http\Message\ResponseInterface) {

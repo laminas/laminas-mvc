@@ -45,7 +45,7 @@ class ServiceManagerConfigTest extends TestCase
      */
     public function testEventManagerAwareInterfaceIsNotInjectedIfPresentButSharedManagerIs()
     {
-        $events = new EventManager();
+        $events = new EventManager($this->services->get('SharedEventManager'));
         TestAsset\EventManagerAwareObject::$defaultEvents = $events;
 
         $this->services->setInvokableClass('EventManagerAwareObject', __NAMESPACE__ . '\TestAsset\EventManagerAwareObject');

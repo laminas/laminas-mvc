@@ -12,6 +12,7 @@ namespace ZendTest\Mvc\Controller;
 use PHPUnit_Framework_TestCase as TestCase;
 use ReflectionObject;
 use stdClass;
+use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
 use Zend\Http\Response;
 use Zend\Mvc\MvcEvent;
@@ -37,6 +38,10 @@ class RestfulControllerTest extends TestCase
         $this->event->setRouteMatch($this->routeMatch);
         $this->controller->setEvent($this->event);
         $this->emptyController->setEvent($this->event);
+
+        $this->sharedEvents = new SharedEventManager();
+        $this->events       = new EventManager($this->sharedEvents);
+        $this->controller->setEventManager($this->events);
     }
 
     public function testDispatchInvokesListWhenNoActionPresentAndNoIdentifierOnGet()
@@ -299,11 +304,9 @@ class RestfulControllerTest extends TestCase
     {
         $response = new Response();
         $response->setContent('short circuited!');
-        $events = new SharedEventManager();
-        $events->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
+        $this->sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
             return $response;
         }, 10);
-        $this->controller->getEventManager()->setSharedManager($events);
         $result = $this->controller->dispatch($this->request, $this->response);
         $this->assertSame($response, $result);
     }
@@ -312,11 +315,9 @@ class RestfulControllerTest extends TestCase
     {
         $response = new Response();
         $response->setContent('short circuited!');
-        $events = new SharedEventManager();
-        $events->attach('Zend\Mvc\Controller\AbstractRestfulController', MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
+        $this->sharedEvents->attach('Zend\Mvc\Controller\AbstractRestfulController', MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
             return $response;
         }, 10);
-        $this->controller->getEventManager()->setSharedManager($events);
         $result = $this->controller->dispatch($this->request, $this->response);
         $this->assertSame($response, $result);
     }
@@ -325,11 +326,9 @@ class RestfulControllerTest extends TestCase
     {
         $response = new Response();
         $response->setContent('short circuited!');
-        $events = new SharedEventManager();
-        $events->attach(get_class($this->controller), MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
+        $this->sharedEvents->attach(get_class($this->controller), MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
             return $response;
         }, 10);
-        $this->controller->getEventManager()->setSharedManager($events);
         $result = $this->controller->dispatch($this->request, $this->response);
         $this->assertSame($response, $result);
     }
@@ -375,7 +374,6 @@ class RestfulControllerTest extends TestCase
         $this->request->setMethod('POST');
         $this->request->getHeaders()->addHeaderLine('Content-type', 'application/json');
         $this->request->setContent('{"foo":"bar"}');
-        $this->controller->getEventManager()->setSharedManager(new SharedEventManager());
 
         $result = $this->controller->dispatch($this->request, $this->response);
         $this->assertInternalType('array', $result);

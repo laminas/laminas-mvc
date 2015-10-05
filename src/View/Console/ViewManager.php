@@ -48,11 +48,11 @@ class ViewManager extends BaseViewManager
         $this->registerMvcRenderingStrategies($events);
         $this->registerViewStrategies();
 
-        $events->attach($routeNotFoundStrategy);
-        $events->attach($exceptionStrategy);
+        $routeNotFoundStrategy->attach($events);
+        $exceptionStrategy->attach($events);
         $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, [$injectViewModelListener, 'injectViewModel'], -100);
         $events->attach(MvcEvent::EVENT_RENDER_ERROR, [$injectViewModelListener, 'injectViewModel'], -100);
-        $events->attach($mvcRenderingStrategy);
+        $mvcRenderingStrategy->attach($events);
 
         $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, [$injectParamsListener,  'injectNamedParams'], 1000);
         $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, [$createViewModelListener, 'createViewModelFromArray'], -80);

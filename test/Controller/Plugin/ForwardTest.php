@@ -11,7 +11,8 @@ namespace ZendTest\Mvc\Controller\Plugin;
 
 use PHPUnit_Framework_TestCase as TestCase;
 use stdClass;
-use Zend\EventManager\StaticEventManager;
+use Zend\EventManager\EventManager;
+use Zend\EventManager\SharedEventManager;
 use Zend\Http\Request;
 use Zend\Http\Response;
 use Zend\Mvc\Controller\ControllerManager;
@@ -19,7 +20,6 @@ use Zend\Mvc\Controller\PluginManager;
 use Zend\Mvc\Controller\Plugin\Forward as ForwardPlugin;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Router\RouteMatch;
-use Zend\Stdlib\CallbackHandler;
 use ZendTest\Mvc\Controller\TestAsset\ForwardController;
 use ZendTest\Mvc\Controller\TestAsset\SampleController;
 use ZendTest\Mvc\Controller\TestAsset\UneventfulController;
@@ -49,14 +49,9 @@ class ForwardTest extends TestCase
 
     public function setUp()
     {
-        StaticEventManager::resetInstance();
-
-        $mockSharedEventManager = $this->getMock('Zend\EventManager\SharedEventManagerInterface');
-        $mockSharedEventManager->expects($this->any())->method('getListeners')->will($this->returnValue([]));
-        $mockEventManager = $this->getMock('Zend\EventManager\EventManagerInterface');
-        $mockEventManager->expects($this->any())->method('getSharedManager')->will($this->returnValue($mockSharedEventManager));
+        $eventManager = new EventManager(new SharedEventManager());
         $mockApplication = $this->getMock('Zend\Mvc\ApplicationInterface');
-        $mockApplication->expects($this->any())->method('getEventManager')->will($this->returnValue($mockEventManager));
+        $mockApplication->expects($this->any())->method('getEventManager')->will($this->returnValue($eventManager));
 
         $event   = new MvcEvent();
         $event->setApplication($mockApplication);
@@ -89,11 +84,11 @@ class ForwardTest extends TestCase
         $services->add('Zend\ServiceManager\ServiceLocatorInterface', function () use ($services) {
             return $services;
         });
-        $services->add('EventManager', function () use ($mockEventManager) {
-            return $mockEventManager;
+        $services->add('EventManager', function () use ($eventManager) {
+            return new EventManager($eventManager->getSharedManager());
         });
-        $services->add('SharedEventManager', function () use ($mockSharedEventManager) {
-            return $mockSharedEventManager;
+        $services->add('SharedEventManager', function () use ($eventManager) {
+            return $eventManager->getSharedManager();
         });
 
         $this->controller = new SampleController();
@@ -102,11 +97,6 @@ class ForwardTest extends TestCase
         $this->controller->setPluginManager($plugins);
 
         $this->plugin = $this->controller->plugin('forward');
-    }
-
-    public function tearDown()
-    {
-        StaticEventManager::resetInstance();
     }
 
     public function testPluginWithoutEventAwareControllerRaisesDomainException()
@@ -158,11 +148,12 @@ class ForwardTest extends TestCase
         $services = $this->plugins->getServiceLocator();
         $events   = $services->get('EventManager');
         $sharedEvents = $this->getMock('Zend\EventManager\SharedEventManagerInterface');
+        // @codingStandardsIgnoreStart
         $sharedEvents->expects($this->any())->method('getListeners')->will($this->returnValue([
-            new CallbackHandler(function ($e) {})
+            function ($e) {}
         ]));
-        $events = $this->getMock('Zend\EventManager\EventManagerInterface');
-        $events->expects($this->any())->method('getSharedManager')->will($this->returnValue($sharedEvents));
+        // @codingStandardsIgnoreEnd
+        $events = new EventManager($sharedEvents);
         $application = $this->getMock('Zend\Mvc\ApplicationInterface');
         $application->expects($this->any())->method('getEventManager')->will($this->returnValue($events));
         $event = $this->controller->getEvent();
