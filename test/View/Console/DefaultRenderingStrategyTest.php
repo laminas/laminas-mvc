@@ -67,8 +67,9 @@ class DefaultRenderingStrategyTest extends TestCase
             ->willReturnArgument(0);
 
         //Register console service
-        $sm = new ServiceManager();
-        $sm->setService('console', $console);
+        $sm = new ServiceManager(['services' => [
+            'console' => $console,
+        ]]);
 
         /* @var \PHPUnit_Framework_MockObject_MockObject|ApplicationInterface $mockApplication */
         $mockApplication = $this->getMock(ApplicationInterface::class);
@@ -98,8 +99,9 @@ class DefaultRenderingStrategyTest extends TestCase
             ->willReturnArgument(0);
 
         //Register console service
-        $sm = new ServiceManager();
-        $sm->setService('console', $console);
+        $sm = new ServiceManager(['services' => [
+            'console' => $console,
+        ]]);
 
         /* @var \PHPUnit_Framework_MockObject_MockObject|ApplicationInterface $mockApplication */
         $mockApplication = $this->getMock(ApplicationInterface::class);

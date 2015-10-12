@@ -10,6 +10,7 @@
 namespace Zend\Mvc\Router;
 
 use Traversable;
+use Zend\ServiceManager\ServiceManager;
 use Zend\Stdlib\ArrayUtils;
 use Zend\Stdlib\RequestInterface as Request;
 
@@ -49,7 +50,7 @@ class SimpleRouteStack implements RouteStackInterface
         $this->routes = new PriorityList();
 
         if (null === $routePluginManager) {
-            $routePluginManager = new RoutePluginManager();
+            $routePluginManager = new RoutePluginManager(new ServiceManager());
         }
 
         $this->routePluginManager = $routePluginManager;

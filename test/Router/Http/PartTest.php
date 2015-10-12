@@ -13,18 +13,37 @@ use ArrayObject;
 use PHPUnit_Framework_TestCase as TestCase;
 use Zend\Http\Request as Request;
 use Zend\Mvc\Router\RoutePluginManager;
+use Zend\Mvc\Router\Http\Literal;
 use Zend\Mvc\Router\Http\Part;
+use Zend\Mvc\Router\Http\Segment;
+use Zend\Mvc\Router\Http\Wildcard;
+use Zend\ServiceManager\ServiceManager;
 use Zend\Stdlib\Parameters;
 use Zend\Stdlib\Request as BaseRequest;
 use ZendTest\Mvc\Router\FactoryTester;
 
 class PartTest extends TestCase
 {
+    public static function getRoutePlugins()
+    {
+        return new RoutePluginManager(new ServiceManager(), [
+            'aliases' => [
+                'Literal'  => 'literal',
+                'Part'     => 'part',
+                'Segment'  => 'segment',
+                'Wildcard' => 'wildcard',
+            ],
+            'invokables' => [
+                'literal'  => Literal::class,
+                'part'     => Part::class,
+                'segment'  => Segment::class,
+                'wildcard' => Wildcard::class,
+            ],
+        ]);
+    }
+
     public static function getRoute()
     {
-        $routePlugins = new RoutePluginManager();
-        $routePlugins->setInvokableClass('part', 'Zend\Mvc\Router\Http\Part');
-
         return new Part(
             [
                 'type'    => 'Zend\Mvc\Router\Http\Literal',
@@ -36,7 +55,7 @@ class PartTest extends TestCase
                 ]
             ],
             true,
-            $routePlugins,
+            self::getRoutePlugins(),
             [
                 'bar' => [
                     'type'    => 'Zend\Mvc\Router\Http\Literal',
@@ -97,9 +116,6 @@ class PartTest extends TestCase
 
     public static function getRouteAlternative()
     {
-        $routePlugins = new RoutePluginManager();
-        $routePlugins->setInvokableClass('part', 'Zend\Mvc\Router\Http\Part');
-
         return new Part(
             [
                 'type' => 'Zend\Mvc\Router\Http\Segment',
@@ -112,7 +128,7 @@ class PartTest extends TestCase
                 ]
             ],
             true,
-            $routePlugins,
+            self::getRoutePlugins(),
             [
                 'wildcard' => [
                     'type' => 'Zend\Mvc\Router\Http\Wildcard',
@@ -315,7 +331,7 @@ class PartTest extends TestCase
     {
         $this->setExpectedException('Zend\Mvc\Router\Exception\InvalidArgumentException', 'Base route may not be a part route');
 
-        $route = new Part(self::getRoute(), true, new RoutePluginManager());
+        $route = new Part(self::getRoute(), true, new RoutePluginManager(new ServiceManager()));
     }
 
     public function testNoMatchWithoutUriMethod()
@@ -345,7 +361,7 @@ class PartTest extends TestCase
             ],
             [
                 'route'         => new \Zend\Mvc\Router\Http\Literal('/foo'),
-                'route_plugins' => new RoutePluginManager()
+                'route_plugins' => self::getRoutePlugins(),
             ]
         );
     }
@@ -378,7 +394,7 @@ class PartTest extends TestCase
                     ],
                 ],
             ],
-            'route_plugins' => new RoutePluginManager(),
+            'route_plugins' => self::getRoutePlugins(),
             'may_terminate' => true,
             'child_routes'  => $children,
         ];
@@ -403,7 +419,7 @@ class PartTest extends TestCase
                     ],
                 ],
             ],
-            'route_plugins' => new RoutePluginManager(),
+            'route_plugins' => self::getRoutePlugins(),
             'may_terminate' => true,
             'child_routes'  => [
                 'child' => [
@@ -446,7 +462,7 @@ class PartTest extends TestCase
                     ],
                 ],
             ],
-            'route_plugins' => new RoutePluginManager(),
+            'route_plugins' => self::getRoutePlugins(),
             'may_terminate' => true,
             /*
             'child_routes'  => array(

@@ -125,7 +125,7 @@ class Application implements
      */
     public function getConfig()
     {
-        return $this->serviceManager->get('Config');
+        return $this->serviceManager->get('config');
     }
 
     /**
@@ -140,9 +140,10 @@ class Application implements
      */
     public function bootstrap(array $listeners = [])
     {
-        $serviceManager = $this->serviceManager;
         $events         = $this->events;
+        $serviceManager = $this->serviceManager;
 
+        // Setup default listeners
         $listeners = array_unique(array_merge($this->defaultListeners, $listeners));
 
         foreach ($listeners as $listener) {
@@ -160,6 +161,7 @@ class Application implements
 
         // Trigger bootstrap events
         $events->triggerEvent($event);
+
         return $this;
     }
 
@@ -252,13 +254,27 @@ class Application implements
      */
     public static function init($configuration = [])
     {
+        // Prepare the service manager
         $smConfig = isset($configuration['service_manager']) ? $configuration['service_manager'] : [];
-        $serviceManager = new ServiceManager(new Service\ServiceManagerConfig($smConfig));
-        $serviceManager->setService('ApplicationConfig', $configuration);
+        $smConfig = new Service\ServiceManagerConfig($smConfig);
+
+        $serviceManager = new ServiceManager($smConfig->toArray());
+        $serviceManager = $serviceManager->withConfig(['services' => [
+            'ApplicationConfig' => $configuration,
+        ]]);
+
+        // Load modules
         $serviceManager->get('ModuleManager')->loadModules();
 
+        // Get the configured SM if necessary.
+        if ($serviceManager->has('ServiceListener')) {
+            $serviceListener = $serviceManager->get('ServiceListener');
+            $serviceManager  = $serviceListener->getConfiguredServiceManager();
+        }
+
+        // Prepare list of listeners to bootstrap
         $listenersFromAppConfig     = isset($configuration['listeners']) ? $configuration['listeners'] : [];
-        $config                     = $serviceManager->get('Config');
+        $config                     = $serviceManager->get('config');
         $listenersFromConfigService = isset($config['listeners']) ? $config['listeners'] : [];
 
         $listeners = array_unique(array_merge($listenersFromConfigService, $listenersFromAppConfig));

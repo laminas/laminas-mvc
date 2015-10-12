@@ -32,7 +32,7 @@ class HttpMethodListenerFactoryTest extends TestCase
     public function testCreateWithDefaults()
     {
         $factory = new HttpMethodListenerFactory();
-        $listener = $factory->createService($this->serviceLocator);
+        $listener = $factory($this->serviceLocator, 'HttpMethodListener');
         $this->assertTrue($listener->isEnabled());
         $this->assertNotEmpty($listener->getAllowedMethods());
     }
@@ -50,7 +50,7 @@ class HttpMethodListenerFactoryTest extends TestCase
             ->willReturn($config);
 
         $factory = new HttpMethodListenerFactory();
-        $listener = $factory->createService($this->serviceLocator);
+        $listener = $factory($this->serviceLocator, 'HttpMethodListener');
 
         $listenerConfig = $config['http_methods_listener'];
 

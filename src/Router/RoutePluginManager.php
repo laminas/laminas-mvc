@@ -9,18 +9,29 @@
 
 namespace Zend\Mvc\Router;
 
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\AbstractPluginManager;
+use Zend\Stdlib\ArrayUtils;
 
 /**
  * Plugin manager implementation for routes
  *
  * Enforces that routes retrieved are instances of RouteInterface. It overrides
- * createFromInvokable() to call the route's factory method in order to get an
- * instance. The manager is marked to not share by default, in order to allow
- * multiple route instances of the same type.
+ * configure() to map invokables to the component-specific
+ * RouteInvokableFactory.
+ *
+ * The manager is marked to not share by default, in order to allow multiple
+ * route instances of the same type.
  */
 class RoutePluginManager extends AbstractPluginManager
 {
+    /**
+     * Only RouteInterface instances are valid
+     *
+     * @var string
+     */
+    protected $instanceOf = RouteInterface::class;
+
     /**
      * Do not share instances.
      *
@@ -29,85 +40,98 @@ class RoutePluginManager extends AbstractPluginManager
     protected $shareByDefault = false;
 
     /**
-     * Override setInvokableClass().
+     * Constructor
      *
-     * Performs normal operation, but also auto-aliases the class name to the
-     * service name. This ensures that providing the FQCN does not trigger an
-     * abstract factory later.
+     * Ensure that the instance is seeded with the RouteInvokableFactory as an
+     * abstract factory.
      *
-     * @param  string       $name
-     * @param  string       $invokableClass
-     * @param  null|bool    $shared
-     * @return RoutePluginManager
+     * @param ContainerInterface $container
+     * @param array $config
      */
-    public function setInvokableClass($name, $invokableClass, $shared = null)
+    public function __construct(ContainerInterface $container, array $config = [])
     {
-        parent::setInvokableClass($name, $invokableClass, $shared);
-        if ($name != $invokableClass) {
-            $this->setAlias($invokableClass, $name);
-        }
-        return $this;
+        $config = ArrayUtils::merge(['abstract_factories' => [
+            RouteInvokableFactory::class,
+        ]], $config);
+
+        parent::__construct($container, $config);
     }
 
     /**
-     * Validate the plugin.
+     * Pre-process configuration.
      *
-     * Checks that the filter loaded is either a valid callback or an instance
-     * of FilterInterface.
+     * Checks for invokables, and, if found, maps them to the
+     * component-specific RouteInvokableFactory; removes the invokables entry
+     * before passing to the parent.
      *
-     * @param  mixed $plugin
+     * @param array $config
      * @return void
-     * @throws Exception\RuntimeException if invalid
      */
-    public function validatePlugin($plugin)
+    protected function configure(array $config)
     {
-        if ($plugin instanceof RouteInterface) {
-            // we're okay
-            return;
+        if (isset($config['invokables']) && ! empty($config['invokables'])) {
+            $aliases   = $this->createAliasesForInvokables($config['invokables']);
+            $factories = $this->createFactoriesForInvokables($config['invokables']);
+
+            if (! empty($aliases)) {
+                $config['aliases'] = isset($config['aliases'])
+                    ? array_merge($config['aliases'], $aliases)
+                    : $aliases;
+            }
+
+            $config['factories'] = isset($config['factories'])
+                ? array_merge($config['factories'], $factories)
+                : $factories;
+
+            unset($config['invokables']);
         }
 
-        throw new Exception\RuntimeException(sprintf(
-            'Plugin of type %s is invalid; must implement %s\RouteInterface',
-            (is_object($plugin) ? get_class($plugin) : gettype($plugin)),
-            __NAMESPACE__
-        ));
+        parent::configure($config);
+    }
+
+     /**
+     * Create aliases for invokable classes.
+     *
+     * If an invokable service name does not match the class it maps to, this
+     * creates an alias to the class (which will later be mapped as an
+     * invokable factory).
+     *
+     * @param array $invokables
+     * @return array
+     */
+    protected function createAliasesForInvokables(array $invokables)
+    {
+        $aliases = [];
+        foreach ($invokables as $name => $class) {
+            if ($name === $class) {
+                continue;
+            }
+            $aliases[$name] = $class;
+        }
+        return $aliases;
     }
 
     /**
-     * Attempt to create an instance via an invokable class.
+     * Create invokable factories for invokable classes.
      *
-     * Overrides parent implementation by invoking the route factory,
-     * passing $creationOptions as the argument.
+     * If an invokable service name does not match the class it maps to, this
+     * creates an invokable factory entry for the class name; otherwise, it
+     * creates an invokable factory for the entry name.
      *
-     * @param  string $canonicalName
-     * @param  string $requestedName
-     * @return null|\stdClass
-     * @throws Exception\RuntimeException If resolved class does not exist, or does not implement RouteInterface
+     * @param array $invokables
+     * @return array
      */
-    protected function createFromInvokable($canonicalName, $requestedName)
+    protected function createFactoriesForInvokables(array $invokables)
     {
-        $invokable = $this->invokableClasses[$canonicalName];
-        if (!class_exists($invokable)) {
-            throw new Exception\RuntimeException(sprintf(
-                '%s: failed retrieving "%s%s" via invokable class "%s"; class does not exist',
-                __METHOD__,
-                $canonicalName,
-                ($requestedName ? '(alias: ' . $requestedName . ')' : ''),
-                $invokable
-            ));
-        }
+        $factories = [];
+        foreach ($invokables as $name => $class) {
+            if ($name === $class) {
+                $factories[$name] = RouteInvokableFactory::class;
+                continue;
+            }
 
-        if (!static::isSubclassOf($invokable, __NAMESPACE__ . '\RouteInterface')) {
-            throw new Exception\RuntimeException(sprintf(
-                '%s: failed retrieving "%s%s" via invokable class "%s"; class does not implement %s\RouteInterface',
-                __METHOD__,
-                $canonicalName,
-                ($requestedName ? '(alias: ' . $requestedName . ')' : ''),
-                $invokable,
-                __NAMESPACE__
-            ));
+            $factories[$class] = RouteInvokableFactory::class;
         }
-
-        return $invokable::factory($this->creationOptions);
+        return $factories;
     }
 }

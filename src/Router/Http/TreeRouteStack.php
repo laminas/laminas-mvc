@@ -81,7 +81,20 @@ class TreeRouteStack extends SimpleRouteStack
         $this->prototypes = new ArrayObject;
 
         $routes = $this->routePluginManager;
-        foreach ([
+        $this->routePluginManager = $routes->withConfig([
+            'aliases' => [
+                'Chain'    => 'chain',
+                'Hostname' => 'hostname',
+                'Literal'  => 'literal',
+                'Method'   => 'method',
+                'Part'     => 'part',
+                'Query'    => 'query',
+                'Regex'    => 'regex',
+                'Scheme'   => 'scheme',
+                'Segment'  => 'segment',
+                'Wildcard' => 'wildcard',
+            ],
+            'invokables' => [
                 'chain'    => __NAMESPACE__ . '\Chain',
                 'hostname' => __NAMESPACE__ . '\Hostname',
                 'literal'  => __NAMESPACE__ . '\Literal',
@@ -92,10 +105,8 @@ class TreeRouteStack extends SimpleRouteStack
                 'scheme'   => __NAMESPACE__ . '\Scheme',
                 'segment'  => __NAMESPACE__ . '\Segment',
                 'wildcard' => __NAMESPACE__ . '\Wildcard',
-            ] as $name => $class
-        ) {
-            $routes->setInvokableClass($name, $class);
-        };
+            ],
+        ]);
     }
 
     /**
@@ -275,8 +286,7 @@ class TreeRouteStack extends SimpleRouteStack
         }
 
         foreach ($this->routes as $name => $route) {
-            if (
-                ($match = $route->match($request, $baseUrlLength, $options)) instanceof RouteMatch
+            if (($match = $route->match($request, $baseUrlLength, $options)) instanceof RouteMatch
                 && ($pathLength === null || $match->getLength() === $pathLength)
             ) {
                 $match->setMatchedRouteName($name);

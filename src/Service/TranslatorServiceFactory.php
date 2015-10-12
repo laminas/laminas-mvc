@@ -9,12 +9,12 @@
 
 namespace Zend\Mvc\Service;
 
+use Interop\Container\ContainerInterface;
 use Traversable;
 use Zend\I18n\Translator\Translator;
 use Zend\Mvc\I18n\DummyTranslator;
 use Zend\Mvc\I18n\Translator as MvcTranslator;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
  * Overrides the translator factory from the i18n component in order to
@@ -23,20 +23,22 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 class TranslatorServiceFactory implements FactoryInterface
 {
     /**
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param  ContainerInterface $container
+     * @param  string $name
+     * @param  null|array $options
      * @return MvcTranslator
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $name, array $options = null)
     {
         // Assume that if a user has registered a service for the
         // TranslatorInterface, it must be valid
-        if ($serviceLocator->has('Zend\I18n\Translator\TranslatorInterface')) {
-            return new MvcTranslator($serviceLocator->get('Zend\I18n\Translator\TranslatorInterface'));
+        if ($container->has('Zend\I18n\Translator\TranslatorInterface')) {
+            return new MvcTranslator($container->get('Zend\I18n\Translator\TranslatorInterface'));
         }
 
         // Load a translator from configuration, if possible
-        if ($serviceLocator->has('Config')) {
-            $config = $serviceLocator->get('Config');
+        if ($container->has('config')) {
+            $config = $container->get('config');
 
             // 'translator' => false
             if (array_key_exists('translator', $config) && $config['translator'] === false) {
@@ -49,8 +51,8 @@ class TranslatorServiceFactory implements FactoryInterface
                     || $config['translator'] instanceof Traversable)
             ) {
                 $i18nTranslator = Translator::factory($config['translator']);
-                $i18nTranslator->setPluginManager($serviceLocator->get('TranslatorPluginManager'));
-                $serviceLocator->setService('Zend\I18n\Translator\TranslatorInterface', $i18nTranslator);
+                $i18nTranslator->setPluginManager($container->get('TranslatorPluginManager'));
+                // $container->setService('Zend\I18n\Translator\TranslatorInterface', $i18nTranslator);
                 return new MvcTranslator($i18nTranslator);
             }
         }

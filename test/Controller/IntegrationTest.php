@@ -20,27 +20,39 @@ class IntegrationTest extends TestCase
 {
     public function setUp()
     {
-        $this->plugins      = new PluginManager();
-        $this->sharedEvents = $sharedEvents = new SharedEventManager();
-        $this->services     = new ServiceManager();
-        $this->services->setService('ControllerPluginManager', $this->plugins);
-        $this->services->setService('SharedEventManager', $this->sharedEvents);
-        $this->services->setService('Zend\ServiceManager\ServiceLocatorInterface', $this->services);
-        $this->services->setFactory('EventManager', function ($services) use ($sharedEvents) {
-            return new EventManager($sharedEvents);
-        });
+        $this->sharedEvents = new SharedEventManager();
 
-        $this->controllers = new ControllerManager();
-        $this->controllers->setServiceLocator($this->services);
+        $this->services     = new ServiceManager([
+            'services' => [
+                'SharedEventManager' => $this->sharedEvents,
+            ],
+            'factories' => [
+                'ControllerPluginManager' => function ($services) {
+                    return new PluginManager($services);
+                },
+                'EventManager' => function () {
+                    return new EventManager($this->sharedEvents);
+                },
+            ],
+            'shared' => [
+                'EventManager' => false,
+            ],
+        ]);
     }
 
     public function testPluginReceivesCurrentController()
     {
-        $this->controllers->setInvokableClass('first', 'ZendTest\Mvc\Controller\TestAsset\SampleController');
-        $this->controllers->setInvokableClass('second', 'ZendTest\Mvc\Controller\TestAsset\SampleController');
+        $controllers = new ControllerManager($this->services, ['factories' => [
+            'first'  => function ($services) {
+                return new TestAsset\SampleController();
+            },
+            'second' => function ($services) {
+                return new TestAsset\SampleController();
+            },
+        ]]);
 
-        $first  = $this->controllers->get('first');
-        $second = $this->controllers->get('second');
+        $first  = $controllers->get('first');
+        $second = $controllers->get('second');
         $this->assertNotSame($first, $second);
 
         $plugin1 = $first->plugin('url');

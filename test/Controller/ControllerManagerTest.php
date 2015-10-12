@@ -21,30 +21,30 @@ class ControllerManagerTest extends TestCase
 {
     public function setUp()
     {
-        $this->sharedEvents = new SharedEventManager;
-        $this->events       = new EventManager($this->sharedEvents);
-
+        $this->sharedEvents   = new SharedEventManager;
+        $this->events         = new EventManager($this->sharedEvents);
         $this->consoleAdapter = new ConsoleAdapter();
 
-        $this->plugins  = new ControllerPluginManager();
-        $this->services = new ServiceManager();
-        $this->services->setService('Console', $this->consoleAdapter);
-        $this->services->setService('Zend\ServiceManager\ServiceLocatorInterface', $this->services);
-        $this->services->setService('EventManager', $this->events);
-        $this->services->setService('SharedEventManager', $this->sharedEvents);
-        $this->services->setService('ControllerPluginManager', $this->plugins);
+        $this->services = new ServiceManager([
+            'factories' => [
+                'ControllerPluginManager' => function ($services) {
+                    return new ControllerPluginManager($services);
+                },
+            ],
+            'services' => [
+                'Console'            => $this->consoleAdapter,
+                'EventManager'       => $this->events,
+                'SharedEventManager' => $this->sharedEvents,
+            ],
+        ]);
 
-        $this->controllers = new ControllerManager();
-        $this->controllers->setServiceLocator($this->services);
-        $this->controllers->addPeeringServiceManager($this->services);
+        $this->controllers = new ControllerManager($this->services);
     }
 
-    public function testInjectControllerDependenciesInjectsExpectedDependencies()
+    public function testCanInjectEventManager()
     {
         $controller = new TestAsset\SampleController();
-        $this->controllers->injectControllerDependencies($controller, $this->controllers);
-        $this->assertSame($this->services, $controller->getServiceLocator());
-        $this->assertSame($this->plugins, $controller->getPluginManager());
+        $this->controllers->injectEventManager($this->services, $controller);
 
         // The default AbstractController implementation lazy instantiates an EM
         // instance, which means we need to check that that instance gets injected
@@ -54,19 +54,26 @@ class ControllerManagerTest extends TestCase
         $this->assertSame($this->sharedEvents, $events->getSharedManager());
     }
 
-    public function testInjectControllerDependenciesToConsoleController()
+    public function testCanInjectConsoleAdapter()
     {
         $controller = new TestAsset\ConsoleController();
-        $this->controllers->injectControllerDependencies($controller, $this->controllers);
+        $this->controllers->injectConsole($this->services, $controller);
         $this->assertInstanceOf('Zend\Console\Adapter\AdapterInterface', $controller->getConsole());
     }
 
-    public function testInjectControllerDependenciesWillNotOverwriteExistingEventManager()
+    public function testCanInjectPluginManager()
+    {
+        $controller = new TestAsset\SampleController();
+        $this->controllers->injectPluginManager($this->services, $controller);
+        $this->assertSame($this->services->get('ControllerPluginManager'), $controller->getPluginManager());
+    }
+
+    public function testInjectEventManagerWillNotOverwriteExistingEventManagerIfItAlreadyHasASharedManager()
     {
         $events     = new EventManager($this->sharedEvents);
         $controller = new TestAsset\SampleController();
         $controller->setEventManager($events);
-        $this->controllers->injectControllerDependencies($controller, $this->controllers);
+        $this->controllers->injectEventManager($this->services, $controller);
         $this->assertSame($events, $controller->getEventManager());
         $this->assertSame($this->sharedEvents, $events->getSharedManager());
     }

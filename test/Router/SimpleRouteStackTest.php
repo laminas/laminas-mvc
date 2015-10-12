@@ -14,12 +14,13 @@ use ArrayIterator;
 use Zend\Stdlib\Request;
 use Zend\Mvc\Router\RoutePluginManager;
 use Zend\Mvc\Router\SimpleRouteStack;
+use Zend\ServiceManager\ServiceManager;
 
 class SimpleRouteStackTest extends TestCase
 {
     public function testSetRoutePluginManager()
     {
-        $routes = new RoutePluginManager();
+        $routes = new RoutePluginManager(new ServiceManager());
         $stack  = new SimpleRouteStack();
         $stack->setRoutePluginManager($routes);
 
@@ -239,7 +240,7 @@ class SimpleRouteStackTest extends TestCase
             'Zend\Mvc\Router\SimpleRouteStack',
             [],
             [
-                'route_plugins'  => new RoutePluginManager(),
+                'route_plugins'  => new RoutePluginManager(new ServiceManager()),
                 'routes'         => [],
                 'default_params' => []
             ]

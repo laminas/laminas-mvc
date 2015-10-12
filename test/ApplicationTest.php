@@ -9,15 +9,15 @@
 
 namespace ZendTest\Mvc;
 
-use ArrayObject;
 use PHPUnit_Framework_TestCase as TestCase;
-use ReflectionObject;
+use ReflectionMethod;
 use ReflectionProperty;
 use stdClass;
 use Zend\Http\PhpEnvironment\Response;
 use Zend\ModuleManager\Listener\ConfigListener;
 use Zend\ModuleManager\ModuleEvent;
 use Zend\Mvc\Application;
+use Zend\Mvc\Controller\ControllerManager;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Router;
 use Zend\Mvc\Service\ServiceManagerConfig;
@@ -42,10 +42,14 @@ class ApplicationTest extends TestCase
 
     public function setUp()
     {
+        $serviceListener = new ServiceListenerFactory();
+        $r = new ReflectionProperty($serviceListener, 'defaultServiceConfig');
+        $r->setAccessible(true);
+        $serviceConfig = $r->getValue($serviceListener);
+
         $serviceConfig = ArrayUtils::merge(
-            $this->readAttribute(new ServiceListenerFactory, 'defaultServiceConfig'),
+            $serviceConfig,
             [
-                'allow_override' => true,
                 'invokables' => [
                     'Request'              => 'Zend\Http\PhpEnvironment\Request',
                     'Response'             => 'Zend\Http\PhpEnvironment\Response',
@@ -57,7 +61,7 @@ class ApplicationTest extends TestCase
                     'Router'                 => 'HttpRouter',
                 ],
                 'services' => [
-                    'Config' => [],
+                    'config' => [],
                     'ApplicationConfig' => [
                         'modules' => [],
                         'module_listener_options' => [
@@ -69,8 +73,23 @@ class ApplicationTest extends TestCase
                 ],
             ]
         );
-        $this->serviceManager = new ServiceManager(new ServiceManagerConfig($serviceConfig));
+        $this->serviceManager = new ServiceManager((new ServiceManagerConfig($serviceConfig))->toArray());
         $this->application = $this->serviceManager->get('Application');
+    }
+
+    /**
+     * Re-inject the application service manager instance
+     *
+     * @param Application $application
+     * @param ServiceManager $services
+     * @return Application
+     */
+    public function setApplicationServiceManager(Application $application, ServiceManager $services)
+    {
+        $r = new ReflectionProperty($application, 'serviceManager');
+        $r->setAccessible(true);
+        $r->setValue($application, $services);
+        return $application;
     }
 
     public function getConfigListener()
@@ -125,9 +144,13 @@ class ApplicationTest extends TestCase
 
     public function testConfigIsPopulated()
     {
-        $smConfig  = $this->serviceManager->get('Config');
+        $smConfig  = $this->serviceManager->get('config');
         $appConfig = $this->application->getConfig();
-        $this->assertEquals($smConfig, $appConfig, sprintf('SM config: %s; App config: %s', var_export($smConfig, 1), var_export($appConfig, 1)));
+        $this->assertEquals(
+            $smConfig,
+            $appConfig,
+            sprintf('SM config: %s; App config: %s', var_export($smConfig, 1), var_export($appConfig, 1))
+        );
     }
 
     public function testEventsAreEmptyAtFirst()
@@ -160,21 +183,24 @@ class ApplicationTest extends TestCase
 
     public function bootstrapRegistersListenersProvider()
     {
+        // @codingStandardsIgnoreStart
+        //                     [ Service Name,           Event,                       Method,        isCustom ]
         return [
-            ['RouteListener', MvcEvent::EVENT_ROUTE, 'onRoute'],
-            ['DispatchListener', MvcEvent::EVENT_DISPATCH, 'onDispatch'],
-            ['SendResponseListener', MvcEvent::EVENT_FINISH, 'sendResponse'],
-            ['ViewManager', MvcEvent::EVENT_BOOTSTRAP, 'onBootstrap'],
-            ['HttpMethodListener', MvcEvent::EVENT_ROUTE, 'onRoute'],
-            ['BootstrapListener', MvcEvent::EVENT_BOOTSTRAP, 'onBootstrap', true],
+            'route'         => ['RouteListener'        , MvcEvent::EVENT_ROUTE     , 'onRoute',      false],
+            'dispatch'      => ['DispatchListener'     , MvcEvent::EVENT_DISPATCH  , 'onDispatch',   false],
+            'send_response' => ['SendResponseListener' , MvcEvent::EVENT_FINISH    , 'sendResponse', false],
+            'view_manager'  => ['ViewManager'          , MvcEvent::EVENT_BOOTSTRAP , 'onBootstrap',  false],
+            'http_method'   => ['HttpMethodListener'   , MvcEvent::EVENT_ROUTE     , 'onRoute',      false],
+            'bootstrap'     => ['BootstrapListener'    , MvcEvent::EVENT_BOOTSTRAP , 'onBootstrap',  true ],
         ];
+        // @codingStandardsIgnoreEnd
     }
 
     public function testBootstrapAlwaysRegistersDefaultListeners()
     {
-        $refl = new ReflectionProperty($this->application, 'defaultListeners');
-        $refl->setAccessible(true);
-        $defaultListenersNames = $refl->getValue($this->application);
+        $r = new ReflectionProperty($this->application, 'defaultListeners');
+        $r->setAccessible(true);
+        $defaultListenersNames = $r->getValue($this->application);
         $defaultListeners = [];
         foreach ($defaultListenersNames as $defaultListenerName) {
             $defaultListeners[] = $this->serviceManager->get($defaultListenerName);
@@ -230,13 +256,31 @@ class ApplicationTest extends TestCase
             ],
         ]);
         $router->addRoute('path', $route);
+        $services = $this->serviceManager->withConfig([
+            'aliases' => [
+                'Router'     => 'HttpRouter',
+            ],
+            'services' => [
+                'HttpRouter' => $router,
+            ],
+        ]);
+
+        $application = $this->setApplicationServiceManager($this->application, $services);
         if ($addService) {
-            $controllerLoader = $this->serviceManager->get('ControllerLoader');
-            $controllerLoader->setFactory('path', function () {
-                return new TestAsset\PathController;
-            });
+            $services = $services->withConfig(['factories' => [
+                'ControllerManager' => function ($services) {
+                    return new ControllerManager($services, ['factories' => [
+                        'path' => function () {
+                            return new TestAsset\PathController;
+                        },
+                    ]]);
+                },
+            ]]);
+            $application = $this->setApplicationServiceManager($application, $services);
         }
-        $this->application->bootstrap();
+
+        $application->bootstrap();
+        return $application;
     }
 
     public function setupActionController()
@@ -254,11 +298,19 @@ class ApplicationTest extends TestCase
         ]);
         $router->addRoute('sample', $route);
 
-        $controllerLoader = $this->serviceManager->get('ControllerLoader');
-        $controllerLoader->setFactory('sample', function () {
-            return new Controller\TestAsset\SampleController;
-        });
-        $this->application->bootstrap();
+        $services = $this->serviceManager->withConfig(['factories' => [
+            'ControllerManager' => function ($services) {
+                return new ControllerManager($services, ['factories' => [
+                    'sample' => function () {
+                        return new Controller\TestAsset\SampleController();
+                    },
+                ]]);
+            },
+        ]]);
+        $application = $this->setApplicationServiceManager($this->application, $services);
+
+        $application->bootstrap();
+        return $application;
     }
 
     public function setupBadController($addService = true)
@@ -276,170 +328,36 @@ class ApplicationTest extends TestCase
         ]);
         $router->addRoute('bad', $route);
 
+        $application = $this->application;
         if ($addService) {
-            $controllerLoader = $this->serviceManager->get('ControllerLoader');
-            $controllerLoader->setFactory('bad', function () {
-                return new Controller\TestAsset\BadController;
-            });
+            $services = $this->serviceManager->withConfig(['factories' => [
+                'ControllerManager' => function ($services) {
+                    return new ControllerManager($services, ['factories' => [
+                        'bad' => function () {
+                            return new Controller\TestAsset\BadController();
+                        },
+                    ]]);
+                },
+            ]]);
+            $application = $this->setApplicationServiceManager($application, $services);
         }
-        $this->application->bootstrap();
-    }
 
-    public function testRoutingIsExecutedDuringRun()
-    {
-        $this->setupPathController();
-
-        $log = [];
-        $this->application->getEventManager()->attach(MvcEvent::EVENT_ROUTE, function ($e) use (&$log) {
-            $match = $e->getRouteMatch();
-            if (!$match) {
-                return;
-            }
-            $log['route-match'] = $match;
-        });
-
-        $this->application->run();
-        $this->assertArrayHasKey('route-match', $log);
-        $this->assertInstanceOf(Router\RouteMatch::class, $log['route-match']);
-    }
-
-    public function testAllowsReturningEarlyFromRouting()
-    {
-        $this->setupPathController();
-        $response = new Response();
-
-        $this->application->getEventManager()->attach(MvcEvent::EVENT_ROUTE, function ($e) use ($response) {
-            return $response;
-        });
-
-        $result = $this->application->run();
-        $this->assertSame($this->application, $result);
-        $this->assertSame($response, $result->getResponse());
-    }
-
-    public function testControllerIsDispatchedDuringRun()
-    {
-        $this->setupPathController();
-
-        $response = $this->application->run()->getResponse();
-        $this->assertContains('PathController', $response->getContent());
-        $this->assertContains(MvcEvent::EVENT_DISPATCH, $response->toString());
-    }
-
-    /**
-     * @group zen-92
-     */
-    public function testDispatchingInjectsLocatorInLocatorAwareControllers()
-    {
-        $this->setupActionController();
-
-        $events  = $this->application->getEventManager()->getSharedManager();
-        $storage = new ArrayObject();
-        $events->attach('ZendTest\Mvc\Controller\TestAsset\SampleController', MvcEvent::EVENT_DISPATCH, function ($e) use ($storage) {
-            $controller = $e->getTarget();
-            $storage['locator'] = $controller->getServiceLocator();
-            return $e->getResponse();
-        }, 100);
-
-        $this->application->run();
-
-        $this->assertTrue(isset($storage['locator']));
-        $this->assertSame($this->serviceManager, $storage['locator']);
+        $application->bootstrap();
+        return $application;
     }
 
     public function testFinishEventIsTriggeredAfterDispatching()
     {
-        $this->setupActionController();
-        $this->application->getEventManager()->attach(MvcEvent::EVENT_FINISH, function ($e) {
+        $application = $this->setupActionController();
+        $application->getEventManager()->attach(MvcEvent::EVENT_FINISH, function ($e) {
             return $e->getResponse()->setContent($e->getResponse()->getBody() . 'foobar');
         });
-        $this->application->run();
-        $this->assertContains('foobar', $this->application->getResponse()->getBody(), 'The "finish" event was not triggered ("foobar" not in response)');
-    }
-
-    /**
-     * @group error-handling
-     */
-    public function testExceptionsRaisedInDispatchableShouldRaiseDispatchErrorEvent()
-    {
-        $this->setupBadController();
-        $response = $this->application->getResponse();
-        $events   = $this->application->getEventManager();
-        $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) use ($response) {
-            $exception = $e->getParam('exception');
-            $response->setContent($exception->getMessage());
-            return $response;
-        });
-
-        $this->application->run();
-        $this->assertContains('Raised an exception', $response->getContent());
-    }
-
-    /**
-     * @group error-handling
-     */
-    public function testInabilityToRetrieveControllerShouldTriggerExceptionError()
-    {
-        $this->setupBadController(false);
-        $controllerLoader = $this->serviceManager->get('ControllerLoader');
-        $response = $this->application->getResponse();
-        $events   = $this->application->getEventManager();
-        $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) use ($response) {
-            $error      = $e->getError();
-            $controller = $e->getController();
-            $response->setContent("Code: " . $error . '; Controller: ' . $controller);
-            return $response;
-        });
-
-        $this->application->run();
-        $this->assertContains(Application::ERROR_CONTROLLER_NOT_FOUND, $response->getContent());
-        $this->assertContains('bad', $response->getContent());
-    }
-
-    /**
-     * @group error-handling
-     */
-    public function testInabilityToRetrieveControllerShouldTriggerDispatchError()
-    {
-        $this->setupBadController(false);
-        $response = $this->application->getResponse();
-        $events   = $this->application->getEventManager();
-        $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) use ($response) {
-            $error      = $e->getError();
-            $controller = $e->getController();
-            $response->setContent("Code: " . $error . '; Controller: ' . $controller);
-            return $response;
-        });
-
-        $this->application->run();
-        $this->assertContains(Application::ERROR_CONTROLLER_NOT_FOUND, $response->getContent());
-        $this->assertContains('bad', $response->getContent());
-    }
-
-    /**
-     * @group error-handling
-     */
-    public function testInvalidControllerTypeShouldTriggerDispatchError()
-    {
-        $this->serviceManager->get('ControllerLoader');
-        $this->setupBadController(false);
-        $controllerLoader = $this->serviceManager->get('ControllerLoader');
-        $controllerLoader->setFactory('bad', function () {
-            return new stdClass;
-        });
-        $response = $this->application->getResponse();
-        $events   = $this->application->getEventManager();
-        $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) use ($response) {
-            $error      = $e->getError();
-            $controller = $e->getController();
-            $class      = $e->getControllerClass();
-            $response->setContent("Code: " . $error . '; Controller: ' . $controller . '; Class: ' . $class);
-            return $response;
-        });
-
-        $this->application->run();
-        $this->assertContains(Application::ERROR_CONTROLLER_INVALID, $response->getContent());
-        $this->assertContains('bad', $response->getContent());
+        $application->run();
+        $this->assertContains(
+            'foobar',
+            $this->application->getResponse()->getBody(),
+            'The "finish" event was not triggered ("foobar" not in response)'
+        );
     }
 
     /**
@@ -447,20 +365,20 @@ class ApplicationTest extends TestCase
      */
     public function testRoutingFailureShouldTriggerDispatchError()
     {
-        $this->setupBadController();
-        $router = new Router\SimpleRouteStack();
-        $event = $this->application->getMvcEvent();
+        $application = $this->setupBadController();
+        $router      = new Router\SimpleRouteStack();
+        $event       = $application->getMvcEvent();
         $event->setRouter($router);
 
-        $response = $this->application->getResponse();
-        $events   = $this->application->getEventManager();
+        $response = $application->getResponse();
+        $events   = $application->getEventManager();
         $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) use ($response) {
             $error      = $e->getError();
             $response->setContent("Code: " . $error);
             return $response;
         });
 
-        $this->application->run();
+        $application->run();
         $this->assertTrue($event->isError());
         $this->assertContains(Application::ERROR_ROUTER_NO_MATCH, $response->getContent());
     }
@@ -470,15 +388,15 @@ class ApplicationTest extends TestCase
      */
     public function testLocatorExceptionShouldTriggerDispatchError()
     {
-        $this->setupPathController(false);
-        $controllerLoader = $this->serviceManager->get('ControllerLoader');
+        $application = $this->setupPathController(false);
+        $controllerLoader = $application->getServiceManager()->get('ControllerManager');
         $response = new Response();
-        $this->application->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) use ($response) {
+        $application->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) use ($response) {
             return $response;
         });
 
-        $result = $this->application->run();
-        $this->assertSame($this->application, $result, get_class($result));
+        $result = $application->run();
+        $this->assertSame($application, $result, get_class($result));
         $this->assertSame($response, $result->getResponse(), get_class($result));
     }
 
@@ -487,20 +405,20 @@ class ApplicationTest extends TestCase
      */
     public function testFailureForRouteToReturnRouteMatchShouldPopulateEventError()
     {
-        $this->setupBadController();
-        $router = new Router\SimpleRouteStack();
-        $event = $this->application->getMvcEvent();
+        $application = $this->setupBadController();
+        $router      = new Router\SimpleRouteStack();
+        $event       = $application->getMvcEvent();
         $event->setRouter($router);
 
-        $response = $this->application->getResponse();
-        $events   = $this->application->getEventManager();
+        $response = $application->getResponse();
+        $events   = $application->getEventManager();
         $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) use ($response) {
             $error      = $e->getError();
             $response->setContent("Code: " . $error);
             return $response;
         });
 
-        $this->application->run();
+        $application->run();
         $this->assertTrue($event->isError());
         $this->assertEquals(Application::ERROR_ROUTER_NO_MATCH, $event->getError());
     }
@@ -552,30 +470,30 @@ class ApplicationTest extends TestCase
 
     public function testApplicationShouldBeEventTargetAtFinishEvent()
     {
-        $this->setupActionController();
+        $application = $this->setupActionController();
 
-        $events   = $this->application->getEventManager();
-        $response = $this->application->getResponse();
+        $events   = $application->getEventManager();
+        $response = $application->getResponse();
         $events->attach(MvcEvent::EVENT_FINISH, function ($e) use ($response) {
             $response->setContent("EventClass: " . get_class($e->getTarget()));
             return $response;
         });
 
-        $this->application->run();
+        $application->run();
         $this->assertContains('Zend\Mvc\Application', $response->getContent());
     }
 
     public function testOnDispatchErrorEventPassedToTriggersShouldBeTheOriginalOne()
     {
-        $this->setupPathController(false);
-        $controllerLoader = $this->serviceManager->get('ControllerLoader');
+        $application = $this->setupPathController(false);
+        $controllerManager = $application->getServiceManager()->get('ControllerManager');
         $model = $this->getMock('Zend\View\Model\ViewModel');
-        $this->application->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) use ($model) {
+        $application->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) use ($model) {
             $e->setResult($model);
         });
 
-        $this->application->run();
-        $event = $this->application->getMvcEvent();
+        $application->run();
+        $event = $application->getMvcEvent();
         $this->assertInstanceOf('Zend\View\Model\ViewModel', $event->getResult());
     }
 
@@ -631,13 +549,12 @@ class ApplicationTest extends TestCase
 
     public function testCompleteRequestShouldReturnApplicationInstance()
     {
-        $r      = new ReflectionObject($this->application);
-        $method = $r->getMethod('completeRequest');
-        $method->setAccessible(true);
+        $r = new ReflectionMethod($this->application, 'completeRequest');
+        $r->setAccessible(true);
 
         $this->application->bootstrap();
         $event  = $this->application->getMvcEvent();
-        $result = $method->invoke($this->application, $event);
+        $result = $r->invoke($this->application, $event);
         $this->assertSame($this->application, $result);
     }
 
@@ -724,10 +641,9 @@ class ApplicationTest extends TestCase
         $event->stopPropagation(true);
 
         // Intentionally not calling bootstrap; setting mvc event
-        $r = new ReflectionObject($this->application);
-        $eventProp = $r->getProperty('event');
-        $eventProp->setAccessible(true);
-        $eventProp->setValue($this->application, $event);
+        $r = new ReflectionProperty($this->application, 'event');
+        $r->setAccessible(true);
+        $r->setValue($this->application, $event);
 
         // Setup listeners that stop propagation, but do nothing else
         $marker = [];

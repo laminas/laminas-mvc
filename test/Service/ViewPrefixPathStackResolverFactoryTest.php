@@ -20,7 +20,7 @@ class ViewPrefixPathStackResolverFactoryTest extends \PHPUnit_Framework_TestCase
 
         $serviceLocator->expects($this->once())
             ->method('get')
-            ->with('Config')
+            ->with('config')
             ->will($this->returnValue([
                 'view_manager' => [
                     'prefix_template_path_stack' => [
@@ -30,7 +30,7 @@ class ViewPrefixPathStackResolverFactoryTest extends \PHPUnit_Framework_TestCase
             ]));
 
         $factory  = new ViewPrefixPathStackResolverFactory();
-        $resolver = $factory->createService($serviceLocator);
+        $resolver = $factory($serviceLocator, 'ViewPrefixPathStackResolver');
 
         $this->assertInstanceOf('Zend\View\Resolver\PrefixPathStackResolver', $resolver);
     }

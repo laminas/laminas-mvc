@@ -10,15 +10,19 @@
 namespace ZendTest\Mvc\View\Console;
 
 use PHPUnit_Framework_TestCase as TestCase;
+use ReflectionProperty;
+use Zend\Console\Request as ConsoleRequest;
 use Zend\Console\Response as ConsoleResponse;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
 use Zend\Mvc\Application;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Service\ConsoleViewManagerFactory;
+use Zend\Mvc\Service\ServiceListenerFactory;
 use Zend\Mvc\Service\ServiceManagerConfig;
+use Zend\Mvc\View\Console\ViewManager;
 use Zend\ServiceManager\ServiceManager;
-use Zend\Console\Request as ConsoleRequest;
+use Zend\Stdlib\ArrayUtils;
 
 /**
  * Tests for {@see \Zend\Mvc\View\Console\ViewManager}
@@ -44,9 +48,18 @@ class ViewManagerTest extends TestCase
 
     public function setUp()
     {
-        $this->config = new ServiceManagerConfig();
-        $this->services = new ServiceManager();
-        $this->factory = new ConsoleViewManagerFactory();
+        $this->services = new ServiceManager($this->prepareServiceManagerConfig());
+        $this->factory  = new ConsoleViewManagerFactory();
+    }
+
+    private function prepareServiceManagerConfig()
+    {
+        $serviceListener = new ServiceListenerFactory();
+        $r = new ReflectionProperty($serviceListener, 'defaultServiceConfig');
+        $r->setAccessible(true);
+
+        $config = $r->getValue($serviceListener);
+        return ArrayUtils::merge((new ServiceManagerConfig())->toArray(), $config);
     }
 
     /**
@@ -105,27 +118,29 @@ class ViewManagerTest extends TestCase
      *
      * @group 6866
      */
-    public function testConsoleKeyWillOverrideDisplayExceptionAndDisplayNotFoundReason($config)
+    public function testConsoleKeyWillOverrideDisplayExceptionAndExceptionMessage($config)
     {
         $eventManager = new EventManager(new SharedEventManager());
         $request      = new ConsoleRequest();
         $response     = new ConsoleResponse();
 
-        $this->services->setService('Config', $config);
-        $this->services->setService('Request', $request);
-        $this->services->setService('EventManager', $eventManager);
-        $this->services->setService('Response', $response);
+        $services = $this->services->withConfig(['services' => [
+            'config'       => $config,
+            'Request'      => $request,
+            'EventManager' => $eventManager,
+            'Response'     => $response,
+        ]]);
 
-        $manager = $this->factory->createService($this->services);
+        $manager = $this->factory->__invoke($services, 'ConsoleViewRenderer');
 
-        $application = new Application($config, $this->services, $eventManager, $request, $response);
+        $application = new Application($config, $services, $eventManager, $request, $response);
 
         $event = new MvcEvent();
         $event->setApplication($application);
         $manager->onBootstrap($event);
 
-        $this->assertFalse($manager->getExceptionStrategy()->displayExceptions());
-        $this->assertFalse($manager->getRouteNotFoundStrategy()->displayNotFoundReason());
+        $this->assertFalse($services->get('ConsoleExceptionStrategy')->displayExceptions());
+        $this->assertFalse($services->get('ConsoleRouteNotFoundStrategy')->displayNotFoundReason());
     }
 
     /**
@@ -137,20 +152,28 @@ class ViewManagerTest extends TestCase
         $request      = new ConsoleRequest();
         $response     = new ConsoleResponse();
 
-        $this->services->setService('Config', []);
-        $this->services->setService('Request', $request);
-        $this->services->setService('EventManager', $eventManager);
-        $this->services->setService('Response', $response);
+        $services = $this->services->withConfig([
+            'services' => [
+                'config'       => [],
+                'Request'      => $request,
+                'EventManager' => $eventManager,
+                'Response'     => $response,
+            ],
+        ]);
 
-        $manager = $this->factory->createService($this->services);
-
-        $application = new Application([], $this->services, $eventManager, $request, $response);
-
-        $event = new MvcEvent();
+        $manager     = new ViewManager;
+        $application = new Application([], $services, $eventManager, $request, $response);
+        $event       = new MvcEvent();
         $event->setApplication($application);
+
         $manager->onBootstrap($event);
 
-        $this->assertTrue($manager->getExceptionStrategy()->displayExceptions());
-        $this->assertTrue($manager->getRouteNotFoundStrategy()->displayNotFoundReason());
+        $exceptionStrategy = $services->get('ConsoleExceptionStrategy');
+        $this->assertInstanceOf('Zend\Mvc\View\Console\ExceptionStrategy', $exceptionStrategy);
+        $this->assertTrue($exceptionStrategy->displayExceptions());
+
+        $routeNotFoundStrategy = $services->get('ConsoleRouteNotFoundStrategy');
+        $this->assertInstanceOf('Zend\Mvc\View\Console\RouteNotFoundStrategy', $routeNotFoundStrategy);
+        $this->assertTrue($routeNotFoundStrategy->displayNotFoundReason());
     }
 }

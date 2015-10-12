@@ -9,17 +9,17 @@
 
 namespace ZendTest\Mvc\Controller\TestAsset;
 
-use Zend\ServiceManager\AbstractFactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\AbstractFactoryInterface;
 
 class UnlocatableControllerLoaderAbstractFactory implements AbstractFactoryInterface
 {
-    public function canCreateServiceWithName(ServiceLocatorInterface $sl, $cName, $rName)
+    public function canCreateServiceWithName(ContainerInterface $container, $name)
     {
         return false;
     }
 
-    public function createServiceWithName(ServiceLocatorInterface $sl, $cName, $rName)
+    public function __invoke(ContainerInterface $container, $name, array $options = null)
     {
     }
 }

@@ -9,12 +9,12 @@
 
 namespace Zend\Mvc\Service;
 
+use Interop\Container\ContainerInterface;
 use Zend\ModuleManager\Listener\DefaultListenerAggregate;
 use Zend\ModuleManager\Listener\ListenerOptions;
 use Zend\ModuleManager\ModuleEvent;
 use Zend\ModuleManager\ModuleManager;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 class ModuleManagerFactory implements FactoryInterface
 {
@@ -29,28 +29,26 @@ class ModuleManagerFactory implements FactoryInterface
      * the default listener aggregate is attached. The ModuleEvent is also created
      * and attached to the module manager.
      *
-     * @param  ServiceLocatorInterface $serviceLocator
+     * @param  ContainerInterface $container
+     * @param  string $name
+     * @param  null|array $options
      * @return ModuleManager
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $name, array $options = null)
     {
-        if (!$serviceLocator->has('ServiceListener')) {
-            $serviceLocator->setFactory('ServiceListener', 'Zend\Mvc\Service\ServiceListenerFactory');
-        }
-
-        $configuration    = $serviceLocator->get('ApplicationConfig');
+        $configuration    = $container->get('ApplicationConfig');
         $listenerOptions  = new ListenerOptions($configuration['module_listener_options']);
         $defaultListeners = new DefaultListenerAggregate($listenerOptions);
-        $serviceListener  = $serviceLocator->get('ServiceListener');
+        $serviceListener  = $container->get('ServiceListener');
 
-        $serviceListener->addServiceManager(
-            $serviceLocator,
+        $serviceListener->setApplicationServiceManager(
             'service_manager',
             'Zend\ModuleManager\Feature\ServiceProviderInterface',
             'getServiceConfig'
         );
+
         $serviceListener->addServiceManager(
-            'ControllerLoader',
+            'ControllerManager',
             'controllers',
             'Zend\ModuleManager\Feature\ControllerProviderInterface',
             'getControllerConfig'
@@ -128,12 +126,12 @@ class ModuleManagerFactory implements FactoryInterface
             'getTranslatorPluginConfig'
         );
 
-        $events = $serviceLocator->get('EventManager');
+        $events = $container->get('EventManager');
         $defaultListeners->attach($events);
         $serviceListener->attach($events);
 
         $moduleEvent = new ModuleEvent;
-        $moduleEvent->setParam('ServiceManager', $serviceLocator);
+        $moduleEvent->setParam('ServiceManager', $container);
 
         $moduleManager = new ModuleManager($configuration['modules'], $events);
         $moduleManager->setEvent($moduleEvent);

@@ -13,13 +13,14 @@ use PHPUnit_Framework_TestCase as TestCase;
 use Zend\Http\Request as Request;
 use Zend\Mvc\Router\RoutePluginManager;
 use Zend\Mvc\Router\Http\Chain;
+use Zend\ServiceManager\ServiceManager;
 use ZendTest\Mvc\Router\FactoryTester;
 
 class ChainTest extends TestCase
 {
     public static function getRoute()
     {
-        $routePlugins = new RoutePluginManager();
+        $routePlugins = new RoutePluginManager(new ServiceManager());
 
         return new Chain(
             [
@@ -51,7 +52,7 @@ class ChainTest extends TestCase
 
     public static function getRouteWithOptionalParam()
     {
-        $routePlugins = new RoutePluginManager();
+        $routePlugins = new RoutePluginManager(new ServiceManager());
 
         return new Chain(
             [
@@ -192,7 +193,7 @@ class ChainTest extends TestCase
             ],
             [
                 'routes'        => [],
-                'route_plugins' => new RoutePluginManager(),
+                'route_plugins' => new RoutePluginManager(new ServiceManager()),
             ]
         );
     }

@@ -9,8 +9,8 @@
 
 namespace ZendTest\Mvc\Controller\TestAsset;
 
-use Zend\ServiceManager\AbstractFactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\AbstractFactoryInterface;
 
 class ControllerLoaderAbstractFactory implements AbstractFactoryInterface
 {
@@ -18,16 +18,19 @@ class ControllerLoaderAbstractFactory implements AbstractFactoryInterface
         'path' => 'ZendTest\Mvc\TestAsset\PathController',
     );
 
-    public function canCreateServiceWithName(ServiceLocatorInterface $sl, $cName, $rName)
+    public function canCreateServiceWithName(ContainerInterface $container, $name)
     {
-        $classname = $this->classmap[$cName];
+        if (! isset($this->classmap[$name])) {
+            return false;
+        }
+
+        $classname = $this->classmap[$name];
         return class_exists($classname);
     }
 
-    public function createServiceWithName(ServiceLocatorInterface $sl, $cName, $rName)
+    public function __invoke(ContainerInterface $container, $name, array $options = null)
     {
-        $classname = $this->classmap[$cName];
-        $controller = new $classname;
-        return $controller;
+        $classname = $this->classmap[$name];
+        return new $classname;
     }
 }
