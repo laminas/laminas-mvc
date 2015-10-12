@@ -9,6 +9,7 @@
 
 namespace Zend\Mvc;
 
+use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
 use Zend\EventManager\AbstractListenerAggregate;
 use Zend\EventManager\EventManagerInterface;
 use Zend\Psr7Bridge\Psr7ServerRequest as Psr7Request;
@@ -72,7 +73,7 @@ class MiddlewareListener extends AbstractListenerAggregate
             }
         }
 
-        if (! $return instanceof \Psr\Http\Message\ResponseInterface) {
+        if (! $return instanceof PsrResponseInterface) {
             $event->setResult($return);
             return $return;
         }
