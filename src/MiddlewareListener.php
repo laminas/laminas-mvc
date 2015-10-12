@@ -9,11 +9,8 @@
 
 namespace Zend\Mvc;
 
-use ArrayObject;
 use Zend\EventManager\AbstractListenerAggregate;
 use Zend\EventManager\EventManagerInterface;
-use Zend\Mvc\Exception\InvalidControllerException;
-use Zend\Stdlib\ArrayUtils;
 use Zend\Psr7Bridge\Psr7ServerRequest as Psr7Request;
 use Zend\Psr7Bridge\Psr7Response;
 

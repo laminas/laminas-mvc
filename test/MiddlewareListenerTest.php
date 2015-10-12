@@ -75,7 +75,7 @@ class MiddlewareListenerTest extends TestCase
         $listener = new MiddlewareListener();
         $return   = $listener->onDispatch($event);
         $this->assertInstanceOf(Response::class, $return);
-        
+
         $this->assertInstanceOf('Zend\Http\Response', $return);
         $this->assertSame(200, $return->getStatusCode());
         $this->assertEquals('Test!', $return->getBody());
