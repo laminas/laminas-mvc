@@ -100,12 +100,12 @@ class DispatchListener extends AbstractListenerAggregate
             return $this->complete($return, $e);
         }
 
-        $request  = $e->getRequest();
-        $response = $application->getResponse();
-
         if ($controller instanceof InjectApplicationEventInterface) {
             $controller->setEvent($e);
         }
+
+        $request  = $e->getRequest();
+        $response = $application->getResponse();
 
         try {
             $return = $controller->dispatch($request, $response);
@@ -116,7 +116,7 @@ class DispatchListener extends AbstractListenerAggregate
             $e->setControllerClass(get_class($controller));
             $e->setParam('exception', $ex);
 
-            $return = $events->triggerEvent($e)->last();
+            $return = $application->getEventManager()->triggerEvent($e)->last();
             if (! $return) {
                 $return = $e->getResult();
             }

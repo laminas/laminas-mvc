@@ -22,26 +22,6 @@ use Zend\ServiceManager\ServiceManager;
 
 class DispatchListenerTest extends TestCase
 {
-    public function setUp()
-    {
-    }
-
-    public function setupPathController()
-    {
-        $request = $this->serviceManager->get('Request');
-        $request->setUri('http://example.local/path');
-
-        $router = $this->serviceManager->get('HttpRouter');
-        $route  = Router\Http\Literal::factory([
-            'route'    => '/path',
-            'defaults' => [
-                'controller' => 'path',
-            ],
-        ]);
-        $router->addRoute('path', $route);
-        $this->application->bootstrap();
-    }
-
     public function createMvcEvent($controllerMatched)
     {
         $response   = new Response();
