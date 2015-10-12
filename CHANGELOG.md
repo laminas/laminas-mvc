@@ -12,6 +12,31 @@ All notable changes to this project will be documented in this file, in reverse 
 - [#36](https://github.com/zendframework/zend-mvc/pull/36) adds more than a
   dozen service factories, primarily to separate conditional factories into
   discrete factories.
+- [#32](https://github.com/zendframework/zend-mvc/pull/32) adds
+  `Zend\Mvc\MiddlewareListener`, which allows dispatching PSR-7-based middleware
+  implementing the signature `function (ServerRequestInterface $request,
+  ResponseInterface $response)`. To dispatch such middleware, point the
+  `middleware` "default" for a given route to a service name or callable that
+  will resolve to the middleware:
+
+  ```php
+  [ 'router' => 'routes' => [
+      'path' => [
+          'type' => 'Literal',
+          'options' => [
+              'route' => '/path',
+              'defaults' => [
+                  'middleware' => 'ServiceNameForPathMiddleware',
+              ],
+          ],
+      ],
+  ]
+  ```
+
+  This new listener listens at the same priority as the `DispatchListener`, but,
+  due to being registered earlier, will invoke first; if the route match does
+  not resolve to middleware, it will fall through to the original
+  `DispatchListener`, allowing normal ZF2-style controller dispatch.
 
 ### Deprecated
 
