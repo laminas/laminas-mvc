@@ -43,7 +43,7 @@ class DispatchListenerTest extends TestCase
         return $event;
     }
 
-    public function testControllerLoaderComposedOfAbstractFactory()
+    public function testControllerManagerUsingAbstractFactory()
     {
         $controllerManager = new ControllerManager(new ServiceManager(), ['abstract_factories' => [
             Controller\TestAsset\ControllerLoaderAbstractFactory::class,
@@ -64,7 +64,7 @@ class DispatchListenerTest extends TestCase
         $this->assertSame(200, $return->getStatusCode());
     }
 
-    public function testUnlocatableControllerLoaderComposedOfAbstractFactory()
+    public function testUnlocatableControllerViaAbstractFactory()
     {
         $controllerManager = new ControllerManager(new ServiceManager(), ['abstract_factories' => [
             Controller\TestAsset\UnlocatableControllerLoaderAbstractFactory::class,
