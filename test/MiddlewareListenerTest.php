@@ -20,6 +20,7 @@ use Zend\Mvc\Application;
 use Zend\Mvc\MiddlewareListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Router\RouteMatch;
+use Zend\ServiceManager\ServiceManager;
 
 class MiddlewareListenerTest extends TestCase
 {
@@ -39,7 +40,7 @@ class MiddlewareListenerTest extends TestCase
         $eventManager = new EventManager();
 
         $serviceManager = $this->prophesize(ContainerInterface::class);
-        $serviceManager->has($middlewareMatched)->willReturn(true);
+        $serviceManager->has($middlewareMatched, true)->willReturn(true);
         $serviceManager->get($middlewareMatched)->willReturn($middleware);
 
         $application = $this->prophesize(Application::class);
@@ -114,5 +115,50 @@ class MiddlewareListenerTest extends TestCase
         $listener = new MiddlewareListener();
         $return   = $listener->onDispatch($event);
         $this->assertEquals('FAILED', $return);
+    }
+
+    /**
+     * Ensure that the listener tests for services in abstract factories.
+     *
+     * has() omits abstract factories by default; you must pass an optional
+     * second parameter, a boolean flag, to indicate it should also search
+     * those.
+     *
+     * This test ensures that.
+     */
+    public function testCanLoadFromAbstractFactory()
+    {
+        $response   = new Response();
+        $routeMatch = $this->prophesize(RouteMatch::class);
+        $routeMatch->getParam('middleware', false)->willReturn('test');
+
+        $eventManager = new EventManager();
+
+        $serviceManager = new ServiceManager(['abstract_factories' => [
+            TestAsset\MiddlewareAbstractFactory::class,
+        ]]);
+
+        $application = $this->prophesize(Application::class);
+        $application->getEventManager()->willReturn($eventManager);
+        $application->getServiceManager()->willReturn($serviceManager);
+        $application->getResponse()->willReturn($response);
+
+        $event = new MvcEvent();
+        $event->setRequest(new Request());
+        $event->setResponse($response);
+        $event->setApplication($application->reveal());
+        $event->setRouteMatch($routeMatch->reveal());
+
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) {
+            $this->fail(sprintf('dispatch.error triggered when it should not be: %s', var_export($e->getError(), 1)));
+        });
+
+        $listener = new MiddlewareListener();
+        $return   = $listener->onDispatch($event);
+        $this->assertInstanceOf(Response::class, $return);
+
+        $this->assertInstanceOf('Zend\Http\Response', $return);
+        $this->assertSame(200, $return->getStatusCode());
+        $this->assertEquals(TestAsset\Middleware::class, $return->getBody());
     }
 }
