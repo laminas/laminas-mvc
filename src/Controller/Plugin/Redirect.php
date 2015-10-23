@@ -52,7 +52,7 @@ class Redirect extends AbstractPlugin
     }
 
     /**
-     * Generate redirect response based on given url
+     * Generate redirect response based on given URL
      *
      * @param  string $url
      * @return Response
