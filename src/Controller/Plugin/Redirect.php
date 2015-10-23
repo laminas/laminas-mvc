@@ -23,7 +23,7 @@ class Redirect extends AbstractPlugin
     protected $response;
 
     /**
-     * Redirect to URL that generated based on given route
+     * Generate redirect response based on given route
      *
      * @param  string $route RouteInterface name
      * @param  array $params Parameters to use in url generation, if any
@@ -52,7 +52,7 @@ class Redirect extends AbstractPlugin
     }
 
     /**
-     * Redirect to the given URL
+     * Generate redirect response based on given url
      *
      * @param  string $url
      * @return Response
