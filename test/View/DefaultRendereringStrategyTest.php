@@ -156,7 +156,7 @@ class DefaultRendereringStrategyTest extends TestCase
             ],
         ]))->configureServiceManager($services);
 
-        $application = new Application([], $services, $services->get('EventManager'), $this->request, $this->response);
+        $application = new Application($services, $services->get('EventManager'), $this->request, $this->response);
         $this->event->setApplication($application);
 
         $test = (object) ['flag' => false];
