@@ -325,18 +325,18 @@ In the above example, the `$routePlugins` is an instance of `Zend\Mvc\Router\Rou
 ```php
 $routePlugins = new Zend\Mvc\Router\RoutePluginManager();
 $plugins = array(
-'hostname' = 'Zend\Mvc\Router\Http\Hostname',
-'literal'  = 'Zend\Mvc\Router\Http\Literal',
-'part'     = 'Zend\Mvc\Router\Http\Part',
-'regex'    = 'Zend\Mvc\Router\Http\Regex',
-'scheme'   = 'Zend\Mvc\Router\Http\Scheme',
-'segment'  = 'Zend\Mvc\Router\Http\Segment',
-'wildcard' = 'Zend\Mvc\Router\Http\Wildcard',
-'query'    = 'Zend\Mvc\Router\Http\Query',
-'method'   = 'Zend\Mvc\Router\Http\Method',
+    'hostname' => 'Zend\Mvc\Router\Http\Hostname',
+    'literal'  => 'Zend\Mvc\Router\Http\Literal',
+    'part'     => 'Zend\Mvc\Router\Http\Part',
+    'regex'    => 'Zend\Mvc\Router\Http\Regex',
+    'scheme'   => 'Zend\Mvc\Router\Http\Scheme',
+    'segment'  => 'Zend\Mvc\Router\Http\Segment',
+    'wildcard' => 'Zend\Mvc\Router\Http\Wildcard',
+    'query'    => 'Zend\Mvc\Router\Http\Query',
+    'method'   => 'Zend\Mvc\Router\Http\Method',
 );
-foreach ($plugins as $name = $class) {
-$routePlugins-setInvokableClass($name, $class);
+foreach ($plugins as $name => $class) {
+    $routePlugins->setInvokableClass($name, $class);
 }
 ```
 When using `Zend\Mvc\Router\Http\TreeRouteStack`, the `RoutePluginManager` is set up by default, and

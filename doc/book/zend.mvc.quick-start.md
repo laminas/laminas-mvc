@@ -12,14 +12,14 @@ be done in the following ways.
 
 Simply clone the `ZendSkeletonApplication` repository:
 
-```php
+```bash
 prompt> git clone git://github.com/zendframework/ZendSkeletonApplication.git my-application
 ```
 
 Then run [Composer](http://getcomposer.org/)'s `install` command to install the ZF library and any
 other configured dependencies:
 
-```php
+```bash
 prompt> php ./composer.phar install
 ```
 
@@ -28,7 +28,7 @@ prompt> php ./composer.phar install
 Simply clone the `ZendSkeletonApplication` repository, using the `--recursive` option, which will
 also grab ZF.
 
-```php
+```bash
 prompt> git clone --recursive git://github.com/zendframework/ZendSkeletonApplication.git
 my-application
 ```
@@ -249,47 +249,47 @@ your module. Replace &lt;module-name&gt; with the name of your module.
 ```php
 // module.config.php
 return array(
-'<module-name' = array(
-'type'    = 'Literal',
-'options' = array(
-'route'    = '/<module-name',
-'defaults' = array(
-'controller'    = '<module-namespace\Controller\Index',
-'action'        = 'index',
-),
-),
-'may_terminate' = true,
-'child_routes' = array(
-'default' = array(
-'type'    = 'Segment',
-'options' = array(
-'route'    = '/[:controller[/:action]]',
-'constraints' = array(
-'controller' = '[a-zA-Z][a-zA-Z0-9_-]*',
-'action'     = '[a-zA-Z][a-zA-Z0-9_-]*',
-),
-'defaults' = array(
-),
-),
-),
-),
-),
-// ... other configuration ...
+    '<module-name>' => array(
+        'type'    => 'Literal',
+        'options' => array(
+            'route'    => '/<module-name>',
+            'defaults' => array(
+                'controller'    => '<module-namespace>\Controller\Index',
+                'action'        => 'index',
+            ),
+        ),
+        'may_terminate' => true,
+        'child_routes' => array(
+            'default' => array(
+                'type'    => 'Segment',
+                'options' => array(
+                    'route'    => '/[:controller[/:action]]',
+                    'constraints' => array(
+                        'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                    ),
+                ),
+            ),
+        ),
+    ),
+    // ... other configuration ...
 );
 ```
 
 Additionally, we need to tell the application we have a controller:
 
-> ```php
+```php
 // module.config.php
 return array(
-'controllers' = array(
-'invokables' = array(
-'<module-namespace\Controller\Index' = '<module-namespace\Controller\IndexController',
-// Do similar for each other controller in your module
-),
-),
-// ... other configuration ...
+    'controllers' => array(
+        'invokables' => array(
+            '<module-namespace>\Controller\Index' => '<module-namespace>\Controller\IndexController',
+            // Do similar for each other controller in your module
+        ),
+    ),
+   // ... other configuration ...
 );
 ```
 
@@ -365,7 +365,7 @@ ZendSkeletonApplication.
 Now alter the location in your URL to append the path "/hello/world", and load the page. You should
 now get the following content:
 
-```php
+```html
 <h1>Greetings!</h1>
 
 <p>You said "foo".</p>
@@ -373,7 +373,7 @@ now get the following content:
 
 Now alter the location to append "?message=bar" and load the page. You should now get:
 
-```php
+```html
 <h1>Greetings!</h1>
 
 <p>You said "bar".</p>
