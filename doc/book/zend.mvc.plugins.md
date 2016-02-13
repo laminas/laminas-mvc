@@ -511,7 +511,7 @@ rtype
 In each case, the `Response` object is returned. If you return this immediately, you can effectively
 short-circuit execution of the request.
 
-> ## Note
+> ### Note
 This plugin requires that the controller invoking it implements `InjectApplicationEventInterface`,
 and thus has an `MvcEvent` composed, as it retrieves the router from the event object.
 
@@ -540,6 +540,6 @@ $url = $this->url()->fromRoute('route-name', $params);
 
 The `fromRoute()` method is the only public method defined, and has the following signature:
 
-> ## Note
+> ### Note
 This plugin requires that the controller invoking it implements `InjectApplicationEventInterface`,
 and thus has an `MvcEvent` composed, as it retrieves the router from the event object.

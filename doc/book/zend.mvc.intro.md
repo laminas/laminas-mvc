@@ -269,7 +269,7 @@ The `init()` method will basically do the following:
 - Grabs the `ModuleManager` service and load the modules;
 - `bootstrap()`s the `Application` and returns its instance;
 
-> ## Note
+> ### Note
 If you use the `init()` method, you cannot specify a service with the name of 'ApplicationConfig' in
 your service manager config. This name is reserved to hold the array from application.config.php.
 The following services can only be overridden from application.config.php:  
