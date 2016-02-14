@@ -200,7 +200,7 @@ hasCurrentSuccessMessages()
 Additionally, the `FlashMessenger` implements both `IteratorAggregate` and `Countable`, allowing you
 to iterate over and count the flash messages in the current namespace within the session container.
 
-**Examples**
+### Examples
 
 ```php
 public function processAction()
@@ -306,6 +306,7 @@ getAuthenticationService()
 > Retrieves the current authentication service instance if any is attached.
 rtype  
 `Zend\Authentication\AuthenticationService`
+
 ## Layout Plugin
 
 The `Layout` plugin allows for changing layout templates from within controller actions.
@@ -388,7 +389,7 @@ argument defaults to false.
 
 When no arguments are provided, the current matched route is used.
 
-**Example Usage**
+### Example Usage
 
 ```php
 // Pass in the route/url you want to redirect to after the POST
@@ -436,7 +437,7 @@ will default to the current matched route.
 treated as a URL instead of a route name (this is required when redirecting to a URL instead of a
 route). This argument defaults to false.
 
-**Example Usage**
+### Example Usage
 
 ```php
 $myForm = new Zend\Form\Form('my-form');
