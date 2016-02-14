@@ -5,27 +5,27 @@ focusing on performance and flexibility.
 
 The MVC layer is built on top of the following components:
 
-- `Zend\ServiceManager` - Zend Framework provides a set of default service definitions set up at
+* `Zend\ServiceManager` - Zend Framework provides a set of default service definitions set up at
 `Zend\Mvc\Service`. The `ServiceManager` creates and configures your application instance and
 workflow.
-- `Zend\EventManager` - The MVC is event driven. This component is used everywhere from initial
+* `Zend\EventManager` - The MVC is event driven. This component is used everywhere from initial
 bootstrapping of the application, through returning response and request calls, to setting and
 retrieving routes and matched routes, as well as render views.
-- `Zend\Http` - specifically the request and response objects, used within:
-- `Zend\Stdlib\DispatchableInterface`. All "controllers" are simply dispatchable objects.
+* `Zend\Http` - specifically the request and response objects, used within:
+* `Zend\Stdlib\DispatchableInterface`. All "controllers" are simply dispatchable objects.
 
 Within the MVC layer, several sub-components are exposed:
 
-- `Zend\Mvc\Router` contains classes pertaining to routing a request. In other words, it matches the
+* `Zend\Mvc\Router` contains classes pertaining to routing a request. In other words, it matches the
 request to its respective controller (or dispatchable).
-- `Zend\Http\PhpEnvironment` provides a set of decorators for the HTTP `Request` and `Response`
+* `Zend\Http\PhpEnvironment` provides a set of decorators for the HTTP `Request` and `Response`
 objects that ensure the request is injected with the current environment (including query
 parameters, POST parameters, HTTP headers, etc.)
-- `Zend\Mvc\Controller`, a set of abstract "controller" classes with basic responsibilities such as
+* `Zend\Mvc\Controller`, a set of abstract "controller" classes with basic responsibilities such as
 event wiring, action dispatching, etc.
-- `Zend\Mvc\Service` provides a set of `ServiceManager` factories and definitions for the default
+* `Zend\Mvc\Service` provides a set of `ServiceManager` factories and definitions for the default
 application workflow.
-- `Zend\Mvc\View` provides default wiring for renderer selection, view script resolution, helper
+* `Zend\Mvc\View` provides default wiring for renderer selection, view script resolution, helper
 registration, and more; additionally, it provides a number of listeners that tie into the MVC
 workflow, providing features such as automated template name resolution, automated view model
 creation and injection, and more.
@@ -162,15 +162,15 @@ The `view` directory contains view scripts related to your controllers.
 
 The `Application` has six basic dependencies.
 
-- **configuration**, usually an array or object implementing `Traversable`.
-- **ServiceManager** instance.
-- **EventManager** instance, which, by default, is pulled from the `ServiceManager`, by the service
+* **configuration**, usually an array or object implementing `Traversable`.
+* **ServiceManager** instance.
+* **EventManager** instance, which, by default, is pulled from the `ServiceManager`, by the service
 name "EventManager".
-- **ModuleManager** instance, which, by default, is pulled from the `ServiceManager`, by the service
+* **ModuleManager** instance, which, by default, is pulled from the `ServiceManager`, by the service
 name "ModuleManager".
-- **Request** instance, which, by default, is pulled from the `ServiceManager`, by the service name
+* **Request** instance, which, by default, is pulled from the `ServiceManager`, by the service name
 "Request".
-- **Response** instance, which, by default, is pulled from the `ServiceManager`, by the service name
+* **Response** instance, which, by default, is pulled from the `ServiceManager`, by the service name
 "Response".
 
 These may be satisfied at instantiation:
@@ -196,13 +196,13 @@ $application = new Application($config, $serviceManager);
 Once you've done this, there are two additional actions you can take. The first is to "bootstrap"
 the application. In the default implementation, this does the following:
 
-- Attaches the default route listener (`Zend\Mvc\RouteListener`).
-- Attaches the default dispatch listener (`Zend\Mvc\DispatchListener`).
-- Attaches the `ViewManager` listener (`Zend\Mvc\View\ViewManager`).
-- Creates the `MvcEvent`, and injects it with the application, request, and response; it also
+* Attaches the default route listener (`Zend\Mvc\RouteListener`).
+* Attaches the default dispatch listener (`Zend\Mvc\DispatchListener`).
+* Attaches the `ViewManager` listener (`Zend\Mvc\View\ViewManager`).
+* Creates the `MvcEvent`, and injects it with the application, request, and response; it also
 retrieves the router (`Zend\Mvc\Router\Http\TreeRouteStack`) at this time and attaches it to the
 event.
-- Triggers the "bootstrap" event.
+* Triggers the "bootstrap" event.
 
 If you do not want these actions, or want to provide alternatives, you can do so by extending the
 `Application` class and/or simply coding what actions you want to occur.
@@ -260,22 +260,21 @@ $configuration = include 'config/application.config.php';
 Application::init($configuration)->run();
 ```
 
-The `init()` method will basically do the following:  
-- Grabs the application configuration and pulls from the `service_manager` key, creating a
-`ServiceManager`  
-    instance with it and with the default services shipped with `Zend\Mvc`;
+The `init()` method will basically do the following:
 
-- Create a service named `ApplicationConfig` with the application configuration array;
-- Grabs the `ModuleManager` service and load the modules;
-- `bootstrap()`s the `Application` and returns its instance;
+* Grabs the application configuration and pulls from the `service_manager` key, creating a
+`ServiceManager` instance with it and with the default services shipped with `Zend\Mvc`;
+* Create a service named `ApplicationConfig` with the application configuration array;
+* Grabs the `ModuleManager` service and load the modules;
+* `bootstrap()`s the `Application` and returns its instance;
 
 > ## Note
 If you use the `init()` method, you cannot specify a service with the name of 'ApplicationConfig' in
 your service manager config. This name is reserved to hold the array from application.config.php.
 The following services can only be overridden from application.config.php:  
-- `ModuleManager`
-- `SharedEventManager`
-- `EventManager` & `Zend\EventManager\EventManagerInterface`
+* `ModuleManager`
+* `SharedEventManager`
+* `EventManager` & `Zend\EventManager\EventManagerInterface`
 All other services are configured after module loading, thus can be overridden by modules.
 
 You'll note that you have a great amount of control over the workflow. Using the `ServiceManager`,

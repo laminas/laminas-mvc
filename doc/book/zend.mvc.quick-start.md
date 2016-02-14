@@ -35,12 +35,12 @@ my-application
 
 ### Manual Installation
 
-- Download a tarball of the `ZendSkeletonApplication` repository:
-- Zip: <https://github.com/zendframework/ZendSkeletonApplication/zipball/master>
-- Tarball: <https://github.com/zendframework/ZendSkeletonApplication/tarball/master>
-- Deflate the archive you selected and rename the parent directory according to your project needs;
+* Download a tarball of the `ZendSkeletonApplication` repository:
+* Zip: <https://github.com/zendframework/ZendSkeletonApplication/zipball/master>
+* Tarball: <https://github.com/zendframework/ZendSkeletonApplication/tarball/master>
+* Deflate the archive you selected and rename the parent directory according to your project needs;
 we use "my-application" throughout this document.
-- Install Zend Framework, and either have its library on your PHP `include_path`, symlink the
+* Install Zend Framework, and either have its library on your PHP `include_path`, symlink the
 library into your project's "library", or install it directly into your application using Pyrus.
 
 ## Create a New Module
@@ -57,8 +57,8 @@ Additional functionality will be provided by creating new modules.
 To get you started with modules, we recommend using the `ZendSkeletonModule` as a base. Download it
 from here:
 
-- Zip: <https://github.com/zendframework/ZendSkeletonModule/zipball/master>
-- Tarball: <https://github.com/zendframework/ZendSkeletonModule/tarball/master>
+* Zip: <https://github.com/zendframework/ZendSkeletonModule/zipball/master>
+* Tarball: <https://github.com/zendframework/ZendSkeletonModule/tarball/master>
 
 Deflate the package, and rename the directory "ZendSkeletonModule" to reflect the name of the new
 module you want to create; when done, move the module into your new project's `module/` directory.
@@ -136,17 +136,17 @@ need to implement a `dispatch()` method that takes minimally a `Request` object 
 In practice, though, this would mean writing logic to branch based on matched routing within every
 controller. As such, we've created two base controller classes for you to start with:
 
-- `Zend\Mvc\Controller\AbstractActionController` allows routes to match an "action". When matched, a
+* `Zend\Mvc\Controller\AbstractActionController` allows routes to match an "action". When matched, a
 method named after the action will be called by the controller. As an example, if you had a route
 that returned "foo" for the "action" key, the "fooAction" method would be invoked.
-- `Zend\Mvc\Controller\AbstractRestfulController` introspects the `Request` to determine what HTTP
+* `Zend\Mvc\Controller\AbstractRestfulController` introspects the `Request` to determine what HTTP
 method was used, and calls a method according to that.
-- `GET` will call either the `getList()` method, or, if an "id" was matched during routing, the
+* `GET` will call either the `getList()` method, or, if an "id" was matched during routing, the
 `get()` method (with that identifer value).
-- `POST` will call the `create()` method, passing in the `$_POST` values.
-- `PUT` expects an "id" to be matched during routing, and will call the `update()` method, passing
+* `POST` will call the `create()` method, passing in the `$_POST` values.
+* `PUT` expects an "id" to be matched during routing, and will call the `update()` method, passing
 in the identifier, and any data found in the raw post body.
-- `DELETE` expects an "id" to be matched during routing, and will call the `delete()` method.
+* `DELETE` expects an "id" to be matched during routing, and will call the `delete()` method.
 
 To get started, we'll simply create a "hello world"-style controller, with a single action. First,
 create the directory `src/<module name>/Controller`, and then create the file `HelloController.php`
@@ -171,11 +171,11 @@ class HelloController extends AbstractActionController
 
 So, what are we doing here?
 
-- We're creating an action controller.
-- We're defining an action, "world".
-- We're pulling a message from the query parameters (yes, this is a superbly bad idea in production!
+* We're creating an action controller.
+* We're defining an action, "world".
+* We're pulling a message from the query parameters (yes, this is a superbly bad idea in production!
 Always sanitize your inputs!).
-- We're returning a ViewModel with an array of values to be processed later.
+* We're returning a ViewModel with an array of values to be processed later.
 
 We return a `ViewModel`. The view layer will use this when rendering the view, pulling variables and
 the template name from it. By default, you can omit the template name, and it will resolve to
