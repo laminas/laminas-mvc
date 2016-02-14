@@ -426,7 +426,7 @@ $route = Segment::factory(array(
 
 ### Zend\\Mvc\\Router\\Http\\Query (Deprecated)
 
-> ## Warning
+> ### Warning
 #### Potential security issue
 A misuse of this route part can lead to a potential security issue.
 
@@ -490,7 +490,7 @@ The output from our example should then be "/page/my-test-page?format=rss&limit=
 
 ### Zend\\Mvc\\Router\\Http\\Wildcard (Deprecated)
 
-> ## Warning
+> ### Warning
 #### Potential security issue
 A misuse of this route type can lead to a potential security issue.
 
@@ -692,7 +692,7 @@ echo $this->url('modules.zendframework.com/index', array(), array(), true);
 echo $this->url('packages.zendframework.com/index', array(), array(), true);
 ```
 
-> ## Warning
+> ### Warning
 When defining child routes pay attention that the `may_terminate` and `child_routes` definitions are
 in same level as the `options` and `type` definitions. A common pitfall is to have those two
 definitions nested in `options`, which will not result in the desired routes.

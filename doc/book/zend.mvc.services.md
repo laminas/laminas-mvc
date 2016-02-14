@@ -559,7 +559,7 @@ configuration with your application configuration. If you have both a
 `config/autoload/my.global.config.php` and `config/autoload/my.local.config.php`, the local
 configuration file overrides the global configuration.
 
-> ## Warning
+> ### Warning
 Local configuration files are intended to keep sensitive information, such as database credentials,
 and as such, it is highly recommended to keep these local configuration files out of your VCS. The
 `ZendSkeletonApplication`'s `config/autoload/.gitignore` file ignores `*.local.php` files by

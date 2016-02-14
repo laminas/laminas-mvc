@@ -421,7 +421,7 @@ By interacting directly with the form, the File PRG Plugin will turn off any fil
 flags for already uploaded files (for a partially valid form state), as well as run the file input
 filters to move the uploaded files into a new location (configured by the user).
 
-> ## Warning
+> ### Warning
 You **must** attach a Filter for moving the uploaded files to a new location, such as the
 \[RenameUpload Filter\](zend.filter.file.rename-upload), or else your files will be removed upon the
 redirect.
