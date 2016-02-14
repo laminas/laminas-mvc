@@ -18,6 +18,12 @@ The methods it defines are:
 Currently, three listeners are listening to this event at different priorities based on which
 listener is used most.
 
+Class                                                        | Priority | Method Called | Description
+------------------------------------------------------------ | -------- | ------------- | -----------
+`Zend\Mvc\SendResponseListener\PhpEnvironmentResponseSender` | -1000    | `__invoke`    | This is used in context of HTTP (this is the most often used).
+`Zend\Mvc\SendResponseListener\ConsoleResponseSender`        | -2000    | `__invoke`    | This is used in context of Console.
+`Zend\Mvc\SendResponseListener\SimpleStreamResponseSender`   | -3000    | `__invoke`    | 
+
 Because all these listeners have negative priorities, adding your own logic to modify `Response`
 object is easy: just add a new listener without any priority (it will default to 1) and it will
 always be executed first.
