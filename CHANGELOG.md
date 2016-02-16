@@ -91,7 +91,7 @@ All notable changes to this project will be documented in this file, in reverse 
     factories by default. You can force it to do so by passing an optional
     second argument, a boolean flag, with a value of boolean true.
 
-## 2.6.1 - TBD
+## 2.6.1 - 2016-02-16
 
 ### Added
 
@@ -107,7 +107,17 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#69](https://github.com/zendframework/zend-mvc/pull/69) largely reverts
+  [#30](https://github.com/zendframework/zend-mvc/pull/30), having the component
+  utilize the `HydratorPluginManager` from zend-stdlib 2.7.5. This was done to
+  provide backwards compatibility; while zend-stdlib Hydrator types can be used
+  in place of zend-hydrator types, the reverse is not true.
+
+  You can make your code forwards-compatible with version 3, where the
+  `HydratorPluginManager` will be pulled from zend-hydrator, by updating your
+  typehints to use the zend-hydrator classes instead of those from zend-stdlib;
+  the instances returned from the zend-stdlib `HydratorPluginManager`, because
+  they extend those from zend-hydrator, remain compatible. 
 
 ## 2.6.0 - 2015-09-22
 
