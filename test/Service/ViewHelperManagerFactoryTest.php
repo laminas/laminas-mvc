@@ -92,6 +92,7 @@ class ViewHelperManagerFactoryTest extends TestCase
             ['url'],
             ['Url'],
             [Helper\Url::class],
+            ['zendviewhelperurl'],
         ];
     }
 
@@ -124,7 +125,8 @@ class ViewHelperManagerFactoryTest extends TestCase
 
     public function basePathConfiguration()
     {
-        $names = ['basepath', 'basePath', 'BasePath', Helper\BasePath::class];
+        $names = ['basepath', 'basePath', 'BasePath', Helper\BasePath::class, 'zendviewhelperbasepath'];
+
         $configurations = [
             'console' => [[
                 'config' => [
@@ -188,6 +190,7 @@ class ViewHelperManagerFactoryTest extends TestCase
             ['doctype'],
             ['Doctype'],
             [Helper\Doctype::class],
+            ['zendviewhelperdoctype'],
         ];
     }
 
