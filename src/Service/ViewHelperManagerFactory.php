@@ -47,7 +47,29 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         $options = $options ?: [];
+        $options['factories'] = isset($options['factories']) ? $options['factories'] : [];
+        $plugins = parent::__invoke($container, $requestedName, $options);
 
+        // Configure default helpers from other components
+        $plugins = $this->configureHelpers($plugins);
+
+        // Override plugin factories
+        $plugins = $this->injectOverrideFactories($plugins, $serviceLocator);
+
+        return $plugins;
+    }
+
+    /**
+     * Configure helpers from other components.
+     *
+     * Loops through the list of default helper configuration classes, and uses
+     * each to configure the helper plugin manager.
+     *
+     * @param HelperPluginManager $plugins
+     * @return HelperPluginManager
+     */
+    private function configureHelpers(HelperPluginManager $plugins)
+    {
         foreach ($this->defaultHelperMapClasses as $configClass) {
             if (! is_string($configClass) || ! class_exists($configClass)) {
                 continue;
@@ -66,35 +88,55 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
             $options = ArrayUtils::merge($options, $config->toArray());
         }
 
-        $config = $container->has('config') ? $container->get('config') : [];
-
-        $options['factories'] = isset($options['factories']) ? $options['factories'] : [];
-
-        // Configure URL view helper factory
-        $options['factories'][ViewHelper\Url::class] = $this->createUrlHelperFactory();
-
-        // Configure basepath view helper factory
-        $options['factories'][ViewHelper\BasePath::class] = $this->createBasePathHelperFactory($config);
-
-        // Configure doctype view helper factory
-        $options['factories'][ViewHelper\Doctype::class] = $this->createDoctypeHelperFactory();
-
-        return parent::__invoke($container, $requestedName, $options);
+        $plugins->configure($options);
+        return $plugins;
     }
 
     /**
-     * Create a factory for the "url" view helper
+     * Inject override factories into the plugin manager.
      *
+     * @param HelperPluginManager $plugins
+     * @param ContainerInterface $services
+     * @return HelperPluginManager
+     */
+    private function injectOverrideFactories(HelperPluginManager $plugins, ContainerInterface $services)
+    {
+        // Configure URL view helper
+        $urlFactory = $this->createUrlHelperFactory($services);
+        $plugins->setFactory(ViewHelper\Url::class, $urlFactory);
+        $plugins->setFactory('zendviewhelperurl', $urlFactory);
+
+        // Configure base path helper
+        $basePathFactory = $this->createBasePathHelperFactory($services);
+        $plugins->setFactory(ViewHelper\BasePath::class, $basePathFactory);
+        $plugins->setFactory('zendviewhelperbasepath', $basePathFactory);
+
+        // Configure doctype view helper
+        $doctypeFactory = $this->createDoctypeHelperFactory($services);
+        $plugins->setFactory(ViewHelper\doctype::class, $doctypeFactory);
+        $plugins->setFactory('zendviewhelperdoctype', $doctypeFactory);
+
+        return $plugins;
+    }
+
+    /**
+     * Create and return a factory for creating a URL helper.
+     *
+     * Retrieves the application and router from the servicemanager,
+     * and the route match from the MvcEvent composed by the application,
+     * using them to configure the helper.
+     *
+     * @param ContainerInterface $services
      * @return callable
      */
-    private function createUrlHelperFactory()
+    private function createUrlHelperFactory(ContainerInterface $services)
     {
-        return function ($container, $name, array $options = null) {
+        return function () use ($services) {
             $helper = new ViewHelper\Url;
             $router = Console::isConsole() ? 'HttpRouter' : 'Router';
-            $helper->setRouter($container->get($router));
+            $helper->setRouter($services->get($router));
 
-            $match = $container->get('application')
+            $match = $services->get('application')
                 ->getMvcEvent()
                 ->getRouteMatch()
             ;
@@ -107,16 +149,17 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
         };
     }
 
-    /**
-     * Create a factory for the "basepath" view helper
+     * Create and return a factory for creating a BasePath helper.
      *
-     * @param  array $config
+     * Uses configuration and request services to configure the helper.
+     *
+     * @param ContainerInterface $services
      * @return callable
      */
-    private function createBasePathHelperFactory($config)
+    private function createBasePathHelperFactory(ContainerInterface $services)
     {
-        return function ($container, $name, array $options = null) {
-            $config = $container->has('config') ? $container->get('config') : [];
+        return function () use ($services) {
+            $config = $services->has('config') ? $services->get('config') : [];
             $helper = new ViewHelper\BasePath;
 
             if (Console::isConsole()
@@ -131,7 +174,8 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
                 return $helper;
             }
 
-            $request = $container->get('Request');
+            $request = $services->get('Request');
+
             if (is_callable([$request, 'getBasePath'])) {
                 $helper->setBasePath($request->getBasePath());
             }
@@ -141,19 +185,18 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
     }
 
     /**
-     * Configure doctype view helper with doctype from configuration, if available.
+     * Create and return a Doctype helper factory.
      *
      * Other view helpers depend on this to decide which spec to generate their tags
-     * based on.
+     * based on. This is why it must be set early instead of later in the layout phtml.
      *
-     * This is why it must be set early instead of later in the layout phtml.
-     *
+     * @param ContainerInterface $services
      * @return callable
      */
-    private function createDoctypeHelperFactory()
+    private function createDoctypeHelperFactory(ContainerInterface $services)
     {
-        return function ($container, $name, array $options = null) {
-            $config = $container->has('config') ? $container->get('config') : [];
+        return function () use ($services) {
+            $config = $services->has('config') ? $services->get('config') : [];
             $config = isset($config['view_manager']) ? $config['view_manager'] : [];
             $helper = new ViewHelper\Doctype;
             if (isset($config['doctype']) && $config['doctype']) {

@@ -14,13 +14,14 @@ use PHPUnit_Framework_TestCase as TestCase;
 use ReflectionProperty;
 use Zend\Console\Console;
 use Zend\Console\Request as ConsoleRequest;
-use Zend\Http\PhpEnvironment\Request as HttpRequest;
+use Zend\Http\PhpEnvironment\Request;
 use Zend\Mvc\Application;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Router\RouteMatch;
 use Zend\Mvc\Router\RouteStackInterface;
 use Zend\Mvc\Service\ViewHelperManagerFactory;
 use Zend\ServiceManager\ServiceManager;
+use Zend\View\Helper;
 
 class ViewHelperManagerFactoryTest extends TestCase
 {
@@ -49,10 +50,8 @@ class ViewHelperManagerFactoryTest extends TestCase
      */
     public function testDoctypeFactoryDoesNotRaiseErrorOnMissingConfiguration($config)
     {
-        $services = $this->services->withConfig(['services' => [
-            'config' => $config,
-        ]]);
-        $manager = $this->factory->__invoke($services, 'ViewHelperManager');
+        $this->services->setService('config', $config);
+        $manager = $this->factory->createService($this->services);
         $this->assertInstanceof('Zend\View\HelperPluginManager', $manager);
         $doctype = $manager->get('doctype');
         $this->assertInstanceof('Zend\View\Helper\Doctype', $doctype);
@@ -60,10 +59,8 @@ class ViewHelperManagerFactoryTest extends TestCase
 
     public function testConsoleRequestsResultInSilentFailure()
     {
-        $services = $this->services->withConfig(['services' => [
-            'config'  => [],
-            'Request' => new ConsoleRequest(),
-        ]]);
+        $this->services->setService('config', []);
+        $this->services->setService('Request', new ConsoleRequest());
 
         $manager = $this->factory->__invoke($services, 'ViewHelperManager');
 
@@ -88,27 +85,11 @@ class ViewHelperManagerFactoryTest extends TestCase
             $this->markTestSkipped('Cannot force console context; skipping test');
         }
 
-        $services = $this->services->withConfig(['services' => [
-            'config' => [
-                'view_manager' => [
-                    'base_path_console' => 'http://test.com',
-                ],
-            ],
-            'Request' => new ConsoleRequest(),
-        ]]);
-
-        $this->assertTrue($services->has('config'), 'Config service does not appear to be present');
-        $config = $services->get('config');
-        $this->assertArrayHasKey(
-            'view_manager',
-            $config,
-            'Config service is missing view_manager configuration'
-        );
-        $this->assertArrayHasKey(
-            'base_path_console',
-            $config['view_manager'],
-            'Config service is missing base_path_console view_manager configuration'
-        );
+        $this->services->setService('config', [
+            'view_manager' => [
+                'base_path_console' => 'http://test.com'
+            ]
+        ]);
 
         $manager = $this->factory->__invoke($services, 'ViewHelperManager');
 
@@ -116,104 +97,129 @@ class ViewHelperManagerFactoryTest extends TestCase
         $this->assertEquals('http://test.com', $basePath());
     }
 
-    public function testCreatesCustomUrlHelperFactory()
+    public function urlHelperNames()
     {
-        $routeMatch = $this->prophesize(RouteMatch::class);
+        return [
+            ['url'],
+            ['Url'],
+            [Helper\Url::class],
+            ['zendviewhelperurl'],
+        ];
+    }
 
+    /**
+     * @group 71
+     * @dataProvider urlHelperNames
+     */
+    public function testUrlHelperFactoryCanBeInvokedViaShortNameOrFullClassName($name)
+    {
+        $routeMatch = $this->prophesize(RouteMatch::class)->reveal();
         $mvcEvent = $this->prophesize(MvcEvent::class);
-        $mvcEvent->getRouteMatch()->will(function () use ($routeMatch) {
-            return $routeMatch->reveal();
-        });
+        $mvcEvent->getRouteMatch()->willReturn($routeMatch);
 
         $application = $this->prophesize(Application::class);
-        $application->getMvcEvent()->will(function () use ($mvcEvent) {
-            return $mvcEvent->reveal();
-        });
+        $application->getMvcEvent()->willReturn($mvcEvent->reveal());
 
-        $router = $this->prophesize(RouteStackInterface::class);
+        $router = $this->prophesize(RouteStackInterface::class)->reveal();
 
-        $container = $this->prophesize(ContainerInterface::class);
-        $container->has('config')->willReturn(false);
-        $container->get('Router')->will(function () use ($router) {
-            return $router->reveal();
-        });
-        $container->get('HttpRouter')->will(function () use ($router) {
-            return $router->reveal();
-        });
-        $container->get('application')->will(function () use ($application) {
-            return $application->reveal();
-        });
+        $this->services->setService('HttpRouter', $router);
+        $this->services->setService('Router', $router);
+        $this->services->setService('application', $application->reveal());
+        $this->services->setService('config', []);
 
-        $factory = $this->factory;
-        $manager = $factory($container->reveal(), 'ViewHelperManager');
-        $helper  = $manager->get('url');
-        $this->assertAttributeSame($router->reveal(), 'router', $helper);
-        $this->assertAttributeSame($routeMatch->reveal(), 'routeMatch', $helper);
+        $manager = $this->factory->createService($this->services);
+        $helper = $manager->get($name);
+
+        $this->assertAttributeSame($routeMatch, 'routeMatch', $helper, 'Route match was not injected');
+        $this->assertAttributeSame($router, 'router', $helper, 'Router was not injected');
     }
 
-    public function testCustomBasePathHelperFactoryCanUseViewManagerConfig()
+    public function basePathConfiguration()
     {
-        $container = $this->prophesize(ContainerInterface::class);
-        $container->has('config')->willReturn(true);
-        $container->get('config')->willReturn([
+        $names = ['basepath', 'basePath', 'BasePath', Helper\BasePath::class, 'zendviewhelperbasepath'];
+
+        $configurations = [
+            'console' => [[
+                'config' => [
+                    'view_manager' => [
+                        'base_path_console' => '/foo/bar',
+                    ],
+                ],
+            ], '/foo/bar'],
+
+            'hard-coded' => [[
+                'config' => [
+                    'view_manager' => [
+                        'base_path' => '/foo/baz',
+                    ],
+                ],
+            ], '/foo/baz'],
+
+            'request-base' => [[
+                'config' => [], // fails creating plugin manager without this
+                'request' => function () {
+                    $request = $this->prophesize(Request::class);
+                    $request->getBasePath()->willReturn('/foo/bat');
+                    return $request->reveal();
+                },
+            ], '/foo/bat'],
+        ];
+
+        foreach ($names as $name) {
+            foreach ($configurations as $testcase => $arguments) {
+                array_unshift($arguments, $name);
+                $testcase .= '-' . $name;
+                yield $testcase => $arguments;
+            }
+        }
+    }
+
+    /**
+     * @group 71
+     * @dataProvider basePathConfiguration
+     */
+    public function testBasePathHelperFactoryCanBeInvokedViaShortNameOrFullClassName($name, array $services, $expected)
+    {
+        foreach ($services as $key => $value) {
+            if (is_callable($value)) {
+                $this->services->setFactory($key, $value);
+                continue;
+            }
+
+            $this->services->setService($key, $value);
+        }
+
+        $plugins = $this->factory->createService($this->services);
+        $helper = $plugins->get($name);
+        $this->assertInstanceof(Helper\BasePath::class, $helper);
+        $this->assertEquals($expected, $helper());
+    }
+
+    public function doctypeHelperNames()
+    {
+        return [
+            ['doctype'],
+            ['Doctype'],
+            [Helper\Doctype::class],
+            ['zendviewhelperdoctype'],
+        ];
+    }
+
+    /**
+     * @group 71
+     * @dataProvider doctypeHelperNames
+     */
+    public function testDoctypeHelperFactoryCanBeInvokedViaShortNameOrFullClassName($name)
+    {
+        $this->services->setService('config', [
             'view_manager' => [
-                'base_path' => 'https://example.com/test',
+                'doctype' => Helper\Doctype::HTML5,
             ],
         ]);
 
-        $factory = $this->factory;
-        $manager = $factory($container->reveal(), 'ViewHelperManager');
-        $helper  = $manager->get('basepath');
-        $this->assertEquals('https://example.com/test', $helper());
-    }
-
-    public function testCustomBasePathHelperFactoryCanUseViewManagerConsoleConfig()
-    {
-        $container = $this->prophesize(ContainerInterface::class);
-        $container->has('config')->willReturn(true);
-        $container->get('config')->willReturn([
-            'view_manager' => [
-                'base_path_console' => 'https://example.com/test',
-            ],
-        ]);
-
-        $factory = $this->factory;
-        $manager = $factory($container->reveal(), 'ViewHelperManager');
-        $helper  = $manager->get('basepath');
-        $this->assertEquals('https://example.com/test', $helper());
-    }
-
-    public function testCustomBasePathHelperFactoryCanUseRequestService()
-    {
-        $request = $this->prophesize(HttpRequest::class);
-        $request->getBasePath()->willReturn('https://example.com/test');
-
-        $container = $this->prophesize(ContainerInterface::class);
-        $container->has('config')->willReturn(true);
-        $container->get('config')->willReturn([]);
-        $container->get('Request')->will(function () use ($request) {
-            return $request->reveal();
-        });
-
-        $factory = $this->factory;
-        $manager = $factory($container->reveal(), 'ViewHelperManager');
-        $helper  = $manager->get('basepath');
-        $this->assertEquals('https://example.com/test', $helper());
-    }
-
-    public function testCustomDoctypeHelperFactoryCanUseViewManagerConfig()
-    {
-        $container = $this->prophesize(ContainerInterface::class);
-        $container->has('config')->willReturn(true);
-        $container->get('config')->willReturn([
-            'view_manager' => [
-                'doctype' => 'CUSTOM',
-            ],
-        ]);
-
-        $factory = $this->factory;
-        $manager = $factory($container->reveal(), 'ViewHelperManager');
-        $helper  = $manager->get('doctype');
-        $this->assertEquals('CUSTOM', $helper->getDoctype());
+        $plugins = $this->factory->createService($this->services);
+        $helper = $plugins->get($name);
+        $this->assertInstanceof(Helper\Doctype::class, $helper);
+        $this->assertEquals('<!DOCTYPE html>', (string) $helper);
     }
 }
