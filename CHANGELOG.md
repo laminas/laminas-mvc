@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.6.2 - TBD
+## 2.6.2 - 2016-02-22
 
 ### Added
 
@@ -18,7 +18,13 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#71](https://github.com/zendframework/zend-mvc/pull/71) fixes the
+  `ViewHelperManagerFactory` to be backwards-compatible with v2 by ensuring that
+  the factories for each of the `url`, `basepath`, and `doctype` view helpers
+  are registered using the fully qualified class names present in
+  `Zend\View\HelperPluginManager`; these changes ensure requests for these
+  helpers resolve to these override factories, instead of the
+  `InvokableFactory`.
 
 ## 2.6.1 - 2016-02-16
 
