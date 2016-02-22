@@ -21,7 +21,7 @@ class HydratorManagerFactoryTest extends TestCase
     {
         $this->factory = new HydratorManagerFactory();
         $this->services = $this->prophesize(ServiceLocatorInterface::class);
-        $this->services->get('Config')->willReturn([]);
+        $this->services->get('config')->willReturn([]);
     }
 
     public function testFactoryReturnsZendHydratorManagerInstance()
