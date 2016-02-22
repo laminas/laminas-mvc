@@ -91,6 +91,24 @@ All notable changes to this project will be documented in this file, in reverse 
     factories by default. You can force it to do so by passing an optional
     second argument, a boolean flag, with a value of boolean true.
 
+## 2.6.3 - TBD
+
+### Added
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 2.6.2 - 2016-02-22
 
 ### Added
