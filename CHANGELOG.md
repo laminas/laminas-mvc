@@ -91,7 +91,7 @@ All notable changes to this project will be documented in this file, in reverse 
     factories by default. You can force it to do so by passing an optional
     second argument, a boolean flag, with a value of boolean true.
 
-## 2.6.3 - TBD
+## 2.6.3 - 2016-02-23
 
 ### Added
 
@@ -107,7 +107,10 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#74](https://github.com/zendframework/zend-mvc/pull/74) fixes the
+  `FormAnnotationBuilderFactory`'s usage of the
+  `FormElementManager::injectFactory()` method to ensure it works correctly on
+  all versions.
 
 ## 2.6.2 - 2016-02-22
 

@@ -34,7 +34,7 @@ class FormAnnotationBuilderFactory implements FactoryInterface
         $annotationBuilder->setEventManager($ventManager);
 
         $formElementManager = $container->get('FormElementManager');
-        $formElementManager->injectFactory($annotationBuilder);
+        $formElementManager->injectFactory($container, $annotationBuilder);
 
         $config = $container->get('config');
         if (isset($config['form_annotation_builder'])) {
