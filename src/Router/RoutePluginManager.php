@@ -12,7 +12,6 @@ namespace Zend\Mvc\Router;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\AbstractPluginManager;
 use Zend\ServiceManager\Exception\InvalidServiceException;
-use Zend\Stdlib\ArrayUtils;
 
 /**
  * Plugin manager implementation for routes

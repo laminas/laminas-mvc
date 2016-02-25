@@ -9,7 +9,6 @@
 
 namespace ZendTest\Mvc\Service;
 
-use Interop\Container\ContainerInterface;
 use PHPUnit_Framework_TestCase as TestCase;
 use Zend\Hydrator\HydratorPluginManager;
 use Zend\Mvc\Service\HydratorManagerFactory;
