@@ -30,11 +30,9 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
      * @var array
      */
     protected $defaultHelperMapClasses = [
-        /*
         'Zend\Form\View\HelperConfig',
         'Zend\I18n\View\HelperConfig',
         'Zend\Navigation\View\HelperConfig',
-         */
     ];
 
     /**
@@ -54,7 +52,7 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
         $plugins = $this->configureHelpers($plugins);
 
         // Override plugin factories
-        $plugins = $this->injectOverrideFactories($plugins, $serviceLocator);
+        $plugins = $this->injectOverrideFactories($plugins, $container);
 
         return $plugins;
     }
@@ -85,10 +83,9 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
                 ));
             }
 
-            $options = ArrayUtils::merge($options, $config->toArray());
+            $config->configureServiceManager($plugins);
         }
 
-        $plugins->configure($options);
         return $plugins;
     }
 

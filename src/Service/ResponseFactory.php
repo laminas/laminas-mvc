@@ -13,7 +13,9 @@ use Interop\Container\ContainerInterface;
 use Zend\Console\Console;
 use Zend\Console\Response as ConsoleResponse;
 use Zend\Http\PhpEnvironment\Response as HttpResponse;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\Stdlib\MessageInterface;
 
 class ResponseFactory implements FactoryInterface
 {
@@ -23,7 +25,7 @@ class ResponseFactory implements FactoryInterface
      * @param  ContainerInterface $container
      * @param  string $name
      * @param  null|array $options
-     * @return \Zend\Stdlib\Message
+     * @return MessageInterface
      */
     public function __invoke(ContainerInterface $container, $name, array $options = null)
     {
@@ -32,5 +34,18 @@ class ResponseFactory implements FactoryInterface
         }
 
         return new HttpResponse();
+    }
+
+    /**
+     * Create and return MessageInterface instance
+     *
+     * For use with zend-servicemanager v2; proxies to __invoke().
+     *
+     * @param ServiceLocatorInterface $container
+     * @return MessageInterface
+     */
+    public function createService(ServiceLocatorInterface $container)
+    {
+        return $this($container, MessageInterface::class);
     }
 }

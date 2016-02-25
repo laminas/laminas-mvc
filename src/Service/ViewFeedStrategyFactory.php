@@ -10,7 +10,8 @@
 namespace Zend\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\Strategy\FeedStrategy;
 
 class ViewFeedStrategyFactory implements FactoryInterface
@@ -31,5 +32,18 @@ class ViewFeedStrategyFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $name, array $options = null)
     {
         return new FeedStrategy($container->get('ViewFeedRenderer'));
+    }
+
+    /**
+     * Create and return FeedStrategy instance
+     *
+     * For use with zend-servicemanager v2; proxies to __invoke().
+     *
+     * @param ServiceLocatorInterface $container
+     * @return FeedStrategy
+     */
+    public function createService(ServiceLocatorInterface $container)
+    {
+        return $this($container, FeedStrategy::class);
     }
 }

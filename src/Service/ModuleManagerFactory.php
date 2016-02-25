@@ -14,7 +14,8 @@ use Zend\ModuleManager\Listener\DefaultListenerAggregate;
 use Zend\ModuleManager\Listener\ListenerOptions;
 use Zend\ModuleManager\ModuleEvent;
 use Zend\ModuleManager\ModuleManager;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 class ModuleManagerFactory implements FactoryInterface
 {
@@ -137,5 +138,18 @@ class ModuleManagerFactory implements FactoryInterface
         $moduleManager->setEvent($moduleEvent);
 
         return $moduleManager;
+    }
+
+    /**
+     * Create and return ModuleManager instance
+     *
+     * For use with zend-servicemanager v2; proxies to __invoke().
+     *
+     * @param ServiceLocatorInterface $container
+     * @return ModuleManager
+     */
+    public function createService(ServiceLocatorInterface $container)
+    {
+        return $this($container, ModuleManager::class);
     }
 }

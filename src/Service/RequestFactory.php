@@ -13,7 +13,8 @@ use Interop\Container\ContainerInterface;
 use Zend\Console\Console;
 use Zend\Console\Request as ConsoleRequest;
 use Zend\Http\PhpEnvironment\Request as HttpRequest;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 class RequestFactory implements FactoryInterface
 {
@@ -32,5 +33,19 @@ class RequestFactory implements FactoryInterface
         }
 
         return new HttpRequest();
+    }
+
+    /**
+     * Create and return HttpRequest or ConsoleRequest instance
+     *
+     * For use with zend-servicemanager v2; proxies to __invoke().
+     *
+     * @param ServiceLocatorInterface $container
+     * @return HttpRequest|ConsoleRequest
+     */
+    public function createService(ServiceLocatorInterface $container)
+    {
+        $type = Console::isConsole() ? ConsoleRequest::class : HttpRequest::class;
+        return $this($container, $type);
     }
 }

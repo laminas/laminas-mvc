@@ -11,7 +11,8 @@ namespace Zend\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
 use Zend\Mvc\View\Http\InjectTemplateListener;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 class InjectTemplateListenerFactory implements FactoryInterface
 {
@@ -34,5 +35,18 @@ class InjectTemplateListenerFactory implements FactoryInterface
         }
 
         return $listener;
+    }
+
+    /**
+     * Create and return InjectTemplateListener instance
+     *
+     * For use with zend-servicemanager v2; proxies to __invoke().
+     *
+     * @param ServiceLocatorInterface $container
+     * @return InjectTemplateListener
+     */
+    public function createService(ServiceLocatorInterface $container)
+    {
+        return $this($container, InjectTemplateListener::class);
     }
 }

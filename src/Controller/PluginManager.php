@@ -9,7 +9,9 @@
 
 namespace Zend\Mvc\Controller;
 
+use Zend\Mvc\Exception;
 use Zend\ServiceManager\AbstractPluginManager;
+use Zend\ServiceManager\Exception\InvalidServiceException;
 use Zend\ServiceManager\Factory\InvokableFactory;
 use Zend\Stdlib\DispatchableInterface;
 
@@ -21,6 +23,11 @@ use Zend\Stdlib\DispatchableInterface;
  */
 class PluginManager extends AbstractPluginManager
 {
+    /**
+     * Plugins must be of this type.
+     *
+     * @var string
+     */
     protected $instanceOf = Plugin\PluginInterface::class;
 
     /**
@@ -77,6 +84,21 @@ class PluginManager extends AbstractPluginManager
         Plugin\Url::class                         => InvokableFactory::class,
         Plugin\CreateHttpNotFoundModel::class     => InvokableFactory::class,
         Plugin\CreateConsoleNotFoundModel::class  => InvokableFactory::class,
+
+        // v2 normalized names
+
+        'zendmvccontrollerpluginforward'                     => Plugin\Service\ForwardFactory::class,
+        'zendmvccontrollerpluginidentity'                    => Plugin\Service\IdentityFactory::class,
+        'zendmvccontrollerpluginacceptableviewmodelselector' => InvokableFactory::class,
+        'zendmvccontrollerpluginfilepostredirectget'         => InvokableFactory::class,
+        'zendmvccontrollerpluginflashmessenger'              => InvokableFactory::class,
+        'zendmvccontrollerpluginlayout'                      => InvokableFactory::class,
+        'zendmvccontrollerpluginparams'                      => InvokableFactory::class,
+        'zendmvccontrollerpluginpostredirectget'             => InvokableFactory::class,
+        'zendmvccontrollerpluginredirect'                    => InvokableFactory::class,
+        'zendmvccontrollerpluginurl'                         => InvokableFactory::class,
+        'zendmvccontrollerplugincreatehttpnotfoundmodel'     => InvokableFactory::class,
+        'zendmvccontrollerplugincreateconsolenotfoundmodel'  => InvokableFactory::class,
     ];
 
     /**
@@ -149,5 +171,41 @@ class PluginManager extends AbstractPluginManager
         }
 
         $plugin->setController($controller);
+    }
+
+    /**
+     * Validate a plugin (v3)
+     *
+     * {@inheritDoc}
+     */
+    public function validate($plugin)
+    {
+        if (! $plugin instanceof $this->instanceOf) {
+            throw new InvalidServiceException(sprintf(
+                'Plugin of type "%s" is invalid; must implement %s',
+                (is_object($plugin) ? get_class($plugin) : gettype($plugin)),
+                $this->instanceOf
+            ));
+        }
+    }
+
+    /**
+     * Validate a plugin (v2)
+     *
+     * {@inheritDoc}
+     *
+     * @throws Exception\InvalidPluginException
+     */
+    public function validatePlugin($plugin)
+    {
+        try {
+            $this->validate($plugin);
+        } catch (InvalidServiceException $e) {
+            throw new Exception\InvalidPluginException(
+                $e->getMessage(),
+                $e->getCode(),
+                $e
+            );
+        }
     }
 }

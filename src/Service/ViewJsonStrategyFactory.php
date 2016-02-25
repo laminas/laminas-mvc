@@ -10,7 +10,8 @@
 namespace Zend\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\Strategy\JsonStrategy;
 
 class ViewJsonStrategyFactory implements FactoryInterface
@@ -33,5 +34,18 @@ class ViewJsonStrategyFactory implements FactoryInterface
         $jsonRenderer = $container->get('ViewJsonRenderer');
         $jsonStrategy = new JsonStrategy($jsonRenderer);
         return $jsonStrategy;
+    }
+
+    /**
+     * Create and return JsonStrategy instance
+     *
+     * For use with zend-servicemanager v2; proxies to __invoke().
+     *
+     * @param ServiceLocatorInterface $container
+     * @return JsonStrategy
+     */
+    public function createService(ServiceLocatorInterface $container)
+    {
+        return $this($container, JsonStrategy::class);
     }
 }

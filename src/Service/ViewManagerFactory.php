@@ -13,7 +13,8 @@ use Interop\Container\ContainerInterface;
 use Zend\Console\Console;
 use Zend\Mvc\View\Console\ViewManager as ConsoleViewManager;
 use Zend\Mvc\View\Http\ViewManager as HttpViewManager;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 class ViewManagerFactory implements FactoryInterface
 {
@@ -32,5 +33,19 @@ class ViewManagerFactory implements FactoryInterface
         }
 
         return $container->get('HttpViewManager');
+    }
+
+    /**
+     * Create and return HttpViewManager or ConsoleViewManager instance
+     *
+     * For use with zend-servicemanager v2; proxies to __invoke().
+     *
+     * @param ServiceLocatorInterface $container
+     * @return HttpViewManager|ConsoleViewManager
+     */
+    public function createService(ServiceLocatorInterface $container)
+    {
+        $type = Console::isConsole() ? ConsoleViewManager::class : HttpViewManager::class;
+        return $this($container, $type);
     }
 }

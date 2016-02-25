@@ -10,7 +10,8 @@
 namespace Zend\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\Renderer\PhpRenderer;
 
 class ViewPhpRendererFactory implements FactoryInterface
@@ -28,5 +29,18 @@ class ViewPhpRendererFactory implements FactoryInterface
         $renderer->setResolver($container->get('ViewResolver'));
 
         return $renderer;
+    }
+
+    /**
+     * Create and return PhpRenderer instance
+     *
+     * For use with zend-servicemanager v2; proxies to __invoke().
+     *
+     * @param ServiceLocatorInterface $container
+     * @return PhpRenderer
+     */
+    public function createService(ServiceLocatorInterface $container)
+    {
+        return $this($container, PhpRenderer::class);
     }
 }

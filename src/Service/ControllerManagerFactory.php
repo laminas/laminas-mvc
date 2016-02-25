@@ -11,7 +11,8 @@ namespace Zend\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
 use Zend\Mvc\Controller\ControllerManager;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 class ControllerManagerFactory implements FactoryInterface
 {
@@ -36,5 +37,18 @@ class ControllerManagerFactory implements FactoryInterface
             return new ControllerManager($container, $options);
         }
         return new ControllerManager($container);
+    }
+
+    /**
+     * Create and return ControllerManager instance
+     *
+     * For use with zend-servicemanager v2; proxies to __invoke().
+     *
+     * @param ServiceLocatorInterface $container
+     * @return ControllerManager
+     */
+    public function createService(ServiceLocatorInterface $container)
+    {
+        return $this($container, ControllerManager::class);
     }
 }

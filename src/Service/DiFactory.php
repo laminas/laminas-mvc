@@ -9,6 +9,7 @@
 
 namespace Zend\Mvc\Service;
 
+use Interop\Container\ContainerInterface;
 use Zend\Di\Config;
 use Zend\Di\Di;
 use Zend\ServiceManager\FactoryInterface;
@@ -26,13 +27,15 @@ class DiFactory implements FactoryInterface
      * DiAbstractServiceFactory, which is then registered with the service
      * manager.
      *
-     * @param  ServiceLocatorInterface $serviceLocator
+     * @param ContainerInterface $container
+     * @param string $name
+     * @param null|array $options
      * @return Di
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $name, array $options = null)
     {
         $di     = new Di();
-        $config = $serviceLocator->get('Config');
+        $config = $container->get('config');
 
         if (isset($config['di'])) {
             $config = new Config($config['di']);
@@ -40,5 +43,18 @@ class DiFactory implements FactoryInterface
         }
 
         return $di;
+    }
+
+    /**
+     * Create and return Di instance
+     *
+     * For use with zend-servicemanager v2; proxies to __invoke().
+     *
+     * @param ServiceLocatorInterface $container
+     * @return Di
+     */
+    public function createService(ServiceLocatorInterface $container)
+    {
+        return $this($container, Di::class);
     }
 }

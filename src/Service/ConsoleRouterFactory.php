@@ -11,7 +11,9 @@ namespace Zend\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
 use Zend\Console\Console;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Zend\Mvc\Router\RouteStackInterface;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 class ConsoleRouterFactory implements FactoryInterface
 {
@@ -23,7 +25,7 @@ class ConsoleRouterFactory implements FactoryInterface
      * @param  ContainerInterface $container
      * @param  string $name
      * @param  null|array $options
-     * @return \Zend\Mvc\Router\RouteStackInterface
+     * @return RouteStackInterface
      */
     public function __invoke(ContainerInterface $container, $name, array $options = null)
     {
@@ -34,5 +36,18 @@ class ConsoleRouterFactory implements FactoryInterface
         $config = isset($config['console']['router']) ? $config['console']['router'] : [];
 
         return $this->createRouter($class, $config, $container);
+    }
+
+    /**
+     * Create and return RouteStackInterface instance
+     *
+     * For use with zend-servicemanager v2; proxies to __invoke().
+     *
+     * @param ServiceLocatorInterface $container
+     * @return RouteStackInterface
+     */
+    public function createService(ServiceLocatorInterface $container)
+    {
+        return $this($container, RouteStackInterface::class);
     }
 }

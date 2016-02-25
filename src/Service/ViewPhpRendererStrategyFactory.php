@@ -10,7 +10,8 @@
 namespace Zend\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\Strategy\PhpRendererStrategy;
 use Zend\View\Renderer\PhpRenderer;
 
@@ -25,5 +26,18 @@ class ViewPhpRendererStrategyFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $name, array $options = null)
     {
         return new PhpRendererStrategy($container->get(PhpRenderer::class));
+    }
+
+    /**
+     * Create and return PhpRendererStrategy instance
+     *
+     * For use with zend-servicemanager v2; proxies to __invoke().
+     *
+     * @param ServiceLocatorInterface $container
+     * @return PhpRendererStrategy
+     */
+    public function createService(ServiceLocatorInterface $container)
+    {
+        return $this($container, PhpRendererStrategy::class);
     }
 }
