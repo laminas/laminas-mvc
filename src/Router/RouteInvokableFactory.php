@@ -11,7 +11,8 @@ namespace Zend\Mvc\Router;
 
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Exception\ServiceNotCreatedException;
-use Zend\ServiceManager\Factory\AbstractFactoryInterface;
+use Zend\ServiceManager\AbstractFactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Specialized invokable/abstract factory for use with RoutePluginManager.
@@ -22,7 +23,7 @@ use Zend\ServiceManager\Factory\AbstractFactoryInterface;
 class RouteInvokableFactory implements AbstractFactoryInterface
 {
     /**
-     * Can we create a route instance with the given name?
+     * Can we create a route instance with the given name? (v3)
      *
      * Only works for FQCN $routeName values, for classes that implement RouteInterface.
      *
@@ -30,7 +31,7 @@ class RouteInvokableFactory implements AbstractFactoryInterface
      * @param string $routeName
      * @return bool
      */
-    public function canCreateServiceWithName(ContainerInterface $container, $routeName)
+    public function canCreate(ContainerInterface $container, $routeName)
     {
         if (! class_exists($routeName)) {
             return false;
@@ -41,6 +42,21 @@ class RouteInvokableFactory implements AbstractFactoryInterface
         }
 
         return true;
+    }
+
+    /**
+     * Can we create a route instance with the given name? (v2)
+     *
+     * Proxies to canCreate().
+     *
+     * @param ServiceLocatorInterface $container
+     * @param string $normalizedName
+     * @param string $routeName
+     * @return bool
+     */
+    public function canCreateServiceWithName(ServiceLocatorInterface $container, $normalizedName, $routeName)
+    {
+        return $this->canCreate($container, $routeName);
     }
 
     /**
@@ -79,5 +95,20 @@ class RouteInvokableFactory implements AbstractFactoryInterface
         }
 
         return $routeName::factory($options);
+    }
+
+    /**
+     * Create a route instance with the given name. (v2)
+     *
+     * Proxies to __invoke().
+     *
+     * @param ServiceLocatorInterface $container
+     * @param string $normalizedName
+     * @param string $routeName
+     * @return RouteInterface
+     */
+    public function createServiceWithName(ServiceLocatorInterface $container, $normalizedName, $routeName)
+    {
+        return $this($container, $routeName);
     }
 }
