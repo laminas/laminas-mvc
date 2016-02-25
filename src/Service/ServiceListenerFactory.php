@@ -14,7 +14,7 @@ use Zend\ModuleManager\Listener\ServiceListener;
 use Zend\ModuleManager\Listener\ServiceListenerInterface;
 use Zend\Mvc\View;
 use Zend\ServiceManager\Exception\ServiceNotCreatedException;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\Factory\InvokableFactory;
 
 class ServiceListenerFactory implements FactoryInterface
@@ -36,14 +36,33 @@ class ServiceListenerFactory implements FactoryInterface
      * @var array
      */
     protected $defaultServiceConfig = [
-        'invokables' => [
-            'MiddlewareListener'   => 'Zend\Mvc\MiddlewareListener',
-            'RouteListener'        => 'Zend\Mvc\RouteListener',
-            'SendResponseListener' => 'Zend\Mvc\SendResponseListener',
-            'ViewJsonRenderer'     => 'Zend\View\Renderer\JsonRenderer',
-            'ViewFeedRenderer'     => 'Zend\View\Renderer\FeedRenderer',
+        'aliases' => [
+            'Config'                                     => 'config',
+            'Configuration'                              => 'config',
+            'configuration'                              => 'config',
+            'Console'                                    => 'ConsoleAdapter',
+            'ConsoleDefaultRenderingStrategy'            => View\Console\DefaultRenderingStrategy::class,
+            'HttpDefaultRenderingStrategy'               => View\Http\DefaultRenderingStrategy::class,
+            'MiddlewareListener'                         => 'Zend\Mvc\MiddlewareListener',
+            'RouteListener'                              => 'Zend\Mvc\RouteListener',
+            'SendResponseListener'                       => 'Zend\Mvc\SendResponseListener',
+            'View'                                       => 'Zend\View\View',
+            'ViewFeedRenderer'                           => 'Zend\View\Renderer\FeedRenderer',
+            'ViewJsonRenderer'                           => 'Zend\View\Renderer\JsonRenderer',
+            'ViewPhpRendererStrategy'                    => 'Zend\View\Strategy\PhpRendererStrategy',
+            'ViewPhpRenderer'                            => 'Zend\View\Renderer\PhpRenderer',
+            'ViewRenderer'                               => 'Zend\View\Renderer\PhpRenderer',
+            'Zend\Form\Annotation\FormAnnotationBuilder' => 'FormAnnotationBuilder',
+            'Zend\Mvc\Controller\PluginManager'          => 'ControllerPluginManager',
+            'Zend\Mvc\View\Http\InjectTemplateListener'  => 'InjectTemplateListener',
+            'Zend\View\Renderer\RendererInterface'       => 'Zend\View\Renderer\PhpRenderer',
+            'Zend\View\Resolver\TemplateMapResolver'     => 'ViewTemplateMapResolver',
+            'Zend\View\Resolver\TemplatePathStack'       => 'ViewTemplatePathStack',
+            'Zend\View\Resolver\AggregateResolver'       => 'ViewResolver',
+            'Zend\View\Resolver\ResolverInterface'       => 'ViewResolver',
         ],
-        'factories' => [
+        'invokables' => [],
+        'factories'  => [
             'Application'                    => 'Zend\Mvc\Service\ApplicationFactory',
             'config'                         => 'Zend\Mvc\Service\ConfigFactory',
             'ControllerManager'              => 'Zend\Mvc\Service\ControllerManagerFactory',
@@ -86,56 +105,40 @@ class ServiceListenerFactory implements FactoryInterface
             'ViewTemplateMapResolver'        => 'Zend\Mvc\Service\ViewTemplateMapResolverFactory',
             'ViewTemplatePathStack'          => 'Zend\Mvc\Service\ViewTemplatePathStackFactory',
             'ViewPrefixPathStackResolver'    => 'Zend\Mvc\Service\ViewPrefixPathStackResolverFactory',
+            'Zend\Mvc\MiddlewareListener'    => InvokableFactory::class,
+            'Zend\Mvc\RouteListener'         => InvokableFactory::class,
+            'Zend\Mvc\SendResponseListener'  => InvokableFactory::class,
+            'Zend\View\Renderer\FeedRenderer' => InvokableFactory::class,
+            'Zend\View\Renderer\JsonRenderer' => InvokableFactory::class,
             'Zend\View\Renderer\PhpRenderer' => ViewPhpRendererFactory::class,
             'Zend\View\Strategy\PhpRendererStrategy' => ViewPhpRendererStrategyFactory::class,
             'Zend\View\View'                 => ViewFactory::class,
         ],
-        'aliases' => [
-            'Config'                                     => 'config',
-            'Configuration'                              => 'config',
-            'configuration'                              => 'config',
-            'Console'                                    => 'ConsoleAdapter',
-            'ConsoleDefaultRenderingStrategy'            => View\Console\DefaultRenderingStrategy::class,
-            'HttpDefaultRenderingStrategy'               => View\Http\DefaultRenderingStrategy::class,
-            'View'                                       => 'Zend\View\View',
-            'ViewPhpRendererStrategy'                    => 'Zend\View\Strategy\PhpRendererStrategy',
-            'ViewPhpRenderer'                            => 'Zend\View\Renderer\PhpRenderer',
-            'ViewRenderer'                               => 'Zend\View\Renderer\PhpRenderer',
-            'Zend\Form\Annotation\FormAnnotationBuilder' => 'FormAnnotationBuilder',
-            'Zend\Mvc\Controller\PluginManager'          => 'ControllerPluginManager',
-            'Zend\Mvc\View\Http\InjectTemplateListener'  => 'InjectTemplateListener',
-            'Zend\View\Renderer\RendererInterface'       => 'Zend\View\Renderer\PhpRenderer',
-            'Zend\View\Resolver\TemplateMapResolver'     => 'ViewTemplateMapResolver',
-            'Zend\View\Resolver\TemplatePathStack'       => 'ViewTemplatePathStack',
-            'Zend\View\Resolver\AggregateResolver'       => 'ViewResolver',
-            'Zend\View\Resolver\ResolverInterface'       => 'ViewResolver',
-        ],
-        /*
         'abstract_factories' => [
             'Zend\Form\FormAbstractServiceFactory',
         ],
-         */
     ];
 
     /**
      * Create the service listener service
      *
      * Tries to get a service named ServiceListenerInterface from the service
-     * locator, otherwise creates a Zend\ModuleManager\Listener\ServiceListener
-     * service, passing it the service locator instance and the default service
-     * configuration, which can be overridden by modules.
+     * locator, otherwise creates a ServiceListener instance, passing it the
+     * container instance and the default service configuration, which can be
+     * overridden by modules.
      *
      * It looks for the 'service_listener_options' key in the application
-     * config and tries to add service manager as configured. The value of
-     * 'service_listener_options' must be a list (array) which contains the
+     * config and tries to add service/plugin managers as configured. The value
+     * of 'service_listener_options' must be a list (array) which contains the
      * following keys:
-     *   - service_manager: the name of the service manage to create as string
-     *   - config_key: the name of the configuration key to search for as string
-     *   - interface: the name of the interface that modules can implement as string
-     *   - method: the name of the method that modules have to implement as string
+     *
+     * - service_manager: the name of the service manage to create as string
+     * - config_key: the name of the configuration key to search for as string
+     * - interface: the name of the interface that modules can implement as string
+     * - method: the name of the method that modules have to implement as string
      *
      * @param  ServiceLocatorInterface  $serviceLocator
-     * @return ServiceListener
+     * @return ServiceListenerInterface
      * @throws ServiceNotCreatedException for invalid ServiceListener service
      * @throws ServiceNotCreatedException For invalid configurations.
      */
@@ -149,8 +152,8 @@ class ServiceListenerFactory implements FactoryInterface
 
         if (! $serviceListener instanceof ServiceListenerInterface) {
             throw new ServiceNotCreatedException(
-                'The service named ServiceListenerInterface must implement ' .
-                'Zend\ModuleManager\Listener\ServiceListenerInterface'
+                'The service named ServiceListenerInterface must implement '
+                .  ServiceListenerInterface::class
             );
         }
 
@@ -159,6 +162,17 @@ class ServiceListenerFactory implements FactoryInterface
         }
 
         return $serviceListener;
+    }
+
+    /**
+     * Create and return the ServiceListener (v2)
+     *
+     * @param ServiceLocatorInterface $container
+     * @return ServiceListenerInterface
+     */
+    public function createService(ServiceLocatorInterface $container)
+    {
+        return $this($container, ServiceListener::class);
     }
 
     /**
