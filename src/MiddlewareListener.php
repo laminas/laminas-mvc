@@ -48,7 +48,7 @@ class MiddlewareListener extends AbstractListenerAggregate
         $serviceManager = $application->getServiceManager();
         $middlewareName = is_string($middleware) ? $middleware : get_class($middleware);
 
-        if (is_string($middleware) && $serviceManager->has($middleware, true)) {
+        if (is_string($middleware) && $serviceManager->has($middleware)) {
             $middleware = $serviceManager->get($middleware);
         }
         if (! is_callable($middleware)) {

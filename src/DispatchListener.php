@@ -85,7 +85,7 @@ class DispatchListener extends AbstractListenerAggregate
 
 
         // Query abstract controllers, too!
-        if (! $controllerManager->has($controllerName, true)) {
+        if (! $controllerManager->has($controllerName)) {
             $return = $this->marshalControllerNotFoundEvent($application::ERROR_CONTROLLER_NOT_FOUND, $controllerName, $e, $application);
             return $this->complete($return, $e);
         }

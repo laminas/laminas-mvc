@@ -80,11 +80,6 @@ All notable changes to this project will be documented in this file, in reverse 
     `Zend\ModuleManager\Listener\ServiceListener` instance before retrieving and
     bootstrapping the `Application` instance; this ensure it is fully
     configured at that time.
-- [#38](https://github.com/zendframework/zend-mvc/pull/38) Ensure middleware
-  tests against abstract factories
-  - zend-servicemanager v3 modified the behavior of has() to not search abstract
-    factories by default. You can force it to do so by passing an optional
-    second argument, a boolean flag, with a value of boolean true.
 
 ## 2.6.4 - TBD
 
