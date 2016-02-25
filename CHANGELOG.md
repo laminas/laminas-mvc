@@ -40,25 +40,20 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Deprecated
 
-- Nothing.
+- Two initializers registered by `Zend\Mvc\Service\ServiceManagerConfig` are now
+  deprecated, and will be removed starting in version 3.0:
+  - `ServiceManagerAwareInitializer`, which injects classes implementing
+    `Zend\ServiceManager\ServiceManagerAwareInterface` with the service manager
+    instance. Users should create factories for such classes that directly
+    inject their dependencies instead.
+  - `ServiceLocatorAwareInitializer`, which injects classes implementing
+    `Zend\ServiceManager\ServiceLocatorAwareInterface` with the service manager
+    instance. Users should create factories for such classes that directly
+    inject their dependencies instead.
 
 ### Removed
 
-- [#36](https://github.com/zendframework/zend-mvc/pull/36) removes
-  `Zend\Mvc\Service\ConfigFactory`, as the functionality is now incorporated
-  into `Zend\ModuleManager\Listener\ServiceListener`.
-- [#36](https://github.com/zendframework/zend-mvc/pull/36) removes
-  the `ServiceLocatorAware` intializer, as zend-servicemanager v3 no longer
-  defines the interface.
-- [#36](https://github.com/zendframework/zend-mvc/pull/36) removes
-  `Zend\Mvc\Service\ControllerLoaderFactory` and replaces it with
-  `Zend\Mvc\Service\ControllerManagerFactory`.
-- [#36](https://github.com/zendframework/zend-mvc/pull/36) removes
-  `Zend\Mvc\Service\DiFactory`, `Zend\Mvc\Service\DiAbstractServiceFactory`,
-  `Zend\Mvc\Service\DiStrictAbstractServiceFactory`,
-  `Zend\Mvc\Service\DiStrictAbstractServiceFactoryFactory`,
-  and `Zend\Mvc\Service\DiServiceInitializerFactory`, as zend-servicemanager v3
-  removes `Zend\Di` integration.
+- Nothing.
 
 ### Fixed
 
