@@ -106,19 +106,22 @@ class Application implements
      *
      * @param mixed $configuration
      * @param ServiceManager $serviceManager
+     * @param null|EventManagerInterface $events
+     * @param null|RequestInterface $request
+     * @param null|ResponseInterface $response
      */
     public function __construct(
         $configuration,
         ServiceManager $serviceManager,
-        EventManagerInterface $events,
-        RequestInterface $request,
-        ResponseInterface $response
+        EventManagerInterface $events = null,
+        RequestInterface $request = null,
+        ResponseInterface $response = null
     ) {
         $this->configuration  = $configuration;
         $this->serviceManager = $serviceManager;
-        $this->setEventManager($events);
-        $this->request        = $request;
-        $this->response       = $response;
+        $this->setEventManager($events ?: $serviceManager->get('EventManager'));
+        $this->request        = $request ?: $serviceManager->get('Request');
+        $this->response       = $response ?: $serviceManager->get('Response');
     }
 
     /**
