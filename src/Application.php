@@ -146,8 +146,8 @@ class Application implements
      */
     public function bootstrap(array $listeners = [])
     {
-        $events         = $this->events;
         $serviceManager = $this->serviceManager;
+        $events         = $this->events;
 
         // Setup default listeners
         $listeners = array_unique(array_merge($this->defaultListeners, $listeners));
@@ -264,19 +264,12 @@ class Application implements
         $smConfig = isset($configuration['service_manager']) ? $configuration['service_manager'] : [];
         $smConfig = new Service\ServiceManagerConfig($smConfig);
 
-        $serviceManager = new ServiceManager($smConfig->toArray());
-        $serviceManager = $serviceManager->withConfig(['services' => [
-            'ApplicationConfig' => $configuration,
-        ]]);
+        $serviceManager = new ServiceManager();
+        $smConfig->configureServiceManager($serviceManager);
+        $serviceManager->setService('ApplicationConfig', $configuration);
 
         // Load modules
         $serviceManager->get('ModuleManager')->loadModules();
-
-        // Get the configured SM if necessary.
-        if ($serviceManager->has('ServiceListener')) {
-            $serviceListener = $serviceManager->get('ServiceListener');
-            $serviceManager  = $serviceListener->getConfiguredServiceManager();
-        }
 
         // Prepare list of listeners to bootstrap
         $listenersFromAppConfig     = isset($configuration['listeners']) ? $configuration['listeners'] : [];
