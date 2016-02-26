@@ -148,7 +148,7 @@ class ServiceListenerFactory implements FactoryInterface
 
         $serviceListener = $container->has('ServiceListenerInterface')
             ? $container->get('ServiceListenerInterface')
-            : new ServiceListener($container, $this->defaultServiceConfig);
+            : new ServiceListener($container);
 
         if (! $serviceListener instanceof ServiceListenerInterface) {
             throw new ServiceNotCreatedException(
@@ -156,6 +156,8 @@ class ServiceListenerFactory implements FactoryInterface
                 .  ServiceListenerInterface::class
             );
         }
+
+        $serviceListener->setDefaultServiceConfig($this->defaultServiceConfig);
 
         if (isset($configuration['service_listener_options'])) {
             $this->injectServiceListenerOptions($configuration['service_listener_options'], $serviceListener);
