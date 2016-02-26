@@ -104,16 +104,25 @@ class RoutePluginManager extends AbstractPluginManager
      *
      * @param string $name
      * @param string $class
+     * @param bool $shared
      * @return self
      */
-    public function setInvokableClass($name, $class)
+    public function setInvokableClass($name, $class, $shared = null)
     {
         foreach ($this->createAliasesForInvokables([$name => $class]) as $name => $class) {
             $this->setAlias($name, $class);
+
+            if (is_bool($shared)) {
+                $this->setShared($name, $shared);
+            }
         }
 
         foreach ($this->createFactoriesForInvokables([$name => $class]) as $name => $factory) {
             $this->setFactory($name, $factory);
+
+            if (is_bool($shared)) {
+                $this->setShared($name, $shared);
+            }
         }
 
         return $this;

@@ -16,6 +16,7 @@ use Zend\Mvc\View;
 use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\Factory\InvokableFactory;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 class ServiceListenerFactory implements FactoryInterface
 {
