@@ -10,6 +10,7 @@
 namespace ZendTest\Mvc\Controller\Plugin;
 
 use PHPUnit_Framework_TestCase as TestCase;
+use ReflectionClass;
 use stdClass;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
@@ -50,8 +51,7 @@ class ForwardTest extends TestCase
 
     public function setUp()
     {
-        $eventManager = new EventManager();
-        $eventManager->setSharedManager(new SharedEventManager());
+        $eventManager = $this->createEventManager(new SharedEventManager());
         $mockApplication = $this->getMock('Zend\Mvc\ApplicationInterface');
         $mockApplication->expects($this->any())->method('getEventManager')->will($this->returnValue($eventManager));
 
@@ -84,9 +84,7 @@ class ForwardTest extends TestCase
                     return new PluginManager($services);
                 },
                 'EventManager' => function ($services, $name) {
-                    $eventManager = new EventManager();
-                    $eventManager->setSharedManager($services->get('SharedEventManager'));
-                    return $eventManager;
+                    return $this->createEventManager($services->get('SharedEventManager'));
                 },
                 'SharedEventManager' => function ($services, $name) {
                     return new SharedEventManager();
@@ -107,6 +105,25 @@ class ForwardTest extends TestCase
         $this->controller->setPluginManager($plugins);
 
         $this->plugin = $plugins->get('forward');
+    }
+
+    /**
+     * Create an event manager instance based on zend-eventmanager version
+     *
+     * @param SharedEventManager
+     * @return EventManager
+     */
+    protected function createEventManager($sharedManager)
+    {
+        $r = new ReflectionClass(EventManager::class);
+
+        if ($r->hasMethod('setSharedManager')) {
+            $events = new EventManager();
+            $events->setSharedManager($sharedManager);
+            return $events;
+        }
+
+        return new EventManager($sharedManager);
     }
 
     public function testPluginWithoutEventAwareControllerRaisesDomainException()
@@ -172,9 +189,7 @@ class ForwardTest extends TestCase
                     return new PluginManager($services);
                 },
                 'EventManager' => function ($services, $name) {
-                    $eventManager = new EventManager();
-                    $eventManager->setSharedManager($services->get('SharedEventManager'));
-                    return $eventManager;
+                    return $this->createEventManager($services->get('SharedEventManager'));
                 },
                 'SharedEventManager' => function ($services, $name) {
                     return new SharedEventManager();
@@ -216,8 +231,7 @@ class ForwardTest extends TestCase
             function ($e) {}
         ]));
         // @codingStandardsIgnoreEnd
-        $events = new EventManager();
-        $events->setSharedManager($sharedEvents);
+        $events = $this->createEventManager($sharedEvents);
         $application = $this->getMock('Zend\Mvc\ApplicationInterface');
         $application->expects($this->any())->method('getEventManager')->will($this->returnValue($events));
         $event = $this->controller->getEvent();

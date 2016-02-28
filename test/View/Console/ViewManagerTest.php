@@ -10,6 +10,7 @@
 namespace ZendTest\Mvc\View\Console;
 
 use PHPUnit_Framework_TestCase as TestCase;
+use ReflectionClass;
 use ReflectionProperty;
 use Zend\Console\Request as ConsoleRequest;
 use Zend\Console\Response as ConsoleResponse;
@@ -51,6 +52,24 @@ class ViewManagerTest extends TestCase
         $this->services = new ServiceManager();
         $this->prepareServiceManagerConfig()->configureServiceManager($this->services);
         $this->factory  = new ConsoleViewManagerFactory();
+    }
+
+    /**
+     * Create an event manager instance based on zend-eventmanager version
+     *
+     * @return EventManager
+     */
+    protected function createEventManager()
+    {
+        $r = new ReflectionClass(EventManager::class);
+
+        if ($r->hasMethod('setSharedManager')) {
+            $events = new EventManager();
+            $events->setSharedManager(new SharedEventManager());
+            return $events;
+        }
+
+        return new EventManager(new SharedEventManager());
     }
 
     private function prepareServiceManagerConfig()
@@ -121,8 +140,7 @@ class ViewManagerTest extends TestCase
      */
     public function testConsoleKeyWillOverrideDisplayExceptionAndExceptionMessage($config)
     {
-        $eventManager = new EventManager();
-        $eventManager->setSharedManager(new SharedEventManager());
+        $eventManager = $this->createEventManager();
         $request      = new ConsoleRequest();
         $response     = new ConsoleResponse();
 
@@ -150,8 +168,7 @@ class ViewManagerTest extends TestCase
      */
     public function testConsoleDisplayExceptionIsTrue()
     {
-        $eventManager = new EventManager();
-        $eventManager->setSharedManager(new SharedEventManager());
+        $eventManager = $this->createEventManager();
         $request      = new ConsoleRequest();
         $response     = new ConsoleResponse();
 

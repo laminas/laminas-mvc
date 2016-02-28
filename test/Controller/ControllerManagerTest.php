@@ -10,6 +10,7 @@
 namespace ZendTest\Mvc\Controller;
 
 use PHPUnit_Framework_TestCase as TestCase;
+use ReflectionClass;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
 use Zend\Mvc\Controller\ControllerManager;
@@ -23,8 +24,7 @@ class ControllerManagerTest extends TestCase
     public function setUp()
     {
         $this->sharedEvents   = new SharedEventManager;
-        $this->events         = new EventManager();
-        $this->events->setSharedManager($this->sharedEvents);
+        $this->events         = $this->createEventManager($this->sharedEvents);
         $this->consoleAdapter = new ConsoleAdapter();
 
         $this->services = new ServiceManager();
@@ -42,6 +42,25 @@ class ControllerManagerTest extends TestCase
         ]))->configureServiceManager($this->services);
 
         $this->controllers = new ControllerManager($this->services);
+    }
+
+    /**
+     * Create an event manager instance based on zend-eventmanager version
+     *
+     * @param SharedEventManager
+     * @return EventManager
+     */
+    protected function createEventManager($sharedManager)
+    {
+        $r = new ReflectionClass(EventManager::class);
+
+        if ($r->hasMethod('setSharedManager')) {
+            $events = new EventManager();
+            $events->setSharedManager($sharedManager);
+            return $events;
+        }
+
+        return new EventManager($sharedManager);
     }
 
     public function testCanInjectEventManager()
@@ -99,7 +118,7 @@ class ControllerManagerTest extends TestCase
 
     public function testInjectEventManagerWillNotOverwriteExistingEventManagerIfItAlreadyHasASharedManager()
     {
-        $events     = new EventManager($this->sharedEvents);
+        $events     = $this->createEventManager($this->sharedEvents);
         $controller = new TestAsset\SampleController();
         $controller->setEventManager($events);
 

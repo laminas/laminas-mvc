@@ -10,6 +10,7 @@
 namespace ZendTest\Mvc\Service;
 
 use PHPUnit_Framework_TestCase as TestCase;
+use ReflectionClass;
 use stdClass;
 use Zend\EventManager\EventManager;
 use Zend\Mvc\Service\ServiceManagerConfig;
@@ -42,12 +43,30 @@ class ServiceManagerConfigTest extends TestCase
     }
 
     /**
+     * Create an event manager instance based on zend-eventmanager version
+     *
+     * @param null|\Zend\EventManager\SharedEventManagerInterface
+     * @return EventManager
+     */
+    protected function createEventManager($sharedManager = null)
+    {
+        $r = new ReflectionClass(EventManager::class);
+
+        if ($r->hasMethod('setSharedManager')) {
+            $events = new EventManager();
+            $events->setSharedManager($sharedManager ?: $this->services->get('SharedEventManager'));
+            return $events;
+        }
+
+        return new EventManager($sharedManager ?: $this->services->get('SharedEventManager'));
+    }
+
+    /**
      * @group 3786
      */
     public function testEventManagerAwareInterfaceIsNotInjectedIfPresentButSharedManagerIs()
     {
-        $events = new EventManager();
-        $events->setSharedManager($this->services->get('SharedEventManager'));
+        $events = $this->createEventManager();
         TestAsset\EventManagerAwareObject::$defaultEvents = $events;
 
         $this->services->setAlias('EventManagerAwareObject', TestAsset\EventManagerAwareObject::class);

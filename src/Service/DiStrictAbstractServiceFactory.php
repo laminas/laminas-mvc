@@ -85,7 +85,7 @@ class DiStrictAbstractServiceFactory extends Di implements AbstractFactoryInterf
     public function __invoke(ContainerInterface $container, $name, array $options = null)
     {
         if (!isset($this->allowedServiceNames[$name])) {
-            throw new Exception\InvalidServiceNameException('Service "' . $name . '" is not whitelisted');
+            throw new Exception\InvalidServiceException('Service "' . $name . '" is not whitelisted');
         }
 
         if ($container instanceof AbstractPluginManager) {

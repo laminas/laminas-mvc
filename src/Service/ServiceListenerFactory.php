@@ -42,6 +42,7 @@ class ServiceListenerFactory implements FactoryInterface
             'configuration'                              => 'config',
             'Console'                                    => 'ConsoleAdapter',
             'ConsoleDefaultRenderingStrategy'            => View\Console\DefaultRenderingStrategy::class,
+            'ControllerLoader'                           => 'ControllerManager',
             'HttpDefaultRenderingStrategy'               => View\Http\DefaultRenderingStrategy::class,
             'MiddlewareListener'                         => 'Zend\Mvc\MiddlewareListener',
             'RouteListener'                              => 'Zend\Mvc\RouteListener',

@@ -98,37 +98,6 @@ class RoutePluginManager extends AbstractPluginManager
     }
 
     /**
-     * Register an invokable class. (v2)
-     *
-     * Create invokable factories + optional aliases for an invokable class.
-     *
-     * @param string $name
-     * @param string $class
-     * @param bool $shared
-     * @return self
-     */
-    public function setInvokableClass($name, $class, $shared = null)
-    {
-        foreach ($this->createAliasesForInvokables([$name => $class]) as $name => $class) {
-            $this->setAlias($name, $class);
-
-            if (is_bool($shared)) {
-                $this->setShared($name, $shared);
-            }
-        }
-
-        foreach ($this->createFactoriesForInvokables([$name => $class]) as $name => $factory) {
-            $this->setFactory($name, $factory);
-
-            if (is_bool($shared)) {
-                $this->setShared($name, $shared);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * Pre-process configuration. (v3)
      *
      * Checks for invokables, and, if found, maps them to the
@@ -138,7 +107,7 @@ class RoutePluginManager extends AbstractPluginManager
      * @param array $config
      * @return void
      */
-    protected function configure(array $config)
+    public function configure(array $config)
     {
         if (isset($config['invokables']) && ! empty($config['invokables'])) {
             $aliases   = $this->createAliasesForInvokables($config['invokables']);
