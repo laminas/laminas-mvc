@@ -6,8 +6,8 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- [#31](https://github.com/zendframework/zend-mvc/pull/31) adds three required
-  arguments to the `Zend\Mvc\Application` constructor: an EventManager
+- [#31](https://github.com/zendframework/zend-mvc/pull/31) adds three new
+  optional arguments to the `Zend\Mvc\Application` constructor: an EventManager
   instance, a Request instance, and a Response instance.
 - [#36](https://github.com/zendframework/zend-mvc/pull/36) adds more than a
   dozen service factories, primarily to separate conditional factories into
@@ -57,29 +57,21 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- [#31](https://github.com/zendframework/zend-mvc/pull/31) updates the component
-  to use zend-eventmanager v3.
-- [#36](https://github.com/zendframework/zend-mvc/pull/36) updates the component
-  to use zend-servicemanager v3, and zend-modulemanager v3. This involves:
-  - Updating all factories implementing either `FactoryInterface` or
-    `AbstractFactoryInterface` to the new signatures of those interfaces.
-  - Updating all plugin managers to the updates to `AbstractPluginManager`.
-  - Updating how plugin manager factories work (they're now passed the container
-    instance in their constructor arguments, as well as any build options).
+- [#31](https://github.com/zendframework/zend-mvc/pull/31) and
+  [#76](https://github.com/zendframework/zend-mvc/pull/76) update the component
+  to be forwards-compatible with zend-eventmanager v3.
+- [#36](https://github.com/zendframework/zend-mvc/pull/36) and
+  [#76](https://github.com/zendframework/zend-mvc/pull/76) update the component
+  to be forwards-compatible with zend-servicemanager v3. Several changes were
+  introduced to support this effort:
   - Added a `RouteInvokableFactory`, which can act as either a
-   `FactoryInterface` or `AbstractFactoryInterface` for loading invokable route
-   classes, including by fully qualified class name. This is registered as an
-   abstract factory by default with the `RoutePluginManager`.
+    `FactoryInterface` or `AbstractFactoryInterface` for loading invokable route
+    classes, including by fully qualified class name. This is registered as an
+    abstract factory by default with the `RoutePluginManager`.
   - The `DispatchListener` now receives the controller manager instance at
     instantiation.
   - The `ViewManager` implementations were updated, and most functionality
-    within separated into discrete factories. (Previously these instances
-    injected services and aliases into the service manager instance, which is no
-    longer possible or desirable with the zend-servicemanager v3 changes.)
-  - `Application::init()` now pulls the configured service manager from the
-    `Zend\ModuleManager\Listener\ServiceListener` instance before retrieving and
-    bootstrapping the `Application` instance; this ensure it is fully
-    configured at that time.
+    within separated into discrete factories.
 
 ## 2.6.4 - TBD
 
