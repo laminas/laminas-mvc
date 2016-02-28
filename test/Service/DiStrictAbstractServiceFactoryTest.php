@@ -58,7 +58,7 @@ class DiStrictAbstractServiceFactoryTest extends \PHPUnit_Framework_TestCase
             'not-whitelisted'
         ));
 
-        $this->setExpectedException('Zend\ServiceManager\Exception\InvalidServiceNameException');
+        $this->setExpectedException('Zend\ServiceManager\Exception\InvalidServiceException');
         $instance->createServiceWithName($locator->reveal(), 'not-whitelisted', 'not-whitelisted');
     }
 

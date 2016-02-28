@@ -23,7 +23,7 @@ class TranslatorServiceFactoryTest extends TestCase
     {
         $this->factory = new TranslatorServiceFactory();
         $this->services = new ServiceManager();
-        $this->services->setService('TranslatorPluginManager', $this->getMock(LoaderPluginManager::class));
+        $this->services->setService('TranslatorPluginManager', $this->prophesize(LoaderPluginManager::class)->reveal());
         $this->services->setAllowOverride(true);
     }
 

@@ -144,14 +144,14 @@ class ForwardTest extends TestCase
 
     public function testDispatchRaisesDomainExceptionIfDiscoveredControllerIsNotDispatchable()
     {
-        $controllers = $this->controllers->setFactory('bogus', function () {
+        $this->controllers->setFactory('bogus', function () {
             return new stdClass;
         });
-        $plugin = new ForwardPlugin($controllers);
+        $plugin = new ForwardPlugin($this->controllers);
         $plugin->setController($this->controller);
 
         // Vary exception expected based on zend-servicemanager version
-        $expectedException = method_exists($controllers, 'configure')
+        $expectedException = method_exists($this->controllers, 'configure')
             ? 'Zend\ServiceManager\Exception\InvalidServiceException' // v3
             : 'Zend\Mvc\Exception\InvalidControllerException';        // v2
 
