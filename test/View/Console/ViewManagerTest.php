@@ -23,7 +23,6 @@ use Zend\Mvc\Service\ServiceListenerFactory;
 use Zend\Mvc\Service\ServiceManagerConfig;
 use Zend\Mvc\View\Console\ViewManager;
 use Zend\ServiceManager\ServiceManager;
-use Zend\Stdlib\ArrayUtils;
 
 /**
  * Tests for {@see \Zend\Mvc\View\Console\ViewManager}

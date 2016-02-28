@@ -61,7 +61,7 @@ class TreeRouteStack extends SimpleRouteStack
         if ($options instanceof Traversable) {
             $options = ArrayUtils::iteratorToArray($options);
         }
-       
+
         if (! is_array($options)) {
             throw new Exception\InvalidArgumentException(__METHOD__ . ' expects an array or Traversable set of options');
         }

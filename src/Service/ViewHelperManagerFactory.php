@@ -14,7 +14,6 @@ use Zend\Console\Console;
 use Zend\Mvc\Router\RouteMatch;
 use Zend\ServiceManager\ConfigInterface;
 use Zend\ServiceManager\Exception\ServiceNotCreatedException;
-use Zend\Stdlib\ArrayUtils;
 use Zend\View\Helper as ViewHelper;
 use Zend\View\HelperPluginManager;
 
