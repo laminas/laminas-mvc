@@ -23,7 +23,7 @@
         "container-interop/container-interop": "^1.1"
     },
     "require-dev": {
-        "zendframework/zend-authentication": "^2.5",
+        "zendframework/zend-authentication": "^2.5.3",
         "zendframework/zend-cache": "^2.6.1",
         "zendframework/zend-console": "^2.6",
         "zendframework/zend-di": "^2.6",
