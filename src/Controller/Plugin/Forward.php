@@ -177,7 +177,7 @@ class Forward extends AbstractPlugin
             $results[$id] = [];
             foreach ($eventArray as $eventName => $classArray) {
                 $results[$id][$eventName] = [];
-                $events = $sharedEvents->getListeners([$id], $eventName);
+                $events = $this->getSharedListenersById($id, $eventName, $sharedEvents);
                 foreach ($events as $currentEvent) {
                     $currentCallback = $currentEvent;
 
@@ -254,5 +254,26 @@ class Forward extends AbstractPlugin
         $this->event = $event;
 
         return $this->event;
+    }
+
+    /**
+     * Retrieve shared listeners for an event by identifier.
+     *
+     * Varies retrieval based on zend-eventmanager version.
+     *
+     * @param string|int $id
+     * @param string $event
+     * @param SharedEvents $sharedEvents
+     * @return array|\Traversable
+     */
+    private function getSharedListenersById($id, $event, SharedEvents $sharedEvents)
+    {
+        if (method_exists($sharedEvents, 'attachAggregate')) {
+            // v2
+            return $sharedEvents->getListeners($id, $event) ?: [];
+        }
+
+        // v3
+        return $sharedEvents->getListeners([$id], $event);
     }
 }

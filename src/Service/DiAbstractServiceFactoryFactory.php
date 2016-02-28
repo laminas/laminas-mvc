@@ -10,42 +10,42 @@
 namespace Zend\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
-use Zend\Console\Console;
-use Zend\Console\Request as ConsoleRequest;
-use Zend\Http\PhpEnvironment\Request as HttpRequest;
+use Zend\ServiceManager\Di\DiAbstractServiceFactory;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\ServiceManager;
 
-class RequestFactory implements FactoryInterface
+class DiAbstractServiceFactoryFactory implements FactoryInterface
 {
     /**
-     * Create and return a request instance, according to current environment.
+     * Class responsible for instantiating a DiAbstractServiceFactory
      *
-     * @param  ContainerInterface $container
-     * @param  string $name
-     * @param  null|array $options
-     * @return ConsoleRequest|HttpRequest
+     * @param ContainerInterface $container
+     * @param string $name
+     * @param null|array $options
+     * @return DiAbstractServiceFactory
      */
     public function __invoke(ContainerInterface $container, $name, array $options = null)
     {
-        if (Console::isConsole()) {
-            return new ConsoleRequest();
+        $factory = new DiAbstractServiceFactory($container->get('Di'), DiAbstractServiceFactory::USE_SL_BEFORE_DI);
+
+        if ($serviceLocator instanceof ServiceManager) {
+            $serviceLocator->addAbstractFactory($factory, false);
         }
 
-        return new HttpRequest();
+        return $factory;
     }
 
     /**
-     * Create and return HttpRequest or ConsoleRequest instance
+     * Create and return DiAbstractServiceFactory instance
      *
      * For use with zend-servicemanager v2; proxies to __invoke().
      *
      * @param ServiceLocatorInterface $container
-     * @return HttpRequest|ConsoleRequest
+     * @return DiAbstractServiceFactory
      */
     public function createService(ServiceLocatorInterface $container)
     {
-        $type = Console::isConsole() ? ConsoleRequest::class : HttpRequest::class;
-        return $this($container, $type);
+        return $this($container, DiAbstractServiceFactory::class);
     }
 }

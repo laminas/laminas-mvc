@@ -9,41 +9,36 @@
 
 namespace Zend\Mvc\Service;
 
-use Interop\Container\ContainerInterface;
+use Container\Interop\ContainerInterface;
+use Zend\ServiceManager\Di\DiServiceInitializer;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\View\Strategy\FeedStrategy;
 
-class ViewFeedStrategyFactory implements FactoryInterface
+class DiServiceInitializerFactory implements FactoryInterface
 {
     /**
-     * Create and return the Feed view strategy
+     * Class responsible for instantiating a DiServiceInitializer
      *
-     * Retrieves the ViewFeedRenderer service from the service locator, and
-     * injects it into the constructor for the feed strategy.
-     *
-     * It then attaches the strategy to the View service, at a priority of 100.
-     *
-     * @param  ContainerInterface $container
-     * @param  string $name
-     * @param  null|array $options
-     * @return FeedStrategy
+     * @param ContainerInterface $container
+     * @param string $name
+     * @param null|array $options
+     * @return DiServiceInitializer
      */
     public function __invoke(ContainerInterface $container, $name, array $options = null)
     {
-        return new FeedStrategy($container->get('ViewFeedRenderer'));
+        return new DiServiceInitializer($container->get('Di'), $container);
     }
 
     /**
-     * Create and return FeedStrategy instance
+     * Create and return DiServiceInitializer instance
      *
      * For use with zend-servicemanager v2; proxies to __invoke().
      *
      * @param ServiceLocatorInterface $container
-     * @return FeedStrategy
+     * @return DiServiceInitializer
      */
     public function createService(ServiceLocatorInterface $container)
     {
-        return $this($container, FeedStrategy::class);
+        return $this($container, DiServiceInitializer::class);
     }
 }

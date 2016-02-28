@@ -10,6 +10,7 @@
 namespace ZendTest\Mvc\Controller\Plugin;
 
 use PHPUnit_Framework_TestCase as TestCase;
+use ReflectionClass;
 use stdClass;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
@@ -20,6 +21,7 @@ use Zend\Mvc\Controller\PluginManager;
 use Zend\Mvc\Controller\Plugin\Forward as ForwardPlugin;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Router\RouteMatch;
+use Zend\ServiceManager\Config;
 use Zend\ServiceManager\ServiceManager;
 use ZendTest\Mvc\Controller\TestAsset\ForwardController;
 use ZendTest\Mvc\Controller\TestAsset\SampleController;
@@ -49,7 +51,7 @@ class ForwardTest extends TestCase
 
     public function setUp()
     {
-        $eventManager = new EventManager(new SharedEventManager());
+        $eventManager = $this->createEventManager(new SharedEventManager());
         $mockApplication = $this->getMock('Zend\Mvc\ApplicationInterface');
         $mockApplication->expects($this->any())->method('getEventManager')->will($this->returnValue($eventManager));
 
@@ -62,13 +64,14 @@ class ForwardTest extends TestCase
         $routeMatch->setMatchedRouteName('some-route');
         $event->setRouteMatch($routeMatch);
 
-        $this->services = $services = new ServiceManager([
+        $config = new Config([
             'aliases' => [
                 'ControllerLoader' => 'ControllerManager',
             ],
             'factories' => [
                 'ControllerManager' => function ($services, $name) {
                     $plugins = $services->get('ControllerPluginManager');
+
                     return new ControllerManager($services, ['factories' => [
                         'forward' => function ($services) use ($plugins) {
                             $controller = new ForwardController();
@@ -81,7 +84,7 @@ class ForwardTest extends TestCase
                     return new PluginManager($services);
                 },
                 'EventManager' => function ($services, $name) {
-                    return new EventManager($services->get('SharedEventManager'));
+                    return $this->createEventManager($services->get('SharedEventManager'));
                 },
                 'SharedEventManager' => function ($services, $name) {
                     return new SharedEventManager();
@@ -91,6 +94,8 @@ class ForwardTest extends TestCase
                 'EventManager' => false,
             ],
         ]);
+        $this->services = $services = new ServiceManager();
+        $config->configureServiceManager($services);
 
         $this->controllers = $services->get('ControllerManager');
 
@@ -100,6 +105,25 @@ class ForwardTest extends TestCase
         $this->controller->setPluginManager($plugins);
 
         $this->plugin = $plugins->get('forward');
+    }
+
+    /**
+     * Create an event manager instance based on zend-eventmanager version
+     *
+     * @param SharedEventManager
+     * @return EventManager
+     */
+    protected function createEventManager($sharedManager)
+    {
+        $r = new ReflectionClass(EventManager::class);
+
+        if ($r->hasMethod('setSharedManager')) {
+            $events = new EventManager();
+            $events->setSharedManager($sharedManager);
+            return $events;
+        }
+
+        return new EventManager($sharedManager);
     }
 
     public function testPluginWithoutEventAwareControllerRaisesDomainException()
@@ -120,15 +144,18 @@ class ForwardTest extends TestCase
 
     public function testDispatchRaisesDomainExceptionIfDiscoveredControllerIsNotDispatchable()
     {
-        $controllers = $this->controllers->withConfig(['factories' => [
-            'bogus' => function () {
-                return new stdClass;
-            },
-        ]]);
-        $plugin = new ForwardPlugin($controllers);
+        $this->controllers->setFactory('bogus', function () {
+            return new stdClass;
+        });
+        $plugin = new ForwardPlugin($this->controllers);
         $plugin->setController($this->controller);
 
-        $this->setExpectedException('Zend\ServiceManager\Exception\InvalidServiceException', 'DispatchableInterface');
+        // Vary exception expected based on zend-servicemanager version
+        $expectedException = method_exists($this->controllers, 'configure')
+            ? 'Zend\ServiceManager\Exception\InvalidServiceException' // v3
+            : 'Zend\Mvc\Exception\InvalidControllerException';        // v2
+
+        $this->setExpectedException($expectedException, 'DispatchableInterface');
         $plugin->dispatch('bogus');
     }
 
@@ -136,7 +163,7 @@ class ForwardTest extends TestCase
     {
         $event = $this->controller->getEvent();
 
-        $services = new ServiceManager([
+        $config = new Config([
             'aliases' => [
                 'ControllerLoader' => 'ControllerManager',
             ],
@@ -162,7 +189,7 @@ class ForwardTest extends TestCase
                     return new PluginManager($services);
                 },
                 'EventManager' => function ($services, $name) {
-                    return new EventManager($services->get('SharedEventManager'));
+                    return $this->createEventManager($services->get('SharedEventManager'));
                 },
                 'SharedEventManager' => function ($services, $name) {
                     return new SharedEventManager();
@@ -172,6 +199,8 @@ class ForwardTest extends TestCase
                 'EventManager' => false,
             ],
         ]);
+        $services = new ServiceManager();
+        $config->configureServiceManager($services);
 
         $controllers = $services->get('ControllerManager');
 
@@ -202,7 +231,7 @@ class ForwardTest extends TestCase
             function ($e) {}
         ]));
         // @codingStandardsIgnoreEnd
-        $events = new EventManager($sharedEvents);
+        $events = $this->createEventManager($sharedEvents);
         $application = $this->getMock('Zend\Mvc\ApplicationInterface');
         $application->expects($this->any())->method('getEventManager')->will($this->returnValue($events));
         $event = $this->controller->getEvent();

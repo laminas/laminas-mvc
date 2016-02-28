@@ -11,14 +11,14 @@ namespace ZendTest\Mvc\View\Console;
 
 use PHPUnit_Framework_TestCase as TestCase;
 use Zend\EventManager\EventManager;
+use Zend\EventManager\Test\EventListenerIntrospectionTrait;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\View\Console\CreateViewModelListener;
 use Zend\View\Model\ConsoleModel;
-use ZendTest\Mvc\EventManagerIntrospectionTrait;
 
 class CreateViewModelListenerTest extends TestCase
 {
-    use EventManagerIntrospectionTrait;
+    use EventListenerIntrospectionTrait;
 
     public function setUp()
     {

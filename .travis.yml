@@ -11,17 +11,48 @@ cache:
   directories:
     - $HOME/.composer/cache
 
+env:
+  global:
+    - EVENT_MANAGER_VERSION="^3.0"
+    - HYDRATOR_VERSION="^2.1"
+    - SERVICE_MANAGER_VERSION="^3.0.3"
+    - STDLIB_VERSION="^3.0"
+
 matrix:
   fast_finish: true
   include:
     - php: 5.5
       env:
         - EXECUTE_CS_CHECK=true
+    - php: 5.5
+      env:
+        - EVENT_MANAGER_VERSION="^2.6.2"
+        - HYDRATOR_VERSION="^1.1"
+        - SERVICE_MANAGER_VERSION="^2.7.5"
+        - STDLIB_VERSION="^2.7.5"
     - php: 5.6
       env:
         - EXECUTE_TEST_COVERALLS=true
+    - php: 5.6
+      env:
+        - EVENT_MANAGER_VERSION="^2.6.2"
+        - HYDRATOR_VERSION="^1.1"
+        - SERVICE_MANAGER_VERSION="^2.7.5"
+        - STDLIB_VERSION="^2.7.5"
     - php: 7
+    - php: 7
+      env:
+        - EVENT_MANAGER_VERSION="^2.6.2"
+        - HYDRATOR_VERSION="^1.1"
+        - SERVICE_MANAGER_VERSION="^2.7.5"
+        - STDLIB_VERSION="^2.7.5"
     - php: hhvm 
+    - php: hhvm 
+      env:
+        - EVENT_MANAGER_VERSION="^2.6.2"
+        - HYDRATOR_VERSION="^1.1"
+        - SERVICE_MANAGER_VERSION="^2.7.5"
+        - STDLIB_VERSION="^2.7.5"
   allow_failures:
     - php: hhvm
 
@@ -33,6 +64,7 @@ before_install:
   - if [[ $EXECUTE_TEST_COVERALLS != 'true' ]]; then phpenv config-rm xdebug.ini || return 0 ; fi
   - composer self-update
   - if [[ $EXECUTE_TEST_COVERALLS == 'true' ]]; then composer require --dev --no-update satooshi/php-coveralls ; fi
+  - composer require --no-update "zendframework/zend-eventmanager:$EVENT_MANAGER_VERSION" "zendframework/zend-servicemanager:$SERVICE_MANAGER_VERSION" "zendframework/zend-hydrator:$HYDRATOR_VERSION" "zendframework/zend-stdlib:$STDLIB_VERSION"
 
 install:
   - travis_retry composer install --no-interaction --ignore-platform-reqs

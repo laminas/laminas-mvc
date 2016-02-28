@@ -12,17 +12,17 @@ namespace ZendTest\Mvc\View\Console;
 use PHPUnit_Framework_TestCase as TestCase;
 use Zend\Console\Adapter\AbstractAdapter;
 use Zend\EventManager\EventManager;
+use Zend\EventManager\Test\EventListenerIntrospectionTrait;
 use Zend\Mvc\ApplicationInterface;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\View\Console\DefaultRenderingStrategy;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Stdlib\Response;
 use Zend\View\Model;
-use ZendTest\Mvc\EventManagerIntrospectionTrait;
 
 class DefaultRenderingStrategyTest extends TestCase
 {
-    use EventManagerIntrospectionTrait;
+    use EventListenerIntrospectionTrait;
 
     /** @var DefaultRenderingStrategy */
     protected $strategy;
@@ -67,9 +67,8 @@ class DefaultRenderingStrategyTest extends TestCase
             ->willReturnArgument(0);
 
         //Register console service
-        $sm = new ServiceManager(['services' => [
-            'console' => $console,
-        ]]);
+        $sm = new ServiceManager();
+        $sm->setService('console', $console);
 
         /* @var \PHPUnit_Framework_MockObject_MockObject|ApplicationInterface $mockApplication */
         $mockApplication = $this->getMock(ApplicationInterface::class);
@@ -99,9 +98,8 @@ class DefaultRenderingStrategyTest extends TestCase
             ->willReturnArgument(0);
 
         //Register console service
-        $sm = new ServiceManager(['services' => [
-            'console' => $console,
-        ]]);
+        $sm = new ServiceManager();
+        $sm->setService('console', $console);
 
         /* @var \PHPUnit_Framework_MockObject_MockObject|ApplicationInterface $mockApplication */
         $mockApplication = $this->getMock(ApplicationInterface::class);

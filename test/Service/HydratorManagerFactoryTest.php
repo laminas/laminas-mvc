@@ -20,6 +20,7 @@ class HydratorManagerFactoryTest extends TestCase
     {
         $this->factory = new HydratorManagerFactory();
         $this->services = $this->prophesize(ServiceLocatorInterface::class);
+        $this->services->willImplement(ContainerInterface::class);
         $this->services->get('config')->willReturn([]);
     }
 

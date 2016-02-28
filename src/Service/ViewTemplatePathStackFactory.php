@@ -10,7 +10,8 @@
 namespace Zend\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\Resolver as ViewResolver;
 
 class ViewTemplatePathStackFactory implements FactoryInterface
@@ -46,5 +47,18 @@ class ViewTemplatePathStackFactory implements FactoryInterface
         }
 
         return $templatePathStack;
+    }
+
+    /**
+     * Create and return ViewResolver\TemplatePathStack instance
+     *
+     * For use with zend-servicemanager v2; proxies to __invoke().
+     *
+     * @param ServiceLocatorInterface $container
+     * @return ViewResolver\TemplatePathStack
+     */
+    public function createService(ServiceLocatorInterface $container)
+    {
+        return $this($container, ViewResolver\TemplatePathStack::class);
     }
 }

@@ -12,6 +12,8 @@ namespace ZendTest\Mvc\Controller;
 use PHPUnit_Framework_TestCase as TestCase;
 use Zend\Authentication\AuthenticationService;
 use Zend\Mvc\Controller\PluginManager;
+use Zend\ServiceManager\Config;
+use Zend\ServiceManager\Factory\InvokableFactory;
 use Zend\ServiceManager\ServiceManager;
 use ZendTest\Mvc\Controller\TestAsset\SampleController;
 use ZendTest\Mvc\Controller\Plugin\TestAsset\SamplePlugin;
@@ -22,7 +24,8 @@ class PluginManagerTest extends TestCase
     {
         $controller    = new SampleController;
         $pluginManager = new PluginManager(new ServiceManager(), [
-            'invokables' => ['samplePlugin' =>  SamplePlugin::class],
+            'aliases'   => ['samplePlugin' => SamplePlugin::class],
+            'factories' => [SamplePlugin::class => InvokableFactory::class],
         ]);
         $pluginManager->setController($controller);
 
@@ -34,7 +37,8 @@ class PluginManagerTest extends TestCase
     {
         $controller1   = new SampleController;
         $pluginManager = new PluginManager(new ServiceManager(), [
-            'invokables' => ['samplePlugin' =>  SamplePlugin::class],
+            'aliases'   => ['samplePlugin' => SamplePlugin::class],
+            'factories' => [SamplePlugin::class => InvokableFactory::class],
         ]);
         $pluginManager->setController($controller1);
 
@@ -51,7 +55,8 @@ class PluginManagerTest extends TestCase
     public function testGetWithConstructor()
     {
         $pluginManager = new PluginManager(new ServiceManager(), [
-            'invokables' => ['samplePlugin' => Plugin\TestAsset\SamplePluginWithConstructor::class],
+            'aliases'   => ['samplePlugin' => Plugin\TestAsset\SamplePluginWithConstructor::class],
+            'factories' => [Plugin\TestAsset\SamplePluginWithConstructor::class => InvokableFactory::class],
         ]);
         $plugin = $pluginManager->get('samplePlugin');
         $this->assertEquals($plugin->getBar(), 'baz');
@@ -60,7 +65,8 @@ class PluginManagerTest extends TestCase
     public function testGetWithConstructorAndOptions()
     {
         $pluginManager = new PluginManager(new ServiceManager(), [
-            'invokables' => ['samplePlugin' => Plugin\TestAsset\SamplePluginWithConstructor::class],
+            'aliases'   => ['samplePlugin' => Plugin\TestAsset\SamplePluginWithConstructor::class],
+            'factories' => [Plugin\TestAsset\SamplePluginWithConstructor::class => InvokableFactory::class],
         ]);
         $plugin = $pluginManager->get('samplePlugin', ['foo']);
         $this->assertEquals($plugin->getBar(), ['foo']);
@@ -74,11 +80,12 @@ class PluginManagerTest extends TestCase
 
     public function testIdentityFactoryCanInjectAuthenticationServiceIfInParentServiceManager()
     {
-        $services = new ServiceManager([
-            'invokables' => [
-                AuthenticationService::class => AuthenticationService::class,
+        $services = new ServiceManager();
+        (new Config([
+            'factories' => [
+                AuthenticationService::class => InvokableFactory::class,
             ],
-        ]);
+        ]))->configureServiceManager($services);
         $pluginManager = new PluginManager($services);
         $identity = $pluginManager->get('identity');
         $expected = $services->get(AuthenticationService::class);

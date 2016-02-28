@@ -10,6 +10,7 @@
 namespace ZendTest\Mvc\Controller;
 
 use PHPUnit_Framework_TestCase as TestCase;
+use ReflectionClass;
 use ReflectionObject;
 use stdClass;
 use Zend\EventManager\EventManager;
@@ -40,8 +41,27 @@ class RestfulControllerTest extends TestCase
         $this->emptyController->setEvent($this->event);
 
         $this->sharedEvents = new SharedEventManager();
-        $this->events       = new EventManager($this->sharedEvents);
+        $this->events       = $this->createEventManager($this->sharedEvents);
         $this->controller->setEventManager($this->events);
+    }
+
+    /**
+     * Create an event manager instance based on zend-eventmanager version
+     *
+     * @param SharedEventManager
+     * @return EventManager
+     */
+    protected function createEventManager($sharedManager)
+    {
+        $r = new ReflectionClass(EventManager::class);
+
+        if ($r->hasMethod('setSharedManager')) {
+            $events = new EventManager();
+            $events->setSharedManager($sharedManager);
+            return $events;
+        }
+
+        return new EventManager($sharedManager);
     }
 
     public function testDispatchInvokesListWhenNoActionPresentAndNoIdentifierOnGet()

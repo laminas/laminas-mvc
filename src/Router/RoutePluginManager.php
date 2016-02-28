@@ -11,7 +11,7 @@ namespace Zend\Mvc\Router;
 
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\AbstractPluginManager;
-use Zend\Stdlib\ArrayUtils;
+use Zend\ServiceManager\Exception\InvalidServiceException;
 
 /**
  * Plugin manager implementation for routes
@@ -33,11 +33,18 @@ class RoutePluginManager extends AbstractPluginManager
     protected $instanceOf = RouteInterface::class;
 
     /**
-     * Do not share instances.
+     * Do not share instances. (v3)
      *
      * @var bool
      */
     protected $shareByDefault = false;
+
+    /**
+     * Do not share instances. (v2)
+     *
+     * @var bool
+     */
+    protected $sharedByDefault = false;
 
     /**
      * Constructor
@@ -45,20 +52,53 @@ class RoutePluginManager extends AbstractPluginManager
      * Ensure that the instance is seeded with the RouteInvokableFactory as an
      * abstract factory.
      *
-     * @param ContainerInterface $container
-     * @param array $config
+     * @param ContainerInterface|\Zend\ServiceManager\ConfigInterface $configOrContainerInstance
+     * @param array $v3config
      */
-    public function __construct(ContainerInterface $container, array $config = [])
+    public function __construct($configOrContainerInstance, array $v3config = [])
     {
-        $config = ArrayUtils::merge(['abstract_factories' => [
-            RouteInvokableFactory::class,
-        ]], $config);
-
-        parent::__construct($container, $config);
+        $this->addAbstractFactory(RouteInvokableFactory::class);
+        parent::__construct($configOrContainerInstance, $v3config);
     }
 
     /**
-     * Pre-process configuration.
+     * Validate a route plugin. (v2)
+     *
+     * @param object $plugin
+     * @throws InvalidServiceException
+     */
+    public function validate($plugin)
+    {
+        if (! $plugin instanceof $this->instanceOf) {
+            throw new InvalidServiceException(sprintf(
+                'Plugin of type %s is invalid; must implement %s',
+                (is_object($plugin) ? get_class($plugin) : gettype($plugin)),
+                RouteInterface::class
+            ));
+        }
+    }
+
+    /**
+     * Validate a route plugin. (v2)
+     *
+     * @param object $plugin
+     * @throws Exception\RuntimeException
+     */
+    public function validatePlugin($plugin)
+    {
+        try {
+            $this->validate($plugin);
+        } catch (InvalidServiceException $e) {
+            throw new Exception\RuntimeException(
+                $e->getMessage(),
+                $e->getCode(),
+                $e
+            );
+        }
+    }
+
+    /**
+     * Pre-process configuration. (v3)
      *
      * Checks for invokables, and, if found, maps them to the
      * component-specific RouteInvokableFactory; removes the invokables entry
@@ -67,7 +107,7 @@ class RoutePluginManager extends AbstractPluginManager
      * @param array $config
      * @return void
      */
-    protected function configure(array $config)
+    public function configure(array $config)
     {
         if (isset($config['invokables']) && ! empty($config['invokables'])) {
             $aliases   = $this->createAliasesForInvokables($config['invokables']);

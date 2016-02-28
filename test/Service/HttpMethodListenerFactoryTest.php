@@ -9,6 +9,7 @@
 
 namespace ZendTest\Mvc\Service;
 
+use Interop\Container\ContainerInterface;
 use PHPUnit_Framework_TestCase as TestCase;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Zend\Mvc\Service\HttpMethodListenerFactory;
@@ -26,13 +27,14 @@ class HttpMethodListenerFactoryTest extends TestCase
 
     public function setUp()
     {
-        $this->serviceLocator = $this->getMock('Zend\ServiceManager\ServiceLocatorInterface');
+        $this->serviceLocator = $this->prophesize(ServiceLocatorInterface::class);
+        $this->serviceLocator->willImplement(ContainerInterface::class);
     }
 
     public function testCreateWithDefaults()
     {
         $factory = new HttpMethodListenerFactory();
-        $listener = $factory($this->serviceLocator, 'HttpMethodListener');
+        $listener = $factory($this->serviceLocator->reveal(), 'HttpMethodListener');
         $this->assertTrue($listener->isEnabled());
         $this->assertNotEmpty($listener->getAllowedMethods());
     }
@@ -44,13 +46,10 @@ class HttpMethodListenerFactoryTest extends TestCase
             'allowed_methods' => ['FOO', 'BAR']
         ];
 
-        $this->serviceLocator->expects($this->atLeastOnce())
-            ->method('get')
-            ->with('config')
-            ->willReturn($config);
+        $this->serviceLocator->get('config')->willReturn($config);
 
         $factory = new HttpMethodListenerFactory();
-        $listener = $factory($this->serviceLocator, 'HttpMethodListener');
+        $listener = $factory($this->serviceLocator->reveal(), 'HttpMethodListener');
 
         $listenerConfig = $config['http_methods_listener'];
 

@@ -13,7 +13,8 @@ use Interop\Container\ContainerInterface;
 use stdClass;
 use Zend\Console\Adapter\AdapterInterface;
 use Zend\Console\Console;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 class ConsoleAdapterFactory implements FactoryInterface
 {
@@ -73,5 +74,18 @@ class ConsoleAdapterFactory implements FactoryInterface
         }
 
         return $adapter;
+    }
+
+    /**
+     * Create and return AdapterInterface instance
+     *
+     * For use with zend-servicemanager v2; proxies to __invoke().
+     *
+     * @param ServiceLocatorInterface $container
+     * @return AdapterInterface|stdClass
+     */
+    public function createService(ServiceLocatorInterface $container)
+    {
+        return $this($container, AdapterInterface::class);
     }
 }

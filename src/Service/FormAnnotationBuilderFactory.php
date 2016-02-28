@@ -13,7 +13,8 @@ use Interop\Container\ContainerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
 use Zend\Form\Annotation\AnnotationBuilder;
 use Zend\ServiceManager\Exception\ServiceNotCreatedException;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 class FormAnnotationBuilderFactory implements FactoryInterface
 {
@@ -23,7 +24,7 @@ class FormAnnotationBuilderFactory implements FactoryInterface
      * @param  ContainerInterface $container
      * @param  string $name
      * @param  null|array $options
-     * @return mixed
+     * @return AnnotationBuilder
      * @throws ServiceNotCreatedException for invalid listener configuration.
      */
     public function __invoke(ContainerInterface $container, $name, array $options = null)
@@ -62,5 +63,18 @@ class FormAnnotationBuilderFactory implements FactoryInterface
         }
 
         return $annotationBuilder;
+    }
+
+    /**
+     * Create and return AnnotationBuilder instance
+     *
+     * For use with zend-servicemanager v2; proxies to __invoke().
+     *
+     * @param ServiceLocatorInterface $container
+     * @return AnnotationBuilder
+     */
+    public function createService(ServiceLocatorInterface $container)
+    {
+        return $this($container, AnnotationBuilder::class);
     }
 }

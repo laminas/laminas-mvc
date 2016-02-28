@@ -10,7 +10,8 @@
 namespace ZendTest\Mvc\TestAsset;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\AbstractFactoryInterface;
+use Zend\ServiceManager\AbstractFactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 class MiddlewareAbstractFactory implements AbstractFactoryInterface
 {
@@ -18,7 +19,7 @@ class MiddlewareAbstractFactory implements AbstractFactoryInterface
         'test' => 'ZendTest\Mvc\TestAsset\Middleware',
     );
 
-    public function canCreateServiceWithName(ContainerInterface $container, $name)
+    public function canCreate(ContainerInterface $container, $name)
     {
         if (! isset($this->classmap[$name])) {
             return false;
@@ -32,5 +33,29 @@ class MiddlewareAbstractFactory implements AbstractFactoryInterface
     {
         $classname = $this->classmap[$name];
         return new $classname;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * For use with zend-servicemanager v2; proxies to canCreate().
+     */
+    public function canCreateServiceWithName(ServiceLocatorInterface $container, $name, $requestedName)
+    {
+        return $this->canCreate($container, $requestedName);
+    }
+
+    /**
+     * Create and return callable instance
+     *
+     * For use with zend-servicemanager v2; proxies to __invoke().
+     *
+     * {@inheritDoc}
+     *
+     * @return callable
+     */
+    public function createServiceWithName(ServiceLocatorInterface $container, $name, $requestedName)
+    {
+        return $this($container, $requestedName);
     }
 }

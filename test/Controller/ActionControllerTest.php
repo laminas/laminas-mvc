@@ -10,6 +10,7 @@
 namespace ZendTest\Mvc\Controller;
 
 use PHPUnit_Framework_TestCase as TestCase;
+use ReflectionClass;
 use Zend\Console\Response as ConsoleResponse;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
@@ -38,8 +39,27 @@ class ActionControllerTest extends TestCase
         $this->controller->setEvent($this->event);
 
         $this->sharedEvents = new SharedEventManager();
-        $this->events       = new EventManager($this->sharedEvents);
+        $this->events       = $this->createEventManager($this->sharedEvents);
         $this->controller->setEventManager($this->events);
+    }
+
+    /**
+     * Create an event manager instance based on zend-eventmanager version
+     *
+     * @param SharedEventManager
+     * @return EventManager
+     */
+    protected function createEventManager($sharedManager)
+    {
+        $r = new ReflectionClass(EventManager::class);
+
+        if ($r->hasMethod('setSharedManager')) {
+            $events = new EventManager();
+            $events->setSharedManager($sharedManager);
+            return $events;
+        }
+
+        return new EventManager($sharedManager);
     }
 
     public function testDispatchInvokesNotFoundActionWhenNoActionPresentInRouteMatch()

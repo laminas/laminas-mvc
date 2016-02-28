@@ -14,7 +14,8 @@ use Traversable;
 use Zend\I18n\Translator\Translator;
 use Zend\Mvc\I18n\DummyTranslator;
 use Zend\Mvc\I18n\Translator as MvcTranslator;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Overrides the translator factory from the i18n component in order to
@@ -52,7 +53,7 @@ class TranslatorServiceFactory implements FactoryInterface
             ) {
                 $i18nTranslator = Translator::factory($config['translator']);
                 $i18nTranslator->setPluginManager($container->get('TranslatorPluginManager'));
-                // $container->setService('Zend\I18n\Translator\TranslatorInterface', $i18nTranslator);
+                $container->setService('Zend\I18n\Translator\TranslatorInterface', $i18nTranslator);
                 return new MvcTranslator($i18nTranslator);
             }
         }
@@ -64,5 +65,18 @@ class TranslatorServiceFactory implements FactoryInterface
 
         // For BC purposes (pre-2.3.0), use the I18n Translator
         return new MvcTranslator(new Translator());
+    }
+
+    /**
+     * Create and return MvcTranslator instance
+     *
+     * For use with zend-servicemanager v2; proxies to __invoke().
+     *
+     * @param ServiceLocatorInterface $container
+     * @return MvcTranslator
+     */
+    public function createService(ServiceLocatorInterface $container)
+    {
+        return $this($container, MvcTranslator::class);
     }
 }

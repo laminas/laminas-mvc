@@ -9,15 +9,14 @@
 
 namespace Zend\Mvc\Service;
 
-use Interop\Container\ContainerInterface;
 use Zend\Mvc\Controller\ControllerManager;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class ControllerManagerFactory implements FactoryInterface
+class ControllerLoaderFactory implements FactoryInterface
 {
     /**
-     * Create the controller manager service
+     * Create the controller loader service
      *
      * Creates and returns an instance of ControllerManager. The
      * only controllers this manager will allow are those defined in the
@@ -26,29 +25,24 @@ class ControllerManagerFactory implements FactoryInterface
      * Finally, it will attempt to inject the controller plugin manager
      * if the controller implements a setPluginManager() method.
      *
-     * @param  ContainerInterface $container
-     * @param  string $Name
-     * @param  null|array $options
+     * This plugin manager is _not_ peered against DI, and as such, will
+     * not load unknown classes.
+     *
+     * @param  ServiceLocatorInterface $serviceLocator
      * @return ControllerManager
      */
-    public function __invoke(ContainerInterface $container, $name, array $options = null)
+    public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        if ($options) {
-            return new ControllerManager($container, $options);
-        }
-        return new ControllerManager($container);
-    }
+        $controllerLoader = new ControllerManager();
+        $controllerLoader->setServiceLocator($serviceLocator);
+        $controllerLoader->addPeeringServiceManager($serviceLocator);
 
-    /**
-     * Create and return ControllerManager instance
-     *
-     * For use with zend-servicemanager v2; proxies to __invoke().
-     *
-     * @param ServiceLocatorInterface $container
-     * @return ControllerManager
-     */
-    public function createService(ServiceLocatorInterface $container)
-    {
-        return $this($container, ControllerManager::class);
+        $config = $serviceLocator->get('Config');
+
+        if (isset($config['di']) && isset($config['di']['allowed_controllers']) && $serviceLocator->has('Di')) {
+            $controllerLoader->addAbstractFactory($serviceLocator->get('DiStrictAbstractServiceFactory'));
+        }
+
+        return $controllerLoader;
     }
 }

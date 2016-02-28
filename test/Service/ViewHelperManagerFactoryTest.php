@@ -9,7 +9,6 @@
 
 namespace ZendTest\Mvc\Service;
 
-use Interop\Container\ContainerInterface;
 use PHPUnit_Framework_TestCase as TestCase;
 use ReflectionProperty;
 use Zend\Console\Console;
@@ -62,7 +61,7 @@ class ViewHelperManagerFactoryTest extends TestCase
         $this->services->setService('config', []);
         $this->services->setService('Request', new ConsoleRequest());
 
-        $manager = $this->factory->__invoke($services, 'ViewHelperManager');
+        $manager = $this->factory->__invoke($this->services, 'ViewHelperManager');
 
         $doctype = $manager->get('doctype');
         $this->assertInstanceof('Zend\View\Helper\Doctype', $doctype);
@@ -91,7 +90,7 @@ class ViewHelperManagerFactoryTest extends TestCase
             ]
         ]);
 
-        $manager = $this->factory->__invoke($services, 'ViewHelperManager');
+        $manager = $this->factory->__invoke($this->services, 'ViewHelperManager');
 
         $basePath = $manager->get('basepath');
         $this->assertEquals('http://test.com', $basePath());
@@ -157,7 +156,7 @@ class ViewHelperManagerFactoryTest extends TestCase
 
             'request-base' => [[
                 'config' => [], // fails creating plugin manager without this
-                'request' => function () {
+                'Request' => function () {
                     $request = $this->prophesize(Request::class);
                     $request->getBasePath()->willReturn('/foo/bat');
                     return $request->reveal();

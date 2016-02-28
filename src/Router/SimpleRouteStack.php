@@ -262,13 +262,17 @@ class SimpleRouteStack implements RouteStackInterface
     {
         if ($specs instanceof Traversable) {
             $specs = ArrayUtils::iteratorToArray($specs);
-        } elseif (!is_array($specs)) {
+        }
+
+        if (! is_array($specs)) {
             throw new Exception\InvalidArgumentException('Route definition must be an array or Traversable object');
         }
 
-        if (!isset($specs['type'])) {
+        if (! isset($specs['type'])) {
             throw new Exception\InvalidArgumentException('Missing "type" option');
-        } elseif (!isset($specs['options'])) {
+        }
+
+        if (! isset($specs['options'])) {
             $specs['options'] = [];
         }
 

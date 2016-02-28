@@ -11,7 +11,8 @@ namespace Zend\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
 use Zend\Mvc\View\Console\RouteNotFoundStrategy;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 class ConsoleRouteNotFoundStrategyFactory implements FactoryInterface
 {
@@ -31,6 +32,17 @@ class ConsoleRouteNotFoundStrategyFactory implements FactoryInterface
         $this->injectDisplayNotFoundReason($strategy, $config);
 
         return $strategy;
+    }
+
+    /**
+     * Create and return RouteNotFoundStrategy instance
+     *
+     * @param ServiceLocatorInterface $container
+     * @return RouteNotFoundStrategy
+     */
+    public function createService(ServiceLocatorInterface $container)
+    {
+        return $this($container, RouteNotFoundStrategy::class);
     }
 
     /**

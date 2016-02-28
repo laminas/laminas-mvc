@@ -11,7 +11,8 @@ namespace Zend\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
 use Zend\Mvc\DispatchListener;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 class DispatchListenerFactory implements FactoryInterface
 {
@@ -26,5 +27,18 @@ class DispatchListenerFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $name, array $options = null)
     {
         return new DispatchListener($container->get('ControllerManager'));
+    }
+
+    /**
+     * Create and return DispatchListener instance
+     *
+     * For use with zend-servicemanager v2; proxies to __invoke().
+     *
+     * @param ServiceLocatorInterface $container
+     * @return DispatchListener
+     */
+    public function createService(ServiceLocatorInterface $container)
+    {
+        return $this($container, DispatchListener::class);
     }
 }

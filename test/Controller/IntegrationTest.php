@@ -14,6 +14,7 @@ use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
 use Zend\Mvc\Controller\ControllerManager;
 use Zend\Mvc\Controller\PluginManager;
+use Zend\ServiceManager\Config;
 use Zend\ServiceManager\ServiceManager;
 
 class IntegrationTest extends TestCase
@@ -22,7 +23,8 @@ class IntegrationTest extends TestCase
     {
         $this->sharedEvents = new SharedEventManager();
 
-        $this->services     = new ServiceManager([
+        $this->services = new ServiceManager();
+        (new Config([
             'services' => [
                 'SharedEventManager' => $this->sharedEvents,
             ],
@@ -37,7 +39,7 @@ class IntegrationTest extends TestCase
             'shared' => [
                 'EventManager' => false,
             ],
-        ]);
+        ]))->configureServiceManager($this->services);
     }
 
     public function testPluginReceivesCurrentController()
