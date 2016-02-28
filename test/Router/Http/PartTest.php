@@ -12,11 +12,12 @@ namespace ZendTest\Mvc\Router\Http;
 use ArrayObject;
 use PHPUnit_Framework_TestCase as TestCase;
 use Zend\Http\Request as Request;
-use Zend\Mvc\Router\RoutePluginManager;
 use Zend\Mvc\Router\Http\Literal;
 use Zend\Mvc\Router\Http\Part;
 use Zend\Mvc\Router\Http\Segment;
 use Zend\Mvc\Router\Http\Wildcard;
+use Zend\Mvc\Router\RouteInvokableFactory;
+use Zend\Mvc\Router\RoutePluginManager;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Stdlib\Parameters;
 use Zend\Stdlib\Request as BaseRequest;
@@ -28,16 +29,29 @@ class PartTest extends TestCase
     {
         return new RoutePluginManager(new ServiceManager(), [
             'aliases' => [
-                'Literal'  => 'literal',
-                'Part'     => 'part',
-                'Segment'  => 'segment',
-                'Wildcard' => 'wildcard',
-            ],
-            'invokables' => [
                 'literal'  => Literal::class,
+                'Literal'  => Literal::class,
                 'part'     => Part::class,
+                'Part'     => Part::class,
                 'segment'  => Segment::class,
+                'Segment'  => Segment::class,
                 'wildcard' => Wildcard::class,
+                'Wildcard' => Wildcard::class,
+                'wildCard' => Wildcard::class,
+                'WildCard' => Wildcard::class,
+            ],
+            'factories' => [
+                Literal::class  => RouteInvokableFactory::class,
+                Part::class     => RouteInvokableFactory::class,
+                Segment::class  => RouteInvokableFactory::class,
+                Wildcard::class => RouteInvokableFactory::class,
+
+                // v2 normalized names
+
+                'zendmvcrouterhttpliteral'  => RouteInvokableFactory::class,
+                'zendmvcrouterhttppart'     => RouteInvokableFactory::class,
+                'zendmvcrouterhttpsegment'  => RouteInvokableFactory::class,
+                'zendmvcrouterhttpwildcard' => RouteInvokableFactory::class,
             ],
         ]);
     }

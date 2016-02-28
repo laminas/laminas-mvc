@@ -315,6 +315,7 @@ class Application implements
 
         // Trigger route event
         $event->setName(MvcEvent::EVENT_ROUTE);
+        $event->stopPropagation(false); // Clear before triggering
         $result = $events->triggerEventUntil($shortCircuit, $event);
         if ($result->stopped()) {
             $response = $result->last();
@@ -322,6 +323,7 @@ class Application implements
                 $event->setName(MvcEvent::EVENT_FINISH);
                 $event->setTarget($this);
                 $event->setResponse($response);
+                $event->stopPropagation(false); // Clear before triggering
                 $events->triggerEvent($event);
                 $this->response = $response;
                 return $this;
@@ -334,6 +336,7 @@ class Application implements
 
         // Trigger dispatch event
         $event->setName(MvcEvent::EVENT_DISPATCH);
+        $event->stopPropagation(false); // Clear before triggering
         $result = $events->triggerEventUntil($shortCircuit, $event);
 
         // Complete response
@@ -342,6 +345,7 @@ class Application implements
             $event->setName(MvcEvent::EVENT_FINISH);
             $event->setTarget($this);
             $event->setResponse($response);
+            $event->stopPropagation(false); // Clear before triggering
             $events->triggerEvent($event);
             $this->response = $response;
             return $this;
@@ -376,9 +380,11 @@ class Application implements
         $event->setTarget($this);
 
         $event->setName(MvcEvent::EVENT_RENDER);
+        $event->stopPropagation(false); // Clear before triggering
         $events->triggerEvent($event);
 
         $event->setName(MvcEvent::EVENT_FINISH);
+        $event->stopPropagation(false); // Clear before triggering
         $events->triggerEvent($event);
 
         return $this;

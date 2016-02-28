@@ -40,7 +40,8 @@ class RestfulControllerTest extends TestCase
         $this->emptyController->setEvent($this->event);
 
         $this->sharedEvents = new SharedEventManager();
-        $this->events       = new EventManager($this->sharedEvents);
+        $this->events       = new EventManager();
+        $this->events->setSharedManager($this->sharedEvents);
         $this->controller->setEventManager($this->events);
     }
 

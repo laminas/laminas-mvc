@@ -22,26 +22,35 @@ use Zend\ServiceManager\Factory\InvokableFactory;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceManager;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
+use Zend\Stdlib\ArrayUtils;
 
 class ServiceManagerConfig extends Config
 {
+
+    /**
+     * Default service configuration.
+     *
+     * In addition to these, the constructor registers several factories and
+     * initializers; see that method for details.
+     *
+     * @var array
+     */
     protected $config = [
         'abstract_factories' => [],
         'aliases'            => [
-            'EventManager'            => EventManagerInterface::class,
-            EventManager::class       => EventManagerInterface::class,
-            'ModuleManager'           => ModuleManager::class,
-            'ServiceListener'         => ServiceListener::class,
-            'ServiceManager'          => ServiceManager::class,
-            'SharedEventManager'      => SharedEventManagerInterface::class,
-            SharedEventManager::class => SharedEventManagerInterface::class,
+            'EventManagerInterface'            => EventManager::class,
+            EventManagerInterface::class       => 'EventManager',
+            ModuleManager::class               => 'ModuleManager',
+            ServiceListener::class             => 'ServiceListener',
+            SharedEventManager::class          => 'SharedEventManager',
+            'SharedEventManagerInterface'      => 'SharedEventManager',
+            SharedEventManagerInterface::class => 'SharedEventManager',
         ],
         'delegators' => [],
         'factories'  => [
-            EventManagerInterface::class       => EventManagerFactory::class,
-            ModuleManager::class               => ModuleManagerFactory::class,
-            ServiceListener::class             => ServiceListenerFactory::class,
-            SharedEventManagerInterface::class => InvokableFactory::class,
+            'EventManager'            => EventManagerFactory::class,
+            'ModuleManager'           => ModuleManagerFactory::class,
+            'ServiceListener'         => ServiceListenerFactory::class,
         ],
         'lazy_services' => [],
         'initializers'  => [],
@@ -49,8 +58,6 @@ class ServiceManagerConfig extends Config
         'services'      => [],
         'shared'        => [
             'EventManager' => false,
-            EventManager::class => false,
-            EventManagerInterface::class => false,
         ],
     ];
 
@@ -58,17 +65,22 @@ class ServiceManagerConfig extends Config
      * Constructor
      *
      * Merges internal arrays with those passed via configuration, and also
-     * defines initializers for each of:
+     * defines:
      *
-     * - EventManagerAwareInterface implementations
-     * - ServiceManagerAwareInterface implementations
-     * - ServiceLocatorAwareInterface implementations
+     * - factory for the service 'SharedEventManager'.
+     * - initializer for EventManagerAwareInterface implementations
+     * - initializer for ServiceManagerAwareInterface implementations
+     * - initializer for ServiceLocatorAwareInterface implementations
      *
-     * @param  array $configuration
+     * @param  array $config
      */
-    public function __construct(array $configuration = [])
+    public function __construct(array $config = [])
     {
-        $this->config['initializers'] = array_merge($this->config['initializers'], [
+        $this->config['factories']['SharedEventManager'] = function () {
+            return new SharedEventManager();
+        };
+
+        $this->config['initializers'] = ArrayUtils::merge($this->config['initializers'], [
             'EventManagerAwareInitializer' => function ($first, $second) {
                 if ($first instanceof ContainerInterface) {
                     $container = $first;
@@ -133,7 +145,13 @@ class ServiceManagerConfig extends Config
             },
         ]);
 
-        parent::__construct($configuration);
+        // In zend-servicemanager v2, incoming configuration is not merged
+        // with existing; it replaces. So we need to detect that and merge.
+        if (method_exists($this, 'getAllowOverride')) {
+            $config = ArrayUtils::merge($this->config, $config);
+        }
+
+        parent::__construct($config);
     }
 
     /**
@@ -151,7 +169,52 @@ class ServiceManagerConfig extends Config
     public function configureServiceManager(ServiceManager $services)
     {
         $this->config['services'][ServiceManager::class] = $services;
+
+        /*
+        printf("Configuration prior to configuring servicemanager:\n");
+        foreach ($this->config as $type => $list) {
+            switch ($type) {
+                case 'aliases':
+                case 'delegators':
+                case 'factories':
+                case 'invokables':
+                case 'lazy_services':
+                case 'services':
+                case 'shared':
+                    foreach (array_keys($list) as $name) {
+                        printf("    %s (%s)\n", $name, $type);
+                    }
+                    break;
+
+                case 'initializers':
+                case 'abstract_factories':
+                    foreach ($list as $callable) {
+                        printf("    %s (%s)\n", (is_object($callable) ? get_class($callable) : $callable), $type);
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }
+         */
+
+        // This is invoked as part of the bootstrapping process, and requires
+        // the ability to override services.
+        $services->setAllowOverride(true);
         parent::configureServiceManager($services);
+        $services->setAllowOverride(false);
+
         return $services;
+    }
+
+    /**
+     * Return all service configuration (v3)
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return $this->config;
     }
 }

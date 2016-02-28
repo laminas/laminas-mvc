@@ -38,7 +38,8 @@ class ActionControllerTest extends TestCase
         $this->controller->setEvent($this->event);
 
         $this->sharedEvents = new SharedEventManager();
-        $this->events       = new EventManager($this->sharedEvents);
+        $this->events       = new EventManager();
+        $this->events->setSharedManager($this->sharedEvents);
         $this->controller->setEventManager($this->events);
     }
 

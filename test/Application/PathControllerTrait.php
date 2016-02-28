@@ -82,7 +82,8 @@ trait PathControllerTrait
                 ],
             ]
         );
-        $services = new ServiceManager((new ServiceManagerConfig($serviceConfig))->toArray());
+        $services = new ServiceManager();
+        (new ServiceManagerConfig($serviceConfig))->configureServiceManager($services);
         $application = $services->get('Application');
 
         $request = $services->get('Request');

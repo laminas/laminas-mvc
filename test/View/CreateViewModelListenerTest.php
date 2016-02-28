@@ -12,13 +12,13 @@ namespace ZendTest\Mvc\View;
 use PHPUnit_Framework_TestCase as TestCase;
 use stdClass;
 use Zend\EventManager\EventManager;
+use Zend\EventManager\Test\EventListenerIntrospectionTrait;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\View\Http\CreateViewModelListener;
-use ZendTest\Mvc\EventManagerIntrospectionTrait;
 
 class CreateViewModelListenerTest extends TestCase
 {
-    use EventManagerIntrospectionTrait;
+    use EventListenerIntrospectionTrait;
 
     public function setUp()
     {

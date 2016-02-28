@@ -12,14 +12,14 @@ namespace ZendTest\Mvc\View\Console;
 use PHPUnit_Framework_TestCase as TestCase;
 use Zend\Console\Response;
 use Zend\EventManager\EventManager;
+use Zend\EventManager\Test\EventListenerIntrospectionTrait;
 use Zend\Mvc\Application;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\View\Console\ExceptionStrategy;
-use ZendTest\Mvc\EventManagerIntrospectionTrait;
 
 class ExceptionStrategyTest extends TestCase
 {
-    use EventManagerIntrospectionTrait;
+    use EventListenerIntrospectionTrait;
 
     protected $strategy;
 

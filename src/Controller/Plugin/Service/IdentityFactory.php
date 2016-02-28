@@ -41,6 +41,11 @@ class IdentityFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $container)
     {
+        // Retrieve the parent container when under zend-servicemanager v2
+        if (! method_exists($container, 'configure')) {
+            $container = $container->getServiceLocator() ?: $container;
+        }
+
         return $this($container, Identity::class);
     }
 }

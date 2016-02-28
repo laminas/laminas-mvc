@@ -107,7 +107,7 @@ class ControllerManager extends AbstractPluginManager
      * @param DispatchableInterface|ContainerInterface $second Controller when
      *     using zend-servicemanager v3; container under v2.
      */
-    public function injectEventManager(ContainerInterface $container, $controller)
+    public function injectEventManager($first, $second)
     {
         if ($first instanceof ContainerInterface) {
             $container = $first;
@@ -123,6 +123,11 @@ class ControllerManager extends AbstractPluginManager
 
         $events = $controller->getEventManager();
         if (! $events || ! $events->getSharedManager() instanceof SharedEventManagerInterface) {
+            // For v2, we need to pull the parent service locator
+            if (! method_exists($container, 'configure')) {
+                $container = $container->getServiceLocator() ?: $container;
+            }
+
             $controller->setEventManager($container->get('EventManager'));
         }
     }
@@ -135,7 +140,7 @@ class ControllerManager extends AbstractPluginManager
      * @param DispatchableInterface|ContainerInterface $second Controller when
      *     using zend-servicemanager v3; container under v2.
      */
-    public function injectConsole(ContainerInterface $container, $controller)
+    public function injectConsole($first, $second)
     {
         if ($first instanceof ContainerInterface) {
             $container = $first;
@@ -149,6 +154,11 @@ class ControllerManager extends AbstractPluginManager
             return;
         }
 
+        // For v2, we need to pull the parent service locator
+        if (! method_exists($container, 'configure')) {
+            $container = $container->getServiceLocator() ?: $container;
+        }
+
         $controller->setConsole($container->get('Console'));
     }
 
@@ -160,7 +170,7 @@ class ControllerManager extends AbstractPluginManager
      * @param DispatchableInterface|ContainerInterface $second Controller when
      *     using zend-servicemanager v3; container under v2.
      */
-    public function injectPluginManager(ContainerInterface $container, $controller)
+    public function injectPluginManager($first, $second)
     {
         if ($first instanceof ContainerInterface) {
             $container = $first;
@@ -172,6 +182,11 @@ class ControllerManager extends AbstractPluginManager
 
         if (! method_exists($controller, 'setPluginManager')) {
             return;
+        }
+
+        // For v2, we need to pull the parent service locator
+        if (! method_exists($container, 'configure')) {
+            $container = $container->getServiceLocator() ?: $container;
         }
 
         $controller->setPluginManager($container->get('ControllerPluginManager'));

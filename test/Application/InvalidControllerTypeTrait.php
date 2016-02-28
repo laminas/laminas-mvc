@@ -51,12 +51,11 @@ trait InvalidControllerTypeTrait
             $serviceConfig,
             [
                 'aliases' => [
-                    'ControllerLoader'  => ControllerManager::class,
-                    'ControllerManager' => ControllerManager::class,
+                    'ControllerLoader'  => 'ControllerManager',
                     'Router'            => 'HttpRouter',
                 ],
                 'factories' => [
-                    ControllerManager::class => function ($services) {
+                    'ControllerManager' => function ($services) {
                         return new ControllerManager($services, ['factories' => [
                             'bad' => function () {
                                 return new stdClass();
@@ -84,7 +83,8 @@ trait InvalidControllerTypeTrait
                 ],
             ]
         );
-        $services = new ServiceManager((new ServiceManagerConfig($serviceConfig))->toArray());
+        $services = new ServiceManager();
+        (new ServiceManagerConfig($serviceConfig))->configureServiceManager($services);
         $application = $services->get('Application');
 
         $request = $services->get('Request');

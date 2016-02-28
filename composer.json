@@ -33,7 +33,7 @@
         "zendframework/zend-inputfilter": "^2.6",
         "zendframework/zend-json": "^2.6.1",
         "zendframework/zend-log": "^2.7.1",
-        "zendframework/zend-modulemanager": "^2.7",
+        "zendframework/zend-modulemanager": "^2.7.1",
         "zendframework/zend-session": "^2.6.2",
         "zendframework/zend-serializer": "^2.6.1",
         "zendframework/zend-text": "^2.6",
@@ -64,12 +64,10 @@
         "zendframework/zend-version": "Zend\\Version component",
         "zendframework/zend-view": "Zend\\View component"
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "extra": {
         "branch-alias": {
             "dev-master": "2.6-dev",
-            "dev-develop": "3.0-dev"
+            "dev-develop": "2.7-dev"
         }
     },
     "autoload-dev": {

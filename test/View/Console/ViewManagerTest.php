@@ -48,7 +48,8 @@ class ViewManagerTest extends TestCase
 
     public function setUp()
     {
-        $this->services = new ServiceManager($this->prepareServiceManagerConfig());
+        $this->services = new ServiceManager();
+        $this->prepareServiceManagerConfig()->configureServiceManager($this->services);
         $this->factory  = new ConsoleViewManagerFactory();
     }
 
@@ -59,7 +60,7 @@ class ViewManagerTest extends TestCase
         $r->setAccessible(true);
 
         $config = $r->getValue($serviceListener);
-        return ArrayUtils::merge((new ServiceManagerConfig())->toArray(), $config);
+        return new ServiceManagerConfig($config);
     }
 
     /**
@@ -120,27 +121,28 @@ class ViewManagerTest extends TestCase
      */
     public function testConsoleKeyWillOverrideDisplayExceptionAndExceptionMessage($config)
     {
-        $eventManager = new EventManager(new SharedEventManager());
+        $eventManager = new EventManager();
+        $eventManager->setSharedManager(new SharedEventManager());
         $request      = new ConsoleRequest();
         $response     = new ConsoleResponse();
 
-        $services = $this->services->withConfig(['services' => [
-            'config'       => $config,
-            'Request'      => $request,
-            'EventManager' => $eventManager,
-            'Response'     => $response,
-        ]]);
+        $this->services->setAllowOverride(true);
+        $this->services->setService('config', $config);
+        $this->services->setService('EventManager', $eventManager);
+        $this->services->setService('Request', $request);
+        $this->services->setService('Response', $response);
+        $this->services->setAllowOverride(false);
 
-        $manager = $this->factory->__invoke($services, 'ConsoleViewRenderer');
+        $manager = $this->factory->__invoke($this->services, 'ConsoleViewRenderer');
 
-        $application = new Application($config, $services, $eventManager, $request, $response);
+        $application = new Application($config, $this->services, $eventManager, $request, $response);
 
         $event = new MvcEvent();
         $event->setApplication($application);
         $manager->onBootstrap($event);
 
-        $this->assertFalse($services->get('ConsoleExceptionStrategy')->displayExceptions());
-        $this->assertFalse($services->get('ConsoleRouteNotFoundStrategy')->displayNotFoundReason());
+        $this->assertFalse($this->services->get('ConsoleExceptionStrategy')->displayExceptions());
+        $this->assertFalse($this->services->get('ConsoleRouteNotFoundStrategy')->displayNotFoundReason());
     }
 
     /**
@@ -148,31 +150,30 @@ class ViewManagerTest extends TestCase
      */
     public function testConsoleDisplayExceptionIsTrue()
     {
-        $eventManager = new EventManager(new SharedEventManager());
+        $eventManager = new EventManager();
+        $eventManager->setSharedManager(new SharedEventManager());
         $request      = new ConsoleRequest();
         $response     = new ConsoleResponse();
 
-        $services = $this->services->withConfig([
-            'services' => [
-                'config'       => [],
-                'Request'      => $request,
-                'EventManager' => $eventManager,
-                'Response'     => $response,
-            ],
-        ]);
+        $this->services->setAllowOverride(true);
+        $this->services->setService('config', []);
+        $this->services->setService('EventManager', $eventManager);
+        $this->services->setService('Request', $request);
+        $this->services->setService('Response', $response);
+        $this->services->setAllowOverride(false);
 
         $manager     = new ViewManager;
-        $application = new Application([], $services, $eventManager, $request, $response);
+        $application = new Application([], $this->services, $eventManager, $request, $response);
         $event       = new MvcEvent();
         $event->setApplication($application);
 
         $manager->onBootstrap($event);
 
-        $exceptionStrategy = $services->get('ConsoleExceptionStrategy');
+        $exceptionStrategy = $this->services->get('ConsoleExceptionStrategy');
         $this->assertInstanceOf('Zend\Mvc\View\Console\ExceptionStrategy', $exceptionStrategy);
         $this->assertTrue($exceptionStrategy->displayExceptions());
 
-        $routeNotFoundStrategy = $services->get('ConsoleRouteNotFoundStrategy');
+        $routeNotFoundStrategy = $this->services->get('ConsoleRouteNotFoundStrategy');
         $this->assertInstanceOf('Zend\Mvc\View\Console\RouteNotFoundStrategy', $routeNotFoundStrategy);
         $this->assertTrue($routeNotFoundStrategy->displayNotFoundReason());
     }

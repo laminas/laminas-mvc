@@ -12,6 +12,7 @@ namespace Zend\Mvc\Service;
 use Interop\Container\ContainerInterface;
 use Zend\Console\Console;
 use Zend\Mvc\Router\RouteMatch;
+use Zend\ServiceManager\ConfigInterface;
 use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\Stdlib\ArrayUtils;
 use Zend\View\Helper as ViewHelper;
@@ -146,6 +147,7 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
         };
     }
 
+    /**
      * Create and return a factory for creating a BasePath helper.
      *
      * Uses configuration and request services to configure the helper.

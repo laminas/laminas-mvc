@@ -61,7 +61,7 @@ class ViewHelperManagerFactoryTest extends TestCase
         $this->services->setService('config', []);
         $this->services->setService('Request', new ConsoleRequest());
 
-        $manager = $this->factory->__invoke($services, 'ViewHelperManager');
+        $manager = $this->factory->__invoke($this->services, 'ViewHelperManager');
 
         $doctype = $manager->get('doctype');
         $this->assertInstanceof('Zend\View\Helper\Doctype', $doctype);
@@ -90,7 +90,7 @@ class ViewHelperManagerFactoryTest extends TestCase
             ]
         ]);
 
-        $manager = $this->factory->__invoke($services, 'ViewHelperManager');
+        $manager = $this->factory->__invoke($this->services, 'ViewHelperManager');
 
         $basePath = $manager->get('basepath');
         $this->assertEquals('http://test.com', $basePath());

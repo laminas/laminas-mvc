@@ -92,6 +92,9 @@ class DispatchListener extends AbstractListenerAggregate
 
         try {
             $controller = $controllerManager->get($controllerName);
+        } catch (Exception\InvalidControllerException $exception) {
+            $return = $this->marshalControllerNotFoundEvent($application::ERROR_CONTROLLER_INVALID, $controllerName, $e, $application, $exception);
+            return $this->complete($return, $e);
         } catch (InvalidServiceException $exception) {
             $return = $this->marshalControllerNotFoundEvent($application::ERROR_CONTROLLER_INVALID, $controllerName, $e, $application, $exception);
             return $this->complete($return, $e);

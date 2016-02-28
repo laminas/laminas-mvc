@@ -12,6 +12,7 @@ namespace Zend\Mvc\Router;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\ServiceManager\AbstractFactoryInterface;
+use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
@@ -20,8 +21,17 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * Can be mapped directly to specific route plugin names, or used as an
  * abstract factory to map FQCN services to invokables.
  */
-class RouteInvokableFactory implements AbstractFactoryInterface
+class RouteInvokableFactory implements
+    AbstractFactoryInterface,
+    FactoryInterface
 {
+    /**
+     * Options used to create instance (used with zend-servicemanager v2)
+     *
+     * @var array
+     */
+    protected $creationOptions = [];
+
     /**
      * Can we create a route instance with the given name? (v3)
      *
@@ -109,6 +119,30 @@ class RouteInvokableFactory implements AbstractFactoryInterface
      */
     public function createServiceWithName(ServiceLocatorInterface $container, $normalizedName, $routeName)
     {
-        return $this($container, $routeName);
+        return $this($container, $routeName, $this->creationOptions);
+    }
+
+    /**
+     * Create and return RouteInterface instance
+     *
+     * For use with zend-servicemanager v2; proxies to __invoke().
+     *
+     * @param ServiceLocatorInterface $container
+     * @return RouteInterface
+     */
+    public function createService(ServiceLocatorInterface $container, $normalizedName = null, $routeName = null)
+    {
+        $routeName = $routeName ?: RouteInterface::class;
+        return $this($container, $routeName, $this->creationOptions);
+    }
+
+    /**
+     * Set options to use when creating a service (v2)
+     *
+     * @param array $creationOptions
+     */
+    public function setCreationOptions(array $creationOptions)
+    {
+        $this->creationOptions = $creationOptions;
     }
 }

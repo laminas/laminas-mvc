@@ -10,12 +10,26 @@
 namespace ZendTest\Mvc\Controller\Plugin\TestAsset;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 class SamplePluginFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, $name, array $options = null)
     {
         return new SamplePlugin();
+    }
+
+    /**
+     * Create and return SamplePlugin instance
+     *
+     * For use with zend-servicemanager v2; proxies to __invoke().
+     *
+     * @param ServiceLocatorInterface $container
+     * @return SamplePlugin
+     */
+    public function createService(ServiceLocatorInterface $container)
+    {
+        return $this($container, SamplePlugin::class);
     }
 }

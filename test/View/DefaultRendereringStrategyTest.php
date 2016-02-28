@@ -12,22 +12,23 @@ namespace ZendTest\Mvc\View;
 use PHPUnit_Framework_TestCase as TestCase;
 use Zend\EventManager\Event;
 use Zend\EventManager\EventManager;
+use Zend\EventManager\Test\EventListenerIntrospectionTrait;
 use Zend\Http\Request;
 use Zend\Http\Response;
 use Zend\Mvc\Application;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\View\Http\DefaultRenderingStrategy;
+use Zend\ServiceManager\Config;
 use Zend\ServiceManager\ServiceManager;
 use Zend\View\Renderer\PhpRenderer;
 use Zend\View\View;
 use Zend\View\Model\ViewModel;
 use Zend\View\Resolver\TemplateMapResolver;
 use Zend\View\Strategy\PhpRendererStrategy;
-use ZendTest\Mvc\EventManagerIntrospectionTrait;
 
 class DefaultRendereringStrategyTest extends TestCase
 {
-    use EventManagerIntrospectionTrait;
+    use EventListenerIntrospectionTrait;
 
     protected $event;
     protected $request;
@@ -134,12 +135,13 @@ class DefaultRendereringStrategyTest extends TestCase
         $model->setTemplate('exception');
         $this->event->setViewModel($model);
 
-        $services = new ServiceManager([
+        $services = new ServiceManager();
+        (new Config([
             'invokables' => [
                 'SharedEventManager' =>  'Zend\EventManager\SharedEventManager',
             ],
             'factories' => [
-                'EventManager' => function ($services, $name, array $options = null) {
+                'EventManager' => function ($services) {
                     $sharedEvents = $services->get('SharedEventManager');
                     $events = new EventManager($sharedEvents);
                     return $events;
@@ -152,7 +154,7 @@ class DefaultRendereringStrategyTest extends TestCase
             'shared' => [
                 'EventManager' => false,
             ],
-        ]);
+        ]))->configureServiceManager($services);
 
         $application = new Application([], $services, $services->get('EventManager'), $this->request, $this->response);
         $this->event->setApplication($application);

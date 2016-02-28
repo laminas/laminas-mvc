@@ -47,6 +47,7 @@ class ForwardFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $container)
     {
-        return $this($container, Forward::class);
+        $parentContainer = $container->getServiceLocator() ?: $container;
+        return $this($parentContainer, Forward::class);
     }
 }

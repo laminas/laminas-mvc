@@ -15,7 +15,10 @@ use Zend\Mvc\Service\ControllerManagerFactory;
 use Zend\Mvc\Service\ControllerPluginManagerFactory;
 use Zend\Mvc\Service\EventManagerFactory;
 use Zend\ServiceManager\Config;
+use Zend\ServiceManager\Factory\InvokableFactory;
 use Zend\ServiceManager\ServiceManager;
+use ZendTest\Mvc\Controller\Plugin\TestAsset\SamplePlugin;
+use ZendTest\Mvc\Controller\TestAsset\SampleController;
 
 class ControllerManagerFactoryTest extends TestCase
 {
@@ -33,19 +36,21 @@ class ControllerManagerFactoryTest extends TestCase
     {
         $loaderFactory  = new ControllerManagerFactory();
         $this->defaultServiceConfig = [
-            'invokables' => [
+            'aliases' => [
                 'SharedEventManager' => SharedEventManager::class,
             ],
             'factories' => [
                 'ControllerManager'       => $loaderFactory,
                 'ControllerPluginManager' => ControllerPluginManagerFactory::class,
                 'EventManager'            => EventManagerFactory::class,
+                SharedEventManager::class => InvokableFactory::class,
             ],
             'services' => [
                 'config' => [],
             ],
         ];
-        $this->services = new ServiceManager($this->defaultServiceConfig);
+        $this->services = new ServiceManager();
+        (new Config($this->defaultServiceConfig))->configureServiceManager($this->services);
     }
 
     public function testCannotLoadInvalidDispatchable()
@@ -67,9 +72,10 @@ class ControllerManagerFactoryTest extends TestCase
 
     public function testCannotLoadControllerFromPeer()
     {
-        $services = new ServiceManager(array_merge_recursive($this->defaultServiceConfig, ['services' => [
+        $services = new ServiceManager();
+        (new Config(array_merge_recursive($this->defaultServiceConfig, ['services' => [
             'foo' => $this,
-        ]]));
+        ]])))->configureServiceManager($services);
         $loader = $services->get('ControllerManager');
 
         $this->setExpectedException('Zend\ServiceManager\Exception\ExceptionInterface');
@@ -79,9 +85,8 @@ class ControllerManagerFactoryTest extends TestCase
     public function testControllerLoadedCanBeInjectedWithValuesFromPeer()
     {
         $loader = $this->services->get('ControllerManager');
-        $loader = $loader->withConfig(['invokables' => [
-            'ZendTest\Dispatchable' => TestAsset\Dispatchable::class,
-        ]]);
+        $loader->setAlias('ZendTest\Dispatchable', TestAsset\Dispatchable::class);
+        $loader->setFactory(TestAsset\Dispatchable::class, InvokableFactory::class);
 
         $controller = $loader->get('ZendTest\Dispatchable');
         $this->assertInstanceOf(TestAsset\Dispatchable::class, $controller);
@@ -92,18 +97,11 @@ class ControllerManagerFactoryTest extends TestCase
     public function testCallPluginWithControllerPluginManager()
     {
         $controllerPluginManager = $this->services->get('ControllerPluginManager');
-        $controllerPluginManager = $controllerPluginManager->withConfig([
-            'invokables' => [
-                'samplePlugin' => 'ZendTest\Mvc\Controller\Plugin\TestAsset\SamplePlugin',
-            ],
-        ]);
+        $controllerPluginManager->setAlias('samplePlugin', SamplePlugin::class);
+        $controllerPluginManager->setFactory(SamplePlugin::class, InvokableFactory::class);
 
-        $controller    = new \ZendTest\Mvc\Controller\TestAsset\SampleController;
+        $controller = new SampleController;
         $controllerPluginManager->setController($controller);
-
-        $services = $this->services->withConfig(['services' => [
-            'ControllerPluginManager' => $controllerPluginManager,
-        ]]);
 
         $plugin = $controllerPluginManager->get('samplePlugin');
         $this->assertEquals($controller, $plugin->getController());

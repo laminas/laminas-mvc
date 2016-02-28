@@ -38,7 +38,6 @@ class ServiceListenerFactory implements FactoryInterface
      */
     protected $defaultServiceConfig = [
         'aliases' => [
-            'Config'                                     => 'config',
             'Configuration'                              => 'config',
             'configuration'                              => 'config',
             'Console'                                    => 'ConsoleAdapter',

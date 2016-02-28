@@ -40,7 +40,7 @@ class MiddlewareListenerTest extends TestCase
         $eventManager = new EventManager();
 
         $serviceManager = $this->prophesize(ContainerInterface::class);
-        $serviceManager->has($middlewareMatched, true)->willReturn(true);
+        $serviceManager->has($middlewareMatched)->willReturn(true);
         $serviceManager->get($middlewareMatched)->willReturn($middleware);
 
         $application = $this->prophesize(Application::class);
@@ -61,7 +61,7 @@ class MiddlewareListenerTest extends TestCase
 
     public function testSuccessfullyDispatchesMiddleware()
     {
-        $event       = $this->createMvcEvent('path', function ($request, $response) {
+        $event = $this->createMvcEvent('path', function ($request, $response) {
             $this->assertInstanceOf(ServerRequestInterface::class, $request);
             $this->assertInstanceOf(ResponseInterface::class, $response);
             $response->getBody()->write('Test!');
@@ -119,12 +119,6 @@ class MiddlewareListenerTest extends TestCase
 
     /**
      * Ensure that the listener tests for services in abstract factories.
-     *
-     * has() omits abstract factories by default; you must pass an optional
-     * second parameter, a boolean flag, to indicate it should also search
-     * those.
-     *
-     * This test ensures that.
      */
     public function testCanLoadFromAbstractFactory()
     {
@@ -134,9 +128,8 @@ class MiddlewareListenerTest extends TestCase
 
         $eventManager = new EventManager();
 
-        $serviceManager = new ServiceManager(['abstract_factories' => [
-            TestAsset\MiddlewareAbstractFactory::class,
-        ]]);
+        $serviceManager = new ServiceManager();
+        $serviceManager->addAbstractFactory(TestAsset\MiddlewareAbstractFactory::class);
 
         $application = $this->prophesize(Application::class);
         $application->getEventManager()->willReturn($eventManager);

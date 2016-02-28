@@ -14,6 +14,7 @@ use Zend\Mvc\Router\RoutePluginManager;
 use Zend\Mvc\Service\ConsoleRouterFactory;
 use Zend\Mvc\Service\HttpRouterFactory;
 use Zend\Mvc\Service\RouterFactory;
+use Zend\ServiceManager\Config;
 use Zend\ServiceManager\ServiceManager;
 
 class RouterFactoryTest extends TestCase
@@ -24,7 +25,7 @@ class RouterFactoryTest extends TestCase
             'factories' => [
                 'ConsoleRouter'      => ConsoleRouterFactory::class,
                 'HttpRouter'         => HttpRouterFactory::class,
-                'RoutePluginManager' => function ($services, $name, array $options = null) {
+                'RoutePluginManager' => function ($services) {
                     return new RoutePluginManager($services);
                 },
             ],
@@ -35,7 +36,7 @@ class RouterFactoryTest extends TestCase
 
     public function testFactoryCanCreateRouterBasedOnConfiguredName()
     {
-        $services = new ServiceManager(array_merge_recursive($this->defaultServiceConfig, [
+        $config = new Config(array_merge_recursive($this->defaultServiceConfig, [
             'services' => [ 'config' => [
                 'router' => [
                     'router_class' => 'ZendTest\Mvc\Service\TestAsset\Router',
@@ -47,6 +48,8 @@ class RouterFactoryTest extends TestCase
                 ],
             ]],
         ]));
+        $services = new ServiceManager();
+        $config->configureServiceManager($services);
 
         $router = $this->factory->__invoke($services, 'router');
         $this->assertInstanceOf('ZendTest\Mvc\Service\TestAsset\Router', $router);
@@ -54,13 +57,15 @@ class RouterFactoryTest extends TestCase
 
     public function testFactoryCanCreateRouterWhenOnlyHttpRouterConfigPresent()
     {
-        $services = new ServiceManager(array_merge_recursive($this->defaultServiceConfig, [
+        $config = new Config(array_merge_recursive($this->defaultServiceConfig, [
             'services' => [ 'config' => [
                 'router' => [
                     'router_class' => 'ZendTest\Mvc\Service\TestAsset\Router',
                 ],
             ]],
         ]));
+        $services = new ServiceManager();
+        $config->configureServiceManager($services);
 
         $router = $this->factory->__invoke($services, 'router');
         $this->assertInstanceOf('Zend\Mvc\Router\Console\SimpleRouteStack', $router);

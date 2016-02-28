@@ -13,6 +13,8 @@ use PHPUnit_Framework_TestCase as TestCase;
 use ReflectionMethod;
 use ReflectionProperty;
 use stdClass;
+use Zend\EventManager\SharedEventManager;
+use Zend\EventManager\Test\EventListenerIntrospectionTrait;
 use Zend\Http\PhpEnvironment\Response;
 use Zend\ModuleManager\Listener\ConfigListener;
 use Zend\ModuleManager\ModuleEvent;
@@ -28,7 +30,7 @@ use Zend\Stdlib\ResponseInterface;
 
 class ApplicationTest extends TestCase
 {
-    use EventManagerIntrospectionTrait;
+    use EventListenerIntrospectionTrait;
 
     /**
      * @var ServiceManager
@@ -73,23 +75,10 @@ class ApplicationTest extends TestCase
                 ],
             ]
         );
-        $this->serviceManager = new ServiceManager((new ServiceManagerConfig($serviceConfig))->toArray());
+        $this->serviceManager = new ServiceManager();
+        (new ServiceManagerConfig($serviceConfig))->configureServiceManager($this->serviceManager);
+        $this->serviceManager->setAllowOverride(true);
         $this->application = $this->serviceManager->get('Application');
-    }
-
-    /**
-     * Re-inject the application service manager instance
-     *
-     * @param Application $application
-     * @param ServiceManager $services
-     * @return Application
-     */
-    public function setApplicationServiceManager(Application $application, ServiceManager $services)
-    {
-        $r = new ReflectionProperty($application, 'serviceManager');
-        $r->setAccessible(true);
-        $r->setValue($application, $services);
-        return $application;
     }
 
     public function getConfigListener()
@@ -160,6 +149,7 @@ class ApplicationTest extends TestCase
         $this->assertEquals([], $registeredEvents);
 
         $sharedEvents = $events->getSharedManager();
+        $this->assertInstanceOf(SharedEventManager::class, $sharedEvents);
         $this->assertAttributeEquals([], 'identifiers', $sharedEvents);
     }
 
@@ -257,31 +247,21 @@ class ApplicationTest extends TestCase
             ],
         ]);
         $router->addRoute('path', $route);
-        $services = $this->serviceManager->withConfig([
-            'aliases' => [
-                'Router'     => 'HttpRouter',
-            ],
-            'services' => [
-                'HttpRouter' => $router,
-            ],
-        ]);
+        $this->serviceManager->setAlias('Router', 'HttpRouter');
+        $this->serviceManager->setService('HttpRouter', $router);
 
-        $application = $this->setApplicationServiceManager($this->application, $services);
         if ($addService) {
-            $services = $services->withConfig(['factories' => [
-                'ControllerManager' => function ($services) {
-                    return new ControllerManager($services, ['factories' => [
-                        'path' => function () {
-                            return new TestAsset\PathController;
-                        },
-                    ]]);
-                },
-            ]]);
-            $application = $this->setApplicationServiceManager($application, $services);
+            $this->services->addFactory('ControllerManager', function ($services) {
+                return new ControllerManager($services, ['factories' => [
+                    'path' => function () {
+                        return new TestAsset\PathController;
+                    },
+                ]]);
+            });
         }
 
-        $application->bootstrap();
-        return $application;
+        $this->application->bootstrap();
+        return $this->application;
     }
 
     public function setupActionController()
@@ -299,19 +279,16 @@ class ApplicationTest extends TestCase
         ]);
         $router->addRoute('sample', $route);
 
-        $services = $this->serviceManager->withConfig(['factories' => [
-            'ControllerManager' => function ($services) {
-                return new ControllerManager($services, ['factories' => [
-                    'sample' => function () {
-                        return new Controller\TestAsset\SampleController();
-                    },
-                ]]);
-            },
-        ]]);
-        $application = $this->setApplicationServiceManager($this->application, $services);
+        $this->serviceManager->setFactory('ControllerManager', function ($services) {
+            return new ControllerManager($services, ['factories' => [
+                'sample' => function () {
+                    return new Controller\TestAsset\SampleController();
+                },
+            ]]);
+        });
 
-        $application->bootstrap();
-        return $application;
+        $this->application->bootstrap();
+        return $this->application;
     }
 
     public function setupBadController($addService = true)
@@ -329,22 +306,18 @@ class ApplicationTest extends TestCase
         ]);
         $router->addRoute('bad', $route);
 
-        $application = $this->application;
         if ($addService) {
-            $services = $this->serviceManager->withConfig(['factories' => [
-                'ControllerManager' => function ($services) {
-                    return new ControllerManager($services, ['factories' => [
-                        'bad' => function () {
-                            return new Controller\TestAsset\BadController();
-                        },
-                    ]]);
-                },
-            ]]);
-            $application = $this->setApplicationServiceManager($application, $services);
+            $this->serviceManager->setFactory('ControllerManager', function ($services) {
+                return new ControllerManager($services, ['factories' => [
+                    'bad' => function () {
+                        return new Controller\TestAsset\BadController();
+                    },
+                ]]);
+            });
         }
 
-        $application->bootstrap();
-        return $application;
+        $this->application->bootstrap();
+        return $this->application;
     }
 
     public function testFinishEventIsTriggeredAfterDispatching()

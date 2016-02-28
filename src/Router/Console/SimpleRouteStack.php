@@ -11,7 +11,9 @@ namespace Zend\Mvc\Router\Console;
 
 use Traversable;
 use Zend\Mvc\Router\Exception;
+use Zend\Mvc\Router\RouteInvokableFactory;
 use Zend\Mvc\Router\SimpleRouteStack as BaseSimpleRouteStack;
+use Zend\ServiceManager\Config;
 use Zend\Stdlib\ArrayUtils;
 
 /**
@@ -26,11 +28,24 @@ class SimpleRouteStack extends BaseSimpleRouteStack
      */
     protected function init()
     {
-        $routes = $this->routePluginManager;
-        $this->routePluginManager = $routes->withConfig(['invokables' => [
-            'catchall' => __NAMESPACE__ . '\Catchall',
-            'simple'   => __NAMESPACE__ . '\Simple',
-        ]]);
+        (new Config([
+            'aliases' => [
+                'catchall' => Catchall::class,
+                'catchAll' => Catchall::class,
+                'Catchall' => Catchall::class,
+                'CatchAll' => Catchall::class,
+                'simple'   => Simple::class,
+                'Simple'   => Simple::class,
+            ],
+            'factories' => [
+                Catchall::class => RouteInvokableFactory::class,
+                Simple::class   => RouteInvokableFactory::class,
+
+                // v2 normalized names
+                'zendmvcrouterconsoleCatchall' => RouteInvokableFactory::class,
+                'zendmvcrouterconsoleSimple'   => RouteInvokableFactory::class,
+            ],
+        ]))->configureServiceManager($this->routePluginManager);
     }
 
     /**

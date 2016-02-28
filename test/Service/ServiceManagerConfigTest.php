@@ -37,7 +37,8 @@ class ServiceManagerConfigTest extends TestCase
     protected function setUp()
     {
         $this->config   = new ServiceManagerConfig();
-        $this->services = $this->config->configureServiceManager(new ServiceManager());
+        $this->services = new ServiceManager();
+        $this->config->configureServiceManager($this->services);
     }
 
     /**
@@ -45,17 +46,17 @@ class ServiceManagerConfigTest extends TestCase
      */
     public function testEventManagerAwareInterfaceIsNotInjectedIfPresentButSharedManagerIs()
     {
-        $events = new EventManager($this->services->get('SharedEventManager'));
+        $events = new EventManager();
+        $events->setSharedManager($this->services->get('SharedEventManager'));
         TestAsset\EventManagerAwareObject::$defaultEvents = $events;
 
-        $services = $this->services->withConfig(['invokables' => [
-            'EventManagerAwareObject' => TestAsset\EventManagerAwareObject::class,
-        ]]);
+        $this->services->setAlias('EventManagerAwareObject', TestAsset\EventManagerAwareObject::class);
+        $this->services->setFactory(TestAsset\EventManagerAwareObject::class, InvokableFactory::class);
 
-        $instance = $services->get('EventManagerAwareObject');
+        $instance = $this->services->get('EventManagerAwareObject');
         $this->assertInstanceOf(TestAsset\EventManagerAwareObject::class, $instance);
         $this->assertSame($events, $instance->getEventManager());
-        $this->assertSame($services->get('SharedEventManager'), $events->getSharedManager());
+        $this->assertSame($this->services->get('SharedEventManager'), $events->getSharedManager());
     }
 
     /**
@@ -74,8 +75,8 @@ class ServiceManagerConfigTest extends TestCase
             ],
         ];
 
-        $config = new ServiceManagerConfig($custom);
-        $sm = $config->configureServiceManager(new ServiceManager());
+        $sm = new ServiceManager();
+        (new ServiceManagerConfig($custom))->configureServiceManager($sm);
 
         $this->assertTrue($sm->has('foo'));
         $this->assertTrue($sm->has('bar'));
@@ -98,8 +99,8 @@ class ServiceManagerConfigTest extends TestCase
             ],
         ];
 
-        $config = new ServiceManagerConfig($custom);
-        $sm     = $config->configureServiceManager(new ServiceManager());
+        $sm = new ServiceManager();
+        (new ServiceManagerConfig($custom))->configureServiceManager($sm);
 
         $this->assertTrue($sm->has('foo'));
         $this->assertTrue($sm->has('ModuleManager'));
@@ -112,6 +113,29 @@ class ServiceManagerConfigTest extends TestCase
      */
     public function testCanAddDelegators()
     {
+        /*
+         * Create delegator closure
+         *
+         * The signature for delegators differs between zend-servicemanager
+         * v2 and v3, so we must vary the closure used based on the version
+         * being used when testing.
+         */
+        if (method_exists($this->services, 'configure')) {
+            // v3
+            $delegator = function ($container, $name, $callback, array $options = null) {
+                $service = $callback();
+                $service->bar = 'baz';
+                return $service;
+            };
+        } else {
+            // v2
+            $delegator = function ($container, $name, $requestedName, $callback) {
+                $service = $callback();
+                $service->bar = 'baz';
+                return $service;
+            };
+        }
+
         $config = [
             'aliases' => [
                 'foo' => stdClass::class,
@@ -120,18 +144,13 @@ class ServiceManagerConfigTest extends TestCase
                 stdClass::class => InvokableFactory::class,
             ],
             'delegators' => [
-                stdClass::class => [
-                    function ($container, $name, $callback, array $options = null) {
-                        $service = $callback();
-                        $service->bar = 'baz';
-
-                        return $service;
-                    },
-                ],
+                stdClass::class => [ $delegator ],
             ],
         ];
 
-        $sm  = new ServiceManager((new ServiceManagerConfig($config))->toArray());
+        $sm = new ServiceManager();
+        (new ServiceManagerConfig($config))->configureServiceManager($sm);
+
         $std = $sm->get('foo');
         $this->assertInstanceOf(stdClass::class, $std);
         $this->assertEquals('baz', $std->bar);
@@ -154,9 +173,21 @@ class ServiceManagerConfigTest extends TestCase
                 },
             ],
         ]);
-        $serviceManager = $config->configureServiceManager(new ServiceManager());
+        $serviceManager = new ServiceManager();
+        $config->configureServiceManager($serviceManager);
 
-        $initializer->expects($this->once())->method('__invoke')->with($serviceManager, $instance);
+        /*
+         * Need to vary the order of arguments the initializer receives based on
+         * which zend-servicemanager version is being tested against.
+         */
+        if (method_exists($this->services, 'configure')) {
+            // v3
+            $initializer->expects($this->once())->method('__invoke')->with($serviceManager, $instance);
+        } else {
+            // v2
+            $initializer->expects($this->once())->method('__invoke')->with($instance, $serviceManager);
+        }
+
         $instance->expects($this->never())->method('getEventManager');
         $instance->expects($this->never())->method('setEventManager');
 

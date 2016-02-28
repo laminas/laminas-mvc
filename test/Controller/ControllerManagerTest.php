@@ -14,6 +14,7 @@ use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
 use Zend\Mvc\Controller\ControllerManager;
 use Zend\Mvc\Controller\PluginManager as ControllerPluginManager;
+use Zend\ServiceManager\Config;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Console\Adapter\Virtual as ConsoleAdapter;
 
@@ -22,10 +23,12 @@ class ControllerManagerTest extends TestCase
     public function setUp()
     {
         $this->sharedEvents   = new SharedEventManager;
-        $this->events         = new EventManager($this->sharedEvents);
+        $this->events         = new EventManager();
+        $this->events->setSharedManager($this->sharedEvents);
         $this->consoleAdapter = new ConsoleAdapter();
 
-        $this->services = new ServiceManager([
+        $this->services = new ServiceManager();
+        (new Config([
             'factories' => [
                 'ControllerPluginManager' => function ($services) {
                     return new ControllerPluginManager($services);
@@ -36,7 +39,7 @@ class ControllerManagerTest extends TestCase
                 'EventManager'       => $this->events,
                 'SharedEventManager' => $this->sharedEvents,
             ],
-        ]);
+        ]))->configureServiceManager($this->services);
 
         $this->controllers = new ControllerManager($this->services);
     }
@@ -44,7 +47,15 @@ class ControllerManagerTest extends TestCase
     public function testCanInjectEventManager()
     {
         $controller = new TestAsset\SampleController();
-        $this->controllers->injectEventManager($this->services, $controller);
+
+        // Vary injection based on zend-servicemanager version
+        if (method_exists($this->controllers, 'configure')) {
+            // v3
+            $this->controllers->injectEventManager($this->services, $controller);
+        } else {
+            // v2
+            $this->controllers->injectEventManager($controller, $this->controllers);
+        }
 
         // The default AbstractController implementation lazy instantiates an EM
         // instance, which means we need to check that that instance gets injected
@@ -57,14 +68,32 @@ class ControllerManagerTest extends TestCase
     public function testCanInjectConsoleAdapter()
     {
         $controller = new TestAsset\ConsoleController();
-        $this->controllers->injectConsole($this->services, $controller);
+
+        // Vary injection based on zend-servicemanager version
+        if (method_exists($this->controllers, 'configure')) {
+            // v3
+            $this->controllers->injectConsole($this->services, $controller);
+        } else {
+            // v2
+            $this->controllers->injectConsole($controller, $this->controllers);
+        }
+
         $this->assertInstanceOf('Zend\Console\Adapter\AdapterInterface', $controller->getConsole());
     }
 
     public function testCanInjectPluginManager()
     {
         $controller = new TestAsset\SampleController();
-        $this->controllers->injectPluginManager($this->services, $controller);
+
+        // Vary injection based on zend-servicemanager version
+        if (method_exists($this->controllers, 'configure')) {
+            // v3
+            $this->controllers->injectPluginManager($this->services, $controller);
+        } else {
+            // v2
+            $this->controllers->injectPluginManager($controller, $this->controllers);
+        }
+
         $this->assertSame($this->services->get('ControllerPluginManager'), $controller->getPluginManager());
     }
 
@@ -73,7 +102,16 @@ class ControllerManagerTest extends TestCase
         $events     = new EventManager($this->sharedEvents);
         $controller = new TestAsset\SampleController();
         $controller->setEventManager($events);
-        $this->controllers->injectEventManager($this->services, $controller);
+
+        // Vary injection based on zend-servicemanager version
+        if (method_exists($this->controllers, 'configure')) {
+            // v3
+            $this->controllers->injectEventManager($this->services, $controller);
+        } else {
+            // v2
+            $this->controllers->injectEventManager($controller, $this->controllers);
+        }
+
         $this->assertSame($events, $controller->getEventManager());
         $this->assertSame($this->sharedEvents, $events->getSharedManager());
     }
