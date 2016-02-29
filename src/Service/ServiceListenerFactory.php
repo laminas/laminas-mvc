@@ -65,6 +65,7 @@ class ServiceListenerFactory implements FactoryInterface
         'invokables' => [],
         'factories'  => [
             'Application'                    => 'Zend\Mvc\Service\ApplicationFactory',
+            'application'                    => 'Zend\Mvc\Service\ApplicationFactory',
             'config'                         => 'Zend\Mvc\Service\ConfigFactory',
             'ControllerManager'              => 'Zend\Mvc\Service\ControllerManagerFactory',
             'ControllerPluginManager'        => 'Zend\Mvc\Service\ControllerPluginManagerFactory',
