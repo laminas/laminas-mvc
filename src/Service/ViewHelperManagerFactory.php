@@ -129,11 +129,6 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
     private function createUrlHelperFactory(ContainerInterface $services)
     {
         return function () use ($services) {
-            // zend-servicemanager v2: fetch parent locator
-            if (method_exists($services, 'getServiceLocator') && ! method_exists($services, 'configure')) {
-                $services = $services->getServiceLocator() ?: $services;
-            }
-
             $helper = new ViewHelper\Url;
             $router = Console::isConsole() ? 'HttpRouter' : 'Router';
             $helper->setRouter($services->get($router));
@@ -162,11 +157,6 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
     private function createBasePathHelperFactory(ContainerInterface $services)
     {
         return function () use ($services) {
-            // zend-servicemanager v2: fetch parent locator
-            if (method_exists($services, 'getServiceLocator') && ! method_exists($services, 'configure')) {
-                $services = $services->getServiceLocator() ?: $services;
-            }
-
             $config = $services->has('config') ? $services->get('config') : [];
             $helper = new ViewHelper\BasePath;
 
@@ -204,11 +194,6 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
     private function createDoctypeHelperFactory(ContainerInterface $services)
     {
         return function () use ($services) {
-            // zend-servicemanager v2: fetch parent locator
-            if (method_exists($services, 'getServiceLocator') && ! method_exists($services, 'configure')) {
-                $services = $services->getServiceLocator() ?: $services;
-            }
-
             $config = $services->has('config') ? $services->get('config') : [];
             $config = isset($config['view_manager']) ? $config['view_manager'] : [];
             $helper = new ViewHelper\Doctype;
