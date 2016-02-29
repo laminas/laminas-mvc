@@ -9,6 +9,7 @@
 
 namespace ZendTest\Mvc\Controller;
 
+use PHPUnit_Framework_Error_Deprecated;
 use PHPUnit_Framework_TestCase as TestCase;
 use ReflectionClass;
 use Zend\EventManager\EventManager;
@@ -16,13 +17,18 @@ use Zend\EventManager\SharedEventManager;
 use Zend\Mvc\Controller\ControllerManager;
 use Zend\Mvc\Controller\PluginManager as ControllerPluginManager;
 use Zend\ServiceManager\Config;
+use Zend\ServiceManager\Factory\InvokableFactory;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Console\Adapter\Virtual as ConsoleAdapter;
+use ZendTest\Mvc\Service\TestAsset\DuckTypedServiceLocatorAwareController;
 
 class ControllerManagerTest extends TestCase
 {
     public function setUp()
     {
+        // Disable deprecation notices
+        PHPUnit_Framework_Error_Deprecated::$enabled = false;
+
         $this->sharedEvents   = new SharedEventManager;
         $this->events         = $this->createEventManager($this->sharedEvents);
         $this->consoleAdapter = new ConsoleAdapter();
@@ -144,5 +150,14 @@ class ControllerManagerTest extends TestCase
         $this->assertFalse($this->controllers->has('EventManager'));
         $this->setExpectedException('Zend\ServiceManager\Exception\ServiceNotFoundException');
         $this->controllers->get('EventManager');
+    }
+
+    public function testServiceLocatorAwareInitializerInjectsDuckTypedImplementations()
+    {
+        $this->controllers->setFactory(DuckTypedServiceLocatorAwareController::class, InvokableFactory::class);
+
+        $controller = $this->controllers->get(DuckTypedServiceLocatorAwareController::class);
+        $this->assertInstanceOf(DuckTypedServiceLocatorAwareController::class, $controller);
+        $this->assertSame($this->services, $controller->getServiceLocator());
     }
 }
