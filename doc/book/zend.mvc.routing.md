@@ -505,7 +505,7 @@ The `Wildcard` route type matches all segments of a URI path, like in version 1 
 Most of the routing definitions will be done in module configuration files, so the following
 examples will show how to set up routes in config files.
 
-**Simple example with two literal routes**
+### Simple example with two literal routes
 
 ```php
 return array(
@@ -538,7 +538,7 @@ return array(
 );
 ```
 
-**A complex example with child routes**
+### A complex example with child routes
 
 ```php
 return array(
@@ -606,7 +606,7 @@ echo $this->url('blog/post', array('slug' => 'my-post')); // gives "/blog/my-pos
 echo $this->url('blog/rss'); // gives "/blog/rss"
 ```
 
-**An example with multiple Hostnames and subdomains within a single application**
+### An example with multiple Hostnames and subdomains within a single application
 
 ```php
 return array(
