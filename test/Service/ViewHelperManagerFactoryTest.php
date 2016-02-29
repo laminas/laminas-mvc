@@ -123,7 +123,6 @@ class ViewHelperManagerFactoryTest extends TestCase
 
         $this->services->setService('HttpRouter', $router);
         $this->services->setService('Router', $router);
-        $this->services->setService('application', $application->reveal());
         $this->services->setService('Application', $application->reveal());
         $this->services->setService('config', []);
 
