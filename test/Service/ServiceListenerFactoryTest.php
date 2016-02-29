@@ -10,6 +10,7 @@
 namespace ZendTest\Mvc\Service;
 
 use PHPUnit_Framework_TestCase as TestCase;
+use ReflectionProperty;
 use Zend\Mvc\Service\ServiceListenerFactory;
 
 class ServiceListenerFactoryTest extends TestCase
@@ -178,5 +179,16 @@ class ServiceListenerFactoryTest extends TestCase
                  ->will($this->returnValue($config));
 
         $this->factory->__invoke($this->sm, 'ServiceListener');
+    }
+
+    public function testDefinesExpectedAliasesForConsole()
+    {
+        $r = new ReflectionProperty($this->factory, 'defaultServiceConfig');
+        $r->setAccessible(true);
+        $config = $r->getValue($this->factory);
+
+        $this->assertArrayHasKey('aliases', $config, 'Missing aliases from default service config');
+        $this->assertArrayHasKey('console', $config['aliases'], 'Missing "console" alias from default service config');
+        $this->assertArrayHasKey('Console', $config['aliases'], 'Missing "Console" alias from default service config');
     }
 }
