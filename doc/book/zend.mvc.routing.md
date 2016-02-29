@@ -136,11 +136,11 @@ a B-tree algorithm to match routes. As such, you register a single route with ma
 
 A `TreeRouteStack` will consist of the following configuration:
 
-- A base "route", which describes the base match needed, the root of the tree.
-- An optional "route\_plugins", which is a configured `Zend\Mvc\Router\RoutePluginManager` that can
+* A base "route", which describes the base match needed, the root of the tree.
+* An optional "route\_plugins", which is a configured `Zend\Mvc\Router\RoutePluginManager` that can
 lazy-load routes.
-- The option "may\_terminate", which hints to the router that no other segments will follow it.
-- An optional "child\_routes" array, which contains additional routes that stem from the base
+* The option "may\_terminate", which hints to the router that no other segments will follow it.
+* An optional "child\_routes" array, which contains additional routes that stem from the base
 "route" (i.e., build from it). Each child route can itself be a `TreeRouteStack` if desired; in
 fact, the `Part` route works exactly this way.
 
@@ -161,8 +161,8 @@ Zend Framework 2.0 ships with the following HTTP route types.
 The `Hostname` route attempts to match the hostname registered in the request against specific
 criteria. Typically, this will be in one of the following forms:
 
-- "subdomain.domain.tld"
-- ":subdomain.domain.tld"
+* "subdomain.domain.tld"
+* ":subdomain.domain.tld"
 
 In the above, the second route would return a "subdomain" key as part of the route match.
 
@@ -306,11 +306,11 @@ $route = Part::factory(array(
 
 The above would match the following:
 
-- "/" would load the "Index" controller, "index" action.
-- "/blog" would load the "Blog" controller, "index" action.
-- "/blog/rss" would load the "Blog" controller, "rss" action.
-- "/blog/rss/sub" would load the "Blog" controller, "subrss" action.
-- "/forum" would load the "Forum" controller, "index" action.
+* "/" would load the "Index" controller, "index" action.
+* "/blog" would load the "Blog" controller, "index" action.
+* "/blog/rss" would load the "Blog" controller, "rss" action.
+* "/blog/rss/sub" would load the "Blog" controller, "subrss" action.
+* "/forum" would load the "Forum" controller, "index" action.
 
 You may use any route type as a child route of a `Part` route.
 
@@ -675,13 +675,13 @@ return array(
 
 The above would match the following:
 
-- `modules.zendframework.com` would dispatch the `Index` controller's `index` action of the `Module`
+* `modules.zendframework.com` would dispatch the `Index` controller's `index` action of the `Module`
 module.
-- `modules.ci.zendframework.com` would dispatch the `Index` controller's `index` action of the
+* `modules.ci.zendframework.com` would dispatch the `Index` controller's `index` action of the
 `Module` module.
-- `packages.zendframework.com` would dispatch the `Index` controller's `index` action of the
+* `packages.zendframework.com` would dispatch the `Index` controller's `index` action of the
 `Package` module.
-- `packages.dev.zendframework.com` would dispatch the `Index` controller's `index` action of the
+* `packages.dev.zendframework.com` would dispatch the `Index` controller's `index` action of the
 `Package` module.
 
 The `Url` controller plugin or view helper may be used to generate URLs following the above example:

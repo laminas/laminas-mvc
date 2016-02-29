@@ -6,12 +6,12 @@ to update the response object, by setting headers and content.
 
 The methods it defines are:
 
-- `setResponse($response)`
-- `getResponse()`
-- `setContentSent()`
-- `contentSent()`
-- `setHeadersSent()`
-- `headersSent()`
+* `setResponse($response)`
+* `getResponse()`
+* `setContentSent()`
+* `contentSent()`
+* `setHeadersSent()`
+* `headersSent()`
 
 ## Listeners
 

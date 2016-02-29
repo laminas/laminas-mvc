@@ -8,37 +8,37 @@ Additionally, if your controllers implement the `Zend\Mvc\InjectApplicationEvent
 
 The `MvcEvent` adds accessors and mutators for the following:
 
-- `Application` object.
-- `Request` object.
-- `Response` object.
-- `Router` object.
-- `RouteMatch` object.
-- Result - usually the result of dispatching a controller.
-- `ViewModel` object, typically representing the layout view model.
+* `Application` object.
+* `Request` object.
+* `Response` object.
+* `Router` object.
+* `RouteMatch` object.
+* Result - usually the result of dispatching a controller.
+* `ViewModel` object, typically representing the layout view model.
 
 The methods it defines are:
 
-- `setApplication($application)`
-- `getApplication()`
-- `setRequest($request)`
-- `getRequest()`
-- `setResponse($response)`
-- `getResponse()`
-- `setRouter($router)`
-- `getRouter()`
-- `setRouteMatch($routeMatch)`
-- `getRouteMatch()`
-- `setResult($result)`
-- `getResult()`
-- `setViewModel($viewModel)`
-- `getViewModel()`
-- `isError()`
-- `setError()`
-- `getError()`
-- `getController()`
-- `setController($name)`
-- `getControllerClass()`
-- `setControllerClass($class)`
+* `setApplication($application)`
+* `getApplication()`
+* `setRequest($request)`
+* `getRequest()`
+* `setResponse($response)`
+* `getResponse()`
+* `setRouter($router)`
+* `getRouter()`
+* `setRouteMatch($routeMatch)`
+* `getRouteMatch()`
+* `setResult($result)`
+* `getResult()`
+* `setViewModel($viewModel)`
+* `getViewModel()`
+* `isError()`
+* `setError()`
+* `getError()`
+* `getController()`
+* `setController($name)`
+* `getControllerClass()`
+* `setControllerClass($class)`
 
 The `Application`, `Request`, `Response`, `Router`, and `ViewModel` are all injected during the
 `bootstrap` event. Following the `route` event, it will be injected also with the `RouteMatch`

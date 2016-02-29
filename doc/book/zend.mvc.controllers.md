@@ -104,10 +104,10 @@ often difficult to achieve cleanly in abstract, general systems.
 Within your controllers, you'll often find yourself repeating tasks from one controller to another.
 Some common examples:
 
-- Generating URLs
-- Redirecting
-- Setting and retrieving flash messages (self-expiring session messages)
-- Invoking and dispatching additional controllers
+* Generating URLs
+* Redirecting
+* Setting and retrieving flash messages (self-expiring session messages)
+* Invoking and dispatching additional controllers
 
 To facilitate these actions while also making them available to alternate controller
 implementations, we've created a `PluginManager` implementation for the controller layer,
@@ -149,13 +149,13 @@ As such, we've developed two abstract, base controllers you can extend to get st
 The first is `Zend\Mvc\Controller\AbstractActionController`. This controller implements each of the
 above interfaces, and uses the following assumptions:
 
-- An "action" parameter is expected in the `RouteMatch` object composed in the attached `MvcEvent`.
+* An "action" parameter is expected in the `RouteMatch` object composed in the attached `MvcEvent`.
 If none is found, a `notFoundAction()` is invoked.
-- The "action" parameter is converted to a camelCased format and appended with the word "Action" to
+* The "action" parameter is converted to a camelCased format and appended with the word "Action" to
 create a method name. As examples: "foo" maps to "fooAction", "foo-bar" or "foo.bar" or "foo\_bar"
 to "fooBarAction". The controller then checks to see if that method exists. If not, the
 `notFoundAction()` method is invoked; otherwise, the discovered method is called.
-- The results of executing the given action method are injected into the `MvcEvent`'s "result"
+* The results of executing the given action method are injected into the `MvcEvent`'s "result"
 property (via `setResult()`, and accessible via `getResult()`).
 
 Essentially, a route mapping to an `AbstractActionController` needs to return both "controller" and
@@ -186,16 +186,16 @@ class BarController extends AbstractActionController
 
 `AbstractActionController` implements each of the following interfaces:
 
-- `Zend\Stdlib\DispatchableInterface`
-- `Zend\Mvc\InjectApplicationEventInterface`
-- `Zend\ServiceManager\ServiceLocatorAwareInterface`
-- `Zend\EventManager\EventManagerAwareInterface`
+* `Zend\Stdlib\DispatchableInterface`
+* `Zend\Mvc\InjectApplicationEventInterface`
+* `Zend\ServiceManager\ServiceLocatorAwareInterface`
+* `Zend\EventManager\EventManagerAwareInterface`
 
 The composed `EventManager` will be configured to listen on the following contexts:
 
-- `Zend\Stdlib\DispatchableInterface`
-- `Zend\Mvc\Controller\AbstractActionController`
-- `Zend\Mvc\Controller\AbstractController`
+* `Zend\Stdlib\DispatchableInterface`
+* `Zend\Mvc\Controller\AbstractActionController`
+* `Zend\Mvc\Controller\AbstractController`
 
 Additionally, if you extend the class, it will listen on the extending class's name.
 
@@ -205,18 +205,18 @@ The second abstract controller ZF2 provides is `Zend\Mvc\Controller\AbstractRest
 controller provides a native RESTful implementation that simply maps HTTP request methods to
 controller methods, using the following matrix:
 
-- **GET** maps to either `get()` or `getList()`, depending on whether or not an "id" parameter is
+* **GET** maps to either `get()` or `getList()`, depending on whether or not an "id" parameter is
 found in the route matches. If one is, it is passed as an argument to `get()`; if not, `getList()`
 is invoked. In the former case, you should provide a representation of the given entity with that
 identification; in the latter, you should provide a list of entities.
-- **POST** maps to `create()`. That method expects a `$data` argument, usually the `$_POST`
+* **POST** maps to `create()`. That method expects a `$data` argument, usually the `$_POST`
 superglobal array. The data should be used to create a new entity, and the response should typically
 be an HTTP 201 response with the Location header indicating the URI of the newly created entity and
 the response body providing the representation.
-- **PUT** maps to `update()`, and requires that an "id" parameter exists in the route matches; that
+* **PUT** maps to `update()`, and requires that an "id" parameter exists in the route matches; that
 value is passed as an argument to the method. It should attempt to update the given entity, and, if
 successful, return either a 200 or 202 response status, as well as the representation of the entity.
-- **DELETE** maps to `delete()`, and requires that an "id" parameter exists in the route matches;
+* **DELETE** maps to `delete()`, and requires that an "id" parameter exists in the route matches;
 that value is passed as an argument to the method. It should attempt to delete the given entity,
 and, if successful, return either a 200 or 204 response status.
 
@@ -229,15 +229,15 @@ used to submit to the various RESTful methods, or to add RPC methods to your RES
 
 `AbstractRestfulController` implements each of the following interfaces:
 
-- `Zend\Stdlib\DispatchableInterface`
-- `Zend\Mvc\InjectApplicationEventInterface`
-- `Zend\ServiceManager\ServiceLocatorAwareInterface`
-- `Zend\EventManager\EventManagerAwareInterface`
+* `Zend\Stdlib\DispatchableInterface`
+* `Zend\Mvc\InjectApplicationEventInterface`
+* `Zend\ServiceManager\ServiceLocatorAwareInterface`
+* `Zend\EventManager\EventManagerAwareInterface`
 
 The composed `EventManager` will be configured to listen on the following contexts:
 
-- `Zend\Stdlib\DispatchableInterface`
-- `Zend\Mvc\Controller\AbstractRestfulController`
-- `Zend\Mvc\Controller\AbstractController`
+* `Zend\Stdlib\DispatchableInterface`
+* `Zend\Mvc\Controller\AbstractRestfulController`
+* `Zend\Mvc\Controller\AbstractController`
 
 Additionally, if you extend the class, it will listen on the extending class's name.

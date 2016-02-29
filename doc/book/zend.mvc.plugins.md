@@ -6,16 +6,15 @@ plugins. Additionally, you can register your own custom plugins with the manager
 
 The built-in plugins are:
 
--
-\[Zend\\Mvc\\Controller\\Plugin\\AcceptableViewModelSelector\](zend.mvc.controller-plugins.acceptableviewmodelselector)
-- \[Zend\\Mvc\\Controller\\Plugin\\FlashMessenger\](zend.mvc.controller-plugins.flashmessenger)
-- \[Zend\\Mvc\\Controller\\Plugin\\Forward\](zend.mvc.controller-plugins.forward)
-- \[Zend\\Mvc\\Controller\\Plugin\\Identity\](zend.mvc.controller-plugins.identity)
-- \[Zend\\Mvc\\Controller\\Plugin\\Layout\](zend.mvc.controller-plugins.layout)
-- \[Zend\\Mvc\\Controller\\Plugin\\Params\](zend.mvc.controller-plugins.params)
-- \[Zend\\Mvc\\Controller\\Plugin\\PostRedirectGet\](zend.mvc.controller-plugins.postredirectget)
-- \[Zend\\Mvc\\Controller\\Plugin\\Redirect\](zend.mvc.controller-plugins.redirect)
-- \[Zend\\Mvc\\Controller\\Plugin\\Url\](zend.mvc.controller-plugins.url)
+* \[Zend\\Mvc\\Controller\\Plugin\\AcceptableViewModelSelector\](zend.mvc.controller-plugins.acceptableviewmodelselector)
+* \[Zend\\Mvc\\Controller\\Plugin\\FlashMessenger\](zend.mvc.controller-plugins.flashmessenger)
+* \[Zend\\Mvc\\Controller\\Plugin\\Forward\](zend.mvc.controller-plugins.forward)
+* \[Zend\\Mvc\\Controller\\Plugin\\Identity\](zend.mvc.controller-plugins.identity)
+* \[Zend\\Mvc\\Controller\\Plugin\\Layout\](zend.mvc.controller-plugins.layout)
+* \[Zend\\Mvc\\Controller\\Plugin\\Params\](zend.mvc.controller-plugins.params)
+* \[Zend\\Mvc\\Controller\\Plugin\\PostRedirectGet\](zend.mvc.controller-plugins.postredirectget)
+* \[Zend\\Mvc\\Controller\\Plugin\\Redirect\](zend.mvc.controller-plugins.redirect)
+* \[Zend\\Mvc\\Controller\\Plugin\\Url\](zend.mvc.controller-plugins.url)
 
 If your controller implements the `setPluginManager`, `getPluginManager` and `plugin` methods, you
 can access these using their shortname via the `plugin()` method:
@@ -233,10 +232,10 @@ controller.
 
 The plugin exposes a single method, `dispatch()`, which takes two arguments:
 
-- `$name`, the name of the controller to invoke. This may be either the fully qualified class name,
+* `$name`, the name of the controller to invoke. This may be either the fully qualified class name,
 or an alias defined and recognized by the `ServiceManager` instance attached to the invoking
 controller.
-- `$params` is an optional array of parameters with which to seed a `RouteMatch` object for purposes
+* `$params` is an optional array of parameters with which to seed a `RouteMatch` object for purposes
 of this specific request. Meaning the parameters will be matched by their key to the routing
 identifiers in the config (otherwise non-matching keys are ignored)
 
@@ -313,7 +312,7 @@ The `Layout` plugin allows for changing layout templates from within controller 
 
 It exposes a single method, `setTemplate()`, which takes one argument:
 
-- `$template`, the name of the template to set.
+* `$template`, the name of the template to set.
 
 As an example:
 
@@ -381,9 +380,9 @@ session container and redirect the user to a GET request.
 
 This plugin can be invoked with two arguments:
 
-- `$redirect`, a string containing the redirect location which can either be a named route or a URL,
+* `$redirect`, a string containing the redirect location which can either be a named route or a URL,
 based on the contents of the second parameter.
-- `$redirectToUrl`, a boolean that when set to TRUE, causes the first parameter to be treated as a
+* `$redirectToUrl`, a boolean that when set to TRUE, causes the first parameter to be treated as a
 URL instead of a route name (this is required when redirecting to a URL instead of a route). This
 argument defaults to false.
 
@@ -429,11 +428,11 @@ redirect.
 
 This plugin can be invoked with three arguments:
 
-- `$form`: the form instance.
-- `$redirect`: (Optional) a string containing the redirect location which can either be a named
+* `$form`: the form instance.
+* `$redirect`: (Optional) a string containing the redirect location which can either be a named
 route or a URL, based on the contents of the third parameter. If this argument is not provided, it
 will default to the current matched route.
-- `$redirectToUrl`: (Optional) a boolean that when set to TRUE, causes the second parameter to be
+* `$redirectToUrl`: (Optional) a boolean that when set to TRUE, causes the second parameter to be
 treated as a URL instead of a route name (this is required when redirecting to a URL instead of a
 route). This argument defaults to false.
 
@@ -487,9 +486,9 @@ if ($form->isValid()) {
 Redirections are quite common operations within applications. If done manually, you will need to do
 the following steps:
 
-- Assemble a url using the router
-- Create and inject a "Location" header into the `Response` object, pointing to the assembled URL
-- Set the status code of the `Response` object to one of the 3xx HTTP statuses.
+* Assemble a url using the router
+* Create and inject a "Location" header into the `Response` object, pointing to the assembled URL
+* Set the status code of the `Response` object to one of the 3xx HTTP statuses.
 
 The `Redirect` plugin does this work for you. It offers three methods:
 
