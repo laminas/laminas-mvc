@@ -219,10 +219,10 @@ class ServiceManagerConfigTest extends TestCase
 
     public function testServiceLocatorAwareInitializerInjectsDuckTypedImplementations()
     {
-        $serviceManager = new ServiceManager(['factories' => [
+        $serviceManager = new ServiceManager();
+        (new ServiceManagerConfig(['factories' => [
             TestAsset\DuckTypedServiceLocatorAware::class => InvokableFactory::class,
-        ]]);
-        (new ServiceManagerConfig())->configureServiceManager($serviceManager);
+        ]]))->configureServiceManager($serviceManager);
 
         $instance = $serviceManager->get(TestAsset\DuckTypedServiceLocatorAware::class);
         $this->assertInstanceOf(TestAsset\DuckTypedServiceLocatorAware::class, $instance);

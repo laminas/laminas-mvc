@@ -54,8 +54,11 @@ class ControllerManager extends AbstractPluginManager
         $this->addInitializer([$this, 'injectEventManager']);
         $this->addInitializer([$this, 'injectConsole']);
         $this->addInitializer([$this, 'injectPluginManager']);
-        $this->addInitializer([$this, 'injectServiceLocator']);
         parent::__construct($configOrContainerInstance, $v3config);
+
+        // Added after parent construction, as v2 abstract plugin managers add
+        // one during construction.
+        $this->addInitializer([$this, 'injectServiceLocator']);
     }
 
     /**
@@ -204,6 +207,7 @@ class ControllerManager extends AbstractPluginManager
      */
     public function injectServiceLocator($first, $second)
     {
+        printf("In %s\n", __METHOD__);
         if ($first instanceof ContainerInterface) {
             $container = $first;
             $controller = $second;
@@ -217,7 +221,7 @@ class ControllerManager extends AbstractPluginManager
             $container = $container->getServiceLocator() ?: $container;
         }
 
-        if (! interface_exists(ServiceLocatorAwareInterface::class)
+        if (! $controller instanceof ServiceLocatorAwareInterface
             && method_exists($controller, 'setServiceLocator')
         ) {
             trigger_error(sprintf(

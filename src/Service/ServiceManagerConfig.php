@@ -142,7 +142,7 @@ class ServiceManagerConfig extends Config
                     $instance->setServiceLocator($container);
                 }
 
-                if (! interface_exists(ServiceLocatorAwareInterface::class)
+                if (! $instance instanceof ServiceLocatorAwareInterface
                     && method_exists($instance, 'setServiceLocator')
                 ) {
                     trigger_error(sprintf(
