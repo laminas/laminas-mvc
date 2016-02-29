@@ -207,7 +207,6 @@ class ControllerManager extends AbstractPluginManager
      */
     public function injectServiceLocator($first, $second)
     {
-        printf("In %s\n", __METHOD__);
         if ($first instanceof ContainerInterface) {
             $container = $first;
             $controller = $second;
