@@ -40,6 +40,7 @@ class ServiceListenerFactory implements FactoryInterface
         'aliases' => [
             'Configuration'                              => 'config',
             'configuration'                              => 'config',
+            'console'                                    => 'ConsoleAdapter',
             'Console'                                    => 'ConsoleAdapter',
             'ConsoleDefaultRenderingStrategy'            => View\Console\DefaultRenderingStrategy::class,
             'ControllerLoader'                           => 'ControllerManager',
