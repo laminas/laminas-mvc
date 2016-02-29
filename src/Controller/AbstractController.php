@@ -17,7 +17,6 @@ use Zend\Http\PhpEnvironment\Response as HttpResponse;
 use Zend\Http\Request as HttpRequest;
 use Zend\Mvc\InjectApplicationEventInterface;
 use Zend\Mvc\MvcEvent;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Stdlib\DispatchableInterface as Dispatchable;
@@ -47,8 +46,7 @@ use Zend\Stdlib\ResponseInterface as Response;
 abstract class AbstractController implements
     Dispatchable,
     EventManagerAwareInterface,
-    InjectApplicationEventInterface,
-    ServiceLocatorAwareInterface
+    InjectApplicationEventInterface
 {
     /**
      * @var PluginManager
