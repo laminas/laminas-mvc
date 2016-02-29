@@ -16,6 +16,7 @@ use Zend\Mvc\Exception;
 use Zend\ServiceManager\AbstractPluginManager;
 use Zend\ServiceManager\ConfigInterface;
 use Zend\ServiceManager\Exception\InvalidServiceException;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\Stdlib\DispatchableInterface;
 
 /**
@@ -53,6 +54,7 @@ class ControllerManager extends AbstractPluginManager
         $this->addInitializer([$this, 'injectEventManager']);
         $this->addInitializer([$this, 'injectConsole']);
         $this->addInitializer([$this, 'injectPluginManager']);
+        $this->addInitializer([$this, 'injectServiceLocator']);
         parent::__construct($configOrContainerInstance, $v3config);
     }
 
@@ -190,5 +192,39 @@ class ControllerManager extends AbstractPluginManager
         }
 
         $controller->setPluginManager($container->get('ControllerPluginManager'));
+    }
+
+    /**
+     * Initializer: inject service locator
+     *
+     * @param ContainerInterface|DispatchableInterface $first Container when
+     *     using zend-servicemanager v3; controller under v2.
+     * @param DispatchableInterface|ContainerInterface $second Controller when
+     *     using zend-servicemanager v3; container under v2.
+     */
+    public function injectServiceLocator($first, $second)
+    {
+        if ($first instanceof ContainerInterface) {
+            $container = $first;
+            $controller = $second;
+        } else {
+            $container = $second;
+            $controller = $first;
+        }
+
+        // For v2, we need to pull the parent service locator
+        if (! method_exists($container, 'configure')) {
+            $container = $container->getServiceLocator() ?: $container;
+        }
+
+        if ($controller instanceof ServiceLocatorAwareInterface) {
+            trigger_error(sprintf(
+                'ServiceLocatorAwareInterface is deprecated and will be removed in version 3.0, along '
+                . 'with the ServiceLocatorAwareInitializer. Please update your class %s to remove '
+                . 'the implementation, and start injecting your dependencies via factory instead.',
+                get_class($controller)
+            ), E_USER_DEPRECATED);
+            $controller->setServiceLocator($container);
+        }
     }
 }
