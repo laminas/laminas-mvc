@@ -9,12 +9,19 @@
 
 namespace ZendTest\Mvc\Application;
 
+use PHPUnit_Framework_Error_Deprecated;
 use PHPUnit_Framework_TestCase as TestCase;
 use Zend\Mvc\MvcEvent;
 
 class ExceptionsRaisedInDispatchableShouldRaiseDispatchErrorEventTest extends TestCase
 {
     use BadControllerTrait;
+
+    public function setUp()
+    {
+        // Ignore deprecation errors
+        PHPUnit_Framework_Error_Deprecated::$enabled = false;
+    }
 
     /**
      * @group error-handling

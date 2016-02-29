@@ -9,6 +9,7 @@
 
 namespace ZendTest\Mvc\Service;
 
+use PHPUnit_Framework_Error_Deprecated;
 use PHPUnit_Framework_TestCase as TestCase;
 use Zend\EventManager\SharedEventManager;
 use Zend\Mvc\Service\ControllerManagerFactory;
@@ -34,6 +35,9 @@ class ControllerManagerFactoryTest extends TestCase
 
     public function setUp()
     {
+        // Ignore deprecation errors
+        PHPUnit_Framework_Error_Deprecated::$enabled = false;
+
         $loaderFactory  = new ControllerManagerFactory();
         $this->defaultServiceConfig = [
             'aliases' => [
