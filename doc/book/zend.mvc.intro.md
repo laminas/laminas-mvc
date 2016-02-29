@@ -41,20 +41,22 @@ sending the response.
 
 The basic application structure follows:
 
-    application_root/
-        config/
-            application.config.php
-            autoload/
-                global.php
-                local.php
-                // etc.
-        data/
-        module/
-        vendor/
-        public/
-            .htaccess
-            index.php
-        init_autoloader.php
+```
+application_root/
+    config/
+        application.config.php
+        autoload/
+            global.php
+            local.php
+            // etc.
+    data/
+    module/
+    vendor/
+    public/
+        .htaccess
+        index.php
+    init_autoloader.php
+```
 
 The `public/index.php` marshalls all user requests to your website, retrieving an array of
 configuration located in `config/application.config.php`. On return, it `run()`s the `Application`,
@@ -84,29 +86,31 @@ of tasks.
 
 The recommended module structure follows:
 
-    module_root<named-after-module-namespace>/
-        Module.php
-        autoload_classmap.php
-        autoload_function.php
-        autoload_register.php
-        config/
-            module.config.php
-        public/
-            images/
-            css/
-            js/
-        src/
-            <module_namespace>/
-                <code files>
-        test/
-            phpunit.xml
-            bootstrap.php
-            <module_namespace>/
-                <test code files>
-        view/
-            <dir-named-after-module-namespace>/
-                <dir-named-after-a-controller>/
-                    <.phtml files>
+```
+module_root<named-after-module-namespace>/
+    Module.php
+    autoload_classmap.php
+    autoload_function.php
+    autoload_register.php
+    config/
+        module.config.php
+    public/
+        images/
+        css/
+        js/
+    src/
+        <module_namespace>/
+            <code files>
+    test/
+        phpunit.xml
+        bootstrap.php
+        <module_namespace>/
+            <test code files>
+    view/
+        <dir-named-after-module-namespace>/
+            <dir-named-after-a-controller>/
+                <.phtml files>
+```
 
 Since a module acts as a namespace, the module root directory should be that namespace. This
 namespace could also include a vendor prefix of sorts. As an example a module centered around "User"
