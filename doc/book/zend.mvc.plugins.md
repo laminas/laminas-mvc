@@ -421,7 +421,7 @@ By interacting directly with the form, the File PRG Plugin will turn off any fil
 flags for already uploaded files (for a partially valid form state), as well as run the file input
 filters to move the uploaded files into a new location (configured by the user).
 
-> ## Warning
+> ### Warning
 You **must** attach a Filter for moving the uploaded files to a new location, such as the
 \[RenameUpload Filter\](zend.filter.file.rename-upload), or else your files will be removed upon the
 redirect.
@@ -511,7 +511,7 @@ rtype
 In each case, the `Response` object is returned. If you return this immediately, you can effectively
 short-circuit execution of the request.
 
-> ## Note
+> ### Note
 This plugin requires that the controller invoking it implements `InjectApplicationEventInterface`,
 and thus has an `MvcEvent` composed, as it retrieves the router from the event object.
 
@@ -540,6 +540,6 @@ $url = $this->url()->fromRoute('route-name', $params);
 
 The `fromRoute()` method is the only public method defined, and has the following signature:
 
-> ## Note
+> ### Note
 This plugin requires that the controller invoking it implements `InjectApplicationEventInterface`,
 and thus has an `MvcEvent` composed, as it retrieves the router from the event object.

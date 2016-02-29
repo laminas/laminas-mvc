@@ -198,7 +198,7 @@ Create the directory `view/<module-name>/hello`. Inside that directory, create a
 
 That's it. Save the file.
 
-> ## Note
+> ### Note
 What is the method `escapeHtml()`? It's actually a \[view helper\](zend.view.helpers), and it's
 designed to help mitigate *XSS* attacks. Never trust user input; if you are at all uncertain about
 the source of a given variable in your view script, escape it using one of the \[provided escape
@@ -237,7 +237,7 @@ Now, create the directory `view/<module>/<name>/hello`. Inside that directory, c
 
 Now that we have a controller and a view script, we need to create a route to it.
 
-> ## Note
+> ### Note
 `ZendSkeletonApplication` ships with a "default route" that will likely get you to this action. That
 route basically expects "/{module}/{controller}/{action}", which allows you to specify this:
 "/zend-user/hello/world". We're going to create a route here mainly for illustration purposes, as
@@ -293,7 +293,7 @@ return array(
 );
 ```
 
-> ## Note
+> ### Note
 We inform the application about controllers we expect to have in the application. This is to prevent
 somebody requesting any service the `ServiceManager` knows about in an attempt to break the
 application. The dispatcher uses a special, scoped container that will only pull controllers that

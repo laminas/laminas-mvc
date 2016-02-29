@@ -11,7 +11,7 @@ and more.
 Routing has been written from the ground up for Zend Framework 2.0. Execution is quite similar, but
 the internal workings are more consistent, performant, and often simpler.
 
-> ## Note
+> ### Note
 If you are a developer with knowledge of the routing system in Zend Framework 1.x, you should know
 that some of the old terminology does not apply in Zend Framework 2.x. In the new routing system we
 don't have a router as such, as every route can match and assemble URIs by themselves, which makes
@@ -314,13 +314,13 @@ The above would match the following:
 
 You may use any route type as a child route of a `Part` route.
 
-> ## Note
+> ### Note
 `Part` routes are not meant to be used directly. When you add definitions for `child_routes` to any
 route type, that route will become a `Part` route. As already said, describing `Part` routes with
 words is difficult, so hopefully the additional \[examples at the
 end\](zend.mvc.routing.http-route-types.examples) will provide further insight.
 
-> ## Note
+> ### Note
 In the above example, the `$routePlugins` is an instance of `Zend\Mvc\Router\RoutePluginManager`.
 ```php
 $routePlugins = new Zend\Mvc\Router\RoutePluginManager();
@@ -426,11 +426,11 @@ $route = Segment::factory(array(
 
 ### Zend\\Mvc\\Router\\Http\\Query (Deprecated)
 
-> ## Warning
+> ### Warning
 #### Potential security issue
 A misuse of this route part can lead to a potential security issue.
 
-> ## Note
+> ### Note
 #### Deprecated
 This route part is deprecated since you can now add query parameters without a query route.
 
@@ -490,11 +490,11 @@ The output from our example should then be "/page/my-test-page?format=rss&limit=
 
 ### Zend\\Mvc\\Router\\Http\\Wildcard (Deprecated)
 
-> ## Warning
+> ### Warning
 #### Potential security issue
 A misuse of this route type can lead to a potential security issue.
 
-> ## Note
+> ### Note
 #### Deprecated
 This route type is deprecated. Use the `Segment` route type.
 
@@ -692,7 +692,7 @@ echo $this->url('modules.zendframework.com/index', array(), array(), true);
 echo $this->url('packages.zendframework.com/index', array(), array(), true);
 ```
 
-> ## Warning
+> ### Warning
 When defining child routes pay attention that the `may_terminate` and `child_routes` definitions are
 in same level as the `options` and `type` definitions. A common pitfall is to have those two
 definitions nested in `options`, which will not result in the desired routes.
