@@ -138,7 +138,7 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
             $router = Console::isConsole() ? 'HttpRouter' : 'Router';
             $helper->setRouter($services->get($router));
 
-            $match = $services->get('application')
+            $match = $services->get('Application')
                 ->getMvcEvent()
                 ->getRouteMatch()
             ;
