@@ -66,8 +66,10 @@ All notable changes to this project will be documented in this file, in reverse 
   [#76](https://github.com/zendframework/zend-mvc/pull/76) update the component
   to be forwards-compatible with zend-eventmanager v3.
 - [#36](https://github.com/zendframework/zend-mvc/pull/36),
-  [#76](https://github.com/zendframework/zend-mvc/pull/76), and
-  [#81](https://github.com/zendframework/zend-mvc/pull/81) update the component
+  [#76](https://github.com/zendframework/zend-mvc/pull/76),
+  [#80](https://github.com/zendframework/zend-mvc/pull/80),
+  [#81](https://github.com/zendframework/zend-mvc/pull/81), and
+  [#82](https://github.com/zendframework/zend-mvc/pull/82) update the component
   to be forwards-compatible with zend-servicemanager v3. Several changes were
   introduced to support this effort:
   - Added a `RouteInvokableFactory`, which can act as either a
