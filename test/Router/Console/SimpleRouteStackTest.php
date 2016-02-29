@@ -10,7 +10,6 @@
 namespace ZendTest\Mvc\Router\Console;
 
 use PHPUnit_Framework_TestCase as TestCase;
-use ReflectionClass;
 use Zend\Mvc\Router\Console\Catchall;
 use Zend\Mvc\Router\Console\Simple;
 use Zend\Mvc\Router\Console\SimpleRouteStack;
@@ -23,7 +22,7 @@ class SimpleRouteStackTest extends TestCase
         $catchallOpts = ['defaults' => []];
         $simpleOpts   = ['route' => 'test'];
 
-        $data = [
+        return [
             'catchall' => ['catchall', $catchallOpts, Catchall::class],
             'catchAll' => ['catchAll', $catchallOpts, Catchall::class],
             'Catchall' => ['Catchall', $catchallOpts, Catchall::class],
@@ -34,15 +33,6 @@ class SimpleRouteStackTest extends TestCase
             Catchall::class => [Catchall::class, $catchallOpts, Catchall::class],
             Simple::class   => [Simple::class, $simpleOpts, Simple::class],
         ];
-
-        // Two additional cases under zend-servicemanager v2:
-        $r = new ReflectionClass(ServiceManager::class);
-        if (! $r->hasMethod('configure')) {
-            $data['zendmvcrouterconsolecatchall'] = ['zendmvcrouterconsolecatchall', $catchallOpts, Catchall::class];
-            $data['zendmvcrouterconsolesimple']   = ['zendmvcrouterconsolesimple', $simpleOpts, Simple::class];
-        }
-
-        return $data;
     }
 
     /**
