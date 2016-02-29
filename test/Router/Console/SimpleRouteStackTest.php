@@ -13,7 +13,6 @@ use PHPUnit_Framework_TestCase as TestCase;
 use Zend\Mvc\Router\Console\Catchall;
 use Zend\Mvc\Router\Console\Simple;
 use Zend\Mvc\Router\Console\SimpleRouteStack;
-use Zend\ServiceManager\ServiceManager;
 
 class SimpleRouteStackTest extends TestCase
 {
