@@ -9,6 +9,7 @@
 
 namespace ZendTest\Mvc\Application;
 
+use PHPUnit_Framework_Error_Deprecated;
 use PHPUnit_Framework_TestCase as TestCase;
 use Zend\Http\PhpEnvironment\Response;
 use Zend\Mvc\MvcEvent;
@@ -16,6 +17,12 @@ use Zend\Mvc\MvcEvent;
 class AllowsReturningEarlyFromRoutingTest extends TestCase
 {
     use PathControllerTrait;
+
+    public function setUp()
+    {
+        // Ignore deprecation errors
+        PHPUnit_Framework_Error_Deprecated::$enabled = false;
+    }
 
     public function testAllowsReturningEarlyFromRouting()
     {

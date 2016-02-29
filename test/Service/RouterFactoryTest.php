@@ -19,6 +19,8 @@ use Zend\ServiceManager\ServiceManager;
 
 class RouterFactoryTest extends TestCase
 {
+    use FactoryEnvironmentTrait;
+
     public function setUp()
     {
         $this->defaultServiceConfig = [
@@ -68,6 +70,17 @@ class RouterFactoryTest extends TestCase
         $config->configureServiceManager($services);
 
         $router = $this->factory->__invoke($services, 'router');
+        $this->assertInstanceOf('Zend\Mvc\Router\Console\SimpleRouteStack', $router);
+    }
+
+    public function testFactoryWillCreateConsoleRouterBasedOnConsoleUsageUnderServiceManagerV2()
+    {
+        $this->setConsoleEnvironment(true);
+
+        $services = new ServiceManager();
+        (new Config($this->defaultServiceConfig))->configureServiceManager($services);
+
+        $router = $this->factory->createService($services, 'router');
         $this->assertInstanceOf('Zend\Mvc\Router\Console\SimpleRouteStack', $router);
     }
 }

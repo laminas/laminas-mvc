@@ -53,15 +53,21 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Removed
 
-- Nothing.
+- `Zend\Mvc\Controller\AbstractController` no longer directly implements
+  `Zend\ServiceManager\ServiceLocatorAwareInterface`, but still implements the
+  methods defined in that interface. This was done to provide
+  forwards-compatibility, as zend-servicemanager v3 no longer defines the
+  interface. All initializers that do `ServiceLocatorInterface` injection were
+  updated to also inject when just the methods are present.
 
 ### Fixed
 
 - [#31](https://github.com/zendframework/zend-mvc/pull/31) and
   [#76](https://github.com/zendframework/zend-mvc/pull/76) update the component
   to be forwards-compatible with zend-eventmanager v3.
-- [#36](https://github.com/zendframework/zend-mvc/pull/36) and
-  [#76](https://github.com/zendframework/zend-mvc/pull/76) update the component
+- [#36](https://github.com/zendframework/zend-mvc/pull/36),
+  [#76](https://github.com/zendframework/zend-mvc/pull/76), and
+  [#81](https://github.com/zendframework/zend-mvc/pull/81) update the component
   to be forwards-compatible with zend-servicemanager v3. Several changes were
   introduced to support this effort:
   - Added a `RouteInvokableFactory`, which can act as either a

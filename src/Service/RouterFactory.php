@@ -46,10 +46,16 @@ class RouterFactory implements FactoryInterface
      * For use with zend-servicemanager v2; proxies to __invoke().
      *
      * @param ServiceLocatorInterface $container
+     * @param null|string $normalizedName
+     * @param null|string $requestedName
      * @return RouteStackInterface
      */
-    public function createService(ServiceLocatorInterface $container)
+    public function createService(ServiceLocatorInterface $container, $normalizedName = null, $requestedName = null)
     {
-        return $this($container, RouteStackInterface::class);
+        if ($normalizedName === 'router' && Console::isConsole()) {
+            $requestedName = 'ConsoleRouter';
+        }
+
+        return $this($container, $requestedName);
     }
 }

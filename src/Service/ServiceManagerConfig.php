@@ -141,6 +141,18 @@ class ServiceManagerConfig extends Config
                     ), E_USER_DEPRECATED);
                     $instance->setServiceLocator($container);
                 }
+
+                if (! $instance instanceof ServiceLocatorAwareInterface
+                    && method_exists($instance, 'setServiceLocator')
+                ) {
+                    trigger_error(sprintf(
+                        'ServiceLocatorAwareInterface is deprecated and will be removed in version 3.0, along '
+                        . 'with the ServiceLocatorAwareInitializer. Please update your class %s to remove '
+                        . 'the implementation, and start injecting your dependencies via factory instead.',
+                        get_class($instance)
+                    ), E_USER_DEPRECATED);
+                    $instance->setServiceLocator($container);
+                }
             },
         ]);
 
