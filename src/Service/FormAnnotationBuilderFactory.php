@@ -9,9 +9,10 @@
 
 namespace Zend\Mvc\Service;
 
+use Interop\Container\ContainerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
 use Zend\Form\Annotation\AnnotationBuilder;
-use Zend\ServiceManager\Exception\RuntimeException;
+use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -20,18 +21,23 @@ class FormAnnotationBuilderFactory implements FactoryInterface
     /**
      * Create service
      *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @throws \Zend\ServiceManager\Exception\RuntimeException
-     * @return mixed
+     * @param  ContainerInterface $container
+     * @param  string $name
+     * @param  null|array $options
+     * @return AnnotationBuilder
+     * @throws ServiceNotCreatedException for invalid listener configuration.
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $name, array $options = null)
     {
         //setup a form factory which can use custom form elements
         $annotationBuilder = new AnnotationBuilder();
-        $formElementManager = $serviceLocator->get('FormElementManager');
-        $formElementManager->injectFactory($annotationBuilder, $serviceLocator);
+        $eventManager       = $container->build('EventManager');
+        $annotationBuilder->setEventManager($ventManager);
 
-        $config = $serviceLocator->get('Config');
+        $formElementManager = $container->get('FormElementManager');
+        $formElementManager->injectFactory($container, $annotationBuilder);
+
+        $config = $container->get('config');
         if (isset($config['form_annotation_builder'])) {
             $config = $config['form_annotation_builder'];
 
@@ -43,11 +49,11 @@ class FormAnnotationBuilderFactory implements FactoryInterface
 
             if (isset($config['listeners'])) {
                 foreach ((array) $config['listeners'] as $listenerName) {
-                    $listener = $serviceLocator->get($listenerName);
+                    $listener = $container->get($listenerName);
                     if (!($listener instanceof ListenerAggregateInterface)) {
-                        throw new RuntimeException(sprintf('Invalid event listener (%s) provided', $listenerName));
+                        throw new ServiceNotCreatedException(sprintf('Invalid event listener (%s) provided', $listenerName));
                     }
-                    $listener->attach($annotationBuilder->getEventManager());
+                    $listener->attach($eventManager);
                 }
             }
 
@@ -57,5 +63,18 @@ class FormAnnotationBuilderFactory implements FactoryInterface
         }
 
         return $annotationBuilder;
+    }
+
+    /**
+     * Create and return AnnotationBuilder instance
+     *
+     * For use with zend-servicemanager v2; proxies to __invoke().
+     *
+     * @param ServiceLocatorInterface $container
+     * @return AnnotationBuilder
+     */
+    public function createService(ServiceLocatorInterface $container)
+    {
+        return $this($container, AnnotationBuilder::class);
     }
 }

@@ -9,10 +9,9 @@
 
 namespace Zend\Mvc\Service;
 
+use Zend\Hydrator\HydratorPluginManager;
+
 class HydratorManagerFactory extends AbstractPluginManagerFactory
 {
-    /**
-     * @todo Switch to Zend\Hydrator\HydratorPluginManager for 3.0 (if kept)
-     */
-    const PLUGIN_MANAGER_CLASS = 'Zend\Stdlib\Hydrator\HydratorPluginManager';
+    const PLUGIN_MANAGER_CLASS = HydratorPluginManager::class;
 }

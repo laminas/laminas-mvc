@@ -12,12 +12,15 @@ namespace ZendTest\Mvc\View\Console;
 use PHPUnit_Framework_TestCase as TestCase;
 use Zend\Console\Response;
 use Zend\EventManager\EventManager;
+use Zend\EventManager\Test\EventListenerIntrospectionTrait;
 use Zend\Mvc\Application;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\View\Console\ExceptionStrategy;
 
 class ExceptionStrategyTest extends TestCase
 {
+    use EventListenerIntrospectionTrait;
+
     protected $strategy;
 
     public function setUp()
@@ -28,38 +31,23 @@ class ExceptionStrategyTest extends TestCase
     public function testEventListeners()
     {
         $events = new EventManager();
-        $events->attachAggregate($this->strategy);
+        $this->strategy->attach($events);
 
-        $listeners        = $events->getListeners(MvcEvent::EVENT_DISPATCH_ERROR);
-        $expectedCallback = [$this->strategy, 'prepareExceptionViewModel'];
-        $expectedPriority = 1;
-        $found            = false;
-        foreach ($listeners as $listener) {
-            $callback = $listener->getCallback();
-            if ($callback === $expectedCallback) {
-                if ($listener->getMetadatum('priority') == $expectedPriority) {
-                    $found = true;
-                    break;
-                }
-            }
-        }
-        $this->assertTrue($found, 'MvcEvent::EVENT_DISPATCH_ERROR not found');
+        $this->assertListenerAtPriority(
+            [$this->strategy, 'prepareExceptionViewModel'],
+            1,
+            MvcEvent::EVENT_DISPATCH_ERROR,
+            $events,
+            'MvcEvent::EVENT_DISPATCH_ERROR listener not found'
+        );
 
-
-        $listeners        = $events->getListeners(MvcEvent::EVENT_RENDER_ERROR);
-        $expectedCallback = [$this->strategy, 'prepareExceptionViewModel'];
-        $expectedPriority = 1;
-        $found            = false;
-        foreach ($listeners as $listener) {
-            $callback = $listener->getCallback();
-            if ($callback === $expectedCallback) {
-                if ($listener->getMetadatum('priority') == $expectedPriority) {
-                    $found = true;
-                    break;
-                }
-            }
-        }
-        $this->assertTrue($found, 'MvcEvent::EVENT_RENDER_ERROR not found');
+        $this->assertListenerAtPriority(
+            [$this->strategy, 'prepareExceptionViewModel'],
+            1,
+            MvcEvent::EVENT_RENDER_ERROR,
+            $events,
+            'MvcEvent::EVENT_RENDER_ERROR listener not found'
+        );
     }
 
     public function testDefaultDisplayExceptions()
@@ -132,9 +120,6 @@ class ExceptionStrategyTest extends TestCase
 
     public function testPrepareExceptionViewModelNoErrorInResultGetsSameResult()
     {
-        $events = new EventManager();
-        $events->attachAggregate($this->strategy);
-
         $event = new MvcEvent(MvcEvent::EVENT_DISPATCH_ERROR);
 
         $event->setResult('something');
@@ -143,9 +128,6 @@ class ExceptionStrategyTest extends TestCase
 
     public function testPrepareExceptionViewModelResponseObjectInResultGetsSameResult()
     {
-        $events = new EventManager();
-        $events->attachAggregate($this->strategy);
-
         $event = new MvcEvent(MvcEvent::EVENT_DISPATCH_ERROR);
 
         $result = new Response();
@@ -156,17 +138,17 @@ class ExceptionStrategyTest extends TestCase
     public function testPrepareExceptionViewModelErrorsThatMustGetSameResult()
     {
         $errors = [Application::ERROR_CONTROLLER_NOT_FOUND, Application::ERROR_CONTROLLER_INVALID, Application::ERROR_ROUTER_NO_MATCH];
-
         foreach ($errors as $error) {
             $events = new EventManager();
-            $events->attachAggregate($this->strategy);
+            $this->strategy->attach($events);
 
             $exception = new \Exception('some exception');
             $event = new MvcEvent(MvcEvent::EVENT_DISPATCH_ERROR, null, ['exception'=>$exception]);
             $event->setResult('something');
             $event->setError($error);
+            $event->setParams(['exception' => $exception]);
 
-            $events->trigger($event, null, ['exception'=>$exception]);
+            $events->triggerEvent($event);
 
             $this->assertEquals('something', $event->getResult(), sprintf('With an error of %s getResult should not be modified', $error));
         }
@@ -178,10 +160,10 @@ class ExceptionStrategyTest extends TestCase
 
         foreach ($errors as $error) {
             $events = new EventManager();
-            $events->attachAggregate($this->strategy);
+            $this->strategy->attach($events);
 
             $exception = new \Exception('message foo');
-            $event = new MvcEvent(MvcEvent::EVENT_DISPATCH_ERROR, null, ['exception'=>$exception]);
+            $event = new MvcEvent(MvcEvent::EVENT_DISPATCH_ERROR, null, ['exception' => $exception]);
 
             $event->setError($error);
 
@@ -196,7 +178,7 @@ class ExceptionStrategyTest extends TestCase
     public function testPrepareExceptionRendersPreviousMessages()
     {
         $events = new EventManager();
-        $events->attachAggregate($this->strategy);
+        $this->strategy->attach($events);
 
         $messages  = ['message foo', 'message bar', 'deepest message'];
         $exception = null;
@@ -209,7 +191,7 @@ class ExceptionStrategyTest extends TestCase
         $event = new MvcEvent(MvcEvent::EVENT_DISPATCH_ERROR, null, ['exception'=>$exception]);
         $event->setError('user-defined-error');
 
-        $events->trigger($event, null, ['exception'=>$exception]); //$this->strategy->prepareExceptionViewModel($event);
+        $events->triggerEvent($event); //$this->strategy->prepareExceptionViewModel($event);
 
         foreach ($messages as $message) {
             $this->assertContains($message, $event->getResult()->getResult(), sprintf('Not all errors are rendered'));

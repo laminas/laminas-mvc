@@ -11,44 +11,76 @@ namespace ZendTest\Mvc\Service;
 
 use PHPUnit_Framework_TestCase as TestCase;
 use Zend\Mvc\Router\RoutePluginManager;
+use Zend\Mvc\Service\ConsoleRouterFactory;
+use Zend\Mvc\Service\HttpRouterFactory;
 use Zend\Mvc\Service\RouterFactory;
+use Zend\ServiceManager\Config;
 use Zend\ServiceManager\ServiceManager;
 
 class RouterFactoryTest extends TestCase
 {
+    use FactoryEnvironmentTrait;
+
     public function setUp()
     {
-        $this->services = new ServiceManager();
-        $this->services->setService('RoutePluginManager', new RoutePluginManager());
+        $this->defaultServiceConfig = [
+            'factories' => [
+                'ConsoleRouter'      => ConsoleRouterFactory::class,
+                'HttpRouter'         => HttpRouterFactory::class,
+                'RoutePluginManager' => function ($services) {
+                    return new RoutePluginManager($services);
+                },
+            ],
+        ];
+
         $this->factory  = new RouterFactory();
     }
 
     public function testFactoryCanCreateRouterBasedOnConfiguredName()
     {
-        $this->services->setService('Config', [
-            'router' => [
-                'router_class' => 'ZendTest\Mvc\Service\TestAsset\Router',
-            ],
-            'console' => [
+        $config = new Config(array_merge_recursive($this->defaultServiceConfig, [
+            'services' => [ 'config' => [
                 'router' => [
                     'router_class' => 'ZendTest\Mvc\Service\TestAsset\Router',
                 ],
-            ],
-        ]);
+                'console' => [
+                    'router' => [
+                        'router_class' => 'ZendTest\Mvc\Service\TestAsset\Router',
+                    ],
+                ],
+            ]],
+        ]));
+        $services = new ServiceManager();
+        $config->configureServiceManager($services);
 
-        $router = $this->factory->createService($this->services, 'router', 'Router');
+        $router = $this->factory->__invoke($services, 'router');
         $this->assertInstanceOf('ZendTest\Mvc\Service\TestAsset\Router', $router);
     }
 
     public function testFactoryCanCreateRouterWhenOnlyHttpRouterConfigPresent()
     {
-        $this->services->setService('Config', [
-            'router' => [
-                'router_class' => 'ZendTest\Mvc\Service\TestAsset\Router',
-            ],
-        ]);
+        $config = new Config(array_merge_recursive($this->defaultServiceConfig, [
+            'services' => [ 'config' => [
+                'router' => [
+                    'router_class' => 'ZendTest\Mvc\Service\TestAsset\Router',
+                ],
+            ]],
+        ]));
+        $services = new ServiceManager();
+        $config->configureServiceManager($services);
 
-        $router = $this->factory->createService($this->services, 'router', 'Router');
+        $router = $this->factory->__invoke($services, 'router');
+        $this->assertInstanceOf('Zend\Mvc\Router\Console\SimpleRouteStack', $router);
+    }
+
+    public function testFactoryWillCreateConsoleRouterBasedOnConsoleUsageUnderServiceManagerV2()
+    {
+        $this->setConsoleEnvironment(true);
+
+        $services = new ServiceManager();
+        (new Config($this->defaultServiceConfig))->configureServiceManager($services);
+
+        $router = $this->factory->createService($services, 'router');
         $this->assertInstanceOf('Zend\Mvc\Router\Console\SimpleRouteStack', $router);
     }
 }

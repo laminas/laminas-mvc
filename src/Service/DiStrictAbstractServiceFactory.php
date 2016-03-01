@@ -9,6 +9,7 @@
 
 namespace Zend\Mvc\Service;
 
+use Interop\Container\ContainerInterface;
 use Zend\Di\Di;
 use Zend\Di\Exception\ClassNotFoundException;
 use Zend\Mvc\Exception\DomainException;
@@ -38,7 +39,7 @@ class DiStrictAbstractServiceFactory extends Di implements AbstractFactoryInterf
     protected $useServiceLocator = self::USE_SL_AFTER_DI;
 
     /**
-     * @var ServiceLocatorInterface
+     * @var ContainerInterface
      */
     protected $serviceLocator = null;
 
@@ -81,20 +82,29 @@ class DiStrictAbstractServiceFactory extends Di implements AbstractFactoryInterf
      *
      * Allows creation of services only when in a whitelist
      */
+    public function __invoke(ContainerInterface $container, $name, array $options = null)
+    {
+        if (!isset($this->allowedServiceNames[$name])) {
+            throw new Exception\InvalidServiceException('Service "' . $name . '" is not whitelisted');
+        }
+
+        if ($container instanceof AbstractPluginManager) {
+            $this->serviceLocator = $container->getServiceLocator();
+        } else {
+            $this->serviceLocator = $container;
+        }
+
+        return parent::get($name);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * For use with zend-servicemanager v2; proxies to __invoke().
+     */
     public function createServiceWithName(ServiceLocatorInterface $serviceLocator, $serviceName, $requestedName)
     {
-        if (!isset($this->allowedServiceNames[$requestedName])) {
-            throw new Exception\InvalidServiceNameException('Service "' . $requestedName . '" is not whitelisted');
-        }
-
-        if ($serviceLocator instanceof AbstractPluginManager) {
-            /* @var $serviceLocator AbstractPluginManager */
-            $this->serviceLocator = $serviceLocator->getServiceLocator();
-        } else {
-            $this->serviceLocator = $serviceLocator;
-        }
-
-        return parent::get($requestedName);
+        return $this($serviceLocator, $requestedName);
     }
 
     /**
@@ -132,11 +142,21 @@ class DiStrictAbstractServiceFactory extends Di implements AbstractFactoryInterf
     /**
      * {@inheritDoc}
      *
-     * Allows creation of services only when in a whitelist
+     * Allows creation of services only when in a whitelist.
      */
-    public function canCreateServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName)
+    public function canCreate(ContainerInterface $container, $requestedName)
     {
         // won't check if the service exists, we are trusting the user's whitelist
         return isset($this->allowedServiceNames[$requestedName]);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * For use with zend-servicemanager v2; proxies to canCreate().
+     */
+    public function canCreateServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName)
+    {
+        return $this->canCreate($serviceLocator, $requestedName);
     }
 }

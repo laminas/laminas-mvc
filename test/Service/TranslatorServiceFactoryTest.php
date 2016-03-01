@@ -10,6 +10,8 @@
 namespace ZendTest\Mvc\Service;
 
 use PHPUnit_Framework_TestCase as TestCase;
+use Zend\I18n\Translator\LoaderPluginManager;
+use Zend\I18n\Translator\TranslatorInterface;
 use Zend\Mvc\Service\RoutePluginManagerFactory;
 use Zend\Mvc\Service\ServiceManagerConfig;
 use Zend\Mvc\Service\TranslatorServiceFactory;
@@ -21,18 +23,16 @@ class TranslatorServiceFactoryTest extends TestCase
     {
         $this->factory = new TranslatorServiceFactory();
         $this->services = new ServiceManager();
-        $this->services->setService(
-            'TranslatorPluginManager',
-            $this->getMock('Zend\I18n\Translator\LoaderPluginManager')
-        );
+        $this->services->setService('TranslatorPluginManager', $this->prophesize(LoaderPluginManager::class)->reveal());
+        $this->services->setAllowOverride(true);
     }
 
     public function testReturnsMvcTranslatorWithTranslatorInterfaceServiceComposedWhenPresent()
     {
-        $i18nTranslator = $this->getMock('Zend\I18n\Translator\TranslatorInterface');
-        $this->services->setService('Zend\I18n\Translator\TranslatorInterface', $i18nTranslator);
+        $i18nTranslator = $this->getMock(TranslatorInterface::class);
+        $this->services->setService(TranslatorInterface::class, $i18nTranslator);
 
-        $translator = $this->factory->createService($this->services);
+        $translator = $this->factory->__invoke($this->services, TranslatorInterface::class);
         $this->assertInstanceOf('Zend\Mvc\I18n\Translator', $translator);
         $this->assertSame($i18nTranslator, $translator->getTranslator());
     }
@@ -43,7 +43,7 @@ class TranslatorServiceFactoryTest extends TestCase
             $this->markTestSkipped('This test will only run if ext/intl is not present');
         }
 
-        $translator = $this->factory->createService($this->services);
+        $translator = $this->factory->__invoke($this->services, TranslatorInterface::class);
         $this->assertInstanceOf('Zend\Mvc\I18n\Translator', $translator);
         $this->assertInstanceOf('Zend\Mvc\I18n\DummyTranslator', $translator->getTranslator());
     }
@@ -54,7 +54,7 @@ class TranslatorServiceFactoryTest extends TestCase
             $this->markTestSkipped('This test will only run if ext/intl is present');
         }
 
-        $translator = $this->factory->createService($this->services);
+        $translator = $this->factory->__invoke($this->services, TranslatorInterface::class);
         $this->assertInstanceOf('Zend\Mvc\I18n\Translator', $translator);
         $this->assertInstanceOf('Zend\I18n\Translator\Translator', $translator->getTranslator());
     }
@@ -64,9 +64,9 @@ class TranslatorServiceFactoryTest extends TestCase
         $config = ['translator' => [
             'locale' => 'en_US',
         ]];
-        $this->services->setService('Config', $config);
+        (new ServiceManagerConfig(['services' => ['config' => $config]]))->configureServiceManager($this->services);
 
-        $translator = $this->factory->createService($this->services);
+        $translator = $this->factory->__invoke($this->services, TranslatorInterface::class);
         $this->assertInstanceOf('Zend\Mvc\I18n\Translator', $translator);
         $this->assertInstanceOf('Zend\I18n\Translator\Translator', $translator->getTranslator());
 
@@ -95,16 +95,14 @@ class TranslatorServiceFactoryTest extends TestCase
             'module_listener_options' => [],
             'modules' => [],
         ];
-        $serviceLocator = new ServiceManager(new ServiceManagerConfig());
-        $serviceLocator->setService('ApplicationConfig', $applicationConfig);
+        $config = new ServiceManagerConfig(['services' => [
+            'ApplicationConfig' => $applicationConfig,
+        ]]);
+        $serviceLocator = new ServiceManager();
+        $config->configureServiceManager($serviceLocator);
+        $serviceLocator->setAllowOverride(true);
         $serviceLocator->get('ModuleManager')->loadModules();
         $serviceLocator->get('Application')->bootstrap();
-
-        //enable to re-write Config
-        $ref = new \ReflectionObject($serviceLocator);
-        $prop = $ref->getProperty('allowOverride');
-        $prop->setAccessible(true);
-        $prop->setValue($serviceLocator, true);
 
         $config = [
             'di' => [],
@@ -113,9 +111,10 @@ class TranslatorServiceFactoryTest extends TestCase
             ],
         ];
 
-        $serviceLocator->setService('Config', $config);
+        $serviceLocator->setService('config', $config);
+        $serviceLocator->setAllowOverride(false);
 
-        $translator = $this->factory->createService($serviceLocator);
+        $translator = $this->factory->__invoke($serviceLocator, TranslatorInterface::class);
 
         $this->assertEquals(
             $serviceLocator->get('TranslatorPluginManager'),
@@ -134,16 +133,14 @@ class TranslatorServiceFactoryTest extends TestCase
             'module_listener_options' => [],
             'modules' => [],
         ];
-        $serviceLocator = new ServiceManager(new ServiceManagerConfig());
-        $serviceLocator->setService('ApplicationConfig', $applicationConfig);
+        $config = new ServiceManagerConfig(['services' => [
+            'ApplicationConfig' => $applicationConfig,
+        ]]);
+        $serviceLocator = new ServiceManager();
+        $config->configureServiceManager($serviceLocator);
+        $serviceLocator->setAllowOverride(true);
         $serviceLocator->get('ModuleManager')->loadModules();
         $serviceLocator->get('Application')->bootstrap();
-
-        //enable to re-write Config
-        $ref = new \ReflectionObject($serviceLocator);
-        $prop = $ref->getProperty('allowOverride');
-        $prop->setAccessible(true);
-        $prop->setValue($serviceLocator, true);
 
         $config = [
             'di' => [],
@@ -152,14 +149,15 @@ class TranslatorServiceFactoryTest extends TestCase
             ],
         ];
 
-        $serviceLocator->setService('Config', $config);
+        $serviceLocator->setService('config', $config);
+        $serviceLocator->setAllowOverride(false);
 
         //#5959
         //get any plugins with AbstractPluginManagerFactory
         $routePluginManagerFactory = new RoutePluginManagerFactory;
-        $routePluginManager = $routePluginManagerFactory->createService($serviceLocator);
+        $routePluginManager = $routePluginManagerFactory($serviceLocator, 'RoutePluginManager');
 
-        $translator = $this->factory->createService($serviceLocator);
+        $translator = $this->factory->__invoke($serviceLocator, TranslatorInterface::class);
         $this->assertInstanceOf('Zend\Mvc\I18n\Translator', $translator);
         $this->assertInstanceOf('Zend\I18n\Translator\Translator', $translator->getTranslator());
     }
@@ -180,12 +178,11 @@ class TranslatorServiceFactoryTest extends TestCase
         $config = ['translator' => [
             'locale' => 'en_US',
         ]];
-        $this->services->setService('Config', $config);
+        $i18nTranslator = $this->getMock(TranslatorInterface::class);
+        $this->services->setService('config', $config);
+        $this->services->setService(TranslatorInterface::class, $i18nTranslator);
 
-        $i18nTranslator = $this->getMock('Zend\I18n\Translator\TranslatorInterface');
-        $this->services->setService('Zend\I18n\Translator\TranslatorInterface', $i18nTranslator);
-
-        $translator = $this->factory->createService($this->services);
+        $translator = $this->factory->__invoke($this->services, TranslatorInterface::class);
         $this->assertInstanceOf('Zend\Mvc\I18n\Translator', $translator);
         $this->assertSame($i18nTranslator, $translator->getTranslator());
     }
@@ -193,8 +190,9 @@ class TranslatorServiceFactoryTest extends TestCase
     public function testReturnsDummyTranslatorWhenTranslatorConfigIsBooleanFalse()
     {
         $config = ['translator' => false];
-        $this->services->setService('Config', $config);
-        $translator = $this->factory->createService($this->services);
+        $this->services->setService('config', $config);
+
+        $translator = $this->factory->__invoke($this->services, TranslatorInterface::class);
         $this->assertInstanceOf('Zend\Mvc\I18n\Translator', $translator);
         $this->assertInstanceOf('Zend\Mvc\I18n\DummyTranslator', $translator->getTranslator());
     }

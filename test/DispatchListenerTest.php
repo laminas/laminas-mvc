@@ -10,114 +10,75 @@
 namespace ZendTest\Mvc;
 
 use PHPUnit_Framework_TestCase as TestCase;
+use Zend\EventManager\EventManager;
+use Zend\Http\Request;
+use Zend\Http\Response;
 use Zend\Mvc\Application;
+use Zend\Mvc\Controller\ControllerManager;
+use Zend\Mvc\DispatchListener;
 use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router;
-use Zend\Mvc\Service\ServiceManagerConfig;
-use Zend\Mvc\Service\ServiceListenerFactory;
+use Zend\Mvc\Router\RouteMatch;
 use Zend\ServiceManager\ServiceManager;
-use Zend\Stdlib\ArrayUtils;
 
 class DispatchListenerTest extends TestCase
 {
-    /**
-     * @var ServiceManager
-     */
-    protected $serviceManager;
-
-    /**
-     * @var Application
-     */
-    protected $application;
-
-    public function setUp()
+    public function createMvcEvent($controllerMatched)
     {
-        $serviceConfig = ArrayUtils::merge(
-            $this->readAttribute(new ServiceListenerFactory, 'defaultServiceConfig'),
-            [
-                'allow_override' => true,
-                'invokables' => [
-                    'Request'              => 'Zend\Http\PhpEnvironment\Request',
-                    'Response'             => 'Zend\Http\PhpEnvironment\Response',
-                    'ViewManager'          => 'ZendTest\Mvc\TestAsset\MockViewManager',
-                    'SendResponseListener' => 'ZendTest\Mvc\TestAsset\MockSendResponseListener',
-                    'BootstrapListener'    => 'ZendTest\Mvc\TestAsset\StubBootstrapListener',
-                ],
-                'aliases' => [
-                    'Router'                 => 'HttpRouter',
-                ],
-                'services' => [
-                    'Config' => [],
-                    'ApplicationConfig' => [
-                        'modules' => [],
-                        'module_listener_options' => [
-                            'config_cache_enabled' => false,
-                            'cache_dir'            => 'data/cache',
-                            'module_paths'         => [],
-                        ],
-                    ],
-                ],
-            ]
-        );
-        $this->serviceManager = new ServiceManager(new ServiceManagerConfig($serviceConfig));
-        $this->application = $this->serviceManager->get('Application');
+        $response   = new Response();
+        $routeMatch = $this->prophesize(RouteMatch::class);
+        $routeMatch->getParam('controller', 'not-found')->willReturn('path');
+
+        $eventManager = new EventManager();
+
+        $application = $this->prophesize(Application::class);
+        $application->getEventManager()->willReturn($eventManager);
+        $application->getResponse()->willReturn($response);
+
+        $event = new MvcEvent();
+        $event->setRequest(new Request());
+        $event->setResponse($response);
+        $event->setApplication($application->reveal());
+        $event->setRouteMatch($routeMatch->reveal());
+
+        return $event;
     }
 
-    public function setupPathController()
+    public function testControllerManagerUsingAbstractFactory()
     {
-        $request = $this->serviceManager->get('Request');
-        $request->setUri('http://example.local/path');
+        $controllerManager = new ControllerManager(new ServiceManager(), ['abstract_factories' => [
+            Controller\TestAsset\ControllerLoaderAbstractFactory::class,
+        ]]);
+        $listener = new DispatchListener($controllerManager);
 
-        $router = $this->serviceManager->get('HttpRouter');
-        $route  = Router\Http\Literal::factory([
-            'route'    => '/path',
-            'defaults' => [
-                'controller' => 'path',
-            ],
-        ]);
-        $router->addRoute('path', $route);
-        $this->application->bootstrap();
-    }
-
-    public function testControllerLoaderComposedOfAbstractFactory()
-    {
-        $this->setupPathController();
-
-        $controllerLoader = $this->serviceManager->get('ControllerLoader');
-        $controllerLoader->addAbstractFactory('ZendTest\Mvc\Controller\TestAsset\ControllerLoaderAbstractFactory');
+        $event = $this->createMvcEvent('path');
 
         $log = [];
-        $this->application->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) use (&$log) {
+        $event->getApplication()->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) use (&$log) {
             $log['error'] = $e->getError();
         });
 
-        $this->application->run();
+        $return = $listener->onDispatch($event);
 
-        $event = $this->application->getMvcEvent();
-        $dispatchListener = $this->serviceManager->get('DispatchListener');
-        $return = $dispatchListener->onDispatch($event);
-
-        $this->assertEmpty($log);
-        $this->assertInstanceOf('Zend\Http\PhpEnvironment\Response', $return);
+        $this->assertEmpty($log, var_export($log, 1));
+        $this->assertSame($event->getResponse(), $return);
         $this->assertSame(200, $return->getStatusCode());
     }
 
-    public function testUnlocatableControllerLoaderComposedOfAbstractFactory()
+    public function testUnlocatableControllerViaAbstractFactory()
     {
-        $this->setupPathController();
+        $controllerManager = new ControllerManager(new ServiceManager(), ['abstract_factories' => [
+            Controller\TestAsset\UnlocatableControllerLoaderAbstractFactory::class,
+        ]]);
+        $listener = new DispatchListener($controllerManager);
 
-        $controllerLoader = $this->serviceManager->get('ControllerLoader');
-        $controllerLoader->addAbstractFactory('ZendTest\Mvc\Controller\TestAsset\UnlocatableControllerLoaderAbstractFactory');
+        $event = $this->createMvcEvent('path');
 
         $log = [];
-        $this->application->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) use (&$log) {
+        $event->getApplication()->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) use (&$log) {
             $log['error'] = $e->getError();
         });
 
-        $this->application->run();
-        $event = $this->application->getMvcEvent();
-        $dispatchListener = $this->serviceManager->get('DispatchListener');
-        $return = $dispatchListener->onDispatch($event);
+        $return = $listener->onDispatch($event);
 
         $this->assertArrayHasKey('error', $log);
         $this->assertSame('error-controller-not-found', $log['error']);

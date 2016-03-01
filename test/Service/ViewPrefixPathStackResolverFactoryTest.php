@@ -9,28 +9,27 @@
 
 namespace ZendTest\Mvc\Service;
 
+use Interop\Container\ContainerInterface;
 use Zend\Mvc\Service\ViewPrefixPathStackResolverFactory;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 class ViewPrefixPathStackResolverFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testCreateService()
     {
-        /* @var $serviceLocator \Zend\ServiceManager\ServiceLocatorInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $serviceLocator = $this->getMock('Zend\ServiceManager\ServiceLocatorInterface');
+        $serviceLocator = $this->prophesize(ServiceLocatorInterface::class);
+        $serviceLocator->willImplement(ContainerInterface::class);
 
-        $serviceLocator->expects($this->once())
-            ->method('get')
-            ->with('Config')
-            ->will($this->returnValue([
-                'view_manager' => [
-                    'prefix_template_path_stack' => [
-                        'album/' => [],
-                    ],
+        $serviceLocator->get('config')->willReturn([
+            'view_manager' => [
+                'prefix_template_path_stack' => [
+                    'album/' => [],
                 ],
-            ]));
+            ],
+        ]);
 
         $factory  = new ViewPrefixPathStackResolverFactory();
-        $resolver = $factory->createService($serviceLocator);
+        $resolver = $factory($serviceLocator->reveal(), 'ViewPrefixPathStackResolver');
 
         $this->assertInstanceOf('Zend\View\Resolver\PrefixPathStackResolver', $resolver);
     }

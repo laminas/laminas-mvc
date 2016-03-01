@@ -10,21 +10,30 @@
 namespace ZendTest\Mvc\Service;
 
 use PHPUnit_Framework_TestCase as TestCase;
+use ReflectionClass;
+use ReflectionProperty;
 use Zend\Mvc\Service\ServiceListenerFactory;
+use Zend\ServiceManager\ServiceManager;
 
 class ServiceListenerFactoryTest extends TestCase
 {
     public function setUp()
     {
-        $sm = $this->sm = $this->getMockBuilder('Zend\ServiceManager\ServiceManager')
+        $sm = $this->sm = $this->getMockBuilder(ServiceManager::class)
                                ->setMethods(['get'])
                                ->getMock();
 
         $this->factory  = new ServiceListenerFactory();
     }
 
+    private function isServiceManagerV3()
+    {
+        $r = new ReflectionClass(ServiceManager::class);
+        return $r->hasMethod('configure');
+    }
+
     /**
-     * @expectedException        Zend\Mvc\Exception\InvalidArgumentException
+     * @expectedException        Zend\ServiceManager\Exception\ServiceNotCreatedException
      * @expectedExceptionMessage The value of service_listener_options must be an array, string given.
      */
     public function testInvalidOptionType()
@@ -33,11 +42,11 @@ class ServiceListenerFactoryTest extends TestCase
                  ->method('get')
                  ->will($this->returnValue(['service_listener_options' => 'string']));
 
-        $this->factory->createService($this->sm);
+        $this->factory->__invoke($this->sm, 'ServiceListener');
     }
 
     /**
-     * @expectedException        Zend\Mvc\Exception\InvalidArgumentException
+     * @expectedException        Zend\ServiceManager\Exception\ServiceNotCreatedException
      * @expectedExceptionMessage Invalid service listener options detected, 0 array must contain service_manager key.
      */
     public function testMissingServiceManager()
@@ -51,11 +60,11 @@ class ServiceListenerFactoryTest extends TestCase
                  ->method('get')
                  ->will($this->returnValue($config));
 
-        $this->factory->createService($this->sm);
+        $this->factory->__invoke($this->sm, 'ServiceListener');
     }
 
     /**
-     * @expectedException        Zend\Mvc\Exception\InvalidArgumentException
+     * @expectedException        Zend\ServiceManager\Exception\ServiceNotCreatedException
      * @expectedExceptionMessage Invalid service listener options detected, service_manager must be a string, integer given.
      */
     public function testInvalidTypeServiceManager()
@@ -69,11 +78,11 @@ class ServiceListenerFactoryTest extends TestCase
                  ->method('get')
                  ->will($this->returnValue($config));
 
-        $this->factory->createService($this->sm);
+        $this->factory->__invoke($this->sm, 'ServiceListener');
     }
 
     /**
-     * @expectedException        Zend\Mvc\Exception\InvalidArgumentException
+     * @expectedException        Zend\ServiceManager\Exception\ServiceNotCreatedException
      * @expectedExceptionMessage Invalid service listener options detected, 0 array must contain config_key key.
      */
     public function testMissingConfigKey()
@@ -87,11 +96,11 @@ class ServiceListenerFactoryTest extends TestCase
                  ->method('get')
                  ->will($this->returnValue($config));
 
-        $this->factory->createService($this->sm);
+        $this->factory->__invoke($this->sm, 'ServiceListener');
     }
 
     /**
-     * @expectedException        Zend\Mvc\Exception\InvalidArgumentException
+     * @expectedException        Zend\ServiceManager\Exception\ServiceNotCreatedException
      * @expectedExceptionMessage Invalid service listener options detected, config_key must be a string, integer given.
      */
     public function testInvalidTypeConfigKey()
@@ -105,11 +114,11 @@ class ServiceListenerFactoryTest extends TestCase
                  ->method('get')
                  ->will($this->returnValue($config));
 
-        $this->factory->createService($this->sm);
+        $this->factory->__invoke($this->sm, 'ServiceListener');
     }
 
     /**
-     * @expectedException        Zend\Mvc\Exception\InvalidArgumentException
+     * @expectedException        Zend\ServiceManager\Exception\ServiceNotCreatedException
      * @expectedExceptionMessage Invalid service listener options detected, 0 array must contain interface key.
      */
     public function testMissingInterface()
@@ -123,11 +132,11 @@ class ServiceListenerFactoryTest extends TestCase
                  ->method('get')
                  ->will($this->returnValue($config));
 
-        $this->factory->createService($this->sm);
+        $this->factory->__invoke($this->sm, 'ServiceListener');
     }
 
     /**
-     * @expectedException        Zend\Mvc\Exception\InvalidArgumentException
+     * @expectedException        Zend\ServiceManager\Exception\ServiceNotCreatedException
      * @expectedExceptionMessage Invalid service listener options detected, interface must be a string, integer given.
      */
     public function testInvalidTypeInterface()
@@ -141,11 +150,11 @@ class ServiceListenerFactoryTest extends TestCase
                  ->method('get')
                  ->will($this->returnValue($config));
 
-        $this->factory->createService($this->sm);
+        $this->factory->__invoke($this->sm, 'ServiceListener');
     }
 
     /**
-     * @expectedException        Zend\Mvc\Exception\InvalidArgumentException
+     * @expectedException        Zend\ServiceManager\Exception\ServiceNotCreatedException
      * @expectedExceptionMessage Invalid service listener options detected, 0 array must contain method key.
      */
     public function testMissingMethod()
@@ -159,11 +168,11 @@ class ServiceListenerFactoryTest extends TestCase
                  ->method('get')
                  ->will($this->returnValue($config));
 
-        $this->factory->createService($this->sm);
+        $this->factory->__invoke($this->sm, 'ServiceListener');
     }
 
     /**
-     * @expectedException        Zend\Mvc\Exception\InvalidArgumentException
+     * @expectedException        Zend\ServiceManager\Exception\ServiceNotCreatedException
      * @expectedExceptionMessage Invalid service listener options detected, method must be a string, integer given.
      */
     public function testInvalidTypeMethod()
@@ -177,6 +186,91 @@ class ServiceListenerFactoryTest extends TestCase
                  ->method('get')
                  ->will($this->returnValue($config));
 
-        $this->factory->createService($this->sm);
+        $this->factory->__invoke($this->sm, 'ServiceListener');
+    }
+
+    public function testDefinesExpectedAliasesForConsole()
+    {
+        $r = new ReflectionProperty($this->factory, 'defaultServiceConfig');
+        $r->setAccessible(true);
+        $config = $r->getValue($this->factory);
+
+        $this->assertArrayHasKey('aliases', $config, 'Missing aliases from default service config');
+        $this->assertArrayHasKey('console', $config['aliases'], 'Missing "console" alias from default service config');
+        $this->assertArrayHasKey('Console', $config['aliases'], 'Missing "Console" alias from default service config');
+    }
+
+    public function testDefinesExpectedApplicationAliasesUnderV3()
+    {
+        if (! $this->isServiceManagerV3()) {
+            $this->markTestSkipped('Application aliases are only defined under zend-servicemanager v3');
+        }
+
+        $r = new ReflectionProperty($this->factory, 'defaultServiceConfig');
+        $r->setAccessible(true);
+        $config = $r->getValue($this->factory);
+
+        // @codingStandardsIgnoreStart
+        $this->assertArrayHasKey('aliases', $config, 'Missing aliases from default service config');
+        $this->assertArrayHasKey('application', $config['aliases'], 'Missing "application" alias from default service config');
+        // @codingStandardsIgnoreEnd
+    }
+
+    public function testDefinesExpectedConfigAliasesUnderV3()
+    {
+        if (! $this->isServiceManagerV3()) {
+            $this->markTestSkipped('Config aliases are only defined under zend-servicemanager v3');
+        }
+
+        $r = new ReflectionProperty($this->factory, 'defaultServiceConfig');
+        $r->setAccessible(true);
+        $config = $r->getValue($this->factory);
+
+        $this->assertArrayHasKey('aliases', $config, 'Missing aliases from default service config');
+        $this->assertArrayHasKey('Config', $config['aliases'], 'Missing "Config" alias from default service config');
+    }
+
+    public function testDefinesExpectedRequestAliasesUnderV3()
+    {
+        if (! $this->isServiceManagerV3()) {
+            $this->markTestSkipped('Request aliases are only defined under zend-servicemanager v3');
+        }
+
+        $r = new ReflectionProperty($this->factory, 'defaultServiceConfig');
+        $r->setAccessible(true);
+        $config = $r->getValue($this->factory);
+
+        $this->assertArrayHasKey('aliases', $config, 'Missing aliases from default service config');
+        $this->assertArrayHasKey('request', $config['aliases'], 'Missing "request" alias from default service config');
+    }
+
+    public function testDefinesExpectedResponseFactories()
+    {
+        if (! $this->isServiceManagerV3()) {
+            $this->markTestSkipped('Response aliases are only defined under zend-servicemanager v3');
+        }
+
+        $r = new ReflectionProperty($this->factory, 'defaultServiceConfig');
+        $r->setAccessible(true);
+        $config = $r->getValue($this->factory);
+
+        // @codingStandardsIgnoreStart
+        $this->assertArrayHasKey('aliases', $config, 'Missing aliases from default service config');
+        $this->assertArrayHasKey('response', $config['aliases'], 'Missing "response" alias from default service config');
+        // @codingStandardsIgnoreEnd
+    }
+
+    public function testDefinesExpectedRouterAliases()
+    {
+        if (! $this->isServiceManagerV3()) {
+            $this->markTestSkipped('Router aliases are only defined under zend-servicemanager v3');
+        }
+
+        $r = new ReflectionProperty($this->factory, 'defaultServiceConfig');
+        $r->setAccessible(true);
+        $config = $r->getValue($this->factory);
+
+        $this->assertArrayHasKey('aliases', $config, 'Missing aliases from default service config');
+        $this->assertArrayHasKey('router', $config['aliases'], 'Missing "router" alias from default service config');
     }
 }

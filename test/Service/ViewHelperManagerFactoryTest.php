@@ -10,6 +10,8 @@
 namespace ZendTest\Mvc\Service;
 
 use PHPUnit_Framework_TestCase as TestCase;
+use ReflectionProperty;
+use Zend\Console\Console;
 use Zend\Console\Request as ConsoleRequest;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Mvc\Application;
@@ -59,7 +61,7 @@ class ViewHelperManagerFactoryTest extends TestCase
         $this->services->setService('config', []);
         $this->services->setService('Request', new ConsoleRequest());
 
-        $manager = $this->factory->createService($this->services);
+        $manager = $this->factory->__invoke($this->services, 'ViewHelperManager');
 
         $doctype = $manager->get('doctype');
         $this->assertInstanceof('Zend\View\Helper\Doctype', $doctype);
@@ -73,14 +75,22 @@ class ViewHelperManagerFactoryTest extends TestCase
      */
     public function testConsoleRequestWithBasePathConsole()
     {
+        // Force Console context
+        $r = new ReflectionProperty(Console::class, 'isConsole');
+        $r->setAccessible(true);
+        $r->setValue(true);
+
+        if (! Console::isConsole()) {
+            $this->markTestSkipped('Cannot force console context; skipping test');
+        }
+
         $this->services->setService('config', [
             'view_manager' => [
                 'base_path_console' => 'http://test.com'
             ]
         ]);
-        $this->services->setService('Request', new ConsoleRequest());
 
-        $manager = $this->factory->createService($this->services);
+        $manager = $this->factory->__invoke($this->services, 'ViewHelperManager');
 
         $basePath = $manager->get('basepath');
         $this->assertEquals('http://test.com', $basePath());
@@ -113,7 +123,7 @@ class ViewHelperManagerFactoryTest extends TestCase
 
         $this->services->setService('HttpRouter', $router);
         $this->services->setService('Router', $router);
-        $this->services->setService('application', $application->reveal());
+        $this->services->setService('Application', $application->reveal());
         $this->services->setService('config', []);
 
         $manager = $this->factory->createService($this->services);
@@ -146,7 +156,7 @@ class ViewHelperManagerFactoryTest extends TestCase
 
             'request-base' => [[
                 'config' => [], // fails creating plugin manager without this
-                'request' => function () {
+                'Request' => function () {
                     $request = $this->prophesize(Request::class);
                     $request->getBasePath()->willReturn('/foo/bat');
                     return $request->reveal();

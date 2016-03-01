@@ -9,10 +9,12 @@
 
 namespace ZendTest\Mvc\Service;
 
-use Zend\Mvc\Service\DiStrictAbstractServiceFactory;
-use Zend\ServiceManager\ServiceManager;
-use Zend\Di\Di;
+use Interop\Container\ContainerInterface;
 use Zend\Di\Config;
+use Zend\Di\Di;
+use Zend\Mvc\Service\DiStrictAbstractServiceFactory;
+use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\ServiceManager;
 
 class DiStrictAbstractServiceFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -32,14 +34,32 @@ class DiStrictAbstractServiceFactoryTest extends \PHPUnit_Framework_TestCase
         $instance->setAllowedServiceNames(['a-whitelisted-service-name']);
         $im = $instance->instanceManager();
         $im->addSharedInstance(new \stdClass(), 'a-whitelisted-service-name');
-        $locator = $this->getMock('Zend\ServiceManager\ServiceLocatorInterface');
 
-        $this->assertTrue($instance->canCreateServiceWithName($locator, 'a-whitelisted-service-name', 'a-whitelisted-service-name'));
-        $this->assertInstanceOf('stdClass', $instance->createServiceWithName($locator, 'a-whitelisted-service-name', 'a-whitelisted-service-name'));
+        $locator = $this->prophesize(ServiceLocatorInterface::class);
+        $locator->willImplement(ContainerInterface::class);
 
-        $this->assertFalse($instance->canCreateServiceWithName($locator, 'not-whitelisted', 'not-whitelisted'));
-        $this->setExpectedException('Zend\ServiceManager\Exception\InvalidServiceNameException');
-        $instance->createServiceWithName($locator, 'not-whitelisted', 'not-whitelisted');
+        $this->assertTrue($instance->canCreateServiceWithName(
+            $locator->reveal(),
+            'a-whitelisted-service-name',
+            'a-whitelisted-service-name'
+        ));
+        $this->assertInstanceOf(
+            'stdClass',
+            $instance->createServiceWithName(
+                $locator->reveal(),
+                'a-whitelisted-service-name',
+                'a-whitelisted-service-name'
+            )
+        );
+
+        $this->assertFalse($instance->canCreateServiceWithName(
+            $locator->reveal(),
+            'not-whitelisted',
+            'not-whitelisted'
+        ));
+
+        $this->setExpectedException('Zend\ServiceManager\Exception\InvalidServiceException');
+        $instance->createServiceWithName($locator->reveal(), 'not-whitelisted', 'not-whitelisted');
     }
 
     public function testWillFetchDependenciesFromServiceManagerBeforeDi()

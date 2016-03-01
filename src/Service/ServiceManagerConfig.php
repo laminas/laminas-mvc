@@ -9,128 +9,223 @@
 
 namespace Zend\Mvc\Service;
 
+use Interop\Container\ContainerInterface;
+use Zend\EventManager\EventManager;
 use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerInterface;
+use Zend\EventManager\SharedEventManager;
+use Zend\EventManager\SharedEventManagerInterface;
+use Zend\ModuleManager\Listener\ServiceListener;
+use Zend\ModuleManager\ModuleManager;
 use Zend\ServiceManager\Config;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\ServiceManager;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\Stdlib\ArrayUtils;
 
 class ServiceManagerConfig extends Config
 {
+
     /**
-     * Services that can be instantiated without factories
+     * Default service configuration.
+     *
+     * In addition to these, the constructor registers several factories and
+     * initializers; see that method for details.
      *
      * @var array
      */
-    protected $invokables = [
-        'SharedEventManager' => 'Zend\EventManager\SharedEventManager',
+    protected $config = [
+        'abstract_factories' => [],
+        'aliases'            => [
+            'EventManagerInterface'            => EventManager::class,
+            EventManagerInterface::class       => 'EventManager',
+            ModuleManager::class               => 'ModuleManager',
+            ServiceListener::class             => 'ServiceListener',
+            SharedEventManager::class          => 'SharedEventManager',
+            'SharedEventManagerInterface'      => 'SharedEventManager',
+            SharedEventManagerInterface::class => 'SharedEventManager',
+        ],
+        'delegators' => [],
+        'factories'  => [
+            'EventManager'            => EventManagerFactory::class,
+            'ModuleManager'           => ModuleManagerFactory::class,
+            'ServiceListener'         => ServiceListenerFactory::class,
+        ],
+        'lazy_services' => [],
+        'initializers'  => [],
+        'invokables'    => [],
+        'services'      => [],
+        'shared'        => [
+            'EventManager' => false,
+        ],
     ];
-
-    /**
-     * Service factories
-     *
-     * @var array
-     */
-    protected $factories = [
-        'EventManager'  => 'Zend\Mvc\Service\EventManagerFactory',
-        'ModuleManager' => 'Zend\Mvc\Service\ModuleManagerFactory',
-    ];
-
-    /**
-     * Abstract factories
-     *
-     * @var array
-     */
-    protected $abstractFactories = [];
-
-    /**
-     * Aliases
-     *
-     * @var array
-     */
-    protected $aliases = [
-        'Zend\EventManager\EventManagerInterface'     => 'EventManager',
-        'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
-        'Zend\ServiceManager\ServiceManager'          => 'ServiceManager',
-    ];
-
-    /**
-     * Shared services
-     *
-     * Services are shared by default; this is primarily to indicate services
-     * that should NOT be shared
-     *
-     * @var array
-     */
-    protected $shared = [
-        'EventManager' => false,
-    ];
-
-    /**
-     * Delegators
-     *
-     * @var array
-     */
-    protected $delegators = [];
-
-    /**
-     * Initializers
-     *
-     * @var array
-     */
-    protected $initializers = [];
 
     /**
      * Constructor
      *
-     * Merges internal arrays with those passed via configuration
+     * Merges internal arrays with those passed via configuration, and also
+     * defines:
      *
-     * @param  array $configuration
+     * - factory for the service 'SharedEventManager'.
+     * - initializer for EventManagerAwareInterface implementations
+     * - initializer for ServiceManagerAwareInterface implementations
+     * - initializer for ServiceLocatorAwareInterface implementations
+     *
+     * @param  array $config
      */
-    public function __construct(array $configuration = [])
+    public function __construct(array $config = [])
     {
-        $this->initializers = [
-            'EventManagerAwareInitializer' => function ($instance, ServiceLocatorInterface $serviceLocator) {
-                if ($instance instanceof EventManagerAwareInterface) {
-                    $eventManager = $instance->getEventManager();
-
-                    if ($eventManager instanceof EventManagerInterface) {
-                        $eventManager->setSharedManager($serviceLocator->get('SharedEventManager'));
-                    } else {
-                        $instance->setEventManager($serviceLocator->get('EventManager'));
-                    }
-                }
-            },
-            'ServiceManagerAwareInitializer' => function ($instance, ServiceLocatorInterface $serviceLocator) {
-                if ($serviceLocator instanceof ServiceManager && $instance instanceof ServiceManagerAwareInterface) {
-                    $instance->setServiceManager($serviceLocator);
-                }
-            },
-            'ServiceLocatorAwareInitializer' => function ($instance, ServiceLocatorInterface $serviceLocator) {
-                if ($instance instanceof ServiceLocatorAwareInterface) {
-                    $instance->setServiceLocator($serviceLocator);
-                }
-            },
-        ];
-
-        $this->factories['ServiceManager'] = function (ServiceLocatorInterface $serviceLocator) {
-            return $serviceLocator;
+        $this->config['factories']['SharedEventManager'] = function () {
+            return new SharedEventManager();
         };
 
-        parent::__construct(ArrayUtils::merge(
-            [
-                'invokables'         => $this->invokables,
-                'factories'          => $this->factories,
-                'abstract_factories' => $this->abstractFactories,
-                'aliases'            => $this->aliases,
-                'shared'             => $this->shared,
-                'delegators'         => $this->delegators,
-                'initializers'       => $this->initializers,
-            ],
-            $configuration
-        ));
+        $this->config['initializers'] = ArrayUtils::merge($this->config['initializers'], [
+            'EventManagerAwareInitializer' => function ($first, $second) {
+                if ($first instanceof ContainerInterface) {
+                    $container = $first;
+                    $instance = $second;
+                } else {
+                    $container = $second;
+                    $instance = $first;
+                }
+
+                if (! $instance instanceof EventManagerAwareInterface) {
+                    return;
+                }
+
+                $eventManager = $instance->getEventManager();
+
+                // If the instance has an EM WITH an SEM composed, do nothing.
+                if ($eventManager instanceof EventManagerInterface
+                    && $eventManager->getSharedManager() instanceof SharedEventManagerInterface
+                ) {
+                    return;
+                }
+
+                $instance->setEventManager($container->get('EventManager'));
+            },
+            'ServiceManagerAwareInitializer' => function ($first, $second) {
+                if ($first instanceof ContainerInterface) {
+                    $container = $first;
+                    $instance = $second;
+                } else {
+                    $container = $second;
+                    $instance = $first;
+                }
+
+                if ($container instanceof ServiceManager && $instance instanceof ServiceManagerAwareInterface) {
+                    trigger_error(sprintf(
+                        'ServiceManagerAwareInterface is deprecated and will be removed in version 3.0, along '
+                        . 'with the ServiceManagerAwareInitializer. Please update your class %s to remove '
+                        . 'the implementation, and start injecting your dependencies via factory instead.',
+                        get_class($instance)
+                    ), E_USER_DEPRECATED);
+                    $instance->setServiceManager($container);
+                }
+            },
+            'ServiceLocatorAwareInitializer' => function ($first, $second) {
+                if ($first instanceof ContainerInterface) {
+                    $container = $first;
+                    $instance = $second;
+                } else {
+                    $container = $second;
+                    $instance = $first;
+                }
+
+                if ($instance instanceof ServiceLocatorAwareInterface) {
+                    trigger_error(sprintf(
+                        'ServiceLocatorAwareInterface is deprecated and will be removed in version 3.0, along '
+                        . 'with the ServiceLocatorAwareInitializer. Please update your class %s to remove '
+                        . 'the implementation, and start injecting your dependencies via factory instead.',
+                        get_class($instance)
+                    ), E_USER_DEPRECATED);
+                    $instance->setServiceLocator($container);
+                }
+
+                if (! $instance instanceof ServiceLocatorAwareInterface
+                    && method_exists($instance, 'setServiceLocator')
+                ) {
+                    trigger_error(sprintf(
+                        'ServiceLocatorAwareInterface is deprecated and will be removed in version 3.0, along '
+                        . 'with the ServiceLocatorAwareInitializer. Please update your class %s to remove '
+                        . 'the implementation, and start injecting your dependencies via factory instead.',
+                        get_class($instance)
+                    ), E_USER_DEPRECATED);
+                    $instance->setServiceLocator($container);
+                }
+            },
+        ]);
+
+        // In zend-servicemanager v2, incoming configuration is not merged
+        // with existing; it replaces. So we need to detect that and merge.
+        if (method_exists($this, 'getAllowOverride')) {
+            $config = ArrayUtils::merge($this->config, $config);
+        }
+
+        parent::__construct($config);
+    }
+
+    /**
+     * Configure service container.
+     *
+     * Uses the configuration present in the instance to configure the provided
+     * service container.
+     *
+     * Before doing so, it adds a "service" entry for the ServiceManager class,
+     * pointing to the provided service container.
+     *
+     * @param ServiceManager $services
+     * @return ServiceManager
+     */
+    public function configureServiceManager(ServiceManager $services)
+    {
+        $this->config['services'][ServiceManager::class] = $services;
+
+        /*
+        printf("Configuration prior to configuring servicemanager:\n");
+        foreach ($this->config as $type => $list) {
+            switch ($type) {
+                case 'aliases':
+                case 'delegators':
+                case 'factories':
+                case 'invokables':
+                case 'lazy_services':
+                case 'services':
+                case 'shared':
+                    foreach (array_keys($list) as $name) {
+                        printf("    %s (%s)\n", $name, $type);
+                    }
+                    break;
+
+                case 'initializers':
+                case 'abstract_factories':
+                    foreach ($list as $callable) {
+                        printf("    %s (%s)\n", (is_object($callable) ? get_class($callable) : $callable), $type);
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }
+         */
+
+        // This is invoked as part of the bootstrapping process, and requires
+        // the ability to override services.
+        $services->setAllowOverride(true);
+        parent::configureServiceManager($services);
+        $services->setAllowOverride(false);
+
+        return $services;
+    }
+
+    /**
+     * Return all service configuration (v3)
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return $this->config;
     }
 }

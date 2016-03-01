@@ -177,9 +177,9 @@ class Forward extends AbstractPlugin
             $results[$id] = [];
             foreach ($eventArray as $eventName => $classArray) {
                 $results[$id][$eventName] = [];
-                $events = $sharedEvents->getListeners($id, $eventName);
+                $events = $this->getSharedListenersById($id, $eventName, $sharedEvents);
                 foreach ($events as $currentEvent) {
-                    $currentCallback = $currentEvent->getCallback();
+                    $currentCallback = $currentEvent;
 
                     // If we have an array, grab the object
                     if (is_array($currentCallback)) {
@@ -193,7 +193,7 @@ class Forward extends AbstractPlugin
 
                     foreach ($classArray as $class) {
                         if ($currentCallback instanceof $class) {
-                            $sharedEvents->detach($id, $currentEvent);
+                            $sharedEvents->detach($currentEvent, $id);
                             $results[$id][$eventName][] = $currentEvent;
                         }
                     }
@@ -236,7 +236,10 @@ class Forward extends AbstractPlugin
 
         $controller = $this->getController();
         if (!$controller instanceof InjectApplicationEventInterface) {
-            throw new Exception\DomainException('Forward plugin requires a controller that implements InjectApplicationEventInterface');
+            throw new Exception\DomainException(sprintf(
+                'Forward plugin requires a controller that implements InjectApplicationEventInterface; received %s',
+                (is_object($controller) ? get_class($controller) : var_export($controller, 1))
+            ));
         }
 
         $event = $controller->getEvent();
@@ -251,5 +254,26 @@ class Forward extends AbstractPlugin
         $this->event = $event;
 
         return $this->event;
+    }
+
+    /**
+     * Retrieve shared listeners for an event by identifier.
+     *
+     * Varies retrieval based on zend-eventmanager version.
+     *
+     * @param string|int $id
+     * @param string $event
+     * @param SharedEvents $sharedEvents
+     * @return array|\Traversable
+     */
+    private function getSharedListenersById($id, $event, SharedEvents $sharedEvents)
+    {
+        if (method_exists($sharedEvents, 'attachAggregate')) {
+            // v2
+            return $sharedEvents->getListeners($id, $event) ?: [];
+        }
+
+        // v3
+        return $sharedEvents->getListeners([$id], $event);
     }
 }

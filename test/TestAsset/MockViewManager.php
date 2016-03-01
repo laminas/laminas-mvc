@@ -15,7 +15,7 @@ use Zend\Mvc\MvcEvent;
 
 class MockViewManager extends AbstractListenerAggregate
 {
-    public function attach(EventManagerInterface $events)
+    public function attach(EventManagerInterface $events, $priority = 1)
     {
         $this->listeners[] = $events->attach(MvcEvent::EVENT_BOOTSTRAP, array($this, 'onBootstrap'), 10000);
     }

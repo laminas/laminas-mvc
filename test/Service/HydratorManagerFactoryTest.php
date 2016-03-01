@@ -9,11 +9,10 @@
 
 namespace ZendTest\Mvc\Service;
 
+use Interop\Container\ContainerInterface;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Hydrator\HydratorPluginManager as ZendHydratorManager;
+use Zend\Hydrator\HydratorPluginManager;
 use Zend\Mvc\Service\HydratorManagerFactory;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\Stdlib\Hydrator\HydratorPluginManager;
 
 class HydratorManagerFactoryTest extends TestCase
 {
@@ -21,22 +20,13 @@ class HydratorManagerFactoryTest extends TestCase
     {
         $this->factory = new HydratorManagerFactory();
         $this->services = $this->prophesize(ServiceLocatorInterface::class);
+        $this->services->willImplement(ContainerInterface::class);
         $this->services->get('config')->willReturn([]);
     }
 
     public function testFactoryReturnsZendHydratorManagerInstance()
     {
-        $hydrators = $this->factory->createService($this->services->reveal());
-        $this->assertInstanceOf(ZendHydratorManager::class, $hydrators);
-        return $hydrators;
-    }
-
-    /**
-     * @todo Remove for 3.0
-     * @depends testFactoryReturnsZendHydratorManagerInstance
-     */
-    public function testFactoryReturnsStdlibHydratorManagerInstance($hydrators)
-    {
+        $hydrators = $this->factory->__invoke($this->services->reveal(), null);
         $this->assertInstanceOf(HydratorPluginManager::class, $hydrators);
     }
 }

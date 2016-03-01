@@ -9,6 +9,7 @@
 
 namespace ZendTest\Mvc\Controller\Plugin\TestAsset;
 
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -16,13 +17,27 @@ class SamplePluginWithConstructorFactory implements FactoryInterface
 {
     protected $options;
 
-    public function __construct($options)
+    public function __invoke(ContainerInterface $container, $name, array $options = null)
     {
-        $this->options = $options;
+        return new SamplePluginWithConstructor($options);
     }
 
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    /**
+     * Create and return SamplePluginWithConstructor instance
+     *
+     * For use with zend-servicemanager v2; proxies to __invoke().
+     *
+     * @param ServiceLocatorInterface $container
+     * @return SamplePluginWithConstructor
+     */
+    public function createService(ServiceLocatorInterface $container)
     {
-        return new SamplePluginWithConstructor($this->options);
+        $container = $container->getServiceLocator() ?: $container;
+        return $this($container, SamplePluginWithConstructor::class, $this->options);
+    }
+
+    public function setCreationOptions(array $options)
+    {
+        $this->options = $options;
     }
 }

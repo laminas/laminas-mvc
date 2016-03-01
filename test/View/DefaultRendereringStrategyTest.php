@@ -12,11 +12,13 @@ namespace ZendTest\Mvc\View;
 use PHPUnit_Framework_TestCase as TestCase;
 use Zend\EventManager\Event;
 use Zend\EventManager\EventManager;
+use Zend\EventManager\Test\EventListenerIntrospectionTrait;
 use Zend\Http\Request;
 use Zend\Http\Response;
 use Zend\Mvc\Application;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\View\Http\DefaultRenderingStrategy;
+use Zend\ServiceManager\Config;
 use Zend\ServiceManager\ServiceManager;
 use Zend\View\Renderer\PhpRenderer;
 use Zend\View\View;
@@ -26,6 +28,8 @@ use Zend\View\Strategy\PhpRendererStrategy;
 
 class DefaultRendereringStrategyTest extends TestCase
 {
+    use EventListenerIntrospectionTrait;
+
     protected $event;
     protected $request;
     protected $response;
@@ -50,36 +54,30 @@ class DefaultRendereringStrategyTest extends TestCase
     public function testAttachesRendererAtExpectedPriority()
     {
         $evm = new EventManager();
-        $evm->attachAggregate($this->strategy);
+        $this->strategy->attach($evm);
         $events = [MvcEvent::EVENT_RENDER, MvcEvent::EVENT_RENDER_ERROR];
 
         foreach ($events as $event) {
-            $listeners = $evm->getListeners($event);
-
-            $expectedCallback = [$this->strategy, 'render'];
-            $expectedPriority = -10000;
-            $found            = false;
-            foreach ($listeners as $listener) {
-                $callback = $listener->getCallback();
-                if ($callback === $expectedCallback) {
-                    if ($listener->getMetadatum('priority') == $expectedPriority) {
-                        $found = true;
-                        break;
-                    }
-                }
-            }
-            $this->assertTrue($found, 'Renderer not found');
+            $this->assertListenerAtPriority(
+                [$this->strategy, 'render'],
+                -10000,
+                $event,
+                $evm,
+                'Renderer not found'
+            );
         }
     }
 
     public function testCanDetachListenersFromEventManager()
     {
         $events = new EventManager();
-        $events->attachAggregate($this->strategy);
-        $this->assertEquals(1, count($events->getListeners(MvcEvent::EVENT_RENDER)));
+        $this->strategy->attach($events);
+        $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_RENDER, $events);
+        $this->assertCount(1, $listeners);
 
-        $events->detachAggregate($this->strategy);
-        $this->assertEquals(0, count($events->getListeners(MvcEvent::EVENT_RENDER)));
+        $this->strategy->detach($events);
+        $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_RENDER, $events);
+        $this->assertCount(0, $listeners);
     }
 
     public function testWillRenderAlternateStrategyWhenSelected()
@@ -131,24 +129,34 @@ class DefaultRendereringStrategyTest extends TestCase
         $this->renderer->setResolver($resolver);
 
         $strategy = new PhpRendererStrategy($this->renderer);
-        $this->view->getEventManager()->attach($strategy);
+        $strategy->attach($this->view->getEventManager());
 
         $model = new ViewModel();
         $model->setTemplate('exception');
         $this->event->setViewModel($model);
 
         $services = new ServiceManager();
-        $services->setService('Request', $this->request);
-        $services->setService('Response', $this->response);
-        $services->setInvokableClass('SharedEventManager', 'Zend\EventManager\SharedEventManager');
-        $services->setFactory('EventManager', function ($services) {
-            $sharedEvents = $services->get('SharedEventManager');
-            $events = new EventManager();
-            $events->setSharedManager($sharedEvents);
-            return $events;
-        }, false);
+        (new Config([
+            'invokables' => [
+                'SharedEventManager' =>  'Zend\EventManager\SharedEventManager',
+            ],
+            'factories' => [
+                'EventManager' => function ($services) {
+                    $sharedEvents = $services->get('SharedEventManager');
+                    $events = new EventManager($sharedEvents);
+                    return $events;
+                },
+            ],
+            'services' => [
+                'Request'  => $this->request,
+                'Response' => $this->response,
+            ],
+            'shared' => [
+                'EventManager' => false,
+            ],
+        ]))->configureServiceManager($services);
 
-        $application = new Application([], $services);
+        $application = new Application([], $services, $services->get('EventManager'), $this->request, $this->response);
         $this->event->setApplication($application);
 
         $test = (object) ['flag' => false];

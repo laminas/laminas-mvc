@@ -2,6 +2,87 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 2.7.0 - TBD
+
+### Added
+
+- [#31](https://github.com/zendframework/zend-mvc/pull/31) adds three new
+  optional arguments to the `Zend\Mvc\Application` constructor: an EventManager
+  instance, a Request instance, and a Response instance.
+- [#36](https://github.com/zendframework/zend-mvc/pull/36) adds more than a
+  dozen service factories, primarily to separate conditional factories into
+  discrete factories.
+- [#32](https://github.com/zendframework/zend-mvc/pull/32) adds
+  `Zend\Mvc\MiddlewareListener`, which allows dispatching PSR-7-based middleware
+  implementing the signature `function (ServerRequestInterface $request,
+  ResponseInterface $response)`. To dispatch such middleware, point the
+  `middleware` "default" for a given route to a service name or callable that
+  will resolve to the middleware:
+
+  ```php
+  [ 'router' => 'routes' => [
+      'path' => [
+          'type' => 'Literal',
+          'options' => [
+              'route' => '/path',
+              'defaults' => [
+                  'middleware' => 'ServiceNameForPathMiddleware',
+              ],
+          ],
+      ],
+  ]
+  ```
+
+  This new listener listens at the same priority as the `DispatchListener`, but,
+  due to being registered earlier, will invoke first; if the route match does
+  not resolve to middleware, it will fall through to the original
+  `DispatchListener`, allowing normal ZF2-style controller dispatch.
+- [#84](https://github.com/zendframework/zend-mvc/pull/84) publishes the
+  documentation to https://zendframework.github.io/zend-mvc/
+
+### Deprecated
+
+- Two initializers registered by `Zend\Mvc\Service\ServiceManagerConfig` are now
+  deprecated, and will be removed starting in version 3.0:
+  - `ServiceManagerAwareInitializer`, which injects classes implementing
+    `Zend\ServiceManager\ServiceManagerAwareInterface` with the service manager
+    instance. Users should create factories for such classes that directly
+    inject their dependencies instead.
+  - `ServiceLocatorAwareInitializer`, which injects classes implementing
+    `Zend\ServiceManager\ServiceLocatorAwareInterface` with the service manager
+    instance. Users should create factories for such classes that directly
+    inject their dependencies instead.
+
+### Removed
+
+- `Zend\Mvc\Controller\AbstractController` no longer directly implements
+  `Zend\ServiceManager\ServiceLocatorAwareInterface`, but still implements the
+  methods defined in that interface. This was done to provide
+  forwards-compatibility, as zend-servicemanager v3 no longer defines the
+  interface. All initializers that do `ServiceLocatorInterface` injection were
+  updated to also inject when just the methods are present.
+
+### Fixed
+
+- [#31](https://github.com/zendframework/zend-mvc/pull/31) and
+  [#76](https://github.com/zendframework/zend-mvc/pull/76) update the component
+  to be forwards-compatible with zend-eventmanager v3.
+- [#36](https://github.com/zendframework/zend-mvc/pull/36),
+  [#76](https://github.com/zendframework/zend-mvc/pull/76),
+  [#80](https://github.com/zendframework/zend-mvc/pull/80),
+  [#81](https://github.com/zendframework/zend-mvc/pull/81), and
+  [#82](https://github.com/zendframework/zend-mvc/pull/82) update the component
+  to be forwards-compatible with zend-servicemanager v3. Several changes were
+  introduced to support this effort:
+  - Added a `RouteInvokableFactory`, which can act as either a
+    `FactoryInterface` or `AbstractFactoryInterface` for loading invokable route
+    classes, including by fully qualified class name. This is registered as an
+    abstract factory by default with the `RoutePluginManager`.
+  - The `DispatchListener` now receives the controller manager instance at
+    instantiation.
+  - The `ViewManager` implementations were updated, and most functionality
+    within separated into discrete factories.
+
 ## 2.6.4 - TBD
 
 ### Added

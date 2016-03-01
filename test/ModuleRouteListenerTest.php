@@ -27,8 +27,8 @@ class ModuleRouteListenerTest extends TestCase
         $this->routeListener       = new RouteListener();
         $this->moduleRouteListener = new ModuleRouteListener();
 
-        $this->events->attach($this->routeListener);
-        $this->events->attach($this->moduleRouteListener, -1);
+        $this->routeListener->attach($this->events);
+        $this->moduleRouteListener->attach($this->events, -1);
     }
 
     public function testRouteReturningModuleNamespaceInRouteMatchTriggersControllerRename()
@@ -45,9 +45,10 @@ class ModuleRouteListenerTest extends TestCase
         ]);
         $this->request->setUri('/foo');
         $event = new MvcEvent();
+        $event->setName('route');
         $event->setRouter($this->router);
         $event->setRequest($this->request);
-        $this->events->trigger('route', $event);
+        $this->events->triggerEvent($event);
 
         $matches = $event->getRouteMatch();
         $this->assertInstanceOf('Zend\Mvc\Router\RouteMatch', $matches);
@@ -68,9 +69,10 @@ class ModuleRouteListenerTest extends TestCase
         ]);
         $this->request->setUri('/foo');
         $event = new MvcEvent();
+        $event->setName('route');
         $event->setRouter($this->router);
         $event->setRequest($this->request);
-        $this->events->trigger('route', $event);
+        $this->events->triggerEvent($event);
 
         $matches = $event->getRouteMatch();
         $this->assertInstanceOf('Zend\Mvc\Router\RouteMatch', $matches);
@@ -80,7 +82,7 @@ class ModuleRouteListenerTest extends TestCase
     public function testMultipleRegistrationShouldNotResultInMultiplePrefixingOfControllerName()
     {
         $moduleListener = new ModuleRouteListener();
-        $this->events->attach($moduleListener);
+        $moduleListener->attach($this->events);
 
         $this->router->addRoute('foo', [
             'type' => 'Literal',
@@ -94,9 +96,10 @@ class ModuleRouteListenerTest extends TestCase
         ]);
         $this->request->setUri('/foo');
         $event = new MvcEvent();
+        $event->setName('route');
         $event->setRouter($this->router);
         $event->setRequest($this->request);
-        $this->events->trigger('route', $event);
+        $this->events->triggerEvent($event);
 
         $matches = $event->getRouteMatch();
         $this->assertInstanceOf('Zend\Mvc\Router\RouteMatch', $matches);
@@ -107,7 +110,7 @@ class ModuleRouteListenerTest extends TestCase
     public function testRouteMatchIsTransformedToProperControllerClassName()
     {
         $moduleListener = new ModuleRouteListener();
-        $this->events->attach($moduleListener);
+        $moduleListener->attach($this->events);
 
         $this->router->addRoute('foo', [
             'type' => 'Literal',
@@ -122,9 +125,10 @@ class ModuleRouteListenerTest extends TestCase
 
         $this->request->setUri('/foo');
         $event = new MvcEvent();
+        $event->setName('route');
         $event->setRouter($this->router);
         $event->setRequest($this->request);
-        $this->events->trigger('route', $event);
+        $this->events->triggerEvent($event);
 
         $matches = $event->getRouteMatch();
         $this->assertInstanceOf('Zend\Mvc\Router\RouteMatch', $matches);

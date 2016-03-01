@@ -9,6 +9,7 @@
 
 namespace Zend\Mvc\Service;
 
+use Container\Interop\ContainerInterface;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -17,21 +18,36 @@ class DiStrictAbstractServiceFactoryFactory implements FactoryInterface
     /**
      * Class responsible for instantiating a DiStrictAbstractServiceFactory
      *
-     * @param  ServiceLocatorInterface $serviceLocator
+     * @param ContainerInterface $container
+     * @param string $name
+     * @param null|array $options
      * @return DiStrictAbstractServiceFactory
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $name, array $options = null)
     {
         $diAbstractFactory = new DiStrictAbstractServiceFactory(
-            $serviceLocator->get('Di'),
+            $container->get('Di'),
             DiStrictAbstractServiceFactory::USE_SL_BEFORE_DI
         );
-        $config = $serviceLocator->get('Config');
+        $config = $container->get('config');
 
         if (isset($config['di']['allowed_controllers'])) {
             $diAbstractFactory->setAllowedServiceNames($config['di']['allowed_controllers']);
         }
 
         return $diAbstractFactory;
+    }
+
+    /**
+     * Create and return DiStrictAbstractServiceFactory instance
+     *
+     * For use with zend-servicemanager v2; proxies to __invoke().
+     *
+     * @param ServiceLocatorInterface $container
+     * @return DiStrictAbstractServiceFactory
+     */
+    public function createService(ServiceLocatorInterface $container)
+    {
+        return $this($container, DiStrictAbstractServiceFactory::class);
     }
 }

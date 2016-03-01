@@ -12,11 +12,14 @@ namespace ZendTest\Mvc\View;
 use PHPUnit_Framework_TestCase as TestCase;
 use stdClass;
 use Zend\EventManager\EventManager;
+use Zend\EventManager\Test\EventListenerIntrospectionTrait;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\View\Http\CreateViewModelListener;
 
 class CreateViewModelListenerTest extends TestCase
 {
+    use EventListenerIntrospectionTrait;
+
     public function setUp()
     {
         $this->listener   = new CreateViewModelListener();
@@ -69,39 +72,32 @@ class CreateViewModelListenerTest extends TestCase
     public function testAttachesListenersAtExpectedPriority()
     {
         $events = new EventManager();
-        $events->attachAggregate($this->listener);
-        $listeners = $events->getListeners(MvcEvent::EVENT_DISPATCH);
-
-        $expectedArrayCallback = [$this->listener, 'createViewModelFromArray'];
-        $expectedNullCallback  = [$this->listener, 'createViewModelFromNull'];
-        $expectedPriority      = -80;
-        $foundArray            = false;
-        $foundNull             = false;
-        foreach ($listeners as $listener) {
-            $callback = $listener->getCallback();
-            if ($callback === $expectedArrayCallback) {
-                if ($listener->getMetadatum('priority') == $expectedPriority) {
-                    $foundArray = true;
-                }
-            }
-            if ($callback === $expectedNullCallback) {
-                if ($listener->getMetadatum('priority') == $expectedPriority) {
-                    $foundNull = true;
-                }
-            }
-        }
-        $this->assertTrue($foundArray, 'Listener FromArray not found');
-        $this->assertTrue($foundNull,  'Listener FromNull not found');
+        $this->listener->attach($events);
+        $this->assertListenerAtPriority(
+            [$this->listener, 'createViewModelFromArray'],
+            -80,
+            MvcEvent::EVENT_DISPATCH,
+            $events,
+            'Did not find createViewModelFromArray listener in event list at expected priority'
+        );
+        $this->assertListenerAtPriority(
+            [$this->listener, 'createViewModelFromNull'],
+            -80,
+            MvcEvent::EVENT_DISPATCH,
+            $events,
+            'Did not find createViewModelFromNull listener in event list at expected priority'
+        );
     }
 
     public function testDetachesListeners()
     {
         $events = new EventManager();
-        $events->attachAggregate($this->listener);
-        $listeners = $events->getListeners(MvcEvent::EVENT_DISPATCH);
+        $this->listener->attach($events);
+        $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_DISPATCH, $events);
         $this->assertEquals(2, count($listeners));
-        $events->detachAggregate($this->listener);
-        $listeners = $events->getListeners(MvcEvent::EVENT_DISPATCH);
+
+        $this->listener->detach($events);
+        $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_DISPATCH, $events);
         $this->assertEquals(0, count($listeners));
     }
 

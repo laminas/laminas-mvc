@@ -11,6 +11,7 @@ namespace ZendTest\Mvc\View;
 
 use PHPUnit_Framework_TestCase as TestCase;
 use Zend\EventManager\EventManager;
+use Zend\EventManager\Test\EventListenerIntrospectionTrait;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Router\RouteMatch;
 use Zend\Mvc\View\Http\InjectViewModelListener;
@@ -18,6 +19,8 @@ use Zend\View\Model\ViewModel;
 
 class InjectViewModelListenerTest extends TestCase
 {
+    use EventListenerIntrospectionTrait;
+
     public function setUp()
     {
         $this->listener   = new InjectViewModelListener();
@@ -63,49 +66,36 @@ class InjectViewModelListenerTest extends TestCase
     public function testAttachesListenersAtExpectedPriorities()
     {
         $events = new EventManager();
-        $events->attachAggregate($this->listener);
-        $listeners = $events->getListeners(MvcEvent::EVENT_DISPATCH);
+        $this->listener->attach($events);
+        $this->assertListenerAtPriority(
+            [$this->listener, 'injectViewModel'],
+            -100,
+            MvcEvent::EVENT_DISPATCH,
+            $events
+        );
 
-        $expectedCallback = [$this->listener, 'injectViewModel'];
-        $expectedPriority = -100;
-        $found            = false;
-        foreach ($listeners as $listener) {
-            $callback = $listener->getCallback();
-            if ($callback === $expectedCallback) {
-                if ($listener->getMetadatum('priority') == $expectedPriority) {
-                    $found = true;
-                    break;
-                }
-            }
-        }
-        $this->assertTrue($found, 'Listener not found');
-
-        $listeners = $events->getListeners(MvcEvent::EVENT_DISPATCH_ERROR);
-        $found     = false;
-        foreach ($listeners as $listener) {
-            $callback = $listener->getCallback();
-            if ($callback === $expectedCallback) {
-                if ($listener->getMetadatum('priority') == $expectedPriority) {
-                    $found = true;
-                    break;
-                }
-            }
-        }
-        $this->assertTrue($found, 'Listener not found');
+        $this->assertListenerAtPriority(
+            [$this->listener, 'injectViewModel'],
+            -100,
+            MvcEvent::EVENT_DISPATCH_ERROR,
+            $events
+        );
     }
 
     public function testDetachesListeners()
     {
         $events = new EventManager();
-        $events->attachAggregate($this->listener);
-        $listeners = $events->getListeners(MvcEvent::EVENT_DISPATCH);
-        $this->assertEquals(1, count($listeners));
-        $listeners = $events->getListeners(MvcEvent::EVENT_DISPATCH_ERROR);
-        $this->assertEquals(1, count($listeners));
-        $events->detachAggregate($this->listener);
-        $listeners = $events->getListeners(MvcEvent::EVENT_DISPATCH);
-        $this->assertEquals(0, count($listeners));
-        $listeners = $events->getListeners(MvcEvent::EVENT_DISPATCH_ERROR);
-        $this->assertEquals(0, count($listeners));
+        $this->listener->attach($events);
+
+        $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_DISPATCH, $events);
+        $this->assertCount(1, $listeners);
+        $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_DISPATCH_ERROR, $events);
+        $this->assertCount(1, $listeners);
+
+        $this->listener->detach($events);
+        $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_DISPATCH, $events);
+        $this->assertCount(0, $listeners);
+        $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_DISPATCH_ERROR, $events);
+        $this->assertCount(0, $listeners);
     }
 }

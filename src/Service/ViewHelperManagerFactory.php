@@ -11,13 +11,11 @@ namespace Zend\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
 use Zend\Console\Console;
-use Zend\Mvc\Exception;
 use Zend\Mvc\Router\RouteMatch;
 use Zend\ServiceManager\ConfigInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\View\Helper as ViewHelper;
 use Zend\View\HelperPluginManager;
-use Zend\View\Helper\HelperInterface as ViewHelperInterface;
 
 class ViewHelperManagerFactory extends AbstractPluginManagerFactory
 {
@@ -26,30 +24,35 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
     /**
      * An array of helper configuration classes to ensure are on the helper_map stack.
      *
+     * These are *not* imported; that way they can be optional dependencies.
+     *
+     * @todo Re-enable these once their components have been updated to zend-servicemanager v3
      * @var array
      */
     protected $defaultHelperMapClasses = [
         'Zend\Form\View\HelperConfig',
         'Zend\I18n\View\HelperConfig',
-        'Zend\Navigation\View\HelperConfig'
+        'Zend\Navigation\View\HelperConfig',
     ];
 
     /**
      * Create and return the view helper manager
      *
-     * @param  ServiceLocatorInterface $serviceLocator
-     * @return ViewHelperInterface
-     * @throws Exception\RuntimeException
+     * @param  ContainerInterface $container
+     * @return HelperPluginManager
+     * @throws ServiceNotCreatedException
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $plugins = parent::createService($serviceLocator);
+        $options = $options ?: [];
+        $options['factories'] = isset($options['factories']) ? $options['factories'] : [];
+        $plugins = parent::__invoke($container, $requestedName, $options);
 
         // Configure default helpers from other components
         $plugins = $this->configureHelpers($plugins);
 
         // Override plugin factories
-        $plugins = $this->injectOverrideFactories($plugins, $serviceLocator);
+        $plugins = $this->injectOverrideFactories($plugins, $container);
 
         return $plugins;
     }
@@ -70,13 +73,13 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
                 continue;
             }
 
-            $config = new $configClass;
+            $config = new $configClass();
 
             if (! $config instanceof ConfigInterface) {
-                throw new Exception\RuntimeException(sprintf(
+                throw new ServiceNotCreatedException(sprintf(
                     'Invalid service manager configuration class provided; received "%s", expected class implementing %s',
                     $configClass,
-                    'Zend\ServiceManager\ConfigInterface'
+                    ConfigInterface::class
                 ));
             }
 
@@ -107,7 +110,7 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
 
         // Configure doctype view helper
         $doctypeFactory = $this->createDoctypeHelperFactory($services);
-        $plugins->setFactory(ViewHelper\doctype::class, $doctypeFactory);
+        $plugins->setFactory(ViewHelper\Doctype::class, $doctypeFactory);
         $plugins->setFactory('zendviewhelperdoctype', $doctypeFactory);
 
         return $plugins;
@@ -130,7 +133,7 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
             $router = Console::isConsole() ? 'HttpRouter' : 'Router';
             $helper->setRouter($services->get($router));
 
-            $match = $services->get('application')
+            $match = $services->get('Application')
                 ->getMvcEvent()
                 ->getRouteMatch()
             ;
@@ -155,30 +158,27 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
     {
         return function () use ($services) {
             $config = $services->has('config') ? $services->get('config') : [];
-            $basePathHelper = new ViewHelper\BasePath;
+            $helper = new ViewHelper\BasePath;
 
             if (Console::isConsole()
-                && isset($config['view_manager'])
                 && isset($config['view_manager']['base_path_console'])
             ) {
-                $basePathHelper->setBasePath($config['view_manager']['base_path_console']);
-
-                return $basePathHelper;
+                $helper->setBasePath($config['view_manager']['base_path_console']);
+                return $helper;
             }
 
             if (isset($config['view_manager']) && isset($config['view_manager']['base_path'])) {
-                $basePathHelper->setBasePath($config['view_manager']['base_path']);
-
-                return $basePathHelper;
+                $helper->setBasePath($config['view_manager']['base_path']);
+                return $helper;
             }
 
             $request = $services->get('Request');
 
             if (is_callable([$request, 'getBasePath'])) {
-                $basePathHelper->setBasePath($request->getBasePath());
+                $helper->setBasePath($request->getBasePath());
             }
 
-            return $basePathHelper;
+            return $helper;
         };
     }
 
@@ -196,11 +196,11 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
         return function () use ($services) {
             $config = $services->has('config') ? $services->get('config') : [];
             $config = isset($config['view_manager']) ? $config['view_manager'] : [];
-            $doctypeHelper = new ViewHelper\Doctype;
+            $helper = new ViewHelper\Doctype;
             if (isset($config['doctype']) && $config['doctype']) {
-                $doctypeHelper->setDoctype($config['doctype']);
+                $helper->setDoctype($config['doctype']);
             }
-            return $doctypeHelper;
+            return $helper;
         };
     }
 }

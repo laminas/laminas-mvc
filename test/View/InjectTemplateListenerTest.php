@@ -11,6 +11,7 @@ namespace ZendTest\Mvc\View;
 
 use PHPUnit_Framework_TestCase as TestCase;
 use Zend\EventManager\EventManager;
+use Zend\EventManager\Test\EventListenerIntrospectionTrait;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Router\RouteMatch;
@@ -19,6 +20,8 @@ use Zend\View\Model\ViewModel;
 
 class InjectTemplateListenerTest extends TestCase
 {
+    use EventListenerIntrospectionTrait;
+
     public function setUp()
     {
         $controllerMap = [
@@ -303,32 +306,24 @@ class InjectTemplateListenerTest extends TestCase
     public function testAttachesListenerAtExpectedPriority()
     {
         $events = new EventManager();
-        $events->attachAggregate($this->listener);
-        $listeners = $events->getListeners(MvcEvent::EVENT_DISPATCH);
-
-        $expectedCallback = [$this->listener, 'injectTemplate'];
-        $expectedPriority = -90;
-        $found            = false;
-        foreach ($listeners as $listener) {
-            $callback = $listener->getCallback();
-            if ($callback === $expectedCallback) {
-                if ($listener->getMetadatum('priority') == $expectedPriority) {
-                    $found = true;
-                    break;
-                }
-            }
-        }
-        $this->assertTrue($found, 'Listener not found');
+        $this->listener->attach($events);
+        $this->assertListenerAtPriority(
+            [$this->listener, 'injectTemplate'],
+            -90,
+            MvcEvent::EVENT_DISPATCH,
+            $events
+        );
     }
 
     public function testDetachesListeners()
     {
         $events = new EventManager();
-        $events->attachAggregate($this->listener);
-        $listeners = $events->getListeners(MvcEvent::EVENT_DISPATCH);
+        $this->listener->attach($events);
+        $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_DISPATCH, $events);
         $this->assertEquals(1, count($listeners));
-        $events->detachAggregate($this->listener);
-        $listeners = $events->getListeners(MvcEvent::EVENT_DISPATCH);
+
+        $this->listener->detach($events);
+        $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_DISPATCH, $events);
         $this->assertEquals(0, count($listeners));
     }
 

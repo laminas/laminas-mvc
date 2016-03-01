@@ -9,34 +9,56 @@
 
 namespace ZendTest\Mvc\Controller;
 
+use PHPUnit_Framework_Error_Deprecated;
 use PHPUnit_Framework_TestCase as TestCase;
+use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
 use Zend\Mvc\Controller\ControllerManager;
 use Zend\Mvc\Controller\PluginManager;
+use Zend\ServiceManager\Config;
 use Zend\ServiceManager\ServiceManager;
 
 class IntegrationTest extends TestCase
 {
     public function setUp()
     {
-        $this->plugins      = new PluginManager();
-        $this->sharedEvents = new SharedEventManager();
-        $this->services     = new ServiceManager();
-        $this->services->setService('ControllerPluginManager', $this->plugins);
-        $this->services->setService('SharedEventManager', $this->sharedEvents);
-        $this->services->setService('Zend\ServiceManager\ServiceLocatorInterface', $this->services);
+        // Ignore deprecation errors
+        PHPUnit_Framework_Error_Deprecated::$enabled = false;
 
-        $this->controllers = new ControllerManager();
-        $this->controllers->setServiceLocator($this->services);
+        $this->sharedEvents = new SharedEventManager();
+
+        $this->services = new ServiceManager();
+        (new Config([
+            'services' => [
+                'SharedEventManager' => $this->sharedEvents,
+            ],
+            'factories' => [
+                'ControllerPluginManager' => function ($services) {
+                    return new PluginManager($services);
+                },
+                'EventManager' => function () {
+                    return new EventManager($this->sharedEvents);
+                },
+            ],
+            'shared' => [
+                'EventManager' => false,
+            ],
+        ]))->configureServiceManager($this->services);
     }
 
     public function testPluginReceivesCurrentController()
     {
-        $this->controllers->setInvokableClass('first', 'ZendTest\Mvc\Controller\TestAsset\SampleController');
-        $this->controllers->setInvokableClass('second', 'ZendTest\Mvc\Controller\TestAsset\SampleController');
+        $controllers = new ControllerManager($this->services, ['factories' => [
+            'first'  => function ($services) {
+                return new TestAsset\SampleController();
+            },
+            'second' => function ($services) {
+                return new TestAsset\SampleController();
+            },
+        ]]);
 
-        $first  = $this->controllers->get('first');
-        $second = $this->controllers->get('second');
+        $first  = $controllers->get('first');
+        $second = $controllers->get('second');
         $this->assertNotSame($first, $second);
 
         $plugin1 = $first->plugin('url');

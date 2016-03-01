@@ -9,42 +9,78 @@
 
 namespace ZendTest\Mvc\Controller;
 
+use PHPUnit_Framework_Error_Deprecated;
 use PHPUnit_Framework_TestCase as TestCase;
+use ReflectionClass;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
 use Zend\Mvc\Controller\ControllerManager;
 use Zend\Mvc\Controller\PluginManager as ControllerPluginManager;
+use Zend\ServiceManager\Config;
+use Zend\ServiceManager\Factory\InvokableFactory;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Console\Adapter\Virtual as ConsoleAdapter;
+use ZendTest\Mvc\Service\TestAsset\DuckTypedServiceLocatorAwareController;
 
 class ControllerManagerTest extends TestCase
 {
     public function setUp()
     {
-        $this->events       = new EventManager();
+        // Disable deprecation notices
+        PHPUnit_Framework_Error_Deprecated::$enabled = false;
+
+        $this->sharedEvents   = new SharedEventManager;
+        $this->events         = $this->createEventManager($this->sharedEvents);
         $this->consoleAdapter = new ConsoleAdapter();
-        $this->sharedEvents = new SharedEventManager;
-        $this->events->setSharedManager($this->sharedEvents);
 
-        $this->plugins  = new ControllerPluginManager();
         $this->services = new ServiceManager();
-        $this->services->setService('Console', $this->consoleAdapter);
-        $this->services->setService('Zend\ServiceManager\ServiceLocatorInterface', $this->services);
-        $this->services->setService('EventManager', $this->events);
-        $this->services->setService('SharedEventManager', $this->sharedEvents);
-        $this->services->setService('ControllerPluginManager', $this->plugins);
+        (new Config([
+            'factories' => [
+                'ControllerPluginManager' => function ($services) {
+                    return new ControllerPluginManager($services);
+                },
+            ],
+            'services' => [
+                'Console'            => $this->consoleAdapter,
+                'EventManager'       => $this->events,
+                'SharedEventManager' => $this->sharedEvents,
+            ],
+        ]))->configureServiceManager($this->services);
 
-        $this->controllers = new ControllerManager();
-        $this->controllers->setServiceLocator($this->services);
-        $this->controllers->addPeeringServiceManager($this->services);
+        $this->controllers = new ControllerManager($this->services);
     }
 
-    public function testInjectControllerDependenciesInjectsExpectedDependencies()
+    /**
+     * Create an event manager instance based on zend-eventmanager version
+     *
+     * @param SharedEventManager
+     * @return EventManager
+     */
+    protected function createEventManager($sharedManager)
+    {
+        $r = new ReflectionClass(EventManager::class);
+
+        if ($r->hasMethod('setSharedManager')) {
+            $events = new EventManager();
+            $events->setSharedManager($sharedManager);
+            return $events;
+        }
+
+        return new EventManager($sharedManager);
+    }
+
+    public function testCanInjectEventManager()
     {
         $controller = new TestAsset\SampleController();
-        $this->controllers->injectControllerDependencies($controller, $this->controllers);
-        $this->assertSame($this->services, $controller->getServiceLocator());
-        $this->assertSame($this->plugins, $controller->getPluginManager());
+
+        // Vary injection based on zend-servicemanager version
+        if (method_exists($this->controllers, 'configure')) {
+            // v3
+            $this->controllers->injectEventManager($this->services, $controller);
+        } else {
+            // v2
+            $this->controllers->injectEventManager($controller, $this->controllers);
+        }
 
         // The default AbstractController implementation lazy instantiates an EM
         // instance, which means we need to check that that instance gets injected
@@ -54,19 +90,53 @@ class ControllerManagerTest extends TestCase
         $this->assertSame($this->sharedEvents, $events->getSharedManager());
     }
 
-    public function testInjectControllerDependenciesToConsoleController()
+    public function testCanInjectConsoleAdapter()
     {
         $controller = new TestAsset\ConsoleController();
-        $this->controllers->injectControllerDependencies($controller, $this->controllers);
+
+        // Vary injection based on zend-servicemanager version
+        if (method_exists($this->controllers, 'configure')) {
+            // v3
+            $this->controllers->injectConsole($this->services, $controller);
+        } else {
+            // v2
+            $this->controllers->injectConsole($controller, $this->controllers);
+        }
+
         $this->assertInstanceOf('Zend\Console\Adapter\AdapterInterface', $controller->getConsole());
     }
 
-    public function testInjectControllerDependenciesWillNotOverwriteExistingEventManager()
+    public function testCanInjectPluginManager()
     {
-        $events     = new EventManager();
+        $controller = new TestAsset\SampleController();
+
+        // Vary injection based on zend-servicemanager version
+        if (method_exists($this->controllers, 'configure')) {
+            // v3
+            $this->controllers->injectPluginManager($this->services, $controller);
+        } else {
+            // v2
+            $this->controllers->injectPluginManager($controller, $this->controllers);
+        }
+
+        $this->assertSame($this->services->get('ControllerPluginManager'), $controller->getPluginManager());
+    }
+
+    public function testInjectEventManagerWillNotOverwriteExistingEventManagerIfItAlreadyHasASharedManager()
+    {
+        $events     = $this->createEventManager($this->sharedEvents);
         $controller = new TestAsset\SampleController();
         $controller->setEventManager($events);
-        $this->controllers->injectControllerDependencies($controller, $this->controllers);
+
+        // Vary injection based on zend-servicemanager version
+        if (method_exists($this->controllers, 'configure')) {
+            // v3
+            $this->controllers->injectEventManager($this->services, $controller);
+        } else {
+            // v2
+            $this->controllers->injectEventManager($controller, $this->controllers);
+        }
+
         $this->assertSame($events, $controller->getEventManager());
         $this->assertSame($this->sharedEvents, $events->getSharedManager());
     }
@@ -80,5 +150,14 @@ class ControllerManagerTest extends TestCase
         $this->assertFalse($this->controllers->has('EventManager'));
         $this->setExpectedException('Zend\ServiceManager\Exception\ServiceNotFoundException');
         $this->controllers->get('EventManager');
+    }
+
+    public function testServiceLocatorAwareInitializerInjectsDuckTypedImplementations()
+    {
+        $this->controllers->setFactory(DuckTypedServiceLocatorAwareController::class, InvokableFactory::class);
+
+        $controller = $this->controllers->get(DuckTypedServiceLocatorAwareController::class);
+        $this->assertInstanceOf(DuckTypedServiceLocatorAwareController::class, $controller);
+        $this->assertSame($this->services, $controller->getServiceLocator());
     }
 }
