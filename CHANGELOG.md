@@ -37,6 +37,8 @@ All notable changes to this project will be documented in this file, in reverse 
   due to being registered earlier, will invoke first; if the route match does
   not resolve to middleware, it will fall through to the original
   `DispatchListener`, allowing normal ZF2-style controller dispatch.
+- [#84](https://github.com/zendframework/zend-mvc/pull/84) publishes the
+  documentation to https://zendframework.github.io/zend-mvc/
 
 ### Deprecated
 

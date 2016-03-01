@@ -21,4 +21,4 @@ The MVC layer is built on top of the following components:
 
 
 - File issues at https://github.com/zendframework/zend-mvc/issues
-- Documentation is at http://framework.zend.com/manual/current/en/index.html#zend-mvc
+- Documentation is at https://zendframework.github.io/zend-mvc/
