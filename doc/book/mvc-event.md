@@ -138,11 +138,13 @@ Class                                        | Priority | Method Called         
 
 #### All contexts
 
-The following listeners are attached for all contexts:
+The following listeners are attached for all contexts (sorted from higher
+priority to lower priority):
 
 Class                         | Priority | Method Called | Triggers | Description
 ------------------------------|---------:|---------------|----------|------------
-`Zend\Mvc\DispatchListener`   | 1        | `onDispatch`  | `MvcEvent::EVENT_DISPATCH_ERROR` (if an exception is raised during dispatch processes) | Try to load the matched controller from the service manager (and throws various exceptions if it does not).
+`Zend\Mvc\MiddlewareListener` | 1        | `onDispatch`  | `MvcEvent::EVENT_DISPATCH_ERROR` (if an exception is raised during dispatch processes) | Load and dispatch the matched PSR-7 middleware from the service manager (and throws various exceptions if it does not).
+`Zend\Mvc\DispatchListener`   | 1        | `onDispatch`  | `MvcEvent::EVENT_DISPATCH_ERROR` (if an exception is raised during dispatch processes) |  Load and dispatch the matched controller from the service manager (and throws various exceptions if it does not).
 `Zend\Mvc\AbstractController` | 1        | `onDispatch`  | none     | The `onDispatch` method of the `AbstractController` is an abstract method. In `AbstractActionController`, for instance, it calls the action method.
 
 ### Triggered By
@@ -192,11 +194,12 @@ Class                       | Priority | Method Called        | Description
 
 ### Triggered By
 
-Class                       | In Method
-----------------------------|----------
-`Zend\Mvc\DispatchListener` | `onDispatch`
-`Zend\Mvc\DispatchListener` | `marshallControllerNotFoundEvent`
-`Zend\Mvc\DispatchListener` | `marshallBadControllerEvent`
+Class                         | In Method
+------------------------------|----------
+`Zend\Mvc\MiddlewareListener` | `onDispatch`
+`Zend\Mvc\DispatchListener`   | `onDispatch`
+`Zend\Mvc\DispatchListener`   | `marshallControllerNotFoundEvent`
+`Zend\Mvc\DispatchListener`   | `marshallBadControllerEvent`
 
 ## `MvcEvent::EVENT_RENDER` ("render")
 

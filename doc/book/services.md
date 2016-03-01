@@ -77,6 +77,7 @@ services configured out of the box.
 ### Invokable services
 
 - `DispatchListener`, mapping to `Zend\Mvc\DispatchListener`.
+- `Zend\Mvc\MiddlewareListener`.
 - `RouteListener`, mapping to `Zend\Mvc\RouteListener`.
 - `SendResponseListener`, mapping to `Zend\Mvc\SendResponseListener`.
 - `SharedEventManager`, mapping to `Zend\EventManager\SharedEventManager`.
@@ -314,6 +315,7 @@ services configured out of the box.
 - `Configuration`, mapping to the `Config` service.
 - `Console`, mapping to the `ConsoleAdapter` service.
 - `Di`, mapping to the `DependencyInjector` service.
+- `MiddlewareListener`, mapping to the `Zend\Mvc\MiddlewareListener` service.
 - `Zend\Di\LocatorInterface`, mapping to the `DependencyInjector` service.
 - `Zend\EventManager\EventManagerInterface`, mapping to the `EventManager`
   service. This is mainly to ensure that when falling through to DI, classes

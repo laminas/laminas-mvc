@@ -244,6 +244,8 @@ Once you've done this, there are two additional actions you can take. The first 
 the application. In the default implementation, this does the following:
 
 - Attaches the default route listener (`Zend\Mvc\RouteListener`).
+- Attaches the middleware dispatch listener (`Zend\Mvc\MiddlewareListener`)
+  (v2.7.0 and up).
 - Attaches the default dispatch listener (`Zend\Mvc\DispatchListener`).
 - Attaches the `ViewManager` listener (`Zend\Mvc\View\ViewManager`).
 - Creates the `MvcEvent`, and injects it with the application, request, and

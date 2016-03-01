@@ -2,6 +2,13 @@
 
 ## Upgrading to 2.7
 
+### Middleware
+
+zend-mvc now registers `Zend\Mvc\MiddlewareListener` as a dispatch listener at
+a priority higher than `Zend\Mvc\DispatchListener`, allowing dispatch of
+[PSR-7](http://www.php-fig.org/psr/psr-7/) middleware. Read the
+[middleware chapter](middleware.md) for details on how to use this new feature.
+
 ### Application
 
 The constructor signature of `Zend\Mvc\Application` has changed. Previously, it

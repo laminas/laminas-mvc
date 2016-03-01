@@ -12,6 +12,7 @@ pages:
       - 'Available Controllers': controllers.md
       - 'Controller Plugins': plugins.md
       - Examples: examples.md
+      - 'Dispatching PSR-7 Middleware': middleware.md
       - 'Migration Guide': migration.md
 site_name: zend-mvc
 site_description: 'zend-mvc: MVC application provider'
