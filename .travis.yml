@@ -82,7 +82,7 @@ before_install:
 install:
   - if [[ $DEPS == 'latest' ]]; then travis_retry composer update $COMPOSER_ARGS ; fi
   - if [[ $DEPS == 'lowest' ]]; then travis_retry composer update --prefer-lowest --prefer-stable $COMPOSER_ARGS ; fi
-  - if [[ $TEST_COVERAGE == 'true' ]]; then travis_retry composer require --dev $COMPOSER_ARGS satooshi/php-coveralls ; fi
+  - if [[ $TEST_COVERAGE == 'true' ]]; then travis_retry composer require --no-update --dev $COMPOSER_ARGS satooshi/php-coveralls ; fi
   - travis_retry composer install $COMPOSER_ARGS
   - composer show --installed
 
