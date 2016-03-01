@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.7.0 - TBD
+## 2.7.0 - 2016-03-01
 
 ### Added
 
@@ -82,24 +82,6 @@ All notable changes to this project will be documented in this file, in reverse 
     instantiation.
   - The `ViewManager` implementations were updated, and most functionality
     within separated into discrete factories.
-
-## 2.6.4 - TBD
-
-### Added
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
 
 ## 2.6.3 - 2016-02-23
 
