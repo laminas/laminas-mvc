@@ -248,6 +248,15 @@ abstract class AbstractController implements
      */
     public function getServiceLocator()
     {
+        trigger_error(sprintf(
+            'You are retrieving the service locator from within the class %s. Please be aware that '
+            . 'ServiceLocatorAwareInterface is deprecated and will be removed in version 3.0, along '
+            . 'with the ServiceLocatorAwareInitializer. You will need to update your class to accept '
+            . 'all dependencies at creation, either via constructor arguments or setters, and use '
+            . 'a factory to perform the injections.',
+            get_class($this)
+        ), E_USER_DEPRECATED);
+
         return $this->serviceLocator;
     }
 

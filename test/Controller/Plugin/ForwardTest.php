@@ -9,7 +9,6 @@
 
 namespace ZendTest\Mvc\Controller\Plugin;
 
-use PHPUnit_Framework_Error_Deprecated;
 use PHPUnit_Framework_TestCase as TestCase;
 use ReflectionClass;
 use stdClass;
@@ -52,9 +51,6 @@ class ForwardTest extends TestCase
 
     public function setUp()
     {
-        // Ignore deprecation errors
-        PHPUnit_Framework_Error_Deprecated::$enabled = false;
-
         $eventManager = $this->createEventManager(new SharedEventManager());
         $mockApplication = $this->getMock('Zend\Mvc\ApplicationInterface');
         $mockApplication->expects($this->any())->method('getEventManager')->will($this->returnValue($eventManager));
