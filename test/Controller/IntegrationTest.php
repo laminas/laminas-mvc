@@ -9,7 +9,6 @@
 
 namespace ZendTest\Mvc\Controller;
 
-use PHPUnit_Framework_Error_Deprecated;
 use PHPUnit_Framework_TestCase as TestCase;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
@@ -22,9 +21,6 @@ class IntegrationTest extends TestCase
 {
     public function setUp()
     {
-        // Ignore deprecation errors
-        PHPUnit_Framework_Error_Deprecated::$enabled = false;
-
         $this->sharedEvents = new SharedEventManager();
 
         $this->services = new ServiceManager();

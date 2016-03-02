@@ -17,6 +17,7 @@ use Zend\EventManager\SharedEventManager;
 use Zend\EventManager\SharedEventManagerInterface;
 use Zend\ModuleManager\Listener\ServiceListener;
 use Zend\ModuleManager\ModuleManager;
+use Zend\ServiceManager\AbstractPluginManager;
 use Zend\ServiceManager\Config;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceManager;
@@ -132,7 +133,12 @@ class ServiceManagerConfig extends Config
                     $instance = $first;
                 }
 
-                if ($instance instanceof ServiceLocatorAwareInterface) {
+                // For service locator aware classes, inject the service
+                // locator, but emit a deprecation notice. Skip plugin manager
+                // implementations; they're dealt with later.
+                if ($instance instanceof ServiceLocatorAwareInterface
+                    && ! $instance instanceof AbstractPluginManager
+                ) {
                     trigger_error(sprintf(
                         'ServiceLocatorAwareInterface is deprecated and will be removed in version 3.0, along '
                         . 'with the ServiceLocatorAwareInitializer. Please update your class %s to remove '
@@ -142,13 +148,17 @@ class ServiceManagerConfig extends Config
                     $instance->setServiceLocator($container);
                 }
 
-                if (! $instance instanceof ServiceLocatorAwareInterface
-                    && method_exists($instance, 'setServiceLocator')
+                // For service locator aware plugin managers that do not have
+                // the service locator already injected, inject it, but emit a
+                // deprecation notice.
+                if ($instance instanceof ServiceLocatorAwareInterface
+                    && $instance instanceof AbstractPluginManager
+                    && ! $instance->getServiceLocator()
                 ) {
                     trigger_error(sprintf(
                         'ServiceLocatorAwareInterface is deprecated and will be removed in version 3.0, along '
-                        . 'with the ServiceLocatorAwareInitializer. Please update your class %s to remove '
-                        . 'the implementation, and start injecting your dependencies via factory instead.',
+                        . 'with the ServiceLocatorAwareInitializer. Please update your %s plugin manager factory '
+                        . 'to inject the parent service locator via the constructor.',
                         get_class($instance)
                     ), E_USER_DEPRECATED);
                     $instance->setServiceLocator($container);
