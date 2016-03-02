@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.7.1 - TBD
+## 2.7.1 - 2016-03-02
 
 ### Added
 
@@ -18,7 +18,25 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#88](https://github.com/zendframework/zend-mvc/pull/88) addresses backwards
+  compatibility concerns raised by users due to the new deprecation notices
+  emitted by `ServiceLocatorAware` initializers; in particular, all
+  `AbstractController` implementations were raising a deprecation wen first
+  pulled from the `ControllerManager`.
+  
+  At this time, notices are now only raised in the following conditions:
+
+  - When a non-controller, non-plugin manager, `ServiceLocatorAware` instance
+    is detected.
+  - When a plugin manager instance is detected that is `ServiceLocatorAware` and
+    does not have a composed service locator. In this situation, the deprecation
+    notice indicates that the factory for the plugin manager should be updated
+    to inject the service locator via the constructor.
+  - For controllers that do not extend `AbstractController` but do implement
+    `ServiceLocatorAware`.
+  - When calling `getServiceLocator()` from within an `AbstractController`
+    extension; this properly calls out the practice that should be avoided and
+    which requires updates to the controller.
 
 ## 2.7.0 - 2016-03-01
 
