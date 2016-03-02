@@ -9,7 +9,6 @@
 
 namespace ZendTest\Mvc\Service;
 
-use PHPUnit_Framework_Error_Deprecated;
 use PHPUnit_Framework_TestCase as TestCase;
 use ReflectionClass;
 use stdClass;
@@ -38,9 +37,6 @@ class ServiceManagerConfigTest extends TestCase
      */
     protected function setUp()
     {
-        // Disable deprecation notices
-        PHPUnit_Framework_Error_Deprecated::$enabled = false;
-
         $this->config   = new ServiceManagerConfig();
         $this->services = new ServiceManager();
         $this->config->configureServiceManager($this->services);
@@ -215,17 +211,5 @@ class ServiceManagerConfigTest extends TestCase
         $instance->expects($this->never())->method('setEventManager');
 
         $serviceManager->get('EventManagerAware');
-    }
-
-    public function testServiceLocatorAwareInitializerInjectsDuckTypedImplementations()
-    {
-        $serviceManager = new ServiceManager();
-        (new ServiceManagerConfig(['factories' => [
-            TestAsset\DuckTypedServiceLocatorAware::class => InvokableFactory::class,
-        ]]))->configureServiceManager($serviceManager);
-
-        $instance = $serviceManager->get(TestAsset\DuckTypedServiceLocatorAware::class);
-        $this->assertInstanceOf(TestAsset\DuckTypedServiceLocatorAware::class, $instance);
-        $this->assertSame($serviceManager, $instance->getServiceLocator());
     }
 }

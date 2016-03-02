@@ -11,6 +11,7 @@ namespace ZendTest\Mvc\Controller;
 
 use PHPUnit_Framework_TestCase as TestCase;
 use ReflectionProperty;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * @covers \Zend\Mvc\Controller\AbstractController
@@ -103,5 +104,16 @@ class AbstractControllerTest extends TestCase
             ));
 
         $this->controller->setEventManager($eventManager);
+    }
+
+    public function testRetrievingServiceLocatorRaisesDeprecationNotice()
+    {
+        $services = $this->prophesize(ServiceLocatorInterface::class)->reveal();
+
+        $controller = new TestAsset\SampleController();
+        $controller->setServiceLocator($services);
+
+        $this->setExpectedException('PHPUnit_Framework_Error_Deprecated', 'retrieving the service locator');
+        $controller->getServiceLocator();
     }
 }

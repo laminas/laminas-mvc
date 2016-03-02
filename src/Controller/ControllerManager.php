@@ -220,18 +220,20 @@ class ControllerManager extends AbstractPluginManager
             $container = $container->getServiceLocator() ?: $container;
         }
 
+        // Inject AbstractController extensions that are not ServiceLocatorAware
+        // with the service manager, but do not emit a deprecation notice. We'll
+        // emit it from AbstractController::getServiceLocator() instead.
         if (! $controller instanceof ServiceLocatorAwareInterface
+            && $controller instanceof AbstractController
             && method_exists($controller, 'setServiceLocator')
         ) {
-            trigger_error(sprintf(
-                'ServiceLocatorAwareInterface is deprecated and will be removed in version 3.0, along '
-                . 'with the ServiceLocatorAwareInitializer. Please update your class %s to remove '
-                . 'the implementation, and start injecting your dependencies via factory instead.',
-                get_class($controller)
-            ), E_USER_DEPRECATED);
+            // Do not emit deprecation notice in this case
             $controller->setServiceLocator($container);
         }
 
+        // If a controller implements ServiceLocatorAwareInterface explicitly, we
+        // inject, but emit a deprecation notice. Since AbstractController no longer
+        // explicitly does this, this will only affect userland controllers.
         if ($controller instanceof ServiceLocatorAwareInterface) {
             trigger_error(sprintf(
                 'ServiceLocatorAwareInterface is deprecated and will be removed in version 3.0, along '
