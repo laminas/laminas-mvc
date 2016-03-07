@@ -137,8 +137,8 @@ class Module
     public function onBootstrap($e)
     {
         $app          = $e->getApplication();
-        $eventManager = app->getEventManager();
-        $services     = app->getServiceManager();
+        $eventManager = $app->getEventManager();
+        $services     = $app->getServiceManager();
 
         $eventManager->attach('dispatch', function ($e) use ($services) {
             $request  = Psr7ServerRequest::fromZend($e->getRequest());
