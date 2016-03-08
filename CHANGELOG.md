@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.7.3 - TBD
+## 2.7.3 - 2016-03-08
 
 ### Added
 
@@ -18,7 +18,9 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#97](https://github.com/zendframework/zend-mvc/pull/97) re-introduces the
+  `ServiceManager` factory definition inside `ServiceManagerConfig`, to ensure
+  backwards compatibility.
 
 ## 2.7.2 - 2016-03-08
 
