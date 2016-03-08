@@ -18,6 +18,7 @@ use Zend\EventManager\SharedEventManager;
 use Zend\Http\Response;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Router\RouteMatch;
+use ZendTest\Mvc\Controller\TestAsset\RestfulContentTypeTestController;
 
 class RestfulControllerTest extends TestCase
 {
@@ -99,6 +100,22 @@ class RestfulControllerTest extends TestCase
         $this->assertArrayHasKey('entity', $result);
         $this->assertEquals($entity, $result['entity']);
         $this->assertEquals('create', $this->routeMatch->getParam('action'));
+    }
+
+    public function testCanReceiveStringAsRequestContent()
+    {
+        $string = "any content";
+        $this->request->setMethod('PUT');
+        $this->request->setContent($string);
+        $this->routeMatch->setParam('id', $id = 1);
+
+        $controller = new RestfulContentTypeTestController();
+        $controller->setEvent($this->event);
+        $result = $controller->dispatch($this->request, $this->response);
+
+        $this->assertEquals($id, $result['id']);
+        $this->assertEquals($string, $result['data']);
+        $this->assertEquals('update', $this->routeMatch->getParam('action'));
     }
 
     public function testDispatchInvokesUpdateMethodWhenNoActionPresentAndPutInvokedWithIdentifier()

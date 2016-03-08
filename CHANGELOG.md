@@ -45,6 +45,9 @@ All notable changes to this project will be documented in this file, in reverse 
 - [#93](https://github.com/zendframework/zend-mvc/pull/93) ensures that the
   Console `Catchall` route factory will not fail when the `defaults` `$options`
   array key is missing.
+- [#43](https://github.com/zendframework/zend-mvc/pull/43) updates the
+  `AbstractRestfulController` to ensure it can accept textual (e.g., XML, YAML)
+  data.
 
 ## 2.7.1 - 2016-03-02
 
