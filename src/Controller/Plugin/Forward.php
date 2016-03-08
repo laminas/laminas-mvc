@@ -15,6 +15,7 @@ use Zend\Mvc\Exception;
 use Zend\Mvc\InjectApplicationEventInterface;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Router\RouteMatch;
+use Zend\Stdlib\CallbackHandler;
 
 class Forward extends AbstractPlugin
 {
@@ -178,8 +179,14 @@ class Forward extends AbstractPlugin
             foreach ($eventArray as $eventName => $classArray) {
                 $results[$id][$eventName] = [];
                 $events = $this->getSharedListenersById($id, $eventName, $sharedEvents);
-                foreach ($events as $currentEvent) {
+                foreach ($events as $priority => $currentEvent) {
                     $currentCallback = $currentEvent;
+
+                    // zend-eventmanager v2 compatibility:
+                    if ($currentCallback instanceof CallbackHandler) {
+                        $currentCallback = $currentCallback->getCallback();
+                        $priority        = $currentCallback->getMetadatum('priority');
+                    }
 
                     // If we have an array, grab the object
                     if (is_array($currentCallback)) {
@@ -193,8 +200,11 @@ class Forward extends AbstractPlugin
 
                     foreach ($classArray as $class) {
                         if ($currentCallback instanceof $class) {
-                            $sharedEvents->detach($currentEvent, $id);
-                            $results[$id][$eventName][] = $currentEvent;
+                            // Pass $currentEvent; when using zend-eventmanager v2,
+                            // this is the CallbackHandler, while in v3 it's
+                            // the actual listener.
+                            $this->detachSharedListener($id, $currentEvent, $sharedEvents);
+                            $results[$id][$eventName][$priority] = $currentEvent;
                         }
                     }
                 }
@@ -215,8 +225,16 @@ class Forward extends AbstractPlugin
     {
         foreach ($listeners as $id => $eventArray) {
             foreach ($eventArray as $eventName => $callbacks) {
-                foreach ($callbacks as $current) {
-                    $sharedEvents->attach($id, $eventName, $current->getCallback(), $current->getMetadatum('priority'));
+                foreach ($callbacks as $priority => $current) {
+                    $callback = $current;
+
+                    // zend-eventmanager v2 compatibility:
+                    if ($current instanceof CallbackHandler) {
+                        $callback = $current->getCallback();
+                        $priority = $current->getMetadatum('priority');
+                    }
+
+                    $sharedEvents->attach($id, $eventName, $callback, $priority);
                 }
             }
         }
@@ -275,5 +293,27 @@ class Forward extends AbstractPlugin
 
         // v3
         return $sharedEvents->getListeners([$id], $event);
+    }
+
+    /**
+     * Detach a shared listener by identifier.
+     *
+     * Varies detachment based on zend-eventmanager version.
+     *
+     * @param string|int $id
+     * @param callable|CallbackHandler $listener
+     * @param SharedEvents $sharedEvents
+     * @return void
+     */
+    private function detachSharedListener($id, $listener, SharedEvents $sharedEvents)
+    {
+        if (method_exists($sharedEvents, 'attachAggregate')) {
+            // v2
+            $sharedEvents->detach($id, $listener);
+            return;
+        }
+
+        // v3
+        $sharedEvents->detach($listener, $id);
     }
 }
