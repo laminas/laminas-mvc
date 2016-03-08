@@ -76,6 +76,10 @@ class ServiceManagerConfig extends Config
      */
     public function __construct(array $config = [])
     {
+        $this->config['factories']['ServiceManager'] = function ($container) {
+            return $container;
+        };
+
         $this->config['factories']['SharedEventManager'] = function () {
             return new SharedEventManager();
         };
