@@ -18,7 +18,9 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#90](https://github.com/zendframework/zend-mvc/pull/90) re-introduces the
+  various zend-di aliases and factories in `Zend\Mvc\Service\ServiceListenerFactory`,
+  which were accidently removed in the 2.7.0 release.
 
 ## 2.7.1 - 2016-03-02
 
