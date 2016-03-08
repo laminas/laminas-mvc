@@ -30,6 +30,9 @@ All notable changes to this project will be documented in this file, in reverse 
 - [#43](https://github.com/zendframework/zend-mvc/pull/43) updates the
   `AbstractRestfulController` to ensure it can accept textual (e.g., XML, YAML)
   data.
+- [#79](https://github.com/zendframework/zend-mvc/pull/79) updates the
+  continuous integration configuration to ensure we test against lowest and
+  highest accepted dependencies, and those in the current lockfile.
 
 ## 2.7.1 - 2016-03-02
 
