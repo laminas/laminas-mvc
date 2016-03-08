@@ -18,9 +18,12 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- [#90](https://github.com/zendframework/zend-mvc/pull/90) re-introduces the
+- [#95](https://github.com/zendframework/zend-mvc/pull/95) re-introduces the
   various zend-di aliases and factories in `Zend\Mvc\Service\ServiceListenerFactory`,
   which were accidently removed in the 2.7.0 release.
+- [#96](https://github.com/zendframework/zend-mvc/pull/96) fixes shared event
+  detachment/attachment within the `Forward` plugin to work with both v2 and v3
+  of zend-eventmanager.
 
 ## 2.7.1 - 2016-03-02
 
