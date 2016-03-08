@@ -184,8 +184,8 @@ class Forward extends AbstractPlugin
 
                     // zend-eventmanager v2 compatibility:
                     if ($currentCallback instanceof CallbackHandler) {
-                        $currentCallback = $currentCallback->getCallback();
-                        $priority        = $currentCallback->getMetadatum('priority');
+                        $currentCallback = $currentEvent->getCallback();
+                        $priority        = $currentEvent->getMetadatum('priority');
                     }
 
                     // If we have an array, grab the object
