@@ -25,7 +25,7 @@ class CatchallTest extends TestCase
     /**
      * @dataProvider provideFactoryOptions
      */
-    public function testFactory($options)
+    public function testFactoryReturnsInstanceForAnyOptionsArray($options)
     {
         $this->assertInstanceOf(Catchall::class, Catchall::factory($options));
     }
