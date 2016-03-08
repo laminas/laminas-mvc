@@ -212,4 +212,17 @@ class ServiceManagerConfigTest extends TestCase
 
         $serviceManager->get('EventManagerAware');
     }
+
+    /**
+     * @group 101
+     */
+    public function testCreatesAFactoryForTheServiceManagerThatReturnsIt()
+    {
+        $serviceManager = new ServiceManager();
+        $config         = new ServiceManagerConfig();
+        $config->configureServiceManager($serviceManager);
+
+        $this->assertTrue($serviceManager->has('ServiceManager'), 'Missing ServiceManager service!');
+        $this->assertSame($serviceManager, $serviceManager->get('ServiceManager'));
+    }
 }
