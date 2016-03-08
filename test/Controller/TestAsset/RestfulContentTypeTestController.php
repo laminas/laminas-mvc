@@ -24,7 +24,7 @@ class RestfulContentTypeTestController extends AbstractRestfulController
     {
         return [
             'id' => $id,
-            'data' => $data
+            'data' => $data,
         ];
     }
 }
