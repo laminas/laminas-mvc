@@ -24,6 +24,9 @@ All notable changes to this project will be documented in this file, in reverse 
 - [#96](https://github.com/zendframework/zend-mvc/pull/96) fixes shared event
   detachment/attachment within the `Forward` plugin to work with both v2 and v3
   of zend-eventmanager.
+- [#93](https://github.com/zendframework/zend-mvc/pull/93) ensures that the
+  Console `Catchall` route factory will not fail when the `defaults` `$options`
+  array key is missing.
 
 ## 2.7.1 - 2016-03-02
 
