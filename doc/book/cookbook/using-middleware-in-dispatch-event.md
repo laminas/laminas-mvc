@@ -14,7 +14,7 @@ class AuthorizationMiddleware
 }
 ```
 
-As the request and response in 'dispatch' event is a `Zend\Http` Request and Response object, we need the bridge to convert into PSR-7 Request and Response. To do that, you can do the following:
+As the request and response in 'dispatch' event is a `Zend\Http` Request and Response object, we need the bridge to convert into PSR-7 Request and Response, and then, the result of invoked `AuthorizationMiddleware` above needs to be converted to `Zend\Http` Response if an instance of `Psr\Http\Message\ResponseInterface`. To do that, you can do the following:
 
 ```php
 namespace Application;
