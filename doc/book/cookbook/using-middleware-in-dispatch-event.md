@@ -34,7 +34,7 @@ class Module
         $eventManager->attach('dispatch', function ($e) use ($services) {
             $request  = Psr7ServerRequest::fromZend($e->getRequest());
             $response = Psr7Response::fromZend($e->getResponse());
-            $result   = ($services->get(AuthorizationMiddleware::class))($request, $response);
+            $result   = ($services->get(AuthorizationMiddleware::class))($request, $response, function() {});
         }, 2);
     }
 }
