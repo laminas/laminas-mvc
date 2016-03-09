@@ -20,6 +20,7 @@ As the request and response in 'dispatch' event is a `Zend\Http` Request and Res
 namespace Application;
 
 use Application\Middleware\AuthorizationMiddleware;
+use Psr\Http\Message\ResponseInterface;
 use Zend\Psr7Bridge\Psr7ServerRequest;
 use Zend\Psr7Bridge\Psr7Response;
 
@@ -35,6 +36,10 @@ class Module
             $request  = Psr7ServerRequest::fromZend($e->getRequest());
             $response = Psr7Response::fromZend($e->getResponse());
             $result   = ($services->get(AuthorizationMiddleware::class))($request, $response, function() {});
+
+            if ($result instanceof ResponseInterface) {
+                return Psr7Response::toZend($result);
+            }
         }, 2);
     }
 }
