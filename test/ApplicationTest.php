@@ -51,6 +51,11 @@ class ApplicationTest extends TestCase
 
         $serviceConfig = ArrayUtils::merge(
             $serviceConfig,
+            (new Router\ConfigProvider())->getDependencyConfig()
+        );
+
+        $serviceConfig = ArrayUtils::merge(
+            $serviceConfig,
             [
                 'invokables' => [
                     'Request'              => 'Zend\Http\PhpEnvironment\Request',
@@ -65,7 +70,9 @@ class ApplicationTest extends TestCase
                 'services' => [
                     'config' => [],
                     'ApplicationConfig' => [
-                        'modules' => [],
+                        'modules' => [
+                            'Zend\Router',
+                        ],
                         'module_listener_options' => [
                             'config_cache_enabled' => false,
                             'cache_dir'            => 'data/cache',

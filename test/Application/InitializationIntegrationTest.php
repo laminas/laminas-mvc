@@ -20,6 +20,7 @@ class InitializationIntegrationTest extends TestCase
     {
         $appConfig = [
             'modules' => [
+                'Zend\Router',
                 'Application',
             ],
             'module_listener_options' => [

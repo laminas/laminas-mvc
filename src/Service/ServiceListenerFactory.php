@@ -16,7 +16,6 @@ use Zend\ModuleManager\Listener\ServiceListener;
 use Zend\ModuleManager\Listener\ServiceListenerInterface;
 use Zend\Mvc\Application;
 use Zend\Mvc\View;
-use Zend\Router;
 use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\Factory\InvokableFactory;
@@ -77,8 +76,6 @@ class ServiceListenerFactory implements FactoryInterface
             'ControllerPluginManager'        => 'Zend\Mvc\Service\ControllerPluginManagerFactory',
             'ConsoleAdapter'                 => 'Zend\Mvc\Service\ConsoleAdapterFactory',
             'ConsoleExceptionStrategy'       => ConsoleExceptionStrategyFactory::class,
-            // @todo Re-enable (and re-map) once zend-mvc-console is ready
-            // 'ConsoleRouter'                  => ConsoleRouterFactory::class,
             'ConsoleRouteNotFoundStrategy'   => ConsoleRouteNotFoundStrategyFactory::class,
             'ConsoleViewManager'             => 'Zend\Mvc\Service\ConsoleViewManagerFactory',
             'DependencyInjector'             => DiFactory::class,
@@ -92,7 +89,6 @@ class ServiceListenerFactory implements FactoryInterface
             'HttpExceptionStrategy'          => HttpExceptionStrategyFactory::class,
             'HttpMethodListener'             => 'Zend\Mvc\Service\HttpMethodListenerFactory',
             'HttpRouteNotFoundStrategy'      => HttpRouteNotFoundStrategyFactory::class,
-            'HttpRouter'                     => Router\Http\HttpRouterFactory::class,
             'HttpViewManager'                => 'Zend\Mvc\Service\HttpViewManagerFactory',
             'HydratorManager'                => 'Zend\Mvc\Service\HydratorManagerFactory',
             'InjectTemplateListener'         => 'Zend\Mvc\Service\InjectTemplateListenerFactory',
@@ -103,8 +99,6 @@ class ServiceListenerFactory implements FactoryInterface
             'PaginatorPluginManager'         => 'Zend\Mvc\Service\PaginatorPluginManagerFactory',
             'Request'                        => 'Zend\Mvc\Service\RequestFactory',
             'Response'                       => 'Zend\Mvc\Service\ResponseFactory',
-            'Router'                         => Router\RouterFactory::class,
-            'RoutePluginManager'             => Router\RoutePluginManagerFactory::class,
             'SerializerAdapterManager'       => 'Zend\Mvc\Service\SerializerAdapterPluginManagerFactory',
             'TranslatorPluginManager'        => 'Zend\Mvc\Service\TranslatorPluginManagerFactory',
             'ValidatorManager'               => 'Zend\Mvc\Service\ValidatorManagerFactory',
@@ -317,6 +311,5 @@ class ServiceListenerFactory implements FactoryInterface
         $this->defaultServiceConfig['aliases']['Config']      = 'config';
         $this->defaultServiceConfig['aliases']['request']     = 'Request';
         $this->defaultServiceConfig['aliases']['response']    = 'Response';
-        $this->defaultServiceConfig['aliases']['router']      = 'Router';
     }
 }

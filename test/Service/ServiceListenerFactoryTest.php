@@ -259,18 +259,4 @@ class ServiceListenerFactoryTest extends TestCase
         $this->assertArrayHasKey('response', $config['aliases'], 'Missing "response" alias from default service config');
         // @codingStandardsIgnoreEnd
     }
-
-    public function testDefinesExpectedRouterAliases()
-    {
-        if (! $this->isServiceManagerV3()) {
-            $this->markTestSkipped('Router aliases are only defined under zend-servicemanager v3');
-        }
-
-        $r = new ReflectionProperty($this->factory, 'defaultServiceConfig');
-        $r->setAccessible(true);
-        $config = $r->getValue($this->factory);
-
-        $this->assertArrayHasKey('aliases', $config, 'Missing aliases from default service config');
-        $this->assertArrayHasKey('router', $config['aliases'], 'Missing "router" alias from default service config');
-    }
 }

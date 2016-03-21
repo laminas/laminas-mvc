@@ -49,6 +49,11 @@ trait BadControllerTrait
 
         $serviceConfig = ArrayUtils::merge(
             $serviceConfig,
+            (new Router\ConfigProvider())->getDependencyConfig()
+        );
+
+        $serviceConfig = ArrayUtils::merge(
+            $serviceConfig,
             [
                 'aliases' => [
                     'ControllerLoader'  => ControllerManager::class,

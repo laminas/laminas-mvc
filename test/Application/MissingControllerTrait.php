@@ -47,6 +47,11 @@ trait MissingControllerTrait
 
         $serviceConfig = ArrayUtils::merge(
             $serviceConfig,
+            (new Router\ConfigProvider())->getDependencyConfig()
+        );
+
+        $serviceConfig = ArrayUtils::merge(
+            $serviceConfig,
             [
                 'factories' => [
                     'Router' => function ($services) {

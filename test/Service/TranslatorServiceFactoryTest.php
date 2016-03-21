@@ -93,7 +93,9 @@ class TranslatorServiceFactoryTest extends TestCase
         //minimum bootstrap
         $applicationConfig = [
             'module_listener_options' => [],
-            'modules' => [],
+            'modules' => [
+                'Zend\Router',
+            ],
         ];
         $config = new ServiceManagerConfig(['services' => [
             'ApplicationConfig' => $applicationConfig,
@@ -131,7 +133,9 @@ class TranslatorServiceFactoryTest extends TestCase
         //minimum bootstrap
         $applicationConfig = [
             'module_listener_options' => [],
-            'modules' => [],
+            'modules' => [
+                'Zend\Router',
+            ],
         ];
         $config = new ServiceManagerConfig(['services' => [
             'ApplicationConfig' => $applicationConfig,
