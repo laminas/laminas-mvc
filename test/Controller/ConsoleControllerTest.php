@@ -13,7 +13,7 @@ use PHPUnit_Framework_TestCase as TestCase;
 use Zend\Console\Request as ConsoleRequest;
 use Zend\Http\Request;
 use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router\RouteMatch;
+use Zend\Router\RouteMatch;
 
 class ConsoleControllerTest extends TestCase
 {

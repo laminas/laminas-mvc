@@ -12,6 +12,7 @@ namespace Zend\Mvc;
 use ArrayObject;
 use Zend\EventManager\AbstractListenerAggregate;
 use Zend\EventManager\EventManagerInterface;
+use Zend\Router\RouteMatch;
 use Zend\ServiceManager\Exception\InvalidServiceException;
 use Zend\Stdlib\ArrayUtils;
 
@@ -76,7 +77,7 @@ class DispatchListener extends AbstractListenerAggregate
     public function onDispatch(MvcEvent $e)
     {
         $routeMatch        = $e->getRouteMatch();
-        $controllerName    = $routeMatch instanceof Router\RouteMatch
+        $controllerName    = $routeMatch instanceof RouteMatch
             ? $routeMatch->getParam('controller', 'not-found')
             : 'not-found';
         $application       = $e->getApplication();

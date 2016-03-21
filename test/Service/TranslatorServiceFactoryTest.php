@@ -12,9 +12,9 @@ namespace ZendTest\Mvc\Service;
 use PHPUnit_Framework_TestCase as TestCase;
 use Zend\I18n\Translator\LoaderPluginManager;
 use Zend\I18n\Translator\TranslatorInterface;
-use Zend\Mvc\Service\RoutePluginManagerFactory;
 use Zend\Mvc\Service\ServiceManagerConfig;
 use Zend\Mvc\Service\TranslatorServiceFactory;
+use Zend\Router\RoutePluginManagerFactory;
 use Zend\ServiceManager\ServiceManager;
 
 class TranslatorServiceFactoryTest extends TestCase

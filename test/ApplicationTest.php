@@ -21,9 +21,9 @@ use Zend\ModuleManager\ModuleEvent;
 use Zend\Mvc\Application;
 use Zend\Mvc\Controller\ControllerManager;
 use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router;
 use Zend\Mvc\Service\ServiceManagerConfig;
 use Zend\Mvc\Service\ServiceListenerFactory;
+use Zend\Router;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Stdlib\ArrayUtils;
 use Zend\Stdlib\ResponseInterface;
@@ -59,8 +59,8 @@ class ApplicationTest extends TestCase
                     'SendResponseListener' => 'ZendTest\Mvc\TestAsset\MockSendResponseListener',
                     'BootstrapListener'    => 'ZendTest\Mvc\TestAsset\StubBootstrapListener',
                 ],
-                'aliases' => [
-                    'Router'                 => 'HttpRouter',
+                'factories' => [
+                    'Router' => Router\RouterFactory::class,
                 ],
                 'services' => [
                     'config' => [],
@@ -247,8 +247,8 @@ class ApplicationTest extends TestCase
             ],
         ]);
         $router->addRoute('path', $route);
-        $this->serviceManager->setAlias('Router', 'HttpRouter');
         $this->serviceManager->setService('HttpRouter', $router);
+        $this->serviceManager->setService('Router', $router);
 
         if ($addService) {
             $this->services->addFactory('ControllerManager', function ($services) {

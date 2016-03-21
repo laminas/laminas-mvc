@@ -17,7 +17,7 @@ use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
 use Zend\Http\Response;
 use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router\RouteMatch;
+use Zend\Router\RouteMatch;
 use ZendTest\Mvc\Controller\TestAsset\RestfulContentTypeTestController;
 
 class RestfulControllerTest extends TestCase

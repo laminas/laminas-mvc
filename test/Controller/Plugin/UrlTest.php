@@ -13,10 +13,11 @@ use PHPUnit_Framework_TestCase as TestCase;
 use Zend\Mvc\Controller\Plugin\Url as UrlPlugin;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\ModuleRouteListener;
-use Zend\Mvc\Router\Http\Literal as LiteralRoute;
-use Zend\Mvc\Router\Http\Segment as SegmentRoute;
-use Zend\Mvc\Router\RouteMatch;
-use Zend\Mvc\Router\SimpleRouteStack;
+use Zend\Router\Http\Literal as LiteralRoute;
+use Zend\Router\Http\Segment as SegmentRoute;
+use Zend\Router\Http\TreeRouteStack;
+use Zend\Router\RouteMatch;
+use Zend\Router\SimpleRouteStack;
 use ZendTest\Mvc\Controller\TestAsset\SampleController;
 
 class UrlTest extends TestCase
@@ -31,7 +32,7 @@ class UrlTest extends TestCase
             ],
         ]));
         $router->addRoute('default', [
-            'type' => 'Zend\Mvc\Router\Http\Segment',
+            'type' => 'Zend\Router\Http\Segment',
             'options' => [
                 'route' => '/:controller[/:action]',
             ]
@@ -145,9 +146,9 @@ class UrlTest extends TestCase
 
     public function testRemovesModuleRouteListenerParamsWhenReusingMatchedParameters()
     {
-        $router = new \Zend\Mvc\Router\Http\TreeRouteStack;
+        $router = new TreeRouteStack;
         $router->addRoute('default', [
-            'type' => 'Zend\Mvc\Router\Http\Segment',
+            'type' => 'Zend\Router\Http\Segment',
             'options' => [
                 'route'    => '/:controller/:action',
                 'defaults' => [
@@ -158,7 +159,7 @@ class UrlTest extends TestCase
             ],
             'child_routes' => [
                 'wildcard' => [
-                    'type'    => 'Zend\Mvc\Router\Http\Wildcard',
+                    'type'    => 'Zend\Router\Http\Wildcard',
                     'options' => [
                         'param_delimiter'     => '=',
                         'key_value_delimiter' => '%'

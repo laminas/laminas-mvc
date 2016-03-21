@@ -18,6 +18,7 @@
         "zendframework/zend-servicemanager": "^2.7.5 || ^3.0.3",
         "zendframework/zend-hydrator": "^1.1 || ^2.1",
         "zendframework/zend-form": "^2.7",
+        "zendframework/zend-router": "^3.0",
         "zendframework/zend-stdlib": "^2.7.5 || ^3.0",
         "zendframework/zend-psr7bridge": "^0.2",
         "container-interop/container-interop": "^1.1"
@@ -37,7 +38,6 @@
         "zendframework/zend-session": "^2.6.2",
         "zendframework/zend-serializer": "^2.6.1",
         "zendframework/zend-text": "^2.6",
-        "zendframework/zend-uri": "^2.5",
         "zendframework/zend-validator": "^2.6",
         "zendframework/zend-version": "^2.5",
         "zendframework/zend-view": "^2.6.3",
@@ -60,7 +60,6 @@
         "zendframework/zend-serializer": "Zend\\Serializer component",
         "zendframework/zend-session": "Zend\\Session component for FlashMessenger, PRG, and FPRG plugins",
         "zendframework/zend-text": "Zend\\Text component",
-        "zendframework/zend-uri": "Zend\\Uri component",
         "zendframework/zend-validator": "Zend\\Validator component",
         "zendframework/zend-version": "Zend\\Version component",
         "zendframework/zend-view": "Zend\\View component"

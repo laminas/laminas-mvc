@@ -293,8 +293,7 @@ abstract class AbstractRestfulController extends AbstractController
     public function dispatch(Request $request, Response $response = null)
     {
         if (! $request instanceof HttpRequest) {
-            throw new Exception\InvalidArgumentException(
-                    'Expected an HTTP request');
+            throw new Exception\InvalidArgumentException('Expected an HTTP request');
         }
 
         return parent::dispatch($request, $response);
@@ -316,8 +315,7 @@ abstract class AbstractRestfulController extends AbstractController
              * @todo Determine requirements for when route match is missing.
              *       Potentially allow pulling directly from request metadata?
              */
-            throw new Exception\DomainException(
-                    'Missing route matches; unsure how to retrieve action');
+            throw new Exception\DomainException('Missing route matches; unsure how to retrieve action');
         }
 
         $request = $e->getRequest();
@@ -535,7 +533,7 @@ abstract class AbstractRestfulController extends AbstractController
      * Attempts to see if an identifier was passed in either the URI or the
      * query string, returning it if found. Otherwise, returns a boolean false.
      *
-     * @param  \Zend\Mvc\Router\RouteMatch $routeMatch
+     * @param  \Zend\Router\RouteMatch $routeMatch
      * @param  Request $request
      * @return false|mixed
      */

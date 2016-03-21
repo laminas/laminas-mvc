@@ -15,7 +15,7 @@ use Zend\Mvc\Exception;
 use Zend\Mvc\InjectApplicationEventInterface;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router\RouteStackInterface;
+use Zend\Router\RouteStackInterface;
 
 class Url extends AbstractPlugin
 {

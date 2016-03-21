@@ -13,8 +13,8 @@ use PHPUnit_Framework_TestCase as TestCase;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\Test\EventListenerIntrospectionTrait;
 use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router\RouteMatch;
 use Zend\Mvc\View\Http\InjectViewModelListener;
+use Zend\Router\RouteMatch;
 use Zend\View\Model\ViewModel;
 
 class InjectViewModelListenerTest extends TestCase
