@@ -39,6 +39,6 @@ class ResponseFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $container)
     {
-        return $this($container, HttpResponse);
+        return $this($container, 'Response');
     }
 }
