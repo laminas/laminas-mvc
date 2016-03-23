@@ -52,7 +52,6 @@ class ControllerManager extends AbstractPluginManager
     public function __construct($configOrContainerInstance, array $v3config = [])
     {
         $this->addInitializer([$this, 'injectEventManager']);
-        $this->addInitializer([$this, 'injectConsole']);
         $this->addInitializer([$this, 'injectPluginManager']);
         parent::__construct($configOrContainerInstance, $v3config);
 
@@ -135,36 +134,6 @@ class ControllerManager extends AbstractPluginManager
 
             $controller->setEventManager($container->get('EventManager'));
         }
-    }
-
-    /**
-     * Initializer: inject Console adapter instance
-     *
-     * @param ContainerInterface|DispatchableInterface $first Container when
-     *     using zend-servicemanager v3; controller under v2.
-     * @param DispatchableInterface|ContainerInterface $second Controller when
-     *     using zend-servicemanager v3; container under v2.
-     */
-    public function injectConsole($first, $second)
-    {
-        if ($first instanceof ContainerInterface) {
-            $container = $first;
-            $controller = $second;
-        } else {
-            $container = $second;
-            $controller = $first;
-        }
-
-        if (! $controller instanceof AbstractConsoleController) {
-            return;
-        }
-
-        // For v2, we need to pull the parent service locator
-        if (! method_exists($container, 'configure')) {
-            $container = $container->getServiceLocator() ?: $container;
-        }
-
-        $controller->setConsole($container->get('Console'));
     }
 
     /**

@@ -189,17 +189,6 @@ class ServiceListenerFactoryTest extends TestCase
         $this->factory->__invoke($this->sm, 'ServiceListener');
     }
 
-    public function testDefinesExpectedAliasesForConsole()
-    {
-        $r = new ReflectionProperty($this->factory, 'defaultServiceConfig');
-        $r->setAccessible(true);
-        $config = $r->getValue($this->factory);
-
-        $this->assertArrayHasKey('aliases', $config, 'Missing aliases from default service config');
-        $this->assertArrayHasKey('console', $config['aliases'], 'Missing "console" alias from default service config');
-        $this->assertArrayHasKey('Console', $config['aliases'], 'Missing "Console" alias from default service config');
-    }
-
     public function testDefinesExpectedApplicationAliasesUnderV3()
     {
         if (! $this->isServiceManagerV3()) {

@@ -17,7 +17,6 @@ use Zend\Mvc\Controller\ControllerManager;
 use Zend\Mvc\Controller\PluginManager as ControllerPluginManager;
 use Zend\ServiceManager\Config;
 use Zend\ServiceManager\ServiceManager;
-use Zend\Console\Adapter\Virtual as ConsoleAdapter;
 
 class ControllerManagerTest extends TestCase
 {
@@ -25,7 +24,6 @@ class ControllerManagerTest extends TestCase
     {
         $this->sharedEvents   = new SharedEventManager;
         $this->events         = $this->createEventManager($this->sharedEvents);
-        $this->consoleAdapter = new ConsoleAdapter();
 
         $this->services = new ServiceManager();
         (new Config([
@@ -35,7 +33,6 @@ class ControllerManagerTest extends TestCase
                 },
             ],
             'services' => [
-                'Console'            => $this->consoleAdapter,
                 'EventManager'       => $this->events,
                 'SharedEventManager' => $this->sharedEvents,
             ],
@@ -82,22 +79,6 @@ class ControllerManagerTest extends TestCase
         $events = $controller->getEventManager();
         $this->assertInstanceOf('Zend\EventManager\EventManagerInterface', $events);
         $this->assertSame($this->sharedEvents, $events->getSharedManager());
-    }
-
-    public function testCanInjectConsoleAdapter()
-    {
-        $controller = new TestAsset\ConsoleController();
-
-        // Vary injection based on zend-servicemanager version
-        if (method_exists($this->controllers, 'configure')) {
-            // v3
-            $this->controllers->injectConsole($this->services, $controller);
-        } else {
-            // v2
-            $this->controllers->injectConsole($controller, $this->controllers);
-        }
-
-        $this->assertInstanceOf('Zend\Console\Adapter\AdapterInterface', $controller->getConsole());
     }
 
     public function testCanInjectPluginManager()

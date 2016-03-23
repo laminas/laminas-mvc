@@ -63,9 +63,6 @@ class PluginManager extends AbstractPluginManager
         'CreateHttpNotFoundModel'     => Plugin\CreateHttpNotFoundModel::class,
         'createHttpNotFoundModel'     => Plugin\CreateHttpNotFoundModel::class,
         'createhttpnotfoundmodel'     => Plugin\CreateHttpNotFoundModel::class,
-        'CreateConsoleNotFoundModel'  => Plugin\CreateConsoleNotFoundModel::class,
-        'createConsoleNotFoundModel'  => Plugin\CreateConsoleNotFoundModel::class,
-        'createconsolenotfoundmodel'  => Plugin\CreateConsoleNotFoundModel::class,
     ];
 
     /**
@@ -83,7 +80,6 @@ class PluginManager extends AbstractPluginManager
         Plugin\Redirect::class                    => InvokableFactory::class,
         Plugin\Url::class                         => InvokableFactory::class,
         Plugin\CreateHttpNotFoundModel::class     => InvokableFactory::class,
-        Plugin\CreateConsoleNotFoundModel::class  => InvokableFactory::class,
 
         // v2 normalized names
 
@@ -98,7 +94,6 @@ class PluginManager extends AbstractPluginManager
         'zendmvccontrollerpluginredirect'                    => InvokableFactory::class,
         'zendmvccontrollerpluginurl'                         => InvokableFactory::class,
         'zendmvccontrollerplugincreatehttpnotfoundmodel'     => InvokableFactory::class,
-        'zendmvccontrollerplugincreateconsolenotfoundmodel'  => InvokableFactory::class,
     ];
 
     /**

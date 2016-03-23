@@ -10,7 +10,6 @@
 namespace Zend\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
-use Zend\Console\Console;
 use Zend\Router\RouteMatch;
 use Zend\ServiceManager\ConfigInterface;
 use Zend\ServiceManager\Exception\ServiceNotCreatedException;
@@ -130,8 +129,7 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
     {
         return function () use ($services) {
             $helper = new ViewHelper\Url;
-            $router = Console::isConsole() ? 'HttpRouter' : 'Router';
-            $helper->setRouter($services->get($router));
+            $helper->setRouter($services->get('HttpRouter'));
 
             $match = $services->get('Application')
                 ->getMvcEvent()
@@ -159,13 +157,6 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
         return function () use ($services) {
             $config = $services->has('config') ? $services->get('config') : [];
             $helper = new ViewHelper\BasePath;
-
-            if (Console::isConsole()
-                && isset($config['view_manager']['base_path_console'])
-            ) {
-                $helper->setBasePath($config['view_manager']['base_path_console']);
-                return $helper;
-            }
 
             if (isset($config['view_manager']) && isset($config['view_manager']['base_path'])) {
                 $helper->setBasePath($config['view_manager']['base_path']);

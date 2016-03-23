@@ -9,7 +9,6 @@
 
 namespace Zend\Mvc\View\Http;
 
-use Zend\Console\Request as ConsoleRequest;
 use Zend\EventManager\AbstractListenerAggregate;
 use Zend\EventManager\EventManagerInterface;
 use Zend\Http\Request as HttpRequest;
@@ -43,25 +42,25 @@ class InjectRoutematchParamsListener extends AbstractListenerAggregate
         $routeMatchParams = $e->getRouteMatch()->getParams();
         $request = $e->getRequest();
 
-        /** @var $params \Zend\Stdlib\Parameters */
-        if ($request instanceof ConsoleRequest) {
-            $params = $request->params();
-        } elseif ($request instanceof HttpRequest) {
-            $params = $request->get();
-        } else {
+        if (! $request instanceof HttpRequest) {
             // unsupported request type
             return;
         }
 
+        $params = $request->get();
+
         if ($this->overwrite) {
+            // Overwrite existing parameters, or create new ones if not present.
             foreach ($routeMatchParams as $key => $val) {
                 $params->$key = $val;
             }
-        } else {
-            foreach ($routeMatchParams as $key => $val) {
-                if (!$params->offsetExists($key)) {
-                    $params->$key = $val;
-                }
+            return;
+        }
+
+        // Only create new parameters.
+        foreach ($routeMatchParams as $key => $val) {
+            if (! $params->offsetExists($key)) {
+                $params->$key = $val;
             }
         }
     }

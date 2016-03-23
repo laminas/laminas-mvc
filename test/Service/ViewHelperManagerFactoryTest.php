@@ -10,9 +10,6 @@
 namespace ZendTest\Mvc\Service;
 
 use PHPUnit_Framework_TestCase as TestCase;
-use ReflectionProperty;
-use Zend\Console\Console;
-use Zend\Console\Request as ConsoleRequest;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Mvc\Application;
 use Zend\Mvc\MvcEvent;
@@ -54,46 +51,6 @@ class ViewHelperManagerFactoryTest extends TestCase
         $this->assertInstanceof('Zend\View\HelperPluginManager', $manager);
         $doctype = $manager->get('doctype');
         $this->assertInstanceof('Zend\View\Helper\Doctype', $doctype);
-    }
-
-    public function testConsoleRequestsResultInSilentFailure()
-    {
-        $this->services->setService('config', []);
-        $this->services->setService('Request', new ConsoleRequest());
-
-        $manager = $this->factory->__invoke($this->services, 'ViewHelperManager');
-
-        $doctype = $manager->get('doctype');
-        $this->assertInstanceof('Zend\View\Helper\Doctype', $doctype);
-
-        $basePath = $manager->get('basepath');
-        $this->assertInstanceof('Zend\View\Helper\BasePath', $basePath);
-    }
-
-    /**
-     * @group 6247
-     */
-    public function testConsoleRequestWithBasePathConsole()
-    {
-        // Force Console context
-        $r = new ReflectionProperty(Console::class, 'isConsole');
-        $r->setAccessible(true);
-        $r->setValue(true);
-
-        if (! Console::isConsole()) {
-            $this->markTestSkipped('Cannot force console context; skipping test');
-        }
-
-        $this->services->setService('config', [
-            'view_manager' => [
-                'base_path_console' => 'http://test.com'
-            ]
-        ]);
-
-        $manager = $this->factory->__invoke($this->services, 'ViewHelperManager');
-
-        $basePath = $manager->get('basepath');
-        $this->assertEquals('http://test.com', $basePath());
     }
 
     public function urlHelperNames()
@@ -144,14 +101,6 @@ class ViewHelperManagerFactoryTest extends TestCase
         $names = ['basepath', 'basePath', 'BasePath', Helper\BasePath::class, 'zendviewhelperbasepath'];
 
         $configurations = [
-            'console' => [[
-                'config' => [
-                    'view_manager' => [
-                        'base_path_console' => '/foo/bar',
-                    ],
-                ],
-            ], '/foo/bar'],
-
             'hard-coded' => [[
                 'config' => [
                     'view_manager' => [
