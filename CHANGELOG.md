@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ## 3.0.0 - TBD
 
+New major version! Please see:
+
+- [doc/book/migration/to-v3-0.md](doc/book/migration/to-v3-0.md)
+
+for full details on how to migrate your v2 application.
+
 ### Added
 
 - Nothing.
