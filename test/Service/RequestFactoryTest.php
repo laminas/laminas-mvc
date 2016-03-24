@@ -9,33 +9,17 @@
 
 namespace ZendTest\Mvc\Service;
 
+use Interop\Container\ContainerInterface;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Console\Request as ConsoleRequest;
 use Zend\Http\Request as HttpRequest;
 use Zend\Mvc\Service\RequestFactory;
 
 class RequestFactoryTest extends TestCase
 {
-    use FactoryEnvironmentTrait;
-
-    public function tearDown()
+    public function testFactoryCreatesHttpRequest()
     {
-        $this->setConsoleEnvironment(true);
-    }
-
-    public function testFactoryCreatesConsoleRequestInConsoleEnvironment()
-    {
-        $this->setConsoleEnvironment(true);
         $factory = new RequestFactory();
-        $request = $factory($this->createContainer(), 'Request');
-        $this->assertInstanceOf(ConsoleRequest::class, $request);
-    }
-
-    public function testFactoryCreatesHttpRequestInNonConsoleEnvironment()
-    {
-        $this->setConsoleEnvironment(false);
-        $factory = new RequestFactory();
-        $request = $factory($this->createContainer(), 'Request');
+        $request = $factory($this->prophesize(ContainerInterface::class)->reveal(), 'Request');
         $this->assertInstanceOf(HttpRequest::class, $request);
     }
 }

@@ -14,7 +14,7 @@ use Zend\EventManager\EventManager;
 use Zend\EventManager\Test\EventListenerIntrospectionTrait;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router\RouteMatch;
+use Zend\Router\RouteMatch;
 use Zend\Mvc\View\Http\InjectTemplateListener;
 use Zend\View\Model\ViewModel;
 

@@ -9,7 +9,6 @@
 
 namespace Zend\Mvc\Controller;
 
-use Zend\Http\Response as HttpResponse;
 use Zend\Mvc\Exception;
 use Zend\Mvc\MvcEvent;
 use Zend\View\Model\ViewModel;
@@ -43,15 +42,12 @@ abstract class AbstractActionController extends AbstractController
      */
     public function notFoundAction()
     {
-        $response   = $this->response;
         $event      = $this->getEvent();
         $routeMatch = $event->getRouteMatch();
         $routeMatch->setParam('action', 'not-found');
 
-        if ($response instanceof HttpResponse) {
-            return $this->createHttpNotFoundModel($response);
-        }
-        return $this->createConsoleNotFoundModel($response);
+        $helper = $this->plugin('createHttpNotFoundModel');
+        return $helper($event->getResponse());
     }
 
     /**
@@ -84,27 +80,5 @@ abstract class AbstractActionController extends AbstractController
         $e->setResult($actionResponse);
 
         return $actionResponse;
-    }
-
-    /**
-     * @deprecated please use the {@see \Zend\Mvc\Controller\Plugin\CreateHttpNotFoundModel} plugin instead: this
-     *             method will be removed in release 2.5 or later.
-     *
-     * {@inheritDoc}
-     */
-    protected function createHttpNotFoundModel(HttpResponse $response)
-    {
-        return $this->__call('createHttpNotFoundModel', [$response]);
-    }
-
-    /**
-     * @deprecated please use the {@see \Zend\Mvc\Controller\Plugin\CreateConsoleNotFoundModel} plugin instead: this
-     *             method will be removed in release 2.5 or later.
-     *
-     * {@inheritDoc}
-     */
-    protected function createConsoleNotFoundModel($response)
-    {
-        return $this->__call('createConsoleNotFoundModel', [$response]);
     }
 }

@@ -14,7 +14,7 @@ use Zend\Mvc\Controller\ControllerManager;
 use Zend\Mvc\Exception;
 use Zend\Mvc\InjectApplicationEventInterface;
 use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router\RouteMatch;
+use Zend\Router\RouteMatch;
 use Zend\Stdlib\CallbackHandler;
 
 class Forward extends AbstractPlugin

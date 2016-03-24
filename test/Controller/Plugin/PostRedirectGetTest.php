@@ -14,12 +14,12 @@ use PHPUnit_Framework_TestCase as TestCase;
 use Zend\Http\Request;
 use Zend\Http\Response;
 use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router\Http\Literal as LiteralRoute;
-use Zend\Mvc\Router\Http\Segment as SegmentRoute;
-use Zend\Mvc\Router\RouteMatch;
-use Zend\Mvc\Router\SimpleRouteStack;
-use Zend\Mvc\Router\Http\TreeRouteStack;
 use Zend\Mvc\ModuleRouteListener;
+use Zend\Router\Http\Literal as LiteralRoute;
+use Zend\Router\Http\Segment as SegmentRoute;
+use Zend\Router\RouteMatch;
+use Zend\Router\SimpleRouteStack;
+use Zend\Router\Http\TreeRouteStack;
 use Zend\Stdlib\Parameters;
 use ZendTest\Mvc\Controller\TestAsset\SampleController;
 
@@ -139,7 +139,7 @@ class PostRedirectGetTest extends TestCase
     }
 
     /**
-     * @expectedException Zend\Mvc\Exception\RuntimeException
+     * @expectedException Zend\Router\Exception\RuntimeException
      */
     public function testThrowsExceptionOnRouteWithoutRouter()
     {

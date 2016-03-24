@@ -43,9 +43,6 @@ class ServiceListenerFactory implements FactoryInterface
         'aliases' => [
             'configuration'                              => 'config',
             'Configuration'                              => 'config',
-            'console'                                    => 'ConsoleAdapter',
-            'Console'                                    => 'ConsoleAdapter',
-            'ConsoleDefaultRenderingStrategy'            => View\Console\DefaultRenderingStrategy::class,
             'ControllerLoader'                           => 'ControllerManager',
             'Di'                                         => 'DependencyInjector',
             'HttpDefaultRenderingStrategy'               => View\Http\DefaultRenderingStrategy::class,
@@ -74,11 +71,6 @@ class ServiceListenerFactory implements FactoryInterface
             'config'                         => 'Zend\Mvc\Service\ConfigFactory',
             'ControllerManager'              => 'Zend\Mvc\Service\ControllerManagerFactory',
             'ControllerPluginManager'        => 'Zend\Mvc\Service\ControllerPluginManagerFactory',
-            'ConsoleAdapter'                 => 'Zend\Mvc\Service\ConsoleAdapterFactory',
-            'ConsoleExceptionStrategy'       => ConsoleExceptionStrategyFactory::class,
-            'ConsoleRouter'                  => ConsoleRouterFactory::class,
-            'ConsoleRouteNotFoundStrategy'   => ConsoleRouteNotFoundStrategyFactory::class,
-            'ConsoleViewManager'             => 'Zend\Mvc\Service\ConsoleViewManagerFactory',
             'DependencyInjector'             => DiFactory::class,
             'DiAbstractServiceFactory'       => DiAbstractServiceFactoryFactory::class,
             'DiServiceInitializer'           => DiServiceInitializerFactory::class,
@@ -90,7 +82,6 @@ class ServiceListenerFactory implements FactoryInterface
             'HttpExceptionStrategy'          => HttpExceptionStrategyFactory::class,
             'HttpMethodListener'             => 'Zend\Mvc\Service\HttpMethodListenerFactory',
             'HttpRouteNotFoundStrategy'      => HttpRouteNotFoundStrategyFactory::class,
-            'HttpRouter'                     => HttpRouterFactory::class,
             'HttpViewManager'                => 'Zend\Mvc\Service\HttpViewManagerFactory',
             'HydratorManager'                => 'Zend\Mvc\Service\HydratorManagerFactory',
             'InjectTemplateListener'         => 'Zend\Mvc\Service\InjectTemplateListenerFactory',
@@ -101,12 +92,9 @@ class ServiceListenerFactory implements FactoryInterface
             'PaginatorPluginManager'         => 'Zend\Mvc\Service\PaginatorPluginManagerFactory',
             'Request'                        => 'Zend\Mvc\Service\RequestFactory',
             'Response'                       => 'Zend\Mvc\Service\ResponseFactory',
-            'Router'                         => 'Zend\Mvc\Service\RouterFactory',
-            'RoutePluginManager'             => 'Zend\Mvc\Service\RoutePluginManagerFactory',
             'SerializerAdapterManager'       => 'Zend\Mvc\Service\SerializerAdapterPluginManagerFactory',
             'TranslatorPluginManager'        => 'Zend\Mvc\Service\TranslatorPluginManagerFactory',
             'ValidatorManager'               => 'Zend\Mvc\Service\ValidatorManagerFactory',
-            View\Console\DefaultRenderingStrategy::class => InvokableFactory::class,
             'ViewHelperManager'              => 'Zend\Mvc\Service\ViewHelperManagerFactory',
             View\Http\DefaultRenderingStrategy::class => HttpDefaultRenderingStrategyFactory::class,
             'ViewFeedStrategy'               => 'Zend\Mvc\Service\ViewFeedStrategyFactory',
@@ -315,6 +303,5 @@ class ServiceListenerFactory implements FactoryInterface
         $this->defaultServiceConfig['aliases']['Config']      = 'config';
         $this->defaultServiceConfig['aliases']['request']     = 'Request';
         $this->defaultServiceConfig['aliases']['response']    = 'Response';
-        $this->defaultServiceConfig['aliases']['router']      = 'Router';
     }
 }

@@ -11,14 +11,13 @@ namespace ZendTest\Mvc\Controller;
 
 use PHPUnit_Framework_TestCase as TestCase;
 use ReflectionClass;
-use Zend\Console\Response as ConsoleResponse;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
 use Zend\Http\Request;
 use Zend\Http\Response;
 use Zend\Mvc\Controller\PluginManager;
 use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router\RouteMatch;
+use Zend\Router\RouteMatch;
 use Zend\ServiceManager\ServiceManager;
 
 class ActionControllerTest extends TestCase
@@ -224,21 +223,5 @@ class ActionControllerTest extends TestCase
         $model = $this->event->getViewModel();
         $this->controller->layout('alternate/layout');
         $this->assertEquals('alternate/layout', $model->getTemplate());
-    }
-
-    /**
-     * @group 3186
-     */
-    public function testNotFoundActionReturnsSuccessfullyForConsoleResponse()
-    {
-        $response     = new ConsoleResponse();
-        $result       = $this->controller->dispatch($this->request, $response);
-        $testResponse = $this->controller->getResponse();
-        $this->assertSame($response, $testResponse);
-        $this->assertInstanceOf('Zend\View\Model\ConsoleModel', $result);
-        $vars = $result->getVariables();
-        $this->assertTrue(isset($vars['result']));
-        $this->assertContains('Page not found', $vars['result']);
-        $this->assertEquals(1, $result->getErrorLevel());
     }
 }

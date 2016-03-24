@@ -13,10 +13,10 @@ use PHPUnit_Framework_TestCase as TestCase;
 use Zend\Http\Response;
 use Zend\Mvc\Controller\Plugin\Redirect as RedirectPlugin;
 use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router\Http\Literal as LiteralRoute;
-use Zend\Mvc\Router\Http\Segment as SegmentRoute;
-use Zend\Mvc\Router\RouteMatch;
-use Zend\Mvc\Router\SimpleRouteStack;
+use Zend\Router\Http\Literal as LiteralRoute;
+use Zend\Router\Http\Segment as SegmentRoute;
+use Zend\Router\RouteMatch;
+use Zend\Router\SimpleRouteStack;
 use ZendTest\Mvc\Controller\TestAsset\SampleController;
 
 class RedirectTest extends TestCase

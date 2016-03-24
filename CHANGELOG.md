@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.8.0 - TBD
+## 3.0.0 - TBD
+
+New major version! Please see:
+
+- [doc/book/migration/to-v3-0.md](doc/book/migration/to-v3-0.md)
+
+for full details on how to migrate your v2 application.
 
 ### Added
 
@@ -14,7 +20,19 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Removed
 
-- Nothing.
+- [#99](https://github.com/zendframework/zend-mvc/pull/99) removes all router
+  functionality (everything in the `Zend\Mvc\Router` namespace. This
+  functionality is now provided by the [zend-router](https://zendframework.github.io/zend-router/)
+  component, which becomes a requirement of zend-mvc. The removal also includes
+  all service factories related to routing, as they are provided by zend-router.
+- [#99](https://github.com/zendframework/zend-mvc/pull/99) removes all
+  console-related functionality, including the `AbstractConsoleController`, the
+  `CreateConsoleNotFoundModel` controller plugin, the `ConsoleResponseSender`,
+  and all classes under the `Zend\Mvc\View\Console` namespace; these are now
+  provided by the [zend-mvc-console](https://zendframework.github.io/zend-mvc-console/)
+  component. (That component also includes console-specific routes, which were
+  removed from zend-router.) All service factories related to console
+  functionality are also now provided by zend-mvc-console.
 
 ### Fixed
 

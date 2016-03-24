@@ -15,7 +15,7 @@ use Zend\Http\PhpEnvironment\Request;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\RouteListener;
-use Zend\Mvc\Router;
+use Zend\Router;
 
 class ModuleRouteListenerTest extends TestCase
 {
@@ -51,7 +51,7 @@ class ModuleRouteListenerTest extends TestCase
         $this->events->triggerEvent($event);
 
         $matches = $event->getRouteMatch();
-        $this->assertInstanceOf('Zend\Mvc\Router\RouteMatch', $matches);
+        $this->assertInstanceOf('Zend\Router\RouteMatch', $matches);
         $this->assertEquals('Foo\Index', $matches->getParam('controller'));
         $this->assertEquals('Index', $matches->getParam(ModuleRouteListener::ORIGINAL_CONTROLLER));
     }
@@ -75,7 +75,7 @@ class ModuleRouteListenerTest extends TestCase
         $this->events->triggerEvent($event);
 
         $matches = $event->getRouteMatch();
-        $this->assertInstanceOf('Zend\Mvc\Router\RouteMatch', $matches);
+        $this->assertInstanceOf('Zend\Router\RouteMatch', $matches);
         $this->assertEquals('Index', $matches->getParam('controller'));
     }
 
@@ -102,7 +102,7 @@ class ModuleRouteListenerTest extends TestCase
         $this->events->triggerEvent($event);
 
         $matches = $event->getRouteMatch();
-        $this->assertInstanceOf('Zend\Mvc\Router\RouteMatch', $matches);
+        $this->assertInstanceOf('Zend\Router\RouteMatch', $matches);
         $this->assertEquals('Foo\Index', $matches->getParam('controller'));
         $this->assertEquals('Index', $matches->getParam(ModuleRouteListener::ORIGINAL_CONTROLLER));
     }
@@ -131,7 +131,7 @@ class ModuleRouteListenerTest extends TestCase
         $this->events->triggerEvent($event);
 
         $matches = $event->getRouteMatch();
-        $this->assertInstanceOf('Zend\Mvc\Router\RouteMatch', $matches);
+        $this->assertInstanceOf('Zend\Router\RouteMatch', $matches);
         $this->assertEquals('Foo\SomeIndex', $matches->getParam('controller'));
         $this->assertEquals('some-index', $matches->getParam(ModuleRouteListener::ORIGINAL_CONTROLLER));
     }

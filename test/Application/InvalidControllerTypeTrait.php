@@ -14,9 +14,9 @@ use stdClass;
 use Zend\Http\PhpEnvironment\Response;
 use Zend\Mvc\Application;
 use Zend\Mvc\Controller\ControllerManager;
-use Zend\Mvc\Router;
 use Zend\Mvc\Service\ServiceManagerConfig;
 use Zend\Mvc\Service\ServiceListenerFactory;
+use Zend\Router;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Stdlib\ArrayUtils;
 use ZendTest\Mvc\TestAsset;
@@ -49,10 +49,14 @@ trait InvalidControllerTypeTrait
 
         $serviceConfig = ArrayUtils::merge(
             $serviceConfig,
+            (new Router\ConfigProvider())->getDependencyConfig()
+        );
+
+        $serviceConfig = ArrayUtils::merge(
+            $serviceConfig,
             [
                 'aliases' => [
                     'ControllerLoader'  => 'ControllerManager',
-                    'Router'            => 'HttpRouter',
                 ],
                 'factories' => [
                     'ControllerManager' => function ($services) {
@@ -61,6 +65,9 @@ trait InvalidControllerTypeTrait
                                 return new stdClass();
                             },
                         ]]);
+                    },
+                    'Router' => function ($services) {
+                        return $services->get('HttpRouter');
                     },
                 ],
                 'invokables' => [
