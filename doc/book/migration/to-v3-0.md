@@ -77,3 +77,24 @@ ensure console tooling continues to work.
 > recommend migrating your code to use standalone tools such as
 > [zf-console](https://github.com/zfcampus/zf-console) or
 > [Aura.Cli](https://github.com/auraphp/Aura.Cli).
+
+## Plugins
+
+The following plugins have been removed from the main zend-mvc repository, and
+into their own standalone repositories. In all cases, please be sure to install
+the [component installer as detailed above](#dependency-reduction) before
+installing the plugins, to automate injection into your application
+configuration.
+
+### prg()
+
+The `prg()` plugin is now provided via the
+[zend-mvc-plugin-prg](https://github.com/zendframework/zend-mvc-plugin-prg)
+component.
+
+```bash
+$ composer require zendframework/zend-mvc-plugin-prg
+```
+
+`Zend\Mvc\Controller\Plugin\PostRedirectGet` becomes
+`Zend\Mvc\Plugin\Prg\PostRedirectGet`. However, it is still mapped as `prg()`.

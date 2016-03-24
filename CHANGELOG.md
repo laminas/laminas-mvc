@@ -33,6 +33,9 @@ for full details on how to migrate your v2 application.
   component. (That component also includes console-specific routes, which were
   removed from zend-router.) All service factories related to console
   functionality are also now provided by zend-mvc-console.
+- [#104](https://github.com/zendframework/zend-mvc/pull/104) removes the `prg()`
+  plugin. It can now be installed separately via the
+  zendframework/zend-mvc-plugin-prg package.
 
 ### Fixed
 
