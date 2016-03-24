@@ -115,7 +115,7 @@ services configured out of the box.
   `Zend\Mvc\Service\ControllerPluginManagerFactory`. This instantiates the
   `Zend\Mvc\Controller\PluginManager` instance, passing it the service manager
   instance. It also uses the `DiAbstractServiceFactory` service, effectively
-  allowing you to fall back to DI in order to retrieve your [controller plugins](controller-plugins.md).
+  allowing you to fall back to DI in order to retrieve your [controller plugins](plugins.md).
   It registers a set of default controller plugins, and contains an
   initializer for injecting plugins with the current controller.
 

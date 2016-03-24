@@ -13,7 +13,10 @@ pages:
       - 'Controller Plugins': plugins.md
       - Examples: examples.md
       - 'Dispatching PSR-7 Middleware': middleware.md
-      - 'Migration Guide': migration.md
+      - Migration:
+          - "Migration Overview": migration/index.md
+          - 'v2.X to v2.7': migration/to-v2-7.md
+          - 'v2.X to v3.0': migration/to-v3-0.md
 site_name: zend-mvc
 site_description: 'zend-mvc: MVC application provider'
 repo_url: 'https://github.com/zendframework/zend-mvc'
