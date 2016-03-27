@@ -9,7 +9,7 @@
 
 namespace Zend\Mvc\Service;
 
-use Container\Interop\ContainerInterface;
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
