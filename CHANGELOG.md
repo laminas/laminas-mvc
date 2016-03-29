@@ -36,6 +36,11 @@ for full details on how to migrate your v2 application.
 - [#104](https://github.com/zendframework/zend-mvc/pull/104) removes the `prg()`
   plugin. It can now be installed separately via the
   zendframework/zend-mvc-plugin-prg package.
+- [#108](https://github.com/zendframework/zend-mvc/pull/108) removes the
+  `fileprg()`, `flashMessenger()`, and `identity()` plugins. These can be
+  installed via, respectively, the zendframework/zend-mvc-plugin-fileprg,
+  zendframework/zend-mvc-plugin-flashmessenger, and
+  zendframework/zend-mvc-plugin-identity packages.
 
 ### Fixed
 
