@@ -86,6 +86,51 @@ the [component installer as detailed above](#dependency-reduction) before
 installing the plugins, to automate injection into your application
 configuration.
 
+### fileprg()
+
+The `fileprg()` plugin is now provided via the
+[zend-mvc-plugin-fileprg](https://github.com/zendframework/zend-mvc-plugin-fileprg)
+component.
+
+```bash
+$ composer require zendframework/zend-mvc-plugin-fileprg
+```
+
+`Zend\Mvc\Controller\Plugin\FilePostRedirectGet` becomes
+`Zend\Mvc\Plugin\FilePrg\FilePostRedirectGet`. However, it is still mapped as
+`fileprg()`.
+
+### flashMessenger()
+
+The `flashMessenger()` plugin is now provided via the
+[zend-mvc-plugin-flashmessenger](https://github.com/zendframework/zend-mvc-plugin-flashmessenger)
+component.
+
+```bash
+$ composer require zendframework/zend-mvc-plugin-flashmessenger
+```
+
+`Zend\Mvc\Controller\Plugin\FlashMessenger` becomes
+`Zend\Mvc\Plugin\FlashMessenger\FlashMessenger`. However, it is still mapped as
+`flashMessenger()` and `flashmessenger()`.
+
+### identity()
+
+The `identity()` plugin is now provided via the
+[zend-mvc-plugin-identity](https://github.com/zendframework/zend-mvc-plugin-identity)
+component.
+
+```bash
+$ composer require zendframework/zend-mvc-plugin-identity
+```
+
+`Zend\Mvc\Controller\Plugin\Identity` becomes
+`Zend\Mvc\Plugin\Identity\Identity`. However, it is still mapped as
+`identity()`.
+
+Additionally, `Zend\Mvc\Controller\Plugin\Service\IdentityFactory` now becomes
+`Zend\Mvc\Plugin\Identity\IdentityFactory`.
+
 ### prg()
 
 The `prg()` plugin is now provided via the
