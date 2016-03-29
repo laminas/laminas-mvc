@@ -10,9 +10,7 @@
 namespace ZendTest\Mvc\Controller;
 
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Authentication\AuthenticationService;
 use Zend\Mvc\Controller\PluginManager;
-use Zend\ServiceManager\Config;
 use Zend\ServiceManager\Factory\InvokableFactory;
 use Zend\ServiceManager\ServiceManager;
 use ZendTest\Mvc\Controller\TestAsset\SampleController;
