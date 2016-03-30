@@ -78,6 +78,41 @@ ensure console tooling continues to work.
 > [zf-console](https://github.com/zfcampus/zf-console) or
 > [Aura.Cli](https://github.com/auraphp/Aura.Cli).
 
+## i18n integration
+
+Internationalization tooling, including:
+
+- the integration translator (`MvcTranslator` service)
+- the "dummy" translator
+- the `TranslatorAwareTreeRouteStack` implementation
+- factories for the translator and translator loader managers
+
+were removed, and re-assigned to the [zend-i18n](https://zendframework.github.io/zend-i18n/)
+and [zend-mvc-i18n](https://zendframework.github.io/zend-mvc-i18n/) packages.
+In most cases, you can install `zendframework/zend-mvc-i18n` to restore i18n
+functionality to your application:
+
+```bash
+$ composer require zendframework/zend-mvc-i18n
+```
+
+There are two categories of changes that could affect you on upgrading.
+
+First, if you were using the `TranslatorAwareTreeRouteStack`, the class name has
+changed from `Zend\Mvc\Router\Http\TranslatorAwareTreeRouteStack` to
+`Zend\Mvc\I18n\Router\TranslatorAwareTreeRouteStack`; updating your code to
+reflect that will allow it to work again.
+
+Second, if you were extending one of the service factories for either the
+`MvcTranslator` or the `TranslatorPluginManager`, the namespaces for the
+factories have changed. In such situations, you have two options:
+
+- Update your extensions to extend the new classes. See the [zend-mvc-i18n
+  migration guide](https://zendframework.github.io/zend-mvc-i18n/migration/v2-to-v3/)
+  to determine what names have changed.
+- Instead of extending, consider using [delegator factories](https://zendframework.github.io/zend-servicemanager/delegators/),
+  as these decorate the service factory, regardless of what factory is used.
+
 ## Plugins
 
 The following plugins have been removed from the main zend-mvc repository, and
