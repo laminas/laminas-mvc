@@ -25,12 +25,11 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
      *
      * These are *not* imported; that way they can be optional dependencies.
      *
-     * @todo Re-enable these once their components have been updated to zend-servicemanager v3
+     * @todo Remove these once their components have Modules defined.
      * @var array
      */
     protected $defaultHelperMapClasses = [
         'Zend\Form\View\HelperConfig',
-        'Zend\I18n\View\HelperConfig',
         'Zend\Navigation\View\HelperConfig',
     ];
 
