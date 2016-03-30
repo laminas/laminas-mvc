@@ -41,6 +41,13 @@ for full details on how to migrate your v2 application.
   installed via, respectively, the zendframework/zend-mvc-plugin-fileprg,
   zendframework/zend-mvc-plugin-flashmessenger, and
   zendframework/zend-mvc-plugin-identity packages.
+- [#110](https://github.com/zendframework/zend-mvc/pull/110) removes the
+  internationalization functionality from the component, including factories for
+  the translator and translator loader manager. This functionality is
+  now provided by the [zend-i18n](https://zendframework.github.io/zend-i18n/)
+  and [zend-mvc-i18n](https://zendframework.github.io/zend-mvc-i18n/) packages;
+  installing `zendframework/zend-mvc-i18n` will restore i18n functionality in
+  your application.
 
 ### Fixed
 
