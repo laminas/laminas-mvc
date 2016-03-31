@@ -68,7 +68,8 @@ class ConsoleExceptionStrategyFactory implements FactoryInterface
      */
     private function injectExceptionMessage(ExceptionStrategy $strategy, array $config)
     {
-        $message = isset($config['exception_message']) ? $config['exception_message'] : '';
-        $strategy->setMessage($message);
+        if (isset($config['exception_message'])) {
+            $strategy->setMessage($config['exception_message']);
+        }
     }
 }
