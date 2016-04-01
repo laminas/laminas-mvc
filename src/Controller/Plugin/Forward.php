@@ -182,9 +182,8 @@ class Forward extends AbstractPlugin
                 foreach ($events as $priority => $currentPriorityEvents) {
                     // v2 fix
                     if (!is_array($currentPriorityEvents)) {
-                        $currentPriorityEvents = array($currentPriorityEvents);
+                        $currentPriorityEvents = [$currentPriorityEvents];
                     }
-                    
                     // v3
                     foreach ($currentPriorityEvents as $currentEvent) {
                         $currentCallback = $currentEvent;
