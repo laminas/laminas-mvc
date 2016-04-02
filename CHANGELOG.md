@@ -51,7 +51,11 @@ for full details on how to migrate your v2 application.
 
 ### Fixed
 
-- Nothing.
+- [#113](https://github.com/zendframework/zend-mvc/pull/113) updates
+  `AbstractRestfulController` to make usage of zend-json for deserializing JSON
+  requests optional. `json_decode()` is now used by default, falling back to
+  `Zend\Json\Json::decode()` if it is available. If neither are available, an
+  exception is now thrown.
 
 ## 2.7.4 - TBD
 
