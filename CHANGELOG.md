@@ -57,6 +57,24 @@ for full details on how to migrate your v2 application.
   `Zend\Json\Json::decode()` if it is available. If neither are available, an
   exception is now thrown.
 
+## 2.7.5 - TBD
+
+### Added
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 2.7.4 - 2016-04-03
 
 ### Added
