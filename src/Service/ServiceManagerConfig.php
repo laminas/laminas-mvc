@@ -111,9 +111,11 @@ class ServiceManagerConfig extends Config
             },
             'ServiceManagerAwareInitializer' => function ($first, $second) {
                 if ($first instanceof ContainerInterface) {
+                    // zend-servicemanager v3
                     $container = $first;
                     $instance = $second;
                 } else {
+                    // zend-servicemanager v2
                     $container = $second;
                     $instance = $first;
                 }
@@ -129,10 +131,16 @@ class ServiceManagerConfig extends Config
                 }
             },
             'ServiceLocatorAwareInitializer' => function ($first, $second) {
-                if ($first instanceof ContainerInterface) {
+                if ($first instanceof AbstractPluginManager) {
+                    // Edge case under zend-servicemanager v2
+                    $container = $second;
+                    $instance = $first;
+                } elseif ($first instanceof ContainerInterface) {
+                    // zend-servicemanager v3
                     $container = $first;
                     $instance = $second;
                 } else {
+                    // zend-servicemanager v2
                     $container = $second;
                     $instance = $first;
                 }

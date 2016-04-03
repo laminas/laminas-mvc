@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.7.4 - TBD
+## 2.7.4 - 2016-04-03
 
 ### Added
 
@@ -18,7 +18,9 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#114](https://github.com/zendframework/zend-mvc/pull/114) fixes an issue in
+  the `ServiceLocatorAware` initializer whereby plugin manager instances were
+  falsely identified as the container instance when under zend-servicemanager v2.
 
 ## 2.7.3 - 2016-03-08
 
