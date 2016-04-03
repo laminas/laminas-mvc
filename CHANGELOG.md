@@ -57,7 +57,7 @@ for full details on how to migrate your v2 application.
   `Zend\Json\Json::decode()` if it is available. If neither are available, an
   exception is now thrown.
 
-## 2.7.4 - TBD
+## 2.7.4 - 2016-04-03
 
 ### Added
 
@@ -73,7 +73,9 @@ for full details on how to migrate your v2 application.
 
 ### Fixed
 
-- Nothing.
+- [#114](https://github.com/zendframework/zend-mvc/pull/114) fixes an issue in
+  the `ServiceLocatorAware` initializer whereby plugin manager instances were
+  falsely identified as the container instance when under zend-servicemanager v2.
 
 ## 2.7.3 - 2016-03-08
 
