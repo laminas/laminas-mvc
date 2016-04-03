@@ -13,6 +13,7 @@ use PHPUnit_Framework_TestCase as TestCase;
 use ReflectionClass;
 use stdClass;
 use Zend\EventManager\EventManager;
+use Zend\Mvc\Controller\PluginManager;
 use Zend\Mvc\Service\ServiceManagerConfig;
 use Zend\ServiceManager\Factory\InvokableFactory;
 use Zend\ServiceManager\ServiceManager;
@@ -40,6 +41,16 @@ class ServiceManagerConfigTest extends TestCase
         $this->config   = new ServiceManagerConfig();
         $this->services = new ServiceManager();
         $this->config->configureServiceManager($this->services);
+    }
+
+    /**
+     * Is this a v2 service manager?
+     *
+     * @return bool
+     */
+    public function isV2ServiceManager()
+    {
+        return (! method_exists($this->services, 'configure'));
     }
 
     /**
@@ -224,5 +235,67 @@ class ServiceManagerConfigTest extends TestCase
 
         $this->assertTrue($serviceManager->has('ServiceManager'), 'Missing ServiceManager service!');
         $this->assertSame($serviceManager, $serviceManager->get('ServiceManager'));
+    }
+
+    /**
+     * @see https://github.com/zendframework/zend-servicemanager/issues/109
+     */
+    public function testServiceLocatorAwareInitializerCanInjectPluginManagers()
+    {
+        if (! $this->isV2ServiceManager()) {
+            $this->markTestSkipped(sprintf(
+                '%s verifies backwards compatibility with the v2 series of zend-servicemanager',
+                __FUNCTION__
+            ));
+        }
+
+        $this->services->setFactory('test-plugins', function () {
+            return new PluginManager();
+        });
+
+        $deprecated = false;
+        set_error_handler(function ($errno, $errstr) use (&$deprecated) {
+            $deprecated = true;
+        }, E_USER_DEPRECATED);
+
+        $plugins = $this->services->get('test-plugins');
+
+        restore_error_handler();
+
+        $this->assertSame($this->services, $plugins->getServiceLocator());
+        $this->assertTrue($deprecated, 'Deprecation notice for ServiceLocatorAwareInitializer was not triggered');
+    }
+
+    /**
+     * @see https://github.com/zendframework/zend-servicemanager/issues/109
+     */
+    public function testServiceLocatorAwareInitializerWillNotReinjectPluginManagers()
+    {
+        if (! $this->isV2ServiceManager()) {
+            $this->markTestSkipped(sprintf(
+                '%s verifies backwards compatibility with the v2 series of zend-servicemanager',
+                __FUNCTION__
+            ));
+        }
+
+        $altServices = new ServiceManager();
+        $this->services->setFactory('test-plugins', function () use ($altServices) {
+            return new PluginManager($altServices);
+        });
+
+        $deprecated = false;
+        set_error_handler(function ($errno, $errstr) use (&$deprecated) {
+            $deprecated = true;
+        }, E_USER_DEPRECATED);
+
+        $plugins = $this->services->get('test-plugins');
+
+        restore_error_handler();
+
+        $this->assertSame($altServices, $plugins->getServiceLocator());
+        $this->assertFalse(
+            $deprecated,
+            'Deprecation notice for ServiceLocatorAwareInitializer was triggered, but should not have been'
+        );
     }
 }
