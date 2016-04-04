@@ -11,9 +11,9 @@ namespace Zend\Mvc\View\Http;
 
 use Zend\EventManager\AbstractListenerAggregate;
 use Zend\EventManager\EventManagerInterface as Events;
-use Zend\Filter\Word\CamelCaseToDash as CamelCaseToDashFilter;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\ModuleRouteListener;
+use Zend\Stdlib\StringUtils;
 use Zend\View\Model\ModelInterface as ViewModel;
 
 class InjectTemplateListener extends AbstractListenerAggregate
@@ -171,15 +171,22 @@ class InjectTemplateListener extends AbstractListenerAggregate
     /**
      * Inflect a name to a normalized value
      *
+     * Inlines the logic from zend-filter's Word\CamelCaseToDash filter.
+     *
      * @param  string $name
      * @return string
      */
     protected function inflectName($name)
     {
-        if (!$this->inflector) {
-            $this->inflector = new CamelCaseToDashFilter();
+        if (StringUtils::hasPcreUnicodeSupport()) {
+            $pattern     = ['#(?<=(?:\p{Lu}))(\p{Lu}\p{Ll})#', '#(?<=(?:\p{Ll}|\p{Nd}))(\p{Lu})#'];
+            $replacement = ['-\1', '-\1'];
+        } else {
+            $pattern     = ['#(?<=(?:[A-Z]))([A-Z]+)([A-Z][a-z])#', '#(?<=(?:[a-z0-9]))([A-Z])#'];
+            $replacement = ['\1-\2', '-\1'];
         }
-        $name = $this->inflector->filter($name);
+
+        $name = preg_replace($pattern, $replacement, $name);
         return strtolower($name);
     }
 
