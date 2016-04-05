@@ -48,6 +48,9 @@ for full details on how to migrate your v2 application.
   and [zend-mvc-i18n](https://zendframework.github.io/zend-mvc-i18n/) packages;
   installing `zendframework/zend-mvc-i18n` will restore i18n functionality in
   your application.
+- [#115](https://github.com/zendframework/zend-mvc/pull/115) removes the
+  requirement for zend-filter in the `InjectTemplateListener` by inlining the
+  logic from `Zend\Filter\Word\CamelCaseToDash`.
 
 ### Fixed
 
@@ -56,6 +59,17 @@ for full details on how to migrate your v2 application.
   requests optional. `json_decode()` is now used by default, falling back to
   `Zend\Json\Json::decode()` if it is available. If neither are available, an
   exception is now thrown.
+- [#115](https://github.com/zendframework/zend-mvc/pull/115) updates the
+  dependency list, per https://github.com/zendframework/maintainers/wiki/zend-mvc-v3-refactor:-reduce-components#required-components,
+  to do the following:
+  - Makes the following components required:
+    - zend-modulemanager
+    - zend-view
+  - Makes the following components optional:
+    - zend-form
+    - zend-hydrator
+    - zend-json
+    - zend-psr7bridge
 
 ## 2.7.5 - TBD
 
