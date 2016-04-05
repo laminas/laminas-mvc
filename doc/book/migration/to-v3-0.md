@@ -34,6 +34,28 @@ your application configuration. Components are pushed to the top of the module
 list, while modules are pushed to the end. As a development component, it will
 not be installed in your production distributions.
 
+## DI-ServiceManager integration
+
+The integration between [zend-servicemanager](https://zendframework.github.io/zend-servicemanager) and
+[zend-di](https://github.com/zendframework/zend-di) has been moved to a new
+standalone component, [zend-servicemanager-di](https://zendframework.github.io/zend-servicemanager-di/).
+In most cases, installing the component will restore the original behavior:
+
+```bash
+$ composer require zendframework/zend-servicemanager-di
+```
+
+> ### Manual installation
+>
+> The above assumes you're using the new component installer detailed in the
+> [dependency reduction](#dependency-reduction) section, above. If you are not,
+> you will need to inject the zend-servicemanager-di module into your
+> application manually; follow the [instructions in the zend-servicemanager-di documentation](https://zendframework.github.io/zend-servicemanager-di/)
+> to do so.
+
+The new component also contains a [migration document](https://zendframework.github.io/zend-servicemanager-di/migration/v2-to-v3/)
+detailing potential issues for users migrating to version 3.
+
 ## Routing
 
 Routing was removed from zend-mvc, and moved to a new component,
