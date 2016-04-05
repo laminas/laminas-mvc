@@ -19,13 +19,6 @@ use Zend\View\Model\ModelInterface as ViewModel;
 class InjectTemplateListener extends AbstractListenerAggregate
 {
     /**
-     * FilterInterface/inflector used to normalize names for use as template identifiers
-     *
-     * @var mixed
-     */
-    protected $inflector;
-
-    /**
      * Array of controller namespace -> template mappings
      *
      * @var array
@@ -162,7 +155,7 @@ class InjectTemplateListener extends AbstractListenerAggregate
 
             $template = trim($map . $controller, '/');
 
-            //inflect CamelCase to dash
+            // inflect CamelCase to dash
             return $this->inflectName($template);
         }
         return false;
