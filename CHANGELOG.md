@@ -77,6 +77,11 @@ for full details on how to migrate your v2 application.
   `Application` instance previously (whether in your bootstrap, a factory, or
   tests), you will need to update how you instantiate the instance. (The
   argument was removed as the value was never used.)
+- [#121](https://github.com/zendframework/zend-mvc/pull/121) removes the
+  functionality related to exposing and configuring the zend-log
+  `ProcessorPluginManager` and `WriterPluginManager`. That functionality is now
+  exposed directly by the zend-log component (with the addition of exposing the
+  `FilterPluginManager` and `FormatterPluginManager` as well).
 
 ### Fixed
 
