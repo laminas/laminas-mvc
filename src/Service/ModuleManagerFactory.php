@@ -80,12 +80,6 @@ class ModuleManagerFactory implements FactoryInterface
             'getRouteConfig'
         );
         $serviceListener->addServiceManager(
-            'SerializerAdapterManager',
-            'serializers',
-            'Zend\ModuleManager\Feature\SerializerProviderInterface',
-            'getSerializerConfig'
-        );
-        $serviceListener->addServiceManager(
             'HydratorManager',
             'hydrators',
             'Zend\ModuleManager\Feature\HydratorProviderInterface',

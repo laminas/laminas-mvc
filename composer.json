@@ -30,7 +30,6 @@
         "zendframework/zend-json": "^2.6.1 || ^3.0",
         "zendframework/zend-log": "^2.7.1",
         "zendframework/zend-psr7bridge": "^0.2",
-        "zendframework/zend-serializer": "^2.6.1",
         "fabpot/php-cs-fixer": "1.7.*",
         "phpunit/phpunit": "^4.5"
     },
@@ -49,7 +48,6 @@
         "zendframework/zend-mvc-plugin-identity": "To access the authenticated identity (per zend-authentication) in controllers",
         "zendframework/zend-mvc-plugin-prg": "To provide Post/Redirect/Get functionality within controllers",
         "zendframework/zend-psr7bridge": "(^0.2) To consume PSR-7 middleware within the MVC workflow",
-        "zendframework/zend-serializer": "Zend\\Serializer component",
         "zendframework/zend-servicemanager-di": "zend-servicemanager-di provides utilities for integrating zend-di and zend-servicemanager in your zend-mvc application",
         "zendframework/zend-view": "Zend\\View component"
     },
