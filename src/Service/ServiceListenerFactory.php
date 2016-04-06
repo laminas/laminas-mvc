@@ -70,7 +70,6 @@ class ServiceListenerFactory implements FactoryInterface
             'ControllerManager'              => 'Zend\Mvc\Service\ControllerManagerFactory',
             'ControllerPluginManager'        => 'Zend\Mvc\Service\ControllerPluginManagerFactory',
             'DispatchListener'               => 'Zend\Mvc\Service\DispatchListenerFactory',
-            'FilterManager'                  => 'Zend\Mvc\Service\FilterManagerFactory',
             'FormAnnotationBuilder'          => 'Zend\Mvc\Service\FormAnnotationBuilderFactory',
             'FormElementManager'             => 'Zend\Mvc\Service\FormElementManagerFactory',
             'HttpExceptionStrategy'          => HttpExceptionStrategyFactory::class,

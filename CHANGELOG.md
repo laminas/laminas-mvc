@@ -55,6 +55,10 @@ for full details on how to migrate your v2 application.
   functionality related to integrating zend-servicemanager and zend-di. If you
   used this functionality previously, it is now available via a separate
   package, [zend-servicemanager-di](https://zendframework.github.io/zend-servicemanager-di/]).
+- [#117](https://github.com/zendframework/zend-mvc/pull/117) removes the
+  functionality related to exposing and configuring the zend-filter
+  `FilterPluginManager`. That functionality is now exposed directly by the
+  zend-filter component.
 
 ### Fixed
 

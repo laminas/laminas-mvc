@@ -74,12 +74,6 @@ class ModuleManagerFactory implements FactoryInterface
             'getValidatorConfig'
         );
         $serviceListener->addServiceManager(
-            'FilterManager',
-            'filters',
-            'Zend\ModuleManager\Feature\FilterProviderInterface',
-            'getFilterConfig'
-        );
-        $serviceListener->addServiceManager(
             'FormElementManager',
             'form_elements',
             'Zend\ModuleManager\Feature\FormElementProviderInterface',
