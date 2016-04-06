@@ -217,3 +217,20 @@ $ composer require zendframework/zend-mvc-plugin-prg
 
 `Zend\Mvc\Controller\Plugin\PostRedirectGet` becomes
 `Zend\Mvc\Plugin\Prg\PostRedirectGet`. However, it is still mapped as `prg()`.
+
+## Validator integration
+
+In version 2, zend-mvc exposed a `ValidatorManager` service by default, and
+provided specifications to zend-modulemanager's `ServiceListener`
+to allow modules to provide validator configuration.
+
+This functionality is now removed from zend-mvc. It is now exposed directly by
+the [zend-validator](https://zendframework.github.io/zend-validator/) component
+itself. To add it, install zend-validator:
+
+```bash
+$ composer require zendframework/zend-validator
+```
+
+Note: the above assumes you have already installed zend-component-installer, per
+the section above on [dependency reduction](#dependency-reduction).

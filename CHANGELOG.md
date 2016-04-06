@@ -59,6 +59,10 @@ for full details on how to migrate your v2 application.
   functionality related to exposing and configuring the zend-filter
   `FilterPluginManager`. That functionality is now exposed directly by the
   zend-filter component.
+- [#118](https://github.com/zendframework/zend-mvc/pull/118) removes the
+  functionality related to exposing and configuring the zend-validator
+  `ValidatorPluginManager`. That functionality is now exposed directly by the
+  zend-validator component.
 
 ### Fixed
 
