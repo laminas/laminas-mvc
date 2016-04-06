@@ -97,6 +97,24 @@ for full details on how to migrate your v2 application.
     - zend-json
     - zend-psr7bridge
 
+## 2.7.7 - TBD
+
+### Added
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 2.7.6 - 2016-04-06
 
 ### Added
