@@ -169,7 +169,7 @@ class FilePostRedirectGet extends AbstractPlugin
      */
     public function getSessionContainer()
     {
-        if (!isset($this->sessionContainer)) {
+        if (!$this->sessionContainer) {
             $this->sessionContainer = new Container('file_prg_post1');
         }
         return $this->sessionContainer;

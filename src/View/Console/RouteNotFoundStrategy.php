@@ -451,7 +451,7 @@ class RouteNotFoundStrategy extends AbstractListenerAggregate
             return '';
         }
 
-        $reason    = (isset($this->reason) && !empty($this->reason)) ? $this->reason : 'unknown';
+        $reason    = (!empty($this->reason)) ? $this->reason : 'unknown';
         $reasons   = [
             Application::ERROR_CONTROLLER_NOT_FOUND => 'Could not match to a controller',
             Application::ERROR_CONTROLLER_INVALID   => 'Invalid controller specified',
