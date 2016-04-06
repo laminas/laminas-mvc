@@ -101,7 +101,8 @@ for full details on how to migrate your v2 application.
 
 ### Added
 
-- Nothing.
+- [#94](https://github.com/zendframework/zend-mvc/pull/94) adds a documentation
+  recipe for using middleware withing MVC event listeners.
 
 ### Deprecated
 
