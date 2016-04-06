@@ -13,7 +13,7 @@ If you have not yet done so, [install Composer](https://getcomposer.org/doc/00-i
 Once you have, use the `create-project` command to create a new application:
 
 ```bash
-$ git create-project -sdev zendframework/skeleton-application my-application
+$ composer create-project -sdev zendframework/skeleton-application my-application
 ```
 
 ## Create a New Module
