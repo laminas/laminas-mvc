@@ -19,7 +19,9 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#107](https://github.com/zendframework/zend-mvc/pull/107) fixes an incorrect
+  import statement in the `DiStrictAbstractServiceFactoryFactory` that prevented
+  it from working.
 
 ## 2.7.5 - 2016-04-06
 
