@@ -184,6 +184,34 @@ factories have changed. In such situations, you have two options:
 - Instead of extending, consider using [delegator factories](https://zendframework.github.io/zend-servicemanager/delegators/),
   as these decorate the service factory, regardless of what factory is used.
 
+## Log integration
+
+In version 2, zend-mvc exposed `LogProcessorManager` and `LogWriterManager`
+services by default, and provided specifications to zend-modulemanager's
+`ServiceListener` to allow modules to provide configuration for each.
+
+This functionality is now removed from zend-mvc. It is now exposed directly by
+the [zend-log](https://zendframework.github.io/zend-log/) component
+itself. To add it, install zend-log:
+
+```bash
+$ composer require zendframework/zend-log
+```
+
+Note: the above assumes you have already installed zend-component-installer, per
+the section above on [dependency reduction](#dependency-reduction).
+
+zend-log now also exposes `LogFilterManager` and `LogFormatterManager`,
+corresponding to the following:
+
+Service | Config Key | Provider Interface | Provider Method
+------- | ---------- | ------------------ | ---------------
+LogFilterManager | `log_filters` | `Zend\Log\Filter\LogFilterProviderInterface` | `getLogFilterConfig()`
+LogFormatterManager | `log_formatters` | `Zend\Log\Formatter\LogFormatterProviderInterface` | `getLogFormatterConfig()`
+
+This additions allow you to provide additional plugins for every aspect zend-log
+exposes.
+
 ## Plugins
 
 The following plugins have been removed from the main zend-mvc repository, and
