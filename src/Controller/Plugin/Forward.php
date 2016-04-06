@@ -179,32 +179,39 @@ class Forward extends AbstractPlugin
             foreach ($eventArray as $eventName => $classArray) {
                 $results[$id][$eventName] = [];
                 $events = $this->getSharedListenersById($id, $eventName, $sharedEvents);
-                foreach ($events as $priority => $currentEvent) {
-                    $currentCallback = $currentEvent;
-
-                    // zend-eventmanager v2 compatibility:
-                    if ($currentCallback instanceof CallbackHandler) {
-                        $currentCallback = $currentEvent->getCallback();
-                        $priority        = $currentEvent->getMetadatum('priority');
+                foreach ($events as $priority => $currentPriorityEvents) {
+                    // v2 fix
+                    if (!is_array($currentPriorityEvents)) {
+                        $currentPriorityEvents = [$currentPriorityEvents];
                     }
+                    // v3
+                    foreach ($currentPriorityEvents as $currentEvent) {
+                        $currentCallback = $currentEvent;
 
-                    // If we have an array, grab the object
-                    if (is_array($currentCallback)) {
-                        $currentCallback = array_shift($currentCallback);
-                    }
+                        // zend-eventmanager v2 compatibility:
+                        if ($currentCallback instanceof CallbackHandler) {
+                            $currentCallback = $currentEvent->getCallback();
+                            $priority = $currentEvent->getMetadatum('priority');
+                        }
 
-                    // This routine is only valid for object callbacks
-                    if (!is_object($currentCallback)) {
-                        continue;
-                    }
+                        // If we have an array, grab the object
+                        if (is_array($currentCallback)) {
+                            $currentCallback = array_shift($currentCallback);
+                        }
 
-                    foreach ($classArray as $class) {
-                        if ($currentCallback instanceof $class) {
-                            // Pass $currentEvent; when using zend-eventmanager v2,
-                            // this is the CallbackHandler, while in v3 it's
-                            // the actual listener.
-                            $this->detachSharedListener($id, $currentEvent, $sharedEvents);
-                            $results[$id][$eventName][$priority] = $currentEvent;
+                        // This routine is only valid for object callbacks
+                        if (!is_object($currentCallback)) {
+                            continue;
+                        }
+
+                        foreach ($classArray as $class) {
+                            if ($currentCallback instanceof $class) {
+                                // Pass $currentEvent; when using zend-eventmanager v2,
+                                // this is the CallbackHandler, while in v3 it's
+                                // the actual listener.
+                                $this->detachSharedListener($id, $currentEvent, $sharedEvents);
+                                $results[$id][$eventName][$priority] = $currentEvent;
+                            }
                         }
                     }
                 }
