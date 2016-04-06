@@ -34,6 +34,21 @@ your application configuration. Components are pushed to the top of the module
 list, while modules are pushed to the end. As a development component, it will
 not be installed in your production distributions.
 
+## Application class
+
+The following changes were made to the `Zend\Mvc\Application` constructor:
+
+- The first `$configuration` argument was removed, as it was not used.
+- Three additional, optional arguments were added:
+  - `Zend\EventManager\EventManagerInterface $events = null`
+  - `Zend\Stdlib\RequestInterface $request = null`
+  - `Zend\Stdlib\ResponseInterface $response = null`
+
+End-users using the skeleton application and the default `Application` factory
+will not notice a change. Those who are directly instantiating the `Application`
+instance (in production or test code) or who have created their own factory for
+the class will need to update their code.
+
 ## DI-ServiceManager integration
 
 The integration between [zend-servicemanager](https://zendframework.github.io/zend-servicemanager) and
