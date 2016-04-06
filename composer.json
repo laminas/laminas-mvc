@@ -24,7 +24,6 @@
         "container-interop/container-interop": "^1.1"
     },
     "require-dev": {
-        "zendframework/zend-di": "^2.6",
         "zendframework/zend-filter": "^2.6.1",
         "zendframework/zend-form": "^2.7",
         "zendframework/zend-hydrator": "^1.1 || ^2.1",
@@ -54,6 +53,7 @@
         "zendframework/zend-mvc-plugin-prg": "To provide Post/Redirect/Get functionality within controllers",
         "zendframework/zend-psr7bridge": "(^0.2) To consume PSR-7 middleware within the MVC workflow",
         "zendframework/zend-serializer": "Zend\\Serializer component",
+        "zendframework/zend-servicemanager-di": "zend-servicemanager-di provides utilities for integrating zend-di and zend-servicemanager in your zend-mvc application",
         "zendframework/zend-validator": "Zend\\Validator component",
         "zendframework/zend-view": "Zend\\View component"
     },
