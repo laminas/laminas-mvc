@@ -63,6 +63,10 @@ for full details on how to migrate your v2 application.
   functionality related to exposing and configuring the zend-validator
   `ValidatorPluginManager`. That functionality is now exposed directly by the
   zend-validator component.
+- [#119](https://github.com/zendframework/zend-mvc/pull/119) removes the
+  functionality related to exposing and configuring the zend-serializer
+  `SerializerAdapterManager`. That functionality is now exposed directly by the
+  zend-serializer component.
 
 ### Fixed
 
