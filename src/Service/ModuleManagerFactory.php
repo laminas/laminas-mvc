@@ -80,12 +80,6 @@ class ModuleManagerFactory implements FactoryInterface
             'getRouteConfig'
         );
         $serviceListener->addServiceManager(
-            'HydratorManager',
-            'hydrators',
-            'Zend\ModuleManager\Feature\HydratorProviderInterface',
-            'getHydratorConfig'
-        );
-        $serviceListener->addServiceManager(
             'InputFilterManager',
             'input_filters',
             'Zend\ModuleManager\Feature\InputFilterProviderInterface',

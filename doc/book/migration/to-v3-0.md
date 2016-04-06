@@ -117,6 +117,23 @@ $ composer require zendframework/zend-filter
 Note: the above assumes you have already installed zend-component-installer, per
 the section above on [dependency reduction](#dependency-reduction).
 
+## Hydrator integration
+
+In version 2, zend-mvc exposed a `HydratorManager` service by default, and
+provided specifications to zend-modulemanager's `ServiceListener`
+to allow modules to provide hydrator configuration.
+
+This functionality is now removed from zend-mvc. It is now exposed directly by
+the [zend-hydrator](https://zendframework.github.io/zend-hydrator/) component
+itself. To add it, install zend-hydrator:
+
+```bash
+$ composer require zendframework/zend-hydrator
+```
+
+Note: the above assumes you have already installed zend-component-installer, per
+the section above on [dependency reduction](#dependency-reduction).
+
 ## i18n integration
 
 Internationalization tooling, including:
