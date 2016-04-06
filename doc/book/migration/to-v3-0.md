@@ -100,6 +100,23 @@ ensure console tooling continues to work.
 > [zf-console](https://github.com/zfcampus/zf-console) or
 > [Aura.Cli](https://github.com/auraphp/Aura.Cli).
 
+## Filter integration
+
+In version 2, zend-mvc exposed a `FilterManager` service by default, and
+provided specifications to zend-modulemanager's `ServiceListener`
+to allow modules to provide filter configuration.
+
+This functionality is now removed from zend-mvc. It is now exposed directly by
+the [zend-filter](https://zendframework.github.io/zend-filter/) component
+itself. To add it, install zend-filter:
+
+```bash
+$ composer require zendframework/zend-filter
+```
+
+Note: the above assumes you have already installed zend-component-installer, per
+the section above on [dependency reduction](#dependency-reduction).
+
 ## i18n integration
 
 Internationalization tooling, including:
