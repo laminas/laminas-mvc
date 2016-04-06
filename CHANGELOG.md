@@ -114,7 +114,9 @@ for full details on how to migrate your v2 application.
 
 ### Fixed
 
-- Nothing.
+- [#107](https://github.com/zendframework/zend-mvc/pull/107) fixes an incorrect
+  import statement in the `DiStrictAbstractServiceFactoryFactory` that prevented
+  it from working.
 
 ## 2.7.5 - 2016-04-06
 
