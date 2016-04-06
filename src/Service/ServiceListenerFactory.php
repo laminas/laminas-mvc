@@ -76,7 +76,6 @@ class ServiceListenerFactory implements FactoryInterface
             'HttpMethodListener'             => 'Zend\Mvc\Service\HttpMethodListenerFactory',
             'HttpRouteNotFoundStrategy'      => HttpRouteNotFoundStrategyFactory::class,
             'HttpViewManager'                => 'Zend\Mvc\Service\HttpViewManagerFactory',
-            'HydratorManager'                => 'Zend\Mvc\Service\HydratorManagerFactory',
             'InjectTemplateListener'         => 'Zend\Mvc\Service\InjectTemplateListenerFactory',
             'InputFilterManager'             => 'Zend\Mvc\Service\InputFilterManagerFactory',
             'LogProcessorManager'            => 'Zend\Mvc\Service\LogProcessorManagerFactory',
