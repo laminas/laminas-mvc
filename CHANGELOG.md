@@ -75,7 +75,7 @@ for full details on how to migrate your v2 application.
     - zend-json
     - zend-psr7bridge
 
-## 2.7.5 - TBD
+## 2.7.5 - 2016-04-06
 
 ### Added
 
@@ -91,7 +91,10 @@ for full details on how to migrate your v2 application.
 
 ### Fixed
 
-- Nothing.
+- [#111](https://github.com/zendframework/zend-mvc/pull/111) fixes a bug in how
+  the `ConsoleExceptionStrategyFactory` whereby it was overwriting the default
+  exception message template with an empty string when no configuration for it
+  was provided.
 
 ## 2.7.4 - 2016-04-03
 
