@@ -51,6 +51,10 @@ for full details on how to migrate your v2 application.
 - [#115](https://github.com/zendframework/zend-mvc/pull/115) removes the
   requirement for zend-filter in the `InjectTemplateListener` by inlining the
   logic from `Zend\Filter\Word\CamelCaseToDash`.
+- [#116](https://github.com/zendframework/zend-mvc/pull/116) removes the
+  functionality related to integrating zend-servicemanager and zend-di. If you
+  used this functionality previously, it is now available via a separate
+  package, [zend-servicemanager-di](https://zendframework.github.io/zend-servicemanager-di/]).
 
 ### Fixed
 
