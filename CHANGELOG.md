@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.7.5 - TBD
+## 2.7.5 - 2016-04-06
 
 ### Added
 
@@ -18,7 +18,10 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#111](https://github.com/zendframework/zend-mvc/pull/111) fixes a bug in how
+  the `ConsoleExceptionStrategyFactory` whereby it was overwriting the default
+  exception message template with an empty string when no configuration for it
+  was provided.
 
 ## 2.7.4 - 2016-04-03
 
