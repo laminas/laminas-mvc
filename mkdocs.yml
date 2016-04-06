@@ -14,6 +14,8 @@ pages:
       - Examples: examples.md
       - 'Dispatching PSR-7 Middleware': middleware.md
       - 'Migration Guide': migration.md
+    - Cookbook:
+      - 'Using middleware within event listeners': cookbook/middleware-in-listeners.md
 site_name: zend-mvc
 site_description: 'zend-mvc: MVC application provider'
 repo_url: 'https://github.com/zendframework/zend-mvc'

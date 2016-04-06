@@ -27,7 +27,7 @@ a "controller" in the routing defaults, you provide "middleware":
 ```php
 // Via configuration:
 return [
-    'router' => 
+    'router' =>
         'routes' => [
             'home' => [
                 'type' => 'literal',

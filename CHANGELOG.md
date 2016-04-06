@@ -6,7 +6,8 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- Nothing.
+- [#94](https://github.com/zendframework/zend-mvc/pull/94) adds a documentation
+  recipe for using middleware withing MVC event listeners.
 
 ### Deprecated
 
