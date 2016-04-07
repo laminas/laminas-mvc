@@ -132,6 +132,31 @@ $ composer require zendframework/zend-filter
 Note: the above assumes you have already installed zend-component-installer, per
 the section above on [dependency reduction](#dependency-reduction).
 
+## Form integration
+
+In version 2, zend-mvc exposed several facilities related to zend-form:
+
+- `FormElementManager` mapped to a factory in zend-mvc, but created a
+  `Zend\Form\FormElementManager` instance.
+- `FormAnnotationBuilder` mapped to a factory in zend-mvc, but created a
+  `Zend\Form\Annotation\AnnotationBuilder` instance.
+- The `ServiceListenerFactory` registered `Zend\Form\FormAbstractServiceFactory`
+  as an abstract factory.
+- The `ModuleManagerFactory` registered specifications with the
+  zend-modulemanager `ServiceListener` to allow modules to provide form element
+  configuration.
+
+The above functionality is now removed from zend-mvc, and exposed directly by
+the [zend-form](https://github.com/zendframework/zend-form) component. To
+add/enable it, install zend-form:
+
+```bash
+$ composer require zendframework/zend-form
+```
+
+Note: the above assumes you have already installed zend-component-installer, per
+the section above on [dependency reduction](#dependency-reduction).
+
 ## Hydrator integration
 
 In version 2, zend-mvc exposed a `HydratorManager` service by default, and

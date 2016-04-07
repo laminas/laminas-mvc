@@ -68,12 +68,6 @@ class ModuleManagerFactory implements FactoryInterface
             'getViewHelperConfig'
         );
         $serviceListener->addServiceManager(
-            'FormElementManager',
-            'form_elements',
-            'Zend\ModuleManager\Feature\FormElementProviderInterface',
-            'getFormElementConfig'
-        );
-        $serviceListener->addServiceManager(
             'RoutePluginManager',
             'route_manager',
             'Zend\ModuleManager\Feature\RouteProviderInterface',

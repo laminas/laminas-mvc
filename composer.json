@@ -24,7 +24,6 @@
         "container-interop/container-interop": "^1.1"
     },
     "require-dev": {
-        "zendframework/zend-form": "^2.7",
         "zendframework/zend-json": "^2.6.1 || ^3.0",
         "zendframework/zend-psr7bridge": "^0.2",
         "fabpot/php-cs-fixer": "1.7.*",

@@ -36,7 +36,6 @@ class ServiceListenerFactory implements FactoryInterface
     /**
      * Default mvc-related service configuration -- can be overridden by modules.
      *
-     * @todo Re-enable form abstract service factory after zend-form updated to servicemanager v3.
      * @var array
      */
     protected $defaultServiceConfig = [
@@ -54,7 +53,6 @@ class ServiceListenerFactory implements FactoryInterface
             'ViewPhpRendererStrategy'                    => 'Zend\View\Strategy\PhpRendererStrategy',
             'ViewPhpRenderer'                            => 'Zend\View\Renderer\PhpRenderer',
             'ViewRenderer'                               => 'Zend\View\Renderer\PhpRenderer',
-            'Zend\Form\Annotation\FormAnnotationBuilder' => 'FormAnnotationBuilder',
             'Zend\Mvc\Controller\PluginManager'          => 'ControllerPluginManager',
             'Zend\Mvc\View\Http\InjectTemplateListener'  => 'InjectTemplateListener',
             'Zend\View\Renderer\RendererInterface'       => 'Zend\View\Renderer\PhpRenderer',
@@ -70,8 +68,6 @@ class ServiceListenerFactory implements FactoryInterface
             'ControllerManager'              => 'Zend\Mvc\Service\ControllerManagerFactory',
             'ControllerPluginManager'        => 'Zend\Mvc\Service\ControllerPluginManagerFactory',
             'DispatchListener'               => 'Zend\Mvc\Service\DispatchListenerFactory',
-            'FormAnnotationBuilder'          => 'Zend\Mvc\Service\FormAnnotationBuilderFactory',
-            'FormElementManager'             => 'Zend\Mvc\Service\FormElementManagerFactory',
             'HttpExceptionStrategy'          => HttpExceptionStrategyFactory::class,
             'HttpMethodListener'             => 'Zend\Mvc\Service\HttpMethodListenerFactory',
             'HttpRouteNotFoundStrategy'      => HttpRouteNotFoundStrategyFactory::class,
@@ -97,9 +93,6 @@ class ServiceListenerFactory implements FactoryInterface
             'Zend\View\Renderer\PhpRenderer' => ViewPhpRendererFactory::class,
             'Zend\View\Strategy\PhpRendererStrategy' => ViewPhpRendererStrategyFactory::class,
             'Zend\View\View'                 => ViewFactory::class,
-        ],
-        'abstract_factories' => [
-            'Zend\Form\FormAbstractServiceFactory',
         ],
     ];
 
