@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "28ace2e183fdccb1d849e004084b1be5",
-    "content-hash": "a970d798ed9d246288d5f7d395564e8f",
+    "hash": "727d3b581a8e95b8f5b2fd8fbcbc398d",
+    "content-hash": "e4870a45f802da05c7ed3f3174f16f1a",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -2317,16 +2317,16 @@
         },
         {
             "name": "zendframework/zend-inputfilter",
-            "version": "2.6.0",
+            "version": "2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-inputfilter.git",
-                "reference": "b3b043284b7eec2ae5a3c51e1f81db06f2e167a1"
+                "reference": "3d6c8dab9780c63d14c5649f83a7fbbadc9d16c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-inputfilter/zipball/b3b043284b7eec2ae5a3c51e1f81db06f2e167a1",
-                "reference": "b3b043284b7eec2ae5a3c51e1f81db06f2e167a1",
+                "url": "https://api.github.com/repos/zendframework/zend-inputfilter/zipball/3d6c8dab9780c63d14c5649f83a7fbbadc9d16c8",
+                "reference": "3d6c8dab9780c63d14c5649f83a7fbbadc9d16c8",
                 "shasum": ""
             },
             "require": {
@@ -2346,8 +2346,12 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.6-dev",
-                    "dev-develop": "2.7-dev"
+                    "dev-master": "2.7-dev",
+                    "dev-develop": "2.8-dev"
+                },
+                "zf": {
+                    "component": "Zend\\InputFilter",
+                    "config-provider": "Zend\\InputFilter\\ConfigProvider"
                 }
             },
             "autoload": {
@@ -2364,7 +2368,7 @@
                 "inputfilter",
                 "zf2"
             ],
-            "time": "2016-02-18 19:49:24"
+            "time": "2016-04-07 16:13:29"
         },
         {
             "name": "zendframework/zend-json",

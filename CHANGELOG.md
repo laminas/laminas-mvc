@@ -82,6 +82,10 @@ for full details on how to migrate your v2 application.
   `ProcessorPluginManager` and `WriterPluginManager`. That functionality is now
   exposed directly by the zend-log component (with the addition of exposing the
   `FilterPluginManager` and `FormatterPluginManager` as well).
+- [#123](https://github.com/zendframework/zend-mvc/pull/123) removes the
+  functionality related to exposing and configuring the zend-inputfilter
+  `InputFilterManager`. That functionality is now exposed directly by the
+  zend-inputfilter component.
 
 ### Fixed
 
