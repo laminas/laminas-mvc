@@ -149,6 +149,26 @@ $ composer require zendframework/zend-hydrator
 Note: the above assumes you have already installed zend-component-installer, per
 the section above on [dependency reduction](#dependency-reduction).
 
+## InputFilter integration
+
+In version 2, zend-mvc exposed a `InputFilterManager` service by default, and
+provided specifications to zend-modulemanager's `ServiceListener`
+to allow modules to provide validator configuration.
+
+This functionality is now removed from zend-mvc. It is now exposed directly by
+the [zend-inputfilter](https://zendframework.github.io/zend-inputfilter/) component
+itself. To add it, install zend-inputfilter:
+
+```bash
+$ composer require zendframework/zend-inputfilter
+```
+
+Note: the above assumes you have already installed zend-component-installer, per
+the section above on [dependency reduction](#dependency-reduction).
+
+zend-inputfilter now also exposes the `InputFilterAbstractServiceFactory` as an
+abstract factory by default.
+
 ## i18n integration
 
 Internationalization tooling, including:

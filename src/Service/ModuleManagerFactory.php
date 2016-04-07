@@ -79,12 +79,6 @@ class ModuleManagerFactory implements FactoryInterface
             'Zend\ModuleManager\Feature\RouteProviderInterface',
             'getRouteConfig'
         );
-        $serviceListener->addServiceManager(
-            'InputFilterManager',
-            'input_filters',
-            'Zend\ModuleManager\Feature\InputFilterProviderInterface',
-            'getInputFilterConfig'
-        );
 
         $events = $container->get('EventManager');
         $defaultListeners->attach($events);
