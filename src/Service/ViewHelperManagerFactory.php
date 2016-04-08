@@ -29,7 +29,6 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
      * @var array
      */
     protected $defaultHelperMapClasses = [
-        'Zend\Navigation\View\HelperConfig',
     ];
 
     /**
@@ -45,43 +44,8 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
         $options['factories'] = isset($options['factories']) ? $options['factories'] : [];
         $plugins = parent::__invoke($container, $requestedName, $options);
 
-        // Configure default helpers from other components
-        $plugins = $this->configureHelpers($plugins);
-
         // Override plugin factories
         $plugins = $this->injectOverrideFactories($plugins, $container);
-
-        return $plugins;
-    }
-
-    /**
-     * Configure helpers from other components.
-     *
-     * Loops through the list of default helper configuration classes, and uses
-     * each to configure the helper plugin manager.
-     *
-     * @param HelperPluginManager $plugins
-     * @return HelperPluginManager
-     */
-    private function configureHelpers(HelperPluginManager $plugins)
-    {
-        foreach ($this->defaultHelperMapClasses as $configClass) {
-            if (! is_string($configClass) || ! class_exists($configClass)) {
-                continue;
-            }
-
-            $config = new $configClass();
-
-            if (! $config instanceof ConfigInterface) {
-                throw new ServiceNotCreatedException(sprintf(
-                    'Invalid service manager configuration class provided; received "%s", expected class implementing %s',
-                    $configClass,
-                    ConfigInterface::class
-                ));
-            }
-
-            $config->configureServiceManager($plugins);
-        }
 
         return $plugins;
     }
