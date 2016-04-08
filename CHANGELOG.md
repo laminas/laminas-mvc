@@ -86,6 +86,11 @@ for full details on how to migrate your v2 application.
   functionality related to exposing and configuring the zend-inputfilter
   `InputFilterManager`. That functionality is now exposed directly by the
   zend-inputfilter component.
+- [#124](https://github.com/zendframework/zend-mvc/pull/124) removes the
+  functionality related to exposing and configuring zend-form, including the
+  `FormElementManager`, `FormAnnotationBuilder`, and the
+  `FormAbstractServiceFactory`. The functionality is now exposed directly by the
+  zend-form component.
 
 ### Fixed
 
