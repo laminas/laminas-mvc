@@ -29,7 +29,6 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
      * @var array
      */
     protected $defaultHelperMapClasses = [
-        'Zend\Form\View\HelperConfig',
         'Zend\Navigation\View\HelperConfig',
     ];
 
