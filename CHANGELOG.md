@@ -91,6 +91,10 @@ for full details on how to migrate your v2 application.
   `FormElementManager`, `FormAnnotationBuilder`, and the
   `FormAbstractServiceFactory`. The functionality is now exposed directly by the
   zend-form component.
+- [#125](https://github.com/zendframework/zend-mvc/pull/125) removes the
+  functionality from the `ViewHelperManager` factory for fetching configuration
+  classes from other components and using them to configure the instance. In all
+  cases, this is now done by the components themselves.
 
 ### Fixed
 
