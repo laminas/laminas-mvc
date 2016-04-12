@@ -34,6 +34,21 @@ your application configuration. Components are pushed to the top of the module
 list, while modules are pushed to the end. As a development component, it will
 not be installed in your production distributions.
 
+## Updated dependencies
+
+The v3 release now *requires*:
+
+- zend-http
+- zend-modulemanager
+- zend-router
+- zend-view
+
+Additionally, the following components require their v3 releases:
+
+- zend-eventmanager
+- zend-servicemanager
+- zend-stdlib
+
 ## Application class
 
 The following changes were made to the `Zend\Mvc\Application` constructor:
@@ -48,6 +63,20 @@ End-users using the skeleton application and the default `Application` factory
 will not notice a change. Those who are directly instantiating the `Application`
 instance (in production or test code) or who have created their own factory for
 the class will need to update their code.
+
+### send method
+
+The `send()` method has been deprecated since the 2.2 release, and a no-op since
+then as well. It is removed starting with the v3 release.
+
+## ControllerLoader
+
+The `ControllerLoader` service was deprecated early in the v2 lifecycle, and
+aliased to `ControllerManager`. The `ControllerLoader` factory was kept to
+prevent BC breaks due to extending the class.
+
+v3 removes the `ControllerLoaderFactory`, as well as the `ControllerLoader`
+service alias.
 
 ## DI-ServiceManager integration
 
@@ -70,6 +99,12 @@ $ composer require zendframework/zend-servicemanager-di
 
 The new component also contains a [migration document](https://zendframework.github.io/zend-servicemanager-di/migration/v2-to-v3/)
 detailing potential issues for users migrating to version 3.
+
+## DispatchListener
+
+The `marshallControllerNotFoundEvent()` method was deprecated early in the ZF2
+lifecycle, and has proxied to `marshalControllerNotFoundEvent()`. It is removed
+with the v3 release.
 
 ## Routing
 
@@ -340,6 +375,19 @@ $ composer require zendframework/zend-serializer
 Note: the above assumes you have already installed zend-component-installer, per
 the section above on [dependency reduction](#dependency-reduction).
 
+## ServiceLocatorAware initializers
+
+Starting with zend-servicemanager v3, that component no longer defines the
+`ServiceLocatorAwareInterface`. Since zend-mvc pins against zend-servicemanager
+v3 with its own v3 release, the initializers that injected the application
+container into implementations of that interface are no longer relevant. As
+such, they have now been removed from each of the
+`Zend\Mvc\Service\ServiceManagerConfig` and
+`Zend\Mvc\Controller\ControllerManager` classes.
+
+If you relied on this functionality, you are encouraged to update your code to
+use factories to inject your *actual* dependencies.
+
 ## Validator integration
 
 In version 2, zend-mvc exposed a `ValidatorManager` service by default, and
@@ -356,3 +404,9 @@ $ composer require zendframework/zend-validator
 
 Note: the above assumes you have already installed zend-component-installer, per
 the section above on [dependency reduction](#dependency-reduction).
+
+## Zend\Mvc\View\SendResponseListener
+
+`Zend\Mvc\View\SendResponseListener` was deprecated with the 2.2 release, and
+has been an extension of `Zend\Mvc\SendResponseListener` ever since. It is
+removed with the v3 release.
