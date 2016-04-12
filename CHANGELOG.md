@@ -95,6 +95,27 @@ for full details on how to migrate your v2 application.
   functionality from the `ViewHelperManager` factory for fetching configuration
   classes from other components and using them to configure the instance. In all
   cases, this is now done by the components themselves.
+- [#128](https://github.com/zendframework/zend-mvc/pull/128) removes the
+  `ControllerLoaderFactory`, and the `ControllerLoader` service alias; use
+  `ControllerManagerFactory` and `ControllerManager`, respectively, instead.
+- [#128](https://github.com/zendframework/zend-mvc/pull/128) removes
+  `Zend\Mvc\View\SendResponseListener`; use `Zend\Mvc\SendResponseListener`
+  instead.
+- [#128](https://github.com/zendframework/zend-mvc/pull/128) removes
+  `Application::send()`, which has been a no-op since 2.2.
+- [#128](https://github.com/zendframework/zend-mvc/pull/128) removes
+  `DispatchListener::marshallControllerNotFoundEvent()`, which has proxied to
+  `marshalControllerNotFoundEvent()` since 2.2.
+- [#128](https://github.com/zendframework/zend-mvc/pull/128) removes
+  the `ServiceLocatorAwareInterface` implementation
+  (`setServiceLocator()`/`getServiceLocator()` methods) from
+  `AbstractController`. You will need to inject your dependencies specifically
+  going forward.
+- [#128](https://github.com/zendframework/zend-mvc/pull/128) removes
+  the `ServiceLocatorAwareInterface` initializers defined in
+  `Zend\Mvc\Service\ServiceManagerConfig` and
+  `Zend\Mvc\Controller\ControllerManager`. You will need to inject your
+  dependencies specifically going forward.
 
 ### Fixed
 
@@ -103,17 +124,31 @@ for full details on how to migrate your v2 application.
   requests optional. `json_decode()` is now used by default, falling back to
   `Zend\Json\Json::decode()` if it is available. If neither are available, an
   exception is now thrown.
-- [#115](https://github.com/zendframework/zend-mvc/pull/115) updates the
+- [#115](https://github.com/zendframework/zend-mvc/pull/115) and
+  [#128](https://github.com/zendframework/zend-mvc/pull/128) update the
   dependency list, per https://github.com/zendframework/maintainers/wiki/zend-mvc-v3-refactor:-reduce-components#required-components,
   to do the following:
   - Makes the following components required:
+    - zend-http
     - zend-modulemanager
+    - zend-router
     - zend-view
   - Makes the following components optional:
-    - zend-form
-    - zend-hydrator
     - zend-json
     - zend-psr7bridge
+  - And pares the suggestion list down to:
+    - zend-mvc-console
+    - zend-mvc-i18n
+    - zend-mvc-plugin-fileprg
+    - zend-mvc-plugin-flashmessenger
+    - zend-mvc-plugin-identity
+    - zend-mvc-plugin-prg
+    - zend-servicemanager-di
+- [#128](https://github.com/zendframework/zend-mvc/pull/128) bumps the minimum
+  supported version of zend-eventmanager, zend-servicemanager, and zend-stdlib
+  to their v3 releases.
+- [#128](https://github.com/zendframework/zend-mvc/pull/128) bumps the minimum
+  supported PHP version to 5.6.
 
 ## 2.7.7 - TBD
 
