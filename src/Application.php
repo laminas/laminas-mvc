@@ -351,13 +351,6 @@ class Application implements
     }
 
     /**
-     * @deprecated
-     */
-    public function send()
-    {
-    }
-
-    /**
      * Complete the request
      *
      * Triggers "render" and "finish" events, and returns response from
