@@ -49,6 +49,8 @@ Additionally, the following components require their v3 releases:
 - zend-servicemanager
 - zend-stdlib
 
+The minimum supported PHP version was bumped to 5.6.
+
 ## Application class
 
 The following changes were made to the `Zend\Mvc\Application` constructor:
