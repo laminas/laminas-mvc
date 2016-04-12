@@ -16,7 +16,6 @@ use Zend\Mvc\Exception;
 use Zend\ServiceManager\AbstractPluginManager;
 use Zend\ServiceManager\ConfigInterface;
 use Zend\ServiceManager\Exception\InvalidServiceException;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\Stdlib\DispatchableInterface;
 
 /**
