@@ -150,6 +150,24 @@ for full details on how to migrate your v2 application.
 - [#128](https://github.com/zendframework/zend-mvc/pull/128) bumps the minimum
   supported PHP version to 5.6.
 
+## 2.7.8 - TBD
+
+### Added
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 2.7.7 - 2016-04-12
 
 ### Added
