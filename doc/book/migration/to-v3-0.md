@@ -385,6 +385,9 @@ such, they have now been removed from each of the
 `Zend\Mvc\Service\ServiceManagerConfig` and
 `Zend\Mvc\Controller\ControllerManager` classes.
 
+Additionally, the duck-typed `ServiceLocatorAwareInterface` implementation in
+`AbstractController` was removed, as messaged in the 2.7 release.
+
 If you relied on this functionality, you are encouraged to update your code to
 use factories to inject your *actual* dependencies.
 
