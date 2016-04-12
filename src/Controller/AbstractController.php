@@ -17,7 +17,6 @@ use Zend\Http\PhpEnvironment\Response as HttpResponse;
 use Zend\Http\Request as HttpRequest;
 use Zend\Mvc\InjectApplicationEventInterface;
 use Zend\Mvc\MvcEvent;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Stdlib\DispatchableInterface as Dispatchable;
 use Zend\Stdlib\RequestInterface as Request;
@@ -55,11 +54,6 @@ abstract class AbstractController implements
      * @var Response
      */
     protected $response;
-
-    /**
-     * @var ServiceLocatorInterface
-     */
-    protected $serviceLocator;
 
     /**
      * @var Event
@@ -221,36 +215,6 @@ abstract class AbstractController implements
         }
 
         return $this->event;
-    }
-
-    /**
-     * Set serviceManager instance
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return void
-     */
-    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-    }
-
-    /**
-     * Retrieve serviceManager instance
-     *
-     * @return ServiceLocatorInterface
-     */
-    public function getServiceLocator()
-    {
-        trigger_error(sprintf(
-            'You are retrieving the service locator from within the class %s. Please be aware that '
-            . 'ServiceLocatorAwareInterface is deprecated and will be removed in version 3.0, along '
-            . 'with the ServiceLocatorAwareInitializer. You will need to update your class to accept '
-            . 'all dependencies at creation, either via constructor arguments or setters, and use '
-            . 'a factory to perform the injections.',
-            get_class($this)
-        ), E_USER_DEPRECATED);
-
-        return $this->serviceLocator;
     }
 
     /**

@@ -18,9 +18,7 @@ use Zend\EventManager\SharedEventManagerInterface;
 use Zend\ModuleManager\Listener\ServiceListener;
 use Zend\ModuleManager\ModuleManager;
 use Zend\ServiceManager\Config;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceManager;
-use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\Stdlib\ArrayUtils;
 
 class ServiceManagerConfig extends Config
@@ -68,8 +66,6 @@ class ServiceManagerConfig extends Config
      *
      * - factory for the service 'SharedEventManager'.
      * - initializer for EventManagerAwareInterface implementations
-     * - initializer for ServiceManagerAwareInterface implementations
-     * - initializer for ServiceLocatorAwareInterface implementations
      *
      * @param  array $config
      */
