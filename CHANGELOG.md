@@ -18,7 +18,9 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#122](https://github.com/zendframework/zend-mvc/pull/122) fixes the
+  `FormAnnotationBuilderFactory` to use the container's `get()` method instead
+  of `build()` to retrieve the event manager instance.
 
 ## 2.7.6 - 2016-04-06
 

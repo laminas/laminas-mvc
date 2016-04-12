@@ -31,8 +31,8 @@ class FormAnnotationBuilderFactory implements FactoryInterface
     {
         //setup a form factory which can use custom form elements
         $annotationBuilder = new AnnotationBuilder();
-        $eventManager       = $container->build('EventManager');
-        $annotationBuilder->setEventManager($ventManager);
+        $eventManager       = $container->get('EventManager');
+        $annotationBuilder->setEventManager($eventManager);
 
         $formElementManager = $container->get('FormElementManager');
         $formElementManager->injectFactory($container, $annotationBuilder);
