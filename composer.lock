@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "225530361625ac35e658c2d9442cb74b",
-    "content-hash": "c66a925dc893e75ce0c7cd547a6a05bc",
+    "hash": "1d6eba4943579e57d8eb8db838e41f45",
+    "content-hash": "1177fa09dc136e723d426e41e332085f",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -286,16 +286,16 @@
         },
         {
             "name": "zendframework/zend-router",
-            "version": "3.0.0",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-router.git",
-                "reference": "770bc5408517a593f3142abf145626942f2661b2"
+                "reference": "5a4666ced887d2a9e920e8aaa604b3cc39648b1a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-router/zipball/770bc5408517a593f3142abf145626942f2661b2",
-                "reference": "770bc5408517a593f3142abf145626942f2661b2",
+                "url": "https://api.github.com/repos/zendframework/zend-router/zipball/5a4666ced887d2a9e920e8aaa604b3cc39648b1a",
+                "reference": "5a4666ced887d2a9e920e8aaa604b3cc39648b1a",
                 "shasum": ""
             },
             "require": {
@@ -321,7 +321,8 @@
                     "dev-develop": "3.1-dev"
                 },
                 "zf": {
-                    "component": "Zend\\Mvc\\Router"
+                    "component": "Zend\\Router",
+                    "config-provider": "Zend\\Router\\ConfigProvider"
                 }
             },
             "autoload": {
@@ -339,7 +340,7 @@
                 "routing",
                 "zf2"
             ],
-            "time": "2016-03-21 13:27:20"
+            "time": "2016-04-18 17:04:31"
         },
         {
             "name": "zendframework/zend-servicemanager",
@@ -558,16 +559,16 @@
         },
         {
             "name": "zendframework/zend-view",
-            "version": "2.6.5",
+            "version": "2.6.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-view.git",
-                "reference": "b6cbad62a95ba9bf1ce8814bbd4a1d2316041cb9"
+                "reference": "9993386447a618a39e6e8105026f5874720c7d3f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-view/zipball/b6cbad62a95ba9bf1ce8814bbd4a1d2316041cb9",
-                "reference": "b6cbad62a95ba9bf1ce8814bbd4a1d2316041cb9",
+                "url": "https://api.github.com/repos/zendframework/zend-view/zipball/9993386447a618a39e6e8105026f5874720c7d3f",
+                "reference": "9993386447a618a39e6e8105026f5874720c7d3f",
                 "shasum": ""
             },
             "require": {
@@ -595,6 +596,7 @@
                 "zendframework/zend-navigation": "^2.5",
                 "zendframework/zend-paginator": "^2.5",
                 "zendframework/zend-permissions-acl": "^2.6",
+                "zendframework/zend-router": "^3.0.1",
                 "zendframework/zend-serializer": "^2.6.1",
                 "zendframework/zend-servicemanager": "^2.7.5 || ^3.0.3",
                 "zendframework/zend-session": "^2.6.2",
@@ -637,7 +639,7 @@
                 "view",
                 "zf2"
             ],
-            "time": "2016-03-21 18:04:51"
+            "time": "2016-04-18 20:04:21"
         }
     ],
     "packages-dev": [
@@ -2228,7 +2230,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^5.5 || ^7.0"
+        "php": "^5.6 || ^7.0"
     },
     "platform-dev": []
 }

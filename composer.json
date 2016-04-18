@@ -17,10 +17,10 @@
         "zendframework/zend-eventmanager": "^3.0",
         "zendframework/zend-http": "^2.5.4",
         "zendframework/zend-modulemanager": "^2.7.1",
-        "zendframework/zend-router": "^3.0",
+        "zendframework/zend-router": "^3.0.1",
         "zendframework/zend-servicemanager": "^3.0.3",
         "zendframework/zend-stdlib": "^3.0",
-        "zendframework/zend-view": "^2.6.3",
+        "zendframework/zend-view": "^2.6.7",
         "container-interop/container-interop": "^1.1"
     },
     "require-dev": {
