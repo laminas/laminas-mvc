@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1a4d813b0851239ede05d72dc76f54ec",
-    "content-hash": "89c0ae2ea905656dfc72767ccef7eaf6",
+    "hash": "1d6eba4943579e57d8eb8db838e41f45",
+    "content-hash": "1177fa09dc136e723d426e41e332085f",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -559,16 +559,16 @@
         },
         {
             "name": "zendframework/zend-view",
-            "version": "2.6.6",
+            "version": "2.6.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-view.git",
-                "reference": "9766ae0fa65fac89d592099c0778bad333ad9424"
+                "reference": "9993386447a618a39e6e8105026f5874720c7d3f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-view/zipball/9766ae0fa65fac89d592099c0778bad333ad9424",
-                "reference": "9766ae0fa65fac89d592099c0778bad333ad9424",
+                "url": "https://api.github.com/repos/zendframework/zend-view/zipball/9993386447a618a39e6e8105026f5874720c7d3f",
+                "reference": "9993386447a618a39e6e8105026f5874720c7d3f",
                 "shasum": ""
             },
             "require": {
@@ -596,6 +596,7 @@
                 "zendframework/zend-navigation": "^2.5",
                 "zendframework/zend-paginator": "^2.5",
                 "zendframework/zend-permissions-acl": "^2.6",
+                "zendframework/zend-router": "^3.0.1",
                 "zendframework/zend-serializer": "^2.6.1",
                 "zendframework/zend-servicemanager": "^2.7.5 || ^3.0.3",
                 "zendframework/zend-session": "^2.6.2",
@@ -638,7 +639,7 @@
                 "view",
                 "zf2"
             ],
-            "time": "2016-04-18 19:20:22"
+            "time": "2016-04-18 20:04:21"
         }
     ],
     "packages-dev": [
