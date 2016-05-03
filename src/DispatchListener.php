@@ -101,7 +101,7 @@ class DispatchListener extends AbstractListenerAggregate
         } catch (\Throwable $exception) {
             $return = $this->marshalBadControllerEvent($controllerName, $e, $application, $exception);
             return $this->complete($return, $e);
-        } catch (\Exception $exception) {
+        } catch (\Exception $exception) {  // @TODO clean up once PHP 7 requirement is enforced
             $return = $this->marshalBadControllerEvent($controllerName, $e, $application, $exception);
             return $this->complete($return, $e);
         }
@@ -118,7 +118,7 @@ class DispatchListener extends AbstractListenerAggregate
             $return = $controller->dispatch($request, $response);
         } catch (\Throwable $ex) {
             $caughtException = $ex;
-        } catch (\Exception $ex) {
+        } catch (\Exception $ex) {  // @TODO clean up once PHP 7 requirement is enforced
             $caughtException = $ex;
         }
 
@@ -145,7 +145,7 @@ class DispatchListener extends AbstractListenerAggregate
     {
         $error     = $e->getError();
         $exception = $e->getParam('exception');
-        if ($exception instanceof \Exception || $exception instanceof \Throwable) {
+        if ($exception instanceof \Exception || $exception instanceof \Throwable) {  // @TODO clean up once PHP 7 requirement is enforced
             zend_monitor_custom_event_ex($error, $exception->getMessage(), 'Zend Framework Exception', ['code' => $exception->getCode(), 'trace' => $exception->getTraceAsString()]);
         }
     }

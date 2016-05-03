@@ -62,7 +62,7 @@ class MiddlewareListener extends AbstractListenerAggregate
             $return = $middleware(Psr7Request::fromZend($request), Psr7Response::fromZend($response));
         } catch (\Throwable $exception) {
             $caughtException = $exception;
-        } catch (\Exception $exception) {
+        } catch (\Exception $exception) {  // @TODO clean up once PHP 7 requirement is enforced
             $caughtException = $exception;
         }
 

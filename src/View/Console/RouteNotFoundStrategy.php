@@ -460,7 +460,7 @@ class RouteNotFoundStrategy extends AbstractListenerAggregate
         ];
         $report = sprintf("\nReason for failure: %s\n", $reasons[$reason]);
 
-        while ($exception instanceof \Exception || $exception instanceof \Throwable) {
+        while ($exception instanceof \Exception || $exception instanceof \Throwable) {  // @TODO clean up once PHP 7 requirement is enforced
             $report   .= sprintf("Exception: %s\nTrace:\n%s\n", $exception->getMessage(), $exception->getTraceAsString());
             $exception = $exception->getPrevious();
         }
