@@ -99,9 +99,17 @@ class DefaultRenderingStrategy extends AbstractListenerAggregate
         $view->setRequest($request);
         $view->setResponse($response);
 
+        $caughtException = null;
+
         try {
             $view->render($viewModel);
+        } catch (\Throwable $ex) {
+            $caughtException = $ex;
         } catch (\Exception $ex) {
+            $caughtException = $ex;
+        }
+
+        if ($caughtException !== null) {
             if ($e->getName() === MvcEvent::EVENT_RENDER_ERROR) {
                 throw $ex;
             }

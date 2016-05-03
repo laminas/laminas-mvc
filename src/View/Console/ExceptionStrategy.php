@@ -184,7 +184,7 @@ EOT;
                 if (is_callable($this->message)) {
                     $callback = $this->message;
                     $message = (string) $callback($exception, $this->displayExceptions);
-                } elseif ($this->displayExceptions && $exception instanceof \Exception) {
+                } elseif ($this->displayExceptions && ($exception instanceof \Exception || $exception instanceof \Throwable)) {
                     $previous = '';
                     $previousException = $exception->getPrevious();
                     while ($previousException) {
