@@ -62,7 +62,7 @@ if ($events instanceof EventManagerInterface) {
 }
 ```
 
-In zend-eventmanager v3, event manager's are now injected with the shared
+In zend-eventmanager v3, event managers are now injected with the shared
 manager at instantiation, and no setter exists for providing the shared manager.
 As such, the above logic changed to:
 
