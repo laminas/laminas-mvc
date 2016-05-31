@@ -12,7 +12,6 @@ namespace Zend\Mvc\View\Http;
 use Zend\EventManager\AbstractListenerAggregate;
 use Zend\EventManager\EventManagerInterface as Events;
 use Zend\Mvc\MvcEvent;
-use Zend\Mvc\ModuleRouteListener;
 use Zend\Stdlib\StringUtils;
 use Zend\View\Model\ModelInterface as ViewModel;
 
@@ -73,28 +72,6 @@ class InjectTemplateListener extends AbstractListenerAggregate
         }
 
         $template = $this->mapController($controller);
-        if (!$template) {
-            $module     = $this->deriveModuleNamespace($controller);
-
-            if ($namespace = $routeMatch->getParam(ModuleRouteListener::MODULE_NAMESPACE)) {
-                $controllerSubNs = $this->deriveControllerSubNamespace($namespace);
-                if (!empty($controllerSubNs)) {
-                    if (!empty($module)) {
-                        $module .= '/' . $controllerSubNs;
-                    } else {
-                        $module = $controllerSubNs;
-                    }
-                }
-            }
-
-            $controller = $this->deriveControllerClass($controller);
-            $template   = $this->inflectName($module);
-
-            if (!empty($template)) {
-                $template .= '/';
-            }
-            $template  .= $this->inflectName($controller);
-        }
 
         $action     = $routeMatch->getParam('action');
         if (null !== $action) {
@@ -124,10 +101,7 @@ class InjectTemplateListener extends AbstractListenerAggregate
      */
     public function mapController($controller)
     {
-        if (! is_string($controller)) {
-            return false;
-        }
-
+        $mapped = '';
         foreach ($this->controllerMap as $namespace => $replacement) {
             if (// Allow disabling rule by setting value to false since config
                 // merging have no feature to remove entries
@@ -138,27 +112,26 @@ class InjectTemplateListener extends AbstractListenerAggregate
                 continue;
             }
 
-            $map = '';
             // Map namespace to $replacement if its value is string
             if (is_string($replacement)) {
-                $map = rtrim($replacement, '/') . '/';
+                $mapped = rtrim($replacement, '/') . '/';
                 $controller = substr($controller, strlen($namespace) + 1) ?: '';
+                break;
             }
-
-            //strip Controller namespace(s) (but not classname)
-            $parts = explode('\\', $controller);
-            array_pop($parts);
-            $parts = array_diff($parts, ['Controller']);
-            //strip trailing Controller in class name
-            $parts[] = $this->deriveControllerClass($controller);
-            $controller = implode('/', $parts);
-
-            $template = trim($map . $controller, '/');
-
-            // inflect CamelCase to dash
-            return $this->inflectName($template);
         }
-        return false;
+
+        //strip Controller namespace(s) (but not classname)
+        $parts = explode('\\', $controller);
+        array_pop($parts);
+        $parts = array_diff($parts, ['Controller']);
+        //strip trailing Controller in class name
+        $parts[] = $this->deriveControllerClass($controller);
+        $controller = implode('/', $parts);
+
+        $template = trim($mapped . $controller, '/');
+
+        // inflect CamelCase to dash
+        return $this->inflectName($template);
     }
 
     /**
@@ -181,40 +154,6 @@ class InjectTemplateListener extends AbstractListenerAggregate
 
         $name = preg_replace($pattern, $replacement, $name);
         return strtolower($name);
-    }
-
-    /**
-     * Determine the top-level namespace of the controller
-     *
-     * @param  string $controller
-     * @return string
-     */
-    protected function deriveModuleNamespace($controller)
-    {
-        if (!strstr($controller, '\\')) {
-            return '';
-        }
-        $module = substr($controller, 0, strpos($controller, '\\'));
-        return $module;
-    }
-
-    /**
-     * @param $namespace
-     * @return string
-     */
-    protected function deriveControllerSubNamespace($namespace)
-    {
-        if (!strstr($namespace, '\\')) {
-            return '';
-        }
-        $nsArray = explode('\\', $namespace);
-
-        // Remove the first two elements representing the module and controller directory.
-        $subNsArray = array_slice($nsArray, 2);
-        if (empty($subNsArray)) {
-            return '';
-        }
-        return implode('/', $subNsArray);
     }
 
     /**
