@@ -150,11 +150,16 @@ for full details on how to migrate your v2 application.
 - [#128](https://github.com/zendframework/zend-mvc/pull/128) bumps the minimum
   supported PHP version to 5.6.
 
-## 2.7.8 - TBD
+## 2.7.8 - 2016-05-31
 
 ### Added
 
-- Nothing.
+- [#138](https://github.com/zendframework/zend-mvc/pull/138) adds support for
+  PHP 7 `Throwable`s within each of:
+  - `DispatchListener`
+  - `MiddlewareListener`
+  - The console `RouteNotFoundStrategy` and `ExceptionStrategy`
+  - The HTTP `DefaultRenderingStrategy` and `RouteNotFoundStrategy`
 
 ### Deprecated
 

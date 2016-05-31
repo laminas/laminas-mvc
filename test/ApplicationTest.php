@@ -298,7 +298,7 @@ class ApplicationTest extends TestCase
         return $this->application;
     }
 
-    public function setupBadController($addService = true)
+    public function setupBadController($addService = true, $action = 'test')
     {
         $request = $this->serviceManager->get('Request');
         $request->setUri('http://example.local/bad');
@@ -308,7 +308,7 @@ class ApplicationTest extends TestCase
             'route'    => '/bad',
             'defaults' => [
                 'controller' => 'bad',
-                'action'     => 'test',
+                'action'     => $action,
             ],
         ]);
         $router->addRoute('bad', $route);
@@ -379,6 +379,25 @@ class ApplicationTest extends TestCase
         $result = $application->run();
         $this->assertSame($application, $result, get_class($result));
         $this->assertSame($response, $result->getResponse(), get_class($result));
+    }
+
+    /**
+     * @requires PHP 7.0
+     * @group error-handling
+     */
+    public function testPhp7ErrorRaisedInDispatchableShouldRaiseDispatchErrorEvent()
+    {
+        $this->setupBadController(true, 'test-php7-error');
+        $response = $this->application->getResponse();
+        $events   = $this->application->getEventManager();
+        $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) use ($response) {
+            $exception = $e->getParam('exception');
+            $response->setContent($exception->getMessage());
+            return $response;
+        });
+
+        $this->application->run();
+        $this->assertContains('Raised an error', $response->getContent());
     }
 
     /**

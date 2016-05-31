@@ -99,7 +99,10 @@ class DispatchListener extends AbstractListenerAggregate
         } catch (InvalidServiceException $exception) {
             $return = $this->marshalControllerNotFoundEvent($application::ERROR_CONTROLLER_INVALID, $controllerName, $e, $application, $exception);
             return $this->complete($return, $e);
-        } catch (\Exception $exception) {
+        } catch (\Throwable $exception) {
+            $return = $this->marshalBadControllerEvent($controllerName, $e, $application, $exception);
+            return $this->complete($return, $e);
+        } catch (\Exception $exception) {  // @TODO clean up once PHP 7 requirement is enforced
             $return = $this->marshalBadControllerEvent($controllerName, $e, $application, $exception);
             return $this->complete($return, $e);
         }
@@ -110,15 +113,22 @@ class DispatchListener extends AbstractListenerAggregate
 
         $request  = $e->getRequest();
         $response = $application->getResponse();
+        $caughtException = null;
 
         try {
             $return = $controller->dispatch($request, $response);
-        } catch (\Exception $ex) {
+        } catch (\Throwable $ex) {
+            $caughtException = $ex;
+        } catch (\Exception $ex) {  // @TODO clean up once PHP 7 requirement is enforced
+            $caughtException = $ex;
+        }
+
+        if ($caughtException !== null) {
             $e->setName(MvcEvent::EVENT_DISPATCH_ERROR);
             $e->setError($application::ERROR_EXCEPTION);
             $e->setController($controllerName);
             $e->setControllerClass(get_class($controller));
-            $e->setParam('exception', $ex);
+            $e->setParam('exception', $caughtException);
 
             $return = $application->getEventManager()->triggerEvent($e)->last();
             if (! $return) {
@@ -136,7 +146,7 @@ class DispatchListener extends AbstractListenerAggregate
     {
         $error     = $e->getError();
         $exception = $e->getParam('exception');
-        if ($exception instanceof \Exception) {
+        if ($exception instanceof \Exception || $exception instanceof \Throwable) {  // @TODO clean up once PHP 7 requirement is enforced
             zend_monitor_custom_event_ex($error, $exception->getMessage(), 'Zend Framework Exception', ['code' => $exception->getCode(), 'trace' => $exception->getTraceAsString()]);
         }
     }
