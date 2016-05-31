@@ -1,15 +1,13 @@
-# Migration Guide
-
 ## Upgrading to 2.7
 
-### Middleware
+## Middleware
 
 zend-mvc now registers `Zend\Mvc\MiddlewareListener` as a dispatch listener at
 a priority higher than `Zend\Mvc\DispatchListener`, allowing dispatch of
 [PSR-7](http://www.php-fig.org/psr/psr-7/) middleware. Read the
-[middleware chapter](middleware.md) for details on how to use this new feature.
+[middleware chapter](../middleware.md) for details on how to use this new feature.
 
-### Application
+## Application
 
 The constructor signature of `Zend\Mvc\Application` has changed. Previously, it
 was:
@@ -43,7 +41,7 @@ signature.
 This change should only affect users who are manually instantiating the
 `Application` instance.
 
-### EventManagerAware initializers
+## EventManagerAware initializers
 
 zend-mvc provides two mechanisms for injecting event managers into
 `EventManagerAware` objects. One is the "EventManagerAwareInitializer"
@@ -80,7 +78,7 @@ This likely will not cause regressions in existing code, but may be something to
 be aware of if you were previously depending on lazy-loaded event manager
 state.
 
-### ServiceLocatorAware initializers
+## ServiceLocatorAware initializers
 
 zend-servicemanager v3.0 removes `Zend\ServiceManager\ServiceLocatorAwareInterface`.
 Since zend-mvc provides initializers around that interface, they needed updates

@@ -11,7 +11,7 @@ namespace ZendTest\Mvc\Application;
 
 use PHPUnit_Framework_TestCase as TestCase;
 use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router;
+use Zend\Router\RouteMatch;
 
 class RoutingSuccessTest extends TestCase
 {
@@ -25,12 +25,12 @@ class RoutingSuccessTest extends TestCase
 
         $application->getEventManager()->attach(MvcEvent::EVENT_ROUTE, function ($e) use (&$log) {
             $match = $e->getRouteMatch();
-            $this->assertInstanceOf(Router\RouteMatch::class, $match, 'Did not receive expected route match');
+            $this->assertInstanceOf(RouteMatch::class, $match, 'Did not receive expected route match');
             $log['route-match'] = $match;
         }, -100);
 
         $application->run();
         $this->assertArrayHasKey('route-match', $log);
-        $this->assertInstanceOf(Router\RouteMatch::class, $log['route-match']);
+        $this->assertInstanceOf(RouteMatch::class, $log['route-match']);
     }
 }

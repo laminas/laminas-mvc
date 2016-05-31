@@ -10,9 +10,7 @@
 namespace ZendTest\Mvc\Controller;
 
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Authentication\AuthenticationService;
 use Zend\Mvc\Controller\PluginManager;
-use Zend\ServiceManager\Config;
 use Zend\ServiceManager\Factory\InvokableFactory;
 use Zend\ServiceManager\ServiceManager;
 use ZendTest\Mvc\Controller\TestAsset\SampleController;
@@ -70,26 +68,6 @@ class PluginManagerTest extends TestCase
         ]);
         $plugin = $pluginManager->get('samplePlugin', ['foo']);
         $this->assertEquals($plugin->getBar(), ['foo']);
-    }
-
-    public function testDefinesFactoryForIdentityPlugin()
-    {
-        $pluginManager = new PluginManager(new ServiceManager());
-        $this->assertTrue($pluginManager->has('identity'));
-    }
-
-    public function testIdentityFactoryCanInjectAuthenticationServiceIfInParentServiceManager()
-    {
-        $services = new ServiceManager();
-        (new Config([
-            'factories' => [
-                AuthenticationService::class => InvokableFactory::class,
-            ],
-        ]))->configureServiceManager($services);
-        $pluginManager = new PluginManager($services);
-        $identity = $pluginManager->get('identity');
-        $expected = $services->get(AuthenticationService::class);
-        $this->assertSame($expected, $identity->getAuthenticationService());
     }
 
     public function testCanCreateByFactory()

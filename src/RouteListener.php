@@ -11,6 +11,7 @@ namespace Zend\Mvc;
 
 use Zend\EventManager\AbstractListenerAggregate;
 use Zend\EventManager\EventManagerInterface;
+use Zend\Router\RouteMatch;
 
 class RouteListener extends AbstractListenerAggregate
 {
@@ -34,29 +35,29 @@ class RouteListener extends AbstractListenerAggregate
      *
      * Seeds the event with the route match on completion.
      *
-     * @param  MvcEvent $e
-     * @return null|Router\RouteMatch
+     * @param  MvcEvent $event
+     * @return null|RouteMatch
      */
-    public function onRoute($e)
+    public function onRoute(MvcEvent $event)
     {
-        $target     = $e->getTarget();
-        $request    = $e->getRequest();
-        $router     = $e->getRouter();
+        $request    = $event->getRequest();
+        $router     = $event->getRouter();
         $routeMatch = $router->match($request);
 
-        if (!$routeMatch instanceof Router\RouteMatch) {
-            $e->setName(MvcEvent::EVENT_DISPATCH_ERROR);
-            $e->setError(Application::ERROR_ROUTER_NO_MATCH);
-
-            $results = $target->getEventManager()->triggerEvent($e);
-            if (count($results)) {
-                return $results->last();
-            }
-
-            return $e->getParams();
+        if ($routeMatch instanceof RouteMatch) {
+            $event->setRouteMatch($routeMatch);
+            return $routeMatch;
         }
 
-        $e->setRouteMatch($routeMatch);
-        return $routeMatch;
+        $event->setName(MvcEvent::EVENT_DISPATCH_ERROR);
+        $event->setError(Application::ERROR_ROUTER_NO_MATCH);
+
+        $target  = $event->getTarget();
+        $results = $target->getEventManager()->triggerEvent($event);
+        if (!empty($results)) {
+            return $results->last();
+        }
+
+        return $event->getParams();
     }
 }

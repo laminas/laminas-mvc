@@ -11,8 +11,8 @@ namespace Application;
 
 use Zend\Http\PhpEnvironment\Request as HttpRequest;
 use Zend\Http\PhpEnvironment\Response as HttpResponse;
-use Zend\Mvc\Service\HttpRouterFactory;
 use Zend\Mvc\Service\HttpViewManagerFactory;
+use Zend\Router\Http\HttpRouterFactory;
 
 return [
     'controllers' => [

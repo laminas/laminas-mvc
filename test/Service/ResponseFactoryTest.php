@@ -9,33 +9,17 @@
 
 namespace ZendTest\Mvc\Service;
 
+use Interop\Container\ContainerInterface;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Console\Response as ConsoleResponse;
 use Zend\Http\Response as HttpResponse;
 use Zend\Mvc\Service\ResponseFactory;
 
 class ResponseFactoryTest extends TestCase
 {
-    use FactoryEnvironmentTrait;
-
-    public function tearDown()
+    public function testFactoryCreatesHttpResponse()
     {
-        $this->setConsoleEnvironment(true);
-    }
-
-    public function testFactoryCreatesConsoleResponseInConsoleEnvironment()
-    {
-        $this->setConsoleEnvironment(true);
         $factory = new ResponseFactory();
-        $response = $factory($this->createContainer(), 'Response');
-        $this->assertInstanceOf(ConsoleResponse::class, $response);
-    }
-
-    public function testFactoryCreatesHttpResponseInNonConsoleEnvironment()
-    {
-        $this->setConsoleEnvironment(false);
-        $factory = new ResponseFactory();
-        $response = $factory($this->createContainer(), 'Response');
+        $response = $factory($this->prophesize(ContainerInterface::class)->reveal(), 'Response');
         $this->assertInstanceOf(HttpResponse::class, $response);
     }
 }

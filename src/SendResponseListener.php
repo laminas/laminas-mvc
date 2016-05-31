@@ -13,7 +13,6 @@ use Zend\EventManager\AbstractListenerAggregate;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerInterface;
-use Zend\Mvc\ResponseSender\ConsoleResponseSender;
 use Zend\Mvc\ResponseSender\HttpResponseSender;
 use Zend\Mvc\ResponseSender\PhpEnvironmentResponseSender;
 use Zend\Mvc\ResponseSender\SendResponseEvent;
@@ -125,7 +124,7 @@ class SendResponseListener extends AbstractListenerAggregate implements
      *
      * The order in which the response sender are listed here, is by their usage:
      * PhpEnvironmentResponseSender has highest priority, because it's used most often.
-     * ConsoleResponseSender and SimpleStreamResponseSender are not used that often, yo they have a lower priority.
+     * SimpleStreamResponseSender is not used that often, so has a lower priority.
      * You can attach your response sender before or after every default response sender implementation.
      * All default response sender implementation have negative priority.
      * You are able to attach listeners without giving a priority and your response sender would be first to try.
@@ -136,7 +135,6 @@ class SendResponseListener extends AbstractListenerAggregate implements
     {
         $events = $this->getEventManager();
         $events->attach(SendResponseEvent::EVENT_SEND_RESPONSE, new PhpEnvironmentResponseSender(), -1000);
-        $events->attach(SendResponseEvent::EVENT_SEND_RESPONSE, new ConsoleResponseSender(), -2000);
         $events->attach(SendResponseEvent::EVENT_SEND_RESPONSE, new SimpleStreamResponseSender(), -3000);
         $events->attach(SendResponseEvent::EVENT_SEND_RESPONSE, new HttpResponseSender(), -4000);
     }

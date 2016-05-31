@@ -12,6 +12,7 @@ namespace Zend\Mvc;
 use ArrayObject;
 use Zend\EventManager\AbstractListenerAggregate;
 use Zend\EventManager\EventManagerInterface;
+use Zend\Router\RouteMatch;
 use Zend\ServiceManager\Exception\InvalidServiceException;
 use Zend\Stdlib\ArrayUtils;
 
@@ -76,7 +77,7 @@ class DispatchListener extends AbstractListenerAggregate
     public function onDispatch(MvcEvent $e)
     {
         $routeMatch        = $e->getRouteMatch();
-        $controllerName    = $routeMatch instanceof Router\RouteMatch
+        $controllerName    = $routeMatch instanceof RouteMatch
             ? $routeMatch->getParam('controller', 'not-found')
             : 'not-found';
         $application       = $e->getApplication();
@@ -200,33 +201,6 @@ class DispatchListener extends AbstractListenerAggregate
             $return = $event->getResult();
         }
         return $return;
-    }
-
-    /**
-     * Marshal a controller not found exception event
-     *
-     * @deprecated Use marshalControllerNotFoundEvent() instead
-     * @param  string $type
-     * @param  string $controllerName
-     * @param  MvcEvent $event
-     * @param  Application $application
-     * @param  \Exception $exception
-     * @return mixed
-     */
-    protected function marshallControllerNotFoundEvent(
-        $type,
-        $controllerName,
-        MvcEvent $event,
-        Application $application,
-        \Exception $exception = null
-    ) {
-        trigger_error(sprintf(
-            '%s is deprecated; please use %s::marshalControllerNotFoundEvent instead',
-            __METHOD__,
-            __CLASS__
-        ), E_USER_DEPRECATED);
-
-        return $this->marshalControllerNotFoundEvent($type, $controllerName, $event, $application, $exception);
     }
 
     /**

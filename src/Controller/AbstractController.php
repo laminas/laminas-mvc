@@ -17,7 +17,6 @@ use Zend\Http\PhpEnvironment\Response as HttpResponse;
 use Zend\Http\Request as HttpRequest;
 use Zend\Mvc\InjectApplicationEventInterface;
 use Zend\Mvc\MvcEvent;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Stdlib\DispatchableInterface as Dispatchable;
 use Zend\Stdlib\RequestInterface as Request;
@@ -29,18 +28,11 @@ use Zend\Stdlib\ResponseInterface as Response;
  * Convenience methods for pre-built plugins (@see __call):
  *
  * @method \Zend\View\Model\ModelInterface acceptableViewModelSelector(array $matchAgainst = null, bool $returnDefault = true, \Zend\Http\Header\Accept\FieldValuePart\AbstractFieldValuePart $resultReference = null)
- * @method bool|array|\Zend\Http\Response fileprg(\Zend\Form\FormInterface $form, $redirect = null, $redirectToUrl = false)
- * @method bool|array|\Zend\Http\Response filePostRedirectGet(\Zend\Form\FormInterface $form, $redirect = null, $redirectToUrl = false)
- * @method \Zend\Mvc\Controller\Plugin\FlashMessenger flashMessenger()
  * @method \Zend\Mvc\Controller\Plugin\Forward forward()
- * @method mixed|null identity()
  * @method \Zend\Mvc\Controller\Plugin\Layout|\Zend\View\Model\ModelInterface layout(string $template = null)
  * @method \Zend\Mvc\Controller\Plugin\Params|mixed params(string $param = null, mixed $default = null)
- * @method \Zend\Http\Response|array prg(string $redirect = null, bool $redirectToUrl = false)
- * @method \Zend\Http\Response|array postRedirectGet(string $redirect = null, bool $redirectToUrl = false)
  * @method \Zend\Mvc\Controller\Plugin\Redirect redirect()
  * @method \Zend\Mvc\Controller\Plugin\Url url()
- * @method \Zend\View\Model\ConsoleModel createConsoleNotFoundModel()
  * @method \Zend\View\Model\ViewModel createHttpNotFoundModel(Response $response)
  */
 abstract class AbstractController implements
@@ -62,11 +54,6 @@ abstract class AbstractController implements
      * @var Response
      */
     protected $response;
-
-    /**
-     * @var ServiceLocatorInterface
-     */
-    protected $serviceLocator;
 
     /**
      * @var Event
@@ -228,36 +215,6 @@ abstract class AbstractController implements
         }
 
         return $this->event;
-    }
-
-    /**
-     * Set serviceManager instance
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return void
-     */
-    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-    }
-
-    /**
-     * Retrieve serviceManager instance
-     *
-     * @return ServiceLocatorInterface
-     */
-    public function getServiceLocator()
-    {
-        trigger_error(sprintf(
-            'You are retrieving the service locator from within the class %s. Please be aware that '
-            . 'ServiceLocatorAwareInterface is deprecated and will be removed in version 3.0, along '
-            . 'with the ServiceLocatorAwareInitializer. You will need to update your class to accept '
-            . 'all dependencies at creation, either via constructor arguments or setters, and use '
-            . 'a factory to perform the injections.',
-            get_class($this)
-        ), E_USER_DEPRECATED);
-
-        return $this->serviceLocator;
     }
 
     /**

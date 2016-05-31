@@ -37,25 +37,12 @@ class PluginManager extends AbstractPluginManager
         'AcceptableViewModelSelector' => Plugin\AcceptableViewModelSelector::class,
         'acceptableViewModelSelector' => Plugin\AcceptableViewModelSelector::class,
         'acceptableviewmodelselector' => Plugin\AcceptableViewModelSelector::class,
-        'FilePostRedirectGet'         => Plugin\FilePostRedirectGet::class,
-        'filePostRedirectGet'         => Plugin\FilePostRedirectGet::class,
-        'filepostredirectget'         => Plugin\FilePostRedirectGet::class,
-        'fileprg'                     => Plugin\FilePostRedirectGet::class,
-        'FlashMessenger'              => Plugin\FlashMessenger::class,
-        'flashMessenger'              => Plugin\FlashMessenger::class,
-        'flashmessenger'              => Plugin\FlashMessenger::class,
         'Forward'                     => Plugin\Forward::class,
         'forward'                     => Plugin\Forward::class,
-        'Identity'                    => Plugin\Identity::class,
-        'identity'                    => Plugin\Identity::class,
         'Layout'                      => Plugin\Layout::class,
         'layout'                      => Plugin\Layout::class,
         'Params'                      => Plugin\Params::class,
         'params'                      => Plugin\Params::class,
-        'PostRedirectGet'             => Plugin\PostRedirectGet::class,
-        'postRedirectGet'             => Plugin\PostRedirectGet::class,
-        'postredirectget'             => Plugin\PostRedirectGet::class,
-        'prg'                         => Plugin\PostRedirectGet::class,
         'Redirect'                    => Plugin\Redirect::class,
         'redirect'                    => Plugin\Redirect::class,
         'Url'                         => Plugin\Url::class,
@@ -63,9 +50,6 @@ class PluginManager extends AbstractPluginManager
         'CreateHttpNotFoundModel'     => Plugin\CreateHttpNotFoundModel::class,
         'createHttpNotFoundModel'     => Plugin\CreateHttpNotFoundModel::class,
         'createhttpnotfoundmodel'     => Plugin\CreateHttpNotFoundModel::class,
-        'CreateConsoleNotFoundModel'  => Plugin\CreateConsoleNotFoundModel::class,
-        'createConsoleNotFoundModel'  => Plugin\CreateConsoleNotFoundModel::class,
-        'createconsolenotfoundmodel'  => Plugin\CreateConsoleNotFoundModel::class,
     ];
 
     /**
@@ -73,32 +57,22 @@ class PluginManager extends AbstractPluginManager
      */
     protected $factories = [
         Plugin\Forward::class                     => Plugin\Service\ForwardFactory::class,
-        Plugin\Identity::class                    => Plugin\Service\IdentityFactory::class,
         Plugin\AcceptableViewModelSelector::class => InvokableFactory::class,
-        Plugin\FilePostRedirectGet::class         => InvokableFactory::class,
-        Plugin\FlashMessenger::class              => InvokableFactory::class,
         Plugin\Layout::class                      => InvokableFactory::class,
         Plugin\Params::class                      => InvokableFactory::class,
-        Plugin\PostRedirectGet::class             => InvokableFactory::class,
         Plugin\Redirect::class                    => InvokableFactory::class,
         Plugin\Url::class                         => InvokableFactory::class,
         Plugin\CreateHttpNotFoundModel::class     => InvokableFactory::class,
-        Plugin\CreateConsoleNotFoundModel::class  => InvokableFactory::class,
 
         // v2 normalized names
 
         'zendmvccontrollerpluginforward'                     => Plugin\Service\ForwardFactory::class,
-        'zendmvccontrollerpluginidentity'                    => Plugin\Service\IdentityFactory::class,
         'zendmvccontrollerpluginacceptableviewmodelselector' => InvokableFactory::class,
-        'zendmvccontrollerpluginfilepostredirectget'         => InvokableFactory::class,
-        'zendmvccontrollerpluginflashmessenger'              => InvokableFactory::class,
         'zendmvccontrollerpluginlayout'                      => InvokableFactory::class,
         'zendmvccontrollerpluginparams'                      => InvokableFactory::class,
-        'zendmvccontrollerpluginpostredirectget'             => InvokableFactory::class,
         'zendmvccontrollerpluginredirect'                    => InvokableFactory::class,
         'zendmvccontrollerpluginurl'                         => InvokableFactory::class,
         'zendmvccontrollerplugincreatehttpnotfoundmodel'     => InvokableFactory::class,
-        'zendmvccontrollerplugincreateconsolenotfoundmodel'  => InvokableFactory::class,
     ];
 
     /**

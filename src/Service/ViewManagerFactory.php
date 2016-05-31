@@ -10,8 +10,6 @@
 namespace Zend\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
-use Zend\Console\Console;
-use Zend\Mvc\View\Console\ViewManager as ConsoleViewManager;
 use Zend\Mvc\View\Http\ViewManager as HttpViewManager;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -19,33 +17,28 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 class ViewManagerFactory implements FactoryInterface
 {
     /**
-     * Create and return a view manager based on detected environment
+     * Create and return a view manager.
      *
      * @param  ContainerInterface $container
      * @param  string $name
      * @param  null|array $options
-     * @return ConsoleViewManager|HttpViewManager
+     * @return HttpViewManager
      */
     public function __invoke(ContainerInterface $container, $name, array $options = null)
     {
-        if (Console::isConsole()) {
-            return $container->get('ConsoleViewManager');
-        }
-
         return $container->get('HttpViewManager');
     }
 
     /**
-     * Create and return HttpViewManager or ConsoleViewManager instance
+     * Create and return HttpViewManager.
      *
      * For use with zend-servicemanager v2; proxies to __invoke().
      *
      * @param ServiceLocatorInterface $container
-     * @return HttpViewManager|ConsoleViewManager
+     * @return HttpViewManager
      */
     public function createService(ServiceLocatorInterface $container)
     {
-        $type = Console::isConsole() ? ConsoleViewManager::class : HttpViewManager::class;
-        return $this($container, $type);
+        return $this($container, HttpViewManager::class);
     }
 }

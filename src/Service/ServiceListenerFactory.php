@@ -36,18 +36,12 @@ class ServiceListenerFactory implements FactoryInterface
     /**
      * Default mvc-related service configuration -- can be overridden by modules.
      *
-     * @todo Re-enable form abstract service factory after zend-form updated to servicemanager v3.
      * @var array
      */
     protected $defaultServiceConfig = [
         'aliases' => [
             'configuration'                              => 'config',
             'Configuration'                              => 'config',
-            'console'                                    => 'ConsoleAdapter',
-            'Console'                                    => 'ConsoleAdapter',
-            'ConsoleDefaultRenderingStrategy'            => View\Console\DefaultRenderingStrategy::class,
-            'ControllerLoader'                           => 'ControllerManager',
-            'Di'                                         => 'DependencyInjector',
             'HttpDefaultRenderingStrategy'               => View\Http\DefaultRenderingStrategy::class,
             'MiddlewareListener'                         => 'Zend\Mvc\MiddlewareListener',
             'RouteListener'                              => 'Zend\Mvc\RouteListener',
@@ -58,8 +52,6 @@ class ServiceListenerFactory implements FactoryInterface
             'ViewPhpRendererStrategy'                    => 'Zend\View\Strategy\PhpRendererStrategy',
             'ViewPhpRenderer'                            => 'Zend\View\Renderer\PhpRenderer',
             'ViewRenderer'                               => 'Zend\View\Renderer\PhpRenderer',
-            'Zend\Di\LocatorInterface'                   => 'DependencyInjector',
-            'Zend\Form\Annotation\FormAnnotationBuilder' => 'FormAnnotationBuilder',
             'Zend\Mvc\Controller\PluginManager'          => 'ControllerPluginManager',
             'Zend\Mvc\View\Http\InjectTemplateListener'  => 'InjectTemplateListener',
             'Zend\View\Renderer\RendererInterface'       => 'Zend\View\Renderer\PhpRenderer',
@@ -74,39 +66,15 @@ class ServiceListenerFactory implements FactoryInterface
             'config'                         => 'Zend\Mvc\Service\ConfigFactory',
             'ControllerManager'              => 'Zend\Mvc\Service\ControllerManagerFactory',
             'ControllerPluginManager'        => 'Zend\Mvc\Service\ControllerPluginManagerFactory',
-            'ConsoleAdapter'                 => 'Zend\Mvc\Service\ConsoleAdapterFactory',
-            'ConsoleExceptionStrategy'       => ConsoleExceptionStrategyFactory::class,
-            'ConsoleRouter'                  => ConsoleRouterFactory::class,
-            'ConsoleRouteNotFoundStrategy'   => ConsoleRouteNotFoundStrategyFactory::class,
-            'ConsoleViewManager'             => 'Zend\Mvc\Service\ConsoleViewManagerFactory',
-            'DependencyInjector'             => DiFactory::class,
-            'DiAbstractServiceFactory'       => DiAbstractServiceFactoryFactory::class,
-            'DiServiceInitializer'           => DiServiceInitializerFactory::class,
-            'DiStrictAbstractServiceFactory' => DiStrictAbstractServiceFactoryFactory::class,
             'DispatchListener'               => 'Zend\Mvc\Service\DispatchListenerFactory',
-            'FilterManager'                  => 'Zend\Mvc\Service\FilterManagerFactory',
-            'FormAnnotationBuilder'          => 'Zend\Mvc\Service\FormAnnotationBuilderFactory',
-            'FormElementManager'             => 'Zend\Mvc\Service\FormElementManagerFactory',
             'HttpExceptionStrategy'          => HttpExceptionStrategyFactory::class,
             'HttpMethodListener'             => 'Zend\Mvc\Service\HttpMethodListenerFactory',
             'HttpRouteNotFoundStrategy'      => HttpRouteNotFoundStrategyFactory::class,
-            'HttpRouter'                     => HttpRouterFactory::class,
             'HttpViewManager'                => 'Zend\Mvc\Service\HttpViewManagerFactory',
-            'HydratorManager'                => 'Zend\Mvc\Service\HydratorManagerFactory',
             'InjectTemplateListener'         => 'Zend\Mvc\Service\InjectTemplateListenerFactory',
-            'InputFilterManager'             => 'Zend\Mvc\Service\InputFilterManagerFactory',
-            'LogProcessorManager'            => 'Zend\Mvc\Service\LogProcessorManagerFactory',
-            'LogWriterManager'               => 'Zend\Mvc\Service\LogWriterManagerFactory',
-            'MvcTranslator'                  => 'Zend\Mvc\Service\TranslatorServiceFactory',
             'PaginatorPluginManager'         => 'Zend\Mvc\Service\PaginatorPluginManagerFactory',
             'Request'                        => 'Zend\Mvc\Service\RequestFactory',
             'Response'                       => 'Zend\Mvc\Service\ResponseFactory',
-            'Router'                         => 'Zend\Mvc\Service\RouterFactory',
-            'RoutePluginManager'             => 'Zend\Mvc\Service\RoutePluginManagerFactory',
-            'SerializerAdapterManager'       => 'Zend\Mvc\Service\SerializerAdapterPluginManagerFactory',
-            'TranslatorPluginManager'        => 'Zend\Mvc\Service\TranslatorPluginManagerFactory',
-            'ValidatorManager'               => 'Zend\Mvc\Service\ValidatorManagerFactory',
-            View\Console\DefaultRenderingStrategy::class => InvokableFactory::class,
             'ViewHelperManager'              => 'Zend\Mvc\Service\ViewHelperManagerFactory',
             View\Http\DefaultRenderingStrategy::class => HttpDefaultRenderingStrategyFactory::class,
             'ViewFeedStrategy'               => 'Zend\Mvc\Service\ViewFeedStrategyFactory',
@@ -124,9 +92,6 @@ class ServiceListenerFactory implements FactoryInterface
             'Zend\View\Renderer\PhpRenderer' => ViewPhpRendererFactory::class,
             'Zend\View\Strategy\PhpRendererStrategy' => ViewPhpRendererStrategyFactory::class,
             'Zend\View\View'                 => ViewFactory::class,
-        ],
-        'abstract_factories' => [
-            'Zend\Form\FormAbstractServiceFactory',
         ],
     ];
 
@@ -315,6 +280,5 @@ class ServiceListenerFactory implements FactoryInterface
         $this->defaultServiceConfig['aliases']['Config']      = 'config';
         $this->defaultServiceConfig['aliases']['request']     = 'Request';
         $this->defaultServiceConfig['aliases']['response']    = 'Response';
-        $this->defaultServiceConfig['aliases']['router']      = 'Router';
     }
 }

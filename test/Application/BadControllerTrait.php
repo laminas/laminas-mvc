@@ -13,9 +13,9 @@ use ReflectionProperty;
 use Zend\Http\PhpEnvironment\Response;
 use Zend\Mvc\Application;
 use Zend\Mvc\Controller\ControllerManager;
-use Zend\Mvc\Router;
 use Zend\Mvc\Service\ServiceManagerConfig;
 use Zend\Mvc\Service\ServiceListenerFactory;
+use Zend\Router;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Stdlib\ArrayUtils;
 use ZendTest\Mvc\Controller\TestAsset\BadController;
@@ -49,11 +49,15 @@ trait BadControllerTrait
 
         $serviceConfig = ArrayUtils::merge(
             $serviceConfig,
+            (new Router\ConfigProvider())->getDependencyConfig()
+        );
+
+        $serviceConfig = ArrayUtils::merge(
+            $serviceConfig,
             [
                 'aliases' => [
                     'ControllerLoader'  => ControllerManager::class,
                     'ControllerManager' => ControllerManager::class,
-                    'Router'            => 'HttpRouter',
                 ],
                 'factories' => [
                     ControllerManager::class => function ($services) {
@@ -62,6 +66,9 @@ trait BadControllerTrait
                                 return new BadController();
                             },
                         ]]);
+                    },
+                    'Router' => function ($services) {
+                        return $services->get('HttpRouter');
                     },
                 ],
                 'invokables' => [

@@ -20,7 +20,7 @@ use Zend\Mvc\Controller\ControllerManager;
 use Zend\Mvc\Controller\PluginManager;
 use Zend\Mvc\Controller\Plugin\Forward as ForwardPlugin;
 use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router\RouteMatch;
+use Zend\Router\RouteMatch;
 use Zend\ServiceManager\Config;
 use Zend\ServiceManager\ServiceManager;
 use ZendTest\Mvc\Controller\TestAsset\ForwardController;
