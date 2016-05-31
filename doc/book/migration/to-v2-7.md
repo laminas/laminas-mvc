@@ -101,3 +101,100 @@ injected by one of these initializers, and we plan to remove the initializers
 for version 3.0. The deprecation notice includes the name of the class, to help
 you identify what instances you will need to update before the zend-mvc v3
 release.
+
+To prepare your code, you will need to do the following within your controller:
+
+- Find all cases where you call `getServiceLocator()`, and identify the services
+  they retrieve.
+- Update your controller to accept these services via the constructor.
+- If you have not already, create a factory class for your controller.
+- In the factory, pull the appropriate services and pass them to the
+  controller's constructor.
+
+As an example, consider the following code from a controller:
+
+```php
+$db = $this->getServiceLcoator()->get('Db\ApplicationAdapter');
+```
+
+To update your controller, you will:
+
+- Add a `$db` property to your class.
+- Update the constructor to accept the database adapter and assign it to the
+  `$db` property.
+- Change the above line to either read `$db = $this->db;` *or just use the
+  property directly*.
+- Add a factory that pulls the service and pushes it into the controller.
+
+The controller then might look like the following:
+
+```php
+use Zend\Db\Adapter\AdapterInterface;
+use Zend\Mvc\Controller\AbstractActionController;
+
+class YourController extends AbstractActionController
+{
+    private $db;
+
+    public function __construct(AdapterInterface $db)
+    {
+        $this->db = $db;
+    }
+
+    public function someAction()
+    {
+        $results = $this->db->query(/* ... */);
+        /* ... */
+    }
+}
+```
+
+A factory would look like the following:
+
+```php
+use Interop\Container\ContainerInterface;
+
+class YourControllerFactory
+{
+    public function __invoke(ContainerInterface $container)
+    {
+        return new YourController($this->get('Db\ApplicationAdapter'));
+    }
+}
+```
+
+You then also need to ensure the controller manager knows about the factory. It
+likely already does, as an invokable; you will redefine it as a factory in
+your `module.config.php`:
+
+```php
+return [
+    'controllers' => [
+        'factories' => [
+            YourController::class => YourControllerFactory::class,
+            /* ... */
+        ],
+        /* ... */
+    ],
+    /* ... */
+];
+```
+
+While this may seem like more steps, doing so ensures your code has no hidden
+dependencies, improves the testability of your code, and allows you to substitute
+alternatives for either the dependencies or the controller itself.
+
+#### Optional dependencies
+
+In some cases, you may have dependencies that are only required for some
+execution paths, such as forms, database adapters, etc. In these cases, you have
+two approaches you can use:
+
+- Split your controller into separate responsibilities, and use the more
+  specific controllers. This way you don't need to inject dependencies that are
+  only used in some actions. (We recommend doing this regardless, as it helps
+  keep your code more maintainable.)
+- Use [lazy services](http://zendframework.github.io/zend-servicemanager/lazy-services/).
+  When you configure these, zend-servicemanager gives you a proxy instance that,
+  on first access, loads the full service. This allows you to delay the most
+  expensive operations until absolutely needed.
