@@ -54,9 +54,9 @@ $route = Literal::factory([
 Middleware may be provided as PHP callables, or as service names.
 
 > ### No action required
->
+> 
 > Unlike action controllers, middleware typically is single purpose, and, as
-> such, does require a default `action` parameter.
+> such, does not require a default `action` parameter.
 
 ## Middleware services
 
