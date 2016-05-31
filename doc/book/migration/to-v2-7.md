@@ -158,7 +158,7 @@ class YourControllerFactory
 {
     public function __invoke(ContainerInterface $container)
     {
-        return new YourController($this->get('Db\ApplicationAdapter'));
+        return new YourController($container->get('Db\ApplicationAdapter'));
     }
 }
 ```
