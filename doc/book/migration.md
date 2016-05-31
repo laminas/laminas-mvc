@@ -183,7 +183,7 @@ return [
 ```
 
 While this may seem like more steps, doing so ensures your code has no hidden
-dependencies, improves the testability of your cod, and allows you to substitute
+dependencies, improves the testability of your code, and allows you to substitute
 alternatives for either the dependencies or the controller itself.
 
 #### Optional dependencies
