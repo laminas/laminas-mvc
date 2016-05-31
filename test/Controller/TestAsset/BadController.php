@@ -17,4 +17,9 @@ class BadController extends AbstractActionController
     {
         throw new \Exception('Raised an exception');
     }
+
+    public function testPhp7ErrorAction()
+    {
+        throw new \Error('Raised an error');
+    }
 }

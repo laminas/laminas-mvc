@@ -250,7 +250,7 @@ class RouteNotFoundStrategy extends AbstractListenerAggregate
         $model->setVariable('display_exceptions', true);
 
         $exception = $e->getParam('exception', false);
-        if (!$exception instanceof \Exception) {
+        if (!$exception instanceof \Exception && !$exception instanceof \Throwable) {  // @TODO clean up once PHP 7 requirement is enforced
             return;
         }
 
