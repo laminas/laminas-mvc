@@ -116,6 +116,11 @@ for full details on how to migrate your v2 application.
   `Zend\Mvc\Service\ServiceManagerConfig` and
   `Zend\Mvc\Controller\ControllerManager`. You will need to inject your
   dependencies specifically going forward.
+- [#139](https://github.com/zendframework/zend-mvc/pull/139) removes support for
+  pseudo-module template resolution using the `__NAMESPACE__` routing
+  configuration option, as it often led to conflicts when multiple modules
+  shared a common top-level namespace. Auto-resolution now always takes into
+  account the full namespace (minus the `Controller` segment).
 
 ### Fixed
 

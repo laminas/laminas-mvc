@@ -105,6 +105,18 @@ class InjectTemplateListenerTest extends TestCase
         $this->assertEquals('custom', $model->getTemplate());
     }
 
+    public function testMapsSubNamespaceToSubDirectory()
+    {
+        $myViewModel  = new ViewModel();
+        $myController = new \ZendTest\Mvc\Controller\TestAsset\SampleController();
+        $this->event->setTarget($myController);
+        $this->event->setResult($myViewModel);
+
+        $this->listener->injectTemplate($this->event);
+
+        $this->assertEquals('zend-test/mvc/test-asset/sample', $myViewModel->getTemplate());
+    }
+
     public function testMapsSubNamespaceToSubDirectoryWithControllerFromRouteMatch()
     {
         $this->routeMatch->setParam(ModuleRouteListener::MODULE_NAMESPACE, 'Aj\Controller\SweetAppleAcres\Reports');
@@ -134,7 +146,7 @@ class InjectTemplateListenerTest extends TestCase
         $this->event->setResult($model);
         $this->listener->injectTemplate($this->event);
 
-        $this->assertEquals('aj/sweet-apple-acres/reports/cider-sales/pinkie-pie-revenue', $model->getTemplate());
+        $this->assertEquals('aj/sweet-apple-acres/reports/sub/cider-sales/pinkie-pie-revenue', $model->getTemplate());
     }
 
     public function testMapsSubNamespaceToSubDirectoryWithControllerFromEventTarget()
@@ -152,7 +164,7 @@ class InjectTemplateListenerTest extends TestCase
         $this->event->setResult($myViewModel);
         $this->listener->injectTemplate($this->event);
 
-        $this->assertEquals('zend-test/controller/test-asset/sample/test', $myViewModel->getTemplate());
+        $this->assertEquals('zend-test/mvc/test-asset/sample/test', $myViewModel->getTemplate());
     }
 
     public function testMapsSubNamespaceToSubDirectoryWithControllerFromEventTargetShouldMatchControllerFromRouteParam()
@@ -199,19 +211,6 @@ class InjectTemplateListenerTest extends TestCase
         $this->listener->injectTemplate($this->event);
 
         $this->assertEquals('zend-test/mvc/test-asset/sample', $myViewModel->getTemplate());
-    }
-
-    public function testControllerNotMatchedByMapIsNotAffected()
-    {
-        $this->routeMatch->setParam('action', 'test');
-        $myViewModel  = new ViewModel();
-        $myController = new \ZendTest\Mvc\Controller\TestAsset\SampleController();
-
-        $this->event->setTarget($myController);
-        $this->event->setResult($myViewModel);
-        $this->listener->injectTemplate($this->event);
-
-        $this->assertEquals('zend-test/sample/test', $myViewModel->getTemplate());
     }
 
     public function testFullControllerNameMatchIsMapped()
@@ -339,6 +338,6 @@ class InjectTemplateListenerTest extends TestCase
         $this->event->setResult($myViewModel);
         $this->listener->injectTemplate($this->event);
 
-        $this->assertEquals('some/sample', $myViewModel->getTemplate());
+        $this->assertEquals('some/other/service/namespace/sample', $myViewModel->getTemplate());
     }
 }
