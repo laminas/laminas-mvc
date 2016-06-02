@@ -33,8 +33,7 @@ class ControllerLoaderFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $controllerLoader = new ControllerManager();
-        $controllerLoader->setServiceLocator($serviceLocator);
+        $controllerLoader = new ControllerManager($serviceLocator);
         $controllerLoader->addPeeringServiceManager($serviceLocator);
 
         $config = $serviceLocator->get('Config');
