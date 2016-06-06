@@ -412,22 +412,22 @@ the section above on [dependency reduction](#dependency-reduction).
 
 ## Zend\Mvc\View\InjectTemplateListener
 
-The `InjectTemplateListener` attempts to map a controller *service* name to a
+The `InjectTemplateListener` attempts to map a controller name to a
 template using a variety of heuristics, including an explicit map provided
-during configuration, or auto-detection based on the service name. 
+during configuration, or auto-detection based on the controller class name.
 
 In version 2, the autodetection took into consideration the `__NAMESPACE__`
-provided in routing configuration, and would omit the module subnamespace if a
-match was found. This caused issues when multiple modules shared a top-level
-namespace (e.g., `ZF\Apigility` and `ZF\Apigility\Admin`) if each had a
-controller with the same name.
+route match parameter to derive subnamespaces or would omit them completely if
+`__NAMESPACE__` is not present. This caused issues when multiple modules shared
+a top-level namespace (e.g., `ZF\Apigility` and `ZF\Apigility\Admin`) if each
+had a controller with the same name.
 
 To avoid naming conflicts, version 3 removes this aspect of autodetection, and
 instead provides exactly one workflow for mapping:
 
 - Strip the `Controller` subnamespace, if present (e.g.,
-  the namespace `Application\Controller\\` is normalized to
-  `Application\\`).
+  the namespace `Application\Controller\` is normalized to
+  `Application\`).
 - Strip the `Controller` suffix in the class name, if present (e.g.,
   `IndexController` is normalized to `Index`).
 - Inflect CamelCasing to dash-separated (e.g., `ShowUsers` becomes
@@ -438,6 +438,9 @@ As a full example, the controller service name
 `TestSomething\With\Controller\CamelCaseController` will always map to
 `test-something/with/camel-case`, regardless of the `__NAMESPACE__` value
 provided in routing configuration.
+
+Similar behavior in version 2 could be achieved with namespace whitelisting in
+controller to template map
 
 ## Zend\Mvc\View\SendResponseListener
 

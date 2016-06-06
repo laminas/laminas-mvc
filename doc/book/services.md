@@ -753,7 +753,6 @@ return [
         'default_template_suffix' => $templateSuffix, // e.g. 'php'
 
         // Controller namespace to template map
-        // or whitelisting for controller FQCN to template mapping
         'controller_map' => [
         ],
 
