@@ -13,6 +13,11 @@ use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
+/**
+ * @deprecated Since 2.7.9. The factory is now defined in zend-servicemanager-di,
+ *     and removed in 3.0.0. Use Zend\ServiceManager\Di\DiStrictAbstractServiceFactoryFactory
+ *     from zend-servicemanager-di instead if you rely on this feature.
+ */
 class DiStrictAbstractServiceFactoryFactory implements FactoryInterface
 {
     /**

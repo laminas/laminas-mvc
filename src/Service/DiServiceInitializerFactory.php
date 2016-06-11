@@ -9,36 +9,17 @@
 
 namespace Zend\Mvc\Service;
 
-use Container\Interop\ContainerInterface;
-use Zend\ServiceManager\Di\DiServiceInitializer;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Di\DiServiceInitializerFactory as OriginalFactory;
 
-class DiServiceInitializerFactory implements FactoryInterface
+/**
+ * Since 2.7.9, this class now extends the version defined in zend-servicemanager-di,
+ * ensuring backwards compatibility with zend-servicemanger v2 and forwards
+ * compatibility with zend-servicemanager v3.
+ *
+ * @deprecated Since 2.7.9. The factory is now defined in zend-servicemanager-di,
+ *     and removed in 3.0.0. Use Zend\ServiceManager\Di\DiServiceInitializerFactory
+ *     from zend-servicemanager-di instead if you rely on this feature.
+ */
+class DiServiceInitializerFactory extends OriginalFactory
 {
-    /**
-     * Class responsible for instantiating a DiServiceInitializer
-     *
-     * @param ContainerInterface $container
-     * @param string $name
-     * @param null|array $options
-     * @return DiServiceInitializer
-     */
-    public function __invoke(ContainerInterface $container, $name, array $options = null)
-    {
-        return new DiServiceInitializer($container->get('Di'), $container);
-    }
-
-    /**
-     * Create and return DiServiceInitializer instance
-     *
-     * For use with zend-servicemanager v2; proxies to __invoke().
-     *
-     * @param ServiceLocatorInterface $container
-     * @return DiServiceInitializer
-     */
-    public function createService(ServiceLocatorInterface $container)
-    {
-        return $this($container, DiServiceInitializer::class);
-    }
 }
