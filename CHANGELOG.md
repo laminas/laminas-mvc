@@ -36,6 +36,9 @@ All notable changes to this project will be documented in this file, in reverse 
 - [#149](https://github.com/zendframework/zend-mvc/pull/149) and
   [#158](https://github.com/zendframework/zend-mvc/pull/158) fix an "undefined
   variable" issue with `Zend\Mvc\Service\DiAbstractServiceFactoryFactory`.
+- [#153](https://github.com/zendframework/zend-mvc/pull/153) removes the
+  typehint from the `$exception` argument of `DispatchListener::marshalBadControllerEvent()`,
+  fixing an issue when PHP 7 Error types are caught and passed to the method.
 
 ## 2.7.8 - 2016-05-31
 
