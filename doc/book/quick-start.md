@@ -146,7 +146,7 @@ So, what are we doing here?
 
 We return a `ViewModel`. The view layer will use this when rendering the view,
 pulling variables and the template name from it. By default, you can omit the
-template name, and it will resolve to "lowercase-controller-name/lowercase-action-name".
+template name, and it will resolve to "lowercase-module-name/lowercase-controller-name/lowercase-action-name".
 However, you can override this to specify something different by calling
 `setTemplate()` on the `ViewModel` instance. Typically, templates will resolve
 to files with a ".phtml" suffix in your module's `view` directory.
@@ -177,33 +177,25 @@ That's it. Save the file.
 ## View scripts for module names with subnamespaces
 
 As per PSR-0, modules should be named following the rule: `<Vendor Name>\<Namespace>\*`.
-However, the default controller class to template mapping does not work very
-well with those: it will remove subnamespace.
 
-To address that issue, new mapping rules were introduced with version 2.3.0. To
-maintain backwards compatibility, that mapping is not enabled by default. To
-enable it, you need to add your module namespace to a whitelist in your module
-configuration:
+Since version 3.0, the default template name resolver uses fully qualified
+controller class names, stripping only the `\Controller\\` subnamespace, if
+present.  For example, `AwesomeMe\MyModule\Controller\HelloWorldController`
+resolves to the template name `awesome-me/my-module/hello-world` via the
+following configuration:
 
 ```php
 'view_manager' => array(
-    // Controller namespace to template map
-    // or whitelisting for controller FQCN to template mapping
     'controller_map' => array(
-        '<Module\Name>' => true,
+        'AwesomeMe\MyModule' => true,
     ),
 ),
 ```
 
-Once you have, you can create the directory `view/<module>/<name>/hello`. Inside
-that directory, create a file named `world.phtml`. Inside that, paste the
-following:
-
-```php
-<h1>Greetings!</h1>
-
-<p>You said "<?php echo $this->escapeHtml($message) ?>".</p>
-```
+(In v2 releases, the default was to strip subnamespaces, but optional mapping rules
+allowed whitelisting namespaces in module configuration to enable current
+resolver behavior. See the [migration guide](migration/to-v3-0.md#zendmvcviewinjecttemplatelistener)
+for more details.)
 
 ## Create a Route
 
