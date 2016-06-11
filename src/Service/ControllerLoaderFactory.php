@@ -14,8 +14,9 @@ use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * @deprecated please use the {@see \Zend\Mvc\Service\ControllerManagerFactory} factory instead:
- *             this class will be removed in release 3.0
+ * @see \Zend\Mvc\Service\ControllerManagerFactory
+ * @deprecated please use Zend\Mvc\Service\ControllerManagerFactory instead;
+ *     this class will be removed in release 3.0
  */
 class ControllerLoaderFactory implements FactoryInterface
 {
