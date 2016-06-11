@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 2.7.9 - TBD
+
+### Added
+
+- [#149](https://github.com/zendframework/zend-mvc/pull/149) and
+  [#158](https://github.com/zendframework/zend-mvc/pull/158) add a dependency
+  on zendframework/zend-servicemanager-di in order to provide both backwards and
+  forwards compatibility for the DI/ServiceManager integration.
+
+### Deprecated
+
+- [#158](https://github.com/zendframework/zend-mvc/pull/158) deprecates each of
+  the following classes, which now have equivalents in the
+  zend-servicemanager-di package (which is required by zend-mvc v2, but optional
+  starting with zend-mvc v3):
+  - `Zend\Mvc\Service\DiAbstractServiceFactoryFactory`
+  - `Zend\Mvc\Service\DiFactory`
+  - `Zend\Mvc\Service\DiServiceInitializerFactory`
+  - `Zend\Mvc\Service\DiStrictAbstractServiceFactory`
+  - `Zend\Mvc\Service\DiStrictAbstractServiceFactoryFactory`
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#149](https://github.com/zendframework/zend-mvc/pull/149) and
+  [#158](https://github.com/zendframework/zend-mvc/pull/158) fix an "undefined
+  variable" issue with `Zend\Mvc\Service\DiAbstractServiceFactoryFactory`.
+
 ## 2.7.8 - 2016-05-31
 
 ### Added
