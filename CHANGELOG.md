@@ -22,6 +22,10 @@ All notable changes to this project will be documented in this file, in reverse 
   - `Zend\Mvc\Service\DiServiceInitializerFactory`
   - `Zend\Mvc\Service\DiStrictAbstractServiceFactory`
   - `Zend\Mvc\Service\DiStrictAbstractServiceFactoryFactory`
+- [#152](https://github.com/zendframework/zend-mvc/pull/152) formally marks the
+  `ControllerLoaderFactory` as deprecated via annotation (though it has been
+  noted as such in the documentation for several years). Use
+  `Zend\Mvc\Service\ControllerManagerFactory` instead.
 
 ### Removed
 
