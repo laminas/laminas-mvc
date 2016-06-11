@@ -178,22 +178,24 @@ That's it. Save the file.
 
 As per PSR-0, modules should be named following the rule: `<Vendor Name>\<Namespace>\*`.
 
-Since version 3.0 default template name resolver uses fully qualified controller
-class name, stripping only `\Controller\` subnamespace, if present.
-For example, `AwesomeMe\MyModule\Controller\HelloWorldController` is resolved
-to template name `awesome-me/my-module/hello-world`.
-
-For prior versions default was to strip subnamespaces but optional mapping rules
-allowed to whitelist namespaces in module configuration to enable current
-resolver behavior:
+Since version 3.0, the default template name resolver uses fully qualified
+controller class names, stripping only the `\Controller\\` subnamespace, if
+present.  For example, `AwesomeMe\MyModule\Controller\HelloWorldController`
+resolves to the template name `awesome-me/my-module/hello-world` via the
+following configuration:
 
 ```php
 'view_manager' => array(
     'controller_map' => array(
-        '<AwesomeMe\MyModule>' => true,
+        'AwesomeMe\MyModule' => true,
     ),
 ),
 ```
+
+(In v2 releases, the default was to strip subnamespaces, but optional mapping rules
+allowed whitelisting namespaces in module configuration to enable current
+resolver behavior. See the [migration guide](migration/to-v3-0.md#zendmvcviewinjecttemplatelistener)
+for more details.)
 
 ## Create a Route
 
