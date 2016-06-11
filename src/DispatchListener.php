@@ -235,14 +235,14 @@ class DispatchListener extends AbstractListenerAggregate
      * @param  string $controllerName
      * @param  MvcEvent $event
      * @param  Application $application
-     * @param  \Exception $exception
+     * @param  \Exception|\Throwable $exception
      * @return mixed
      */
     protected function marshalBadControllerEvent(
         $controllerName,
         MvcEvent $event,
         Application $application,
-        \Exception $exception
+        $exception // @TODO clean up once PHP 7 requirement is enforced
     ) {
         $event->setName(MvcEvent::EVENT_DISPATCH_ERROR);
         $event->setError($application::ERROR_EXCEPTION);
