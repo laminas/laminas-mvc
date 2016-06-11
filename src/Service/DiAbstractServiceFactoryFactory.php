@@ -9,43 +9,17 @@
 
 namespace Zend\Mvc\Service;
 
-use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Di\DiAbstractServiceFactory;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\ServiceManager\ServiceManager;
+use Zend\ServiceManager\Di\DiAbstractServiceFactoryFactory as OriginalFactory;
 
-class DiAbstractServiceFactoryFactory implements FactoryInterface
+/**
+ * Since 2.7.9, this class now extends the version defined in zend-servicemanager-di,
+ * ensuring backwards compatibility with zend-servicemanger v2 and forwards
+ * compatibility with zend-servicemanager v3.
+ *
+ * @deprecated Since 2.7.9. The factory is now defined in zend-servicemanager-di,
+ *     and removed in 3.0.0. Use Zend\ServiceManager\Di\DiAbstractServiceFactoryFactory
+ *     from zend-servicemanager-di instead if you rely on this feature.
+ */
+class DiAbstractServiceFactoryFactory extends OriginalFactory
 {
-    /**
-     * Class responsible for instantiating a DiAbstractServiceFactory
-     *
-     * @param ContainerInterface $container
-     * @param string $name
-     * @param null|array $options
-     * @return DiAbstractServiceFactory
-     */
-    public function __invoke(ContainerInterface $container, $name, array $options = null)
-    {
-        $factory = new DiAbstractServiceFactory($container->get('Di'), DiAbstractServiceFactory::USE_SL_BEFORE_DI);
-
-        if ($serviceLocator instanceof ServiceManager) {
-            $serviceLocator->addAbstractFactory($factory, false);
-        }
-
-        return $factory;
-    }
-
-    /**
-     * Create and return DiAbstractServiceFactory instance
-     *
-     * For use with zend-servicemanager v2; proxies to __invoke().
-     *
-     * @param ServiceLocatorInterface $container
-     * @return DiAbstractServiceFactory
-     */
-    public function createService(ServiceLocatorInterface $container)
-    {
-        return $this($container, DiAbstractServiceFactory::class);
-    }
 }

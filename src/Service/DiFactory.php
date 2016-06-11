@@ -9,52 +9,17 @@
 
 namespace Zend\Mvc\Service;
 
-use Interop\Container\ContainerInterface;
-use Zend\Di\Config;
-use Zend\Di\Di;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Di\DiFactory as OriginalFactory;
 
-class DiFactory implements FactoryInterface
+/**
+ * Since 2.7.9, this class now extends the version defined in zend-servicemanager-di,
+ * ensuring backwards compatibility with zend-servicemanger v2 and forwards
+ * compatibility with zend-servicemanager v3.
+ *
+ * @deprecated Since 2.7.9. The factory is now defined in zend-servicemanager-di,
+ *     and removed in 3.0.0. Use Zend\ServiceManager\Di\DiFactory from
+ *     zend-servicemanager-di instead if you rely on this feature.
+ */
+class DiFactory extends OriginalFactory
 {
-    /**
-     * Create and return abstract factory seeded by dependency injector
-     *
-     * Creates and returns an abstract factory seeded by the dependency
-     * injector. If the "di" key of the configuration service is set, that
-     * sub-array is passed to a DiConfig object and used to configure
-     * the DI instance. The DI instance is then used to seed the
-     * DiAbstractServiceFactory, which is then registered with the service
-     * manager.
-     *
-     * @param ContainerInterface $container
-     * @param string $name
-     * @param null|array $options
-     * @return Di
-     */
-    public function __invoke(ContainerInterface $container, $name, array $options = null)
-    {
-        $di     = new Di();
-        $config = $container->get('config');
-
-        if (isset($config['di'])) {
-            $config = new Config($config['di']);
-            $config->configure($di);
-        }
-
-        return $di;
-    }
-
-    /**
-     * Create and return Di instance
-     *
-     * For use with zend-servicemanager v2; proxies to __invoke().
-     *
-     * @param ServiceLocatorInterface $container
-     * @return Di
-     */
-    public function createService(ServiceLocatorInterface $container)
-    {
-        return $this($container, Di::class);
-    }
 }
