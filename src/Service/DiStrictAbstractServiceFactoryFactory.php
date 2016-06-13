@@ -16,7 +16,8 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 /**
  * @deprecated Since 2.7.9. The factory is now defined in zend-servicemanager-di,
  *     and removed in 3.0.0. Use Zend\ServiceManager\Di\DiStrictAbstractServiceFactoryFactory
- *     from zend-servicemanager-di instead if you rely on this feature.
+ *     from zend-servicemanager-di if you are using zend-servicemanager v3, and/or when
+ *     ready to migrate to zend-mvc 3.0.
  */
 class DiStrictAbstractServiceFactoryFactory implements FactoryInterface
 {
