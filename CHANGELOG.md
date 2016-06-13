@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 2.7.10 - 2016-06-13
+
+### Added
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- [#159](https://github.com/zendframework/zend-mvc/pull/159) removes the
+  dependency on zend-servicemanager-di.
+
+### Fixed
+
+- [#159](https://github.com/zendframework/zend-mvc/pull/159) fixes issues with
+  regards to conflicts between zend-servicemanager v2 and
+  zend-servicemanager-di by re-instating code removed from various
+  servicemanager/DI-related factories in 2.7.9. Two factories,
+  `Zend\Mvc\Service\DiAbstractServiceFactoryFactory` and
+  `Zend\Mvc\Service\DiServiceInitializerFactory`, now raise exceptions if they
+  detect they are running under zend-servicemanager v3, and prompt the developer
+  to install zend-servicemanager-di.
+
 ## 2.7.9 - 2016-06-11
 
 ### Added
