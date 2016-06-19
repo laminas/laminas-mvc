@@ -61,6 +61,9 @@ class InjectTemplateListener extends AbstractListenerAggregate
         }
 
         $routeMatch = $e->getRouteMatch();
+        $preferRouteMatchController = $routeMatch->getParam('prefer_route_match_controller', false);
+        $this->setPreferRouteMatchController($preferRouteMatchController);
+
         $controller = $e->getTarget();
         if (is_object($controller)) {
             $controller = get_class($controller);
