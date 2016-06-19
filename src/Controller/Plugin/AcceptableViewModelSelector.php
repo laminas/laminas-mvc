@@ -209,7 +209,7 @@ class AcceptableViewModelSelector extends AbstractPlugin
     protected function injectViewModelName($modelAcceptString, $modelName)
     {
         $modelName = str_replace('\\', '|', $modelName);
-        $modelAcceptString = (is_array($modelAcceptString ))
+        $modelAcceptString = (is_array($modelAcceptString))
             ? $modelAcceptString[key($modelAcceptString)]
             : $modelAcceptString;
         return $modelAcceptString . '; ' . self::INJECT_VIEWMODEL_NAME . '="' . $modelName . '", ';
