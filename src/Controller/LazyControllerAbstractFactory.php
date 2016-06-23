@@ -36,7 +36,7 @@ use Zend\Validator\ValidatorPluginManager;
  * <code>
  * 'controllers' => [
  *     'abstract_factories' => [
- *         LazyControllerFactory::class,
+ *         LazyControllerAbstractFactory::class,
  *     ],
  * ],
  * </code>
@@ -46,7 +46,7 @@ use Zend\Validator\ValidatorPluginManager;
  * <code>
  * 'controllers' => [
  *     'factories' => [
- *         MyControllerWithDependencies::class => LazyControllerFactory::class,
+ *         MyControllerWithDependencies::class => LazyControllerAbstractFactory::class,
  *     ],
  * ],
  * </code>
@@ -70,7 +70,7 @@ use Zend\Validator\ValidatorPluginManager;
  * `$options` passed to the factory are ignored in all cases, as we cannot
  * make assumptions about which argument(s) they might replace.
  */
-class LazyControllerFactory implements AbstractFactoryInterface
+class LazyControllerAbstractFactory implements AbstractFactoryInterface
 {
     /**
      * Maps known classes/interfaces to the service that provides them; only

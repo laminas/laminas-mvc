@@ -4,23 +4,23 @@ Writing a factory class for each and every controller that has dependencies
 can be tedious, particularly in early development as you are still sorting
 out dependencies.
 
-As of version 3.0.1, zend-mvc ships with `Zend\Mvc\Controller\LazyControllerFactory`,
+As of version 3.0.1, zend-mvc ships with `Zend\Mvc\Controller\LazyControllerAbstractFactory`,
 which provides a reflection-based approach to controller instantiation,
 resolving constructor dependencies to the relevant services. The factory may be
 used as either an abstract factory, or mapped to specific controller names as a
 factory:
 
 ```php
-use Zend\Mvc\Controller\LazyControllerFactory;
+use Zend\Mvc\Controller\LazyControllerAbstractFactory;
 
 return [
     /* ... */
     'controllers' => [
         'abstract_factories' => [
-            LazyControllerFactory::class,
+            LazyControllerAbstractFactory::class,
         ],
         'factories' => [
-            'MyModule\Controller\FooController' => LazyControllerFactory::class,
+            'MyModule\Controller\FooController' => LazyControllerAbstractFactory::class,
         ],
     ],
     /* ... */
