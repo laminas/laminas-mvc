@@ -9,9 +9,19 @@ namespace Zend\Mvc\Controller;
 
 use Interop\Container\ContainerInterface;
 use ReflectionClass;
+use Zend\Console\Adapter\AdapterInterface as ConsoleAdapterInterface;
+use Zend\Filter\FilterPluginManager;
+use Zend\Hydrator\HydratorPluginManager;
+use Zend\InputFilter\InputFilterPluginManager;
+use Zend\Log\FilterPluginManager as LogFilterManager;
+use Zend\Log\FormatterPluginManager as LogFormatterManager;
+use Zend\Log\ProcessorPluginManager as LogProcessorManager;
+use Zend\Log\WriterPluginManager as LogWriterManager;
+use Zend\Serializer\AdapterPluginManager as SerializerAdapterManager;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\Factory\AbstractFactoryInterface;
 use Zend\Stdlib\DispatchableInterface;
+use Zend\Validator\ValidatorPluginManager;
 
 /**
  * Reflection-based factory for controllers.
@@ -70,16 +80,16 @@ class LazyControllerFactory implements AbstractFactoryInterface
      * @var string[]
      */
     private $aliases = [
-        'Zend\Console\Adapter\AdapterInterface'     => 'ConsoleAdapter',
-        'Zend\Filter\FilterPluginManager'           => 'FilterManager',
-        'Zend\Hydrator\HydratorPluginManager'       => 'HydratorManager',
-        'Zend\InputFilter\InputFilterPluginManager' => 'InputFilterManager',
-        'Zend\Log\FilterPluginManager'              => 'LogFilterManager',
-        'Zend\Log\FormatterPluginManager'           => 'LogFormatterManager',
-        'Zend\Log\ProcessorPluginManager'           => 'LogProcessorManager',
-        'Zend\Log\WriterPluginManager'              => 'LogWriterManager',
-        'Zend\Serializer\AdapterPluginManager'      => 'SerializerAdapterManager',
-        'Zend\Validator\ValidatorPluginManager'     => 'ValidatorManager',
+        ConsoleAdapterInterface::class  => 'ConsoleAdapter',
+        FilterPluginManager::class      => 'FilterManager',
+        HydratorPluginManager::class    => 'HydratorManager',
+        InputFilterPluginManager::class => 'InputFilterManager',
+        LogFilterManager::class         => 'LogFilterManager',
+        LogFormatterManager::class      => 'LogFormatterManager',
+        LogProcessorManager::class      => 'LogProcessorManager',
+        LogWriterManager::class         => 'LogWriterManager',
+        SerializerAdapterManager::class => 'SerializerAdapterManager',
+        ValidatorPluginManager::class   => 'ValidatorManager',
     ];
 
     /**
