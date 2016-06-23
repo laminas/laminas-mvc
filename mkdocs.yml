@@ -18,6 +18,7 @@ pages:
           - 'v2.X to v2.7': migration/to-v2-7.md
           - 'v2.X to v3.0': migration/to-v3-0.md
     - Cookbook:
+      - 'Automating controller factories': cookbook/automating-controller-factories.md
       - 'Using middleware within event listeners': cookbook/middleware-in-listeners.md
 site_name: zend-mvc
 site_description: 'zend-mvc: MVC application provider'
