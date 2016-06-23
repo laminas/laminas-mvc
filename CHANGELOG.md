@@ -2,11 +2,32 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 3.0.1 - TBD
+## 3.0.1 - 2016-06-23
 
 ### Added
 
-- Nothing.
+- [#165](https://github.com/zendframework/zend-mvc/pull/165) adds a new
+  controller factory, `LazyControllerAbstractFactory`, that provides a
+  Reflection-based approach to instantiating controllers. You may register it
+  either as an abstract factory or as a named factory in your controller
+  configuration:
+
+  ```php
+  'controllers' => [
+      'abstract_factories' => [
+          'Zend\Mvc\Controller\LazyControllerAbstractFactory`,
+      ],
+      'factories' => [
+          'MyModule\Controller\FooController' => 'Zend\Mvc\Controller\LazyControllerAbstractFactory`,
+      ],
+  ],
+  ```
+
+  The factory uses the typehints to lookup services in the container, using
+  aliases for well-known services such as the `FilterManager`,
+  `ValidatorManager`, etc. If an `array` typehint is used with a `$config`
+  parameter, the `config` service is injected; otherwise, an empty array is
+  provided. For all other types, a null value is injected.
 
 ### Deprecated
 
