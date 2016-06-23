@@ -77,9 +77,11 @@ class LazyControllerAbstractFactory implements AbstractFactoryInterface
      * required for those services with no entry based on the class/interface
      * name.
      *
+     * Extend the class if you wish to add to the list.
+     *
      * @var string[]
      */
-    private $aliases = [
+    protected $aliases = [
         ConsoleAdapterInterface::class  => 'ConsoleAdapter',
         FilterPluginManager::class      => 'FilterManager',
         HydratorPluginManager::class    => 'HydratorManager',
