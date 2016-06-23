@@ -23,16 +23,7 @@ class LazyControllerAbstractFactoryTest extends TestCase
     public function nonClassRequestedNames()
     {
         return [
-            'null'             => [null],
-            'true'             => [true],
-            'false'            => [false],
-            'zero'             => [0],
-            'int'              => [1],
-            'zero-float'       => [0.0],
-            'float'            => [1.1],
             'non-class-string' => ['non-class-string'],
-            'array'            => [['non-class-string']],
-            'object'           => [(object) ['class' => 'non-class-string']],
         ];
     }
 

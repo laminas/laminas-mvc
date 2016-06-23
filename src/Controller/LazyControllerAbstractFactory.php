@@ -154,11 +154,10 @@ class LazyControllerAbstractFactory implements AbstractFactoryInterface
      */
     public function canCreate(ContainerInterface $container, $requestedName)
     {
-        if (! is_string($requestedName) || ! class_exists($requestedName)) {
+        if (! class_exists($requestedName)) {
             return false;
         }
 
-        $implements = class_implements($requestedName);
-        return in_array(DispatchableInterface::class, $implements, true);
+        return in_array(DispatchableInterface::class, class_implements($requestedName), true);
     }
 }
