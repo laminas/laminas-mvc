@@ -9,6 +9,7 @@ namespace Zend\Mvc\Controller;
 
 use Interop\Container\ContainerInterface;
 use ReflectionClass;
+use ReflectionParameter;
 use Zend\Console\Adapter\AdapterInterface as ConsoleAdapterInterface;
 use Zend\Filter\FilterPluginManager;
 use Zend\Hydrator\HydratorPluginManager;
@@ -113,40 +114,9 @@ class LazyControllerAbstractFactory implements AbstractFactoryInterface
             return new $requestedName();
         }
 
-        $parameters = [];
-        foreach ($reflectionParameters as $parameter) {
-            if ($parameter->isArray()
-                && $parameter->getName() === 'config'
-                && $container->has('config')
-            ) {
-                $parameters[] = $container->get('config');
-                continue;
-            }
-
-            if ($parameter->isArray()) {
-                $parameters[] = [];
-                continue;
-            }
-
-            if (! $parameter->getClass()) {
-                $parameters[] = null;
-                continue;
-            }
-
-            $type = $parameter->getClass()->getName();
-            $type = isset($this->aliases[$type]) ? $this->aliases[$type] : $type;
-
-            if (! $container->has($type)) {
-                throw new ServiceNotFoundException(sprintf(
-                    'Unable to create controller "%s"; unable to resolve parameter "%s" using type hint "%s"',
-                    $requestedName,
-                    $parameter->getName(),
-                    $type
-                ));
-            }
-
-            $parameters[] = $container->get($type);
-        }
+        $parameters = array_map(function (ReflectionParameter $parameter) use ($container, $requestedName) {
+            return $this->resolveParameter($parameter, $container, $requestedName);
+        }, $reflectionParameters);
 
         return new $requestedName(...$parameters);
     }
@@ -161,5 +131,47 @@ class LazyControllerAbstractFactory implements AbstractFactoryInterface
         }
 
         return in_array(DispatchableInterface::class, class_implements($requestedName), true);
+    }
+
+    /**
+     * Resolve a parameter to a value.
+     *
+     * @param ReflectionClass $parameter
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @return mixed
+     * @throws ServiceNotFoundException If type-hinted parameter cannot be
+     *     resolved to a service in the container.
+     */
+    private function resolveParameter(ReflectionParameter $parameter, ContainerInterface $container, $requestedName)
+    {
+        if ($parameter->isArray()
+            && $parameter->getName() === 'config'
+            && $container->has('config')
+        ) {
+            return $container->get('config');
+        }
+
+        if ($parameter->isArray()) {
+            return [];
+        }
+
+        if (! $parameter->getClass()) {
+            return;
+        }
+
+        $type = $parameter->getClass()->getName();
+        $type = isset($this->aliases[$type]) ? $this->aliases[$type] : $type;
+
+        if (! $container->has($type)) {
+            throw new ServiceNotFoundException(sprintf(
+                'Unable to create controller "%s"; unable to resolve parameter "%s" using type hint "%s"',
+                $requestedName,
+                $parameter->getName(),
+                $type
+            ));
+        }
+
+        return $container->get($type);
     }
 }
