@@ -134,7 +134,7 @@ class LazyControllerAbstractFactory implements AbstractFactoryInterface
             }
 
             $type = $parameter->getClass()->getName();
-            $type = array_key_exists($type, $this->aliases) ? $this->aliases[$type] : $type;
+            $type = isset($this->aliases[$type]) ? $this->aliases[$type] : $type;
 
             if (! $container->has($type)) {
                 throw new ServiceNotFoundException(sprintf(
@@ -148,7 +148,7 @@ class LazyControllerAbstractFactory implements AbstractFactoryInterface
             $parameters[] = $container->get($type);
         }
 
-        return $reflectionClass->newInstanceArgs($parameters);
+        return new $requestedName(...$parameters);
     }
 
     /**
