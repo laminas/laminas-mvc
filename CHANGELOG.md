@@ -6,7 +6,37 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- Nothing.
+- [#163](https://github.com/zendframework/zend-mvc/pull/163) adds support to the
+  `AcceptableViewModelSelector` plugin for controller maps in the `view_manager`
+  configuration in the format:
+
+  ```php
+  [
+      'ControllerClassName' => 'view/name',
+  ]
+  ```
+
+  This fixes an issue observed when running with Apigility.
+
+- [#163](https://github.com/zendframework/zend-mvc/pull/163) adds support to the
+  `InjectTemplateListener` for specifying whether or not to prefer the
+  controller matched during routing via routing configuration:
+
+  ```php
+  'route-name' => [
+      /* ... */
+      'options' => [
+          /* ... */
+          'defaults' => [
+              /* ... */
+              'prefer_route_match_controller' => true,
+          ],
+      ],
+  ],
+  ```
+
+  This allows actions that might otherwise skip injection of the template
+  to force the injection.
 
 ### Deprecated
 
