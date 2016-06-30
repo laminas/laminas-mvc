@@ -36,7 +36,9 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#161](https://github.com/zendframework/zend-mvc/pull/161) fixes the
+  `DispatchListener::marshalBadControllerEvent()` method to allow either
+  `Throwable` or `Exception` types for the `$exception` argument.
 
 ## 3.0.1 - 2016-06-23
 
