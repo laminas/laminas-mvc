@@ -20,7 +20,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 - Nothing.
 
-## 3.0.2 - TBD
+## 3.0.2 - 2016-06-30
 
 ### Added
 
