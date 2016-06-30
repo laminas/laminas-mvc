@@ -17,6 +17,7 @@ use Zend\Mvc\MvcEvent;
 use Zend\Router\RouteMatch;
 use Zend\Mvc\View\Http\InjectTemplateListener;
 use Zend\View\Model\ViewModel;
+use ZendTest\Mvc\Controller\TestAsset\SampleController;
 
 class InjectTemplateListenerTest extends TestCase
 {
@@ -108,7 +109,7 @@ class InjectTemplateListenerTest extends TestCase
     public function testMapsSubNamespaceToSubDirectory()
     {
         $myViewModel  = new ViewModel();
-        $myController = new \ZendTest\Mvc\Controller\TestAsset\SampleController();
+        $myController = new SampleController();
         $this->event->setTarget($myController);
         $this->event->setResult($myViewModel);
 
@@ -158,7 +159,7 @@ class InjectTemplateListenerTest extends TestCase
         $moduleRouteListener->onRoute($this->event);
 
         $myViewModel  = new ViewModel();
-        $myController = new \ZendTest\Mvc\Controller\TestAsset\SampleController();
+        $myController = new SampleController();
 
         $this->event->setTarget($myController);
         $this->event->setResult($myViewModel);
@@ -183,7 +184,7 @@ class InjectTemplateListenerTest extends TestCase
         $template1 = $myViewModel->getTemplate();
 
         $myViewModel  = new ViewModel();
-        $myController = new \ZendTest\Mvc\Controller\TestAsset\SampleController();
+        $myController = new SampleController();
 
         $this->event->setTarget($myController);
         $this->event->setResult($myViewModel);
@@ -204,7 +205,7 @@ class InjectTemplateListenerTest extends TestCase
 
         $this->listener->setControllerMap(['ZendTest' => true]);
         $myViewModel  = new ViewModel();
-        $myController = new \ZendTest\Mvc\Controller\TestAsset\SampleController();
+        $myController = new SampleController();
         $this->event->setTarget($myController);
         $this->event->setResult($myViewModel);
 
@@ -332,12 +333,36 @@ class InjectTemplateListenerTest extends TestCase
         $this->listener->setPreferRouteMatchController(true);
         $this->routeMatch->setParam('controller', 'Some\Other\Service\Namespace\Controller\Sample');
         $myViewModel  = new ViewModel();
-        $myController = new \ZendTest\Mvc\Controller\TestAsset\SampleController();
+        $myController = new SampleController();
 
         $this->event->setTarget($myController);
         $this->event->setResult($myViewModel);
         $this->listener->injectTemplate($this->event);
 
         $this->assertEquals('some/other/service/namespace/sample', $myViewModel->getTemplate());
+    }
+
+    public function testPrefersRouteMatchControllerWithRouteMatchAndControllerMap()
+    {
+        $this->assertFalse($this->listener->isPreferRouteMatchController());
+        $controllerMap = [
+            'Some\Other\Service\Namespace\Controller\Sample' => 'another/sample'
+        ];
+
+        $this->routeMatch->setParam('prefer_route_match_controller', true);
+        $this->routeMatch->setParam('controller', 'Some\Other\Service\Namespace\Controller\Sample');
+
+        $preferRouteMatchControllerRouteMatchConfig = $this->routeMatch->getParam('prefer_route_match_controller', false);
+        $this->listener->setPreferRouteMatchController($preferRouteMatchControllerRouteMatchConfig);
+        $this->listener->setControllerMap($controllerMap);
+
+        $myViewModel  = new ViewModel();
+        $myController = new SampleController();
+
+        $this->event->setTarget($myController);
+        $this->event->setResult($myViewModel);
+        $this->listener->injectTemplate($this->event);
+
+        $this->assertEquals('another/sample', $myViewModel->getTemplate());
     }
 }
