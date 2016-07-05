@@ -36,9 +36,13 @@ class InitializationIntegrationTest extends TestCase
         $request->setUri('http://example.local/path');
         $request->setRequestUri('/path');
 
+        ob_start();
         $application->run();
+        $content = ob_get_clean();
+
         $response = $application->getResponse();
         $this->assertContains('Application\\Controller\\PathController', $response->getContent());
+        $this->assertContains('Application\\Controller\\PathController', $content);
         $this->assertContains(MvcEvent::EVENT_DISPATCH, $response->toString());
     }
 }
