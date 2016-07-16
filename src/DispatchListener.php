@@ -176,7 +176,7 @@ class DispatchListener extends AbstractListenerAggregate
      * @param  string $controllerName
      * @param  MvcEvent $event
      * @param  Application $application
-     * @param  \Exception $exception
+     * @param  \Throwable|\Exception $exception
      * @return mixed
      */
     protected function marshalControllerNotFoundEvent(
@@ -184,7 +184,7 @@ class DispatchListener extends AbstractListenerAggregate
         $controllerName,
         MvcEvent $event,
         Application $application,
-        \Exception $exception = null
+        $exception = null
     ) {
         $event->setName(MvcEvent::EVENT_DISPATCH_ERROR);
         $event->setError($type);
