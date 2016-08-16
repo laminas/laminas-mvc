@@ -51,7 +51,7 @@ class SomeController extends AbstractActionController
         ],
         \Zend\View\Model\JsonModel::class => [
             'application/json',
-            'application/javascript'
+            'application/javascript',
         ],
         \Zend\View\Model\FeedModel::class => [
             'application/rss+xml',
