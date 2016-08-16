@@ -40,34 +40,43 @@ As an example:
 
 ```php
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\JsonModel;
 
 class SomeController extends AbstractActionController
 {
-   protected $acceptCriteria = [
-      'Zend\View\Model\JsonModel' => [
-         'application/json',
-      ],
-      'Zend\View\Model\FeedModel' => [
-         'application/rss+xml',
-      ],
-   ];
+    protected $acceptCriteria = [
+        // Make sure ViewModel is the first as a fallback
+        \Zend\View\Model\ViewModel::class => [
+            'text/html',
+            'application/xhtml+xml',
+        ],
+        \Zend\View\Model\JsonModel::class => [
+            'application/json',
+            'application/javascript'
+        ],
+        \Zend\View\Model\FeedModel::class => [
+            'application/rss+xml',
+            'application/atom+xml',
+        ],
+    ];
 
-   public function apiAction()
-   {
-      $viewModel = $this->acceptableViewModelSelector($this->acceptCriteria);
+    public function apiAction()
+    {
+        $viewModel = $this->acceptableViewModelSelector($this->acceptCriteria);
 
-      // Potentially vary execution based on model returned
-      if ($viewModel instanceof JsonModel) {
-         // ...
-      }
-   }
+        // Potentially vary execution based on model returned
+        if ($viewModel instanceof \Zend\View\Model\JsonModel) {
+            // ...
+        }
+    }
 }
 ```
 
-The above would return a standard `Zend\View\Model\ViewModel` instance if the
-criteria is not met, and the specified view model types if the specific criteria
+The above would return a standard `Zend\View\Model\ViewModel` instance if no
+criterias are met, and the specified view model types if a specific criteria
 is met. Rules are matched in order, with the first match "winning."
+
+> Browsers are sending `*/*` as last part of the Accept header so you have to define every 
+> acceptable view model and their Accept-Header part. Otherwise the first view model will be used.
 
 ## Forward Plugin
 
