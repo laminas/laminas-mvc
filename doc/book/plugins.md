@@ -44,7 +44,6 @@ use Zend\Mvc\Controller\AbstractActionController;
 class SomeController extends AbstractActionController
 {
     protected $acceptCriteria = [
-        // Make sure ViewModel is the first as a fallback
         \Zend\View\Model\ViewModel::class => [
             'text/html',
             'application/xhtml+xml',
@@ -73,10 +72,12 @@ class SomeController extends AbstractActionController
 
 The above would return a standard `Zend\View\Model\ViewModel` instance if no
 criterias are met, and the specified view model types if a specific criteria
-is met. Rules are matched in order, with the first match "winning."
+is met. Rules are matched in order, with the first match "winning". 
+Make sure to put your fallback view model *first* as a fallback for unknown 
+content types or `*/*`.
 
-> Browsers are sending `*/*` as last part of the Accept header so you have to define every 
-> acceptable view model and their Accept-Header part. Otherwise the first view model will be used.
+> Browsers are sending `*/*` as last content type of the Accept header so you have to define every 
+> acceptable view model and their content type.
 
 ## Forward Plugin
 
