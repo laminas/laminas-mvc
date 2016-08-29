@@ -359,13 +359,14 @@ abstract class AbstractRestfulController extends AbstractController
             // DELETE
             case 'delete':
                 $id = $this->getIdentifier($routeMatch, $request);
-                $data = $this->processBodyContent($request);
 
                 if ($id !== false) {
                     $action = 'delete';
                     $return = $this->delete($id);
                     break;
                 }
+
+                $data = $this->processBodyContent($request);
 
                 $action = 'deleteList';
                 $return = $this->deleteList($data);
