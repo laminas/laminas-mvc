@@ -86,7 +86,7 @@ class ServiceListenerFactory implements FactoryInterface
             'ViewPrefixPathStackResolver'    => 'Zend\Mvc\Service\ViewPrefixPathStackResolverFactory',
             'Zend\Mvc\MiddlewareListener'    => InvokableFactory::class,
             'Zend\Mvc\RouteListener'         => InvokableFactory::class,
-            'Zend\Mvc\SendResponseListener'  => InvokableFactory::class,
+            'Zend\Mvc\SendResponseListener'  => SendResponseListenerFactory::class,
             'Zend\View\Renderer\FeedRenderer' => InvokableFactory::class,
             'Zend\View\Renderer\JsonRenderer' => InvokableFactory::class,
             'Zend\View\Renderer\PhpRenderer' => ViewPhpRendererFactory::class,
