@@ -18,7 +18,9 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#184](https://github.com/zendframework/zend-mvc/pull/184) provides a
+  performance optimization for `DELETE` requests to `AbstractRestfulController`
+  instances.
 
 ## 3.0.2 - 2016-06-30
 
