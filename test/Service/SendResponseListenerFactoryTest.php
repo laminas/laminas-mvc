@@ -19,7 +19,7 @@ use Zend\Mvc\ResponseSender\SimpleStreamResponseSender;
 use Zend\Mvc\SendResponseListener;
 use Zend\Mvc\Service\SendResponseListenerFactory;
 
-class SendResponseFactoryTest extends TestCase
+class SendResponseListenerFactoryTest extends TestCase
 {
     public function testFactoryReturnsListenerWithEventManagerFromContainer()
     {
