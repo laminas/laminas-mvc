@@ -232,7 +232,7 @@ $serviceManager->setService('Request', new PhpEnvironment\Request());
 $serviceManager->setService('Response', new PhpEnvironment\Response());
 $serviceManager->setFactory('EventManager', function ($serviceManager) {
     $eventManager = new EventManager();
-    $eventManager->setSharedManager($serviceManager->get('SharedEventManager');
+    $eventManager->setSharedManager($serviceManager->get('SharedEventManager'));
     return $eventManager;
 });
 $serviceManager->setShared('EventManager', false);
