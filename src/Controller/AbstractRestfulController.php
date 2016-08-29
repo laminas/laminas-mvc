@@ -365,7 +365,7 @@ abstract class AbstractRestfulController extends AbstractController
                     $return = $this->delete($id);
                     break;
                 }
-                
+
                 $data = $this->processBodyContent($request);
 
                 $action = 'deleteList';
