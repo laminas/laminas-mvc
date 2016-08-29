@@ -39,6 +39,10 @@ All notable changes to this project will be documented in this file, in reverse 
 - [#184](https://github.com/zendframework/zend-mvc/pull/184) provides a
   performance optimization for `DELETE` requests to `AbstractRestfulController`
   instances.
+- [#187](https://github.com/zendframework/zend-mvc/pull/187) removes a typehint
+  for `Exception` from an argument in
+  `DispatchListener::marshalControllerNotFoundEvent()`, allowing it to be used
+  with PHP 7 `Throwable` instances.
 
 ## 3.0.2 - 2016-06-30
 
