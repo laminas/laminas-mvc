@@ -20,11 +20,14 @@ All notable changes to this project will be documented in this file, in reverse 
 
 - Nothing.
 
-## 3.0.3 - TBD
+## 3.0.3 - 2016-08-29
 
 ### Added
 
-- Nothing.
+- [#198](https://github.com/zendframework/zend-mvc/pull/198) adds a factory for
+  the `SendResponseListener`, to ensure that it is injected with an event
+  manager instance from the outset; this fixes issues with delegator factories
+  that registered listeners with it in previous versions.
 
 ### Deprecated
 
