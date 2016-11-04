@@ -231,9 +231,7 @@ $serviceManager->setService('ModuleManager', new ModuleManager($config));
 $serviceManager->setService('Request', new PhpEnvironment\Request());
 $serviceManager->setService('Response', new PhpEnvironment\Response());
 $serviceManager->setFactory('EventManager', function ($serviceManager) {
-    $eventManager = new EventManager();
-    $eventManager->setSharedManager($serviceManager->get('SharedEventManager'));
-    return $eventManager;
+    return new EventManager($serviceManager->get('SharedEventManager'));
 });
 $serviceManager->setShared('EventManager', false);
 
