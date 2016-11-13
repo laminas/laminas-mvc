@@ -89,7 +89,7 @@ abstract class AbstractController implements
     public function dispatch(Request $request, Response $response = null)
     {
         $this->request = $request;
-        if (!$response) {
+        if (! $response) {
             $response = new HttpResponse();
         }
         $this->response = $response;
@@ -118,7 +118,7 @@ abstract class AbstractController implements
      */
     public function getRequest()
     {
-        if (!$this->request) {
+        if (! $this->request) {
             $this->request = new HttpRequest();
         }
 
@@ -132,7 +132,7 @@ abstract class AbstractController implements
      */
     public function getResponse()
     {
-        if (!$this->response) {
+        if (! $this->response) {
             $this->response = new HttpResponse();
         }
 
@@ -175,7 +175,7 @@ abstract class AbstractController implements
      */
     public function getEventManager()
     {
-        if (!$this->events) {
+        if (! $this->events) {
             $this->setEventManager(new EventManager());
         }
 
@@ -192,7 +192,7 @@ abstract class AbstractController implements
      */
     public function setEvent(Event $e)
     {
-        if (!$e instanceof MvcEvent) {
+        if (! $e instanceof MvcEvent) {
             $eventParams = $e->getParams();
             $e = new MvcEvent();
             $e->setParams($eventParams);
@@ -210,7 +210,7 @@ abstract class AbstractController implements
      */
     public function getEvent()
     {
-        if (!$this->event) {
+        if (! $this->event) {
             $this->setEvent(new MvcEvent());
         }
 
@@ -224,7 +224,7 @@ abstract class AbstractController implements
      */
     public function getPluginManager()
     {
-        if (!$this->plugins) {
+        if (! $this->plugins) {
             $this->setPluginManager(new PluginManager(new ServiceManager()));
         }
 

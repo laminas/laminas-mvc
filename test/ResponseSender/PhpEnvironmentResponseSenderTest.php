@@ -60,7 +60,7 @@ class PhpEnvironmentResponseSenderTest extends TestCase
                     return false;
                 }
                 return true;
-        }));
+            }));
         return $mockSendResponseEvent;
     }
 }

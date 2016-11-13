@@ -160,7 +160,7 @@ class DispatchListener extends AbstractListenerAggregate
      */
     protected function complete($return, MvcEvent $event)
     {
-        if (!is_object($return)) {
+        if (! is_object($return)) {
             if (ArrayUtils::hasStringKeys($return)) {
                 $return = new ArrayObject($return, ArrayObject::ARRAY_AS_PROPS);
             }

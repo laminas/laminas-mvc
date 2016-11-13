@@ -20,7 +20,7 @@ class AbstractResponseSenderTest extends TestCase
      */
     public function testSendHeadersTwoTimesSendsOnlyOnce()
     {
-        if (!function_exists('xdebug_get_headers')) {
+        if (! function_exists('xdebug_get_headers')) {
             $this->markTestSkipped('Xdebug extension needed, skipped test');
         }
         $headers = [
@@ -35,10 +35,10 @@ class AbstractResponseSenderTest extends TestCase
             ['getResponse']
         );
         $mockSendResponseEvent->expects(
-            $this->any())
+            $this->any()
+        )
                 ->method('getResponse')
-                ->will($this->returnValue($response)
-        );
+                ->will($this->returnValue($response));
 
         $responseSender = $this->getMockForAbstractClass(
             'Zend\Mvc\ResponseSender\AbstractResponseSender'
@@ -68,7 +68,7 @@ class AbstractResponseSenderTest extends TestCase
      */
     public function testSendHeadersSendsStatusLast()
     {
-        if (!function_exists('xdebug_get_headers')) {
+        if (! function_exists('xdebug_get_headers')) {
             $this->markTestSkipped('Xdebug extension needed, skipped test');
         }
 

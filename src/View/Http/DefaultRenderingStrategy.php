@@ -91,7 +91,7 @@ class DefaultRenderingStrategy extends AbstractListenerAggregate
         $request   = $e->getRequest();
         $response  = $e->getResponse();
         $viewModel = $e->getViewModel();
-        if (!$viewModel instanceof ViewModel) {
+        if (! $viewModel instanceof ViewModel) {
             return;
         }
 

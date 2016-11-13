@@ -138,7 +138,7 @@ class DefaultRendereringStrategyTest extends TestCase
         $services = new ServiceManager();
         (new Config([
             'invokables' => [
-                'SharedEventManager' =>  'Zend\EventManager\SharedEventManager',
+                'SharedEventManager' => 'Zend\EventManager\SharedEventManager',
             ],
             'factories' => [
                 'EventManager' => function ($services) {

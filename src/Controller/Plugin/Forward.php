@@ -162,10 +162,10 @@ class Forward extends AbstractPlugin
         // Convert the problem list from two-dimensional array to more convenient id => event => class format:
         $formattedProblems = [];
         foreach ($this->getListenersToDetach() as $current) {
-            if (!isset($formattedProblems[$current['id']])) {
+            if (! isset($formattedProblems[$current['id']])) {
                 $formattedProblems[$current['id']] = [];
             }
-            if (!isset($formattedProblems[$current['id']][$current['event']])) {
+            if (! isset($formattedProblems[$current['id']][$current['event']])) {
                 $formattedProblems[$current['id']][$current['event']] = [];
             }
             $formattedProblems[$current['id']][$current['event']][] = $current['class'];
@@ -181,7 +181,7 @@ class Forward extends AbstractPlugin
                 $events = $this->getSharedListenersById($id, $eventName, $sharedEvents);
                 foreach ($events as $priority => $currentPriorityEvents) {
                     // v2 fix
-                    if (!is_array($currentPriorityEvents)) {
+                    if (! is_array($currentPriorityEvents)) {
                         $currentPriorityEvents = [$currentPriorityEvents];
                     }
                     // v3
@@ -200,7 +200,7 @@ class Forward extends AbstractPlugin
                         }
 
                         // This routine is only valid for object callbacks
-                        if (!is_object($currentCallback)) {
+                        if (! is_object($currentCallback)) {
                             continue;
                         }
 
@@ -260,7 +260,7 @@ class Forward extends AbstractPlugin
         }
 
         $controller = $this->getController();
-        if (!$controller instanceof InjectApplicationEventInterface) {
+        if (! $controller instanceof InjectApplicationEventInterface) {
             throw new Exception\DomainException(sprintf(
                 'Forward plugin requires a controller that implements InjectApplicationEventInterface; received %s',
                 (is_object($controller) ? get_class($controller) : var_export($controller, 1))
@@ -268,7 +268,7 @@ class Forward extends AbstractPlugin
         }
 
         $event = $controller->getEvent();
-        if (!$event instanceof MvcEvent) {
+        if (! $event instanceof MvcEvent) {
             $params = [];
             if ($event) {
                 $params = $event->getParams();

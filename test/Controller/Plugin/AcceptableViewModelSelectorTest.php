@@ -176,8 +176,8 @@ class AcceptableViewModelSelectorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($plugin->getDefaultMatchAgainst(), $arr);
         $result = $plugin->match();
         $this->assertInstanceOf(
-                'Zend\Http\Header\Accept\FieldValuePart\AcceptFieldValuePart',
-                $result
+            'Zend\Http\Header\Accept\FieldValuePart\AcceptFieldValuePart',
+            $result
         );
         $this->assertEquals($plugin->getDefaultMatchAgainst(), $arr);
     }
