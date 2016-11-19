@@ -341,9 +341,14 @@ class RestfulControllerTest extends TestCase
     {
         $response = new Response();
         $response->setContent('short circuited!');
-        $this->sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
-            return $response;
-        }, 10);
+        $this->sharedEvents->attach(
+            'Zend\Stdlib\DispatchableInterface',
+            MvcEvent::EVENT_DISPATCH,
+            function ($e) use ($response) {
+                return $response;
+            },
+            10
+        );
         $result = $this->controller->dispatch($this->request, $this->response);
         $this->assertSame($response, $result);
     }
@@ -352,9 +357,14 @@ class RestfulControllerTest extends TestCase
     {
         $response = new Response();
         $response->setContent('short circuited!');
-        $this->sharedEvents->attach('Zend\Mvc\Controller\AbstractRestfulController', MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
-            return $response;
-        }, 10);
+        $this->sharedEvents->attach(
+            'Zend\Mvc\Controller\AbstractRestfulController',
+            MvcEvent::EVENT_DISPATCH,
+            function ($e) use ($response) {
+                return $response;
+            },
+            10
+        );
         $result = $this->controller->dispatch($this->request, $this->response);
         $this->assertSame($response, $result);
     }
@@ -363,9 +373,14 @@ class RestfulControllerTest extends TestCase
     {
         $response = new Response();
         $response->setContent('short circuited!');
-        $this->sharedEvents->attach(get_class($this->controller), MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
-            return $response;
-        }, 10);
+        $this->sharedEvents->attach(
+            get_class($this->controller),
+            MvcEvent::EVENT_DISPATCH,
+            function ($e) use ($response) {
+                return $response;
+            },
+            10
+        );
         $result = $this->controller->dispatch($this->request, $this->response);
         $this->assertSame($response, $result);
     }
@@ -428,7 +443,9 @@ class RestfulControllerTest extends TestCase
     public function testRequestingContentTypeReturnsTrueForValidMatches($contentType)
     {
         $this->request->getHeaders()->addHeaderLine('Content-Type', $contentType);
-        $this->assertTrue($this->controller->requestHasContentType($this->request, TestAsset\RestfulTestController::CONTENT_TYPE_JSON));
+        $this->assertTrue(
+            $this->controller->requestHasContentType($this->request, TestAsset\RestfulTestController::CONTENT_TYPE_JSON)
+        );
     }
 
     public function nonMatchingContentTypes()
@@ -445,7 +462,9 @@ class RestfulControllerTest extends TestCase
     public function testRequestingContentTypeReturnsFalseForInvalidMatches($contentType)
     {
         $this->request->getHeaders()->addHeaderLine('Content-Type', $contentType);
-        $this->assertFalse($this->controller->requestHasContentType($this->request, TestAsset\RestfulTestController::CONTENT_TYPE_JSON));
+        $this->assertFalse(
+            $this->controller->requestHasContentType($this->request, TestAsset\RestfulTestController::CONTENT_TYPE_JSON)
+        );
     }
 
     public function testDispatchWithUnrecognizedMethodReturns405Response()

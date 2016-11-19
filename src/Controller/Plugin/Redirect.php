@@ -37,7 +37,9 @@ class Redirect extends AbstractPlugin
     {
         $controller = $this->getController();
         if (! $controller || ! method_exists($controller, 'plugin')) {
-            throw new Exception\DomainException('Redirect plugin requires a controller that defines the plugin() method');
+            throw new Exception\DomainException(
+                'Redirect plugin requires a controller that defines the plugin() method'
+            );
         }
 
         $urlPlugin = $controller->plugin('url');
@@ -110,7 +112,9 @@ class Redirect extends AbstractPlugin
 
         $controller = $this->getController();
         if (! $controller instanceof InjectApplicationEventInterface) {
-            throw new Exception\DomainException('Redirect plugin requires a controller that implements InjectApplicationEventInterface');
+            throw new Exception\DomainException(
+                'Redirect plugin requires a controller that implements InjectApplicationEventInterface'
+            );
         }
 
         $event = $controller->getEvent();

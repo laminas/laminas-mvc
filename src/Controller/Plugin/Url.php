@@ -37,7 +37,9 @@ class Url extends AbstractPlugin
     {
         $controller = $this->getController();
         if (! $controller instanceof InjectApplicationEventInterface) {
-            throw new Exception\DomainException('Url plugin requires a controller that implements InjectApplicationEventInterface');
+            throw new Exception\DomainException(
+                'Url plugin requires a controller that implements InjectApplicationEventInterface'
+            );
         }
 
         if (! is_array($params)) {
@@ -60,7 +62,9 @@ class Url extends AbstractPlugin
             $matches = $event->getParam('route-match', false);
         }
         if (! $router instanceof RouteStackInterface) {
-            throw new Exception\DomainException('Url plugin requires that controller event compose a router; none found');
+            throw new Exception\DomainException(
+                'Url plugin requires that controller event compose a router; none found'
+            );
         }
 
         if (3 == func_num_args() && is_bool($options)) {

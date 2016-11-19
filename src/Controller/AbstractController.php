@@ -26,8 +26,9 @@ use Zend\Stdlib\ResponseInterface as Response;
  * Abstract controller
  *
  * Convenience methods for pre-built plugins (@see __call):
- *
+ * @codingStandardsIgnoreStart
  * @method \Zend\View\Model\ModelInterface acceptableViewModelSelector(array $matchAgainst = null, bool $returnDefault = true, \Zend\Http\Header\Accept\FieldValuePart\AbstractFieldValuePart $resultReference = null)
+ * @codingStandardsIgnoreEnd
  * @method \Zend\Mvc\Controller\Plugin\Forward forward()
  * @method \Zend\Mvc\Controller\Plugin\Layout|\Zend\View\Model\ModelInterface layout(string $template = null)
  * @method \Zend\Mvc\Controller\Plugin\Params|mixed params(string $param = null, mixed $default = null)

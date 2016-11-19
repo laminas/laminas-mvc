@@ -52,7 +52,12 @@ class MiddlewareListener extends AbstractListenerAggregate
             $middleware = $serviceManager->get($middleware);
         }
         if (! is_callable($middleware)) {
-            $return = $this->marshalMiddlewareNotCallable($application::ERROR_MIDDLEWARE_CANNOT_DISPATCH, $middlewareName, $event, $application);
+            $return = $this->marshalMiddlewareNotCallable(
+                $application::ERROR_MIDDLEWARE_CANNOT_DISPATCH,
+                $middlewareName,
+                $event,
+                $application
+            );
             $event->setResult($return);
             return $return;
         }

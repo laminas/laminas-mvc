@@ -45,7 +45,9 @@ class AcceptableViewModelSelectorTest extends \PHPUnit_Framework_TestCase
             'Zend\View\Model\ViewModel' => '*/*'
         ];
 
-        $header   = Accept::fromString('Accept: text/plain; q=0.5, text/html, text/xml; q=0, text/x-dvi; q=0.8, text/x-c');
+        $header   = Accept::fromString(
+            'Accept: text/plain; q=0.5, text/html, text/xml; q=0, text/x-dvi; q=0.8, text/x-c'
+        );
         $this->request->getHeaders()->addHeader($header);
         $plugin   = $this->plugin;
         $plugin->setDefaultViewModelName('Zend\View\Model\FeedModel');
@@ -77,7 +79,9 @@ class AcceptableViewModelSelectorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Zend\View\Model\ViewModel', $result); //   Default Default View Model Name
 
         $plugin->setDefaultViewModelName('Zend\View\Model\FeedModel');
-        $this->assertEquals($plugin->getDefaultViewModelName(), 'Zend\View\Model\FeedModel'); // Test getter along the way
+
+        // Test getter along the way
+        $this->assertEquals($plugin->getDefaultViewModelName(), 'Zend\View\Model\FeedModel');
         $this->assertInstanceOf('Zend\View\Model\FeedModel', $plugin($arr));
     }
 

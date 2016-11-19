@@ -99,7 +99,10 @@ class LazyControllerAbstractFactoryTest extends TestCase
         $this->container->get(TestAsset\SampleInterface::class)->willReturn($sample);
 
         $factory = new LazyControllerAbstractFactory();
-        $controller = $factory($this->container->reveal(), TestAsset\ControllerWithTypeHintedConstructorParameter::class);
+        $controller = $factory(
+            $this->container->reveal(),
+            TestAsset\ControllerWithTypeHintedConstructorParameter::class
+        );
         $this->assertInstanceOf(TestAsset\ControllerWithTypeHintedConstructorParameter::class, $controller);
         $this->assertSame($sample, $controller->sample);
     }

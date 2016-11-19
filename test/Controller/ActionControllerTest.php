@@ -129,9 +129,14 @@ class ActionControllerTest extends TestCase
         $response = new Response();
         $response->setContent('short circuited!');
         $sharedEvents = $this->controller->getEventManager()->getSharedManager();
-        $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
-            return $response;
-        }, 10);
+        $sharedEvents->attach(
+            'Zend\Stdlib\DispatchableInterface',
+            MvcEvent::EVENT_DISPATCH,
+            function ($e) use ($response) {
+                return $response;
+            },
+            10
+        );
         $result = $this->controller->dispatch($this->request, $this->response);
         $this->assertSame($response, $result);
     }
@@ -141,9 +146,14 @@ class ActionControllerTest extends TestCase
         $response = new Response();
         $response->setContent('short circuited!');
         $sharedEvents = $this->controller->getEventManager()->getSharedManager();
-        $sharedEvents->attach('Zend\Mvc\Controller\AbstractActionController', MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
-            return $response;
-        }, 10);
+        $sharedEvents->attach(
+            'Zend\Mvc\Controller\AbstractActionController',
+            MvcEvent::EVENT_DISPATCH,
+            function ($e) use ($response) {
+                return $response;
+            },
+            10
+        );
         $result = $this->controller->dispatch($this->request, $this->response);
         $this->assertSame($response, $result);
     }
@@ -165,9 +175,14 @@ class ActionControllerTest extends TestCase
         $response = new Response();
         $response->setContent('short circuited!');
         $sharedEvents = $this->controller->getEventManager()->getSharedManager();
-        $sharedEvents->attach('ZendTest\\Mvc\\Controller\\TestAsset\\SampleInterface', MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
-            return $response;
-        }, 10);
+        $sharedEvents->attach(
+            'ZendTest\\Mvc\\Controller\\TestAsset\\SampleInterface',
+            MvcEvent::EVENT_DISPATCH,
+            function ($e) use ($response) {
+                return $response;
+            },
+            10
+        );
         $result = $this->controller->dispatch($this->request, $this->response);
         $this->assertSame($response, $result);
     }
