@@ -254,8 +254,9 @@ The following listeners are only attached in an HTTP context:
 
 Class                                           | Priority | Method Called               | Description
 ------------------------------------------------|---------:|-----------------------------|------------
-`Zend\Mvc\View\Console\ExceptionStrategy`       | 1        | `prepareExceptionViewModel` | Create an exception view model and set the status code to 404.
-`Zend\Mvc\View\Console\InjectViewModelListener` |          |                             | 
+`Zend\Mvc\View\Http\ExceptionStrategy`          | 1        | `prepareExceptionViewModel` | Create an exception view model and set the status code to 404.
+`Zend\Mvc\View\Http\InjectViewModelListener`    | -100     | `injectViewModel`           | Inserts the `ViewModel` (in this case, a `ViewModel`) and adds it to the MvcEvent object. It either (a) adds it as a child to the default, composed view model, or (b) replaces it if the result is marked as terminable.
+`Zend\Mvc\View\Http\DefaultRenderingStrategy`   | -10000   | `render`                    | Render the view
 
 ### Triggered By
 
