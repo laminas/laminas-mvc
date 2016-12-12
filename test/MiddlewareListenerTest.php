@@ -29,7 +29,6 @@ class MiddlewareListenerTest extends TestCase
      */
     private $routeMatch;
 
-
     /**
      * Create an MvcEvent, populated with everything it needs.
      *
@@ -42,6 +41,7 @@ class MiddlewareListenerTest extends TestCase
         $response   = new Response();
         $this->routeMatch = $this->prophesize(RouteMatch::class);
         $this->routeMatch->getParam('middleware', false)->willReturn($middlewareMatched);
+        $this->routeMatch->getParams()->willReturn([]);
 
         $eventManager = new EventManager();
 
@@ -153,6 +153,7 @@ class MiddlewareListenerTest extends TestCase
         $response   = new Response();
         $routeMatch = $this->prophesize(RouteMatch::class);
         $routeMatch->getParam('middleware', false)->willReturn('test');
+        $routeMatch->getParams()->willReturn([]);
 
         $eventManager = new EventManager();
 
