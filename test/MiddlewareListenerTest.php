@@ -91,10 +91,12 @@ class MiddlewareListenerTest extends TestCase
     public function testMatchedRouteParamsAreInjectedToRequestAsAttributes()
     {
         $matchedRouteParam = uniqid('matched param', true);
+        $routeAttribute = null;
 
         $event = $this->createMvcEvent(
             'foo',
-            function (ServerRequestInterface $request, ResponseInterface $response) {
+            function (ServerRequestInterface $request, ResponseInterface $response) use (&$routeAttribute) {
+                $routeAttribute = $request->getAttribute(RouteMatch::class);
                 $response->getBody()->write($request->getAttribute('myParam', 'param did not exist'));
                 return $response;
             }
@@ -106,8 +108,9 @@ class MiddlewareListenerTest extends TestCase
 
         $listener = new MiddlewareListener();
         $return   = $listener->onDispatch($event);
-        self::assertInstanceOf(Response::class, $return);
-        self::assertSame($matchedRouteParam, $return->getBody());
+        $this->assertInstanceOf(Response::class, $return);
+        $this->assertSame($matchedRouteParam, $return->getBody());
+        $this->assertSame($this->routeMatch->reveal(), $routeAttribute);
     }
 
     public function testTriggersErrorForUncallableMiddleware()
