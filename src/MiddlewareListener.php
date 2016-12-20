@@ -14,6 +14,7 @@ use Zend\EventManager\AbstractListenerAggregate;
 use Zend\EventManager\EventManagerInterface;
 use Zend\Psr7Bridge\Psr7ServerRequest as Psr7Request;
 use Zend\Psr7Bridge\Psr7Response;
+use Zend\Router\RouteMatch;
 
 class MiddlewareListener extends AbstractListenerAggregate
 {
@@ -59,7 +60,11 @@ class MiddlewareListener extends AbstractListenerAggregate
 
         $caughtException = null;
         try {
-            $return = $middleware(Psr7Request::fromZend($request), Psr7Response::fromZend($response));
+            $psr7Request = Psr7Request::fromZend($request)->withAttribute(RouteMatch::class, $routeMatch);
+            foreach ($routeMatch->getParams() as $key => $value) {
+                $psr7Request = $psr7Request->withAttribute($key, $value);
+            }
+            $return = $middleware($psr7Request, Psr7Response::fromZend($response));
         } catch (\Throwable $ex) {
             $caughtException = $ex;
         } catch (\Exception $ex) {  // @TODO clean up once PHP 7 requirement is enforced

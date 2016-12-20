@@ -25,6 +25,11 @@ use Zend\ServiceManager\ServiceManager;
 class MiddlewareListenerTest extends TestCase
 {
     /**
+     * @var \Prophecy\Prophecy\ObjectProphecy
+     */
+    private $routeMatch;
+
+    /**
      * Create an MvcEvent, populated with everything it needs.
      *
      * @param string $middlewareMatched Middleware service matched by routing
@@ -34,8 +39,9 @@ class MiddlewareListenerTest extends TestCase
     public function createMvcEvent($middlewareMatched, $middleware = null)
     {
         $response   = new Response();
-        $routeMatch = $this->prophesize(RouteMatch::class);
-        $routeMatch->getParam('middleware', false)->willReturn($middlewareMatched);
+        $this->routeMatch = $this->prophesize(RouteMatch::class);
+        $this->routeMatch->getParam('middleware', false)->willReturn($middlewareMatched);
+        $this->routeMatch->getParams()->willReturn([]);
 
         $eventManager = new EventManager();
 
@@ -54,7 +60,7 @@ class MiddlewareListenerTest extends TestCase
         $event->setRequest(new Request());
         $event->setResponse($response);
         $event->setApplication($application->reveal());
-        $event->setRouteMatch($routeMatch->reveal());
+        $event->setRouteMatch($this->routeMatch->reveal());
 
         return $event;
     }
@@ -80,6 +86,31 @@ class MiddlewareListenerTest extends TestCase
         $this->assertInstanceOf('Zend\Http\Response', $return);
         $this->assertSame(200, $return->getStatusCode());
         $this->assertEquals('Test!', $return->getBody());
+    }
+
+    public function testMatchedRouteParamsAreInjectedToRequestAsAttributes()
+    {
+        $matchedRouteParam = uniqid('matched param', true);
+        $routeAttribute = null;
+
+        $event = $this->createMvcEvent(
+            'foo',
+            function (ServerRequestInterface $request, ResponseInterface $response) use (&$routeAttribute) {
+                $routeAttribute = $request->getAttribute(RouteMatch::class);
+                $response->getBody()->write($request->getAttribute('myParam', 'param did not exist'));
+                return $response;
+            }
+        );
+
+        $this->routeMatch->getParams()->willReturn([
+            'myParam' => $matchedRouteParam,
+        ]);
+
+        $listener = new MiddlewareListener();
+        $return   = $listener->onDispatch($event);
+        $this->assertInstanceOf(Response::class, $return);
+        $this->assertSame($matchedRouteParam, $return->getBody());
+        $this->assertSame($this->routeMatch->reveal(), $routeAttribute);
     }
 
     public function testTriggersErrorForUncallableMiddleware()
@@ -125,6 +156,7 @@ class MiddlewareListenerTest extends TestCase
         $response   = new Response();
         $routeMatch = $this->prophesize(RouteMatch::class);
         $routeMatch->getParam('middleware', false)->willReturn('test');
+        $routeMatch->getParams()->willReturn([]);
 
         $eventManager = new EventManager();
 
