@@ -18,7 +18,9 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#210](https://github.com/zendframework/zend-mvc/pull/210) copies the 
+  `RouteMatch` and its parameters to the PSR-7 `ServerRequest` object so that
+  they are available to middleware.
 
 ## 3.0.3 - 2016-08-29
 
