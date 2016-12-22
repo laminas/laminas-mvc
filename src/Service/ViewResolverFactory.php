@@ -10,9 +10,9 @@
 namespace Zend\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\View\Resolver as ViewResolver;
+use Zend\View\Resolver\ResolverInterface;
 
 class ViewResolverFactory implements FactoryInterface
 {
@@ -31,11 +31,11 @@ class ViewResolverFactory implements FactoryInterface
     {
         $resolver = new ViewResolver\AggregateResolver();
 
-        /* @var $mapResolver \Zend\View\Resolver\ResolverInterface */
+        /* @var $mapResolver ResolverInterface */
         $mapResolver             = $container->get('ViewTemplateMapResolver');
-        /* @var $pathResolver \Zend\View\Resolver\ResolverInterface */
+        /* @var $pathResolver ResolverInterface */
         $pathResolver            = $container->get('ViewTemplatePathStack');
-        /* @var $prefixPathStackResolver \Zend\View\Resolver\ResolverInterface */
+        /* @var $prefixPathStackResolver ResolverInterface */
         $prefixPathStackResolver = $container->get('ViewPrefixPathStackResolver');
 
         $resolver
@@ -47,18 +47,5 @@ class ViewResolverFactory implements FactoryInterface
             ->attach(new ViewResolver\RelativeFallbackResolver($prefixPathStackResolver));
 
         return $resolver;
-    }
-
-    /**
-     * Create and return ViewResolver\AggregateResolver instance
-     *
-     * For use with zend-servicemanager v2; proxies to __invoke().
-     *
-     * @param ServiceLocatorInterface $container
-     * @return ViewResolver\AggregateResolver
-     */
-    public function createService(ServiceLocatorInterface $container)
-    {
-        return $this($container, ViewResolver\AggregateResolver::class);
     }
 }

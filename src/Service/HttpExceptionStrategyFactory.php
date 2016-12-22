@@ -11,8 +11,7 @@ namespace Zend\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
 use Zend\Mvc\View\Http\ExceptionStrategy;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 class HttpExceptionStrategyFactory implements FactoryInterface
 {
@@ -33,19 +32,6 @@ class HttpExceptionStrategyFactory implements FactoryInterface
         $this->injectExceptionTemplate($strategy, $config);
 
         return $strategy;
-    }
-
-    /**
-     * Create and return ExceptionStrategy instance
-     *
-     * For use with zend-servicemanager v2; proxies to __invoke().
-     *
-     * @param ServiceLocatorInterface $container
-     * @return ExceptionStrategy
-     */
-    public function createService(ServiceLocatorInterface $container)
-    {
-        return $this($container, ExceptionStrategy::class);
     }
 
     /**

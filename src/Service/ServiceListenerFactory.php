@@ -10,14 +10,11 @@
 namespace Zend\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
-use ReflectionClass;
-use Zend\Config\Config;
 use Zend\ModuleManager\Listener\ServiceListener;
 use Zend\ModuleManager\Listener\ServiceListenerInterface;
-use Zend\Mvc\Application;
 use Zend\Mvc\View;
 use Zend\ServiceManager\Exception\ServiceNotCreatedException;
-use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\Factory\InvokableFactory;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -40,10 +37,14 @@ class ServiceListenerFactory implements FactoryInterface
      */
     protected $defaultServiceConfig = [
         'aliases' => [
+            'application'                                => 'Application',
+            'Config'                                     => 'config',
             'configuration'                              => 'config',
             'Configuration'                              => 'config',
             'HttpDefaultRenderingStrategy'               => View\Http\DefaultRenderingStrategy::class,
             'MiddlewareListener'                         => 'Zend\Mvc\MiddlewareListener',
+            'request'                                    => 'Request',
+            'response'                                   => 'Response',
             'RouteListener'                              => 'Zend\Mvc\RouteListener',
             'SendResponseListener'                       => 'Zend\Mvc\SendResponseListener',
             'View'                                       => 'Zend\View\View',
@@ -96,20 +97,6 @@ class ServiceListenerFactory implements FactoryInterface
     ];
 
     /**
-     * Constructor
-     *
-     * When executed under zend-servicemanager v3, injects additional aliases
-     * to ensure backwards compatibility.
-     */
-    public function __construct()
-    {
-        $r = new ReflectionClass(ServiceLocatorInterface::class);
-        if ($r->hasMethod('build')) {
-            $this->injectV3Aliases();
-        }
-    }
-
-    /**
      * Create the service listener service
      *
      * Tries to get a service named ServiceListenerInterface from the service
@@ -154,17 +141,6 @@ class ServiceListenerFactory implements FactoryInterface
         }
 
         return $serviceListener;
-    }
-
-    /**
-     * Create and return the ServiceListener (v2)
-     *
-     * @param ServiceLocatorInterface $container
-     * @return ServiceListenerInterface
-     */
-    public function createService(ServiceLocatorInterface $container)
-    {
-        return $this($container, ServiceListener::class);
     }
 
     /**
@@ -262,23 +238,5 @@ class ServiceListenerFactory implements FactoryInterface
                 gettype($options['method'])
             ));
         }
-    }
-
-    /**
-     * Inject additional aliases for zend-servicemanager v3 usage
-     *
-     * If the constructor detects that we're operating under zend-servicemanager v3,
-     * this method injects additional aliases to ensure that common services
-     * can be retrieved using both Titlecase and lowercase, and will get the
-     * same instances.
-     *
-     * @return void
-     */
-    private function injectV3Aliases()
-    {
-        $this->defaultServiceConfig['aliases']['application'] = 'Application';
-        $this->defaultServiceConfig['aliases']['Config']      = 'config';
-        $this->defaultServiceConfig['aliases']['request']     = 'Request';
-        $this->defaultServiceConfig['aliases']['response']    = 'Response';
     }
 }

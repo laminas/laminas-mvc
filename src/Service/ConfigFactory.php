@@ -10,8 +10,8 @@
 namespace Zend\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Traversable;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 class ConfigFactory implements FactoryInterface
 {
@@ -27,7 +27,7 @@ class ConfigFactory implements FactoryInterface
      * @param ContainerInterface $container
      * @param string $name
      * @param null|array $options
-     * @return array|\Traversable
+     * @return array|Traversable
      */
     public function __invoke(ContainerInterface $container, $name, array $options = null)
     {
@@ -35,18 +35,5 @@ class ConfigFactory implements FactoryInterface
         $moduleManager->loadModules();
         $moduleParams = $moduleManager->getEvent()->getParams();
         return $moduleParams['configListener']->getMergedConfig(false);
-    }
-
-    /**
-     * Create and return config instance
-     *
-     * For use with zend-servicemanager v2; proxies to __invoke().
-     *
-     * @param ServiceLocatorInterface $container
-     * @return array|\Traversable
-     */
-    public function createService(ServiceLocatorInterface $container)
-    {
-        return $this($container, 'config');
     }
 }

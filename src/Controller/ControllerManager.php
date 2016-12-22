@@ -72,26 +72,6 @@ class ControllerManager extends AbstractPluginManager
     }
 
     /**
-     * Validate a plugin (v2)
-     *
-     * {@inheritDoc}
-     *
-     * @throws Exception\InvalidControllerException
-     */
-    public function validatePlugin($plugin)
-    {
-        try {
-            $this->validate($plugin);
-        } catch (InvalidServiceException $e) {
-            throw new Exception\InvalidControllerException(
-                $e->getMessage(),
-                $e->getCode(),
-                $e
-            );
-        }
-    }
-
-    /**
      * Initializer: inject EventManager instance
      *
      * If we have an event manager composed already, make sure it gets injected
