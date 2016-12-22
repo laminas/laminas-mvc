@@ -13,7 +13,6 @@ use PHPUnit_Framework_TestCase as TestCase;
 use ReflectionClass;
 use stdClass;
 use Zend\EventManager\EventManager;
-use Zend\Mvc\Controller\PluginManager;
 use Zend\Mvc\Service\ServiceManagerConfig;
 use Zend\ServiceManager\Factory\InvokableFactory;
 use Zend\ServiceManager\ServiceManager;
