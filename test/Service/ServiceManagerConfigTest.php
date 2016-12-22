@@ -10,12 +10,13 @@
 namespace ZendTest\Mvc\Service;
 
 use PHPUnit_Framework_TestCase as TestCase;
-use ReflectionClass;
 use stdClass;
 use Zend\EventManager\EventManager;
+use Zend\EventManager\SharedEventManagerInterface;
 use Zend\Mvc\Service\ServiceManagerConfig;
 use Zend\ServiceManager\Factory\InvokableFactory;
 use Zend\ServiceManager\ServiceManager;
+use ZendTest\Mvc\Service\TestAsset\EventManagerAwareObject;
 
 /**
  * @covers \Zend\Mvc\Service\ServiceManagerConfig
@@ -43,21 +44,11 @@ class ServiceManagerConfigTest extends TestCase
     }
 
     /**
-     * Create an event manager instance based on zend-eventmanager version
-     *
-     * @param null|\Zend\EventManager\SharedEventManagerInterface
+     * @param null|SharedEventManagerInterface
      * @return EventManager
      */
-    protected function createEventManager($sharedManager = null)
+    protected function createEventManager(SharedEventManagerInterface $sharedManager = null)
     {
-        $r = new ReflectionClass(EventManager::class);
-
-        if ($r->hasMethod('setSharedManager')) {
-            $events = new EventManager();
-            $events->setSharedManager($sharedManager ?: $this->services->get('SharedEventManager'));
-            return $events;
-        }
-
         return new EventManager($sharedManager ?: $this->services->get('SharedEventManager'));
     }
 
@@ -67,13 +58,13 @@ class ServiceManagerConfigTest extends TestCase
     public function testEventManagerAwareInterfaceIsNotInjectedIfPresentButSharedManagerIs()
     {
         $events = $this->createEventManager();
-        TestAsset\EventManagerAwareObject::$defaultEvents = $events;
+        EventManagerAwareObject::$defaultEvents = $events;
 
-        $this->services->setAlias('EventManagerAwareObject', TestAsset\EventManagerAwareObject::class);
-        $this->services->setFactory(TestAsset\EventManagerAwareObject::class, InvokableFactory::class);
+        $this->services->setAlias('EventManagerAwareObject', EventManagerAwareObject::class);
+        $this->services->setFactory(EventManagerAwareObject::class, InvokableFactory::class);
 
         $instance = $this->services->get('EventManagerAwareObject');
-        $this->assertInstanceOf(TestAsset\EventManagerAwareObject::class, $instance);
+        $this->assertInstanceOf(EventManagerAwareObject::class, $instance);
         $this->assertSame($events, $instance->getEventManager());
         $this->assertSame($this->services->get('SharedEventManager'), $events->getSharedManager());
     }

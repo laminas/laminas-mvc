@@ -10,7 +10,6 @@
 namespace ZendTest\Mvc\Controller\Plugin;
 
 use PHPUnit_Framework_TestCase as TestCase;
-use ReflectionClass;
 use stdClass;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
@@ -113,21 +112,11 @@ class ForwardTest extends TestCase
     }
 
     /**
-     * Create an event manager instance based on zend-eventmanager version
-     *
      * @param SharedEventManager
      * @return EventManager
      */
-    protected function createEventManager($sharedManager)
+    protected function createEventManager(SharedEventManagerInterface $sharedManager)
     {
-        $r = new ReflectionClass(EventManager::class);
-
-        if ($r->hasMethod('setSharedManager')) {
-            $events = new EventManager();
-            $events->setSharedManager($sharedManager);
-            return $events;
-        }
-
         return new EventManager($sharedManager);
     }
 
