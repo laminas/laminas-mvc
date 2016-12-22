@@ -21,7 +21,8 @@
         "zendframework/zend-servicemanager": "^3.0.3",
         "zendframework/zend-stdlib": "^3.0",
         "zendframework/zend-view": "^2.6.7",
-        "container-interop/container-interop": "^1.1"
+        "container-interop/container-interop": "^1.1",
+        "humbug/humbug": "~1.0@dev"
     },
     "require-dev": {
         "zendframework/zend-json": "^2.6.1 || ^3.0",
