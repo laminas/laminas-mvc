@@ -64,14 +64,7 @@ class ControllerManagerTest extends TestCase
     {
         $controller = new TestAsset\SampleController();
 
-        // Vary injection based on zend-servicemanager version
-        if (method_exists($this->controllers, 'configure')) {
-            // v3
-            $this->controllers->injectEventManager($this->services, $controller);
-        } else {
-            // v2
-            $this->controllers->injectEventManager($controller, $this->controllers);
-        }
+        $this->controllers->injectEventManager($this->services, $controller);
 
         // The default AbstractController implementation lazy instantiates an EM
         // instance, which means we need to check that that instance gets injected
@@ -85,14 +78,7 @@ class ControllerManagerTest extends TestCase
     {
         $controller = new TestAsset\SampleController();
 
-        // Vary injection based on zend-servicemanager version
-        if (method_exists($this->controllers, 'configure')) {
-            // v3
-            $this->controllers->injectPluginManager($this->services, $controller);
-        } else {
-            // v2
-            $this->controllers->injectPluginManager($controller, $this->controllers);
-        }
+        $this->controllers->injectPluginManager($this->services, $controller);
 
         $this->assertSame($this->services->get('ControllerPluginManager'), $controller->getPluginManager());
     }
@@ -103,14 +89,7 @@ class ControllerManagerTest extends TestCase
         $controller = new TestAsset\SampleController();
         $controller->setEventManager($events);
 
-        // Vary injection based on zend-servicemanager version
-        if (method_exists($this->controllers, 'configure')) {
-            // v3
-            $this->controllers->injectEventManager($this->services, $controller);
-        } else {
-            // v2
-            $this->controllers->injectEventManager($controller, $this->controllers);
-        }
+        $this->controllers->injectEventManager($this->services, $controller);
 
         $this->assertSame($events, $controller->getEventManager());
         $this->assertSame($this->sharedEvents, $events->getSharedManager());

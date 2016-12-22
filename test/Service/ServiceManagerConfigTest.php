@@ -44,16 +44,6 @@ class ServiceManagerConfigTest extends TestCase
     }
 
     /**
-     * Is this a v2 service manager?
-     *
-     * @return bool
-     */
-    public function isV2ServiceManager()
-    {
-        return (! method_exists($this->services, 'configure'));
-    }
-
-    /**
      * Create an event manager instance based on zend-eventmanager version
      *
      * @param null|\Zend\EventManager\SharedEventManagerInterface
@@ -145,26 +135,12 @@ class ServiceManagerConfigTest extends TestCase
     {
         /*
          * Create delegator closure
-         *
-         * The signature for delegators differs between zend-servicemanager
-         * v2 and v3, so we must vary the closure used based on the version
-         * being used when testing.
          */
-        if (method_exists($this->services, 'configure')) {
-            // v3
-            $delegator = function ($container, $name, $callback, array $options = null) {
-                $service = $callback();
-                $service->bar = 'baz';
-                return $service;
-            };
-        } else {
-            // v2
-            $delegator = function ($container, $name, $requestedName, $callback) {
-                $service = $callback();
-                $service->bar = 'baz';
-                return $service;
-            };
-        }
+        $delegator = function ($container, $name, $callback, array $options = null) {
+            $service = $callback();
+            $service->bar = 'baz';
+            return $service;
+        };
 
         $config = [
             'aliases' => [
@@ -206,17 +182,7 @@ class ServiceManagerConfigTest extends TestCase
         $serviceManager = new ServiceManager();
         $config->configureServiceManager($serviceManager);
 
-        /*
-         * Need to vary the order of arguments the initializer receives based on
-         * which zend-servicemanager version is being tested against.
-         */
-        if (method_exists($this->services, 'configure')) {
-            // v3
-            $initializer->expects($this->once())->method('__invoke')->with($serviceManager, $instance);
-        } else {
-            // v2
-            $initializer->expects($this->once())->method('__invoke')->with($instance, $serviceManager);
-        }
+        $initializer->expects($this->once())->method('__invoke')->with($serviceManager, $instance);
 
         $instance->expects($this->never())->method('getEventManager');
         $instance->expects($this->never())->method('setEventManager');
@@ -235,67 +201,5 @@ class ServiceManagerConfigTest extends TestCase
 
         $this->assertTrue($serviceManager->has('ServiceManager'), 'Missing ServiceManager service!');
         $this->assertSame($serviceManager, $serviceManager->get('ServiceManager'));
-    }
-
-    /**
-     * @see https://github.com/zendframework/zend-servicemanager/issues/109
-     */
-    public function testServiceLocatorAwareInitializerCanInjectPluginManagers()
-    {
-        if (! $this->isV2ServiceManager()) {
-            $this->markTestSkipped(sprintf(
-                '%s verifies backwards compatibility with the v2 series of zend-servicemanager',
-                __FUNCTION__
-            ));
-        }
-
-        $this->services->setFactory('test-plugins', function () {
-            return new PluginManager();
-        });
-
-        $deprecated = false;
-        set_error_handler(function ($errno, $errstr) use (&$deprecated) {
-            $deprecated = true;
-        }, E_USER_DEPRECATED);
-
-        $plugins = $this->services->get('test-plugins');
-
-        restore_error_handler();
-
-        $this->assertSame($this->services, $plugins->getServiceLocator());
-        $this->assertTrue($deprecated, 'Deprecation notice for ServiceLocatorAwareInitializer was not triggered');
-    }
-
-    /**
-     * @see https://github.com/zendframework/zend-servicemanager/issues/109
-     */
-    public function testServiceLocatorAwareInitializerWillNotReinjectPluginManagers()
-    {
-        if (! $this->isV2ServiceManager()) {
-            $this->markTestSkipped(sprintf(
-                '%s verifies backwards compatibility with the v2 series of zend-servicemanager',
-                __FUNCTION__
-            ));
-        }
-
-        $altServices = new ServiceManager();
-        $this->services->setFactory('test-plugins', function () use ($altServices) {
-            return new PluginManager($altServices);
-        });
-
-        $deprecated = false;
-        set_error_handler(function ($errno, $errstr) use (&$deprecated) {
-            $deprecated = true;
-        }, E_USER_DEPRECATED);
-
-        $plugins = $this->services->get('test-plugins');
-
-        restore_error_handler();
-
-        $this->assertSame($altServices, $plugins->getServiceLocator());
-        $this->assertFalse(
-            $deprecated,
-            'Deprecation notice for ServiceLocatorAwareInitializer was triggered, but should not have been'
-        );
     }
 }

@@ -148,7 +148,7 @@ class PluginManager extends AbstractPluginManager
     }
 
     /**
-     * Validate a plugin (v3)
+     * Validate a plugin
      *
      * {@inheritDoc}
      */
@@ -160,26 +160,6 @@ class PluginManager extends AbstractPluginManager
                 (is_object($plugin) ? get_class($plugin) : gettype($plugin)),
                 $this->instanceOf
             ));
-        }
-    }
-
-    /**
-     * Validate a plugin (v2)
-     *
-     * {@inheritDoc}
-     *
-     * @throws Exception\InvalidPluginException
-     */
-    public function validatePlugin($plugin)
-    {
-        try {
-            $this->validate($plugin);
-        } catch (InvalidServiceException $e) {
-            throw new Exception\InvalidPluginException(
-                $e->getMessage(),
-                $e->getCode(),
-                $e
-            );
         }
     }
 }

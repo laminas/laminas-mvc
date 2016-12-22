@@ -10,8 +10,7 @@
 namespace ZendTest\Mvc\Controller\TestAsset;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\AbstractFactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\AbstractFactoryInterface;
 
 class ControllerLoaderAbstractFactory implements AbstractFactoryInterface
 {
@@ -29,28 +28,9 @@ class ControllerLoaderAbstractFactory implements AbstractFactoryInterface
         return class_exists($classname);
     }
 
-    public function canCreateServiceWithName(ServiceLocatorInterface $container, $normalizedName, $name)
-    {
-        return $this->canCreate($container, $name);
-    }
-
     public function __invoke(ContainerInterface $container, $name, array $options = null)
     {
         $classname = $this->classmap[$name];
         return new $classname;
-    }
-
-    /**
-     * Create and return DispatchableInterface instance
-     *
-     * For use with zend-servicemanager v2; proxies to __invoke().
-     *
-     * {@inheritDoc}
-     *
-     * @return DispatchableInterface
-     */
-    public function createServiceWithName(ServiceLocatorInterface $container, $name, $requestedName)
-    {
-        return $this($container, $requestedName);
     }
 }

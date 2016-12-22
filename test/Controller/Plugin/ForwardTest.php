@@ -14,14 +14,19 @@ use ReflectionClass;
 use stdClass;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
+use Zend\EventManager\SharedEventManagerInterface;
 use Zend\Http\Request;
 use Zend\Http\Response;
 use Zend\Mvc\Controller\ControllerManager;
-use Zend\Mvc\Controller\PluginManager;
+use Zend\Mvc\Controller\Plugin\Forward;
 use Zend\Mvc\Controller\Plugin\Forward as ForwardPlugin;
+use Zend\Mvc\Controller\PluginManager;
+use Zend\Mvc\Exception\DomainException;
 use Zend\Mvc\MvcEvent;
 use Zend\Router\RouteMatch;
 use Zend\ServiceManager\Config;
+use Zend\ServiceManager\Exception\InvalidServiceException;
+use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\ServiceManager\ServiceManager;
 use ZendTest\Mvc\Controller\TestAsset\ForwardController;
 use ZendTest\Mvc\Controller\TestAsset\SampleController;
@@ -45,7 +50,7 @@ class ForwardTest extends TestCase
     private $controller;
 
     /**
-     * @var \Zend\Mvc\Controller\Plugin\Forward
+     * @var Forward
      */
     private $plugin;
 
@@ -131,14 +136,14 @@ class ForwardTest extends TestCase
         $controller = new UneventfulController();
         $plugin     = new ForwardPlugin($this->controllers);
         $plugin->setController($controller);
-        $this->setExpectedException('Zend\Mvc\Exception\DomainException', 'InjectApplicationEventInterface');
+        $this->setExpectedException(DomainException::class, 'InjectApplicationEventInterface');
         $plugin->dispatch('forward');
     }
 
     public function testPluginWithoutControllerLocatorRaisesServiceNotCreatedException()
     {
         $controller = new SampleController();
-        $this->setExpectedException('Zend\ServiceManager\Exception\ServiceNotCreatedException');
+        $this->setExpectedException(ServiceNotCreatedException::class);
         $plugin     = $controller->plugin('forward');
     }
 
@@ -150,12 +155,7 @@ class ForwardTest extends TestCase
         $plugin = new ForwardPlugin($this->controllers);
         $plugin->setController($this->controller);
 
-        // Vary exception expected based on zend-servicemanager version
-        $expectedException = method_exists($this->controllers, 'configure')
-            ? 'Zend\ServiceManager\Exception\InvalidServiceException' // v3
-            : 'Zend\Mvc\Exception\InvalidControllerException';        // v2
-
-        $this->setExpectedException($expectedException, 'DispatchableInterface');
+        $this->setExpectedException(InvalidServiceException::class, 'DispatchableInterface');
         $plugin->dispatch('bogus');
     }
 
@@ -207,7 +207,7 @@ class ForwardTest extends TestCase
         $forward = new ForwardPlugin($controllers);
         $forward->setController($controllers->get('sample'));
 
-        $this->setExpectedException('Zend\Mvc\Exception\DomainException', 'Circular forwarding');
+        $this->setExpectedException(DomainException::class, 'Circular forwarding');
         $forward->dispatch('sample', ['action' => 'test-circular']);
     }
 
@@ -225,7 +225,7 @@ class ForwardTest extends TestCase
     {
         $services = $this->services;
         $events   = $services->get('EventManager');
-        $sharedEvents = $this->getMock('Zend\EventManager\SharedEventManagerInterface');
+        $sharedEvents = $this->getMock(SharedEventManagerInterface::class);
         // @codingStandardsIgnoreStart
         $sharedEvents->expects($this->any())->method('getListeners')->will($this->returnValue([
             function ($e) {}
