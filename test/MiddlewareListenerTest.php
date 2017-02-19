@@ -118,6 +118,7 @@ class MiddlewareListenerTest extends TestCase
     {
         $response   = new Response();
         $routeMatch = $this->prophesize(RouteMatch::class);
+        $routeMatch->getParams()->willReturn([]);
         $routeMatch->getParam('middleware', false)->willReturn([
             'firstMiddleware',
             'secondMiddleware',
@@ -245,6 +246,7 @@ class MiddlewareListenerTest extends TestCase
     {
         $response   = new Response();
         $routeMatch = $this->prophesize(RouteMatch::class);
+        $routeMatch->getParams()->willReturn([]);
         $routeMatch->getParam('middleware', false)->willReturn([]);
 
         $eventManager = new EventManager();
