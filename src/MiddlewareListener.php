@@ -10,11 +10,14 @@
 namespace Zend\Mvc;
 
 use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
+use Psr\Http\Message\ServerRequestInterface as PsrServerRequestInterface;
 use Zend\EventManager\AbstractListenerAggregate;
 use Zend\EventManager\EventManagerInterface;
+use Zend\Mvc\Exception\ReachedFinalHandlerException;
 use Zend\Psr7Bridge\Psr7ServerRequest as Psr7Request;
 use Zend\Psr7Bridge\Psr7Response;
 use Zend\Router\RouteMatch;
+use Zend\Stratigility\MiddlewarePipe;
 
 class MiddlewareListener extends AbstractListenerAggregate
 {
@@ -47,20 +50,33 @@ class MiddlewareListener extends AbstractListenerAggregate
         $application    = $event->getApplication();
         $response       = $application->getResponse();
         $serviceManager = $application->getServiceManager();
-        $middlewareName = is_string($middleware) ? $middleware : get_class($middleware);
 
-        if (is_string($middleware) && $serviceManager->has($middleware)) {
-            $middleware = $serviceManager->get($middleware);
-        }
-        if (! is_callable($middleware)) {
-            $return = $this->marshalMiddlewareNotCallable(
-                $application::ERROR_MIDDLEWARE_CANNOT_DISPATCH,
-                $middlewareName,
-                $event,
-                $application
-            );
-            $event->setResult($return);
-            return $return;
+        $psr7ResponsePrototype = Psr7Response::fromZend($response);
+        $pipe = new MiddlewarePipe();
+        $pipe->setResponsePrototype($psr7ResponsePrototype);
+
+        $middlewaresToBePiped = !is_array($middleware) ? [$middleware] : $middleware;
+
+        $middlewareName = 'noMiddlewarePiped';
+        $middlewareToBePiped = null;
+        foreach ($middlewaresToBePiped as $middlewareToBePiped) {
+            $middlewareName = is_string($middlewareToBePiped) ? $middlewareToBePiped : get_class($middlewareToBePiped);
+
+            if (is_string($middlewareToBePiped) && $serviceManager->has($middlewareToBePiped)) {
+                $middlewareToBePiped = $serviceManager->get($middlewareToBePiped);
+            }
+            if (! is_callable($middlewareToBePiped)) {
+                $return = $this->marshalMiddlewareNotCallable(
+                    $application::ERROR_MIDDLEWARE_CANNOT_DISPATCH,
+                    $middlewareName,
+                    $event,
+                    $application
+                );
+                $event->setResult($return);
+                return $return;
+            }
+
+            $pipe->pipe($middlewareToBePiped);
         }
 
         $caughtException = null;
@@ -69,7 +85,15 @@ class MiddlewareListener extends AbstractListenerAggregate
             foreach ($routeMatch->getParams() as $key => $value) {
                 $psr7Request = $psr7Request->withAttribute($key, $value);
             }
-            $return = $middleware($psr7Request, Psr7Response::fromZend($response));
+            $return = $pipe(
+                $psr7Request,
+                $psr7ResponsePrototype,
+                function (PsrServerRequestInterface $request, PsrResponseInterface $response) {
+                    throw new ReachedFinalHandlerException(
+                        'Reached the final handler for middleware pipe - check the pipe configuration'
+                    );
+                }
+            );
         } catch (\Throwable $ex) {
             $caughtException = $ex;
         } catch (\Exception $ex) {  // @TODO clean up once PHP 7 requirement is enforced
@@ -80,7 +104,9 @@ class MiddlewareListener extends AbstractListenerAggregate
             $event->setName(MvcEvent::EVENT_DISPATCH_ERROR);
             $event->setError($application::ERROR_EXCEPTION);
             $event->setController($middlewareName);
-            $event->setControllerClass(get_class($middleware));
+            if (null !== $middlewareToBePiped) {
+                $event->setControllerClass(get_class($middlewareToBePiped));
+            }
             $event->setParam('exception', $caughtException);
 
             $events  = $application->getEventManager();
