@@ -17,6 +17,7 @@ use Zend\EventManager\EventManager;
 use Zend\Http\Request;
 use Zend\Http\Response;
 use Zend\Mvc\Application;
+use Zend\Mvc\Exception\ReachedFinalHandlerException;
 use Zend\Mvc\MiddlewareListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Router\RouteMatch;
@@ -113,6 +114,59 @@ class MiddlewareListenerTest extends TestCase
         $this->assertSame($this->routeMatch->reveal(), $routeAttribute);
     }
 
+    public function testSuccessfullyDispatchesPipeOfMiddleware()
+    {
+        $response   = new Response();
+        $routeMatch = $this->prophesize(RouteMatch::class);
+        $routeMatch->getParam('middleware', false)->willReturn([
+            'firstMiddleware',
+            'secondMiddleware',
+        ]);
+
+        $eventManager = new EventManager();
+
+        $serviceManager = $this->prophesize(ContainerInterface::class);
+        $serviceManager->has('firstMiddleware')->willReturn(true);
+        $serviceManager->get('firstMiddleware')->willReturn(function ($request, $response, $next) {
+            $this->assertInstanceOf(ServerRequestInterface::class, $request);
+            $this->assertInstanceOf(ResponseInterface::class, $response);
+            $this->assertTrue(is_callable($next));
+            return $next($request->withAttribute('firstMiddlewareAttribute', 'firstMiddlewareValue'), $response);
+        });
+        $serviceManager->has('secondMiddleware')->willReturn(true);
+        $serviceManager->get('secondMiddleware')->willReturn(function ($request, $response) {
+            $this->assertInstanceOf(ServerRequestInterface::class, $request);
+            $this->assertInstanceOf(ResponseInterface::class, $response);
+            $response->getBody()->write($request->getAttribute('firstMiddlewareAttribute'));
+            return $response;
+        });
+
+        $application = $this->prophesize(Application::class);
+        $application->getEventManager()->willReturn($eventManager);
+        $application->getServiceManager()->will(function () use ($serviceManager) {
+            return $serviceManager->reveal();
+        });
+        $application->getResponse()->willReturn($response);
+
+        $event = new MvcEvent();
+        $event->setRequest(new Request());
+        $event->setResponse($response);
+        $event->setApplication($application->reveal());
+        $event->setRouteMatch($routeMatch->reveal());
+
+        $event->getApplication()->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) {
+            $this->fail(sprintf('dispatch.error triggered when it should not be: %s', var_export($e->getError(), 1)));
+        });
+
+        $listener = new MiddlewareListener();
+        $return   = $listener->onDispatch($event);
+        $this->assertInstanceOf(Response::class, $return);
+
+        $this->assertInstanceOf('Zend\Http\Response', $return);
+        $this->assertSame(200, $return->getStatusCode());
+        $this->assertEquals('firstMiddlewareValue', $return->getBody());
+    }
+
     public function testTriggersErrorForUncallableMiddleware()
     {
         $event       = $this->createMvcEvent('path');
@@ -185,5 +239,38 @@ class MiddlewareListenerTest extends TestCase
         $this->assertInstanceOf(Response::class, $return);
         $this->assertSame(200, $return->getStatusCode());
         $this->assertEquals(TestAsset\Middleware::class, $return->getBody());
+    }
+
+    public function testMiddlewareWithNothingPipedReachesFinalHandlerException()
+    {
+        $response   = new Response();
+        $routeMatch = $this->prophesize(RouteMatch::class);
+        $routeMatch->getParam('middleware', false)->willReturn([]);
+
+        $eventManager = new EventManager();
+
+        $serviceManager = $this->prophesize(ContainerInterface::class);
+        $application = $this->prophesize(Application::class);
+        $application->getEventManager()->willReturn($eventManager);
+        $application->getServiceManager()->will(function () use ($serviceManager) {
+            return $serviceManager->reveal();
+        });
+        $application->getResponse()->willReturn($response);
+
+        $event = new MvcEvent();
+        $event->setRequest(new Request());
+        $event->setResponse($response);
+        $event->setApplication($application->reveal());
+        $event->setRouteMatch($routeMatch->reveal());
+
+        $event->getApplication()->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) {
+            $this->assertEquals(Application::ERROR_EXCEPTION, $e->getError());
+            $this->assertInstanceOf(ReachedFinalHandlerException::class, $e->getParam('exception'));
+            return 'FAILED';
+        });
+
+        $listener = new MiddlewareListener();
+        $return   = $listener->onDispatch($event);
+        $this->assertEquals('FAILED', $return);
     }
 }
