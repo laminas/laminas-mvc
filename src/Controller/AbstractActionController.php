@@ -26,7 +26,7 @@ abstract class AbstractActionController extends AbstractController
     /**
      * Default action if none provided
      *
-     * @return array
+     * @return ViewModel
      */
     public function indexAction()
     {
@@ -38,7 +38,7 @@ abstract class AbstractActionController extends AbstractController
     /**
      * Action called if matched action does not exist
      *
-     * @return array
+     * @return ViewModel
      */
     public function notFoundAction()
     {
