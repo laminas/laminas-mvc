@@ -9,10 +9,13 @@
 
 namespace Zend\Mvc;
 
+use Interop\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface as PsrServerRequestInterface;
 use Zend\EventManager\AbstractListenerAggregate;
 use Zend\EventManager\EventManagerInterface;
+use Zend\Mvc\Exception\MiddlewareNotCallableException;
 use Zend\Mvc\Exception\ReachedFinalHandlerException;
 use Zend\Psr7Bridge\Psr7ServerRequest as Psr7Request;
 use Zend\Psr7Bridge\Psr7Response;
@@ -52,31 +55,22 @@ class MiddlewareListener extends AbstractListenerAggregate
         $serviceManager = $application->getServiceManager();
 
         $psr7ResponsePrototype = Psr7Response::fromZend($response);
-        $pipe = new MiddlewarePipe();
-        $pipe->setResponsePrototype($psr7ResponsePrototype);
 
-        $middlewaresToBePiped = !is_array($middleware) ? [$middleware] : $middleware;
-
-        $middlewareName = 'noMiddlewarePiped';
-        $middlewareToBePiped = null;
-        foreach ($middlewaresToBePiped as $middlewareToBePiped) {
-            $middlewareName = is_string($middlewareToBePiped) ? $middlewareToBePiped : get_class($middlewareToBePiped);
-
-            if (is_string($middlewareToBePiped) && $serviceManager->has($middlewareToBePiped)) {
-                $middlewareToBePiped = $serviceManager->get($middlewareToBePiped);
-            }
-            if (! is_callable($middlewareToBePiped)) {
-                $return = $this->marshalMiddlewareNotCallable(
-                    $application::ERROR_MIDDLEWARE_CANNOT_DISPATCH,
-                    $middlewareName,
-                    $event,
-                    $application
-                );
-                $event->setResult($return);
-                return $return;
-            }
-
-            $pipe->pipe($middlewareToBePiped);
+        try {
+            $pipe = $this->createPipeFromSpec(
+                $serviceManager,
+                $psr7ResponsePrototype,
+                is_array($middleware) ? $middleware : [$middleware]
+            );
+        } catch (MiddlewareNotCallableException $middlewareNotCallableException) {
+            $return = $this->marshalMiddlewareNotCallable(
+                $application::ERROR_MIDDLEWARE_CANNOT_DISPATCH,
+                $middlewareNotCallableException->toMiddlewareName(),
+                $event,
+                $application
+            );
+            $event->setResult($return);
+            return $return;
         }
 
         $caughtException = null;
@@ -103,10 +97,6 @@ class MiddlewareListener extends AbstractListenerAggregate
         if ($caughtException !== null) {
             $event->setName(MvcEvent::EVENT_DISPATCH_ERROR);
             $event->setError($application::ERROR_EXCEPTION);
-            $event->setController($middlewareName);
-            if (null !== $middlewareToBePiped) {
-                $event->setControllerClass(get_class($middlewareToBePiped));
-            }
             $event->setParam('exception', $caughtException);
 
             $events  = $application->getEventManager();
@@ -124,6 +114,37 @@ class MiddlewareListener extends AbstractListenerAggregate
         $response = Psr7Response::toZend($return);
         $event->setResult($response);
         return $response;
+    }
+
+    /**
+     * Create a middleware pipe from the array spec given.
+     *
+     * @param ContainerInterface $serviceLocator
+     * @param ResponseInterface $responsePrototype
+     * @param array $middlewaresToBePiped
+     * @return MiddlewarePipe
+     * @throws \Zend\Mvc\Exception\MiddlewareNotCallableException
+     */
+    private function createPipeFromSpec(
+        ContainerInterface $serviceLocator,
+        ResponseInterface $responsePrototype,
+        array $middlewaresToBePiped
+    ) {
+        $pipe = new MiddlewarePipe();
+        $pipe->setResponsePrototype($responsePrototype);
+        foreach ($middlewaresToBePiped as $middlewareToBePiped) {
+            $middlewareName = is_string($middlewareToBePiped) ? $middlewareToBePiped : get_class($middlewareToBePiped);
+
+            if (is_string($middlewareToBePiped) && $serviceLocator->has($middlewareToBePiped)) {
+                $middlewareToBePiped = $serviceLocator->get($middlewareToBePiped);
+            }
+            if (! is_callable($middlewareToBePiped)) {
+                throw MiddlewareNotCallableException::fromMiddlewareName($middlewareName);
+            }
+
+            $pipe->pipe($middlewareToBePiped);
+        }
+        return $pipe;
     }
 
     /**
