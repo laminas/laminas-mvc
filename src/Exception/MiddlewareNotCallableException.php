@@ -33,6 +33,6 @@ final class MiddlewareNotCallableException extends RuntimeException
      */
     public function toMiddlewareName()
     {
-        return $this->middlewareName ?? '';
+        return null !== $this->middlewareName ? $this->middlewareName : '';
     }
 }
