@@ -123,6 +123,7 @@ class MiddlewareListener extends AbstractListenerAggregate
      * @param ResponseInterface $responsePrototype
      * @param array $middlewaresToBePiped
      * @return MiddlewarePipe
+     * @throws \InvalidArgumentException
      * @throws \Zend\Mvc\Exception\MiddlewareNotCallableException
      */
     private function createPipeFromSpec(
@@ -133,6 +134,10 @@ class MiddlewareListener extends AbstractListenerAggregate
         $pipe = new MiddlewarePipe();
         $pipe->setResponsePrototype($responsePrototype);
         foreach ($middlewaresToBePiped as $middlewareToBePiped) {
+            if (null === $middlewareToBePiped) {
+                throw new \InvalidArgumentException('Middleware name cannot be null');
+            }
+
             $middlewareName = is_string($middlewareToBePiped) ? $middlewareToBePiped : get_class($middlewareToBePiped);
 
             if (is_string($middlewareToBePiped) && $serviceLocator->has($middlewareToBePiped)) {

@@ -275,4 +275,39 @@ class MiddlewareListenerTest extends TestCase
         $return   = $listener->onDispatch($event);
         $this->assertEquals('FAILED', $return);
     }
+
+    public function testNullMiddlewareThrowsInvalidArgument()
+    {
+        $response   = new Response();
+        $routeMatch = $this->prophesize(RouteMatch::class);
+        $routeMatch->getParams()->willReturn([]);
+        $routeMatch->getParam('middleware', false)->willReturn([null]);
+
+        $eventManager = new EventManager();
+
+        $serviceManager = $this->prophesize(ContainerInterface::class);
+        $application = $this->prophesize(Application::class);
+        $application->getEventManager()->willReturn($eventManager);
+        $application->getServiceManager()->will(function () use ($serviceManager) {
+            return $serviceManager->reveal();
+        });
+        $application->getResponse()->willReturn($response);
+
+        $event = new MvcEvent();
+        $event->setRequest(new Request());
+        $event->setResponse($response);
+        $event->setApplication($application->reveal());
+        $event->setRouteMatch($routeMatch->reveal());
+
+        $event->getApplication()->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) {
+            $this->assertEquals(Application::ERROR_EXCEPTION, $e->getError());
+            $this->assertInstanceOf(ReachedFinalHandlerException::class, $e->getParam('exception'));
+            return 'FAILED';
+        });
+
+        $listener = new MiddlewareListener();
+
+        $this->setExpectedException(\InvalidArgumentException::class);
+        $listener->onDispatch($event);
+    }
 }
