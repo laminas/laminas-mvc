@@ -30,7 +30,6 @@ use Zend\ServiceManager\ServiceManager;
 use Zend\Stdlib\ArrayUtils;
 use Zend\Stdlib\ResponseInterface;
 use Zend\View\Model\ViewModel;
-use ZendTest\Mvc\TestAsset;
 
 class ApplicationTest extends TestCase
 {
