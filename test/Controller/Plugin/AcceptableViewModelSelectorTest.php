@@ -9,13 +9,17 @@
 
 namespace ZendTest\Mvc\Controller\Plugin;
 
+use PHPUnit\Framework\TestCase;
+use Zend\Http\Header\Accept\FieldValuePart\AcceptFieldValuePart;
 use Zend\Mvc\Controller\Plugin\AcceptableViewModelSelector;
 use Zend\Http\Request;
+use Zend\Mvc\Exception\InvalidArgumentException;
 use Zend\Mvc\MvcEvent;
 use Zend\Http\Header\Accept;
+use Zend\View\Model;
 use ZendTest\Mvc\Controller\TestAsset\SampleController;
 
-class AcceptableViewModelSelectorTest extends \PHPUnit_Framework_TestCase
+class AcceptableViewModelSelectorTest extends TestCase
 {
     public function setUp()
     {
@@ -34,36 +38,36 @@ class AcceptableViewModelSelectorTest extends \PHPUnit_Framework_TestCase
     public function testHonorsAcceptPrecedenceAndPriorityWhenInvoked()
     {
         $arr = [
-            'Zend\View\Model\JsonModel' => [
+            Model\JsonModel::class => [
                 'application/json',
                 'application/javascript'
             ],
-            'Zend\View\Model\FeedModel' => [
+            Model\FeedModel::class => [
                 'application/rss+xml',
                 'application/atom+xml'
             ],
-            'Zend\View\Model\ViewModel' => '*/*'
+            Model\ViewModel::class => '*/*'
         ];
 
         $header   = Accept::fromString('Accept: text/plain; q=0.5, text/html, text/xml; q=0, text/x-dvi; q=0.8, text/x-c');
         $this->request->getHeaders()->addHeader($header);
         $plugin   = $this->plugin;
-        $plugin->setDefaultViewModelName('Zend\View\Model\FeedModel');
+        $plugin->setDefaultViewModelName(Model\FeedModel::class);
         $result   = $plugin($arr);
 
-        $this->assertInstanceOf('Zend\View\Model\ViewModel', $result);
-        $this->assertNotInstanceOf('Zend\View\Model\FeedModel', $result); // Ensure the default wasn't selected
-        $this->assertNotInstanceOf('Zend\View\Model\JsonModel', $result);
+        $this->assertInstanceOf(Model\ViewModel::class, $result);
+        $this->assertNotInstanceOf(Model\FeedModel::class, $result); // Ensure the default wasn't selected
+        $this->assertNotInstanceOf(Model\JsonModel::class, $result);
     }
 
     public function testDefaultViewModelName()
     {
         $arr = [
-            'Zend\View\Model\JsonModel' => [
+            Model\JsonModel::class => [
                 'application/json',
                 'application/javascript'
             ],
-            'Zend\View\Model\FeedModel' => [
+            Model\FeedModel::class => [
                 'application/rss+xml',
                 'application/atom+xml'
             ],
@@ -74,25 +78,25 @@ class AcceptableViewModelSelectorTest extends \PHPUnit_Framework_TestCase
         $plugin   = $this->plugin;
         $result   = $plugin->getViewModelName($arr);
 
-        $this->assertEquals('Zend\View\Model\ViewModel', $result); //   Default Default View Model Name
+        $this->assertEquals(Model\ViewModel::class, $result); //   Default Default View Model Name
 
-        $plugin->setDefaultViewModelName('Zend\View\Model\FeedModel');
-        $this->assertEquals($plugin->getDefaultViewModelName(), 'Zend\View\Model\FeedModel'); // Test getter along the way
-        $this->assertInstanceOf('Zend\View\Model\FeedModel', $plugin($arr));
+        $plugin->setDefaultViewModelName(Model\FeedModel::class);
+        $this->assertEquals($plugin->getDefaultViewModelName(), Model\FeedModel::class); // Test getter along the way
+        $this->assertInstanceOf(Model\FeedModel::class, $plugin($arr));
     }
 
     public function testSelectsViewModelBasedOnAcceptHeaderWhenInvokedAsFunctor()
     {
         $arr = [
-                'Zend\View\Model\JsonModel' => [
+                Model\JsonModel::class => [
                         'application/json',
                         'application/javascript'
                 ],
-                'Zend\View\Model\FeedModel' => [
+                Model\FeedModel::class => [
                         'application/rss+xml',
                         'application/atom+xml'
                 ],
-                'Zend\View\Model\ViewModel' => '*/*'
+                Model\ViewModel::class => '*/*'
         ];
 
         $plugin   = $this->plugin;
@@ -100,18 +104,18 @@ class AcceptableViewModelSelectorTest extends \PHPUnit_Framework_TestCase
         $this->request->getHeaders()->addHeader($header);
         $result = $plugin($arr);
 
-        $this->assertInstanceOf('Zend\View\Model\FeedModel', $result);
+        $this->assertInstanceOf(Model\FeedModel::class, $result);
     }
 
 
     public function testInvokeWithoutDefaultsReturnsNullWhenNoMatchesOccur()
     {
         $arr = [
-                'Zend\View\Model\JsonModel' => [
+                Model\JsonModel::class => [
                         'application/json',
                         'application/javascript'
                 ],
-                'Zend\View\Model\FeedModel' => [
+                Model\FeedModel::class => [
                         'application/rss+xml',
                         'application/atom+xml'
                 ],
@@ -132,21 +136,21 @@ class AcceptableViewModelSelectorTest extends \PHPUnit_Framework_TestCase
         $this->request->getHeaders()->addHeader($header);
 
         $ref = null;
-        $result = $plugin([ 'Zend\View\Model\ViewModel' => '*/*'], false, $ref);
-        $this->assertInstanceOf('Zend\View\Model\ViewModel', $result);
-        $this->assertNotInstanceOf('Zend\View\Model\JsonModel', $result);
-        $this->assertNotInstanceOf('Zend\View\Model\FeedModel', $result);
-        $this->assertInstanceOf('Zend\Http\Header\Accept\FieldValuePart\AcceptFieldValuePart', $ref);
+        $result = $plugin([ Model\ViewModel::class => '*/*'], false, $ref);
+        $this->assertInstanceOf(Model\ViewModel::class, $result);
+        $this->assertNotInstanceOf(Model\JsonModel::class, $result);
+        $this->assertNotInstanceOf(Model\FeedModel::class, $result);
+        $this->assertInstanceOf(AcceptFieldValuePart::class, $ref);
     }
 
     public function testGetViewModelNameWithoutDefaults()
     {
         $arr = [
-                'Zend\View\Model\JsonModel' => [
+                Model\JsonModel::class => [
                         'application/json',
                         'application/javascript'
                 ],
-                'Zend\View\Model\FeedModel' => [
+                Model\FeedModel::class => [
                         'application/rss+xml',
                         'application/atom+xml'
                 ],
@@ -160,9 +164,9 @@ class AcceptableViewModelSelectorTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($result);
 
         $ref = null;
-        $result = $plugin->getViewModelName([ 'Zend\View\Model\ViewModel' => '*/*'], false, $ref);
-        $this->assertEquals('Zend\View\Model\ViewModel', $result);
-        $this->assertInstanceOf('Zend\Http\Header\Accept\FieldValuePart\AcceptFieldValuePart', $ref);
+        $result = $plugin->getViewModelName([Model\ViewModel::class => '*/*'], false, $ref);
+        $this->assertEquals(Model\ViewModel::class, $result);
+        $this->assertInstanceOf(AcceptFieldValuePart::class, $ref);
     }
 
     public function testMatch()
@@ -171,12 +175,12 @@ class AcceptableViewModelSelectorTest extends \PHPUnit_Framework_TestCase
         $header   = Accept::fromString('Accept: text/html; version=0.2');
         $this->request->getHeaders()->addHeader($header);
 
-        $arr = [ 'Zend\View\Model\ViewModel' => '*/*'];
+        $arr = [Model\ViewModel::class => '*/*'];
         $plugin->setDefaultMatchAgainst($arr);
         $this->assertEquals($plugin->getDefaultMatchAgainst(), $arr);
         $result = $plugin->match();
         $this->assertInstanceOf(
-                'Zend\Http\Header\Accept\FieldValuePart\AcceptFieldValuePart',
+                AcceptFieldValuePart::class,
                 $result
         );
         $this->assertEquals($plugin->getDefaultMatchAgainst(), $arr);
@@ -188,7 +192,7 @@ class AcceptableViewModelSelectorTest extends \PHPUnit_Framework_TestCase
         $header   = Accept::fromString('Accept: */*');
         $this->request->getHeaders()->addHeader($header);
 
-        $this->setExpectedException('\Zend\Mvc\Exception\InvalidArgumentException');
+        $this->expectException(InvalidArgumentException::class);
 
         $this->plugin->getViewModel($arr);
     }

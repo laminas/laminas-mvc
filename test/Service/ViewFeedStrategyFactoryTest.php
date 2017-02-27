@@ -10,7 +10,7 @@
 namespace ZendTest\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\Mvc\Service\ViewFeedStrategyFactory;
 use Zend\View\Renderer\FeedRenderer;
 use Zend\View\Strategy\FeedStrategy;

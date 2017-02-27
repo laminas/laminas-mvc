@@ -9,7 +9,7 @@
 
 namespace ZendTest\Mvc\Service;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Mvc\Application;
 use Zend\Mvc\MvcEvent;
@@ -18,6 +18,7 @@ use Zend\Router\RouteMatch;
 use Zend\Router\RouteStackInterface;
 use Zend\ServiceManager\ServiceManager;
 use Zend\View\Helper;
+use Zend\View\HelperPluginManager;
 
 class ViewHelperManagerFactoryTest extends TestCase
 {
@@ -48,9 +49,9 @@ class ViewHelperManagerFactoryTest extends TestCase
     {
         $this->services->setService('config', $config);
         $manager = $this->factory->createService($this->services);
-        $this->assertInstanceof('Zend\View\HelperPluginManager', $manager);
+        $this->assertInstanceof(HelperPluginManager::class, $manager);
         $doctype = $manager->get('doctype');
-        $this->assertInstanceof('Zend\View\Helper\Doctype', $doctype);
+        $this->assertInstanceof(Helper\Doctype::class, $doctype);
     }
 
     public function urlHelperNames()

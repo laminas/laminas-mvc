@@ -15,6 +15,8 @@ cache:
 
 env:
   global:
+    - COMPOSER_ARGS="--no-interaction"
+    - LEGACY_DEPS="phpunit/phpunit"
     - SITE_URL: https://zendframework.github.io/zend-mvc
     - GH_USER_NAME: "Matthew Weier O'Phinney"
     - GH_USER_EMAIL: matthew@weierophinney.net
@@ -58,10 +60,6 @@ matrix:
   allow_failures:
     - php: hhvm
 
-env:
-  global:
-    - COMPOSER_ARGS="--no-interaction --ignore-platform-reqs"
-
 notifications:
   irc: "irc.freenode.org#zftalk.dev"
   email: false
@@ -72,9 +70,14 @@ before_install:
 
 install:
   - if [[ $DEPS == 'latest' ]]; then travis_retry composer update $COMPOSER_ARGS ; fi
-  - if [[ $DEPS == 'lowest' ]]; then travis_retry composer update --prefer-lowest --prefer-stable $COMPOSER_ARGS ; fi
-  - if [[ $TEST_COVERAGE == 'true' ]]; then travis_retry composer require --dev $COMPOSER_ARGS satooshi/php-coveralls:^1.0 ; fi
-  - travis_retry composer install $COMPOSER_ARGS
+  - 'if [[ $DEPS == 'lowest' ]]; then
+      travis_retry composer update --prefer-lowest --prefer-stable $COMPOSER_ARGS
+        if [[ $DEPS == 'lowest' ]]; then
+          --with-dependencies $LEGACY_DEPS
+        fi;
+    fi'
+  - if [[ $TEST_COVERAGE == 'true' ]]; then travis_retry composer require --dev $COMPOSER_ARGS satooshi/php-coveralls:^1.0 --with-dependencies $LEGACY_DEPS ; fi
+  - if [[ $DEPS == 'locked' ]]; then travis_retry composer install $COMPOSER_ARGS ; fi
   - composer show --installed
 
 script:

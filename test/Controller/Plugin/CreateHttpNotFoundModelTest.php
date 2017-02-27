@@ -9,9 +9,10 @@
 
 namespace ZendTest\Mvc\Controller\Plugin;
 
-use PHPUnit_framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\Http\Response;
 use Zend\Mvc\Controller\Plugin\CreateHttpNotFoundModel;
+use Zend\View\Model\ViewModel;
 
 /**
  * Tests for {@see \Zend\Mvc\Controller\Plugin\CreateHttpNotFoundModel}
@@ -27,7 +28,7 @@ class CreateHttpNotFoundModelTest extends TestCase
 
         $model    = $plugin->__invoke($response);
 
-        $this->assertInstanceOf('Zend\\View\\Model\\ViewModel', $model);
+        $this->assertInstanceOf(ViewModel::class, $model);
         $this->assertSame('Page not found', $model->getVariable('content'));
         $this->assertSame(404, $response->getStatusCode());
     }

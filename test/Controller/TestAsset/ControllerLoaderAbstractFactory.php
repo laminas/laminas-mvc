@@ -12,11 +12,12 @@ namespace ZendTest\Mvc\Controller\TestAsset;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\AbstractFactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use ZendTest\Mvc\TestAsset\PathController;
 
 class ControllerLoaderAbstractFactory implements AbstractFactoryInterface
 {
     protected $classmap = array(
-        'path' => 'ZendTest\Mvc\TestAsset\PathController',
+        'path' => PathController::class,
     );
 
     public function canCreate(ContainerInterface $container, $name)

@@ -9,8 +9,13 @@
 
 namespace ZendTest\Mvc\Controller;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
+use Zend\EventManager\EventManagerAwareInterface;
+use Zend\EventManager\EventManagerInterface;
+use Zend\Mvc\Controller\AbstractController;
+use Zend\Mvc\InjectApplicationEventInterface;
+use Zend\Stdlib\DispatchableInterface;
 
 /**
  * @covers \Zend\Mvc\Controller\AbstractController
@@ -18,7 +23,7 @@ use ReflectionProperty;
 class AbstractControllerTest extends TestCase
 {
     /**
-     * @var \Zend\Mvc\Controller\AbstractController|\PHPUnit_Framework_MockObject_MockObject
+     * @var AbstractController|\PHPUnit_Framework_MockObject_MockObject
      */
     private $controller;
 
@@ -27,7 +32,7 @@ class AbstractControllerTest extends TestCase
      */
     protected function setUp()
     {
-        $this->controller = $this->getMockForAbstractClass('Zend\\Mvc\\Controller\\AbstractController');
+        $this->controller = $this->getMockForAbstractClass(AbstractController::class);
     }
 
     /**
@@ -35,8 +40,8 @@ class AbstractControllerTest extends TestCase
      */
     public function testSetEventManagerWithDefaultIdentifiers()
     {
-        /* @var $eventManager \Zend\EventManager\EventManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $eventManager = $this->getMock('Zend\\EventManager\\EventManagerInterface');
+        /* @var $eventManager EventManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $eventManager = $this->createMock(EventManagerInterface::class);
 
         $eventManager
             ->expects($this->once())
@@ -51,8 +56,8 @@ class AbstractControllerTest extends TestCase
      */
     public function testSetEventManagerWithCustomStringIdentifier()
     {
-        /* @var $eventManager \Zend\EventManager\EventManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $eventManager = $this->getMock('Zend\\EventManager\\EventManagerInterface');
+        /* @var $eventManager EventManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $eventManager = $this->createMock(EventManagerInterface::class);
 
         $eventManager->expects($this->once())->method('setIdentifiers')->with($this->contains('customEventIdentifier'));
 
@@ -69,8 +74,8 @@ class AbstractControllerTest extends TestCase
      */
     public function testSetEventManagerWithMultipleCustomStringIdentifier()
     {
-        /* @var $eventManager \Zend\EventManager\EventManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $eventManager = $this->getMock('Zend\\EventManager\\EventManagerInterface');
+        /* @var $eventManager EventManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $eventManager = $this->createMock(EventManagerInterface::class);
 
         $eventManager->expects($this->once())->method('setIdentifiers')->with($this->logicalAnd(
             $this->contains('customEventIdentifier1'),
@@ -90,16 +95,16 @@ class AbstractControllerTest extends TestCase
      */
     public function testSetEventManagerWithDefaultIdentifiersIncludesImplementedInterfaces()
     {
-        /* @var $eventManager \Zend\EventManager\EventManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $eventManager = $this->getMock('Zend\\EventManager\\EventManagerInterface');
+        /* @var $eventManager EventManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $eventManager = $this->createMock(EventManagerInterface::class);
 
         $eventManager
             ->expects($this->once())
             ->method('setIdentifiers')
             ->with($this->logicalAnd(
-                $this->contains('Zend\\EventManager\\EventManagerAwareInterface'),
-                $this->contains('Zend\\Stdlib\\DispatchableInterface'),
-                $this->contains('Zend\\Mvc\\InjectApplicationEventInterface')
+                $this->contains(EventManagerAwareInterface::class),
+                $this->contains(DispatchableInterface::class),
+                $this->contains(InjectApplicationEventInterface::class)
             ));
 
         $this->controller->setEventManager($eventManager);

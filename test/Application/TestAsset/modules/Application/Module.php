@@ -9,6 +9,8 @@
 
 namespace Application;
 
+use Zend\Loader\StandardAutoloader;
+
 class Module
 {
     public function getConfig()
@@ -18,12 +20,12 @@ class Module
 
     public function getAutoloaderConfig()
     {
-        return array(
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
+        return [
+            StandardAutoloader::class => [
+                'namespaces' => [
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 }

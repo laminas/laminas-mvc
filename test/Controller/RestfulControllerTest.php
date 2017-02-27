@@ -9,15 +9,19 @@
 
 namespace ZendTest\Mvc\Controller;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionObject;
 use stdClass;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
 use Zend\Http\Response;
+use Zend\Mvc\Controller\AbstractRestfulController;
+use Zend\Mvc\Controller\Plugin\Url;
+use Zend\Mvc\InjectApplicationEventInterface;
 use Zend\Mvc\MvcEvent;
 use Zend\Router\RouteMatch;
+use Zend\Stdlib\DispatchableInterface;
 use ZendTest\Mvc\Controller\TestAsset\RestfulContentTypeTestController;
 
 class RestfulControllerTest extends TestCase
@@ -341,7 +345,7 @@ class RestfulControllerTest extends TestCase
     {
         $response = new Response();
         $response->setContent('short circuited!');
-        $this->sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
+        $this->sharedEvents->attach(DispatchableInterface::class, MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
             return $response;
         }, 10);
         $result = $this->controller->dispatch($this->request, $this->response);
@@ -352,7 +356,7 @@ class RestfulControllerTest extends TestCase
     {
         $response = new Response();
         $response->setContent('short circuited!');
-        $this->sharedEvents->attach('Zend\Mvc\Controller\AbstractRestfulController', MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
+        $this->sharedEvents->attach(AbstractRestfulController::class, MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
             return $response;
         }, 10);
         $result = $this->controller->dispatch($this->request, $this->response);
@@ -380,7 +384,7 @@ class RestfulControllerTest extends TestCase
 
     public function testControllerIsEventAware()
     {
-        $this->assertInstanceOf('Zend\Mvc\InjectApplicationEventInterface', $this->controller);
+        $this->assertInstanceOf(InjectApplicationEventInterface::class, $this->controller);
     }
 
     public function testControllerIsPluggable()
@@ -391,7 +395,7 @@ class RestfulControllerTest extends TestCase
     public function testMethodOverloadingShouldReturnPluginWhenFound()
     {
         $plugin = $this->controller->url();
-        $this->assertInstanceOf('Zend\Mvc\Controller\Plugin\Url', $plugin);
+        $this->assertInstanceOf(Url::class, $plugin);
     }
 
     public function testMethodOverloadingShouldInvokePluginAsFunctorIfPossible()
@@ -452,7 +456,7 @@ class RestfulControllerTest extends TestCase
     {
         $this->request->setMethod('PROPFIND');
         $result = $this->controller->dispatch($this->request, $this->response);
-        $this->assertInstanceOf('Zend\Http\Response', $result);
+        $this->assertInstanceOf(Response::class, $result);
         $this->assertEquals(405, $result->getStatusCode());
     }
 
@@ -497,7 +501,7 @@ class RestfulControllerTest extends TestCase
     }
 
     /**
-     * @dataProvider testNotImplementedMethodSets504HttpCodeProvider
+     * @dataProvider providerNotImplementedMethodSets504HttpCodeProvider
      */
     public function testNotImplementedMethodSets504HttpCode($method, $content, array $routeParams)
     {
@@ -518,7 +522,7 @@ class RestfulControllerTest extends TestCase
         $this->assertEquals('Method Not Allowed', $this->response->getReasonPhrase());
     }
 
-    public function testNotImplementedMethodSets504HttpCodeProvider()
+    public function providerNotImplementedMethodSets504HttpCodeProvider()
     {
         return [
             ['DELETE',  [],                             ['id' => 1]], // AbstractRestfulController::delete()

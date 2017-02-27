@@ -9,10 +9,11 @@
 
 namespace ZendTest\Mvc\Service;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use stdClass;
 use Zend\EventManager\EventManager;
+use Zend\EventManager\EventManagerAwareInterface;
 use Zend\Mvc\Controller\PluginManager;
 use Zend\Mvc\Service\ServiceManagerConfig;
 use Zend\ServiceManager\Factory\InvokableFactory;
@@ -191,8 +192,10 @@ class ServiceManagerConfigTest extends TestCase
      */
     public function testEventManagerInitializerCanBeReplaced()
     {
-        $instance       = $this->getMock('Zend\EventManager\EventManagerAwareInterface');
-        $initializer    = $this->getMock(stdClass::class, ['__invoke']);
+        $instance       = $this->createMock(EventManagerAwareInterface::class);
+        $initializer    = $this->getMockBuilder(stdClass::class)
+            ->setMethods(['__invoke'])
+            ->getMock();
         $config         = new ServiceManagerConfig([
             'initializers' => [
                 'EventManagerAwareInitializer' => $initializer,

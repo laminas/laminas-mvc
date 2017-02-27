@@ -9,12 +9,14 @@
 
 namespace ZendTest\Mvc;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
 use ReflectionProperty;
 use stdClass;
+use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
 use Zend\EventManager\Test\EventListenerIntrospectionTrait;
+use Zend\Http\PhpEnvironment;
 use Zend\Http\PhpEnvironment\Response;
 use Zend\ModuleManager\Listener\ConfigListener;
 use Zend\ModuleManager\ModuleEvent;
@@ -27,6 +29,8 @@ use Zend\Router;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Stdlib\ArrayUtils;
 use Zend\Stdlib\ResponseInterface;
+use Zend\View\Model\ViewModel;
+use ZendTest\Mvc\TestAsset;
 
 class ApplicationTest extends TestCase
 {
@@ -58,11 +62,11 @@ class ApplicationTest extends TestCase
             $serviceConfig,
             [
                 'invokables' => [
-                    'Request'              => 'Zend\Http\PhpEnvironment\Request',
-                    'Response'             => 'Zend\Http\PhpEnvironment\Response',
-                    'ViewManager'          => 'ZendTest\Mvc\TestAsset\MockViewManager',
-                    'SendResponseListener' => 'ZendTest\Mvc\TestAsset\MockSendResponseListener',
-                    'BootstrapListener'    => 'ZendTest\Mvc\TestAsset\StubBootstrapListener',
+                    'Request'              => PhpEnvironment\Request::class,
+                    'Response'             => PhpEnvironment\Response::class,
+                    'ViewManager'          => TestAsset\MockViewManager::class,
+                    'SendResponseListener' => TestAsset\MockSendResponseListener::class,
+                    'BootstrapListener'    => TestAsset\StubBootstrapListener::class,
                 ],
                 'factories' => [
                     'Router' => Router\RouterFactory::class,
@@ -120,7 +124,7 @@ class ApplicationTest extends TestCase
         $events       = $this->serviceManager->get('EventManager');
         $sharedEvents = $events->getSharedManager();
         $appEvents    = $this->application->getEventManager();
-        $this->assertInstanceOf('Zend\EventManager\EventManager', $appEvents);
+        $this->assertInstanceOf(EventManager::class, $appEvents);
         $this->assertNotSame($events, $appEvents);
         $this->assertSame($sharedEvents, $appEvents->getSharedManager());
     }
@@ -129,7 +133,7 @@ class ApplicationTest extends TestCase
     {
         $events      = $this->application->getEventManager();
         $identifiers = $events->getIdentifiers();
-        $expected    = ['Zend\Mvc\Application'];
+        $expected    = [Application::class];
         $this->assertEquals($expected, array_values($identifiers));
     }
 
@@ -227,7 +231,7 @@ class ApplicationTest extends TestCase
         $this->assertNull($this->application->getMvcEvent());
         $this->application->bootstrap();
         $event = $this->application->getMvcEvent();
-        $this->assertInstanceOf('Zend\Mvc\MvcEvent', $event);
+        $this->assertInstanceOf(MvcEvent::class, $event);
 
         $request  = $this->application->getRequest();
         $response = $this->application->getResponse();
@@ -480,21 +484,21 @@ class ApplicationTest extends TestCase
         });
 
         $application->run();
-        $this->assertContains('Zend\Mvc\Application', $response->getContent());
+        $this->assertContains(Application::class, $response->getContent());
     }
 
     public function testOnDispatchErrorEventPassedToTriggersShouldBeTheOriginalOne()
     {
         $application = $this->setupPathController(false);
         $controllerManager = $application->getServiceManager()->get('ControllerManager');
-        $model = $this->getMock('Zend\View\Model\ViewModel');
+        $model = $this->createMock(ViewModel::class);
         $application->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) use ($model) {
             $e->setResult($model);
         });
 
         $application->run();
         $event = $application->getMvcEvent();
-        $this->assertInstanceOf('Zend\View\Model\ViewModel', $event->getResult());
+        $this->assertInstanceOf(ViewModel::class, $event->getResult());
     }
 
     /**
@@ -562,10 +566,16 @@ class ApplicationTest extends TestCase
     {
         $this->application->bootstrap();
 
-        $response     = $this->getMock(ResponseInterface::class);
-        $finishMock   = $this->getMock('stdClass', ['__invoke']);
-        $routeMock    = $this->getMock('stdClass', ['__invoke']);
-        $dispatchMock = $this->getMock('stdClass', ['__invoke']);
+        $response     = $this->createMock(ResponseInterface::class);
+        $finishMock   = $this->getMockBuilder(stdClass::class)
+            ->setMethods(['__invoke'])
+            ->getMock();
+        $routeMock    = $this->getMockBuilder(stdClass::class)
+            ->setMethods(['__invoke'])
+            ->getMock();
+        $dispatchMock = $this->getMockBuilder(stdClass::class)
+            ->setMethods(['__invoke'])
+            ->getMock();
 
         $routeMock->expects($this->once())->method('__invoke')->will($this->returnCallback(function (MvcEvent $event) {
             $event->stopPropagation(true);
@@ -588,11 +598,19 @@ class ApplicationTest extends TestCase
     {
         $this->application->bootstrap();
 
-        $response     = $this->getMock(ResponseInterface::class);
-        $errorMock    = $this->getMock('stdClass', ['__invoke']);
-        $finishMock   = $this->getMock('stdClass', ['__invoke']);
-        $routeMock    = $this->getMock('stdClass', ['__invoke']);
-        $dispatchMock = $this->getMock('stdClass', ['__invoke']);
+        $response     = $this->createMock(ResponseInterface::class);
+        $errorMock    = $this->getMockBuilder(stdClass::class)
+            ->setMethods(['__invoke'])
+            ->getMock();
+        $finishMock   = $this->getMockBuilder(stdClass::class)
+            ->setMethods(['__invoke'])
+            ->getMock();
+        $routeMock    = $this->getMockBuilder(stdClass::class)
+            ->setMethods(['__invoke'])
+            ->getMock();
+        $dispatchMock = $this->getMockBuilder(stdClass::class)
+            ->setMethods(['__invoke'])
+            ->getMock();
 
         $errorMock->expects($this->once())->method('__invoke')->will($this->returnCallback(function (MvcEvent $event) {
             $event->stopPropagation(true);

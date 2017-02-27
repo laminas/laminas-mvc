@@ -11,6 +11,7 @@ namespace ZendTest\Mvc\Application;
 
 use ReflectionProperty;
 use stdClass;
+use Zend\Http\PhpEnvironment\Request;
 use Zend\Http\PhpEnvironment\Response;
 use Zend\Mvc\Application;
 use Zend\Mvc\Controller\ControllerManager;
@@ -71,7 +72,7 @@ trait InvalidControllerTypeTrait
                     },
                 ],
                 'invokables' => [
-                    'Request'              => 'Zend\Http\PhpEnvironment\Request',
+                    'Request'              => Request::class,
                     'Response'             => Response::class,
                     'ViewManager'          => TestAsset\MockViewManager::class,
                     'SendResponseListener' => TestAsset\MockSendResponseListener::class,

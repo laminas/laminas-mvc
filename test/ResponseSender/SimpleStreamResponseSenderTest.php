@@ -9,14 +9,17 @@
 
 namespace ZendTest\Mvc\ResponseSender;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
+use Zend\Http\Response;
+use Zend\Mvc\ResponseSender;
 use Zend\Mvc\ResponseSender\SimpleStreamResponseSender;
+use Zend\Stdlib;
 
 class SimpleStreamResponseSenderTest extends TestCase
 {
     public function testSendResponseIgnoresInvalidResponseTypes()
     {
-        $mockResponse = $this->getMockForAbstractClass('Zend\Stdlib\ResponseInterface');
+        $mockResponse = $this->getMockForAbstractClass(Stdlib\ResponseInterface::class);
         $mockSendResponseEvent = $this->getSendResponseEventMock($mockResponse);
         $responseSender = new SimpleStreamResponseSender();
         ob_start();
@@ -28,7 +31,7 @@ class SimpleStreamResponseSenderTest extends TestCase
     public function testSendResponseTwoTimesPrintsResponseOnlyOnce()
     {
         $file = fopen(__DIR__ . '/TestAsset/sample-stream-file.txt', 'rb');
-        $mockResponse = $this->getMock('Zend\Http\Response\Stream');
+        $mockResponse = $this->createMock(Response\Stream::class);
         $mockResponse->expects($this->once())->method('getStream')->will($this->returnValue($file));
         $mockSendResponseEvent = $this->getSendResponseEventMock($mockResponse);
         $responseSender = new SimpleStreamResponseSender();
@@ -46,7 +49,9 @@ class SimpleStreamResponseSenderTest extends TestCase
 
     protected function getSendResponseEventMock($response)
     {
-        $mockSendResponseEvent = $this->getMock('Zend\Mvc\ResponseSender\SendResponseEvent', ['getResponse']);
+        $mockSendResponseEvent = $this->getMockBuilder(ResponseSender\SendResponseEvent::class)
+            ->setMethods(['getResponse'])
+            ->getMock();
         $mockSendResponseEvent->expects($this->any())->method('getResponse')->will($this->returnValue($response));
         return $mockSendResponseEvent;
     }
