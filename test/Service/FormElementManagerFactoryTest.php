@@ -29,8 +29,6 @@ class FormElementManagerFactoryTest extends TestCase
 
     public function setUp()
     {
-        $this->markTestIncomplete('Re-enable once zend-form is migrated to zend-servicemanager v3');
-
         $formElementManagerFactory = new FormElementManagerFactory();
         $this->services = new ServiceManager([
             'factories' => [
