@@ -38,7 +38,7 @@ class FormAnnotationBuilderFactory implements FactoryInterface
 
         $formElementManager = $container->get('FormElementManager');
 
-        $this->prepareAndInjectFactory($formElementManager, $container, $annotationBuilder);
+        $this->injectFactory($formElementManager, $container, $annotationBuilder);
 
         $config = $container->get('config');
         if (isset($config['form_annotation_builder'])) {
@@ -82,13 +82,15 @@ class FormAnnotationBuilderFactory implements FactoryInterface
     }
 
     /**
+     * Handle zend-servicemanager dependent InitializerInterface signature
+     *
      * @param FormElementManagerV2Polyfill|FormElementManagerV3Polyfill $formElementManager
      * @param ContainerInterface                                        $container
      * @param AnnotationBuilder                                         $annotationBuilder
      *
      * @return void
      */
-    private function prepareAndInjectFactory(
+    private function injectFactory(
         $formElementManager,
         ContainerInterface $container,
         AnnotationBuilder $annotationBuilder
