@@ -30,7 +30,7 @@ class FormElementManagerFactoryTest extends TestCase
     public function setUp()
     {
         $formElementManagerFactory = new FormElementManagerFactory();
-        $this->services = new ServiceManager([
+        $serviceManagerConfig = new Config([
             'factories' => [
                 'FormElementManager' => $formElementManagerFactory,
             ],
@@ -38,6 +38,10 @@ class FormElementManagerFactoryTest extends TestCase
                 'config' => [],
             ],
         ]);
+        $services = new ServiceManager();
+        $serviceManagerConfig->configureServiceManager($services);
+
+        $this->services = $services;
     }
 
     public function testWillGetFormElementManager()
