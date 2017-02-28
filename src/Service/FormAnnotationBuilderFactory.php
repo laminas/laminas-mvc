@@ -12,6 +12,8 @@ namespace Zend\Mvc\Service;
 use Interop\Container\ContainerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
 use Zend\Form\Annotation\AnnotationBuilder;
+use Zend\Form\FormElementManager\FormElementManagerV2Polyfill;
+use Zend\Form\FormElementManager\FormElementManagerV3Polyfill;
 use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -35,7 +37,8 @@ class FormAnnotationBuilderFactory implements FactoryInterface
         $annotationBuilder->setEventManager($eventManager);
 
         $formElementManager = $container->get('FormElementManager');
-        $formElementManager->injectFactory($container, $annotationBuilder);
+
+        $this->prepareAndInjectFactory($formElementManager, $container, $annotationBuilder);
 
         $config = $container->get('config');
         if (isset($config['form_annotation_builder'])) {
@@ -76,5 +79,27 @@ class FormAnnotationBuilderFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $container)
     {
         return $this($container, AnnotationBuilder::class);
+    }
+
+    /**
+     * @param FormElementManagerV2Polyfill|FormElementManagerV3Polyfill $formElementManager
+     * @param ContainerInterface                                        $container
+     * @param AnnotationBuilder                                         $annotationBuilder
+     *
+     * @return void
+     */
+    private function prepareAndInjectFactory(
+        $formElementManager,
+        ContainerInterface $container,
+        AnnotationBuilder $annotationBuilder
+    ) {
+        if ($formElementManager instanceof FormElementManagerV2Polyfill) {
+            $formElementManager->injectFactory($annotationBuilder, $container);
+            return;
+        }
+
+        if ($formElementManager instanceof FormElementManagerV3Polyfill) {
+            $formElementManager->injectFactory($container, $annotationBuilder);
+        }
     }
 }

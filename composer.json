@@ -17,7 +17,7 @@
         "zendframework/zend-eventmanager": "^2.6.2 || ^3.0",
         "zendframework/zend-servicemanager": "^2.7.5 || ^3.0.3",
         "zendframework/zend-hydrator": "^1.1 || ^2.1",
-        "zendframework/zend-form": "^2.7",
+        "zendframework/zend-form": "^2.8",
         "zendframework/zend-stdlib": "^2.7.5 || ^3.0",
         "zendframework/zend-psr7bridge": "^0.2",
         "container-interop/container-interop": "^1.1"
