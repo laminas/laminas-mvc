@@ -11,6 +11,7 @@ namespace ZendTest\Mvc\Service;
 
 use PHPUnit_Framework_TestCase as TestCase;
 use Zend\EventManager\EventManagerInterface;
+use Zend\Form\Annotation\AnnotationBuilder;
 use Zend\Mvc\Service\FormAnnotationBuilderFactory;
 use Zend\ServiceManager\ServiceManager;
 
@@ -37,6 +38,60 @@ class FormAnnotationBuilderFactoryTest extends TestCase
         $service = $sut->createService($serviceLocator);
 
         $this->assertTrue($service->preserveDefinedOrder(), 'Preserve defined order was not set correctly');
+    }
+
+
+    public function testInjectFactoryInCorrectOrderV2()
+    {
+        $serviceLocator = new ServiceManager();
+        if (method_exists($serviceLocator, 'build')) {
+            $this->markTestSkipped('`zendframework/zend-servicemanager` v2 needed, skipped test');
+        }
+
+        $this->prepareServiceLocator($serviceLocator, []);
+        $serviceLocator->setAllowOverride(true);
+
+        $mockElementManager = $this
+            ->getMockBuilder('Zend\Form\FormElementManager\FormElementManagerV2Polyfill')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $serviceLocator->setService('FormElementManager', $mockElementManager);
+
+        $mockElementManager
+            ->expects($this->once())
+            ->method('injectFactory')
+            ->with($this->callback(function ($annotationBuilder) {
+                return $annotationBuilder instanceof AnnotationBuilder;
+            }), $serviceLocator);
+
+        $sut = new FormAnnotationBuilderFactory();
+        $sut->createService($serviceLocator);
+    }
+
+    public function testInjectFactoryInCorrectOrderV3()
+    {
+        $serviceLocator = new ServiceManager();
+        if (!method_exists($serviceLocator, 'build')) {
+            $this->markTestSkipped('`zendframework/zend-servicemanager` v3 needed, skipped test');
+        }
+        $this->prepareServiceLocator($serviceLocator, []);
+        $serviceLocator->setAllowOverride(true);
+
+        $mockElementManager = $this
+            ->getMockBuilder('Zend\Form\FormElementManager\FormElementManagerV3Polyfill')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $serviceLocator->setService('FormElementManager', $mockElementManager);
+
+        $mockElementManager
+            ->expects($this->once())
+            ->method('injectFactory')
+            ->with($serviceLocator, $this->callback(function ($annotationBuilder) {
+                return $annotationBuilder instanceof AnnotationBuilder;
+            }));
+
+        $sut = new FormAnnotationBuilderFactory();
+        $sut->__invoke($serviceLocator, AnnotationBuilder::class);
     }
 
     /**
