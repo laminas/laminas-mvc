@@ -28,8 +28,6 @@ class FormAnnotationBuilderFactoryTest extends TestCase
 
     public function testCreateServiceSetsPreserveDefinedOrder()
     {
-
-
         $serviceLocator = new ServiceManager();
         $config = ['form_annotation_builder' => ['preserve_defined_order' => true]];
         $this->prepareServiceLocator($serviceLocator, $config);
