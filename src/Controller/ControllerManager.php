@@ -12,7 +12,6 @@ namespace Zend\Mvc\Controller;
 use Interop\Container\ContainerInterface;
 use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\SharedEventManagerInterface;
-use Zend\Mvc\Exception;
 use Zend\ServiceManager\AbstractPluginManager;
 use Zend\ServiceManager\ConfigInterface;
 use Zend\ServiceManager\Exception\InvalidServiceException;
@@ -46,17 +45,17 @@ class ControllerManager extends AbstractPluginManager
      * event manager and plugin manager.
      *
      * @param  ConfigInterface|ContainerInterface $container
-     * @param  array $v3config
+     * @param  array $config
      */
-    public function __construct($configOrContainerInstance, array $v3config = [])
+    public function __construct($configOrContainerInstance, array $config = [])
     {
         $this->addInitializer([$this, 'injectEventManager']);
         $this->addInitializer([$this, 'injectPluginManager']);
-        parent::__construct($configOrContainerInstance, $v3config);
+        parent::__construct($configOrContainerInstance, $config);
     }
 
     /**
-     * Validate a plugin (v3)
+     * Validate a plugin
      *
      * {@inheritDoc}
      */
@@ -72,26 +71,6 @@ class ControllerManager extends AbstractPluginManager
     }
 
     /**
-     * Validate a plugin (v2)
-     *
-     * {@inheritDoc}
-     *
-     * @throws Exception\InvalidControllerException
-     */
-    public function validatePlugin($plugin)
-    {
-        try {
-            $this->validate($plugin);
-        } catch (InvalidServiceException $e) {
-            throw new Exception\InvalidControllerException(
-                $e->getMessage(),
-                $e->getCode(),
-                $e
-            );
-        }
-    }
-
-    /**
      * Initializer: inject EventManager instance
      *
      * If we have an event manager composed already, make sure it gets injected
@@ -101,32 +80,17 @@ class ControllerManager extends AbstractPluginManager
      * the shared EM injection needs to happen; the conditional will always
      * pass.
      *
-     * @param ContainerInterface|DispatchableInterface $first Container when
-     *     using zend-servicemanager v3; controller under v2.
-     * @param DispatchableInterface|ContainerInterface $second Controller when
-     *     using zend-servicemanager v3; container under v2.
+     * @param ContainerInterface $container
+     * @param DispatchableInterface $controller
      */
-    public function injectEventManager($first, $second)
+    public function injectEventManager(ContainerInterface $container, $controller)
     {
-        if ($first instanceof ContainerInterface) {
-            $container = $first;
-            $controller = $second;
-        } else {
-            $container = $second;
-            $controller = $first;
-        }
-
         if (! $controller instanceof EventManagerAwareInterface) {
             return;
         }
 
         $events = $controller->getEventManager();
         if (! $events || ! $events->getSharedManager() instanceof SharedEventManagerInterface) {
-            // For v2, we need to pull the parent service locator
-            if (! method_exists($container, 'configure')) {
-                $container = $container->getServiceLocator() ?: $container;
-            }
-
             $controller->setEventManager($container->get('EventManager'));
         }
     }
@@ -134,28 +98,13 @@ class ControllerManager extends AbstractPluginManager
     /**
      * Initializer: inject plugin manager
      *
-     * @param ContainerInterface|DispatchableInterface $first Container when
-     *     using zend-servicemanager v3; controller under v2.
-     * @param DispatchableInterface|ContainerInterface $second Controller when
-     *     using zend-servicemanager v3; container under v2.
+     * @param ContainerInterface $container
+     * @param DispatchableInterface $controller
      */
-    public function injectPluginManager($first, $second)
+    public function injectPluginManager(ContainerInterface $container, $controller)
     {
-        if ($first instanceof ContainerInterface) {
-            $container = $first;
-            $controller = $second;
-        } else {
-            $container = $second;
-            $controller = $first;
-        }
-
         if (! method_exists($controller, 'setPluginManager')) {
             return;
-        }
-
-        // For v2, we need to pull the parent service locator
-        if (! method_exists($container, 'configure')) {
-            $container = $container->getServiceLocator() ?: $container;
         }
 
         $controller->setPluginManager($container->get('ControllerPluginManager'));

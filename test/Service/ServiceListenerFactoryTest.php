@@ -10,8 +10,6 @@
 namespace ZendTest\Mvc\Service;
 
 use PHPUnit_Framework_TestCase as TestCase;
-use ReflectionClass;
-use ReflectionProperty;
 use Zend\Mvc\Service\ServiceListenerFactory;
 use Zend\ServiceManager\ServiceManager;
 
@@ -24,12 +22,6 @@ class ServiceListenerFactoryTest extends TestCase
                                ->getMock();
 
         $this->factory  = new ServiceListenerFactory();
-    }
-
-    private function isServiceManagerV3()
-    {
-        $r = new ReflectionClass(ServiceManager::class);
-        return $r->hasMethod('configure');
     }
 
     /**
@@ -187,65 +179,5 @@ class ServiceListenerFactoryTest extends TestCase
                  ->will($this->returnValue($config));
 
         $this->factory->__invoke($this->sm, 'ServiceListener');
-    }
-
-    public function testDefinesExpectedApplicationAliasesUnderV3()
-    {
-        if (! $this->isServiceManagerV3()) {
-            $this->markTestSkipped('Application aliases are only defined under zend-servicemanager v3');
-        }
-
-        $r = new ReflectionProperty($this->factory, 'defaultServiceConfig');
-        $r->setAccessible(true);
-        $config = $r->getValue($this->factory);
-
-        // @codingStandardsIgnoreStart
-        $this->assertArrayHasKey('aliases', $config, 'Missing aliases from default service config');
-        $this->assertArrayHasKey('application', $config['aliases'], 'Missing "application" alias from default service config');
-        // @codingStandardsIgnoreEnd
-    }
-
-    public function testDefinesExpectedConfigAliasesUnderV3()
-    {
-        if (! $this->isServiceManagerV3()) {
-            $this->markTestSkipped('Config aliases are only defined under zend-servicemanager v3');
-        }
-
-        $r = new ReflectionProperty($this->factory, 'defaultServiceConfig');
-        $r->setAccessible(true);
-        $config = $r->getValue($this->factory);
-
-        $this->assertArrayHasKey('aliases', $config, 'Missing aliases from default service config');
-        $this->assertArrayHasKey('Config', $config['aliases'], 'Missing "Config" alias from default service config');
-    }
-
-    public function testDefinesExpectedRequestAliasesUnderV3()
-    {
-        if (! $this->isServiceManagerV3()) {
-            $this->markTestSkipped('Request aliases are only defined under zend-servicemanager v3');
-        }
-
-        $r = new ReflectionProperty($this->factory, 'defaultServiceConfig');
-        $r->setAccessible(true);
-        $config = $r->getValue($this->factory);
-
-        $this->assertArrayHasKey('aliases', $config, 'Missing aliases from default service config');
-        $this->assertArrayHasKey('request', $config['aliases'], 'Missing "request" alias from default service config');
-    }
-
-    public function testDefinesExpectedResponseFactories()
-    {
-        if (! $this->isServiceManagerV3()) {
-            $this->markTestSkipped('Response aliases are only defined under zend-servicemanager v3');
-        }
-
-        $r = new ReflectionProperty($this->factory, 'defaultServiceConfig');
-        $r->setAccessible(true);
-        $config = $r->getValue($this->factory);
-
-        // @codingStandardsIgnoreStart
-        $this->assertArrayHasKey('aliases', $config, 'Missing aliases from default service config');
-        $this->assertArrayHasKey('response', $config['aliases'], 'Missing "response" alias from default service config');
-        // @codingStandardsIgnoreEnd
     }
 }

@@ -10,8 +10,7 @@
 namespace Zend\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\View\Strategy\PhpRendererStrategy;
 use Zend\View\View;
 
@@ -32,18 +31,5 @@ class ViewFactory implements FactoryInterface
         $container->get(PhpRendererStrategy::class)->attach($events);
 
         return $view;
-    }
-
-    /**
-     * Create and return View instance
-     *
-     * For use with zend-servicemanager v2; proxies to __invoke().
-     *
-     * @param ServiceLocatorInterface $container
-     * @return View
-     */
-    public function createService(ServiceLocatorInterface $container)
-    {
-        return $this($container, View::class);
     }
 }

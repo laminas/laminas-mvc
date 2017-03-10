@@ -106,12 +106,6 @@ class ServiceManagerConfig extends Config
             },
         ]);
 
-        // In zend-servicemanager v2, incoming configuration is not merged
-        // with existing; it replaces. So we need to detect that and merge.
-        if (method_exists($this, 'getAllowOverride')) {
-            $config = ArrayUtils::merge($this->config, $config);
-        }
-
         parent::__construct($config);
     }
 
@@ -170,7 +164,7 @@ class ServiceManagerConfig extends Config
     }
 
     /**
-     * Return all service configuration (v3)
+     * Return all service configuration
      *
      * @return array
      */
