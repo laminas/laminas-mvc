@@ -33,7 +33,7 @@ Within the MVC layer, several sub-components are exposed:
   as automated template name resolution, automated view model creation and
   injection, etc.
 
-The gateway to the MVC is the [Zend\\Mvc\\Application](https://github.com/zendframework/zf2/blob/master/library/Zend/Mvc/Application.php)
+The gateway to the MVC is the [Zend\\Mvc\\Application](https://github.com/zendframework/zend-mvc/blob/master/src/Application.php)
 object (referred to as `Application` henceforth). Its primary responsibilities
 are to **bootstrap** resources, to **route** the request, and to retrieve and
 **dispatch** the controller matched during routing. Once accomplished, it will
