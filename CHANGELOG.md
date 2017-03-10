@@ -14,7 +14,9 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Removed
 
-- Nothing.
+- [#211](https://github.com/zendframework/zend-mvc/pull/211) Removed unused
+  zend-servicemanager v2 and zend-eventmanager v2 compatibility code since
+  zend-mvc requires v3 of those components.
 
 ### Fixed
 
