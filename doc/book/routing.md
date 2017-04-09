@@ -635,7 +635,7 @@ return [
                 'type' => 'Zend\Mvc\Router\Http\Hostname',
                 'options' => [
                     'route' => ':4th.[:3rd.]:2nd.:1st', // domain levels from right to left
-                    'contraints' => [
+                    'constraints' => [
                         '4th' => 'modules',
                         '3rd' => '.*?', // optional 3rd level domain such as .ci, .dev or .test
                         '2nd' => 'zendframework',
@@ -663,7 +663,7 @@ return [
                 'type' => 'Zend\Mvc\Router\Http\Hostname',
                 'options' => [
                     'route' => ':4th.[:3rd.]:2nd.:1st', // domain levels from right to left
-                    'contraints' => [
+                    'constraints' => [
                         '4th' => 'packages',
                         '3rd' => '.*?', // optional 3rd level domain such as .ci, .dev or .test
                         '2nd' => 'zendframework',
