@@ -45,6 +45,9 @@
         "phpunit/PHPUnit": "^4.5",
         "sebastian/version": "^1.0.4"
     },
+    "replace": {
+        "zendframework/zend-router": "^2.0"
+    },
     "suggest": {
         "zendframework/zend-authentication": "Zend\\Authentication component for Identity plugin",
         "zendframework/zend-config": "Zend\\Config component",
