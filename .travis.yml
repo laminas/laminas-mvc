@@ -70,16 +70,12 @@ matrix:
   allow_failures:
     - php: hhvm
 
-notifications:
-  irc: "irc.freenode.org#zftalk.dev"
-  email: false
-
 before_install:
   - travis_retry composer self-update
   - if [[ $TRAVIS_PHP_VERSION != "hhvm" && $TEST_COVERAGE != 'true' ]]; then phpenv config-rm xdebug.ini ; fi
 
 install:
-  - travis_retry composer install $COMPOSER_ARGS
+  - travis_retry composer install $COMPOSER_ARGS --ignore-platform-reqs
   - if [[ $TRAVIS_PHP_VERSION =~ ^5.6 ]]; then travis_retry composer update $COMPOSER_ARGS --with-dependencies $LEGACY_DEPS ; fi
   - if [[ $DEPS == 'latest' ]]; then travis_retry composer update $COMPOSER_ARGS ; fi
   - if [[ $DEPS == 'lowest' ]]; then travis_retry composer update --prefer-lowest --prefer-stable $COMPOSER_ARGS ; fi
@@ -96,3 +92,11 @@ after_script:
 
 after_success:
   - if [[ $DEPLOY_DOCS == "true" ]]; then ./zf-mkdoc-theme/deploy.sh ; fi
+
+notifications:
+  email: false
+  slack:
+    rooms:
+      - secure: "Izby0l/9kitKgdtpNsG4wpz1dENiAlBx6BTv54woOue+DB0XPpGV2kRs7Ta0u0neR3Spy1TjAIwQxtWp4SBPRyr99TAvjBmhrV8EHzdQvo3OosHP8VjXCyNTUbI5QhSW9I0UovQ+/Sd5CIQbckVLBs/YTp7MC9LhV/dBxRBM0GIO8EfkTtr7v1qYNmr6rVPGndco8zJUOSB/snSoLt/g2hk8WykAw7FaVpB/OdnAVmzy8rMRAYdqeZZjXdxoHebXF+osVvoBUgbdp2czGiv4jAGOWpRCqA6N4XaYWjqdL0kNCLvO/+LwGeinw2qAiHpm5g4xLhtpCC1mQNqnAOkVWZB9KnGjNcT9KfKD/6NO7AvQd+9LkTNII1+MAHhiwGwr2/JfXuepGuOVx/Jjto5PfZtZKBTCJb64JvacGNY3xY9n0yMpqS6rnSLW/5APq6HV0ufuu/nDDVLP5rJ4g//LHXepLC187QOkRcFfUfeVTscIpGLY8GrZY770XWLkFsR5VpAgBE40jRkqKtl/A7E2wJQ+mQ5YR6WP3vxzZFvnTC9Ut7WZo3RSZRwkwwvSdixydw739Afn/iywznpY1KUifgC2tqyI+dV0dra06hVsA579FDsZtCNHIXadSs/OMGUgoccdVNwlngN5Gxj28I1NugXeh2YGgTanJY0EFgg+Bsg="
+    on_success: change
+    on_failure: always
