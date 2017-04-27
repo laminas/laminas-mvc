@@ -12,6 +12,7 @@ namespace Zend\Mvc\Controller;
 use Zend\Http\Response as HttpResponse;
 use Zend\Mvc\Exception;
 use Zend\Mvc\MvcEvent;
+use Zend\View\Model\ConsoleModel;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -39,7 +40,7 @@ abstract class AbstractActionController extends AbstractController
     /**
      * Action called if matched action does not exist
      *
-     * @return array
+     * @return ViewModel|ConsoleModel
      */
     public function notFoundAction()
     {
