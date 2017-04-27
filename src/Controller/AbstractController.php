@@ -26,8 +26,9 @@ use Zend\Stdlib\ResponseInterface as Response;
  * Abstract controller
  *
  * Convenience methods for pre-built plugins (@see __call):
- *
+ * @codingStandardsIgnoreStart
  * @method \Zend\View\Model\ModelInterface acceptableViewModelSelector(array $matchAgainst = null, bool $returnDefault = true, \Zend\Http\Header\Accept\FieldValuePart\AbstractFieldValuePart $resultReference = null)
+ * @codingStandardsIgnoreEnd
  * @method \Zend\Mvc\Controller\Plugin\Forward forward()
  * @method \Zend\Mvc\Controller\Plugin\Layout|\Zend\View\Model\ModelInterface layout(string $template = null)
  * @method \Zend\Mvc\Controller\Plugin\Params|mixed params(string $param = null, mixed $default = null)
@@ -89,7 +90,7 @@ abstract class AbstractController implements
     public function dispatch(Request $request, Response $response = null)
     {
         $this->request = $request;
-        if (!$response) {
+        if (! $response) {
             $response = new HttpResponse();
         }
         $this->response = $response;
@@ -118,7 +119,7 @@ abstract class AbstractController implements
      */
     public function getRequest()
     {
-        if (!$this->request) {
+        if (! $this->request) {
             $this->request = new HttpRequest();
         }
 
@@ -132,7 +133,7 @@ abstract class AbstractController implements
      */
     public function getResponse()
     {
-        if (!$this->response) {
+        if (! $this->response) {
             $this->response = new HttpResponse();
         }
 
@@ -175,7 +176,7 @@ abstract class AbstractController implements
      */
     public function getEventManager()
     {
-        if (!$this->events) {
+        if (! $this->events) {
             $this->setEventManager(new EventManager());
         }
 
@@ -192,7 +193,7 @@ abstract class AbstractController implements
      */
     public function setEvent(Event $e)
     {
-        if (!$e instanceof MvcEvent) {
+        if (! $e instanceof MvcEvent) {
             $eventParams = $e->getParams();
             $e = new MvcEvent();
             $e->setParams($eventParams);
@@ -210,7 +211,7 @@ abstract class AbstractController implements
      */
     public function getEvent()
     {
-        if (!$this->event) {
+        if (! $this->event) {
             $this->setEvent(new MvcEvent());
         }
 
@@ -224,7 +225,7 @@ abstract class AbstractController implements
      */
     public function getPluginManager()
     {
-        if (!$this->plugins) {
+        if (! $this->plugins) {
             $this->setPluginManager(new PluginManager(new ServiceManager()));
         }
 

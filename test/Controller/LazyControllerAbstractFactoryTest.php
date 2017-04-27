@@ -8,7 +8,7 @@
 namespace ZendTest\Mvc\Controller;
 
 use Interop\Container\ContainerInterface;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\Mvc\Controller\LazyControllerAbstractFactory;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\Validator\ValidatorPluginManager;
@@ -60,8 +60,8 @@ class LazyControllerAbstractFactoryTest extends TestCase
     {
         $this->container->has(TestAsset\SampleInterface::class)->willReturn(false);
         $factory = new LazyControllerAbstractFactory();
-        $this->setExpectedException(
-            ServiceNotFoundException::class,
+        $this->expectException(ServiceNotFoundException::class);
+        $this->expectExceptionMessage(
             sprintf(
                 'Unable to create controller "%s"; unable to resolve parameter "sample" using type hint "%s"',
                 TestAsset\ControllerWithTypeHintedConstructorParameter::class,
@@ -99,7 +99,10 @@ class LazyControllerAbstractFactoryTest extends TestCase
         $this->container->get(TestAsset\SampleInterface::class)->willReturn($sample);
 
         $factory = new LazyControllerAbstractFactory();
-        $controller = $factory($this->container->reveal(), TestAsset\ControllerWithTypeHintedConstructorParameter::class);
+        $controller = $factory(
+            $this->container->reveal(),
+            TestAsset\ControllerWithTypeHintedConstructorParameter::class
+        );
         $this->assertInstanceOf(TestAsset\ControllerWithTypeHintedConstructorParameter::class, $controller);
         $this->assertSame($sample, $controller->sample);
     }

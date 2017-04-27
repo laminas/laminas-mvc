@@ -236,7 +236,7 @@ services configured out of the box.
   creates a `Zend\Http\PhpEnvironment\Response`.
 
 - `Router`, mapping to `Zend\Mvc\Service\RouterFactory`. If in a console
-  enviroment, it proxies to the `ConsoleRouter` service; otherwise, it proxies
+  environment, it proxies to the `ConsoleRouter` service; otherwise, it proxies
   to the `HttpRouter` service.
 
 - `RoutePluginManager`, mapping to `Zend\Mvc\Service\RoutePluginManagerFactory`.

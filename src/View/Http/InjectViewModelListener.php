@@ -40,7 +40,7 @@ class InjectViewModelListener extends AbstractListenerAggregate
     public function injectViewModel(MvcEvent $e)
     {
         $result = $e->getResult();
-        if (!$result instanceof ViewModel) {
+        if (! $result instanceof ViewModel) {
             return;
         }
 

@@ -9,7 +9,7 @@
 
 namespace ZendTest\Mvc\Service;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Mvc\Application;
 use Zend\Mvc\MvcEvent;
@@ -48,10 +48,10 @@ class ViewHelperManagerFactoryTest extends TestCase
     public function testDoctypeFactoryDoesNotRaiseErrorOnMissingConfiguration($config)
     {
         $this->services->setService('config', $config);
-        $manager = $this->factory->__invoke($this->services, HelperPluginManager::class);
-        $this->assertInstanceof('Zend\View\HelperPluginManager', $manager);
+        $manager = $this->factory->__invoke($this->services, 'doctype');
+        $this->assertInstanceof(HelperPluginManager::class, $manager);
         $doctype = $manager->get('doctype');
-        $this->assertInstanceof('Zend\View\Helper\Doctype', $doctype);
+        $this->assertInstanceof(Helper\Doctype::class, $doctype);
     }
 
     public function urlHelperNames()

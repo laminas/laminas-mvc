@@ -9,7 +9,9 @@
 
 namespace ZendTest\Mvc\Service;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
+use ReflectionClass;
+use ReflectionProperty;
 use Zend\Mvc\Service\ServiceListenerFactory;
 use Zend\ServiceManager\ServiceManager;
 
@@ -57,7 +59,8 @@ class ServiceListenerFactoryTest extends TestCase
 
     /**
      * @expectedException        Zend\ServiceManager\Exception\ServiceNotCreatedException
-     * @expectedExceptionMessage Invalid service listener options detected, service_manager must be a string, integer given.
+     * @expectedExceptionMessage Invalid service listener options detected, service_manager must be a string,
+     *                           integer given.
      */
     public function testInvalidTypeServiceManager()
     {

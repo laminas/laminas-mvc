@@ -9,13 +9,16 @@
 
 namespace ZendTest\Mvc\Controller;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 use Zend\EventManager\EventManager;
+use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\SharedEventManager;
 use Zend\EventManager\SharedEventManagerInterface;
 use Zend\Mvc\Controller\ControllerManager;
 use Zend\Mvc\Controller\PluginManager as ControllerPluginManager;
 use Zend\ServiceManager\Config;
+use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\ServiceManager;
 use ZendTest\Mvc\Controller\TestAsset\SampleController;
 
@@ -61,7 +64,7 @@ class ControllerManagerTest extends TestCase
         // instance, which means we need to check that that instance gets injected
         // with the shared EM instance.
         $events = $controller->getEventManager();
-        $this->assertInstanceOf('Zend\EventManager\EventManagerInterface', $events);
+        $this->assertInstanceOf(EventManagerInterface::class, $events);
         $this->assertSame($this->sharedEvents, $events->getSharedManager());
     }
 
@@ -93,7 +96,7 @@ class ControllerManagerTest extends TestCase
     public function testDoNotUsePeeringServiceManagers()
     {
         $this->assertFalse($this->controllers->has('EventManager'));
-        $this->setExpectedException('Zend\ServiceManager\Exception\ServiceNotFoundException');
+        $this->expectException(ServiceNotFoundException::class);
         $this->controllers->get('EventManager');
     }
 }

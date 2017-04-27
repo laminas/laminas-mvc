@@ -17,7 +17,7 @@ class PathController implements DispatchableInterface
 {
     public function dispatch(Request $request, Response $response = null)
     {
-        if (!$response) {
+        if (! $response) {
             $response = new HttpResponse();
         }
         $response->setContent(__METHOD__);

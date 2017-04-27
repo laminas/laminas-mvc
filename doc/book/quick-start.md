@@ -102,7 +102,7 @@ classes for you to start with:
 - `Zend\Mvc\Controller\AbstractRestfulController` introspects the `Request` to
   determine what HTTP method was used, and calls a method according to that.
   - `GET` will call either the `getList()` method, or, if an "id" was matched
-    during routing, the `get()` method (with that identifer value).
+    during routing, the `get()` method (with that identifier value).
   - `POST` will call the `create()` method, passing in the `$_POST` values.
   - `PUT` expects an "id" to be matched during routing, and will call the
     `update()` method, passing in the identifier, and any data found in the raw

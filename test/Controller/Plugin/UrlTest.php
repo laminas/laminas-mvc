@@ -9,13 +9,17 @@
 
 namespace ZendTest\Mvc\Controller\Plugin;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\Mvc\Controller\Plugin\Url as UrlPlugin;
+use Zend\Mvc\Exception\DomainException;
+use Zend\Mvc\Exception\RuntimeException;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Router\Http\Literal as LiteralRoute;
 use Zend\Router\Http\Segment as SegmentRoute;
+use Zend\Router\Http\Segment;
 use Zend\Router\Http\TreeRouteStack;
+use Zend\Router\Http\Wildcard;
 use Zend\Router\RouteMatch;
 use Zend\Router\SimpleRouteStack;
 use ZendTest\Mvc\Controller\TestAsset\SampleController;
@@ -28,11 +32,11 @@ class UrlTest extends TestCase
         $router->addRoute('home', LiteralRoute::factory([
             'route'    => '/',
             'defaults' => [
-                'controller' => 'ZendTest\Mvc\Controller\TestAsset\SampleController',
+                'controller' => SampleController::class,
             ],
         ]));
         $router->addRoute('default', [
-            'type' => 'Zend\Router\Http\Segment',
+            'type' => Segment::class,
             'options' => [
                 'route' => '/:controller[/:action]',
             ]
@@ -65,7 +69,8 @@ class UrlTest extends TestCase
     public function testPluginWithoutControllerRaisesDomainException()
     {
         $plugin = new UrlPlugin();
-        $this->setExpectedException('Zend\Mvc\Exception\DomainException', 'requires a controller');
+        $this->expectException(DomainException::class);
+        $this->expectExceptionMessage('requires a controller');
         $plugin->fromRoute('home');
     }
 
@@ -73,7 +78,8 @@ class UrlTest extends TestCase
     {
         $controller = new SampleController();
         $plugin     = $controller->plugin('url');
-        $this->setExpectedException('Zend\Mvc\Exception\DomainException', 'event compose a router');
+        $this->expectException(DomainException::class);
+        $this->expectExceptionMessage('event compose a router');
         $plugin->fromRoute('home');
     }
 
@@ -83,13 +89,15 @@ class UrlTest extends TestCase
         $event      = new MvcEvent();
         $controller->setEvent($event);
         $plugin = $controller->plugin('url');
-        $this->setExpectedException('Zend\Mvc\Exception\DomainException', 'event compose a router');
+        $this->expectException(DomainException::class);
+        $this->expectExceptionMessage('event compose a router');
         $plugin->fromRoute('home');
     }
 
     public function testPluginWithoutRouteMatchesInEventRaisesExceptionWhenNoRouteProvided()
     {
-        $this->setExpectedException('Zend\Mvc\Exception\RuntimeException', 'RouteMatch');
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('RouteMatch');
         $url = $this->plugin->fromRoute();
     }
 
@@ -97,7 +105,8 @@ class UrlTest extends TestCase
     {
         $event = $this->controller->getEvent();
         $event->setRouteMatch(new RouteMatch([]));
-        $this->setExpectedException('Zend\Mvc\Exception\RuntimeException', 'matched');
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('matched');
         $url = $this->plugin->fromRoute();
     }
 
@@ -115,7 +124,7 @@ class UrlTest extends TestCase
         $this->router->addRoute('replace', SegmentRoute::factory([
             'route'    => '/:controller/:action',
             'defaults' => [
-                'controller' => 'ZendTest\Mvc\Controller\TestAsset\SampleController',
+                'controller' => SampleController::class,
             ],
         ]));
         $routeMatch = new RouteMatch([
@@ -132,7 +141,7 @@ class UrlTest extends TestCase
         $this->router->addRoute('replace', SegmentRoute::factory([
             'route'    => '/:controller/:action',
             'defaults' => [
-                'controller' => 'ZendTest\Mvc\Controller\TestAsset\SampleController',
+                'controller' => SampleController::class,
             ],
         ]));
         $routeMatch = new RouteMatch([
@@ -144,11 +153,14 @@ class UrlTest extends TestCase
         $this->assertEquals('/foo/bar', $url);
     }
 
+    /**
+     *
+     */
     public function testRemovesModuleRouteListenerParamsWhenReusingMatchedParameters()
     {
         $router = new TreeRouteStack;
         $router->addRoute('default', [
-            'type' => 'Zend\Router\Http\Segment',
+            'type' => Segment::class,
             'options' => [
                 'route'    => '/:controller/:action',
                 'defaults' => [
@@ -159,7 +171,7 @@ class UrlTest extends TestCase
             ],
             'child_routes' => [
                 'wildcard' => [
-                    'type'    => 'Zend\Router\Http\Wildcard',
+                    'type'    => Wildcard::class,
                     'options' => [
                         'param_delimiter'     => '=',
                         'key_value_delimiter' => '%'

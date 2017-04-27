@@ -12,4 +12,7 @@ namespace ZendTest\Mvc\Controller\TestAsset;
 use Zend\Mvc\Controller\AbstractRestfulController;
 
 class RestfulMethodNotAllowedTestController extends AbstractRestfulController
-{}
+{
+
+
+}

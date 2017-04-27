@@ -10,7 +10,7 @@
 namespace ZendTest\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\Mvc\Service\ViewManagerFactory;
 use Zend\Mvc\View\Http\ViewManager as HttpViewManager;
 
