@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 2.7.12 - 2017-04-27
+
+### Added
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#235](https://github.com/zendframework/zend-mvc/pull/235) fixes
+  `FormAnnotationBuilderFactory::injectFactory()` to pass the correct
+  arguments to the plugin manager's `injectFactory()` initializer when running
+  under zend-servicemanager v2.
+
 ## 2.7.11 - 2017-04-27
 
 ### Added
