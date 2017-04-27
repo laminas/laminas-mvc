@@ -62,7 +62,7 @@ class FormAnnotationBuilderFactoryTest extends TestCase
             ->method('injectFactory')
             ->with($this->callback(function ($annotationBuilder) {
                 return $annotationBuilder instanceof AnnotationBuilder;
-            }), $serviceLocator);
+            }), $mockElementManager);
 
         $sut = new FormAnnotationBuilderFactory();
         $sut->createService($serviceLocator);

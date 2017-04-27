@@ -96,7 +96,7 @@ class FormAnnotationBuilderFactory implements FactoryInterface
         AnnotationBuilder $annotationBuilder
     ) {
         if ($formElementManager instanceof FormElementManagerV2Polyfill) {
-            $formElementManager->injectFactory($annotationBuilder, $container);
+            $formElementManager->injectFactory($annotationBuilder, $formElementManager);
             return;
         }
 
