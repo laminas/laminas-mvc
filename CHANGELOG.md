@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 2.7.11 - 2017-04-27
+
+### Added
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#223](https://github.com/zendframework/zend-mvc/pull/223) fixes how the
+  `FormAnnotationBuilderFactory` injects the builder with the
+  `FormElementManager` service such that it will work with the latest zend-form
+  releases.
+
 ## 2.7.10 - 2016-06-13
 
 ### Added

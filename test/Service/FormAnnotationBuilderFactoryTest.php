@@ -10,23 +10,17 @@
 namespace ZendTest\Mvc\Service;
 
 use PHPUnit_Framework_TestCase as TestCase;
+use Zend\EventManager\EventManagerInterface;
+use Zend\Form\Annotation\AnnotationBuilder;
 use Zend\Mvc\Service\FormAnnotationBuilderFactory;
 use Zend\ServiceManager\ServiceManager;
 
 class FormAnnotationBuilderFactoryTest extends TestCase
 {
-    public function setUp()
-    {
-        $this->markTestIncomplete('Re-enable once zend-form is migrated to zend-servicemanager v3');
-    }
-
     public function testCreateService()
     {
-        $mockElementManager = $this->getMock('Zend\Form\FormElementManager');
-
         $serviceLocator = new ServiceManager();
-        $serviceLocator->setService('FormElementManager', $mockElementManager);
-        $serviceLocator->setService('config', []);
+        $this->prepareServiceLocator($serviceLocator, []);
 
         $sut = new FormAnnotationBuilderFactory();
 
@@ -35,17 +29,90 @@ class FormAnnotationBuilderFactoryTest extends TestCase
 
     public function testCreateServiceSetsPreserveDefinedOrder()
     {
-        $mockElementManager = $this->getMock('Zend\Form\FormElementManager');
-
         $serviceLocator = new ServiceManager();
-        $serviceLocator->setService('FormElementManager', $mockElementManager);
         $config = ['form_annotation_builder' => ['preserve_defined_order' => true]];
-        $serviceLocator->setService('config', $config);
+        $this->prepareServiceLocator($serviceLocator, $config);
 
         $sut = new FormAnnotationBuilderFactory();
 
         $service = $sut->createService($serviceLocator);
 
         $this->assertTrue($service->preserveDefinedOrder(), 'Preserve defined order was not set correctly');
+    }
+
+
+    public function testInjectFactoryInCorrectOrderV2()
+    {
+        $serviceLocator = new ServiceManager();
+        if (method_exists($serviceLocator, 'build')) {
+            $this->markTestSkipped('`zendframework/zend-servicemanager` v2 needed, skipped test');
+        }
+
+        $this->prepareServiceLocator($serviceLocator, []);
+        $serviceLocator->setAllowOverride(true);
+
+        $mockElementManager = $this
+            ->getMockBuilder('Zend\Form\FormElementManager\FormElementManagerV2Polyfill')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $serviceLocator->setService('FormElementManager', $mockElementManager);
+
+        $mockElementManager
+            ->expects($this->once())
+            ->method('injectFactory')
+            ->with($this->callback(function ($annotationBuilder) {
+                return $annotationBuilder instanceof AnnotationBuilder;
+            }), $serviceLocator);
+
+        $sut = new FormAnnotationBuilderFactory();
+        $sut->createService($serviceLocator);
+    }
+
+    public function testInjectFactoryInCorrectOrderV3()
+    {
+        $serviceLocator = new ServiceManager();
+        if (!method_exists($serviceLocator, 'build')) {
+            $this->markTestSkipped('`zendframework/zend-servicemanager` v3 needed, skipped test');
+        }
+        $this->prepareServiceLocator($serviceLocator, []);
+        $serviceLocator->setAllowOverride(true);
+
+        $mockElementManager = $this
+            ->getMockBuilder('Zend\Form\FormElementManager\FormElementManagerV3Polyfill')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $serviceLocator->setService('FormElementManager', $mockElementManager);
+
+        $mockElementManager
+            ->expects($this->once())
+            ->method('injectFactory')
+            ->with($serviceLocator, $this->callback(function ($annotationBuilder) {
+                return $annotationBuilder instanceof AnnotationBuilder;
+            }));
+
+        $sut = new FormAnnotationBuilderFactory();
+        $sut->__invoke($serviceLocator, AnnotationBuilder::class);
+    }
+
+    /**
+     * @param ServiceManager $manager
+     * @param array          $config
+     *
+     * @return void
+     */
+    private function prepareServiceLocator(ServiceManager $manager, array $config)
+    {
+        $mockElementManager = $this
+            ->getMockBuilder('Zend\Form\FormElementManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $mockEventManager = $this
+            ->getMockBuilder(EventManagerInterface::class)
+            ->getMock();
+
+        $manager->setService('config', $config);
+        $manager->setService('FormElementManager', $mockElementManager);
+        $manager->setService('EventManager', $mockEventManager);
     }
 }
