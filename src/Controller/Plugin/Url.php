@@ -36,12 +36,14 @@ class Url extends AbstractPlugin
     public function fromRoute($route = null, $params = [], $options = [], $reuseMatchedParams = false)
     {
         $controller = $this->getController();
-        if (!$controller instanceof InjectApplicationEventInterface) {
-            throw new Exception\DomainException('Url plugin requires a controller that implements InjectApplicationEventInterface');
+        if (! $controller instanceof InjectApplicationEventInterface) {
+            throw new Exception\DomainException(
+                'Url plugin requires a controller that implements InjectApplicationEventInterface'
+            );
         }
 
-        if (!is_array($params)) {
-            if (!$params instanceof Traversable) {
+        if (! is_array($params)) {
+            if (! $params instanceof Traversable) {
                 throw new Exception\InvalidArgumentException(
                     'Params is expected to be an array or a Traversable object'
                 );
@@ -59,8 +61,10 @@ class Url extends AbstractPlugin
             $router  = $event->getParam('router', false);
             $matches = $event->getParam('route-match', false);
         }
-        if (!$router instanceof RouteStackInterface) {
-            throw new Exception\DomainException('Url plugin requires that controller event compose a router; none found');
+        if (! $router instanceof RouteStackInterface) {
+            throw new Exception\DomainException(
+                'Url plugin requires that controller event compose a router; none found'
+            );
         }
 
         if (3 == func_num_args() && is_bool($options)) {
@@ -69,7 +73,7 @@ class Url extends AbstractPlugin
         }
 
         if ($route === null) {
-            if (!$matches) {
+            if (! $matches) {
                 throw new Exception\RuntimeException('No RouteMatch instance present');
             }
 

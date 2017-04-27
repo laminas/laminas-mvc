@@ -9,7 +9,7 @@
 
 namespace ZendTest\Mvc\View;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\Test\EventListenerIntrospectionTrait;
 use Zend\Mvc\ModuleRouteListener;
@@ -352,7 +352,10 @@ class InjectTemplateListenerTest extends TestCase
         $this->routeMatch->setParam('prefer_route_match_controller', true);
         $this->routeMatch->setParam('controller', 'Some\Other\Service\Namespace\Controller\Sample');
 
-        $preferRouteMatchControllerRouteMatchConfig = $this->routeMatch->getParam('prefer_route_match_controller', false);
+        $preferRouteMatchControllerRouteMatchConfig = $this->routeMatch->getParam(
+            'prefer_route_match_controller',
+            false
+        );
         $this->listener->setPreferRouteMatchController($preferRouteMatchControllerRouteMatchConfig);
         $this->listener->setControllerMap($controllerMap);
 

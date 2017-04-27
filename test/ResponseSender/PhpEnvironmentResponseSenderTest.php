@@ -9,14 +9,17 @@
 
 namespace ZendTest\Mvc\ResponseSender;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
+use Zend\Http\PhpEnvironment\Response;
 use Zend\Mvc\ResponseSender\PhpEnvironmentResponseSender;
+use Zend\Mvc\ResponseSender\SendResponseEvent;
+use Zend\Stdlib\ResponseInterface;
 
 class PhpEnvironmentResponseSenderTest extends TestCase
 {
     public function testSendResponseIgnoresInvalidResponseTypes()
     {
-        $mockResponse = $this->getMockForAbstractClass('Zend\Stdlib\ResponseInterface');
+        $mockResponse = $this->getMockForAbstractClass(ResponseInterface::class);
         $mockSendResponseEvent = $this->getSendResponseEventMock();
         $mockSendResponseEvent->expects($this->any())->method('getResponse')->will($this->returnValue($mockResponse));
         $responseSender = new PhpEnvironmentResponseSender();
@@ -28,7 +31,7 @@ class PhpEnvironmentResponseSenderTest extends TestCase
 
     public function testSendResponseTwoTimesPrintsResponseOnlyOnce()
     {
-        $mockResponse = $this->getMock('Zend\Http\PhpEnvironment\Response');
+        $mockResponse = $this->createMock(Response::class);
         $mockResponse->expects($this->any())->method('getContent')->will($this->returnValue('body'));
         $mockSendResponseEvent = $this->getSendResponseEventMock();
         $mockSendResponseEvent->expects($this->any())->method('getResponse')->will($this->returnValue($mockResponse));
@@ -48,10 +51,10 @@ class PhpEnvironmentResponseSenderTest extends TestCase
     protected function getSendResponseEventMock()
     {
         $returnValue = false;
-        $mockSendResponseEvent = $this->getMock(
-            'Zend\Mvc\ResponseSender\SendResponseEvent',
-            ['getResponse', 'contentSent', 'setContentSent']
-        );
+        $mockSendResponseEvent = $this->getMockBuilder(SendResponseEvent::class)
+            ->setMethods(['getResponse', 'contentSent', 'setContentSent'])
+            ->getMock();
+
         $mockSendResponseEvent->expects($this->any())
             ->method('contentSent')
             ->will($this->returnCallback(function () use (&$returnValue) {
@@ -60,7 +63,7 @@ class PhpEnvironmentResponseSenderTest extends TestCase
                     return false;
                 }
                 return true;
-        }));
+            }));
         return $mockSendResponseEvent;
     }
 }

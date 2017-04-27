@@ -9,8 +9,9 @@
 
 namespace ZendTest\Mvc\Controller\Plugin;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\Mvc\Controller\Plugin\Layout as LayoutPlugin;
+use Zend\Mvc\Exception\DomainException;
 use Zend\Mvc\MvcEvent;
 use ZendTest\Mvc\Controller\TestAsset\SampleController;
 use Zend\View\Model\ViewModel;
@@ -29,7 +30,8 @@ class LayoutTest extends TestCase
     public function testPluginWithoutControllerRaisesDomainException()
     {
         $plugin = new LayoutPlugin();
-        $this->setExpectedException('Zend\Mvc\Exception\DomainException', 'requires a controller');
+        $this->expectException(DomainException::class);
+        $this->expectExceptionMessage('requires a controller');
         $plugin->setTemplate('home');
     }
 

@@ -9,10 +9,9 @@
 
 namespace ZendTest\Mvc\Application;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\Mvc\Application;
 use Zend\Mvc\MvcEvent;
-use ZendTest\Mvc\TestAsset;
 
 class InitializationIntegrationTest extends TestCase
 {

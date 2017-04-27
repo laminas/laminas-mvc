@@ -58,7 +58,7 @@ class SendResponseListener extends AbstractListenerAggregate implements
      */
     public function getEventManager()
     {
-        if (!$this->eventManager instanceof EventManagerInterface) {
+        if (! $this->eventManager instanceof EventManagerInterface) {
             $this->setEventManager(new EventManager());
         }
         return $this->eventManager;
@@ -85,7 +85,7 @@ class SendResponseListener extends AbstractListenerAggregate implements
     public function sendResponse(MvcEvent $e)
     {
         $response = $e->getResponse();
-        if (!$response instanceof Response) {
+        if (! $response instanceof Response) {
             return; // there is no response to send
         }
         $event = $this->getEvent();
@@ -101,7 +101,7 @@ class SendResponseListener extends AbstractListenerAggregate implements
      */
     public function getEvent()
     {
-        if (!$this->event instanceof SendResponseEvent) {
+        if (! $this->event instanceof SendResponseEvent) {
             $this->setEvent(new SendResponseEvent());
         }
         return $this->event;

@@ -43,19 +43,19 @@ class ModuleRouteListener extends AbstractListenerAggregate
     public function onRoute(MvcEvent $e)
     {
         $matches = $e->getRouteMatch();
-        if (!$matches instanceof RouteMatch) {
+        if (! $matches instanceof RouteMatch) {
             // Can't do anything without a route match
             return;
         }
 
         $module = $matches->getParam(self::MODULE_NAMESPACE, false);
-        if (!$module) {
+        if (! $module) {
             // No module namespace found; nothing to do
             return;
         }
 
         $controller = $matches->getParam('controller', false);
-        if (!$controller) {
+        if (! $controller) {
             // no controller matched, nothing to do
             return;
         }

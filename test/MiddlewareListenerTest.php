@@ -10,7 +10,7 @@
 namespace ZendTest\Mvc;
 
 use Interop\Container\ContainerInterface;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\EventManager\EventManager;
@@ -83,7 +83,7 @@ class MiddlewareListenerTest extends TestCase
         $return   = $listener->onDispatch($event);
         $this->assertInstanceOf(Response::class, $return);
 
-        $this->assertInstanceOf('Zend\Http\Response', $return);
+        $this->assertInstanceOf(Response::class, $return);
         $this->assertSame(200, $return->getStatusCode());
         $this->assertEquals('Test!', $return->getBody());
     }
@@ -182,7 +182,7 @@ class MiddlewareListenerTest extends TestCase
         $return   = $listener->onDispatch($event);
         $this->assertInstanceOf(Response::class, $return);
 
-        $this->assertInstanceOf('Zend\Http\Response', $return);
+        $this->assertInstanceOf(Response::class, $return);
         $this->assertSame(200, $return->getStatusCode());
         $this->assertEquals(TestAsset\Middleware::class, $return->getBody());
     }

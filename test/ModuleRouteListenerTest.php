@@ -9,13 +9,14 @@
 
 namespace ZendTest\Mvc;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\EventManager\EventManager;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\RouteListener;
 use Zend\Router;
+use Zend\Router\RouteMatch;
 
 class ModuleRouteListenerTest extends TestCase
 {
@@ -51,7 +52,7 @@ class ModuleRouteListenerTest extends TestCase
         $this->events->triggerEvent($event);
 
         $matches = $event->getRouteMatch();
-        $this->assertInstanceOf('Zend\Router\RouteMatch', $matches);
+        $this->assertInstanceOf(RouteMatch::class, $matches);
         $this->assertEquals('Foo\Index', $matches->getParam('controller'));
         $this->assertEquals('Index', $matches->getParam(ModuleRouteListener::ORIGINAL_CONTROLLER));
     }
@@ -75,7 +76,7 @@ class ModuleRouteListenerTest extends TestCase
         $this->events->triggerEvent($event);
 
         $matches = $event->getRouteMatch();
-        $this->assertInstanceOf('Zend\Router\RouteMatch', $matches);
+        $this->assertInstanceOf(RouteMatch::class, $matches);
         $this->assertEquals('Index', $matches->getParam('controller'));
     }
 
@@ -102,7 +103,7 @@ class ModuleRouteListenerTest extends TestCase
         $this->events->triggerEvent($event);
 
         $matches = $event->getRouteMatch();
-        $this->assertInstanceOf('Zend\Router\RouteMatch', $matches);
+        $this->assertInstanceOf(RouteMatch::class, $matches);
         $this->assertEquals('Foo\Index', $matches->getParam('controller'));
         $this->assertEquals('Index', $matches->getParam(ModuleRouteListener::ORIGINAL_CONTROLLER));
     }
@@ -131,7 +132,7 @@ class ModuleRouteListenerTest extends TestCase
         $this->events->triggerEvent($event);
 
         $matches = $event->getRouteMatch();
-        $this->assertInstanceOf('Zend\Router\RouteMatch', $matches);
+        $this->assertInstanceOf(RouteMatch::class, $matches);
         $this->assertEquals('Foo\SomeIndex', $matches->getParam('controller'));
         $this->assertEquals('some-index', $matches->getParam(ModuleRouteListener::ORIGINAL_CONTROLLER));
     }

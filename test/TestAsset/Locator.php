@@ -17,11 +17,11 @@ use Zend\ServiceManager\Exception\ServiceNotFoundException;
  */
 class Locator implements ServiceLocatorInterface
 {
-    protected $services = array();
+    protected $services = [];
 
     public function get($name)
     {
-        if (!isset($this->services[$name])) {
+        if (! isset($this->services[$name])) {
             throw new ServiceNotFoundException();
         }
 
@@ -35,7 +35,7 @@ class Locator implements ServiceLocatorInterface
 
     public function build($name, array $options = null)
     {
-        if (!isset($this->services[$name])) {
+        if (! isset($this->services[$name])) {
             throw new ServiceNotFoundException();
         }
 

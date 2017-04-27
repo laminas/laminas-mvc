@@ -51,12 +51,12 @@ class InjectTemplateListener extends AbstractListenerAggregate
     public function injectTemplate(MvcEvent $e)
     {
         $model = $e->getResult();
-        if (!$model instanceof ViewModel) {
+        if (! $model instanceof ViewModel) {
             return;
         }
 
         $template = $model->getTemplate();
-        if (!empty($template)) {
+        if (! empty($template)) {
             return;
         }
 
@@ -71,7 +71,7 @@ class InjectTemplateListener extends AbstractListenerAggregate
         }
 
         $routeMatchController = $routeMatch->getParam('controller', '');
-        if (!$controller || ($this->preferRouteMatchController && $routeMatchController)) {
+        if (! $controller || ($this->preferRouteMatchController && $routeMatchController)) {
             $controller = $routeMatchController;
         }
 
@@ -111,7 +111,7 @@ class InjectTemplateListener extends AbstractListenerAggregate
                 // merging have no feature to remove entries
                 false == $replacement
                 // Match full class or full namespace
-                || !($controller === $namespace || strpos($controller, $namespace . '\\') === 0)
+                || ! ($controller === $namespace || strpos($controller, $namespace . '\\') === 0)
             ) {
                 continue;
             }

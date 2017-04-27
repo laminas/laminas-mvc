@@ -9,9 +9,10 @@
 
 namespace ZendTest\Mvc\View;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\EventManager\Event;
 use Zend\EventManager\EventManager;
+use Zend\EventManager\SharedEventManager;
 use Zend\EventManager\Test\EventListenerIntrospectionTrait;
 use Zend\Http\Request;
 use Zend\Http\Response;
@@ -138,7 +139,7 @@ class DefaultRendereringStrategyTest extends TestCase
         $services = new ServiceManager();
         (new Config([
             'invokables' => [
-                'SharedEventManager' =>  'Zend\EventManager\SharedEventManager',
+                'SharedEventManager' => SharedEventManager::class,
             ],
             'factories' => [
                 'EventManager' => function ($services) {

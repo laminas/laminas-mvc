@@ -15,9 +15,9 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class MiddlewareAbstractFactory implements AbstractFactoryInterface
 {
-    public $classmap = array(
-        'test' => 'ZendTest\Mvc\TestAsset\Middleware',
-    );
+    public $classmap = [
+        'test' => Middleware::class,
+    ];
 
     public function canCreate(ContainerInterface $container, $name)
     {

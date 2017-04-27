@@ -9,7 +9,7 @@
 
 namespace ZendTest\Mvc\Application;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\Http\PhpEnvironment\Response;
 use Zend\Mvc\MvcEvent;
 

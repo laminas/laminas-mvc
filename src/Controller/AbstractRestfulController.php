@@ -482,7 +482,7 @@ abstract class AbstractRestfulController extends AbstractController
     {
         /** @var $headerContentType \Zend\Http\Header\ContentType */
         $headerContentType = $request->getHeaders()->get('content-type');
-        if (!$headerContentType) {
+        if (! $headerContentType) {
             return false;
         }
 
@@ -531,7 +531,7 @@ abstract class AbstractRestfulController extends AbstractController
      */
     public function addHttpMethodHandler($method, /* Callable */ $handler)
     {
-        if (!is_callable($handler)) {
+        if (! is_callable($handler)) {
             throw new Exception\InvalidArgumentException(sprintf(
                 'Invalid HTTP method handler: must be a callable; received "%s"',
                 (is_object($handler) ? get_class($handler) : gettype($handler))
@@ -594,7 +594,7 @@ abstract class AbstractRestfulController extends AbstractController
         parse_str($content, $parsedParams);
 
         // If parse_str fails to decode, or we have a single element with empty value
-        if (!is_array($parsedParams) || empty($parsedParams)
+        if (! is_array($parsedParams) || empty($parsedParams)
             || (1 == count($parsedParams) && '' === reset($parsedParams))
         ) {
             return $content;

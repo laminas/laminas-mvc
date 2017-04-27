@@ -9,7 +9,7 @@
 
 namespace ZendTest\Mvc\Controller\Plugin;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\Http\Header\GenericHeader;
 use Zend\Http\Request;
 use Zend\Http\Response;

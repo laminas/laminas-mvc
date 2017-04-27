@@ -64,12 +64,14 @@ class Layout extends AbstractPlugin
         }
 
         $controller = $this->getController();
-        if (!$controller instanceof InjectApplicationEventInterface) {
-            throw new Exception\DomainException('Layout plugin requires a controller that implements InjectApplicationEventInterface');
+        if (! $controller instanceof InjectApplicationEventInterface) {
+            throw new Exception\DomainException(
+                'Layout plugin requires a controller that implements InjectApplicationEventInterface'
+            );
         }
 
         $event = $controller->getEvent();
-        if (!$event instanceof MvcEvent) {
+        if (! $event instanceof MvcEvent) {
             $params = $event->getParams();
             $event  = new MvcEvent();
             $event->setParams($params);
@@ -89,7 +91,7 @@ class Layout extends AbstractPlugin
     {
         $event     = $this->getEvent();
         $viewModel = $event->getViewModel();
-        if (!$viewModel instanceof Model) {
+        if (! $viewModel instanceof Model) {
             throw new Exception\DomainException('Layout plugin requires that event view model is populated');
         }
         return $viewModel;

@@ -9,13 +9,14 @@
 
 namespace ZendTest\Mvc\View;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\Test\EventListenerIntrospectionTrait;
 use Zend\Http\Response;
 use Zend\Mvc\Application;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\View\Http\ExceptionStrategy;
+use Zend\View\Model\ViewModel;
 
 class ExceptionStrategyTest extends TestCase
 {
@@ -67,6 +68,8 @@ class ExceptionStrategyTest extends TestCase
                 $this->assertNotEquals('error', $model->getTemplate());
             }
         }
+
+        $this->addToAssertionCount(1);
     }
 
     public function testCatchesApplicationExceptions()
@@ -81,7 +84,7 @@ class ExceptionStrategyTest extends TestCase
         $this->assertTrue($response->isServerError());
 
         $model = $event->getResult();
-        $this->assertInstanceOf('Zend\View\Model\ViewModel', $model);
+        $this->assertInstanceOf(ViewModel::class, $model);
         $this->assertEquals($this->strategy->getExceptionTemplate(), $model->getTemplate());
 
         $variables = $model->getVariables();
@@ -121,6 +124,8 @@ class ExceptionStrategyTest extends TestCase
             $this->assertArrayNotHasKey('display_exceptions', $variables);
             $this->assertNotEquals('error', $model->getTemplate());
         }
+
+        $this->addToAssertionCount(1);
     }
 
     public function testDoesNothingIfEventResultIsAResponse()
