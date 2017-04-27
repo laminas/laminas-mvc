@@ -6,7 +6,8 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- Nothing.
+- [#231](https://github.com/zendframework/zend-mvc/pull/231) adds a
+  `composer.json` suggestino for zendframework/zend-paginator.
 
 ### Deprecated
 
