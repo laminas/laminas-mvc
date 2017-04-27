@@ -10,10 +10,12 @@
 namespace ZendTest\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
+use PHPUnit\Framework\TestCase;
 use Zend\Mvc\Service\ViewPrefixPathStackResolverFactory;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\View\Resolver\PrefixPathStackResolver;
 
-class ViewPrefixPathStackResolverFactoryTest extends \PHPUnit_Framework_TestCase
+class ViewPrefixPathStackResolverFactoryTest extends TestCase
 {
     public function testCreateService()
     {
@@ -31,6 +33,6 @@ class ViewPrefixPathStackResolverFactoryTest extends \PHPUnit_Framework_TestCase
         $factory  = new ViewPrefixPathStackResolverFactory();
         $resolver = $factory($serviceLocator->reveal(), 'ViewPrefixPathStackResolver');
 
-        $this->assertInstanceOf('Zend\View\Resolver\PrefixPathStackResolver', $resolver);
+        $this->assertInstanceOf(PrefixPathStackResolver::class, $resolver);
     }
 }

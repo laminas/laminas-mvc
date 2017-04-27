@@ -9,7 +9,8 @@
 
 namespace ZendTest\Mvc;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
+use Zend\EventManager\EventManagerInterface;
 use Zend\Http\Request as HttpRequest;
 use Zend\Http\Response as HttpResponse;
 use Zend\Mvc\HttpMethodListener;
@@ -46,7 +47,7 @@ class HttpMethodListenerTest extends TestCase
 
     public function testAttachesToRouteEvent()
     {
-        $eventManager = $this->getMock('Zend\EventManager\EventManagerInterface');
+        $eventManager = $this->createMock(EventManagerInterface::class);
         $eventManager->expects($this->atLeastOnce())
                      ->method('attach')
                      ->with(MvcEvent::EVENT_ROUTE);
@@ -58,7 +59,7 @@ class HttpMethodListenerTest extends TestCase
     {
         $this->listener->setEnabled(false);
 
-        $eventManager = $this->getMock('Zend\EventManager\EventManagerInterface');
+        $eventManager = $this->createMock(EventManagerInterface::class);
         $eventManager->expects($this->never())
                      ->method('attach');
 
@@ -101,7 +102,7 @@ class HttpMethodListenerTest extends TestCase
 
         $response = $this->listener->onRoute($event);
 
-        $this->assertInstanceOf('Zend\Http\Response', $response);
+        $this->assertInstanceOf(HttpResponse::class, $response);
         $this->assertSame(405, $response->getStatusCode());
     }
 }

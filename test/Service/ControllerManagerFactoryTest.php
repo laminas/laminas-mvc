@@ -9,16 +9,18 @@
 
 namespace ZendTest\Mvc\Service;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\EventManager\SharedEventManager;
 use Zend\Mvc\Service\ControllerManagerFactory;
 use Zend\Mvc\Service\ControllerPluginManagerFactory;
 use Zend\Mvc\Service\EventManagerFactory;
 use Zend\ServiceManager\Config;
+use Zend\ServiceManager\Exception;
 use Zend\ServiceManager\Factory\InvokableFactory;
 use Zend\ServiceManager\ServiceManager;
 use ZendTest\Mvc\Controller\Plugin\TestAsset\SamplePlugin;
 use ZendTest\Mvc\Controller\TestAsset\SampleController;
+use ZendTest\Mvc\Service\TestAsset\InvalidDispatchableClass;
 
 class ControllerManagerFactoryTest extends TestCase
 {
@@ -58,10 +60,10 @@ class ControllerManagerFactoryTest extends TestCase
         $loader = $this->services->get('ControllerManager');
 
         // Ensure the class exists and can be autoloaded
-        $this->assertTrue(class_exists('ZendTest\Mvc\Service\TestAsset\InvalidDispatchableClass'));
+        $this->assertTrue(class_exists(InvalidDispatchableClass::class));
 
         try {
-            $loader->get('ZendTest\Mvc\Service\TestAsset\InvalidDispatchableClass');
+            $loader->get(InvalidDispatchableClass::class);
             $this->fail('Retrieving the invalid dispatchable should fail');
         } catch (\Exception $e) {
             do {
@@ -78,7 +80,7 @@ class ControllerManagerFactoryTest extends TestCase
         ]])))->configureServiceManager($services);
         $loader = $services->get('ControllerManager');
 
-        $this->setExpectedException('Zend\ServiceManager\Exception\ExceptionInterface');
+        $this->expectException(Exception\ExceptionInterface::class);
         $loader->get('foo');
     }
 

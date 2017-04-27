@@ -9,15 +9,16 @@
 
 namespace ZendTest\Mvc\ResponseSender;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\Mvc\ResponseSender\SendResponseEvent;
+use Zend\Stdlib\ResponseInterface;
 
 class SendResponseEventTest extends TestCase
 {
     public function testContentSentAndHeadersSent()
     {
-        $mockResponse = $this->getMockForAbstractClass('Zend\Stdlib\ResponseInterface');
-        $mockResponse2 = $this->getMockForAbstractClass('Zend\Stdlib\ResponseInterface');
+        $mockResponse = $this->getMockForAbstractClass(ResponseInterface::class);
+        $mockResponse2 = $this->getMockForAbstractClass(ResponseInterface::class);
         $event = new SendResponseEvent();
         $event->setResponse($mockResponse);
         $this->assertFalse($event->headersSent());

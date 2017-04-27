@@ -9,9 +9,11 @@
 
 namespace ZendTest\Mvc\Controller\Plugin;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\Http\Response;
 use Zend\Mvc\Controller\Plugin\Redirect as RedirectPlugin;
+use Zend\Mvc\Exception\DomainException;
+use Zend\Mvc\Exception\RuntimeException;
 use Zend\Mvc\MvcEvent;
 use Zend\Router\Http\Literal as LiteralRoute;
 use Zend\Router\Http\Segment as SegmentRoute;
@@ -29,7 +31,7 @@ class RedirectTest extends TestCase
         $router->addRoute('home', LiteralRoute::factory([
             'route'    => '/',
             'defaults' => [
-                'controller' => 'ZendTest\Mvc\Controller\TestAsset\SampleController',
+                'controller' => SampleController::class,
             ],
         ]));
         $this->router = $router;
@@ -70,7 +72,8 @@ class RedirectTest extends TestCase
     public function testPluginWithoutControllerRaisesDomainException()
     {
         $plugin = new RedirectPlugin();
-        $this->setExpectedException('Zend\Mvc\Exception\DomainException', 'requires a controller');
+        $this->expectException(DomainException::class);
+        $this->expectExceptionMessage('requires a controller');
         $plugin->toRoute('home');
     }
 
@@ -78,7 +81,8 @@ class RedirectTest extends TestCase
     {
         $controller = new SampleController();
         $plugin     = $controller->plugin('redirect');
-        $this->setExpectedException('Zend\Mvc\Exception\DomainException', 'event compose');
+        $this->expectException(DomainException::class);
+        $this->expectExceptionMessage('event compose');
         $plugin->toRoute('home');
     }
 
@@ -88,7 +92,8 @@ class RedirectTest extends TestCase
         $event      = new MvcEvent();
         $controller->setEvent($event);
         $plugin = $controller->plugin('redirect');
-        $this->setExpectedException('Zend\Mvc\Exception\DomainException', 'event compose');
+        $this->expectException(DomainException::class);
+        $this->expectExceptionMessage('event compose');
         $plugin->toRoute('home');
     }
 
@@ -99,13 +104,15 @@ class RedirectTest extends TestCase
         $event->setResponse($this->response);
         $controller->setEvent($event);
         $plugin = $controller->plugin('redirect');
-        $this->setExpectedException('Zend\Mvc\Exception\DomainException', 'event compose a router');
+        $this->expectException(DomainException::class);
+        $this->expectExceptionMessage('event compose a router');
         $plugin->toRoute('home');
     }
 
     public function testPluginWithoutRouteMatchesInEventRaisesExceptionWhenNoRouteProvided()
     {
-        $this->setExpectedException('Zend\Mvc\Exception\RuntimeException', 'RouteMatch');
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('RouteMatch');
         $url = $this->plugin->toRoute();
     }
 
@@ -125,7 +132,7 @@ class RedirectTest extends TestCase
         $this->router->addRoute('replace', SegmentRoute::factory([
             'route'    => '/:controller/:action',
             'defaults' => [
-                'controller' => 'ZendTest\Mvc\Controller\TestAsset\SampleController',
+                'controller' => SampleController::class,
             ],
         ]));
         $routeMatch = new RouteMatch([
@@ -144,7 +151,7 @@ class RedirectTest extends TestCase
         $this->router->addRoute('replace', SegmentRoute::factory([
             'route'    => '/:controller/:action',
             'defaults' => [
-                'controller' => 'ZendTest\Mvc\Controller\TestAsset\SampleController',
+                'controller' => SampleController::class,
             ],
         ]));
         $routeMatch = new RouteMatch([

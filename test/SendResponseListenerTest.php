@@ -9,9 +9,11 @@
 
 namespace ZendTest\Mvc;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
+use Zend\Mvc\MvcEvent;
 use Zend\Mvc\SendResponseListener;
 use Zend\Mvc\ResponseSender\SendResponseEvent;
+use Zend\Stdlib\ResponseInterface;
 
 class SendResponseListenerTest extends TestCase
 {
@@ -19,7 +21,7 @@ class SendResponseListenerTest extends TestCase
     {
         $listener = new SendResponseListener();
         $identifiers = $listener->getEventManager()->getIdentifiers();
-        $expected    = ['Zend\Mvc\SendResponseListener'];
+        $expected    = [SendResponseListener::class];
         $this->assertEquals($expected, array_values($identifiers));
     }
 
@@ -31,8 +33,10 @@ class SendResponseListenerTest extends TestCase
             $result['target'] = $e->getTarget();
             $result['response'] = $e->getResponse();
         }, 10000);
-        $mockResponse = $this->getMockForAbstractClass('Zend\Stdlib\ResponseInterface');
-        $mockMvcEvent = $this->getMock('Zend\Mvc\MvcEvent', $methods = ['getResponse']);
+        $mockResponse = $this->getMockForAbstractClass(ResponseInterface::class);
+        $mockMvcEvent = $this->getMockBuilder(MvcEvent::class)
+            ->setMethods(['getResponse'])
+            ->getMock();
         $mockMvcEvent->expects($this->any())->method('getResponse')->will($this->returnValue($mockResponse));
         $listener->sendResponse($mockMvcEvent);
         $expected = [

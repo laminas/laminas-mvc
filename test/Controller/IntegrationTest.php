@@ -9,7 +9,7 @@
 
 namespace ZendTest\Mvc\Controller;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
 use Zend\Mvc\Controller\ControllerManager;

@@ -10,7 +10,7 @@
 namespace ZendTest\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\Mvc\Service\ViewJsonStrategyFactory;
 use Zend\View\Renderer\JsonRenderer;
 use Zend\View\Strategy\JsonStrategy;

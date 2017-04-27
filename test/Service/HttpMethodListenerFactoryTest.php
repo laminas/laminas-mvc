@@ -10,7 +10,7 @@
 namespace ZendTest\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Zend\Mvc\Service\HttpMethodListenerFactory;
 use Zend\ServiceManager\ServiceLocatorInterface;

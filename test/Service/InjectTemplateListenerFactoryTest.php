@@ -11,8 +11,9 @@ namespace ZendTest\Mvc\Service;
 
 use ArrayObject;
 use Interop\Container\ContainerInterface;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\Mvc\Service\InjectTemplateListenerFactory;
+use Zend\Mvc\View\Http\InjectTemplateListener;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
@@ -69,7 +70,7 @@ class InjectTemplateListenerFactoryTest extends TestCase
         $factory  = new InjectTemplateListenerFactory();
         $listener = $factory($serviceLocator->reveal(), 'InjectTemplateListener');
 
-        $this->assertInstanceOf('Zend\Mvc\View\Http\InjectTemplateListener', $listener);
+        $this->assertInstanceOf(InjectTemplateListener::class, $listener);
 
         return $listener;
     }

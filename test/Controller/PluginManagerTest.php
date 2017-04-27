@@ -9,7 +9,7 @@
 
 namespace ZendTest\Mvc\Controller;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\Mvc\Controller\PluginManager;
 use Zend\ServiceManager\Factory\InvokableFactory;
 use Zend\ServiceManager\ServiceManager;
