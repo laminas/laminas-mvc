@@ -28,7 +28,7 @@ abstract class AbstractActionController extends AbstractController
     /**
      * Default action if none provided
      *
-     * @return array
+     * @return ViewModel
      */
     public function indexAction()
     {
@@ -60,7 +60,8 @@ abstract class AbstractActionController extends AbstractController
      *
      * @param  MvcEvent $e
      * @return mixed
-     * @throws Exception\DomainException
+     *
+     * @throws Exception\DomainException If no RouteMatch was found within MvcEvent.
      */
     public function onDispatch(MvcEvent $e)
     {
