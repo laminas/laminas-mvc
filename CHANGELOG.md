@@ -19,7 +19,11 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Removed
 
-- Nothing.
+- [#229](https://github.com/zendframework/zend-mvc/pull/229) removes the
+  zend-version package from the `require-dev` and `suggest` sections of
+  `composer.json`, and updates the `RouteNotFoundStrategy::getConsoleBanner()`
+  method to no longer use the version constant. Since zend-version has had no
+  real meaning since the 2.5 release, this removes ambiguity for end-users.
 
 ### Fixed
 
