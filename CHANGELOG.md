@@ -6,7 +6,12 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- Nothing.
+- [#233](https://github.com/zendframework/zend-mvc/pull/233) adds a `replace`
+  entry to the `composer.json` indicating the package replaces
+  zendframework/zend-router. This is done to prevent errors from installing both
+  zend-mvc v2 with zend-router, which could lead to subtle errors when checking
+  exceptions, locating route types, etc. Users should upgrade to zend-mvc v3 if
+  they wish to use the standalone zend-router package.
 
 ### Deprecated
 
