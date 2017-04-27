@@ -25,7 +25,6 @@ use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\Stdlib\ResponseInterface as Response;
 use Zend\Stdlib\StringUtils;
 use Zend\Text\Table;
-use Zend\Version\Version;
 use Zend\View\Model\ConsoleModel;
 
 class RouteNotFoundStrategy extends AbstractListenerAggregate
@@ -204,7 +203,7 @@ class RouteNotFoundStrategy extends AbstractListenerAggregate
          * Handle an application with no defined banners
          */
         if (!count($banners)) {
-            return sprintf("Zend Framework %s application\nUsage:\n", Version::VERSION);
+            return "Zend Framework application\nUsage:\n";
         }
 
         /*
