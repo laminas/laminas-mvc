@@ -27,7 +27,9 @@ All notable changes to this project will be documented in this file, in reverse 
 ### Added
 
 - [#231](https://github.com/zendframework/zend-mvc/pull/231) adds a
-  `composer.json` suggestino for zendframework/zend-paginator.
+  `composer.json` suggestion for zendframework/zend-paginator.
+- [#232](https://github.com/zendframework/zend-mvc/pull/232) adds a
+  `composer.json` suggestion for zendframework/zend-log.
 
 ### Deprecated
 
