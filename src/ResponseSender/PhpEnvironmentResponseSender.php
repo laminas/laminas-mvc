@@ -22,7 +22,7 @@ class PhpEnvironmentResponseSender extends HttpResponseSender
     public function __invoke(SendResponseEvent $event)
     {
         $response = $event->getResponse();
-        if (!$response instanceof Response) {
+        if (! $response instanceof Response) {
             return $this;
         }
 

@@ -15,14 +15,14 @@ use Zend\Mvc\MvcEvent;
 
 class StubBootstrapListener implements ListenerAggregateInterface
 {
-    protected $listeners = array();
+    protected $listeners = [];
 
     /**
      * @see \Zend\EventManager\ListenerAggregateInterface::attach()
      */
     public function attach(EventManagerInterface $events, $priority = 1)
     {
-        $this->listeners[] = $events->attach(MvcEvent::EVENT_BOOTSTRAP, array($this, 'onBootstrap'));
+        $this->listeners[] = $events->attach(MvcEvent::EVENT_BOOTSTRAP, [$this, 'onBootstrap']);
     }
 
     /**

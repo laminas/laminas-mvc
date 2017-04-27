@@ -293,7 +293,11 @@ class RouteNotFoundStrategyTest extends TestCase
         $events = new EventManager();
         $this->strategy->attach($events);
 
-        foreach ([MvcEvent::EVENT_DISPATCH => -90, MvcEvent::EVENT_DISPATCH_ERROR => 1] as $event => $expectedPriority) {
+        $evs = [
+            MvcEvent::EVENT_DISPATCH => -90,
+            MvcEvent::EVENT_DISPATCH_ERROR => 1
+        ];
+        foreach ($evs as $event => $expectedPriority) {
             $this->assertListenerAtPriority(
                 [$this->strategy, 'prepareNotFoundViewModel'],
                 $expectedPriority,

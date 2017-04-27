@@ -31,7 +31,7 @@ class EventManagerAwareObject implements EventManagerAwareInterface
      */
     public function getEventManager()
     {
-        if (!$this->events instanceof EventManagerInterface
+        if (! $this->events instanceof EventManagerInterface
             && static::$defaultEvents instanceof EventManagerInterface
         ) {
             $this->setEventManager(static::$defaultEvents);

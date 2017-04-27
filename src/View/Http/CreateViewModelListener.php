@@ -35,7 +35,7 @@ class CreateViewModelListener extends AbstractListenerAggregate
     public function createViewModelFromArray(MvcEvent $e)
     {
         $result = $e->getResult();
-        if (!ArrayUtils::hasStringKeys($result, true)) {
+        if (! ArrayUtils::hasStringKeys($result, true)) {
             return;
         }
 

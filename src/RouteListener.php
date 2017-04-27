@@ -54,7 +54,7 @@ class RouteListener extends AbstractListenerAggregate
 
         $target  = $event->getTarget();
         $results = $target->getEventManager()->triggerEvent($event);
-        if (!empty($results)) {
+        if (! empty($results)) {
             return $results->last();
         }
 

@@ -20,7 +20,7 @@ class AbstractResponseSenderTest extends TestCase
      */
     public function testSendHeadersTwoTimesSendsOnlyOnce()
     {
-        if (!function_exists('xdebug_get_headers')) {
+        if (! function_exists('xdebug_get_headers')) {
             $this->markTestSkipped('Xdebug extension needed, skipped test');
         }
         $headers = [
@@ -35,10 +35,10 @@ class AbstractResponseSenderTest extends TestCase
             ['getResponse']
         );
         $mockSendResponseEvent->expects(
-            $this->any())
+            $this->any()
+        )
                 ->method('getResponse')
-                ->will($this->returnValue($response)
-        );
+                ->will($this->returnValue($response));
 
         $responseSender = $this->getMockForAbstractClass(
             'Zend\Mvc\ResponseSender\AbstractResponseSender'
@@ -68,13 +68,15 @@ class AbstractResponseSenderTest extends TestCase
      */
     public function testSendHeadersSendsStatusLast()
     {
-        if (!function_exists('xdebug_get_headers')) {
+        if (! function_exists('xdebug_get_headers')) {
             $this->markTestSkipped('Xdebug extension needed, skipped test');
         }
 
         $mockResponse = $this->getMock('Zend\Http\Response');
-        $mockResponse->expects($this->once())->method('getHeaders')->will($this->returnValue(Headers::fromString('Location: example.com')));
-        $mockResponse->expects($this->once())->method('renderStatusLine')->will($this->returnValue('X-Test: HTTP/1.1 202 Accepted'));
+        $mockResponse->expects($this->once())->method('getHeaders')
+            ->will($this->returnValue(Headers::fromString('Location: example.com')));
+        $mockResponse->expects($this->once())->method('renderStatusLine')
+            ->will($this->returnValue('X-Test: HTTP/1.1 202 Accepted'));
 
         $mockSendResponseEvent = $this->getMock('Zend\Mvc\ResponseSender\SendResponseEvent', ['getResponse']);
         $mockSendResponseEvent->expects($this->any())->method('getResponse')->will($this->returnValue($mockResponse));
@@ -89,7 +91,8 @@ class AbstractResponseSenderTest extends TestCase
         $this->assertEquals(
             'X-Test: HTTP/1.1 202 Accepted',
             $sentHeaders[1],
-            'Status header is sent last to prevent header() from overwriting the ZF status code when a Location header is used'
+            'Status header is sent last to prevent header() from overwriting the ZF status code when a Location '
+            . 'header is used'
         );
     }
 }

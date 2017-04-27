@@ -352,7 +352,10 @@ class InjectTemplateListenerTest extends TestCase
         $this->routeMatch->setParam('prefer_route_match_controller', true);
         $this->routeMatch->setParam('controller', 'Some\Other\Service\Namespace\Controller\Sample');
 
-        $preferRouteMatchControllerRouteMatchConfig = $this->routeMatch->getParam('prefer_route_match_controller', false);
+        $preferRouteMatchControllerRouteMatchConfig = $this->routeMatch->getParam(
+            'prefer_route_match_controller',
+            false
+        );
         $this->listener->setPreferRouteMatchController($preferRouteMatchControllerRouteMatchConfig);
         $this->listener->setControllerMap($controllerMap);
 

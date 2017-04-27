@@ -87,17 +87,34 @@ class DispatchListener extends AbstractListenerAggregate
 
         // Query abstract controllers, too!
         if (! $controllerManager->has($controllerName)) {
-            $return = $this->marshalControllerNotFoundEvent($application::ERROR_CONTROLLER_NOT_FOUND, $controllerName, $e, $application);
+            $return = $this->marshalControllerNotFoundEvent(
+                $application::ERROR_CONTROLLER_NOT_FOUND,
+                $controllerName,
+                $e,
+                $application
+            );
             return $this->complete($return, $e);
         }
 
         try {
             $controller = $controllerManager->get($controllerName);
         } catch (Exception\InvalidControllerException $exception) {
-            $return = $this->marshalControllerNotFoundEvent($application::ERROR_CONTROLLER_INVALID, $controllerName, $e, $application, $exception);
+            $return = $this->marshalControllerNotFoundEvent(
+                $application::ERROR_CONTROLLER_INVALID,
+                $controllerName,
+                $e,
+                $application,
+                $exception
+            );
             return $this->complete($return, $e);
         } catch (InvalidServiceException $exception) {
-            $return = $this->marshalControllerNotFoundEvent($application::ERROR_CONTROLLER_INVALID, $controllerName, $e, $application, $exception);
+            $return = $this->marshalControllerNotFoundEvent(
+                $application::ERROR_CONTROLLER_INVALID,
+                $controllerName,
+                $e,
+                $application,
+                $exception
+            );
             return $this->complete($return, $e);
         } catch (\Throwable $exception) {
             $return = $this->marshalBadControllerEvent($controllerName, $e, $application, $exception);
@@ -146,8 +163,14 @@ class DispatchListener extends AbstractListenerAggregate
     {
         $error     = $e->getError();
         $exception = $e->getParam('exception');
-        if ($exception instanceof \Exception || $exception instanceof \Throwable) {  // @TODO clean up once PHP 7 requirement is enforced
-            zend_monitor_custom_event_ex($error, $exception->getMessage(), 'Zend Framework Exception', ['code' => $exception->getCode(), 'trace' => $exception->getTraceAsString()]);
+        // @TODO clean up once PHP 7 requirement is enforced
+        if ($exception instanceof \Exception || $exception instanceof \Throwable) {
+            zend_monitor_custom_event_ex(
+                $error,
+                $exception->getMessage(),
+                'Zend Framework Exception',
+                ['code' => $exception->getCode(), 'trace' => $exception->getTraceAsString()]
+            );
         }
     }
 
@@ -160,7 +183,7 @@ class DispatchListener extends AbstractListenerAggregate
      */
     protected function complete($return, MvcEvent $event)
     {
-        if (!is_object($return)) {
+        if (! is_object($return)) {
             if (ArrayUtils::hasStringKeys($return)) {
                 $return = new ArrayObject($return, ArrayObject::ARRAY_AS_PROPS);
             }

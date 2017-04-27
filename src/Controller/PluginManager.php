@@ -132,15 +132,15 @@ class PluginManager extends AbstractPluginManager
      */
     public function injectController($plugin)
     {
-        if (!is_object($plugin)) {
+        if (! is_object($plugin)) {
             return;
         }
-        if (!method_exists($plugin, 'setController')) {
+        if (! method_exists($plugin, 'setController')) {
             return;
         }
 
         $controller = $this->getController();
-        if (!$controller instanceof DispatchableInterface) {
+        if (! $controller instanceof DispatchableInterface) {
             return;
         }
 
