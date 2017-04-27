@@ -52,7 +52,7 @@ abstract class AbstractActionController extends AbstractController
         if ($response instanceof HttpResponse) {
             return $this->createHttpNotFoundModel($response);
         }
-        return $this->createConsoleNotFoundModel();
+        return $this->createConsoleNotFoundModel($response);
     }
 
     /**
@@ -86,5 +86,27 @@ abstract class AbstractActionController extends AbstractController
         $e->setResult($actionResponse);
 
         return $actionResponse;
+    }
+
+    /**
+     * @deprecated please use the {@see \Zend\Mvc\Controller\Plugin\CreateHttpNotFoundModel} plugin instead: this
+     *             method will be removed in release 2.5 or later.
+     *
+     * {@inheritDoc}
+     */
+    protected function createHttpNotFoundModel(HttpResponse $response)
+    {
+        return $this->__call('createHttpNotFoundModel', [$response]);
+    }
+
+    /**
+     * @deprecated please use the {@see \Zend\Mvc\Controller\Plugin\CreateConsoleNotFoundModel} plugin instead: this
+     *             method will be removed in release 2.5 or later.
+     *
+     * {@inheritDoc}
+     */
+    protected function createConsoleNotFoundModel($response)
+    {
+        return $this->__call('createConsoleNotFoundModel', [$response]);
     }
 }
