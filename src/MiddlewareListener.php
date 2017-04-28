@@ -10,6 +10,7 @@
 namespace Zend\Mvc;
 
 use Interop\Container\ContainerInterface;
+use Interop\Http\ServerMiddleware\MiddlewareInterface;
 use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface as PsrServerRequestInterface;
@@ -143,7 +144,7 @@ class MiddlewareListener extends AbstractListenerAggregate
             if (is_string($middlewareToBePiped) && $serviceLocator->has($middlewareToBePiped)) {
                 $middlewareToBePiped = $serviceLocator->get($middlewareToBePiped);
             }
-            if (! is_callable($middlewareToBePiped)) {
+            if (! $middlewareToBePiped instanceof MiddlewareInterface && ! is_callable($middlewareToBePiped)) {
                 throw MiddlewareNotCallableException::fromMiddlewareName($middlewareName);
             }
 

@@ -10,9 +10,12 @@
 namespace ZendTest\Mvc;
 
 use Interop\Container\ContainerInterface;
+use Interop\Http\ServerMiddleware\DelegateInterface;
+use Interop\Http\ServerMiddleware\MiddlewareInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Zend\Diactoros\Response\HtmlResponse;
 use Zend\EventManager\EventManager;
 use Zend\Http\Request;
 use Zend\Http\Response;
@@ -89,6 +92,38 @@ class MiddlewareListenerTest extends TestCase
         $this->assertEquals('Test!', $return->getBody());
     }
 
+    public function testSuccessfullyDispatchesHttpInteropMiddleware()
+    {
+        $expectedOutput = uniqid('expectedOutput', true);
+
+        $event = $this->createMvcEvent('path', new class($expectedOutput) implements MiddlewareInterface {
+            private $expectedOutput;
+
+            public function __construct($expectedOutput)
+            {
+                $this->expectedOutput = $expectedOutput;
+            }
+
+            public function process(ServerRequestInterface $request, DelegateInterface $delegate)
+            {
+                return new HtmlResponse($this->expectedOutput);
+            }
+        });
+        $application = $event->getApplication();
+
+        $application->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) {
+            $this->fail(sprintf('dispatch.error triggered when it should not be: %s', var_export($e->getError(), 1)));
+        });
+
+        $listener = new MiddlewareListener();
+        $return   = $listener->onDispatch($event);
+        $this->assertInstanceOf(Response::class, $return);
+
+        $this->assertInstanceOf(Response::class, $return);
+        $this->assertSame(200, $return->getStatusCode());
+        $this->assertEquals($expectedOutput, $return->getBody());
+    }
+
     public function testMatchedRouteParamsAreInjectedToRequestAsAttributes()
     {
         $matchedRouteParam = uniqid('matched param', true);
@@ -114,7 +149,7 @@ class MiddlewareListenerTest extends TestCase
         $this->assertSame($this->routeMatch->reveal(), $routeAttribute);
     }
 
-    public function testSuccessfullyDispatchesPipeOfMiddleware()
+    public function testSuccessfullyDispatchesPipeOfCallableAndHttpInteropStyleMiddlewares()
     {
         $response   = new Response();
         $routeMatch = $this->prophesize(RouteMatch::class);
@@ -135,11 +170,11 @@ class MiddlewareListenerTest extends TestCase
             return $next($request->withAttribute('firstMiddlewareAttribute', 'firstMiddlewareValue'), $response);
         });
         $serviceManager->has('secondMiddleware')->willReturn(true);
-        $serviceManager->get('secondMiddleware')->willReturn(function ($request, $response) {
-            $this->assertInstanceOf(ServerRequestInterface::class, $request);
-            $this->assertInstanceOf(ResponseInterface::class, $response);
-            $response->getBody()->write($request->getAttribute('firstMiddlewareAttribute'));
-            return $response;
+        $serviceManager->get('secondMiddleware')->willReturn(new class implements MiddlewareInterface {
+            public function process(ServerRequestInterface $request, DelegateInterface $delegate)
+            {
+                return new HtmlResponse($request->getAttribute('firstMiddlewareAttribute'));
+            }
         });
 
         $application = $this->prophesize(Application::class);
