@@ -18,7 +18,7 @@ use Zend\EventManager\AbstractListenerAggregate;
 use Zend\EventManager\EventManagerInterface;
 use Zend\Mvc\Exception\InvalidMiddlewareException;
 use Zend\Mvc\Exception\ReachedFinalHandlerException;
-use Zend\Psr7Bridge\Psr7ServerRequest as Psr7Request;
+use Zend\Mvc\Controller\MiddlewareController;
 use Zend\Psr7Bridge\Psr7Response;
 use Zend\Router\RouteMatch;
 use Zend\Stratigility\Delegate\CallableDelegateDecorator;
@@ -78,6 +78,11 @@ class MiddlewareListener extends AbstractListenerAggregate
 
         $caughtException = null;
         try {
+            $return = (new MiddlewareController(
+                $middleware,
+                $application->getServiceManager()->get('EventManager'),
+                $event
+            ))->dispatch($request, $response);
             $psr7Request = Psr7Request::fromZend($request)->withAttribute(RouteMatch::class, $routeMatch);
             foreach ($routeMatch->getParams() as $key => $value) {
                 $psr7Request = $psr7Request->withAttribute($key, $value);
