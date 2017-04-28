@@ -18,6 +18,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response as DiactorosResponse;
 use Zend\EventManager\EventManager;
+use Zend\EventManager\SharedEventManager;
 use Zend\Http\Request;
 use Zend\Http\Response;
 use Zend\Mvc\Application;
@@ -27,6 +28,7 @@ use Zend\Mvc\MiddlewareListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Router\RouteMatch;
 use Zend\ServiceManager\ServiceManager;
+use Zend\Stdlib\DispatchableInterface;
 use Zend\View\Model\ModelInterface;
 
 class MiddlewareListenerTest extends TestCase
@@ -461,5 +463,50 @@ class MiddlewareListenerTest extends TestCase
             [['foo' => new \stdClass()]],
             ['a response string'],
         ];
+    }
+
+
+    public function testValidMiddlewareFiresDispatchableInterfaceEventListeners()
+    {
+        $middlewareName = uniqid('middleware', true);
+        $routeMatch     = new RouteMatch(['middleware' => $middlewareName]);
+        $response       = new DiactorosResponse();
+        /* @var $application Application|\PHPUnit_Framework_MockObject_MockObject */
+        $application    = $this->createMock(Application::class);
+        $sharedManager  = new SharedEventManager();
+        /* @var $sharedListener callable|\PHPUnit_Framework_MockObject_MockObject */
+        $sharedListener = $this->getMockBuilder(\stdClass::class)->setMethods(['__invoke'])->getMock();
+        $eventManager   = new EventManager();
+        $middleware     = $this->getMockBuilder(\stdClass::class)->setMethods(['__invoke'])->getMock();
+        $serviceManager = new ServiceManager([
+            'factories' => [
+                'EventManager' => function () use ($sharedManager) {
+                    return new EventManager($sharedManager);
+                },
+            ],
+            'services' => [
+                $middlewareName => $middleware,
+            ],
+        ]);
+
+        $application->expects(self::any())->method('getRequest')->willReturn(new Request());
+        $application->expects(self::any())->method('getEventManager')->willReturn($eventManager);
+        $application->expects(self::any())->method('getServiceManager')->willReturn($serviceManager);
+        $application->expects(self::any())->method('getResponse')->willReturn(new Response());
+        $middleware->expects(self::once())->method('__invoke')->willReturn($response);
+
+        $event = new MvcEvent();
+
+        $event->setRequest(new Request());
+        $event->setApplication($application);
+        $event->setError(Application::ERROR_CONTROLLER_CANNOT_DISPATCH);
+        $event->setRouteMatch($routeMatch);
+
+        $listener = new MiddlewareListener();
+
+        $sharedManager->attach(DispatchableInterface::class, MvcEvent::EVENT_DISPATCH, $sharedListener);
+        $sharedListener->expects(self::once())->method('__invoke')->with($event);
+
+        $listener->onDispatch($event);
     }
 }
