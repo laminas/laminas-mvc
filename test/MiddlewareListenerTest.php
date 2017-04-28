@@ -425,7 +425,6 @@ class MiddlewareListenerTest extends TestCase
         $middleware->expects(self::once())->method('__invoke')->willReturn($middlewareResult);
 
         $eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) {
-            var_dump($e->getParam('exception')->getMessage());
             self::fail('No dispatch error should have been raised');
         });
 
