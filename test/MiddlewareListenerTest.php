@@ -38,7 +38,7 @@ class MiddlewareListenerTest extends TestCase
      *
      * @param string $middlewareMatched Middleware service matched by routing
      * @param mixed $middleware Value to return for middleware service
-     * @return MvcEven
+     * @return MvcEvent
      */
     public function createMvcEvent($middlewareMatched, $middleware = null)
     {
