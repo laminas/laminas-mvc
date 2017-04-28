@@ -9,7 +9,7 @@
 
 namespace ZendTest\Mvc;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\Mvc\Exception\MiddlewareNotCallableException;
 
 final class MiddlewareNotCallableExceptionTest extends TestCase
