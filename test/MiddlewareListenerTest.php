@@ -342,7 +342,7 @@ class MiddlewareListenerTest extends TestCase
 
         $listener = new MiddlewareListener();
 
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $listener->onDispatch($event);
     }
 }
