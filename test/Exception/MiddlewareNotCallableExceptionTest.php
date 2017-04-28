@@ -19,14 +19,14 @@ final class MiddlewareNotCallableExceptionTest extends TestCase
         $middlewareName = uniqid('middlewareName', true);
         $exception = MiddlewareNotCallableException::fromMiddlewareName($middlewareName);
 
-        self::assertInstanceOf(MiddlewareNotCallableException::class, $exception);
-        self::assertSame('Cannot dispatch middleware ' . $middlewareName, $exception->getMessage());
-        self::assertSame($middlewareName, $exception->toMiddlewareName());
+        $this->assertInstanceOf(MiddlewareNotCallableException::class, $exception);
+        $this->assertSame('Cannot dispatch middleware ' . $middlewareName, $exception->getMessage());
+        $this->assertSame($middlewareName, $exception->toMiddlewareName());
     }
 
     public function testToMiddlewareNameWhenNotSet()
     {
         $exception = new MiddlewareNotCallableException();
-        self::assertSame('', $exception->toMiddlewareName());
+        $this->assertSame('', $exception->toMiddlewareName());
     }
 }
