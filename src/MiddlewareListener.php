@@ -84,9 +84,7 @@ class MiddlewareListener extends AbstractListenerAggregate
                 $psr7Request,
                 $psr7ResponsePrototype,
                 function (PsrServerRequestInterface $request, PsrResponseInterface $response) {
-                    throw new ReachedFinalHandlerException(
-                        'Reached the final handler for middleware pipe - check the pipe configuration'
-                    );
+                    throw ReachedFinalHandlerException::create();
                 }
             );
         } catch (\Throwable $ex) {
