@@ -374,6 +374,6 @@ class MiddlewareListenerTest extends TestCase
 
         self::assertInstanceOf(Response::class, $result);
         self::assertInstanceOf(Response::class, $event->getResult());
-        self::assertNull($event->getError(), 'Previously set MVC errors are canceled by a successful dispatch');
+        self::assertEmpty($event->getError(), 'Previously set MVC errors are canceled by a successful dispatch');
     }
 }
