@@ -376,4 +376,67 @@ class MiddlewareListenerTest extends TestCase
         self::assertInstanceOf(Response::class, $event->getResult());
         self::assertEmpty($event->getError(), 'Previously set MVC errors are canceled by a successful dispatch');
     }
+
+    /**
+     * @dataProvider possibleMiddlewareNonPsr7ResponseReturnValues
+     *
+     * @param mixed $middlewareResult
+     */
+    public function testMiddlewareDispatchWillRetrieveAnyCallableReturnValue($middlewareResult)
+    {
+        $middlewareName = uniqid('middleware', true);
+        $routeMatch     = new RouteMatch(['middleware' => $middlewareName]);
+        /* @var $application Application|\PHPUnit_Framework_MockObject_MockObject */
+        $application    = $this->createMock(Application::class);
+        $serviceManager = $this->createMock(ServiceManager::class);
+        $eventManager   = new EventManager();
+        $middleware     = $this->getMockBuilder(\stdClass::class)->setMethods(['__invoke'])->getMock();
+
+        $application->expects(self::any())->method('getRequest')->willReturn(new Request());
+        $application->expects(self::any())->method('getEventManager')->willReturn($eventManager);
+        $application->expects(self::any())->method('getServiceManager')->willReturn($serviceManager);
+        $application->expects(self::any())->method('getResponse')->willReturn(new Response());
+        $middleware->expects(self::once())->method('__invoke')->willReturn($middlewareResult);
+
+        $serviceManager->expects(self::any())->method('has')->with($middlewareName)->willReturn(true);
+        $serviceManager->expects(self::any())->method('get')->with($middlewareName)->willReturn($middleware);
+
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, function () {
+            self::fail('No dispatch error should have been raised');
+        });
+
+        $event = new MvcEvent();
+
+        $event->setRequest(new Request());
+        $event->setApplication($application);
+        $event->setError(Application::ERROR_CONTROLLER_CANNOT_DISPATCH);
+        $event->setRouteMatch($routeMatch);
+
+        $listener = new MiddlewareListener();
+        $result   = $listener->onDispatch($event);
+
+        self::assertSame($middlewareResult, $result);
+        self::assertSame($middlewareResult, $event->getResult());
+        self::assertEmpty($event->getError(), 'No errors raised when the return type is unknown');
+    }
+
+    /**
+     * @return mixed[][]
+     */
+    public function possibleMiddlewareNonPsr7ResponseReturnValues()
+    {
+        return [
+            [123],
+            [true],
+            [false],
+            [[]],
+            [new \stdClass()],
+            [$this],
+            [$this->createMock(ModelInterface::class)],
+            [$this->createMock(Response::class)],
+            [['view model data' => 'as an array']],
+            [['foo' => new \stdClass()]],
+            ['a response string'],
+        ];
+    }
 }
