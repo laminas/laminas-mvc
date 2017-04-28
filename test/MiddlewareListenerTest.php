@@ -27,6 +27,7 @@ use Zend\Mvc\MiddlewareListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Router\RouteMatch;
 use Zend\ServiceManager\ServiceManager;
+use Zend\View\Model\ModelInterface;
 
 class MiddlewareListenerTest extends TestCase
 {
@@ -344,8 +345,7 @@ class MiddlewareListenerTest extends TestCase
     public function testValidMiddlewareDispatchCancelsPreviousDispatchFailures()
     {
         $middlewareName = uniqid('middleware', true);
-        /* @var $routeMatch RouteMatch|\PHPUnit_Framework_MockObject_MockObject */
-        $routeMatch     = $this->createMock(RouteMatch::class);
+        $routeMatch     = new RouteMatch(['middleware' => $middlewareName]);
         $response       = new DiactorosResponse();
         /* @var $application Application|\PHPUnit_Framework_MockObject_MockObject */
         $application    = $this->createMock(Application::class);
@@ -361,8 +361,6 @@ class MiddlewareListenerTest extends TestCase
 
         $serviceManager->expects(self::any())->method('has')->with($middlewareName)->willReturn(true);
         $serviceManager->expects(self::any())->method('get')->with($middlewareName)->willReturn($middleware);
-        $routeMatch->expects(self::any())->method('getParam')->with('middleware')->willReturn($middlewareName);
-        $routeMatch->expects(self::any())->method('getParams')->willReturn([]);
 
         $event = new MvcEvent();
 
