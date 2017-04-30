@@ -96,19 +96,10 @@ class MiddlewareListenerTest extends TestCase
     {
         $expectedOutput = uniqid('expectedOutput', true);
 
-        $event = $this->createMvcEvent('path', new class($expectedOutput) implements MiddlewareInterface {
-            private $expectedOutput;
+        $middleware = $this->createMock(MiddlewareInterface::class);
+        $middleware->expects($this->once())->method('process')->willReturn(new HtmlResponse($expectedOutput));
 
-            public function __construct($expectedOutput)
-            {
-                $this->expectedOutput = $expectedOutput;
-            }
-
-            public function process(ServerRequestInterface $request, DelegateInterface $delegate)
-            {
-                return new HtmlResponse($this->expectedOutput);
-            }
-        });
+        $event = $this->createMvcEvent('path', $middleware);
         $application = $event->getApplication();
 
         $application->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) {
@@ -169,13 +160,16 @@ class MiddlewareListenerTest extends TestCase
             $this->assertTrue(is_callable($next));
             return $next($request->withAttribute('firstMiddlewareAttribute', 'firstMiddlewareValue'), $response);
         });
-        $serviceManager->has('secondMiddleware')->willReturn(true);
-        $serviceManager->get('secondMiddleware')->willReturn(new class implements MiddlewareInterface {
-            public function process(ServerRequestInterface $request, DelegateInterface $delegate)
-            {
+
+        $secondMiddleware = $this->createMock(MiddlewareInterface::class);
+        $secondMiddleware->expects($this->once())
+            ->method('process')
+            ->willReturnCallback(function (ServerRequestInterface $request) {
                 return new HtmlResponse($request->getAttribute('firstMiddlewareAttribute'));
-            }
-        });
+            });
+
+        $serviceManager->has('secondMiddleware')->willReturn(true);
+        $serviceManager->get('secondMiddleware')->willReturn($secondMiddleware);
 
         $application = $this->prophesize(Application::class);
         $application->getEventManager()->willReturn($eventManager);
