@@ -76,6 +76,10 @@ class DispatchListener extends AbstractListenerAggregate
      */
     public function onDispatch(MvcEvent $e)
     {
+        if (null !== $e->getResult()) {
+            return;
+        }
+
         $routeMatch        = $e->getRouteMatch();
         $controllerName    = $routeMatch instanceof RouteMatch
             ? $routeMatch->getParam('controller', 'not-found')

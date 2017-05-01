@@ -18,7 +18,7 @@ use Zend\EventManager\AbstractListenerAggregate;
 use Zend\EventManager\EventManagerInterface;
 use Zend\Mvc\Exception\InvalidMiddlewareException;
 use Zend\Mvc\Exception\ReachedFinalHandlerException;
-use Zend\Psr7Bridge\Psr7ServerRequest as Psr7Request;
+use Zend\Mvc\Controller\MiddlewareController;
 use Zend\Psr7Bridge\Psr7Response;
 use Zend\Router\RouteMatch;
 use Zend\Stratigility\Delegate\CallableDelegateDecorator;
@@ -45,6 +45,10 @@ class MiddlewareListener extends AbstractListenerAggregate
      */
     public function onDispatch(MvcEvent $event)
     {
+        if (null !== $event->getResult()) {
+            return;
+        }
+
         $routeMatch = $event->getRouteMatch();
         $middleware = $routeMatch->getParam('middleware', false);
         if (false === $middleware) {
@@ -78,16 +82,12 @@ class MiddlewareListener extends AbstractListenerAggregate
 
         $caughtException = null;
         try {
-            $psr7Request = Psr7Request::fromZend($request)->withAttribute(RouteMatch::class, $routeMatch);
-            foreach ($routeMatch->getParams() as $key => $value) {
-                $psr7Request = $psr7Request->withAttribute($key, $value);
-            }
-            $return = $pipe->process($psr7Request, new CallableDelegateDecorator(
-                function (PsrServerRequestInterface $request, PsrResponseInterface $response) {
-                    throw ReachedFinalHandlerException::create();
-                },
-                $psr7ResponsePrototype
-            ));
+            $return = (new MiddlewareController(
+                $pipe,
+                $psr7ResponsePrototype,
+                $application->getServiceManager()->get('EventManager'),
+                $event
+            ))->dispatch($request, $response);
         } catch (\Throwable $ex) {
             $caughtException = $ex;
         } catch (\Exception $ex) {  // @TODO clean up once PHP 7 requirement is enforced
@@ -106,6 +106,8 @@ class MiddlewareListener extends AbstractListenerAggregate
                 $return = $event->getResult();
             }
         }
+
+        $event->setError('');
 
         if (! $return instanceof PsrResponseInterface) {
             $event->setResult($return);
