@@ -21,7 +21,10 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#237](https://github.com/zendframework/zend-mvc/pull/237) fixes the return
+  annotations for `HttpDefaultRenderingStrategyFactory::createService` and
+  `injectLayoutTemplate()` to be `HttpDefaultRenderingStrategy` and not
+  `HttpDefaultRendererStrategy`.
 
 ## 3.0.4 - 2016-12-20
 
