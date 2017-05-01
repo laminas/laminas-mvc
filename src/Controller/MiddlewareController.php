@@ -10,7 +10,6 @@
 namespace Zend\Mvc\Controller;
 
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Zend\EventManager\EventManager;
 use Zend\Http\Request;
 use Zend\Http\Response;
@@ -90,7 +89,7 @@ final class MiddlewareController extends AbstractController
         }
 
         $result = $this->pipe->process($psr7Request, new CallableDelegateDecorator(
-            function (ServerRequestInterface $request, ResponseInterface $response) {
+            function () {
                 throw ReachedFinalHandlerException::create();
             },
             $this->responsePrototype
