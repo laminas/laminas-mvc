@@ -39,7 +39,7 @@ class HttpDefaultRenderingStrategyFactory implements FactoryInterface
      *
      * Uses layout template from configuration; if none available, defaults to "layout/layout".
      *
-     * @param DefaultRendererStrategy $strategy
+     * @param DefaultRenderingStrategy $strategy
      * @param array $config
      */
     private function injectLayoutTemplate(DefaultRenderingStrategy $strategy, array $config)
