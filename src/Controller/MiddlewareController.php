@@ -54,7 +54,6 @@ final class MiddlewareController extends AbstractController
 
         $this->setEventManager($eventManager);
         $this->setEvent($event);
-
     }
 
     /**
