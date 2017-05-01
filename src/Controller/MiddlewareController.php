@@ -57,32 +57,14 @@ final class MiddlewareController extends AbstractController
 
     /**
      * {@inheritDoc}
-     * @throws \Zend\Mvc\Exception\RuntimeException
+     *
+     * @throws RuntimeException
      */
     public function onDispatch(MvcEvent $e)
     {
-        $request  = $this->request;
-        $response = $this->response;
-
-        if (! $request instanceof Request) {
-            throw new RuntimeException(sprintf(
-                'Expected request to be a %s, %s given',
-                Request::class,
-                get_class($request)
-            ));
-        }
-
-        if (! $response instanceof Response) {
-            throw new RuntimeException(sprintf(
-                'Expected response to be a %s, %s given',
-                Response::class,
-                get_class($response)
-            ));
-        }
-
         $routeMatch  = $e->getRouteMatch();
         $psr7Request = $this->populateRequestParametersFromRoute(
-            Psr7ServerRequest::fromZend($request)->withAttribute(RouteMatch::class, $routeMatch),
+            $this->loadRequest()->withAttribute(RouteMatch::class, $routeMatch),
             $routeMatch
         );
 
@@ -96,6 +78,26 @@ final class MiddlewareController extends AbstractController
         $e->setResult($result);
 
         return $result;
+    }
+
+    /**
+     * @return \Zend\Diactoros\ServerRequest
+     *
+     * @throws RuntimeException
+     */
+    private function loadRequest()
+    {
+        $request = $this->request;
+
+        if (! $request instanceof Request) {
+            throw new RuntimeException(sprintf(
+                'Expected request to be a %s, %s given',
+                Request::class,
+                get_class($request)
+            ));
+        }
+
+        return Psr7ServerRequest::fromZend($request);
     }
 
     /**
