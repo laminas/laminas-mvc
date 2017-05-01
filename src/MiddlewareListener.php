@@ -45,6 +45,10 @@ class MiddlewareListener extends AbstractListenerAggregate
      */
     public function onDispatch(MvcEvent $event)
     {
+        if (null !== $event->getResult()) {
+            return;
+        }
+
         $routeMatch = $event->getRouteMatch();
         $middleware = $routeMatch->getParam('middleware', false);
         if (false === $middleware) {
