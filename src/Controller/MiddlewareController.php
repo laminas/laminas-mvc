@@ -22,13 +22,16 @@ use Zend\Stratigility\Delegate\CallableDelegateDecorator;
 use Zend\Stratigility\MiddlewarePipe;
 
 /**
- * @internal don't use this in your codebase, or else @ocramius will hunt you down. This is just an internal
- * @internal hack to make middleware trigger 'dispatch' events attached to the DispatchableInterface identifier.
+ * @internal don't use this in your codebase, or else @ocramius will hunt you
+ *     down. This is just an internal hack to make middleware trigger
+ *     'dispatch' events attached to the DispatchableInterface identifier.
  *
- * Specifically, it will receive a @see MiddlewarePipe, a @see ResponseInterface prototype, and then dispatch
- * the pipe whilst still behaving like a normal controller. That is needed for any events attached to
- * the @see \Zend\Stdlib\DispatchableInterface identifier to reach their listeners on any attached
- * @see \Zend\EventManager\SharedEventManagerInterface
+ *     Specifically, it will receive a @see MiddlewarePipe and a
+ *     @see ResponseInterface prototype, and then dispatch the pipe whilst still
+ *     behaving like a normal controller. That is needed for any events
+ *     attached to the @see \Zend\Stdlib\DispatchableInterface identifier to
+ *     reach their listeners on any attached
+ *     @see \Zend\EventManager\SharedEventManagerInterface
  */
 final class MiddlewareController extends AbstractController
 {
