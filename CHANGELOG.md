@@ -12,6 +12,13 @@ All notable changes to this project will be documented in this file, in reverse 
   it will be marshaled into a `Zend\Stratigility\MiddlewarePipe` instance, using
   the same rules as if you specified a single middleware.
 
+- [#236](https://github.com/zendframework/zend-mvc/pull/236) adds the ability to
+  attach dispatch listeners to middleware when using the `MiddlewareListener`.
+  Attach shared events to the class identifier `Zend\Mvc\Controller\MiddlewareController`.
+  This feature helps ensure that listeners that should run for every controller
+  (e.g., authentication or authorization listeners) will run even for
+  middleware.
+
 ### Deprecated
 
 - Nothing.

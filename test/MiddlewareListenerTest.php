@@ -1,22 +1,21 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/zendframework/zend-mvc for the canonical source repository
+ * @copyright Copyright (c) 2015-2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/zend-mvc/blob/master/LICENSE.md New BSD License
  */
 
 namespace ZendTest\Mvc;
 
 use Interop\Container\ContainerInterface;
-use Interop\Http\ServerMiddleware\DelegateInterface;
 use Interop\Http\ServerMiddleware\MiddlewareInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response\HtmlResponse;
+use Zend\Diactoros\Response as DiactorosResponse;
 use Zend\EventManager\EventManager;
+use Zend\EventManager\SharedEventManager;
 use Zend\Http\Request;
 use Zend\Http\Response;
 use Zend\Mvc\Application;
@@ -26,6 +25,8 @@ use Zend\Mvc\MiddlewareListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Router\RouteMatch;
 use Zend\ServiceManager\ServiceManager;
+use Zend\Stdlib\DispatchableInterface;
+use Zend\View\Model\ModelInterface;
 
 class MiddlewareListenerTest extends TestCase
 {
@@ -48,17 +49,21 @@ class MiddlewareListenerTest extends TestCase
         $this->routeMatch->getParam('middleware', false)->willReturn($middlewareMatched);
         $this->routeMatch->getParams()->willReturn([]);
 
-        $eventManager = new EventManager();
-
-        $serviceManager = $this->prophesize(ContainerInterface::class);
-        $serviceManager->has($middlewareMatched)->willReturn(true);
-        $serviceManager->get($middlewareMatched)->willReturn($middleware);
+        $eventManager   = new EventManager();
+        $serviceManager = new ServiceManager([
+            'factories' => [
+                'EventManager' => function () {
+                    return new EventManager();
+                },
+            ],
+            'services' => [
+                $middlewareMatched => $middleware,
+            ],
+        ]);
 
         $application = $this->prophesize(Application::class);
         $application->getEventManager()->willReturn($eventManager);
-        $application->getServiceManager()->will(function () use ($serviceManager) {
-            return $serviceManager->reveal();
-        });
+        $application->getServiceManager()->willReturn($serviceManager);
         $application->getResponse()->willReturn($response);
 
         $event = new MvcEvent();
@@ -154,6 +159,7 @@ class MiddlewareListenerTest extends TestCase
         $eventManager = new EventManager();
 
         $serviceManager = $this->prophesize(ContainerInterface::class);
+        $serviceManager->get('EventManager')->willReturn($eventManager);
         $serviceManager->has('firstMiddleware')->willReturn(true);
         $serviceManager->get('firstMiddleware')->willReturn(function ($request, $response, $next) {
             $this->assertInstanceOf(ServerRequestInterface::class, $request);
@@ -247,6 +253,12 @@ class MiddlewareListenerTest extends TestCase
 
         $serviceManager = new ServiceManager();
         $serviceManager->addAbstractFactory(TestAsset\MiddlewareAbstractFactory::class);
+        $serviceManager->setFactory(
+            'EventManager',
+            function () {
+                return new EventManager();
+            }
+        );
 
         $application = $this->prophesize(Application::class);
         $application->getEventManager()->willReturn($eventManager);
@@ -265,7 +277,6 @@ class MiddlewareListenerTest extends TestCase
 
         $listener = new MiddlewareListener();
         $return   = $listener->onDispatch($event);
-        $this->assertInstanceOf(Response::class, $return);
 
         $this->assertInstanceOf(Response::class, $return);
         $this->assertSame(200, $return->getStatusCode());
@@ -288,6 +299,8 @@ class MiddlewareListenerTest extends TestCase
             return $serviceManager->reveal();
         });
         $application->getResponse()->willReturn($response);
+
+        $serviceManager->get('EventManager')->willReturn($eventManager);
 
         $event = new MvcEvent();
         $event->setRequest(new Request());
@@ -339,5 +352,159 @@ class MiddlewareListenerTest extends TestCase
 
         $return = $listener->onDispatch($event);
         $this->assertEquals('FAILED', $return);
+    }
+
+    public function testValidMiddlewareDispatchCancelsPreviousDispatchFailures()
+    {
+        $middlewareName = uniqid('middleware', true);
+        $routeMatch     = new RouteMatch(['middleware' => $middlewareName]);
+        $response       = new DiactorosResponse();
+        /* @var $application Application|\PHPUnit_Framework_MockObject_MockObject */
+        $application    = $this->createMock(Application::class);
+        $eventManager   = new EventManager();
+        $middleware     = $this->getMockBuilder(\stdClass::class)->setMethods(['__invoke'])->getMock();
+        $serviceManager = new ServiceManager([
+            'factories' => [
+                'EventManager' => function () {
+                    return new EventManager();
+                },
+            ],
+            'services' => [
+                $middlewareName => $middleware,
+            ],
+        ]);
+
+        $application->expects(self::any())->method('getRequest')->willReturn(new Request());
+        $application->expects(self::any())->method('getEventManager')->willReturn($eventManager);
+        $application->expects(self::any())->method('getServiceManager')->willReturn($serviceManager);
+        $application->expects(self::any())->method('getResponse')->willReturn(new Response());
+        $middleware->expects(self::once())->method('__invoke')->willReturn($response);
+
+        $event = new MvcEvent();
+
+        $event->setRequest(new Request());
+        $event->setApplication($application);
+        $event->setError(Application::ERROR_CONTROLLER_CANNOT_DISPATCH);
+        $event->setRouteMatch($routeMatch);
+
+        $listener = new MiddlewareListener();
+        $result   = $listener->onDispatch($event);
+
+        self::assertInstanceOf(Response::class, $result);
+        self::assertInstanceOf(Response::class, $event->getResult());
+        self::assertEmpty($event->getError(), 'Previously set MVC errors are canceled by a successful dispatch');
+    }
+
+    public function testValidMiddlewareFiresDispatchableInterfaceEventListeners()
+    {
+        $middlewareName = uniqid('middleware', true);
+        $routeMatch     = new RouteMatch(['middleware' => $middlewareName]);
+        $response       = new DiactorosResponse();
+        /* @var $application Application|\PHPUnit_Framework_MockObject_MockObject */
+        $application    = $this->createMock(Application::class);
+        $sharedManager  = new SharedEventManager();
+        /* @var $sharedListener callable|\PHPUnit_Framework_MockObject_MockObject */
+        $sharedListener = $this->getMockBuilder(\stdClass::class)->setMethods(['__invoke'])->getMock();
+        $eventManager   = new EventManager();
+        $middleware     = $this->getMockBuilder(\stdClass::class)->setMethods(['__invoke'])->getMock();
+        $serviceManager = new ServiceManager([
+            'factories' => [
+                'EventManager' => function () use ($sharedManager) {
+                    return new EventManager($sharedManager);
+                },
+            ],
+            'services' => [
+                $middlewareName => $middleware,
+            ],
+        ]);
+
+        $application->expects(self::any())->method('getRequest')->willReturn(new Request());
+        $application->expects(self::any())->method('getEventManager')->willReturn($eventManager);
+        $application->expects(self::any())->method('getServiceManager')->willReturn($serviceManager);
+        $application->expects(self::any())->method('getResponse')->willReturn(new Response());
+        $middleware->expects(self::once())->method('__invoke')->willReturn($response);
+
+        $event = new MvcEvent();
+
+        $event->setRequest(new Request());
+        $event->setApplication($application);
+        $event->setError(Application::ERROR_CONTROLLER_CANNOT_DISPATCH);
+        $event->setRouteMatch($routeMatch);
+
+        $listener = new MiddlewareListener();
+
+        $sharedManager->attach(DispatchableInterface::class, MvcEvent::EVENT_DISPATCH, $sharedListener);
+        $sharedListener->expects(self::once())->method('__invoke')->with($event);
+
+        $listener->onDispatch($event);
+    }
+
+    /**
+     * @dataProvider alreadySetMvcEventResultProvider
+     *
+     * @param mixed $alreadySetResult
+     */
+    public function testWillNotDispatchWhenAnMvcEventResultIsAlreadySet($alreadySetResult)
+    {
+        $middlewareName = uniqid('middleware', true);
+        $routeMatch     = new RouteMatch(['middleware' => $middlewareName]);
+        /* @var $application Application|\PHPUnit_Framework_MockObject_MockObject */
+        $application    = $this->createMock(Application::class);
+        $eventManager   = new EventManager();
+        $middleware     = $this->getMockBuilder(\stdClass::class)->setMethods(['__invoke'])->getMock();
+        $serviceManager = new ServiceManager([
+            'factories' => [
+                'EventManager' => function () {
+                    return new EventManager();
+                },
+            ],
+            'services' => [
+                $middlewareName => $middleware,
+            ],
+        ]);
+
+        $application->expects(self::any())->method('getRequest')->willReturn(new Request());
+        $application->expects(self::any())->method('getEventManager')->willReturn($eventManager);
+        $application->expects(self::any())->method('getServiceManager')->willReturn($serviceManager);
+        $application->expects(self::any())->method('getResponse')->willReturn(new Response());
+        $middleware->expects(self::never())->method('__invoke');
+
+        $event = new MvcEvent();
+
+        $event->setResult($alreadySetResult); // a result is already there - listener should bail out early
+        $event->setRequest(new Request());
+        $event->setApplication($application);
+        $event->setError(Application::ERROR_CONTROLLER_CANNOT_DISPATCH);
+        $event->setRouteMatch($routeMatch);
+
+        $listener = new MiddlewareListener();
+
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, function () {
+            self::fail('No dispatch failures should be raised - dispatch should be skipped');
+        });
+
+        $listener->onDispatch($event);
+
+        self::assertSame($alreadySetResult, $event->getResult(), 'The event result was not replaced');
+    }
+
+    /**
+     * @return mixed[][]
+     */
+    public function alreadySetMvcEventResultProvider()
+    {
+        return [
+            [123],
+            [true],
+            [false],
+            [[]],
+            [new \stdClass()],
+            [$this],
+            [$this->createMock(ModelInterface::class)],
+            [$this->createMock(Response::class)],
+            [['view model data' => 'as an array']],
+            [['foo' => new \stdClass()]],
+            ['a response string'],
+        ];
     }
 }
