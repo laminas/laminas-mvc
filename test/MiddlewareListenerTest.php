@@ -20,6 +20,7 @@ use Zend\EventManager\EventManager;
 use Zend\Http\Request;
 use Zend\Http\Response;
 use Zend\Mvc\Application;
+use Zend\Mvc\Exception\InvalidMiddlewareException;
 use Zend\Mvc\Exception\ReachedFinalHandlerException;
 use Zend\Mvc\MiddlewareListener;
 use Zend\Mvc\MvcEvent;
@@ -305,7 +306,7 @@ class MiddlewareListenerTest extends TestCase
         $this->assertEquals('FAILED', $return);
     }
 
-    public function testNullMiddlewareThrowsInvalidArgument()
+    public function testNullMiddlewareThrowsInvalidMiddlewareException()
     {
         $response   = new Response();
         $routeMatch = $this->prophesize(RouteMatch::class);
@@ -329,14 +330,14 @@ class MiddlewareListenerTest extends TestCase
         $event->setRouteMatch($routeMatch->reveal());
 
         $event->getApplication()->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) {
-            $this->assertEquals(Application::ERROR_EXCEPTION, $e->getError());
-            $this->assertInstanceOf(ReachedFinalHandlerException::class, $e->getParam('exception'));
+            $this->assertEquals(Application::ERROR_MIDDLEWARE_CANNOT_DISPATCH, $e->getError());
+            $this->assertInstanceOf(InvalidMiddlewareException::class, $e->getParam('exception'));
             return 'FAILED';
         });
 
         $listener = new MiddlewareListener();
 
-        $this->expectException(\InvalidArgumentException::class);
-        $listener->onDispatch($event);
+        $return = $listener->onDispatch($event);
+        $this->assertEquals('FAILED', $return);
     }
 }

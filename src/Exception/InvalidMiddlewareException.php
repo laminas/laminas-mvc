@@ -9,7 +9,7 @@
 
 namespace Zend\Mvc\Exception;
 
-final class MiddlewareNotCallableException extends RuntimeException
+final class InvalidMiddlewareException extends RuntimeException
 {
     /**
      * @var string
@@ -25,6 +25,12 @@ final class MiddlewareNotCallableException extends RuntimeException
         $middlewareName = (string)$middlewareName;
         $instance = new self(sprintf('Cannot dispatch middleware %s', $middlewareName));
         $instance->middlewareName = $middlewareName;
+        return $instance;
+    }
+
+    public static function fromNull()
+    {
+        $instance = new self('Middleware name cannot be null');
         return $instance;
     }
 
