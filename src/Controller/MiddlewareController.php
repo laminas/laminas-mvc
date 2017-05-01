@@ -13,7 +13,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\EventManager\EventManager;
 use Zend\Http\Request;
-use Zend\Http\Response;
 use Zend\Mvc\Exception\ReachedFinalHandlerException;
 use Zend\Mvc\Exception\RuntimeException;
 use Zend\Mvc\MvcEvent;
