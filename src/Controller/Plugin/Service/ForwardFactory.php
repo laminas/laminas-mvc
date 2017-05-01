@@ -10,10 +10,9 @@
 namespace Zend\Mvc\Controller\Plugin\Service;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Exception\ServiceNotCreatedException;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Mvc\Controller\Plugin\Forward;
+use Zend\ServiceManager\Exception\ServiceNotCreatedException;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 class ForwardFactory implements FactoryInterface
 {
@@ -35,19 +34,5 @@ class ForwardFactory implements FactoryInterface
         $controllers = $container->get('ControllerManager');
 
         return new Forward($controllers);
-    }
-
-    /**
-     * Create and return Forward instance
-     *
-     * For use with zend-servicemanager v2; proxies to __invoke().
-     *
-     * @param ServiceLocatorInterface $container
-     * @return Forward
-     */
-    public function createService(ServiceLocatorInterface $container)
-    {
-        $parentContainer = $container->getServiceLocator() ?: $container;
-        return $this($parentContainer, Forward::class);
     }
 }

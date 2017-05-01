@@ -27,8 +27,7 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
      * @todo Remove these once their components have Modules defined.
      * @var array
      */
-    protected $defaultHelperMapClasses = [
-    ];
+    protected $defaultHelperMapClasses = [];
 
     /**
      * Create and return the view helper manager

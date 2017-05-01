@@ -14,11 +14,13 @@ use ReflectionClass;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\SharedEventManager;
+use Zend\EventManager\SharedEventManagerInterface;
 use Zend\Mvc\Controller\ControllerManager;
 use Zend\Mvc\Controller\PluginManager as ControllerPluginManager;
 use Zend\ServiceManager\Config;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\ServiceManager;
+use ZendTest\Mvc\Controller\TestAsset\SampleController;
 
 class ControllerManagerTest extends TestCase
 {
@@ -44,36 +46,19 @@ class ControllerManagerTest extends TestCase
     }
 
     /**
-     * Create an event manager instance based on zend-eventmanager version
-     *
      * @param SharedEventManager
      * @return EventManager
      */
-    protected function createEventManager($sharedManager)
+    protected function createEventManager(SharedEventManagerInterface $sharedManager)
     {
-        $r = new ReflectionClass(EventManager::class);
-
-        if ($r->hasMethod('setSharedManager')) {
-            $events = new EventManager();
-            $events->setSharedManager($sharedManager);
-            return $events;
-        }
-
         return new EventManager($sharedManager);
     }
 
     public function testCanInjectEventManager()
     {
-        $controller = new TestAsset\SampleController();
+        $controller = new SampleController();
 
-        // Vary injection based on zend-servicemanager version
-        if (method_exists($this->controllers, 'configure')) {
-            // v3
-            $this->controllers->injectEventManager($this->services, $controller);
-        } else {
-            // v2
-            $this->controllers->injectEventManager($controller, $this->controllers);
-        }
+        $this->controllers->injectEventManager($this->services, $controller);
 
         // The default AbstractController implementation lazy instantiates an EM
         // instance, which means we need to check that that instance gets injected
@@ -85,16 +70,9 @@ class ControllerManagerTest extends TestCase
 
     public function testCanInjectPluginManager()
     {
-        $controller = new TestAsset\SampleController();
+        $controller = new SampleController();
 
-        // Vary injection based on zend-servicemanager version
-        if (method_exists($this->controllers, 'configure')) {
-            // v3
-            $this->controllers->injectPluginManager($this->services, $controller);
-        } else {
-            // v2
-            $this->controllers->injectPluginManager($controller, $this->controllers);
-        }
+        $this->controllers->injectPluginManager($this->services, $controller);
 
         $this->assertSame($this->services->get('ControllerPluginManager'), $controller->getPluginManager());
     }
@@ -102,17 +80,10 @@ class ControllerManagerTest extends TestCase
     public function testInjectEventManagerWillNotOverwriteExistingEventManagerIfItAlreadyHasASharedManager()
     {
         $events     = $this->createEventManager($this->sharedEvents);
-        $controller = new TestAsset\SampleController();
+        $controller = new SampleController();
         $controller->setEventManager($events);
 
-        // Vary injection based on zend-servicemanager version
-        if (method_exists($this->controllers, 'configure')) {
-            // v3
-            $this->controllers->injectEventManager($this->services, $controller);
-        } else {
-            // v2
-            $this->controllers->injectEventManager($controller, $this->controllers);
-        }
+        $this->controllers->injectEventManager($this->services, $controller);
 
         $this->assertSame($events, $controller->getEventManager());
         $this->assertSame($this->sharedEvents, $events->getSharedManager());

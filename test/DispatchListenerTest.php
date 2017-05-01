@@ -1,10 +1,8 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/zendframework/zend-mvc for the canonical source repository
+ * @copyright Copyright (c) 2005-2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/zend-mvc/blob/master/LICENSE.md New BSD License
  */
 
 namespace ZendTest\Mvc;
@@ -19,6 +17,8 @@ use Zend\Mvc\DispatchListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Router\RouteMatch;
 use Zend\ServiceManager\ServiceManager;
+use Zend\Stdlib\ResponseInterface;
+use Zend\View\Model\ModelInterface;
 
 class DispatchListenerTest extends TestCase
 {
@@ -82,5 +82,50 @@ class DispatchListenerTest extends TestCase
 
         $this->assertArrayHasKey('error', $log);
         $this->assertSame('error-controller-not-found', $log['error']);
+    }
+
+    /**
+     * @dataProvider alreadySetMvcEventResultProvider
+     *
+     * @param mixed $alreadySetResult
+     */
+    public function testWillNotDispatchWhenAnMvcEventResultIsAlreadySet($alreadySetResult)
+    {
+        $event = $this->createMvcEvent('path');
+
+        $event->setResult($alreadySetResult);
+
+        $listener = new DispatchListener(new ControllerManager(new ServiceManager(), ['abstract_factories' => [
+            Controller\TestAsset\UnlocatableControllerLoaderAbstractFactory::class,
+        ]]));
+
+        $event->getApplication()->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, function () {
+            self::fail('No dispatch failures should be raised - dispatch should be skipped');
+        });
+
+        $listener->onDispatch($event);
+
+        self::assertSame($alreadySetResult, $event->getResult(), 'The event result was not replaced');
+    }
+
+    /**
+     * @return mixed[][]
+     */
+    public function alreadySetMvcEventResultProvider()
+    {
+        return [
+            [123],
+            [true],
+            [false],
+            [[]],
+            [new \stdClass()],
+            [$this],
+            [$this->createMock(ModelInterface::class)],
+            [$this->createMock(ResponseInterface::class)],
+            [$this->createMock(Response::class)],
+            [['view model data' => 'as an array']],
+            [['foo' => new \stdClass()]],
+            ['a response string'],
+        ];
     }
 }

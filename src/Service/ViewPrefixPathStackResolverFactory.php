@@ -10,8 +10,7 @@
 namespace Zend\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\View\Resolver\PrefixPathStackResolver;
 
 class ViewPrefixPathStackResolverFactory implements FactoryInterface
@@ -37,18 +36,5 @@ class ViewPrefixPathStackResolverFactory implements FactoryInterface
         }
 
         return new PrefixPathStackResolver($prefixes);
-    }
-
-    /**
-     * Create and return PrefixPathStackResolver instance
-     *
-     * For use with zend-servicemanager v2; proxies to __invoke().
-     *
-     * @param ServiceLocatorInterface $container
-     * @return PrefixPathStackResolver
-     */
-    public function createService(ServiceLocatorInterface $container)
-    {
-        return $this($container, PrefixPathStackResolver::class);
     }
 }

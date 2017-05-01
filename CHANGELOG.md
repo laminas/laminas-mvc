@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 3.1.0 - TBD
+
+### Added
+
+- [#217](https://github.com/zendframework/zend-mvc/pull/217) adds support for
+  middleware _pipelines_ when using the `MiddlewareListener`. You can now
+  specify an _array` of middleware for the `middleware` attached to a route, and
+  it will be marshaled into a `Zend\Stratigility\MiddlewarePipe` instance, using
+  the same rules as if you specified a single middleware.
+
+- [#236](https://github.com/zendframework/zend-mvc/pull/236) adds the ability to
+  attach dispatch listeners to middleware when using the `MiddlewareListener`.
+  Attach shared events to the class identifier `Zend\Mvc\Controller\MiddlewareController`.
+  This feature helps ensure that listeners that should run for every controller
+  (e.g., authentication or authorization listeners) will run even for
+  middleware.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- [#211](https://github.com/zendframework/zend-mvc/pull/211) Removed unused
+  zend-servicemanager v2 and zend-eventmanager v2 compatibility code since
+  zend-mvc requires v3 of those components.
+
+### Fixed
+
+- Nothing.
+
 ## 3.0.5 - TBD
 
 ### Added

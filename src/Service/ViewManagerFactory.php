@@ -11,8 +11,7 @@ namespace Zend\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
 use Zend\Mvc\View\Http\ViewManager as HttpViewManager;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 class ViewManagerFactory implements FactoryInterface
 {
@@ -27,18 +26,5 @@ class ViewManagerFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $name, array $options = null)
     {
         return $container->get('HttpViewManager');
-    }
-
-    /**
-     * Create and return HttpViewManager.
-     *
-     * For use with zend-servicemanager v2; proxies to __invoke().
-     *
-     * @param ServiceLocatorInterface $container
-     * @return HttpViewManager
-     */
-    public function createService(ServiceLocatorInterface $container)
-    {
-        return $this($container, HttpViewManager::class);
     }
 }

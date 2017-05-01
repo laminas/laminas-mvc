@@ -48,7 +48,7 @@ class ViewHelperManagerFactoryTest extends TestCase
     public function testDoctypeFactoryDoesNotRaiseErrorOnMissingConfiguration($config)
     {
         $this->services->setService('config', $config);
-        $manager = $this->factory->createService($this->services);
+        $manager = $this->factory->__invoke($this->services, 'doctype');
         $this->assertInstanceof(HelperPluginManager::class, $manager);
         $doctype = $manager->get('doctype');
         $this->assertInstanceof(Helper\Doctype::class, $doctype);
@@ -90,7 +90,7 @@ class ViewHelperManagerFactoryTest extends TestCase
         $this->services->setService('Application', $application->reveal());
         $this->services->setService('config', []);
 
-        $manager = $this->factory->createService($this->services);
+        $manager = $this->factory->__invoke($this->services, HelperPluginManager::class);
         $helper = $manager->get($name);
 
         $this->assertAttributeSame($routeMatch, 'routeMatch', $helper, 'Route match was not injected');
@@ -144,7 +144,7 @@ class ViewHelperManagerFactoryTest extends TestCase
             $this->services->setService($key, $value);
         }
 
-        $plugins = $this->factory->createService($this->services);
+        $plugins = $this->factory->__invoke($this->services, HelperPluginManager::class);
         $helper = $plugins->get($name);
         $this->assertInstanceof(Helper\BasePath::class, $helper);
         $this->assertEquals($expected, $helper());
@@ -172,7 +172,7 @@ class ViewHelperManagerFactoryTest extends TestCase
             ],
         ]);
 
-        $plugins = $this->factory->createService($this->services);
+        $plugins = $this->factory->__invoke($this->services, HelperPluginManager::class);
         $helper = $plugins->get($name);
         $this->assertInstanceof(Helper\Doctype::class, $helper);
         $this->assertEquals('<!DOCTYPE html>', (string) $helper);

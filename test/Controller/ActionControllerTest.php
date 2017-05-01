@@ -13,6 +13,7 @@ use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
+use Zend\EventManager\SharedEventManagerInterface;
 use Zend\Http\Request;
 use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -24,6 +25,7 @@ use Zend\Router\RouteMatch;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Stdlib\DispatchableInterface;
 use Zend\View\Model\ModelInterface;
+use ZendTest\Mvc\Controller\TestAsset\SampleController;
 use ZendTest\Mvc\Controller\TestAsset\SampleInterface;
 
 class ActionControllerTest extends TestCase
@@ -35,7 +37,7 @@ class ActionControllerTest extends TestCase
 
     public function setUp()
     {
-        $this->controller = new TestAsset\SampleController();
+        $this->controller = new SampleController();
         $this->request    = new Request();
         $this->response   = null;
         $this->routeMatch = new RouteMatch(['controller' => 'controller-sample']);
@@ -49,21 +51,11 @@ class ActionControllerTest extends TestCase
     }
 
     /**
-     * Create an event manager instance based on zend-eventmanager version
-     *
      * @param SharedEventManager
      * @return EventManager
      */
-    protected function createEventManager($sharedManager)
+    protected function createEventManager(SharedEventManagerInterface $sharedManager)
     {
-        $r = new ReflectionClass(EventManager::class);
-
-        if ($r->hasMethod('setSharedManager')) {
-            $events = new EventManager();
-            $events->setSharedManager($sharedManager);
-            return $events;
-        }
-
         return new EventManager($sharedManager);
     }
 

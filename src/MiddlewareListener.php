@@ -1,20 +1,26 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/zendframework/zend-mvc for the canonical source repository
+ * @copyright Copyright (c) 2015-2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/zend-mvc/blob/master/LICENSE.md New BSD License
  */
 
 namespace Zend\Mvc;
 
+use Interop\Container\ContainerInterface;
+use Interop\Http\ServerMiddleware\MiddlewareInterface;
 use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface as PsrServerRequestInterface;
 use Zend\EventManager\AbstractListenerAggregate;
 use Zend\EventManager\EventManagerInterface;
-use Zend\Psr7Bridge\Psr7ServerRequest as Psr7Request;
+use Zend\Mvc\Exception\InvalidMiddlewareException;
+use Zend\Mvc\Exception\ReachedFinalHandlerException;
+use Zend\Mvc\Controller\MiddlewareController;
 use Zend\Psr7Bridge\Psr7Response;
 use Zend\Router\RouteMatch;
+use Zend\Stratigility\Delegate\CallableDelegateDecorator;
+use Zend\Stratigility\MiddlewarePipe;
 
 class MiddlewareListener extends AbstractListenerAggregate
 {
@@ -37,6 +43,10 @@ class MiddlewareListener extends AbstractListenerAggregate
      */
     public function onDispatch(MvcEvent $event)
     {
+        if (null !== $event->getResult()) {
+            return;
+        }
+
         $routeMatch = $event->getRouteMatch();
         $middleware = $routeMatch->getParam('middleware', false);
         if (false === $middleware) {
@@ -47,17 +57,22 @@ class MiddlewareListener extends AbstractListenerAggregate
         $application    = $event->getApplication();
         $response       = $application->getResponse();
         $serviceManager = $application->getServiceManager();
-        $middlewareName = is_string($middleware) ? $middleware : get_class($middleware);
 
-        if (is_string($middleware) && $serviceManager->has($middleware)) {
-            $middleware = $serviceManager->get($middleware);
-        }
-        if (! is_callable($middleware)) {
-            $return = $this->marshalMiddlewareNotCallable(
+        $psr7ResponsePrototype = Psr7Response::fromZend($response);
+
+        try {
+            $pipe = $this->createPipeFromSpec(
+                $serviceManager,
+                $psr7ResponsePrototype,
+                is_array($middleware) ? $middleware : [$middleware]
+            );
+        } catch (InvalidMiddlewareException $invalidMiddlewareException) {
+            $return = $this->marshalInvalidMiddleware(
                 $application::ERROR_MIDDLEWARE_CANNOT_DISPATCH,
-                $middlewareName,
+                $invalidMiddlewareException->toMiddlewareName(),
                 $event,
-                $application
+                $application,
+                $invalidMiddlewareException
             );
             $event->setResult($return);
             return $return;
@@ -65,11 +80,12 @@ class MiddlewareListener extends AbstractListenerAggregate
 
         $caughtException = null;
         try {
-            $psr7Request = Psr7Request::fromZend($request)->withAttribute(RouteMatch::class, $routeMatch);
-            foreach ($routeMatch->getParams() as $key => $value) {
-                $psr7Request = $psr7Request->withAttribute($key, $value);
-            }
-            $return = $middleware($psr7Request, Psr7Response::fromZend($response));
+            $return = (new MiddlewareController(
+                $pipe,
+                $psr7ResponsePrototype,
+                $application->getServiceManager()->get('EventManager'),
+                $event
+            ))->dispatch($request, $response);
         } catch (\Throwable $ex) {
             $caughtException = $ex;
         } catch (\Exception $ex) {  // @TODO clean up once PHP 7 requirement is enforced
@@ -79,8 +95,6 @@ class MiddlewareListener extends AbstractListenerAggregate
         if ($caughtException !== null) {
             $event->setName(MvcEvent::EVENT_DISPATCH_ERROR);
             $event->setError($application::ERROR_EXCEPTION);
-            $event->setController($middlewareName);
-            $event->setControllerClass(get_class($middleware));
             $event->setParam('exception', $caughtException);
 
             $events  = $application->getEventManager();
@@ -91,6 +105,8 @@ class MiddlewareListener extends AbstractListenerAggregate
             }
         }
 
+        $event->setError('');
+
         if (! $return instanceof PsrResponseInterface) {
             $event->setResult($return);
             return $return;
@@ -98,6 +114,41 @@ class MiddlewareListener extends AbstractListenerAggregate
         $response = Psr7Response::toZend($return);
         $event->setResult($response);
         return $response;
+    }
+
+    /**
+     * Create a middleware pipe from the array spec given.
+     *
+     * @param ContainerInterface $serviceLocator
+     * @param ResponseInterface $responsePrototype
+     * @param array $middlewaresToBePiped
+     * @return MiddlewarePipe
+     * @throws InvalidMiddlewareException
+     */
+    private function createPipeFromSpec(
+        ContainerInterface $serviceLocator,
+        ResponseInterface $responsePrototype,
+        array $middlewaresToBePiped
+    ) {
+        $pipe = new MiddlewarePipe();
+        $pipe->setResponsePrototype($responsePrototype);
+        foreach ($middlewaresToBePiped as $middlewareToBePiped) {
+            if (null === $middlewareToBePiped) {
+                throw InvalidMiddlewareException::fromNull();
+            }
+
+            $middlewareName = is_string($middlewareToBePiped) ? $middlewareToBePiped : get_class($middlewareToBePiped);
+
+            if (is_string($middlewareToBePiped) && $serviceLocator->has($middlewareToBePiped)) {
+                $middlewareToBePiped = $serviceLocator->get($middlewareToBePiped);
+            }
+            if (! $middlewareToBePiped instanceof MiddlewareInterface && ! is_callable($middlewareToBePiped)) {
+                throw InvalidMiddlewareException::fromMiddlewareName($middlewareName);
+            }
+
+            $pipe->pipe($middlewareToBePiped);
+        }
+        return $pipe;
     }
 
     /**
@@ -110,7 +161,7 @@ class MiddlewareListener extends AbstractListenerAggregate
      * @param  \Exception $exception
      * @return mixed
      */
-    protected function marshalMiddlewareNotCallable(
+    protected function marshalInvalidMiddleware(
         $type,
         $middlewareName,
         MvcEvent $event,

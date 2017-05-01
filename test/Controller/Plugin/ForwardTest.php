@@ -19,8 +19,9 @@ use Zend\Http\Request;
 use Zend\Http\Response;
 use Zend\Mvc\ApplicationInterface;
 use Zend\Mvc\Controller\ControllerManager;
-use Zend\Mvc\Controller\PluginManager;
+use Zend\Mvc\Controller\Plugin\Forward;
 use Zend\Mvc\Controller\Plugin\Forward as ForwardPlugin;
+use Zend\Mvc\Controller\PluginManager;
 use Zend\Mvc\Exception\DomainException;
 use Zend\Mvc\Exception\InvalidControllerException;
 use Zend\Mvc\MvcEvent;
@@ -51,7 +52,7 @@ class ForwardTest extends TestCase
     private $controller;
 
     /**
-     * @var \Zend\Mvc\Controller\Plugin\Forward
+     * @var Forward
      */
     private $plugin;
 
@@ -114,21 +115,11 @@ class ForwardTest extends TestCase
     }
 
     /**
-     * Create an event manager instance based on zend-eventmanager version
-     *
      * @param SharedEventManager
      * @return EventManager
      */
-    protected function createEventManager($sharedManager)
+    protected function createEventManager(SharedEventManagerInterface $sharedManager)
     {
-        $r = new ReflectionClass(EventManager::class);
-
-        if ($r->hasMethod('setSharedManager')) {
-            $events = new EventManager();
-            $events->setSharedManager($sharedManager);
-            return $events;
-        }
-
         return new EventManager($sharedManager);
     }
 
@@ -157,12 +148,7 @@ class ForwardTest extends TestCase
         $plugin = new ForwardPlugin($this->controllers);
         $plugin->setController($this->controller);
 
-        // Vary exception expected based on zend-servicemanager version
-        $expectedException = method_exists($this->controllers, 'configure')
-            ? InvalidServiceException::class     // v3
-            : InvalidControllerException::class; // v2
-
-        $this->expectException($expectedException);
+        $this->expectException(InvalidServiceException::class);
         $this->expectExceptionMessage('DispatchableInterface');
         $plugin->dispatch('bogus');
     }

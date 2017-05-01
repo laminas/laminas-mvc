@@ -11,8 +11,7 @@ namespace Zend\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
 use Zend\Mvc\HttpMethodListener;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 class HttpMethodListenerFactory implements FactoryInterface
 {
@@ -37,18 +36,5 @@ class HttpMethodListenerFactory implements FactoryInterface
             : null;
 
         return new HttpMethodListener($enabled, $allowedMethods);
-    }
-
-    /**
-     * Create and return HttpMethodListener instance
-     *
-     * For use with zend-servicemanager v2; proxies to __invoke().
-     *
-     * @param ServiceLocatorInterface $container
-     * @return HttpMethodListener
-     */
-    public function createService(ServiceLocatorInterface $container)
-    {
-        return $this($container, HttpMethodListener::class);
     }
 }

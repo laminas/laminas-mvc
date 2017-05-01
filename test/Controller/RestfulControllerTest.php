@@ -15,6 +15,7 @@ use ReflectionObject;
 use stdClass;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
+use Zend\EventManager\SharedEventManagerInterface;
 use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\Mvc\Controller\Plugin\Url;
@@ -22,7 +23,10 @@ use Zend\Mvc\InjectApplicationEventInterface;
 use Zend\Mvc\MvcEvent;
 use Zend\Router\RouteMatch;
 use Zend\Stdlib\DispatchableInterface;
+use ZendTest\Mvc\Controller\TestAsset\Request;
 use ZendTest\Mvc\Controller\TestAsset\RestfulContentTypeTestController;
+use ZendTest\Mvc\Controller\TestAsset\RestfulMethodNotAllowedTestController;
+use ZendTest\Mvc\Controller\TestAsset\RestfulTestController;
 
 class RestfulControllerTest extends TestCase
 {
@@ -35,9 +39,9 @@ class RestfulControllerTest extends TestCase
 
     public function setUp()
     {
-        $this->controller      = new TestAsset\RestfulTestController();
-        $this->emptyController = new TestAsset\RestfulMethodNotAllowedTestController();
-        $this->request         = new TestAsset\Request();
+        $this->controller      = new RestfulTestController();
+        $this->emptyController = new RestfulMethodNotAllowedTestController();
+        $this->request         = new Request();
         $this->response        = new Response();
         $this->routeMatch      = new RouteMatch(['controller' => 'controller-restful']);
         $this->event           = new MvcEvent;
@@ -51,21 +55,11 @@ class RestfulControllerTest extends TestCase
     }
 
     /**
-     * Create an event manager instance based on zend-eventmanager version
-     *
      * @param SharedEventManager
      * @return EventManager
      */
-    protected function createEventManager($sharedManager)
+    protected function createEventManager(SharedEventManagerInterface $sharedManager)
     {
-        $r = new ReflectionClass(EventManager::class);
-
-        if ($r->hasMethod('setSharedManager')) {
-            $events = new EventManager();
-            $events->setSharedManager($sharedManager);
-            return $events;
-        }
-
         return new EventManager($sharedManager);
     }
 
@@ -447,9 +441,10 @@ class RestfulControllerTest extends TestCase
     public function testRequestingContentTypeReturnsTrueForValidMatches($contentType)
     {
         $this->request->getHeaders()->addHeaderLine('Content-Type', $contentType);
-        $this->assertTrue(
-            $this->controller->requestHasContentType($this->request, TestAsset\RestfulTestController::CONTENT_TYPE_JSON)
-        );
+        $this->assertTrue($this->controller->requestHasContentType(
+            $this->request,
+            RestfulTestController::CONTENT_TYPE_JSON
+        ));
     }
 
     public function nonMatchingContentTypes()
@@ -466,9 +461,10 @@ class RestfulControllerTest extends TestCase
     public function testRequestingContentTypeReturnsFalseForInvalidMatches($contentType)
     {
         $this->request->getHeaders()->addHeaderLine('Content-Type', $contentType);
-        $this->assertFalse(
-            $this->controller->requestHasContentType($this->request, TestAsset\RestfulTestController::CONTENT_TYPE_JSON)
-        );
+        $this->assertFalse($this->controller->requestHasContentType(
+            $this->request,
+            RestfulTestController::CONTENT_TYPE_JSON
+        ));
     }
 
     public function testDispatchWithUnrecognizedMethodReturns405Response()
