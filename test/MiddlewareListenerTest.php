@@ -521,6 +521,7 @@ class MiddlewareListenerTest extends TestCase
         $routeMatch     = new RouteMatch(['middleware' => $middlewareName]);
         /* @var $application Application|\PHPUnit_Framework_MockObject_MockObject */
         $application    = $this->createMock(Application::class);
+        $eventManager   = new EventManager();
         $middleware     = $this->getMockBuilder(\stdClass::class)->setMethods(['__invoke'])->getMock();
         $serviceManager = new ServiceManager([
             'factories' => [
@@ -534,7 +535,7 @@ class MiddlewareListenerTest extends TestCase
         ]);
 
         $application->expects(self::any())->method('getRequest')->willReturn(new Request());
-        $application->expects(self::any())->method('getEventManager')->willReturn(new EventManager());
+        $application->expects(self::any())->method('getEventManager')->willReturn($eventManager);
         $application->expects(self::any())->method('getServiceManager')->willReturn($serviceManager);
         $application->expects(self::any())->method('getResponse')->willReturn(new Response());
         $middleware->expects(self::never())->method('__invoke');
@@ -548,6 +549,10 @@ class MiddlewareListenerTest extends TestCase
         $event->setRouteMatch($routeMatch);
 
         $listener = new MiddlewareListener();
+
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, function () {
+            self::fail('No dispatch failures should be raised - dispatch should be skipped');
+        });
 
         $listener->onDispatch($event);
 
