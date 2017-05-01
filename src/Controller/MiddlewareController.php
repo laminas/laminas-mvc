@@ -11,7 +11,7 @@ namespace Zend\Mvc\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\EventManager\EventManager;
+use Zend\EventManager\EventManagerInterface;
 use Zend\Http\Request;
 use Zend\Mvc\Exception\ReachedFinalHandlerException;
 use Zend\Mvc\Exception\RuntimeException;
@@ -45,7 +45,7 @@ final class MiddlewareController extends AbstractController
     public function __construct(
         MiddlewarePipe $pipe,
         ResponseInterface $responsePrototype,
-        EventManager $eventManager,
+        EventManagerInterface $eventManager,
         MvcEvent $event
     ) {
         $this->eventIdentifier   = __CLASS__;
