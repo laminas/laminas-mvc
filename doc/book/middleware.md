@@ -53,6 +53,13 @@ $route = Literal::factory([
 
 Middleware may be provided as PHP callables, or as service names.
 
+**As of 3.1.0** you may also specify an `array` of middleware, and middleware
+may be [http-interop/http-middleware](https://github.com/http-interop/http-middleware)
+compatible. Each item in the array must be a PHP callable, service name, or
+http-middleware instance. These will then be piped into a
+`Zend\Stratigility\MiddlewarePipe` instance in the order in which they are
+present in the array.
+
 > ### No action required
 > 
 > Unlike action controllers, middleware typically is single purpose, and, as
@@ -69,8 +76,8 @@ create an error response if non-callable middleware is indicated.
 
 ## Writing middleware
 
-When dispatching middleware, the `MiddlewareListener` calls it with two
-arguments, the PSR-7 request and response, respectively. As such, your
+Prior to 3.1.0, when dispatching middleware, the `MiddlewareListener` calls it
+with two arguments, the PSR-7 request and response, respectively. As such, your
 middleware signature should look like the following:
 
 ```php
@@ -88,14 +95,55 @@ class IndexMiddleware
 }
 ```
 
-From there, you can pull information from the composed request, and manipulate
-the response.
+Starting in 3.1.0, the `MiddlewareListener` always adds middleware to a
+`Zend\Stratigility\MiddlewarePipe` instance, and invokes it as
+[http-interop/http-middleware](https://github.com/http-interop/http-middleware),
+passing it a PSR-7 `ServerRequestInterface` and an http-interop
+`DelegateInterface`. 
+
+As such, ideally your middleware should implement the `MiddlewareInterface` from
+[http-interop/http-middleware](https://github.com/http-interop/http-middleware):
+
+```php
+namespace Application\Middleware;
+
+use Interop\Http\ServerMiddleware\DelegateInterface;
+use Interop\Http\ServerMiddleware\MiddlewareInterface;
+use Psr\Http\Message\ServerRequestInterface;
+
+class IndexMiddleware implements MiddlewareInterface
+{
+    public function process(ServerRequestInterface $request, DelegateInterface $delegate)
+    {
+        // do some work
+    }
+}
+```
+
+Alternately, you may still write `callable` middleware using the following
+signature:
+
+```php
+function (ServerREquestInterface $request, ResponseInterface $response, callable $next)
+{
+    // do some work
+}
+```
+
+In the above case, the `DelegateInterface` is decorated as a callable.
+
+In all versions, within your middleware, you can pull information from the
+composed request, and return a response.
 
 > ### Routing parameters
 >
-> At the time of the 2.7.0 release, route match parameters are not yet injected
-> into the PSR-7 `ServerRequest` instance, and are thus not available as request
-> attributes..
+> At the time of the 2.7.0 release, route match parameters were not yet injected
+> into the PSR-7 `ServerRequest` instance, and thus not available as request
+> attributes.
+>
+> With the 3.0 release, they are pushed into the PSR-7 `ServerRequest` as
+> attributes, and may thus be fetched using
+> `$request->getAttribute($attributeName)`.
 
 ## Middleware return values
 
