@@ -21,6 +21,7 @@ use Zend\Mvc\Exception\ReachedFinalHandlerException;
 use Zend\Psr7Bridge\Psr7ServerRequest as Psr7Request;
 use Zend\Psr7Bridge\Psr7Response;
 use Zend\Router\RouteMatch;
+use Zend\Stratigility\Delegate\CallableDelegateDecorator;
 use Zend\Stratigility\MiddlewarePipe;
 
 class MiddlewareListener extends AbstractListenerAggregate
@@ -81,13 +82,12 @@ class MiddlewareListener extends AbstractListenerAggregate
             foreach ($routeMatch->getParams() as $key => $value) {
                 $psr7Request = $psr7Request->withAttribute($key, $value);
             }
-            $return = $pipe(
-                $psr7Request,
-                $psr7ResponsePrototype,
+            $return = $pipe->process($psr7Request, new CallableDelegateDecorator(
                 function (PsrServerRequestInterface $request, PsrResponseInterface $response) {
                     throw ReachedFinalHandlerException::create();
-                }
-            );
+                },
+                $psr7ResponsePrototype
+            ));
         } catch (\Throwable $ex) {
             $caughtException = $ex;
         } catch (\Exception $ex) {  // @TODO clean up once PHP 7 requirement is enforced
