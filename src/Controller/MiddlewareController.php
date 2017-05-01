@@ -9,14 +9,19 @@
 
 namespace Zend\Mvc\Controller;
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Zend\EventManager\EventManager;
 use Zend\Http\Request;
 use Zend\Http\Response;
+use Zend\Mvc\Exception\ReachedFinalHandlerException;
 use Zend\Mvc\Exception\RuntimeException;
 use Zend\Mvc\MvcEvent;
 use Zend\Psr7Bridge\Psr7Response;
 use Zend\Psr7Bridge\Psr7ServerRequest;
 use Zend\Router\RouteMatch;
+use Zend\Stratigility\Delegate\CallableDelegateDecorator;
+use Zend\Stratigility\MiddlewarePipe;
 
 /**
  * Note: I'm a terrible person
@@ -27,17 +32,28 @@ use Zend\Router\RouteMatch;
 final class MiddlewareController extends AbstractController
 {
     /**
-     * @var callable
+     * @var MiddlewarePipe
      */
-    private $middleware;
+    private $pipe;
 
-    public function __construct(callable $middleware, EventManager $eventManager, MvcEvent $event)
-    {
-        $this->eventIdentifier = __CLASS__;
-        $this->middleware      = $middleware;
+    /**
+     * @var ResponseInterface
+     */
+    private $responsePrototype;
+
+    public function __construct(
+        MiddlewarePipe $pipe,
+        ResponseInterface $responsePrototype,
+        EventManager $eventManager,
+        MvcEvent $event
+    ) {
+        $this->eventIdentifier   = __CLASS__;
+        $this->pipe              = $pipe;
+        $this->responsePrototype = $responsePrototype;
 
         $this->setEventManager($eventManager);
         $this->setEvent($event);
+
     }
 
     /**
@@ -74,7 +90,12 @@ final class MiddlewareController extends AbstractController
             }
         }
 
-        $result = \call_user_func($this->middleware, $psr7Request, Psr7Response::fromZend($response));
+        $result = $this->pipe->process($psr7Request, new CallableDelegateDecorator(
+            function (ServerRequestInterface $request, ResponseInterface $response) {
+                throw ReachedFinalHandlerException::create();
+            },
+            $this->responsePrototype
+        ));
 
         $e->setResult($result);
 

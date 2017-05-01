@@ -83,20 +83,11 @@ class MiddlewareListener extends AbstractListenerAggregate
         $caughtException = null;
         try {
             $return = (new MiddlewareController(
-                $middleware,
+                $pipe,
+                $psr7ResponsePrototype,
                 $application->getServiceManager()->get('EventManager'),
                 $event
             ))->dispatch($request, $response);
-            $psr7Request = Psr7Request::fromZend($request)->withAttribute(RouteMatch::class, $routeMatch);
-            foreach ($routeMatch->getParams() as $key => $value) {
-                $psr7Request = $psr7Request->withAttribute($key, $value);
-            }
-            $return = $pipe->process($psr7Request, new CallableDelegateDecorator(
-                function (PsrServerRequestInterface $request, PsrResponseInterface $response) {
-                    throw ReachedFinalHandlerException::create();
-                },
-                $psr7ResponsePrototype
-            ));
         } catch (\Throwable $ex) {
             $caughtException = $ex;
         } catch (\Exception $ex) {  // @TODO clean up once PHP 7 requirement is enforced

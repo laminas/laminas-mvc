@@ -89,7 +89,6 @@ class MiddlewareListenerTest extends TestCase
         $application = $event->getApplication();
 
         $application->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) {
-            die(var_dump($e->getParam('exception')->getMessage()));
             $this->fail(sprintf('dispatch.error triggered when it should not be: %s', var_export($e->getError(), 1)));
         });
 
@@ -163,6 +162,7 @@ class MiddlewareListenerTest extends TestCase
         $eventManager = new EventManager();
 
         $serviceManager = $this->prophesize(ContainerInterface::class);
+        $serviceManager->get('EventManager')->willReturn($eventManager);
         $serviceManager->has('firstMiddleware')->willReturn(true);
         $serviceManager->get('firstMiddleware')->willReturn(function ($request, $response, $next) {
             $this->assertInstanceOf(ServerRequestInterface::class, $request);
@@ -302,6 +302,8 @@ class MiddlewareListenerTest extends TestCase
             return $serviceManager->reveal();
         });
         $application->getResponse()->willReturn($response);
+
+        $serviceManager->get('EventManager')->willReturn($eventManager);
 
         $event = new MvcEvent();
         $event->setRequest(new Request());
