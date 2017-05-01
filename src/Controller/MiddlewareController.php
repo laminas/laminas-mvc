@@ -10,6 +10,7 @@
 namespace Zend\Mvc\Controller;
 
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Zend\EventManager\EventManager;
 use Zend\Http\Request;
 use Zend\Http\Response;
@@ -80,13 +81,10 @@ final class MiddlewareController extends AbstractController
         }
 
         $routeMatch  = $e->getRouteMatch();
-        $psr7Request = Psr7ServerRequest::fromZend($request)->withAttribute(RouteMatch::class, $routeMatch);
-
-        if ($routeMatch) {
-            foreach ($routeMatch->getParams() as $key => $value) {
-                $psr7Request = $psr7Request->withAttribute($key, $value);
-            }
-        }
+        $psr7Request = $this->populateRequestParametersFromRoute(
+            Psr7ServerRequest::fromZend($request)->withAttribute(RouteMatch::class, $routeMatch),
+            $routeMatch
+        );
 
         $result = $this->pipe->process($psr7Request, new CallableDelegateDecorator(
             function () {
@@ -98,5 +96,24 @@ final class MiddlewareController extends AbstractController
         $e->setResult($result);
 
         return $result;
+    }
+
+    /**
+     * @param ServerRequestInterface $request
+     * @param RouteMatch|null $routeMatch
+     *
+     * @return ServerRequestInterface
+     */
+    private function populateRequestParametersFromRoute(ServerRequestInterface $request, RouteMatch $routeMatch = null)
+    {
+        if (! $routeMatch) {
+            return $request;
+        }
+
+        foreach ($routeMatch->getParams() as $key => $value) {
+            $request = $request->withAttribute($key, $value);
+        }
+
+        return $request;
     }
 }
