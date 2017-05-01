@@ -11,17 +11,13 @@ namespace ZendTest\Mvc\Controller;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
-use ReflectionProperty;
 use Zend\EventManager\EventManager;
-use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerInterface;
-use Zend\EventManager\ResponseCollection;
 use Zend\Http\Request;
 use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractController;
 use Zend\Mvc\Controller\MiddlewareController;
 use Zend\Mvc\Exception\RuntimeException;
-use Zend\Mvc\InjectApplicationEventInterface;
 use Zend\Mvc\MvcEvent;
 use Zend\Stdlib\DispatchableInterface;
 use Zend\Stdlib\RequestInterface;
