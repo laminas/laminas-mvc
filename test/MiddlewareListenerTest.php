@@ -509,4 +509,68 @@ class MiddlewareListenerTest extends TestCase
 
         $listener->onDispatch($event);
     }
+
+    /**
+     * @dataProvider alreadySetMvcEventResultProvider
+     *
+     * @param mixed $alreadySetResult
+     */
+    public function testWillNotDispatchWhenAnMvcEventResultIsAlreadySet($alreadySetResult)
+    {
+        $middlewareName = uniqid('middleware', true);
+        $routeMatch     = new RouteMatch(['middleware' => $middlewareName]);
+        /* @var $application Application|\PHPUnit_Framework_MockObject_MockObject */
+        $application    = $this->createMock(Application::class);
+        $middleware     = $this->getMockBuilder(\stdClass::class)->setMethods(['__invoke'])->getMock();
+        $serviceManager = new ServiceManager([
+            'factories' => [
+                'EventManager' => function () {
+                    return new EventManager();
+                },
+            ],
+            'services' => [
+                $middlewareName => $middleware,
+            ],
+        ]);
+
+        $application->expects(self::any())->method('getRequest')->willReturn(new Request());
+        $application->expects(self::any())->method('getEventManager')->willReturn(new EventManager());
+        $application->expects(self::any())->method('getServiceManager')->willReturn($serviceManager);
+        $application->expects(self::any())->method('getResponse')->willReturn(new Response());
+        $middleware->expects(self::never())->method('__invoke');
+
+        $event = new MvcEvent();
+
+        $event->setResult($alreadySetResult); // a result is already there - listener should bail out early
+        $event->setRequest(new Request());
+        $event->setApplication($application);
+        $event->setError(Application::ERROR_CONTROLLER_CANNOT_DISPATCH);
+        $event->setRouteMatch($routeMatch);
+
+        $listener = new MiddlewareListener();
+
+        $listener->onDispatch($event);
+
+        self::assertSame($alreadySetResult, $event->getResult(), 'The event result was not replaced');
+    }
+
+    /**
+     * @return mixed[][]
+     */
+    public function alreadySetMvcEventResultProvider()
+    {
+        return [
+            [123],
+            [true],
+            [false],
+            [[]],
+            [new \stdClass()],
+            [$this],
+            [$this->createMock(ModelInterface::class)],
+            [$this->createMock(Response::class)],
+            [['view model data' => 'as an array']],
+            [['foo' => new \stdClass()]],
+            ['a response string'],
+        ];
+    }
 }
