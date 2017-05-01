@@ -17,7 +17,6 @@ use Zend\Http\Response;
 use Zend\Mvc\Exception\ReachedFinalHandlerException;
 use Zend\Mvc\Exception\RuntimeException;
 use Zend\Mvc\MvcEvent;
-use Zend\Psr7Bridge\Psr7Response;
 use Zend\Psr7Bridge\Psr7ServerRequest;
 use Zend\Router\RouteMatch;
 use Zend\Stratigility\Delegate\CallableDelegateDecorator;
