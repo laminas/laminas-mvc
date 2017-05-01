@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 3.1.0 - TBD
+## 3.1.0 - 2017-05-01
 
 ### Added
 
@@ -19,26 +19,9 @@ All notable changes to this project will be documented in this file, in reverse 
   (e.g., authentication or authorization listeners) will run even for
   middleware.
 
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- [#211](https://github.com/zendframework/zend-mvc/pull/211) Removed unused
-  zend-servicemanager v2 and zend-eventmanager v2 compatibility code since
-  zend-mvc requires v3 of those components.
-
-### Fixed
-
-- Nothing.
-
-## 3.0.5 - TBD
-
-### Added
-
 - [#231](https://github.com/zendframework/zend-mvc/pull/231) adds a
   `composer.json` suggestion for zendframework/zend-paginator.
+
 - [#232](https://github.com/zendframework/zend-mvc/pull/232) adds a
   `composer.json` suggestion for zendframework/zend-log.
 
@@ -48,7 +31,9 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Removed
 
-- Nothing.
+- [#211](https://github.com/zendframework/zend-mvc/pull/211) Removed unused
+  zend-servicemanager v2 and zend-eventmanager v2 compatibility code since
+  zend-mvc requires v3 of those components.
 
 ### Fixed
 
