@@ -6,7 +6,11 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- Nothing.
+- [#217](https://github.com/zendframework/zend-mvc/pull/217) adds support for
+  middleware _pipelines_ when using the `MiddlewareListener`. You can now
+  specify an _array` of middleware for the `middleware` attached to a route, and
+  it will be marshaled into a `Zend\Stratigility\MiddlewarePipe` instance, using
+  the same rules as if you specified a single middleware.
 
 ### Deprecated
 
