@@ -109,10 +109,14 @@ classes for you to start with:
     post body.
   - `DELETE` expects an "id" to be matched during routing, and will call the
     `delete()` method.
-- `Zend\Mvc\Controller\AbstractConsoleController` extends from
+- `Zend\Mvc\Console\Controller\AbstractConsoleController` extends from
   `AbstractActionController`, but provides methods for retrieving the
   `Zend\Console\Adapter\AdapterInterface` instance, and ensuring that execution
   fails in non-console environments.
+> To use it, you need to install zend-mvc-console via
+```bash
+composer require zendframework/zend-mvc-console --sort-packages
+```
 
 To get started, we'll create a "hello world"-style controller, with a single
 action. First, create the file `HelloController.php` in the directory
