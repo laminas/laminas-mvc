@@ -113,10 +113,12 @@ classes for you to start with:
   `AbstractActionController`, but provides methods for retrieving the
   `Zend\Console\Adapter\AdapterInterface` instance, and ensuring that execution
   fails in non-console environments.
-> [zend-mvc-console](https://docs.zendframework.com/zend-mvc-console/) is a component that required to use it. We can install via composer command:
-> ```bash
+
+> For version 3, the integration component [zend-mvc-console](https://docs.zendframework.com/zend-mvc-console/) must be installed. It can be done via Composer:
+> ````bash
 > composer require zendframework/zend-mvc-console
 > ```
+> If you are not using the component installer, you will need to [add this component as a module](https://docs.zendframework.com/zend-mvc-console/intro/#manual-installation).
 
 To get started, we'll create a "hello world"-style controller, with a single
 action. First, create the file `HelloController.php` in the directory

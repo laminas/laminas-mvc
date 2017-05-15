@@ -279,10 +279,11 @@ extending class.
 
 ## AbstractConsoleController
 
-> [zend-mvc-console](https://docs.zendframework.com/zend-mvc-console/) is a component that required to use it. We can install via composer command:
-> ```bash
+> For version 3, the integration component [zend-mvc-console](https://docs.zendframework.com/zend-mvc-console/) must be installed. It can be done via Composer:
+> ````bash
 > composer require zendframework/zend-mvc-console
 > ```
+> If you are not using the component installer, you will need to [add this component as a module](https://docs.zendframework.com/zend-mvc-console/intro/#manual-installation).
 
 `Zend\Mvc\Console\Controller\AbstractConsoleController` extends from [AbstractActionController](#abstractactioncontroller)
 and provides the following functionality:
