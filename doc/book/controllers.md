@@ -281,7 +281,7 @@ extending class.
 
 > To use  it, you need to install zend-mvc-console via
 ```bash
-composer require zendframework/zend-mvc-console --sort-packages
+composer require zendframework/zend-mvc-console 
 ```
 
 `Zend\Mvc\Console\Controller\AbstractConsoleController` extends from [AbstractActionController](#abstractactioncontroller)

@@ -115,7 +115,7 @@ classes for you to start with:
   fails in non-console environments.
 > To use it, you need to install zend-mvc-console via
 ```bash
-composer require zendframework/zend-mvc-console --sort-packages
+composer require zendframework/zend-mvc-console 
 ```
 
 To get started, we'll create a "hello world"-style controller, with a single
