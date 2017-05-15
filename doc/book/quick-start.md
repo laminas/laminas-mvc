@@ -113,7 +113,7 @@ classes for you to start with:
   `AbstractActionController`, but provides methods for retrieving the
   `Zend\Console\Adapter\AdapterInterface` instance, and ensuring that execution
   fails in non-console environments.
-> To use it, you need to install zend-mvc-console via
+> [zend-mvc-console](https://docs.zendframework.com/zend-mvc-console/) is a component that required to use it. We can install via composer command:
 > ```bash
 > composer require zendframework/zend-mvc-console
 > ```

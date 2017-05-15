@@ -279,7 +279,7 @@ extending class.
 
 ## AbstractConsoleController
 
-> To use  it, you need to install zend-mvc-console via
+> [zend-mvc-console](https://docs.zendframework.com/zend-mvc-console/) is a component that required to use it. We can install via composer command:
 > ```bash
 > composer require zendframework/zend-mvc-console
 > ```
