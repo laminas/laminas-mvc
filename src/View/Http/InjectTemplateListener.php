@@ -170,7 +170,7 @@ class InjectTemplateListener extends AbstractListenerAggregate
      */
     protected function deriveControllerClass($controller)
     {
-        if (strstr($controller, '\\')) {
+        if (strpos($controller, '\\')) {
             $controller = substr($controller, strrpos($controller, '\\') + 1);
         }
 

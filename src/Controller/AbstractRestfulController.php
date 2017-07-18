@@ -487,7 +487,7 @@ abstract class AbstractRestfulController extends AbstractController
         }
 
         $requestedContentType = $headerContentType->getFieldValue();
-        if (strstr($requestedContentType, ';')) {
+        if (strpos($requestedContentType, ';')) {
             $headerData = explode(';', $requestedContentType);
             $requestedContentType = array_shift($headerData);
         }
