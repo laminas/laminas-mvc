@@ -238,12 +238,41 @@ class ForwardTest extends TestCase
         $this->assertEquals(['content' => 'ZendTest\Mvc\Controller\TestAsset\ForwardController::testAction'], $result);
     }
 
-    public function testProblemListenersAreDetachedAndReattachedWhenPluginDispatchsRequestedController()
+    public function testProblemListenersAreDetachedAndReattachedWhenPluginDispatchesRequestedController()
     {
         $services = $this->services;
         $events   = $services->get('EventManager');
 
         $myCallback = [new ListenerStub(),'myCallback'];
+        $sharedEvents = $this->createMock(SharedEventManagerInterface::class);
+        $sharedEvents->expects($this->once())->method('detach')->with($myCallback, 'Zend\Stdlib\DispatchableInterface');
+        $sharedEvents
+            ->expects($this->once())
+            ->method('attach')
+            ->with('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, $myCallback, -50);
+        $sharedEvents->expects($this->any())->method('getListeners')->will($this->returnValue([-50 => [$myCallback]]));
+        $events = $this->createEventManager($sharedEvents);
+
+        $application = $this->createMock(ApplicationInterface::class);
+        $application->expects($this->any())->method('getEventManager')->will($this->returnValue($events));
+        $event = $this->controller->getEvent();
+        $event->setApplication($application);
+
+        $this->plugin->setListenersToDetach([[
+            'id'    => 'Zend\Stdlib\DispatchableInterface',
+            'event' => MvcEvent::EVENT_DISPATCH,
+            'class' => 'ZendTest\Mvc\Controller\Plugin\TestAsset\ListenerStub',
+        ]]);
+
+        $result = $this->plugin->dispatch('forward');
+    }
+
+    public function testInvokableProblemListenersAreDetachedAndReattachedWhenPluginDispatchesRequestedController()
+    {
+        $services = $this->services;
+        $events   = $services->get('EventManager');
+
+        $myCallback = new ListenerStub();
         $sharedEvents = $this->createMock(SharedEventManagerInterface::class);
         $sharedEvents->expects($this->once())->method('detach')->with($myCallback, 'Zend\Stdlib\DispatchableInterface');
         $sharedEvents
