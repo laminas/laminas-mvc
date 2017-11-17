@@ -197,9 +197,6 @@ class Forward extends AbstractPlugin
 
                         foreach ($classArray as $class) {
                             if ($currentCallback instanceof $class) {
-                                // Pass $currentEvent; when using zend-eventmanager v2,
-                                // this is the CallbackHandler, while in v3 it's
-                                // the actual listener.
                                 $this->detachSharedListener($id, $currentEvent, $sharedEvents);
                                 $results[$id][$eventName][$priority] = $currentEvent;
                             }
