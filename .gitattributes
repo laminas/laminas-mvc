@@ -1,4 +1,3 @@
-/doc export-ignore
 /test export-ignore
 /vendor export-ignore
 .coveralls.yml export-ignore
@@ -7,3 +6,4 @@
 .travis.yml export-ignore
 .php_cs export-ignore
 phpunit.xml.dist export-ignore
+/docs/ export-ignore
