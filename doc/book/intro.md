@@ -17,11 +17,11 @@ The MVC layer is built on top of the following components:
   correctly with the SAPI and output buffering.
 - zend-stdlib - specifically `Zend\Stdlib\DispatchableInterface`. All
   "controllers" are simply dispatchable objects.
+- zend-router - provides routing of a request. In other
+  words, it matches the request to its respective controller (or dispatchable).
 
 Within the MVC layer, several sub-components are exposed:
 
-- `Zend\Mvc\Router` contains classes pertaining to routing a request. In other
-  words, it matches the request to its respective controller (or dispatchable).
 - `Zend\Mvc\Controller`, a set of abstract "controller" classes with basic
   responsibilities such as event wiring, action dispatching, etc., as well as
   controller plugins.
@@ -247,7 +247,7 @@ the application. In the default implementation, this does the following:
 - Attaches the default dispatch listener (`Zend\Mvc\DispatchListener`).
 - Attaches the `ViewManager` listener (`Zend\Mvc\View\ViewManager`).
 - Creates the `MvcEvent`, and injects it with the application, request, and
-  response; it also retrieves the router (`Zend\Mvc\Router\Http\TreeRouteStack`)
+  response; it also retrieves the router (`Zend\Router\Http\TreeRouteStack`)
   at this time and attaches it to the event.
 - Triggers the "bootstrap" event.
 
