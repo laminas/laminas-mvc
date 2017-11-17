@@ -12,7 +12,7 @@ more.
 The base unit of routing is a `Route`:
 
 ```php
-namespace Zend\Mvc\Router;
+namespace Zend\Router;
 
 use Zend\Stdlib\RequestInterface as Request;
 
@@ -28,7 +28,7 @@ A `Route` accepts a `Request`, and determines if it matches. If so, it returns a
 `RouteMatch` object:
 
 ```php
-namespace Zend\Mvc\Router;
+namespace Zend\Router;
 
 class RouteMatch
 {
@@ -58,7 +58,7 @@ facilitate this, you will use a route aggregate, usually implementing
 `RouteStack`:
 
 ```php
-namespace Zend\Mvc\Router;
+namespace Zend\Router;
 
 interface RouteStackInterface extends RouteInterface
 {
@@ -125,7 +125,7 @@ adding it to the route stack.
 
 ### TreeRouteStack
 
-`Zend\Mvc\Router\Http\TreeRouteStack` provides the ability to register trees of
+`Zend\Router\Http\TreeRouteStack` provides the ability to register trees of
 routes, and uses a B-tree algorithm to match routes. As such, you register a
 single route with many children.
 
@@ -133,7 +133,7 @@ A `TreeRouteStack` will consist of the following configuration:
 
 - A base "route", which describes the base match needed, the root of the tree.
 - An optional `route_plugins`, which is a configured
-  `Zend\Mvc\Router\RoutePluginManager` that can lazy-load routes.
+  `Zend\Router\RoutePluginManager` that can lazy-load routes.
 - The option `may_terminate`, which hints to the router that no other segments
   will follow it.
 - An optional `child_routes` array, which contains additional routes that stem
@@ -153,7 +153,7 @@ route.
 
 zend-mvc ships with the following HTTP route types.
 
-### Zend\\Mvc\\Router\\Http\\Hostname
+### Zend\\Router\\Http\\Hostname
 
 The `Hostname` route attempts to match the hostname registered in the request
 against specific criteria. Typically, this will be in one of the following
@@ -198,7 +198,7 @@ $route = Hostname::factory([
 When matched, the above will return two keys in the `RouteMatch`, "subdomain"
 and "type".
 
-### Zend\\Mvc\\Router\\Http\\Literal
+### Zend\\Router\\Http\\Literal
 
 The `Literal` route is for doing exact matching of the URI path. Configuration
 therefore is solely the path you want to match, and the "defaults", or
@@ -217,7 +217,7 @@ $route = Literal::factory([
 The above route would match a path "/foo", and return the key "action" in the
 `RouteMatch`, with the value "foo".
 
-### Zend\\Mvc\\Router\\Http\\Method
+### Zend\\Router\\Http\\Method
 
 The `Method` route is used to match the HTTP method or 'verb' specified in the
 request (See RFC 2616 Sec. 5.1.1). It can optionally be configured to match
@@ -236,7 +236,7 @@ $route = Method::factory([
 The above route would match an http "POST" or "PUT" request and return a
 `RouteMatch` object containing a key "action" with a value of "form-submit".
 
-### Zend\\Mvc\\Router\\Http\\Part
+### Zend\\Router\\Http\\Part
 
 A `Part` route allows crafting a tree of possible routes based on segments of
 the URI path. It actually extends the `TreeRouteStack`.
@@ -328,32 +328,32 @@ You may use any route type as a child route of a `Part` route.
 > ### Route plugins
 >
 > In the above example, the `$routePlugins` is an instance of
-> `Zend\Mvc\Router\RoutePluginManager`, containing essentially the following
+> `Zend\Router\RoutePluginManager`, containing essentially the following
 > configuration:
 >
 > ```php
-> $routePlugins = new Zend\Mvc\Router\RoutePluginManager();
+> $routePlugins = new Zend\Router\RoutePluginManager();
 > $plugins = [
->     'hostname' => 'Zend\Mvc\Router\Http\Hostname',
->     'literal'  => 'Zend\Mvc\Router\Http\Literal',
->     'part'     => 'Zend\Mvc\Router\Http\Part',
->     'regex'    => 'Zend\Mvc\Router\Http\Regex',
->     'scheme'   => 'Zend\Mvc\Router\Http\Scheme',
->     'segment'  => 'Zend\Mvc\Router\Http\Segment',
->     'wildcard' => 'Zend\Mvc\Router\Http\Wildcard',
->     'query'    => 'Zend\Mvc\Router\Http\Query',
->     'method'   => 'Zend\Mvc\Router\Http\Method',
+>     'hostname' => 'Zend\Router\Http\Hostname',
+>     'literal'  => 'Zend\Router\Http\Literal',
+>     'part'     => 'Zend\Router\Http\Part',
+>     'regex'    => 'Zend\Router\Http\Regex',
+>     'scheme'   => 'Zend\Router\Http\Scheme',
+>     'segment'  => 'Zend\Router\Http\Segment',
+>     'wildcard' => 'Zend\Router\Http\Wildcard',
+>     'query'    => 'Zend\Router\Http\Query',
+>     'method'   => 'Zend\Router\Http\Method',
 > ];
 > foreach ($plugins as $name => $class) {
 >     $routePlugins->setInvokableClass($name, $class);
 > }
 > ```
 >
-> When using `Zend\Mvc\Router\Http\TreeRouteStack`, the `RoutePluginManager` is
+> When using `Zend\Router\Http\TreeRouteStack`, the `RoutePluginManager` is
 > set up by default, and the developer does not need to worry about autoloading
 > of standard HTTP routes.
 
-### Zend\\Mvc\\Router\\Http\\Regex
+### Zend\\Router\\Http\\Regex
 
 A `Regex` route utilizes a regular expression to match against the URI path. Any
 valid regular expression is allowed; our recommendation is to use named captures
@@ -385,7 +385,7 @@ items in the `RouteMatch`, an "id", the "controller", the "action", and the
 "format". When assembling a URL from this route, the "id" and "format" values
 would be used to fill the specification.
 
-### Zend\\Mvc\\Router\\Http\\Scheme
+### Zend\\Router\\Http\\Scheme
 
 The `Scheme` route matches the URI scheme only, and must be an exact match. As
 such, this route, like the `Literal` route, simply takes what you want to match
@@ -403,7 +403,7 @@ $route = Scheme::factory([
 The above route would match the "https" scheme, and return the key "https" in
 the `RouteMatch` with a boolean `true` value.
 
-### Zend\\Mvc\\Router\\Http\\Segment
+### Zend\\Router\\Http\\Segment
 
 A `Segment` route allows matching any segment of a URI path. Segments are
 denoted using a colon, followed by alphanumeric characters; if a segment is
@@ -440,7 +440,7 @@ $route = Segment::factory([
 ]);
 ```
 
-### Zend\\Mvc\\Router\\Http\\Query (Deprecated)
+### Zend\\Router\\Http\\Query (Deprecated)
 
 > #### Potential security issue
 >
@@ -449,7 +449,7 @@ $route = Segment::factory([
 > #### Deprecated
 >
 > This route part is deprecated since you can now add query parameters without a
-> query route.
+> query route. It was removed in version 3 of the router.
 
 The `Query` route part allows you to specify and capture query string parameters
 for a given route.
@@ -507,7 +507,7 @@ will then be appended as a query string.
 The output from our example should then be
 `/page/my-test-page?format=rss&limit=10`
 
-### Zend\\Mvc\\Router\\Http\\Wildcard (Deprecated)
+### Zend\\Router\\Http\\Wildcard (Deprecated)
 
 > #### Potential security issue
 >
@@ -632,7 +632,7 @@ return [
     'router' => [
         'routes' => [
             'modules.zendframework.com' => [
-                'type' => 'Zend\Mvc\Router\Http\Hostname',
+                'type' => 'Zend\Router\Http\Hostname',
                 'options' => [
                     'route' => ':4th.[:3rd.]:2nd.:1st', // domain levels from right to left
                     'constraints' => [
@@ -647,7 +647,7 @@ return [
                 // child route controllers may span multiple modules as desired
                 'child_routes' => [
                     'index' => [
-                        'type' => 'Zend\Mvc\Router\Http\Literal',
+                        'type' => 'Zend\Router\Http\Literal',
                         'options' => [
                             'route' => '/',
                             'defaults' => [
@@ -660,7 +660,7 @@ return [
                 ],
             ],
             'packages.zendframework.com' => [
-                'type' => 'Zend\Mvc\Router\Http\Hostname',
+                'type' => 'Zend\Router\Http\Hostname',
                 'options' => [
                     'route' => ':4th.[:3rd.]:2nd.:1st', // domain levels from right to left
                     'constraints' => [
@@ -675,7 +675,7 @@ return [
                 // child route controllers may span multiple modules as desired
                 'child_routes' => [
                     'index' => [
-                        'type' => 'Zend\Mvc\Router\Http\Literal',
+                        'type' => 'Zend\Router\Http\Literal',
                         'options' => [
                             'route' => '/',
                             'defaults' => [

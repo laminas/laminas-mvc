@@ -33,7 +33,7 @@ The above can be useful when composing event listeners into your controller.
 ### Accessing routing parameters
 
 The parameters returned when routing completes are wrapped in a
-`Zend\Mvc\Router\RouteMatch` object.  This object is detailed in the section on
+`Zend\Router\RouteMatch` object.  This object is detailed in the section on
 [Routing](routing.md).
 
 Within your controller, if you implement `InjectApplicationEventInterface` (as
