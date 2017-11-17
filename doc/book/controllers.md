@@ -279,7 +279,13 @@ extending class.
 
 ## AbstractConsoleController
 
-`Zend\Mvc\Controller\AbstractConsoleController` extends from [AbstractActionController](#abstractactioncontroller)
+> For version 3, the integration component [zend-mvc-console](https://docs.zendframework.com/zend-mvc-console/) must be installed. It can be done via Composer:
+> ````bash
+> composer require zendframework/zend-mvc-console
+> ```
+> If you are not using the component installer, you will need to [add this component as a module](https://docs.zendframework.com/zend-mvc-console/intro/#manual-installation).
+
+`Zend\Mvc\Console\Controller\AbstractConsoleController` extends from [AbstractActionController](#abstractactioncontroller)
 and provides the following functionality:
 
 - The method `setConsole(Zend\Console\Adapter\AdapterInterface $console)` allows
@@ -306,7 +312,7 @@ and provides the following functionality:
 The composed `EventManager` will be configured to listen on the following contexts:
 
 - `Zend\Stdlib\DispatchableInterface`
-- `Zend\Mvc\Controller\AbstractConsoleController`
+- `Zend\Mvc\Console\Controller\AbstractConsoleController`
 - `Zend\Mvc\Controller\AbstractActionController`
 - `Zend\Mvc\Controller\AbstractController`
 
