@@ -22,7 +22,7 @@ Class                                                        | Priority | Method
 ------------------------------------------------------------ | -------: | ------------- | -----------
 `Zend\Mvc\SendResponseListener\PhpEnvironmentResponseSender` | -1000    | `__invoke`    | This is used in HTTP contexts (this is the most often used).
 `Zend\Mvc\SendResponseListener\ConsoleResponseSender`        | -2000    | `__invoke`    | This is used in console contexts.
-`Zend\Mvc\SendResponseListener\SimpleStreamResponseSender`   | -3000    | `__invoke`    | 
+`Zend\Mvc\SendResponseListener\SimpleStreamResponseSender`   | -3000    | `__invoke`    |
 
 Because each listener has negative priority, adding your own logic to modify the
 `Response` involves adding a new listener without priority (as priority defaults

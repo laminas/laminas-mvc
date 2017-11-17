@@ -72,11 +72,11 @@ class SomeController extends AbstractActionController
 
 The above would return a standard `Zend\View\Model\ViewModel` instance if no
 criterias are met, and the specified view model types if a specific criteria
-is met. Rules are matched in order, with the first match "winning". 
-Make sure to put your fallback view model *first* as a fallback for unknown 
+is met. Rules are matched in order, with the first match "winning".
+Make sure to put your fallback view model *first* as a fallback for unknown
 content types or `*/*`.
 
-> Browsers are sending `*/*` as last content type of the Accept header so you have to define every 
+> Browsers are sending `*/*` as last content type of the Accept header so you have to define every
 > acceptable view model and their content type.
 
 ## Forward Plugin

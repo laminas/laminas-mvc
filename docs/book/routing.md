@@ -722,4 +722,4 @@ echo $this->url('packages.zendframework.com/index', [], [], true);
 ## Console Route Types
 
 zend-mvc also allows routing Console based applications; console routes are
-explained in the [zend-console routing documentation](http://zendframework.github.io/zend-console/routes/).
+explained in the [zend-console routing documentation](http://docs.zendframework.com/zend-console/routes/).
