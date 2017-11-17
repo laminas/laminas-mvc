@@ -48,7 +48,7 @@ zend-mvc provides two mechanisms for injecting event managers into
 registered in `Zend\Mvc\Service\ServiceManagerConfig`, and the other is the
 `Zend\Mvc\Controller\ControllerManager::injectEventManager()` initializer. In
 both cases, the logic was updated to be forwards compatible with
-zend-eventmanager v3. 
+zend-eventmanager v3.
 
 Previously each would check if the instance's `getEventManager()` method
 returned an event manager instance, and, if so, inject the shared event manager:
@@ -194,7 +194,7 @@ two approaches you can use:
   specific controllers. This way you don't need to inject dependencies that are
   only used in some actions. (We recommend doing this regardless, as it helps
   keep your code more maintainable.)
-- Use [lazy services](http://zendframework.github.io/zend-servicemanager/lazy-services/).
+- Use [lazy services](http://docs.zendframework.com/zend-servicemanager/lazy-services/).
   When you configure these, zend-servicemanager gives you a proxy instance that,
   on first access, loads the full service. This allows you to delay the most
   expensive operations until absolutely needed.

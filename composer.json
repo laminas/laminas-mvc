@@ -1,16 +1,19 @@
 {
     "name": "zendframework/zend-mvc",
-    "description": " ",
+    "description": "Zend Framework's event-driven MVC layer, including MVC Applications, Controllers, and Plugins",
     "license": "BSD-3-Clause",
     "keywords": [
-        "zf2",
+        "zf",
+        "zendframework",
         "mvc"
     ],
-    "homepage": "https://github.com/zendframework/zend-mvc",
-    "autoload": {
-        "psr-4": {
-            "Zend\\Mvc\\": "src/"
-        }
+    "support": {
+        "docs": "https://docs.zendframework.com/zend-mvc/",
+        "issues": "https://github.com/zendframework/zend-mvc/issues",
+        "source": "https://github.com/zendframework/zend-mvc",
+        "rss": "https://github.com/zendframework/zend-mvc/releases.atom",
+        "slack": "https://zendframework-slack.herokuapp.com",
+        "forum": "https://discourse.zendframework.com/c/questions/components"
     },
     "require": {
         "container-interop/container-interop": "^1.1",
@@ -44,13 +47,9 @@
         "zendframework/zend-servicemanager-di": "zend-servicemanager-di provides utilities for integrating zend-di and zend-servicemanager in your zend-mvc application",
         "zendframework/zend-stratigility": "zend-stratigility is required to use middleware pipes in the MiddlewareListener"
     },
-    "config": {
-        "sort-packages": true
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "3.1-dev",
-            "dev-develop": "3.2-dev"
+    "autoload": {
+        "psr-4": {
+            "Zend\\Mvc\\": "src/"
         }
     },
     "autoload-dev": {
@@ -60,6 +59,15 @@
         "files": [
             "test/_autoload.php"
         ]
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "3.1-dev",
+            "dev-develop": "3.2-dev"
+        }
     },
     "scripts": {
         "check": [

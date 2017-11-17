@@ -2,7 +2,7 @@
 
 [PSR-7](http://www.php-fig.org/psr/psr-7/) defines interfaces for HTTP messages,
 and is now being adopted by many frameworks; Zend Framework itself offers a
-parallel microframework targeting PSR-7 with [Expressive](https://zendframework.github.io/zend-expressive).
+parallel microframework targeting PSR-7 with [Expressive](https://docs.zendframework.com/zend-expressive).
 What if you want to dispatch PSR-7 middleware from zend-mvc?
 
 zend-mvc currently uses [zend-http](https://github.com/zendframework/zend-http)
@@ -61,7 +61,7 @@ http-middleware instance. These will then be piped into a
 present in the array.
 
 > ### No action required
-> 
+>
 > Unlike action controllers, middleware typically is single purpose, and, as
 > such, does not require a default `action` parameter.
 
@@ -99,7 +99,7 @@ Starting in 3.1.0, the `MiddlewareListener` always adds middleware to a
 `Zend\Stratigility\MiddlewarePipe` instance, and invokes it as
 [http-interop/http-middleware](https://github.com/http-interop/http-middleware),
 passing it a PSR-7 `ServerRequestInterface` and an http-interop
-`DelegateInterface`. 
+`DelegateInterface`.
 
 As such, ideally your middleware should implement the `MiddlewareInterface` from
 [http-interop/http-middleware](https://github.com/http-interop/http-middleware):
