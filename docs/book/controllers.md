@@ -81,7 +81,7 @@ public function getServiceLocator();
 
 > #### ServiceLocatorInterface is deprecated
 >
-> `ServiceLocatorAwareInterface` [was removed from zend-servicemanager v3.0](http://zendframework.github.io/zend-servicemanager/migration/#miscellaneous-interfaces-traits-and-classes),
+> `ServiceLocatorAwareInterface` [was removed from zend-servicemanager v3.0](http://docs.zendframework.com/zend-servicemanager/migration/#miscellaneous-interfaces-traits-and-classes),
 > and, as such, starting in zend-mvc 2.7.0, the `AbstractController`
 > implementation no longer implements the interface, though it implements the
 > methods the interface defines; this allows forwards compatibility with
@@ -92,7 +92,7 @@ public function getServiceLocator();
 > pulling them from a composed `ServiceManager` instance.
 >
 > In cases where an object will not be used in all code paths, we recommend
-> splitting into discrete controllers, or using [lazy services](http://zendframework.github.io/zend-servicemanager/lazy-services/).
+> splitting into discrete controllers, or using [lazy services](http://docs.zendframework.com/zend-servicemanager/lazy-services/).
 
 ### EventManagerAware
 

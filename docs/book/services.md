@@ -48,7 +48,7 @@ As a quick review, the following service types may be configured:
   service manager as an argument, the resolved service name, and the requested
   service name; it **must** be a class or object implementing
   `Zend\ServiceManager\AbstractFactoryInterface`. See the section on
-  [abstract factories](http://zendframework.github.io/zend-servicemanager/configuring-the-service-manager/#abstract-factories)
+  [abstract factories](http://docs.zendframework.com/zend-servicemanager/configuring-the-service-manager/#abstract-factories)
   for configuration information.
 - **Aliases**, which alias one service name to another. Aliases can also
   reference other aliases.
@@ -107,7 +107,7 @@ services configured out of the box.
 
     - If the controller implements `Zend\EventManager\EventManagerAwareInterface`,
       an instance of the `EventManager` will be injected into it.
-  
+
     - Finally, an initializer will inject it with the `ControllerPluginManager`
       service, as long as the `setPluginManager` method is implemented.
 
@@ -126,7 +126,7 @@ services configured out of the box.
     - If the `adapter` subkey is present, it is used to get the adapter
       instance, otherwise, `Zend\Console\Console::detectBestAdapter()` will be
       called to configure an adapter instance.
-  
+
     - If the `charset` subkey is present, the value is used to set the adapter
       charset.
 
@@ -166,7 +166,7 @@ services configured out of the box.
 
 - `FilterManager`, mapping to `Zend\Mvc\Service\FilterManagerFactory`. This
   instantiates the `Zend\Filter\FilterPluginManager` instance, passing it the
-  service manager instance; this is used to manage filters for [filter chains](http://zendframework.github.io/zend-filter/filter-chains/).
+  service manager instance; this is used to manage filters for [filter chains](http://docs.zendframework.com/zend-filter/filter-chains/).
   It also uses the `DiAbstractServiceFactory` service, effectively allowing
   you to fall back to DI in order to retrieve filters.
 
@@ -380,7 +380,7 @@ return [
 ];
 ```
 
-See the [cache documentation](https://zendframework.github.io/zend-cache/storage/adapter/)
+See the [cache documentation](https://docs.zendframework.com/zend-cache/storage/adapter/)
 for more configuration options.
 
 ### Zend\\Db\\Adapter\\AdapterAbstractServiceFactory
@@ -469,7 +469,7 @@ return [
 ];
 ```
 
-See the [log documentation](https://zendframework.github.io/zend-log/intro/)
+See the [log documentation](https://docs.zendframework.com/zend-log/intro/)
 for more configuration options.
 
 ## Plugin Managers

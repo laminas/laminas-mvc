@@ -257,8 +257,8 @@ If you do not want these actions, or want to provide alternatives, you can do so
 The second action you can take with the configured `Application` is to `run()`
 it. Calling this method performs the following:
 
-- it triggers the "route" event, 
-- followed by the "dispatch" event, and, depending on execution, 
+- it triggers the "route" event,
+- followed by the "dispatch" event, and, depending on execution,
 - the "render" event
 
 When done, it triggers the "finish" event, and then returns the response

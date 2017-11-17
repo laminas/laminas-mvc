@@ -1,4 +1,4 @@
-# Upgrading to 3.0 
+# Upgrading to 3.0
 
 With the release of Zend Framework 2, all components current at that time,
 regardless of history, were tagged as v2 releases; in reality, it was the first
@@ -21,7 +21,7 @@ however, raised another problem: you now have to register components as modules
 in your application.
 
 To solve this new problem, we created a new component,
-[zend-component-installer](http://zendframework.github.io/zend-component-installer/).
+[zend-component-installer](http://docs.zendframework.com/zend-component-installer/).
 Install this in your application now:
 
 ```bash
@@ -82,9 +82,9 @@ service alias.
 
 ## DI-ServiceManager integration
 
-The integration between [zend-servicemanager](https://zendframework.github.io/zend-servicemanager) and
+The integration between [zend-servicemanager](https://docs.zendframework.com/zend-servicemanager) and
 [zend-di](https://github.com/zendframework/zend-di) has been moved to a new
-standalone component, [zend-servicemanager-di](https://zendframework.github.io/zend-servicemanager-di/).
+standalone component, [zend-servicemanager-di](https://docs.zendframework.com/zend-servicemanager-di/).
 In most cases, installing the component will restore the original behavior:
 
 ```bash
@@ -96,10 +96,10 @@ $ composer require zendframework/zend-servicemanager-di
 > The above assumes you're using the new component installer detailed in the
 > [dependency reduction](#dependency-reduction) section, above. If you are not,
 > you will need to inject the zend-servicemanager-di module into your
-> application manually; follow the [instructions in the zend-servicemanager-di documentation](https://zendframework.github.io/zend-servicemanager-di/)
+> application manually; follow the [instructions in the zend-servicemanager-di documentation](https://docs.zendframework.com/zend-servicemanager-di/)
 > to do so.
 
-The new component also contains a [migration document](https://zendframework.github.io/zend-servicemanager-di/migration/v2-to-v3/)
+The new component also contains a [migration document](https://docs.zendframework.com/zend-servicemanager-di/migration/v2-to-v3/)
 detailing potential issues for users migrating to version 3.
 
 ## DispatchListener
@@ -111,14 +111,14 @@ with the v3 release.
 ## Routing
 
 Routing was removed from zend-mvc, and moved to a new component,
-[zend-router](https://zendframework.github.io/zend-router/), which is now a
+[zend-router](https://docs.zendframework.com/zend-router/), which is now a
 dependency of zend-mvc.
 
 The changes that will impact users are:
 
-- [Query route removal](http://zendframework.github.io/zend-router/migration/v2-to-v3/#query-route-removal); 
+- [Query route removal](http://docs.zendframework.com/zend-router/migration/v2-to-v3/#query-route-removal);
   this route had been deprecated since 2.3.0, and removed for the 3.0 release.
-- [Namespace changes](http://zendframework.github.io/zend-router/migration/v2-to-v3/#namespace-change);
+- [Namespace changes](http://docs.zendframework.com/zend-router/migration/v2-to-v3/#namespace-change);
   with the separation to the zend-router component, all routes changed
   namespaces from `Zend\Mvc\Router` to `Zend\Router`.
 
@@ -128,7 +128,7 @@ your code.
 ## Console tooling
 
 Console tooling, including console routes, were split off to a new component,
-[zend-mvc-console](https://zendframework.github.io/zend-mvc-console/). If you
+[zend-mvc-console](https://docs.zendframework.com/zend-mvc-console/). If you
 were using the console tooling, install zend-mvc-console:
 
 ```bash
@@ -140,7 +140,7 @@ ensure the component is registered with your application!)
 
 zend-mvc-console exposes all of the same functionality as was in the v2 series
 of zend-mvc, but most components are in different namespaces. Please read the
-[zend-mvc-console migration guide](http://zendframework.github.io/zend-mvc-console/migration/v2-to-v3/)
+[zend-mvc-console migration guide](http://docs.zendframework.com/zend-mvc-console/migration/v2-to-v3/)
 for full details of what changes you may need to make to your application to
 ensure console tooling continues to work.
 
@@ -159,7 +159,7 @@ provided specifications to zend-modulemanager's `ServiceListener`
 to allow modules to provide filter configuration.
 
 This functionality is now removed from zend-mvc. It is now exposed directly by
-the [zend-filter](https://zendframework.github.io/zend-filter/) component
+the [zend-filter](https://docs.zendframework.com/zend-filter/) component
 itself. To add it, install zend-filter:
 
 ```bash
@@ -201,7 +201,7 @@ provided specifications to zend-modulemanager's `ServiceListener`
 to allow modules to provide hydrator configuration.
 
 This functionality is now removed from zend-mvc. It is now exposed directly by
-the [zend-hydrator](https://zendframework.github.io/zend-hydrator/) component
+the [zend-hydrator](https://docs.zendframework.com/zend-hydrator/) component
 itself. To add it, install zend-hydrator:
 
 ```bash
@@ -218,7 +218,7 @@ provided specifications to zend-modulemanager's `ServiceListener`
 to allow modules to provide validator configuration.
 
 This functionality is now removed from zend-mvc. It is now exposed directly by
-the [zend-inputfilter](https://zendframework.github.io/zend-inputfilter/) component
+the [zend-inputfilter](https://docs.zendframework.com/zend-inputfilter/) component
 itself. To add it, install zend-inputfilter:
 
 ```bash
@@ -240,8 +240,8 @@ Internationalization tooling, including:
 - the `TranslatorAwareTreeRouteStack` implementation
 - factories for the translator and translator loader managers
 
-were removed, and re-assigned to the [zend-i18n](https://zendframework.github.io/zend-i18n/)
-and [zend-mvc-i18n](https://zendframework.github.io/zend-mvc-i18n/) packages.
+were removed, and re-assigned to the [zend-i18n](https://docs.zendframework.com/zend-i18n/)
+and [zend-mvc-i18n](https://docs.zendframework.com/zend-mvc-i18n/) packages.
 In most cases, you can install `zendframework/zend-mvc-i18n` to restore i18n
 functionality to your application:
 
@@ -261,9 +261,9 @@ Second, if you were extending one of the service factories for either the
 factories have changed. In such situations, you have two options:
 
 - Update your extensions to extend the new classes. See the [zend-mvc-i18n
-  migration guide](https://zendframework.github.io/zend-mvc-i18n/migration/v2-to-v3/)
+  migration guide](https://docs.zendframework.com/zend-mvc-i18n/migration/v2-to-v3/)
   to determine what names have changed.
-- Instead of extending, consider using [delegator factories](https://zendframework.github.io/zend-servicemanager/delegators/),
+- Instead of extending, consider using [delegator factories](https://docs.zendframework.com/zend-servicemanager/delegators/),
   as these decorate the service factory, regardless of what factory is used.
 
 ## Log integration
@@ -273,7 +273,7 @@ services by default, and provided specifications to zend-modulemanager's
 `ServiceListener` to allow modules to provide configuration for each.
 
 This functionality is now removed from zend-mvc. It is now exposed directly by
-the [zend-log](https://zendframework.github.io/zend-log/) component
+the [zend-log](https://docs.zendframework.com/zend-log/) component
 itself. To add it, install zend-log:
 
 ```bash
@@ -400,7 +400,7 @@ provided specifications to zend-modulemanager's `ServiceListener`
 to allow modules to provide validator configuration.
 
 This functionality is now removed from zend-mvc. It is now exposed directly by
-the [zend-validator](https://zendframework.github.io/zend-validator/) component
+the [zend-validator](https://docs.zendframework.com/zend-validator/) component
 itself. To add it, install zend-validator:
 
 ```bash
