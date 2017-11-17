@@ -130,9 +130,9 @@ services configured out of the box.
     - If the `charset` subkey is present, the value is used to set the adapter
       charset.
 
-- `ConsoleRouter`, mapping to `Zend\Mvc\Service\ConsoleRouterFactory`. This
+- `ConsoleRouter`, mapping to `Zend\Mvc\Console\Router\ConsoleRouterFactory`. This
   grabs the `Config` service, and pulls from the `console` key and `router`
-  subkey, configuring a `Zend\Mvc\Router\Console\SimpleRouteStack` instance.
+  subkey, configuring a `Zend\Mvc\Console\Router\SimpleRouteStack` instance.
 
 - `ConsoleViewManager`, mapping to `Zend\Mvc\Service\ConsoleViewManagerFactory`.
   This creates and returns an instance of `Zend\Mvc\View\Console\ViewManager`,
@@ -176,9 +176,9 @@ services configured out of the box.
   It also uses the `DiAbstractServiceFactory` service, effectively allowing
   you to fall back to DI in order to retrieve form elements.
 
-- `HttpRouter`, mapping to `Zend\Mvc\Service\HttpRouterFactory`. This grabs
+- `HttpRouter`, mapping to `Zend\Router\Http\HttpRouterFactory`. This grabs
   the `Config` service, and pulls from the `router` key, configuring a
-  `Zend\Mvc\Router\Http\TreeRouteStack` instance.
+  `Zend\Router\Http\TreeRouteStack` instance.
 
 - `HttpViewManager`, mapping to `Zend\Mvc\Service\HttpViewManagerFactory`.
   This creates and returns an instance of `Zend\Mvc\View\Http\ViewManager`,
@@ -235,12 +235,12 @@ services configured out of the box.
   create a `Zend\Console\Response`; otherwise, for HTTP environments, it
   creates a `Zend\Http\PhpEnvironment\Response`.
 
-- `Router`, mapping to `Zend\Mvc\Service\RouterFactory`. If in a console
+- `Router`, mapping to `Zend\Router\RouterFactory`. If in a console
   environment, it proxies to the `ConsoleRouter` service; otherwise, it proxies
   to the `HttpRouter` service.
 
 - `RoutePluginManager`, mapping to `Zend\Mvc\Service\RoutePluginManagerFactory`.
-  This instantiates the `Zend\Mvc\Router\RoutePluginManager` instance, passing
+  This instantiates the `Zend\Router\RoutePluginManager` instance, passing
   it the service manager instance; this is used to manage [route types](routing.md#http-route-types).
   It also uses the `DiAbstractServiceFactory` service, effectively allowing
   you to fall back to DI in order to retrieve route types.
@@ -488,7 +488,7 @@ The following plugin managers are configured by default:
   and used to manage hydrator instances.
 - **InputFilterManager**, corresponding to `Zend\InputFilter\InputFilterPluginManager`,
   and used to manage input filter instances.
-- **RoutePluginManager**, corresponding to `Zend\Mvc\Router\RoutePluginManager`,
+- **RoutePluginManager**, corresponding to `Zend\Router\RoutePluginManager`,
   and used to manage route instances.
 - **SerializerAdapterManager**, corresponding to `Zend\Serializer\AdapterPluginManager`,
   and used to manage serializer instances.

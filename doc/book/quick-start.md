@@ -217,8 +217,8 @@ Now that we have a controller and a view script, we need to create a route to it
 >
 > We're going to create an explicit route in this example, as
 > creating explicit routes is a recommended practice. The application will look for a
-> `Zend\Mvc\Router\RouteStackInterface` instance to setup routing. The default generated router is a
-> `Zend\Mvc\Router\Http\TreeRouteStack`.
+> `Zend\Router\RouteStackInterface` instance to setup routing. The default generated router is a
+> `Zend\Router\Http\TreeRouteStack`.
 >
 > To use the "default route" functionality, you will need to edit the shipped
 > routing definition in the module's `config/module.config.php`, and replace:
