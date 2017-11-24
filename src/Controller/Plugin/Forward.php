@@ -194,6 +194,13 @@ class Forward extends AbstractPlugin
                         if (! is_object($currentCallback)) {
                             continue;
                         }
+
+                        foreach ($classArray as $class) {
+                            if ($currentCallback instanceof $class) {
+                                $this->detachSharedListener($id, $currentEvent, $sharedEvents);
+                                $results[$id][$eventName][$priority] = $currentEvent;
+                            }
+                        }
                     }
                 }
             }
