@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.7.13 - TBD
+## 2.7.13 - 2017-12-14
 
 ### Added
 
@@ -17,6 +17,10 @@ All notable changes to this project will be documented in this file, in reverse 
 - Nothing.
 
 ### Fixed
+
+- Updates the `Zend\Mvc\Controller\PluginManager::get()` signature to match
+  that of `Zend\ServiceManager\AbstractPluginManager::get()`, and thus ensure
+  compatibility when running under PHP 7.2.
 
 - [#234](https://github.com/zendframework/zend-mvc/pull/234) fixes docblock
   annotations in `AbstractActionController::indexAction` and `notFoundAction` to
