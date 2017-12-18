@@ -403,7 +403,7 @@ class Module
 There are a number of other methods you can define for tasks ranging from
 providing autoloader configuration, to providing services to the
 `ServiceManager`, to listening to the bootstrap event.  The
-[ModuleManager documentation](http:/framework.zend.com/manual/current/en/modules/zend.module-manager.intro.html)
+[ModuleManager documentation](https://docs.zendframework.com/zend-modulemanager/)
 goes into more detail on these.
 
 ## Conclusion
