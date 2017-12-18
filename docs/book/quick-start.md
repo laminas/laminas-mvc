@@ -174,7 +174,7 @@ That's it. Save the file.
 
 > ### Escaping output
 >
-> What is the method `escapeHtml()`? It's actually a [view helper](http://framework.zend.com/manual/current/en/modules/zend.view.helpers.html),
+> What is the method `escapeHtml()`? It's actually a [view helper](https://docs.zendframework.com/zend-view/helpers/intro/),
 > and it's designed to help mitigate XSS attacks. Never trust user input; if you
 > are at all uncertain about the source of a given variable in your view script,
 > escape it using one of the provided escape view helpers depending on the type

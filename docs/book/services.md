@@ -172,7 +172,7 @@ services configured out of the box.
 
 - `FormElementManager`, mapping to `Zend\Mvc\Service\FormElementManagerFactory`.
   This instantiates the `Zend\Form\FormElementManager` instance, passing it
-  the service manager instance; this is used to manage [form elements](http://framework.zend.com/manual/current/en/zend.form.elements.intro.html).
+  the service manager instance; this is used to manage [form elements](https://docs.zendframework.com/zend-form/element/intro/).
   It also uses the `DiAbstractServiceFactory` service, effectively allowing
   you to fall back to DI in order to retrieve form elements.
 
@@ -219,7 +219,7 @@ services configured out of the box.
 - `PaginatorPluginManager`, mapping to `Zend\Mvc\Service\PaginatorPluginManagerFactory`.
   This instantiates the `Zend\Paginator\AdapterPluginManager` instance,
   passing it the service manager instance. This is used to manage
-  [paginator adapters](http://framework.zend.com/manual/current/en/zend.paginator.usage.paginating.adapters.html).
+  [paginator adapters](https://docs.zendframework.com/zend-paginator/advanced/#custom-data-source-adapters).
   It also uses the `DiAbstractServiceFactory` service, effectively allowing
   you to fall back to DI in order to retrieve paginator adapters.
 
@@ -262,7 +262,7 @@ services configured out of the box.
 - `ValidatorManager`, mapping to `Zend\Mvc\Service\ValidatorManagerFactory`.
   This instantiates the `Zend\Validator\ValidatorPluginManager` instance,
   passing it the service manager instance. This is used to manage
-  [validators](http://framework.zend.com/manual/current/en/zend.validator.set.html).
+  [validators](https://docs.zendframework.com/zend-validator/intro/#what-is-a-validator).
   It also uses the `DiAbstractServiceFactory` service, effectively allowing
   you to fall back to DI in order to retrieve validators.
 
@@ -405,7 +405,7 @@ return [
 ];
 ```
 
-See the [DB adapter documentation](http://framework.zend.com/manual/current/en/zend.db.adapter.html)
+See the [DB adapter documentation](https://docs.zendframework.com/zend-db/adapter/)
 for more configuration options.
 
 ### Zend\\Form\\FormAbstractServiceFactory
@@ -443,7 +443,7 @@ factory; the primary difference is that all plugin managers have already been
 injected for you, allowing you the possibility of custom objects or
 substitutions.
 
-See the [form factory documentation](http://framework.zend.com/manual/current/en/zend.form.quick-start.factory.html)
+See the [form factory documentation](https://docs.zendframework.com/zend-form/quick-start/)
 for more configuration options.
 
 ### Zend\\Log\\LoggerAbstractServiceFactory
