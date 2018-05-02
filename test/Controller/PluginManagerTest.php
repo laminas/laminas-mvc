@@ -59,7 +59,7 @@ class PluginManagerTest extends TestCase
             'factories' => [Plugin\TestAsset\SamplePluginWithConstructor::class => InvokableFactory::class],
         ]);
         $plugin = $pluginManager->get('samplePlugin');
-        $this->assertEquals($plugin->getBar(), 'baz');
+        $this->assertEquals('baz', $plugin->getBar());
     }
 
     public function testGetWithConstructorAndOptions()
