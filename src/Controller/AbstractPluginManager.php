@@ -1,27 +1,27 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/zendframework/zend-mvc for the canonical source repository
+ * @copyright Copyright (c) 2018 Zend Technologies USA Inc. (https://www.zend.com)
+ * @license   https://github.com/zendframework/zend-mvc/blob/master/LICENSE.md New BSD License
  */
 
 namespace Zend\Mvc\Controller;
 
 use Zend\Mvc\Exception;
-use Zend\ServiceManager\AbstractPluginManager;
+use Zend\ServiceManager\AbstractPluginManager as BasePluginManager;
 use Zend\ServiceManager\Exception\InvalidServiceException;
 use Zend\ServiceManager\Factory\InvokableFactory;
 use Zend\Stdlib\DispatchableInterface;
 
 /**
- * Plugin manager implementation for controllers
+ * Base functionality for the controller plugins plugin manager.
  *
- * Registers a number of default plugins, and contains an initializer for
- * injecting plugins with the current controller.
+ * Functionality is split between two concrete implementations as the signatures
+ * for `get()` vary between zend-servicemanager v2 and v3. The autoloader aliases
+ * `Zend\Mvc\Controller\PluginManager` to the version-appropriate class, which
+ * in turn composses this trait.
  */
-class PluginManager extends AbstractPluginManager
+abstract class AbstractPluginManager extends BasePluginManager
 {
     /**
      * Plugins must be of this type.
@@ -105,28 +105,6 @@ class PluginManager extends AbstractPluginManager
      * @var DispatchableInterface
      */
     protected $controller;
-
-    /**
-     * Retrieve a registered instance
-     *
-     * After the plugin is retrieved from the service locator, inject the
-     * controller in the plugin every time it is requested. This is required
-     * because a controller can use a plugin and another controller can be
-     * dispatched afterwards. If this second controller uses the same plugin
-     * as the first controller, the reference to the controller inside the
-     * plugin is lost.
-     *
-     * @param  string $name
-     * @return DispatchableInterface
-     */
-    public function get($name, array $options = null, $usePeeringServiceManagers = true)
-    {
-        $options = $options ?: [];
-        $plugin = parent::get($name, $options);
-        $this->injectController($plugin);
-
-        return $plugin;
-    }
 
     /**
      * Set controller
