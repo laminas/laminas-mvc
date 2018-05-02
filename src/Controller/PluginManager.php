@@ -119,8 +119,9 @@ class PluginManager extends AbstractPluginManager
      * @param  string $name
      * @return DispatchableInterface
      */
-    public function get($name, $options = [], $usePeeringServiceManagers = true)
+    public function get($name, array $options = null, $usePeeringServiceManagers = true)
     {
+        $options = $options ?: [];
         $plugin = parent::get($name, $options);
         $this->injectController($plugin);
 
