@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 2.7.15 - 2018-05-03
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- [#245](https://github.com/zendframework/zend-mvc/pull/245) moves the zend-console dependency from `require-dev` to `require`, as it is
+  a requirement of the `RequestFactory`, and removal of the package causes that factory to fail.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 2.7.14 - 2018-05-02
 
 ### Added
