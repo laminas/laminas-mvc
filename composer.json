@@ -23,7 +23,7 @@
         "zendframework/zend-modulemanager": "^2.8",
         "zendframework/zend-router": "^3.0.2",
         "zendframework/zend-servicemanager": "^3.3",
-        "zendframework/zend-stdlib": "^3.1",
+        "zendframework/zend-stdlib": "^3.2.1",
         "zendframework/zend-view": "^2.9"
     },
     "require-dev": {
