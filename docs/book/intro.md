@@ -44,7 +44,7 @@ response.
 
 The basic application structure follows:
 
-```
+```bash
 application_root/
     config/
         application.config.php
@@ -93,7 +93,7 @@ number of tasks.
 
 The recommended module structure follows:
 
-```
+```bash
 module_root<named-after-module-namespace>/
     Module.php
     autoload_classmap.php
@@ -367,7 +367,6 @@ Remember the `application.config.php` from earlier? We're going to provide some
 configuration.
 
 ```php
-<?php
 // config/application.config.php
 return array(
     'modules' => array(
