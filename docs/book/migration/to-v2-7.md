@@ -1,4 +1,4 @@
-## Upgrading to 2.7
+# Upgrading to 2.7
 
 ## Middleware
 
