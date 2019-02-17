@@ -7,6 +7,9 @@ All notable changes to this project will be documented in this file, in reverse 
 ### Added
 
 - [#297](https://github.com/zendframework/zend-mvc/pull/297) adds support for PHP 7.3.
+- [#282](https://github.com/zendframework/zend-mvc/pull/282) Adds a full
+  controller namespace as additional event manager identifier for
+  implementations of AbstractController
 
 ### Deprecated
 
