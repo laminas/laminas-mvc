@@ -10,6 +10,8 @@ namespace Zend\Mvc\ResponseSender;
 use Zend\EventManager\Event;
 use Zend\Stdlib\ResponseInterface;
 
+use function spl_object_hash;
+
 class SendResponseEvent extends Event
 {
     /**#@+
