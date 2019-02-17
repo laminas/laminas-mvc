@@ -1,7 +1,7 @@
 docs_dir: docs/book
 site_dir: docs/html
 pages:
-    - index.md
+    - Home: index.md
     - Introduction: intro.md
     - 'Quick Start': quick-start.md
     - Reference:
@@ -21,6 +21,5 @@ pages:
       - 'Automating controller factories': cookbook/automating-controller-factories.md
       - 'Using middleware within event listeners': cookbook/middleware-in-listeners.md
 site_name: zend-mvc
-site_description: 'zend-mvc: MVC application provider'
+site_description: "Zend Framework's event-driven MVC layer, including MVC Applications, Controllers, and Plugins."
 repo_url: 'https://github.com/zendframework/zend-mvc'
-copyright: 'Copyright (c) 2005-2017 <a href="http://www.zend.com/">Zend Technologies USA Inc.</a>'
