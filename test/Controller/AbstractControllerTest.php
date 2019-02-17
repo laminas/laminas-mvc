@@ -14,6 +14,7 @@ use Zend\EventManager\EventManagerInterface;
 use Zend\Mvc\Controller\AbstractController;
 use Zend\Mvc\InjectApplicationEventInterface;
 use Zend\Stdlib\DispatchableInterface;
+use ZendTest\Mvc\Controller\TestAsset\AbstractControllerStub;
 
 /**
  * @covers \Zend\Mvc\Controller\AbstractController
@@ -30,7 +31,7 @@ class AbstractControllerTest extends TestCase
      */
     protected function setUp()
     {
-        $this->controller = $this->getMockForAbstractClass(AbstractController::class);
+        $this->controller = new AbstractControllerStub();
     }
 
     /**
@@ -103,6 +104,24 @@ class AbstractControllerTest extends TestCase
                 $this->contains(EventManagerAwareInterface::class),
                 $this->contains(DispatchableInterface::class),
                 $this->contains(InjectApplicationEventInterface::class)
+            ));
+
+        $this->controller->setEventManager($eventManager);
+    }
+
+    public function testSetEventManagerWithDefaultIdentifiersIncludesExtendingClassNameAndNamespace()
+    {
+        /* @var $eventManager EventManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $eventManager = $this->createMock(EventManagerInterface::class);
+
+        $eventManager
+            ->expects($this->once())
+            ->method('setIdentifiers')
+            ->with($this->logicalAnd(
+                $this->contains(AbstractController::class),
+                $this->contains(AbstractControllerStub::class),
+                $this->contains('ZendTest'),
+                $this->contains('ZendTest\\Mvc\\Controller\\TestAsset')
             ));
 
         $this->controller->setEventManager($eventManager);
