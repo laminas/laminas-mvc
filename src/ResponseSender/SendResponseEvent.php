@@ -66,7 +66,8 @@ class SendResponseEvent extends Event
     {
         $response = $this->getResponse();
         $contentSent = $this->getParam('contentSent', []);
-        $contentSent[$responseObjectHash = spl_object_hash($response)] = true;
+        $responseObjectHash = spl_object_hash($response);
+        $contentSent[$responseObjectHash] = true;
         $this->setParam('contentSent', $contentSent);
         $this->contentSent[$responseObjectHash] = true;
         return $this;
@@ -93,7 +94,8 @@ class SendResponseEvent extends Event
     {
         $response = $this->getResponse();
         $headersSent = $this->getParam('headersSent', []);
-        $headersSent[$responseObjectHash = spl_object_hash($response)] = true;
+        $responseObjectHash = spl_object_hash($response);
+        $headersSent[$responseObjectHash] = true;
         $this->setParam('headersSent', $headersSent);
         $this->headersSent[$responseObjectHash] = true;
         return $this;
