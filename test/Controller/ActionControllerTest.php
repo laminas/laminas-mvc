@@ -8,7 +8,6 @@
 namespace ZendTest\Mvc\Controller;
 
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
 use Zend\EventManager\SharedEventManagerInterface;
@@ -49,7 +48,7 @@ class ActionControllerTest extends TestCase
     }
 
     /**
-     * @param SharedEventManager
+     * @param  SharedEventManagerInterface $sharedManager
      * @return EventManager
      */
     protected function createEventManager(SharedEventManagerInterface $sharedManager)

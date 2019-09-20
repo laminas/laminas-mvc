@@ -165,6 +165,7 @@ class ApplicationTest extends TestCase
      * @param string $listenerServiceName
      * @param string $event
      * @param string $method
+     * @param bool   $isCustom
      *
      * @dataProvider bootstrapRegistersListenersProvider
      */

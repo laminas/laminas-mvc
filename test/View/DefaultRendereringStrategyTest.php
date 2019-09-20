@@ -8,7 +8,6 @@
 namespace ZendTest\Mvc\View;
 
 use PHPUnit\Framework\TestCase;
-use Zend\EventManager\Event;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
 use Zend\EventManager\Test\EventListenerIntrospectionTrait;

@@ -9,7 +9,6 @@ namespace ZendTest\Mvc\Controller\Plugin;
 
 use PHPUnit\Framework\TestCase;
 use Zend\Http\Header\Accept\FieldValuePart\AcceptFieldValuePart;
-use Zend\Mvc\Controller\Plugin\AcceptableViewModelSelector;
 use Zend\Http\Request;
 use Zend\Mvc\Exception\InvalidArgumentException;
 use Zend\Mvc\MvcEvent;

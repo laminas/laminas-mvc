@@ -8,7 +8,6 @@
 namespace ZendTest\Mvc\Controller;
 
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
 use ReflectionObject;
 use stdClass;
 use Zend\EventManager\EventManager;

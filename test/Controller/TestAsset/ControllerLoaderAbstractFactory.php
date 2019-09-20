@@ -9,7 +9,6 @@ namespace ZendTest\Mvc\Controller\TestAsset;
 
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\AbstractFactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use ZendTest\Mvc\TestAsset\PathController;
 
 class ControllerLoaderAbstractFactory implements AbstractFactoryInterface
