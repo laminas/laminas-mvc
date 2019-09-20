@@ -146,7 +146,7 @@ class LazyControllerAbstractFactory implements AbstractFactoryInterface
     private function resolveParameter(ContainerInterface $container, $requestedName)
     {
         /**
-         * @param ReflectionClass $parameter
+         * @param ReflectionParameter $parameter
          * @return mixed
          * @throws ServiceNotFoundException If type-hinted parameter cannot be
          *   resolved to a service in the container.

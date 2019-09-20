@@ -10,7 +10,6 @@ namespace ZendTest\Mvc\Application;
 use ReflectionProperty;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Http\PhpEnvironment\Response;
-use Zend\Mvc\Application;
 use Zend\Mvc\Controller\ControllerManager;
 use Zend\Mvc\Service\ServiceManagerConfig;
 use Zend\Mvc\Service\ServiceListenerFactory;

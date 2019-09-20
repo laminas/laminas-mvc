@@ -8,8 +8,6 @@
 namespace ZendTest\Mvc\Service;
 
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
-use ReflectionProperty;
 use Zend\Mvc\Service\ServiceListenerFactory;
 use Zend\ServiceManager\ServiceManager;
 

@@ -8,12 +8,10 @@
 namespace ZendTest\Mvc\Service;
 
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
 use stdClass;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\SharedEventManagerInterface;
-use Zend\Mvc\Controller\PluginManager;
 use Zend\Mvc\Service\ServiceManagerConfig;
 use Zend\ServiceManager\Factory\InvokableFactory;
 use Zend\ServiceManager\ServiceManager;

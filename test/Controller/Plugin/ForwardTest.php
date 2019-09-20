@@ -8,7 +8,6 @@
 namespace ZendTest\Mvc\Controller\Plugin;
 
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
 use stdClass;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
@@ -21,7 +20,6 @@ use Zend\Mvc\Controller\Plugin\Forward;
 use Zend\Mvc\Controller\Plugin\Forward as ForwardPlugin;
 use Zend\Mvc\Controller\PluginManager;
 use Zend\Mvc\Exception\DomainException;
-use Zend\Mvc\Exception\InvalidControllerException;
 use Zend\Mvc\MvcEvent;
 use Zend\Router\RouteMatch;
 use Zend\ServiceManager\Config;
