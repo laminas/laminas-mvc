@@ -1,20 +1,19 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Router\Console;
+namespace Laminas\Mvc\Router\Console;
 
+use Laminas\Mvc\Router\Exception;
+use Laminas\Mvc\Router\RouteInvokableFactory;
+use Laminas\Mvc\Router\SimpleRouteStack as BaseSimpleRouteStack;
+use Laminas\ServiceManager\Config;
+use Laminas\Stdlib\ArrayUtils;
 use Traversable;
-use Zend\Mvc\Router\Exception;
-use Zend\Mvc\Router\RouteInvokableFactory;
-use Zend\Mvc\Router\SimpleRouteStack as BaseSimpleRouteStack;
-use Zend\ServiceManager\Config;
-use Zend\Stdlib\ArrayUtils;
 
 /**
  * Tree search implementation.
@@ -42,8 +41,8 @@ class SimpleRouteStack extends BaseSimpleRouteStack
                 Simple::class   => RouteInvokableFactory::class,
 
                 // v2 normalized names
-                'zendmvcrouterconsolecatchall' => RouteInvokableFactory::class,
-                'zendmvcrouterconsolesimple'   => RouteInvokableFactory::class,
+                'laminasmvcrouterconsolecatchall' => RouteInvokableFactory::class,
+                'laminasmvcrouterconsolesimple'   => RouteInvokableFactory::class,
             ],
         ]))->configureServiceManager($this->routePluginManager);
     }
