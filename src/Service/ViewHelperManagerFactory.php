@@ -1,25 +1,24 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Service;
+namespace Laminas\Mvc\Service;
 
-use Zend\Console\Console;
-use Zend\Mvc\Exception;
-use Zend\Mvc\Router\RouteMatch;
-use Zend\ServiceManager\ConfigInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\View\Helper as ViewHelper;
-use Zend\View\Helper\HelperInterface as ViewHelperInterface;
+use Laminas\Console\Console;
+use Laminas\Mvc\Exception;
+use Laminas\Mvc\Router\RouteMatch;
+use Laminas\ServiceManager\ConfigInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
+use Laminas\View\Helper as ViewHelper;
+use Laminas\View\Helper\HelperInterface as ViewHelperInterface;
 
 class ViewHelperManagerFactory extends AbstractPluginManagerFactory
 {
-    const PLUGIN_MANAGER_CLASS = 'Zend\View\HelperPluginManager';
+    const PLUGIN_MANAGER_CLASS = 'Laminas\View\HelperPluginManager';
 
     /**
      * An array of helper configuration classes to ensure are on the helper_map stack.
@@ -27,9 +26,9 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
      * @var array
      */
     protected $defaultHelperMapClasses = [
-        'Zend\Form\View\HelperConfig',
-        'Zend\I18n\View\HelperConfig',
-        'Zend\Navigation\View\HelperConfig'
+        'Laminas\Form\View\HelperConfig',
+        'Laminas\I18n\View\HelperConfig',
+        'Laminas\Navigation\View\HelperConfig'
     ];
 
     /**
@@ -51,7 +50,7 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
                     throw new Exception\RuntimeException(sprintf(
                         'Invalid service manager configuration class provided; received "%s", expected class implementing %s',
                         $configClass,
-                        'Zend\ServiceManager\ConfigInterface'
+                        'Laminas\ServiceManager\ConfigInterface'
                     ));
                 }
 
