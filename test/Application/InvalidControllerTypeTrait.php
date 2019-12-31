@@ -1,25 +1,24 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Application;
+namespace LaminasTest\Mvc\Application;
 
+use Laminas\Http\PhpEnvironment\Response;
+use Laminas\Mvc\Application;
+use Laminas\Mvc\Controller\ControllerManager;
+use Laminas\Mvc\Router;
+use Laminas\Mvc\Service\ServiceListenerFactory;
+use Laminas\Mvc\Service\ServiceManagerConfig;
+use Laminas\ServiceManager\ServiceManager;
+use Laminas\Stdlib\ArrayUtils;
+use LaminasTest\Mvc\TestAsset;
 use ReflectionProperty;
 use stdClass;
-use Zend\Http\PhpEnvironment\Response;
-use Zend\Mvc\Application;
-use Zend\Mvc\Controller\ControllerManager;
-use Zend\Mvc\Router;
-use Zend\Mvc\Service\ServiceManagerConfig;
-use Zend\Mvc\Service\ServiceListenerFactory;
-use Zend\ServiceManager\ServiceManager;
-use Zend\Stdlib\ArrayUtils;
-use ZendTest\Mvc\TestAsset;
 
 trait InvalidControllerTypeTrait
 {
@@ -64,7 +63,7 @@ trait InvalidControllerTypeTrait
                     },
                 ],
                 'invokables' => [
-                    'Request'              => 'Zend\Http\PhpEnvironment\Request',
+                    'Request'              => 'Laminas\Http\PhpEnvironment\Request',
                     'Response'             => Response::class,
                     'ViewManager'          => TestAsset\MockViewManager::class,
                     'SendResponseListener' => TestAsset\MockSendResponseListener::class,

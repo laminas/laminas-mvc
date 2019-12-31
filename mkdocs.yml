@@ -1,6 +1,6 @@
 docs_dir: doc/book
 site_dir: doc/html
-pages:
+nav:
     - index.md
     - Introduction: intro.md
     - 'Quick Start': quick-start.md
@@ -14,7 +14,6 @@ pages:
       - Examples: examples.md
       - 'Dispatching PSR-7 Middleware': middleware.md
       - 'Migration Guide': migration.md
-site_name: zend-mvc
-site_description: 'zend-mvc: MVC application provider'
-repo_url: 'https://github.com/zendframework/zend-mvc'
-copyright: 'Copyright (c) 2016 <a href="http://www.zend.com/">Zend Technologies USA Inc.</a>'
+site_name: laminas-mvc
+site_description: 'laminas-mvc: MVC application provider'
+repo_url: 'https://github.com/laminas/laminas-mvc'
