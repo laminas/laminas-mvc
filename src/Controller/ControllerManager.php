@@ -1,30 +1,28 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Mvc
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Controller;
+namespace Laminas\Mvc\Controller;
 
-use Zend\EventManager\EventManagerAwareInterface;
-use Zend\Mvc\Exception;
-use Zend\ServiceManager\AbstractPluginManager;
-use Zend\ServiceManager\ConfigInterface;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\Stdlib\DispatchableInterface;
+use Laminas\EventManager\EventManagerAwareInterface;
+use Laminas\Mvc\Exception;
+use Laminas\ServiceManager\AbstractPluginManager;
+use Laminas\ServiceManager\ConfigInterface;
+use Laminas\ServiceManager\ServiceLocatorAwareInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
+use Laminas\Stdlib\DispatchableInterface;
 
 /**
  * Manager for loading controllers
  *
  * Does not define any controllers by default, but does add a validator.
  *
- * @category   Zend
- * @package    Zend_Mvc
+ * @category   Laminas
+ * @package    Laminas_Mvc
  * @subpackage Controller
  */
 class ControllerManager extends AbstractPluginManager
@@ -67,7 +65,7 @@ class ControllerManager extends AbstractPluginManager
         $parentLocator = $serviceLocator->getServiceLocator();
 
         if ($controller instanceof ServiceLocatorAwareInterface) {
-            $controller->setServiceLocator($parentLocator->get('Zend\ServiceManager\ServiceLocatorInterface'));
+            $controller->setServiceLocator($parentLocator->get('Laminas\ServiceManager\ServiceLocatorInterface'));
         }
 
         if ($controller instanceof EventManagerAwareInterface) {
@@ -96,7 +94,7 @@ class ControllerManager extends AbstractPluginManager
         }
 
         throw new Exception\InvalidControllerException(sprintf(
-            'Controller of type %s is invalid; must implement Zend\Stdlib\DispatchableInterface',
+            'Controller of type %s is invalid; must implement Laminas\Stdlib\DispatchableInterface',
             (is_object($plugin) ? get_class($plugin) : gettype($plugin))
         ));
     }

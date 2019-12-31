@@ -1,26 +1,24 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Mvc
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Controller;
+namespace LaminasTest\Mvc\Controller;
 
+use Laminas\Mvc\Controller\PluginManager;
+use LaminasTest\Mvc\Controller\Plugin\TestAsset\SamplePlugin;
+use LaminasTest\Mvc\Controller\Plugin\TestAsset\SamplePluginWithConstructor;
+use LaminasTest\Mvc\Controller\TestAsset\SampleController;
 use PHPUnit_Framework_TestCase as TestCase;
-use ZendTest\Mvc\Controller\TestAsset\SampleController;
-use ZendTest\Mvc\Controller\Plugin\TestAsset\SamplePlugin;
-use ZendTest\Mvc\Controller\Plugin\TestAsset\SamplePluginWithConstructor;
-use Zend\Mvc\Controller\PluginManager;
 
 class PluginManagerTest extends TestCase
 {
     public function testPluginManagerThrowsExceptionForMissingPluginInterface()
     {
-        $this->setExpectedException('Zend\Mvc\Exception\InvalidPluginException');
+        $this->setExpectedException('Laminas\Mvc\Exception\InvalidPluginException');
 
         $pluginManager = new PluginManager;
         $pluginManager->setInvokableClass('samplePlugin', 'stdClass');
@@ -32,7 +30,7 @@ class PluginManagerTest extends TestCase
     {
         $controller    = new SampleController;
         $pluginManager = new PluginManager;
-        $pluginManager->setInvokableClass('samplePlugin', 'ZendTest\Mvc\Controller\Plugin\TestAsset\SamplePlugin');
+        $pluginManager->setInvokableClass('samplePlugin', 'LaminasTest\Mvc\Controller\Plugin\TestAsset\SamplePlugin');
         $pluginManager->setController($controller);
 
         $plugin = $pluginManager->get('samplePlugin');
@@ -43,7 +41,7 @@ class PluginManagerTest extends TestCase
     {
         $controller1   = new SampleController;
         $pluginManager = new PluginManager;
-        $pluginManager->setInvokableClass('samplePlugin', 'ZendTest\Mvc\Controller\Plugin\TestAsset\SamplePlugin');
+        $pluginManager->setInvokableClass('samplePlugin', 'LaminasTest\Mvc\Controller\Plugin\TestAsset\SamplePlugin');
         $pluginManager->setController($controller1);
 
         // Plugin manager registers now instance of SamplePlugin
@@ -59,7 +57,7 @@ class PluginManagerTest extends TestCase
     public function testGetWithConstrutor()
     {
         $pluginManager = new PluginManager;
-        $pluginManager->setInvokableClass('samplePlugin', 'ZendTest\Mvc\Controller\Plugin\TestAsset\SamplePluginWithConstructor');
+        $pluginManager->setInvokableClass('samplePlugin', 'LaminasTest\Mvc\Controller\Plugin\TestAsset\SamplePluginWithConstructor');
         $plugin = $pluginManager->get('samplePlugin');
         $this->assertEquals($plugin->getBar(), 'baz');
     }
@@ -67,7 +65,7 @@ class PluginManagerTest extends TestCase
     public function testGetWithConstrutorAndOptions()
     {
         $pluginManager = new PluginManager;
-        $pluginManager->setInvokableClass('samplePlugin', 'ZendTest\Mvc\Controller\Plugin\TestAsset\SamplePluginWithConstructor');
+        $pluginManager->setInvokableClass('samplePlugin', 'LaminasTest\Mvc\Controller\Plugin\TestAsset\SamplePluginWithConstructor');
         $plugin = $pluginManager->get('samplePlugin', 'foo');
         $this->assertEquals($plugin->getBar(), 'foo');
     }
@@ -75,17 +73,17 @@ class PluginManagerTest extends TestCase
     public function testCanCreateByFactory()
     {
         $pluginManager = new PluginManager;
-        $pluginManager->setFactory('samplePlugin', 'ZendTest\Mvc\Controller\Plugin\TestAsset\SamplePluginFactory');
+        $pluginManager->setFactory('samplePlugin', 'LaminasTest\Mvc\Controller\Plugin\TestAsset\SamplePluginFactory');
         $plugin = $pluginManager->get('samplePlugin');
-        $this->assertInstanceOf('\ZendTest\Mvc\Controller\Plugin\TestAsset\SamplePlugin', $plugin);
+        $this->assertInstanceOf('\LaminasTest\Mvc\Controller\Plugin\TestAsset\SamplePlugin', $plugin);
     }
 
     public function testCanCreateByFactoryWithConstrutor()
     {
         $pluginManager = new PluginManager;
-        $pluginManager->setFactory('samplePlugin', 'ZendTest\Mvc\Controller\Plugin\TestAsset\SamplePluginWithConstructorFactory');
+        $pluginManager->setFactory('samplePlugin', 'LaminasTest\Mvc\Controller\Plugin\TestAsset\SamplePluginWithConstructorFactory');
         $plugin = $pluginManager->get('samplePlugin', 'foo');
-        $this->assertInstanceOf('\ZendTest\Mvc\Controller\Plugin\TestAsset\SamplePluginWithConstructor', $plugin);
+        $this->assertInstanceOf('\LaminasTest\Mvc\Controller\Plugin\TestAsset\SamplePluginWithConstructor', $plugin);
         $this->assertEquals($plugin->getBar(), 'foo');
     }
 
