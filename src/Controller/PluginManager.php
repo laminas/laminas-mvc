@@ -1,19 +1,18 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Controller;
+namespace Laminas\Mvc\Controller;
 
-use Zend\Mvc\Exception;
-use Zend\ServiceManager\AbstractPluginManager;
-use Zend\ServiceManager\Exception\InvalidServiceException;
-use Zend\ServiceManager\Factory\InvokableFactory;
-use Zend\Stdlib\DispatchableInterface;
+use Laminas\Mvc\Exception;
+use Laminas\ServiceManager\AbstractPluginManager;
+use Laminas\ServiceManager\Exception\InvalidServiceException;
+use Laminas\ServiceManager\Factory\InvokableFactory;
+use Laminas\Stdlib\DispatchableInterface;
 
 /**
  * Plugin manager implementation for controllers
@@ -66,6 +65,34 @@ class PluginManager extends AbstractPluginManager
         'CreateConsoleNotFoundModel'  => Plugin\CreateConsoleNotFoundModel::class,
         'createConsoleNotFoundModel'  => Plugin\CreateConsoleNotFoundModel::class,
         'createconsolenotfoundmodel'  => Plugin\CreateConsoleNotFoundModel::class,
+
+        // Legacy Zend Framework aliases
+        \Zend\Mvc\Controller\Plugin\Forward::class => Plugin\Forward::class,
+        \Zend\Mvc\Controller\Plugin\Identity::class => Plugin\Identity::class,
+        \Zend\Mvc\Controller\Plugin\AcceptableViewModelSelector::class => Plugin\AcceptableViewModelSelector::class,
+        \Zend\Mvc\Controller\Plugin\FilePostRedirectGet::class => Plugin\FilePostRedirectGet::class,
+        \Zend\Mvc\Controller\Plugin\FlashMessenger::class => Plugin\FlashMessenger::class,
+        \Zend\Mvc\Controller\Plugin\Layout::class => Plugin\Layout::class,
+        \Zend\Mvc\Controller\Plugin\Params::class => Plugin\Params::class,
+        \Zend\Mvc\Controller\Plugin\PostRedirectGet::class => Plugin\PostRedirectGet::class,
+        \Zend\Mvc\Controller\Plugin\Redirect::class => Plugin\Redirect::class,
+        \Zend\Mvc\Controller\Plugin\Url::class => Plugin\Url::class,
+        \Zend\Mvc\Controller\Plugin\CreateHttpNotFoundModel::class => Plugin\CreateHttpNotFoundModel::class,
+        \Zend\Mvc\Controller\Plugin\CreateConsoleNotFoundModel::class => Plugin\CreateConsoleNotFoundModel::class,
+
+        // v2 normalized FQCNs
+        'zendmvccontrollerpluginforward' => Plugin\Forward::class,
+        'zendmvccontrollerpluginidentity' => Plugin\Identity::class,
+        'zendmvccontrollerpluginacceptableviewmodelselector' => Plugin\AcceptableViewModelSelector::class,
+        'zendmvccontrollerpluginfilepostredirectget' => Plugin\FilePostRedirectGet::class,
+        'zendmvccontrollerpluginflashmessenger' => Plugin\FlashMessenger::class,
+        'zendmvccontrollerpluginlayout' => Plugin\Layout::class,
+        'zendmvccontrollerpluginparams' => Plugin\Params::class,
+        'zendmvccontrollerpluginpostredirectget' => Plugin\PostRedirectGet::class,
+        'zendmvccontrollerpluginredirect' => Plugin\Redirect::class,
+        'zendmvccontrollerpluginurl' => Plugin\Url::class,
+        'zendmvccontrollerplugincreatehttpnotfoundmodel' => Plugin\CreateHttpNotFoundModel::class,
+        'zendmvccontrollerplugincreateconsolenotfoundmodel' => Plugin\CreateConsoleNotFoundModel::class,
     ];
 
     /**
@@ -87,18 +114,18 @@ class PluginManager extends AbstractPluginManager
 
         // v2 normalized names
 
-        'zendmvccontrollerpluginforward'                     => Plugin\Service\ForwardFactory::class,
-        'zendmvccontrollerpluginidentity'                    => Plugin\Service\IdentityFactory::class,
-        'zendmvccontrollerpluginacceptableviewmodelselector' => InvokableFactory::class,
-        'zendmvccontrollerpluginfilepostredirectget'         => InvokableFactory::class,
-        'zendmvccontrollerpluginflashmessenger'              => InvokableFactory::class,
-        'zendmvccontrollerpluginlayout'                      => InvokableFactory::class,
-        'zendmvccontrollerpluginparams'                      => InvokableFactory::class,
-        'zendmvccontrollerpluginpostredirectget'             => InvokableFactory::class,
-        'zendmvccontrollerpluginredirect'                    => InvokableFactory::class,
-        'zendmvccontrollerpluginurl'                         => InvokableFactory::class,
-        'zendmvccontrollerplugincreatehttpnotfoundmodel'     => InvokableFactory::class,
-        'zendmvccontrollerplugincreateconsolenotfoundmodel'  => InvokableFactory::class,
+        'laminasmvccontrollerpluginforward'                     => Plugin\Service\ForwardFactory::class,
+        'laminasmvccontrollerpluginidentity'                    => Plugin\Service\IdentityFactory::class,
+        'laminasmvccontrollerpluginacceptableviewmodelselector' => InvokableFactory::class,
+        'laminasmvccontrollerpluginfilepostredirectget'         => InvokableFactory::class,
+        'laminasmvccontrollerpluginflashmessenger'              => InvokableFactory::class,
+        'laminasmvccontrollerpluginlayout'                      => InvokableFactory::class,
+        'laminasmvccontrollerpluginparams'                      => InvokableFactory::class,
+        'laminasmvccontrollerpluginpostredirectget'             => InvokableFactory::class,
+        'laminasmvccontrollerpluginredirect'                    => InvokableFactory::class,
+        'laminasmvccontrollerpluginurl'                         => InvokableFactory::class,
+        'laminasmvccontrollerplugincreatehttpnotfoundmodel'     => InvokableFactory::class,
+        'laminasmvccontrollerplugincreateconsolenotfoundmodel'  => InvokableFactory::class,
     ];
 
     /**

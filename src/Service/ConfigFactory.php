@@ -1,17 +1,16 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Service;
+namespace Laminas\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\ServiceManager\FactoryInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 class ConfigFactory implements FactoryInterface
 {
@@ -19,7 +18,7 @@ class ConfigFactory implements FactoryInterface
      * Create the application configuration service
      *
      * Retrieves the Module Manager from the service locator, and executes
-     * {@link Zend\ModuleManager\ModuleManager::loadModules()}.
+     * {@link Laminas\ModuleManager\ModuleManager::loadModules()}.
      *
      * It then retrieves the config listener from the module manager, and from
      * that the merged configuration.
@@ -40,7 +39,7 @@ class ConfigFactory implements FactoryInterface
     /**
      * Create and return config instance
      *
-     * For use with zend-servicemanager v2; proxies to __invoke().
+     * For use with laminas-servicemanager v2; proxies to __invoke().
      *
      * @param ServiceLocatorInterface $container
      * @return array|\Traversable

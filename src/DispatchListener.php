@@ -1,19 +1,18 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc;
+namespace Laminas\Mvc;
 
 use ArrayObject;
-use Zend\EventManager\AbstractListenerAggregate;
-use Zend\EventManager\EventManagerInterface;
-use Zend\ServiceManager\Exception\InvalidServiceException;
-use Zend\Stdlib\ArrayUtils;
+use Laminas\EventManager\AbstractListenerAggregate;
+use Laminas\EventManager\EventManagerInterface;
+use Laminas\ServiceManager\Exception\InvalidServiceException;
+use Laminas\Stdlib\ArrayUtils;
 
 /**
  * Default dispatch listener
@@ -136,7 +135,7 @@ class DispatchListener extends AbstractListenerAggregate
         $error     = $e->getError();
         $exception = $e->getParam('exception');
         if ($exception instanceof \Exception) {
-            zend_monitor_custom_event_ex($error, $exception->getMessage(), 'Zend Framework Exception', ['code' => $exception->getCode(), 'trace' => $exception->getTraceAsString()]);
+            zend_monitor_custom_event_ex($error, $exception->getMessage(), 'Laminas Exception', ['code' => $exception->getCode(), 'trace' => $exception->getTraceAsString()]);
         }
     }
 
