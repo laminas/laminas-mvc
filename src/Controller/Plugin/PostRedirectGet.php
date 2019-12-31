@@ -1,17 +1,15 @@
 <?php
 
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Controller\Plugin;
+namespace Laminas\Mvc\Controller\Plugin;
 
-use Zend\Mvc\Exception\RuntimeException;
-use Zend\Session\Container;
+use Laminas\Mvc\Exception\RuntimeException;
+use Laminas\Session\Container;
 
 /**
  * Plugin to help facilitate Post/Redirect/Get (http://en.wikipedia.org/wiki/Post/Redirect/Get)
@@ -39,7 +37,7 @@ class PostRedirectGet extends AbstractPlugin
      *
      * @param  null|string $redirect
      * @param  bool        $redirectToUrl
-     * @return \Zend\Http\Response|array|\Traversable|false
+     * @return \Laminas\Http\Response|array|\Traversable|false
      */
     public function __invoke($redirect = null, $redirectToUrl = false)
     {
@@ -88,8 +86,8 @@ class PostRedirectGet extends AbstractPlugin
      *
      * @param  string  $redirect
      * @param  bool    $redirectToUrl
-     * @return \Zend\Http\Response
-     * @throws \Zend\Mvc\Exception\RuntimeException
+     * @return \Laminas\Http\Response
+     * @throws \Laminas\Mvc\Exception\RuntimeException
      */
     protected function redirect($redirect, $redirectToUrl)
     {
