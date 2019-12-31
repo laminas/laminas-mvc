@@ -1,25 +1,23 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Mvc
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Service;
+namespace Laminas\Mvc\Service;
 
-use Zend\EventManager\EventManagerAwareInterface;
-use Zend\EventManager\EventManagerInterface;
-use Zend\ServiceManager\ConfigInterface;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceManager;
-use Zend\ServiceManager\ServiceManagerAwareInterface;
+use Laminas\EventManager\EventManagerAwareInterface;
+use Laminas\EventManager\EventManagerInterface;
+use Laminas\ServiceManager\ConfigInterface;
+use Laminas\ServiceManager\ServiceLocatorAwareInterface;
+use Laminas\ServiceManager\ServiceManager;
+use Laminas\ServiceManager\ServiceManagerAwareInterface;
 
 /**
- * @category   Zend
- * @package    Zend_Mvc
+ * @category   Laminas
+ * @package    Laminas_Mvc
  * @subpackage Service
  */
 class ServiceManagerConfig implements ConfigInterface
@@ -30,7 +28,7 @@ class ServiceManagerConfig implements ConfigInterface
      * @var array
      */
     protected $invokables = array(
-        'SharedEventManager' => 'Zend\EventManager\SharedEventManager',
+        'SharedEventManager' => 'Laminas\EventManager\SharedEventManager',
     );
 
     /**
@@ -39,8 +37,8 @@ class ServiceManagerConfig implements ConfigInterface
      * @var array
      */
     protected $factories = array(
-        'EventManager'  => 'Zend\Mvc\Service\EventManagerFactory',
-        'ModuleManager' => 'Zend\Mvc\Service\ModuleManagerFactory',
+        'EventManager'  => 'Laminas\Mvc\Service\EventManagerFactory',
+        'ModuleManager' => 'Laminas\Mvc\Service\ModuleManagerFactory',
     );
 
     /**
@@ -56,7 +54,7 @@ class ServiceManagerConfig implements ConfigInterface
      * @var array
      */
     protected $aliases = array(
-        'Zend\EventManager\EventManagerInterface' => 'EventManager',
+        'Laminas\EventManager\EventManagerInterface' => 'EventManager',
     );
 
     /**
@@ -156,7 +154,7 @@ class ServiceManagerConfig implements ConfigInterface
         });
 
         $serviceManager->setService('ServiceManager', $serviceManager);
-        $serviceManager->setAlias('Zend\ServiceManager\ServiceLocatorInterface', 'ServiceManager');
-        $serviceManager->setAlias('Zend\ServiceManager\ServiceManager', 'ServiceManager');
+        $serviceManager->setAlias('Laminas\ServiceManager\ServiceLocatorInterface', 'ServiceManager');
+        $serviceManager->setAlias('Laminas\ServiceManager\ServiceManager', 'ServiceManager');
     }
 }
