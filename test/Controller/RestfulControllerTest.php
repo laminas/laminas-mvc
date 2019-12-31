@@ -1,22 +1,20 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Mvc
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Controller;
+namespace LaminasTest\Mvc\Controller;
 
+use Laminas\EventManager\SharedEventManager;
+use Laminas\Http\Response;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Mvc\Router\RouteMatch;
 use PHPUnit_Framework_TestCase as TestCase;
 use ReflectionObject;
 use stdClass;
-use Zend\EventManager\SharedEventManager;
-use Zend\Http\Response;
-use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router\RouteMatch;
 
 class RestfulControllerTest extends TestCase
 {
@@ -211,8 +209,8 @@ class RestfulControllerTest extends TestCase
         $this->assertEquals('head', $this->routeMatch->getParam('action'));
 
         $headers = $this->controller->getResponse()->getHeaders();
-        $this->assertTrue($headers->has('X-ZF2-Id'));
-        $header  = $headers->get('X-ZF2-Id');
+        $this->assertTrue($headers->has('X-Laminas-Id'));
+        $header  = $headers->get('X-Laminas-Id');
         $this->assertEquals(1, $header->getFieldValue());
     }
 
@@ -270,7 +268,7 @@ class RestfulControllerTest extends TestCase
         $response = new Response();
         $response->setContent('short circuited!');
         $events = new SharedEventManager();
-        $events->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
+        $events->attach('Laminas\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
             return $response;
         }, 10);
         $this->controller->getEventManager()->setSharedManager($events);
@@ -283,7 +281,7 @@ class RestfulControllerTest extends TestCase
         $response = new Response();
         $response->setContent('short circuited!');
         $events = new SharedEventManager();
-        $events->attach('Zend\Mvc\Controller\AbstractRestfulController', MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
+        $events->attach('Laminas\Mvc\Controller\AbstractRestfulController', MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
             return $response;
         }, 10);
         $this->controller->getEventManager()->setSharedManager($events);
@@ -314,12 +312,12 @@ class RestfulControllerTest extends TestCase
 
     public function testControllerIsLocatorAware()
     {
-        $this->assertInstanceOf('Zend\ServiceManager\ServiceLocatorAwareInterface', $this->controller);
+        $this->assertInstanceOf('Laminas\ServiceManager\ServiceLocatorAwareInterface', $this->controller);
     }
 
     public function testControllerIsEventAware()
     {
-        $this->assertInstanceOf('Zend\Mvc\InjectApplicationEventInterface', $this->controller);
+        $this->assertInstanceOf('Laminas\Mvc\InjectApplicationEventInterface', $this->controller);
     }
 
     public function testControllerIsPluggable()
@@ -330,7 +328,7 @@ class RestfulControllerTest extends TestCase
     public function testMethodOverloadingShouldReturnPluginWhenFound()
     {
         $plugin = $this->controller->url();
-        $this->assertInstanceOf('Zend\Mvc\Controller\Plugin\Url', $plugin);
+        $this->assertInstanceOf('Laminas\Mvc\Controller\Plugin\Url', $plugin);
     }
 
     public function testMethodOverloadingShouldInvokePluginAsFunctorIfPossible()
@@ -399,7 +397,7 @@ class RestfulControllerTest extends TestCase
         $this->request->setMethod('PATCH')
                       ->setContent($string);
         $result = $this->controller->dispatch($this->request, $this->response);
-        $this->assertInstanceOf('Zend\Http\Response', $result);
+        $this->assertInstanceOf('Laminas\Http\Response', $result);
         $this->assertEquals(405, $result->getStatusCode());
     }
 
@@ -407,7 +405,7 @@ class RestfulControllerTest extends TestCase
     {
         $this->request->setMethod('PROPFIND');
         $result = $this->controller->dispatch($this->request, $this->response);
-        $this->assertInstanceOf('Zend\Http\Response', $result);
+        $this->assertInstanceOf('Laminas\Http\Response', $result);
         $this->assertEquals(405, $result->getStatusCode());
     }
 
