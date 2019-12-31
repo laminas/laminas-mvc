@@ -1,24 +1,23 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\View\Http;
+namespace Laminas\Mvc\View\Http;
 
-use Zend\EventManager\EventManagerInterface;
-use Zend\EventManager\ListenerAggregateInterface;
-use Zend\Http\Request as HttpRequest;
-use Zend\Console\Request as ConsoleRequest;
-use Zend\Mvc\MvcEvent;
+use Laminas\Console\Request as ConsoleRequest;
+use Laminas\EventManager\EventManagerInterface;
+use Laminas\EventManager\ListenerAggregateInterface;
+use Laminas\Http\Request as HttpRequest;
+use Laminas\Mvc\MvcEvent;
 
 class InjectRoutematchParamsListener implements ListenerAggregateInterface
 {
     /**
-     * @var \Zend\Stdlib\CallbackHandler[]
+     * @var \Laminas\Stdlib\CallbackHandler[]
      */
     protected $listeners = array();
 
@@ -66,7 +65,7 @@ class InjectRoutematchParamsListener implements ListenerAggregateInterface
         $routeMatchParams = $e->getRouteMatch()->getParams();
         $request = $e->getRequest();
 
-        /** @var $params \Zend\Stdlib\Parameters */
+        /** @var $params \Laminas\Stdlib\Parameters */
         if ($request instanceof ConsoleRequest) {
             $params = $request->params();
         } elseif ($request instanceof HttpRequest) {
