@@ -1,22 +1,21 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Service;
+namespace Laminas\Mvc\Service;
 
-use Zend\EventManager\EventManagerAwareInterface;
-use Zend\EventManager\EventManagerInterface;
-use Zend\ServiceManager\Config;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\ServiceManager\ServiceManager;
-use Zend\ServiceManager\ServiceManagerAwareInterface;
-use Zend\Stdlib\ArrayUtils;
+use Laminas\EventManager\EventManagerAwareInterface;
+use Laminas\EventManager\EventManagerInterface;
+use Laminas\ServiceManager\Config;
+use Laminas\ServiceManager\ServiceLocatorAwareInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
+use Laminas\ServiceManager\ServiceManager;
+use Laminas\ServiceManager\ServiceManagerAwareInterface;
+use Laminas\Stdlib\ArrayUtils;
 
 class ServiceManagerConfig extends Config
 {
@@ -26,7 +25,7 @@ class ServiceManagerConfig extends Config
      * @var array
      */
     protected $invokables = array(
-        'SharedEventManager' => 'Zend\EventManager\SharedEventManager',
+        'SharedEventManager' => 'Laminas\EventManager\SharedEventManager',
     );
 
     /**
@@ -35,8 +34,8 @@ class ServiceManagerConfig extends Config
      * @var array
      */
     protected $factories = array(
-        'EventManager'  => 'Zend\Mvc\Service\EventManagerFactory',
-        'ModuleManager' => 'Zend\Mvc\Service\ModuleManagerFactory',
+        'EventManager'  => 'Laminas\Mvc\Service\EventManagerFactory',
+        'ModuleManager' => 'Laminas\Mvc\Service\ModuleManagerFactory',
     );
 
     /**
@@ -52,9 +51,9 @@ class ServiceManagerConfig extends Config
      * @var array
      */
     protected $aliases = array(
-        'Zend\EventManager\EventManagerInterface'     => 'EventManager',
-        'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
-        'Zend\ServiceManager\ServiceManager'          => 'ServiceManager',
+        'Laminas\EventManager\EventManagerInterface'     => 'EventManager',
+        'Laminas\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
+        'Laminas\ServiceManager\ServiceManager'          => 'ServiceManager',
     );
 
     /**
