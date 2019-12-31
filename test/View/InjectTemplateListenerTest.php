@@ -1,22 +1,21 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\View;
+namespace LaminasTest\Mvc\View;
 
+use Laminas\EventManager\EventManager;
+use Laminas\EventManager\Test\EventListenerIntrospectionTrait;
+use Laminas\Mvc\ModuleRouteListener;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Mvc\Router\RouteMatch;
+use Laminas\Mvc\View\Http\InjectTemplateListener;
+use Laminas\View\Model\ViewModel;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\EventManager\EventManager;
-use Zend\EventManager\Test\EventListenerIntrospectionTrait;
-use Zend\Mvc\ModuleRouteListener;
-use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router\RouteMatch;
-use Zend\Mvc\View\Http\InjectTemplateListener;
-use Zend\View\Model\ViewModel;
 
 class InjectTemplateListenerTest extends TestCase
 {
@@ -26,7 +25,7 @@ class InjectTemplateListenerTest extends TestCase
     {
         $controllerMap = [
             'MappedNs' => true,
-            'ZendTest\MappedNs' => true,
+            'LaminasTest\MappedNs' => true,
         ];
         $this->listener   = new InjectTemplateListener();
         $this->listener->setControllerMap($controllerMap);
@@ -139,25 +138,25 @@ class InjectTemplateListenerTest extends TestCase
 
     public function testMapsSubNamespaceToSubDirectoryWithControllerFromEventTarget()
     {
-        $this->routeMatch->setParam(ModuleRouteListener::MODULE_NAMESPACE, 'ZendTest\Mvc\Controller\TestAsset');
+        $this->routeMatch->setParam(ModuleRouteListener::MODULE_NAMESPACE, 'LaminasTest\Mvc\Controller\TestAsset');
         $this->routeMatch->setParam('action', 'test');
 
         $moduleRouteListener = new ModuleRouteListener;
         $moduleRouteListener->onRoute($this->event);
 
         $myViewModel  = new ViewModel();
-        $myController = new \ZendTest\Mvc\Controller\TestAsset\SampleController();
+        $myController = new \LaminasTest\Mvc\Controller\TestAsset\SampleController();
 
         $this->event->setTarget($myController);
         $this->event->setResult($myViewModel);
         $this->listener->injectTemplate($this->event);
 
-        $this->assertEquals('zend-test/controller/test-asset/sample/test', $myViewModel->getTemplate());
+        $this->assertEquals('laminas-test/controller/test-asset/sample/test', $myViewModel->getTemplate());
     }
 
     public function testMapsSubNamespaceToSubDirectoryWithControllerFromEventTargetShouldMatchControllerFromRouteParam()
     {
-        $this->routeMatch->setParam(ModuleRouteListener::MODULE_NAMESPACE, 'ZendTest\Mvc\Controller');
+        $this->routeMatch->setParam(ModuleRouteListener::MODULE_NAMESPACE, 'LaminasTest\Mvc\Controller');
         $this->routeMatch->setParam('controller', 'TestAsset\SampleController');
         $this->routeMatch->setParam('action', 'test');
 
@@ -171,7 +170,7 @@ class InjectTemplateListenerTest extends TestCase
         $template1 = $myViewModel->getTemplate();
 
         $myViewModel  = new ViewModel();
-        $myController = new \ZendTest\Mvc\Controller\TestAsset\SampleController();
+        $myController = new \LaminasTest\Mvc\Controller\TestAsset\SampleController();
 
         $this->event->setTarget($myController);
         $this->event->setResult($myViewModel);
@@ -190,28 +189,28 @@ class InjectTemplateListenerTest extends TestCase
 
         $this->assertEquals('mapped-ns/sub-ns/sample', $myViewModel->getTemplate());
 
-        $this->listener->setControllerMap(['ZendTest' => true]);
+        $this->listener->setControllerMap(['LaminasTest' => true]);
         $myViewModel  = new ViewModel();
-        $myController = new \ZendTest\Mvc\Controller\TestAsset\SampleController();
+        $myController = new \LaminasTest\Mvc\Controller\TestAsset\SampleController();
         $this->event->setTarget($myController);
         $this->event->setResult($myViewModel);
 
         $this->listener->injectTemplate($this->event);
 
-        $this->assertEquals('zend-test/mvc/test-asset/sample', $myViewModel->getTemplate());
+        $this->assertEquals('laminas-test/mvc/test-asset/sample', $myViewModel->getTemplate());
     }
 
     public function testControllerNotMatchedByMapIsNotAffected()
     {
         $this->routeMatch->setParam('action', 'test');
         $myViewModel  = new ViewModel();
-        $myController = new \ZendTest\Mvc\Controller\TestAsset\SampleController();
+        $myController = new \LaminasTest\Mvc\Controller\TestAsset\SampleController();
 
         $this->event->setTarget($myController);
         $this->event->setResult($myViewModel);
         $this->listener->injectTemplate($this->event);
 
-        $this->assertEquals('zend-test/sample/test', $myViewModel->getTemplate());
+        $this->assertEquals('laminas-test/sample/test', $myViewModel->getTemplate());
     }
 
     public function testFullControllerNameMatchIsMapped()
@@ -333,7 +332,7 @@ class InjectTemplateListenerTest extends TestCase
         $this->listener->setPreferRouteMatchController(true);
         $this->routeMatch->setParam('controller', 'Some\Other\Service\Namespace\Controller\Sample');
         $myViewModel  = new ViewModel();
-        $myController = new \ZendTest\Mvc\Controller\TestAsset\SampleController();
+        $myController = new \LaminasTest\Mvc\Controller\TestAsset\SampleController();
 
         $this->event->setTarget($myController);
         $this->event->setResult($myViewModel);
