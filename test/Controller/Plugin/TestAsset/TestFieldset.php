@@ -1,9 +1,9 @@
 <?php
 
-namespace ZendTest\Mvc\Controller\Plugin\TestAsset;
+namespace LaminasTest\Mvc\Controller\Plugin\TestAsset;
 
-use Zend\Form\Fieldset;
-use Zend\InputFilter\InputFilterProviderInterface;
+use Laminas\Form\Fieldset;
+use Laminas\InputFilter\InputFilterProviderInterface;
 
 class TestFieldset extends Fieldset implements InputFilterProviderInterface
 {
