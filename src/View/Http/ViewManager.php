@@ -1,24 +1,23 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\View\Http;
+namespace Laminas\Mvc\View\Http;
 
 use ArrayAccess;
+use Laminas\EventManager\AbstractListenerAggregate;
+use Laminas\EventManager\EventManagerInterface;
+use Laminas\EventManager\ListenerAggregateInterface;
+use Laminas\Mvc\MvcEvent;
+use Laminas\ServiceManager\ServiceManager;
+use Laminas\View\HelperPluginManager as ViewHelperManager;
+use Laminas\View\Resolver as ViewResolver;
+use Laminas\View\View;
 use Traversable;
-use Zend\EventManager\AbstractListenerAggregate;
-use Zend\EventManager\EventManagerInterface;
-use Zend\EventManager\ListenerAggregateInterface;
-use Zend\Mvc\MvcEvent;
-use Zend\ServiceManager\ServiceManager;
-use Zend\View\HelperPluginManager as ViewHelperManager;
-use Zend\View\Resolver as ViewResolver;
-use Zend\View\View;
 
 /**
  * Prepares the view layer
@@ -30,16 +29,16 @@ use Zend\View\View;
  *
  * Defines and manages the following services:
  *
- * - ViewHelperManager (also aliased to Zend\View\HelperPluginManager)
- * - ViewTemplateMapResolver (also aliased to Zend\View\Resolver\TemplateMapResolver)
- * - ViewTemplatePathStack (also aliased to Zend\View\Resolver\TemplatePathStack)
- * - ViewResolver (also aliased to Zend\View\Resolver\AggregateResolver and ResolverInterface)
- * - ViewRenderer (also aliased to Zend\View\Renderer\PhpRenderer and RendererInterface)
- * - ViewPhpRendererStrategy (also aliased to Zend\View\Strategy\PhpRendererStrategy)
- * - View (also aliased to Zend\View\View)
- * - DefaultRenderingStrategy (also aliased to Zend\Mvc\View\Http\DefaultRenderingStrategy)
- * - ExceptionStrategy (also aliased to Zend\Mvc\View\Http\ExceptionStrategy)
- * - RouteNotFoundStrategy (also aliased to Zend\Mvc\View\Http\RouteNotFoundStrategy and 404Strategy)
+ * - ViewHelperManager (also aliased to Laminas\View\HelperPluginManager)
+ * - ViewTemplateMapResolver (also aliased to Laminas\View\Resolver\TemplateMapResolver)
+ * - ViewTemplatePathStack (also aliased to Laminas\View\Resolver\TemplatePathStack)
+ * - ViewResolver (also aliased to Laminas\View\Resolver\AggregateResolver and ResolverInterface)
+ * - ViewRenderer (also aliased to Laminas\View\Renderer\PhpRenderer and RendererInterface)
+ * - ViewPhpRendererStrategy (also aliased to Laminas\View\Strategy\PhpRendererStrategy)
+ * - View (also aliased to Laminas\View\View)
+ * - DefaultRenderingStrategy (also aliased to Laminas\Mvc\View\Http\DefaultRenderingStrategy)
+ * - ExceptionStrategy (also aliased to Laminas\Mvc\View\Http\ExceptionStrategy)
+ * - RouteNotFoundStrategy (also aliased to Laminas\Mvc\View\Http\RouteNotFoundStrategy and 404Strategy)
  * - ViewModel
  */
 class ViewManager extends AbstractListenerAggregate
@@ -106,7 +105,7 @@ class ViewManager extends AbstractListenerAggregate
 
         $this->injectViewModelIntoPlugin();
 
-        $injectTemplateListener  = $services->get('Zend\Mvc\View\Http\InjectTemplateListener');
+        $injectTemplateListener  = $services->get('Laminas\Mvc\View\Http\InjectTemplateListener');
         $createViewModelListener = new CreateViewModelListener();
         $injectViewModelListener = new InjectViewModelListener();
 
@@ -119,11 +118,11 @@ class ViewManager extends AbstractListenerAggregate
         $events->attach(MvcEvent::EVENT_RENDER_ERROR, [$injectViewModelListener, 'injectViewModel'], -100);
         $mvcRenderingStrategy->attach($events);
 
-        $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, [$createViewModelListener, 'createViewModelFromArray'], -80);
-        $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, [$routeNotFoundStrategy, 'prepareNotFoundViewModel'], -90);
-        $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, [$createViewModelListener, 'createViewModelFromNull'], -80);
-        $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, [$injectTemplateListener, 'injectTemplate'], -90);
-        $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, [$injectViewModelListener, 'injectViewModel'], -100);
+        $sharedEvents->attach('Laminas\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, [$createViewModelListener, 'createViewModelFromArray'], -80);
+        $sharedEvents->attach('Laminas\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, [$routeNotFoundStrategy, 'prepareNotFoundViewModel'], -90);
+        $sharedEvents->attach('Laminas\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, [$createViewModelListener, 'createViewModelFromNull'], -80);
+        $sharedEvents->attach('Laminas\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, [$injectTemplateListener, 'injectTemplate'], -90);
+        $sharedEvents->attach('Laminas\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, [$injectViewModelListener, 'injectViewModel'], -100);
     }
 
     /**
@@ -144,7 +143,7 @@ class ViewManager extends AbstractListenerAggregate
     /**
      * Configures the MvcEvent view model to ensure it has the template injected
      *
-     * @return \Zend\View\Model\ModelInterface
+     * @return \Laminas\View\Model\ModelInterface
      */
     public function getViewModel()
     {

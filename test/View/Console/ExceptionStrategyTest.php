@@ -1,21 +1,20 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\View\Console;
+namespace LaminasTest\Mvc\View\Console;
 
+use Laminas\Console\Response;
+use Laminas\EventManager\EventManager;
+use Laminas\EventManager\Test\EventListenerIntrospectionTrait;
+use Laminas\Mvc\Application;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Mvc\View\Console\ExceptionStrategy;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Console\Response;
-use Zend\EventManager\EventManager;
-use Zend\EventManager\Test\EventListenerIntrospectionTrait;
-use Zend\Mvc\Application;
-use Zend\Mvc\MvcEvent;
-use Zend\Mvc\View\Console\ExceptionStrategy;
 
 class ExceptionStrategyTest extends TestCase
 {
@@ -169,7 +168,7 @@ class ExceptionStrategyTest extends TestCase
 
             $this->strategy->prepareExceptionViewModel($event);
 
-            $this->assertInstanceOf('Zend\View\Model\ConsoleModel', $event->getResult());
+            $this->assertInstanceOf('Laminas\View\Model\ConsoleModel', $event->getResult());
             $this->assertNotEquals('something', $event->getResult()->getResult(), sprintf('With an error of %s getResult should have been modified', $error));
             $this->assertContains('message foo', $event->getResult()->getResult(), sprintf('With an error of %s getResult should have been modified', $error));
         }

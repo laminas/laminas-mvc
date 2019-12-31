@@ -1,26 +1,25 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Service;
+namespace LaminasTest\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
-use Zend\Di\Config;
-use Zend\Di\Di;
-use Zend\Mvc\Service\DiStrictAbstractServiceFactory;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\ServiceManager\ServiceManager;
+use Laminas\Di\Config;
+use Laminas\Di\Di;
+use Laminas\Mvc\Service\DiStrictAbstractServiceFactory;
+use Laminas\ServiceManager\ServiceLocatorInterface;
+use Laminas\ServiceManager\ServiceManager;
 
 class DiStrictAbstractServiceFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testSetGetAllowedServiceNames()
     {
-        $instance = new DiStrictAbstractServiceFactory($this->getMock('Zend\Di\Di'));
+        $instance = new DiStrictAbstractServiceFactory($this->getMock('Laminas\Di\Di'));
         $instance->setAllowedServiceNames(['first-service', 'second-service']);
         $allowedServices = $instance->getAllowedServiceNames();
         $this->assertCount(2, $allowedServices);
@@ -30,7 +29,7 @@ class DiStrictAbstractServiceFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testWillOnlyCreateServiceInWhitelist()
     {
-        $instance = new DiStrictAbstractServiceFactory($this->getMock('Zend\Di\Di'));
+        $instance = new DiStrictAbstractServiceFactory($this->getMock('Laminas\Di\Di'));
         $instance->setAllowedServiceNames(['a-whitelisted-service-name']);
         $im = $instance->instanceManager();
         $im->addSharedInstance(new \stdClass(), 'a-whitelisted-service-name');
@@ -58,7 +57,7 @@ class DiStrictAbstractServiceFactoryTest extends \PHPUnit_Framework_TestCase
             'not-whitelisted'
         ));
 
-        $this->setExpectedException('Zend\ServiceManager\Exception\InvalidServiceException');
+        $this->setExpectedException('Laminas\ServiceManager\Exception\InvalidServiceException');
         $instance->createServiceWithName($locator->reveal(), 'not-whitelisted', 'not-whitelisted');
     }
 

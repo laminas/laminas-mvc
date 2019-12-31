@@ -1,16 +1,17 @@
 <?php
+
 /**
- * @link      http://github.com/zendframework/zend-mvc for the canonical source repository
- * @copyright Copyright (c) 2005-2016 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Service;
+namespace LaminasTest\Mvc\Service;
 
+use Laminas\Mvc\Exception;
+use Laminas\Mvc\Service\DiAbstractServiceFactoryFactory;
+use Laminas\ServiceManager\ServiceManager;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Mvc\Exception;
-use Zend\Mvc\Service\DiAbstractServiceFactoryFactory;
-use Zend\ServiceManager\ServiceManager;
 
 class DiAbstractServiceFactoryFactoryTest extends TestCase
 {
@@ -19,11 +20,11 @@ class DiAbstractServiceFactoryFactoryTest extends TestCase
         $container = new ServiceManager();
 
         if (! method_exists($container, 'configure')) {
-            $this->markTestSkipped('Test is only relevant for zend-servicemanager v3');
+            $this->markTestSkipped('Test is only relevant for laminas-servicemanager v3');
         }
 
         $factory = new DiAbstractServiceFactoryFactory();
-        $this->setExpectedException(Exception\RuntimeException::class, 'zend-servicemanager-di');
+        $this->setExpectedException(Exception\RuntimeException::class, 'laminas-servicemanager-di');
         $factory($container, DiAbstractServiceFactoryFactory::class);
     }
 }
