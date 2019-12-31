@@ -1,28 +1,29 @@
 <?php
+
 /**
- * @link      http://github.com/zendframework/zend-mvc for the canonical source repository
- * @copyright Copyright (c) 2005-2016 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Controller;
+namespace Laminas\Mvc\Controller;
 
 use Interop\Container\ContainerInterface;
+use Laminas\Console\Adapter\AdapterInterface as ConsoleAdapterInterface;
+use Laminas\Filter\FilterPluginManager;
+use Laminas\Hydrator\HydratorPluginManager;
+use Laminas\InputFilter\InputFilterPluginManager;
+use Laminas\Log\FilterPluginManager as LogFilterManager;
+use Laminas\Log\FormatterPluginManager as LogFormatterManager;
+use Laminas\Log\ProcessorPluginManager as LogProcessorManager;
+use Laminas\Log\WriterPluginManager as LogWriterManager;
+use Laminas\Serializer\AdapterPluginManager as SerializerAdapterManager;
+use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
+use Laminas\Stdlib\DispatchableInterface;
+use Laminas\Validator\ValidatorPluginManager;
 use ReflectionClass;
 use ReflectionParameter;
-use Zend\Console\Adapter\AdapterInterface as ConsoleAdapterInterface;
-use Zend\Filter\FilterPluginManager;
-use Zend\Hydrator\HydratorPluginManager;
-use Zend\InputFilter\InputFilterPluginManager;
-use Zend\Log\FilterPluginManager as LogFilterManager;
-use Zend\Log\FormatterPluginManager as LogFormatterManager;
-use Zend\Log\ProcessorPluginManager as LogProcessorManager;
-use Zend\Log\WriterPluginManager as LogWriterManager;
-use Zend\Serializer\AdapterPluginManager as SerializerAdapterManager;
-use Zend\ServiceManager\Exception\ServiceNotFoundException;
-use Zend\ServiceManager\Factory\AbstractFactoryInterface;
-use Zend\Stdlib\DispatchableInterface;
-use Zend\Validator\ValidatorPluginManager;
 
 /**
  * Reflection-based factory for controllers.
@@ -63,7 +64,7 @@ use Zend\Validator\ValidatorPluginManager;
  * - Scalar parameters will be resolved as null values.
  * - If a service cannot be found for a given typehint, the factory will
  *   raise an exception detailing this.
- * - Some services provided by Zend Framework components do not have
+ * - Some services provided by Laminas components do not have
  *   entries based on their class name (for historical reasons); the
  *   factory contains a map of these class/interface names to the
  *   corresponding service name to allow them to resolve.

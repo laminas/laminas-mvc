@@ -1,30 +1,29 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\View;
+namespace LaminasTest\Mvc\View;
 
+use Laminas\EventManager\Event;
+use Laminas\EventManager\EventManager;
+use Laminas\EventManager\Test\EventListenerIntrospectionTrait;
+use Laminas\Http\Request;
+use Laminas\Http\Response;
+use Laminas\Mvc\Application;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Mvc\View\Http\DefaultRenderingStrategy;
+use Laminas\ServiceManager\Config;
+use Laminas\ServiceManager\ServiceManager;
+use Laminas\View\Model\ViewModel;
+use Laminas\View\Renderer\PhpRenderer;
+use Laminas\View\Resolver\TemplateMapResolver;
+use Laminas\View\Strategy\PhpRendererStrategy;
+use Laminas\View\View;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\EventManager\Event;
-use Zend\EventManager\EventManager;
-use Zend\EventManager\Test\EventListenerIntrospectionTrait;
-use Zend\Http\Request;
-use Zend\Http\Response;
-use Zend\Mvc\Application;
-use Zend\Mvc\MvcEvent;
-use Zend\Mvc\View\Http\DefaultRenderingStrategy;
-use Zend\ServiceManager\Config;
-use Zend\ServiceManager\ServiceManager;
-use Zend\View\Renderer\PhpRenderer;
-use Zend\View\View;
-use Zend\View\Model\ViewModel;
-use Zend\View\Resolver\TemplateMapResolver;
-use Zend\View\Strategy\PhpRendererStrategy;
 
 class DefaultRendereringStrategyTest extends TestCase
 {
@@ -138,7 +137,7 @@ class DefaultRendereringStrategyTest extends TestCase
         $services = new ServiceManager();
         (new Config([
             'invokables' => [
-                'SharedEventManager' =>  'Zend\EventManager\SharedEventManager',
+                'SharedEventManager' =>  'Laminas\EventManager\SharedEventManager',
             ],
             'factories' => [
                 'EventManager' => function ($services) {

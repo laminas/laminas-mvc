@@ -1,21 +1,21 @@
 # Dispatching PSR-7 Middleware
 
 [PSR-7](http://www.php-fig.org/psr/psr-7/) defines interfaces for HTTP messages,
-and is now being adopted by many frameworks; Zend Framework itself offers a
-parallel microframework targeting PSR-7 with [Expressive](https://zendframework.github.io/zend-expressive).
-What if you want to dispatch PSR-7 middleware from zend-mvc?
+and is now being adopted by many frameworks; Laminas itself offers a
+parallel microframework targeting PSR-7 with [Mezzio](https://docs.mezzio.dev/mezzio).
+What if you want to dispatch PSR-7 middleware from laminas-mvc?
 
-zend-mvc currently uses [zend-http](https://github.com/zendframework/zend-http)
+laminas-mvc currently uses [laminas-http](https://github.com/laminas/laminas-http)
 for its HTTP transport layer, and the objects it defines are not compatible with
 PSR-7, meaning the basic MVC layer does not and cannot make use of PSR-7
 currently.
 
-However, starting with version 2.7.0, zend-mvc offers
-`Zend\Mvc\MiddlewareListener`. This [dispatch](mvc-event.md#mvceventevent_dispatch-dispatch)
+However, starting with version 2.7.0, laminas-mvc offers
+`Laminas\Mvc\MiddlewareListener`. This [dispatch](mvc-event.md#mvceventevent_dispatch-dispatch)
 listener listens prior to the default `DispatchListener`, and executes if the
 route matches contain a "middleware" parameter, and the service that resolves to
-is callable. When those conditions are met, it uses the [PSR-7 bridge](https://github.com/zendframework/zend-psr7bridge)
-to convert the zend-http request and response objects into PSR-7 instances, and
+is callable. When those conditions are met, it uses the [PSR-7 bridge](https://github.com/laminas/laminas-psr7bridge)
+to convert the laminas-http request and response objects into PSR-7 instances, and
 then invokes the middleware.
 
 ## Mapping routes to middleware
@@ -60,7 +60,7 @@ Middleware may be provided as PHP callables, or as service names.
 
 ## Middleware services
 
-In a normal zend-mvc dispatch cycle, controllers are pulled from a dedicated
+In a normal laminas-mvc dispatch cycle, controllers are pulled from a dedicated
 `ControllerManager`. Middleware, however, are pulled from the application
 service manager.
 
@@ -100,7 +100,7 @@ the response.
 ## Middleware return values
 
 Ideally, your middleware should return a PSR-7 response. When it does, it is
-converted back to a zend-http response and returned by the `MiddlewareListener`,
+converted back to a laminas-http response and returned by the `MiddlewareListener`,
 causing the application to short-circuit and return the response immediately.
 
 You can, however, return arbitrary values. If you do, the result is pushed into
