@@ -1,21 +1,19 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Mvc
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc;
+namespace LaminasTest\Mvc;
 
+use Laminas\Mvc\SendResponseListener;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Mvc\SendResponseListener;
 
 /**
- * @category   Zend
- * @package    Zend_Mvc
+ * @category   Laminas
+ * @package    Laminas_Mvc
  * @subpackage UnitTest
  */
 class SendResponseListenerTest extends TestCase
@@ -25,7 +23,7 @@ class SendResponseListenerTest extends TestCase
     {
         $listener = new SendResponseListener();
         $identifiers = $listener->getEventManager()->getIdentifiers();
-        $expected    = array('Zend\Mvc\SendResponseListener');
+        $expected    = array('Laminas\Mvc\SendResponseListener');
         $this->assertEquals($expected, array_values($identifiers));
     }
 
@@ -37,8 +35,8 @@ class SendResponseListenerTest extends TestCase
             $result['target'] = $e->getTarget();
             $result['response'] = $e->getResponse();
         }, 10000);
-        $mockResponse = $this->getMockForAbstractClass('Zend\Stdlib\ResponseInterface');
-        $mockMvcEvent = $this->getMock('Zend\Mvc\MvcEvent', $methods = array('getResponse'));
+        $mockResponse = $this->getMockForAbstractClass('Laminas\Stdlib\ResponseInterface');
+        $mockMvcEvent = $this->getMock('Laminas\Mvc\MvcEvent', $methods = array('getResponse'));
         $mockMvcEvent->expects($this->any())->method('getResponse')->will($this->returnValue($mockResponse));
         $listener->sendResponse($mockMvcEvent);
         $expected = array(

@@ -1,17 +1,16 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Controller\Plugin;
+namespace Laminas\Mvc\Controller\Plugin;
 
-use Zend\Mvc\Controller\Plugin\AbstractPlugin;
-use Zend\Mvc\Exception\RuntimeException;
-use Zend\Mvc\InjectApplicationEventInterface;
+use Laminas\Mvc\Controller\Plugin\AbstractPlugin;
+use Laminas\Mvc\Exception\RuntimeException;
+use Laminas\Mvc\InjectApplicationEventInterface;
 
 class Params extends AbstractPlugin
 {
@@ -51,7 +50,7 @@ class Params extends AbstractPlugin
      *
      * @param  string $header Header name to retrieve, or null to get all.
      * @param  mixed $default Default value to use when the requested header is missing.
-     * @return null|\Zend\Http\Header\HeaderInterface
+     * @return null|\Laminas\Http\Header\HeaderInterface
      */
     public function fromHeader($header = null, $default = null)
     {
@@ -108,7 +107,7 @@ class Params extends AbstractPlugin
 
         if (!$controller instanceof InjectApplicationEventInterface) {
             throw new RuntimeException(
-                'Controllers must implement Zend\Mvc\InjectApplicationEventInterface to use this plugin.'
+                'Controllers must implement Laminas\Mvc\InjectApplicationEventInterface to use this plugin.'
             );
         }
 
