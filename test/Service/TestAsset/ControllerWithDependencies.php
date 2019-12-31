@@ -1,9 +1,9 @@
 <?php
-namespace ZendTest\Mvc\Service\TestAsset;
+namespace LaminasTest\Mvc\Service\TestAsset;
 
-use Zend\Stdlib\DispatchableInterface;
-use Zend\Stdlib\RequestInterface;
-use Zend\Stdlib\ResponseInterface;
+use Laminas\Stdlib\DispatchableInterface;
+use Laminas\Stdlib\RequestInterface;
+use Laminas\Stdlib\ResponseInterface;
 
 class ControllerWithDependencies implements DispatchableInterface
 {
