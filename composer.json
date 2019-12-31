@@ -1,66 +1,22 @@
 {
-    "name": "zendframework/zend-mvc",
+    "name": "laminas/laminas-mvc",
     "description": " ",
     "license": "BSD-3-Clause",
     "keywords": [
-        "zf2",
+        "laminas",
         "mvc"
     ],
-    "homepage": "https://github.com/zendframework/zend-mvc",
-    "autoload": {
-        "psr-4": {
-            "Zend\\Mvc\\": "src/"
-        }
+    "homepage": "https://laminas.dev",
+    "support": {
+        "docs": "https://docs.laminas.dev/laminas-mvc/",
+        "issues": "https://github.com/laminas/laminas-mvc/issues",
+        "source": "https://github.com/laminas/laminas-mvc",
+        "rss": "https://github.com/laminas/laminas-mvc/releases.atom",
+        "chat": "https://laminas.dev/chat",
+        "forum": "https://discourse.laminas.dev"
     },
-    "require": {
-        "php": ">=5.3.23",
-        "zendframework/zend-eventmanager": "self.version",
-        "zendframework/zend-servicemanager": "self.version",
-        "zendframework/zend-form": "self.version",
-        "zendframework/zend-stdlib": "self.version"
-    },
-    "require-dev": {
-        "zendframework/zend-authentication": "self.version",
-        "zendframework/zend-console": "self.version",
-        "zendframework/zend-di": "self.version",
-        "zendframework/zend-filter": "self.version",
-        "zendframework/zend-http": "self.version",
-        "zendframework/zend-i18n": "self.version",
-        "zendframework/zend-inputfilter": "self.version",
-        "zendframework/zend-json": "self.version",
-        "zendframework/zend-log": "self.version",
-        "zendframework/zend-modulemanager": "self.version",
-        "zendframework/zend-session": "self.version",
-        "zendframework/zend-serializer": "self.version",
-        "zendframework/zend-text": "self.version",
-        "zendframework/zend-uri": "self.version",
-        "zendframework/zend-validator": "self.version",
-        "zendframework/zend-version": "self.version",
-        "zendframework/zend-view": "self.version",
-        "fabpot/php-cs-fixer": "1.7.*",
-        "satooshi/php-coveralls": "dev-master",
-        "phpunit/PHPUnit": "~4.0"
-    },
-    "suggest": {
-        "zendframework/zend-authentication": "Zend\\Authentication component for Identity plugin",
-        "zendframework/zend-config": "Zend\\Config component",
-        "zendframework/zend-console": "Zend\\Console component",
-        "zendframework/zend-di": "Zend\\Di component",
-        "zendframework/zend-filter": "Zend\\Filter component",
-        "zendframework/zend-http": "Zend\\Http component",
-        "zendframework/zend-i18n": "Zend\\I18n component for translatable segments",
-        "zendframework/zend-inputfilter": "Zend\\Inputfilter component",
-        "zendframework/zend-json": "Zend\\Json component",
-        "zendframework/zend-log": "Zend\\Log component",
-        "zendframework/zend-modulemanager": "Zend\\ModuleManager component",
-        "zendframework/zend-serializer": "Zend\\Serializer component",
-        "zendframework/zend-session": "Zend\\Session component for FlashMessenger, PRG, and FPRG plugins",
-        "zendframework/zend-stdlib": "Zend\\Stdlib component",
-        "zendframework/zend-text": "Zend\\Text component",
-        "zendframework/zend-uri": "Zend\\Uri component",
-        "zendframework/zend-validator": "Zend\\Validator component",
-        "zendframework/zend-version": "Zend\\Version component",
-        "zendframework/zend-view": "Zend\\View component"
+    "config": {
+        "sort-packages": true
     },
     "extra": {
         "branch-alias": {
@@ -68,9 +24,68 @@
             "dev-develop": "2.5-dev"
         }
     },
+    "require": {
+        "php": ">=5.3.23",
+        "laminas/laminas-eventmanager": "self.version",
+        "laminas/laminas-form": "self.version",
+        "laminas/laminas-servicemanager": "self.version",
+        "laminas/laminas-stdlib": "self.version",
+        "laminas/laminas-zendframework-bridge": "^1.0"
+    },
+    "require-dev": {
+        "fabpot/php-cs-fixer": "1.7.*",
+        "laminas/laminas-authentication": "self.version",
+        "laminas/laminas-console": "self.version",
+        "laminas/laminas-di": "self.version",
+        "laminas/laminas-filter": "self.version",
+        "laminas/laminas-http": "self.version",
+        "laminas/laminas-i18n": "self.version",
+        "laminas/laminas-inputfilter": "self.version",
+        "laminas/laminas-json": "self.version",
+        "laminas/laminas-log": "self.version",
+        "laminas/laminas-modulemanager": "self.version",
+        "laminas/laminas-serializer": "self.version",
+        "laminas/laminas-session": "self.version",
+        "laminas/laminas-text": "self.version",
+        "laminas/laminas-uri": "self.version",
+        "laminas/laminas-validator": "self.version",
+        "laminas/laminas-view": "self.version",
+        "phpunit/phpunit": "~4.0",
+        "satooshi/php-coveralls": "dev-master",
+        "zendframework/zend-version": "self.version"
+    },
+    "suggest": {
+        "laminas/laminas-authentication": "Laminas\\Authentication component for Identity plugin",
+        "laminas/laminas-config": "Laminas\\Config component",
+        "laminas/laminas-console": "Laminas\\Console component",
+        "laminas/laminas-di": "Laminas\\Di component",
+        "laminas/laminas-filter": "Laminas\\Filter component",
+        "laminas/laminas-http": "Laminas\\Http component",
+        "laminas/laminas-i18n": "Laminas\\I18n component for translatable segments",
+        "laminas/laminas-inputfilter": "Laminas\\Inputfilter component",
+        "laminas/laminas-json": "Laminas\\Json component",
+        "laminas/laminas-log": "Laminas\\Log component",
+        "laminas/laminas-modulemanager": "Laminas\\ModuleManager component",
+        "laminas/laminas-serializer": "Laminas\\Serializer component",
+        "laminas/laminas-session": "Laminas\\Session component for FlashMessenger, PRG, and FPRG plugins",
+        "laminas/laminas-stdlib": "Laminas\\Stdlib component",
+        "laminas/laminas-text": "Laminas\\Text component",
+        "laminas/laminas-uri": "Laminas\\Uri component",
+        "laminas/laminas-validator": "Laminas\\Validator component",
+        "laminas/laminas-view": "Laminas\\View component",
+        "zendframework/zend-version": "Laminas\\Version component"
+    },
+    "autoload": {
+        "psr-4": {
+            "Laminas\\Mvc\\": "src/"
+        }
+    },
     "autoload-dev": {
         "psr-4": {
-            "ZendTest\\Mvc\\": "test/"
+            "LaminasTest\\Mvc\\": "test/"
         }
+    },
+    "replace": {
+        "zendframework/zend-mvc": "self.version"
     }
 }
