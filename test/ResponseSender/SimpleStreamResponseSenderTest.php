@@ -1,22 +1,21 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\ResponseSender;
+namespace LaminasTest\Mvc\ResponseSender;
 
+use Laminas\Mvc\ResponseSender\SimpleStreamResponseSender;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Mvc\ResponseSender\SimpleStreamResponseSender;
 
 class StreamResponseSenderTest extends TestCase
 {
     public function testSendResponseIgnoresInvalidResponseTypes()
     {
-        $mockResponse = $this->getMockForAbstractClass('Zend\Stdlib\ResponseInterface');
+        $mockResponse = $this->getMockForAbstractClass('Laminas\Stdlib\ResponseInterface');
         $mockSendResponseEvent = $this->getSendResponseEventMock($mockResponse);
         $responseSender = new SimpleStreamResponseSender();
         ob_start();
@@ -28,7 +27,7 @@ class StreamResponseSenderTest extends TestCase
     public function testSendResponseTwoTimesPrintsResponseOnlyOnce()
     {
         $file = fopen(__DIR__ . '/TestAsset/sample-stream-file.txt', 'rb');
-        $mockResponse = $this->getMock('Zend\Http\Response\Stream');
+        $mockResponse = $this->getMock('Laminas\Http\Response\Stream');
         $mockResponse->expects($this->once())->method('getStream')->will($this->returnValue($file));
         $mockSendResponseEvent = $this->getSendResponseEventMock($mockResponse);
         $responseSender = new SimpleStreamResponseSender();
@@ -46,7 +45,7 @@ class StreamResponseSenderTest extends TestCase
 
     protected function getSendResponseEventMock($response)
     {
-        $mockSendResponseEvent = $this->getMock('Zend\Mvc\ResponseSender\SendResponseEvent', array('getResponse'));
+        $mockSendResponseEvent = $this->getMock('Laminas\Mvc\ResponseSender\SendResponseEvent', array('getResponse'));
         $mockSendResponseEvent->expects($this->any())->method('getResponse')->will($this->returnValue($response));
         return $mockSendResponseEvent;
     }

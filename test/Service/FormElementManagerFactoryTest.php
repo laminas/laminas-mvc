@@ -1,24 +1,23 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Service;
+namespace LaminasTest\Mvc\Service;
 
 use ArrayObject;
+use Laminas\Form\FormElementManager;
+use Laminas\Mvc\Exception;
+use Laminas\Mvc\Service\DiAbstractServiceFactoryFactory;
+use Laminas\Mvc\Service\DiFactory;
+use Laminas\Mvc\Service\DiServiceInitializerFactory;
+use Laminas\Mvc\Service\FormElementManagerFactory;
+use Laminas\ServiceManager\Config;
+use Laminas\ServiceManager\ServiceManager;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Mvc\Service\FormElementManagerFactory;
-use Zend\Mvc\Service\DiFactory;
-use Zend\Mvc\Service\DiAbstractServiceFactoryFactory;
-use Zend\Mvc\Service\DiServiceInitializerFactory;
-use Zend\ServiceManager\Config;
-use Zend\ServiceManager\ServiceManager;
-use Zend\Mvc\Exception;
-use Zend\Form\FormElementManager;
 
 class FormElementManagerFactoryTest extends TestCase
 {
@@ -28,7 +27,7 @@ class FormElementManagerFactoryTest extends TestCase
     protected $services;
 
     /**
-     * @var \Zend\Mvc\Controller\ControllerManager
+     * @var \Laminas\Mvc\Controller\ControllerManager
      */
     protected $loader;
 
@@ -37,7 +36,7 @@ class FormElementManagerFactoryTest extends TestCase
         $formElementManagerFactory = new FormElementManagerFactory();
         $config = new ArrayObject(array('di' => array()));
         $this->services = new ServiceManager();
-        $this->services->setService('Zend\ServiceManager\ServiceLocatorInterface', $this->services);
+        $this->services->setService('Laminas\ServiceManager\ServiceLocatorInterface', $this->services);
         $this->services->setFactory('FormElementManager', $formElementManagerFactory);
         $this->services->setService('Config', $config);
         $this->services->setFactory('Di', new DiFactory());
@@ -48,25 +47,25 @@ class FormElementManagerFactoryTest extends TestCase
     public function testWillGetFormElementManager()
     {
         $formElementManager = $this->services->get('FormElementManager');
-        $this->assertInstanceof('Zend\Form\FormElementManager', $formElementManager);
+        $this->assertInstanceof('Laminas\Form\FormElementManager', $formElementManager);
     }
 
     public function testWillInstantiateFormFromInvokable()
     {
         $formElementManager = $this->services->get('FormElementManager');
         $form = $formElementManager->get('form');
-        $this->assertInstanceof('Zend\Form\Form', $form);
+        $this->assertInstanceof('Laminas\Form\Form', $form);
     }
 
     public function testWillInstantiateFormFromDiAbstractFactory()
     {
         //without DiAbstractFactory
         $standaloneFormElementManager = new FormElementManager();
-        $this->assertFalse($standaloneFormElementManager->has('ZendTest\Mvc\Service\TestAsset\CustomForm'));
+        $this->assertFalse($standaloneFormElementManager->has('LaminasTest\Mvc\Service\TestAsset\CustomForm'));
         //with DiAbstractFactory
         $formElementManager = $this->services->get('FormElementManager');
-        $this->assertTrue($formElementManager->has('ZendTest\Mvc\Service\TestAsset\CustomForm'));
-        $form = $formElementManager->get('ZendTest\Mvc\Service\TestAsset\CustomForm');
-        $this->assertInstanceof('ZendTest\Mvc\Service\TestAsset\CustomForm', $form);
+        $this->assertTrue($formElementManager->has('LaminasTest\Mvc\Service\TestAsset\CustomForm'));
+        $form = $formElementManager->get('LaminasTest\Mvc\Service\TestAsset\CustomForm');
+        $this->assertInstanceof('LaminasTest\Mvc\Service\TestAsset\CustomForm', $form);
     }
 }
