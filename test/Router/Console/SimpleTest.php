@@ -1,18 +1,17 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Router\Console;
+namespace LaminasTest\Mvc\Router\Console;
 
+use Laminas\Console\Request as ConsoleRequest;
+use Laminas\Mvc\Router\Console\Simple;
+use LaminasTest\Mvc\Router\FactoryTester;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Console\Request as ConsoleRequest;
-use Zend\Mvc\Router\Console\Simple;
-use ZendTest\Mvc\Router\FactoryTester;
 
 class SimpleTest extends TestCase
 {
@@ -678,7 +677,7 @@ class SimpleTest extends TestCase
             ),
 
             /**
-             * @bug ZF2-4315
+             * @bug Laminas-4315
              * @link https://github.com/zendframework/zf2/issues/4315
              */
             'literal-with-dashes' => array(
@@ -861,7 +860,7 @@ class SimpleTest extends TestCase
         if ($params === null) {
             $this->assertNull($match, "The route must not match");
         } else {
-            $this->assertInstanceOf('Zend\Mvc\Router\Console\RouteMatch', $match, "The route matches");
+            $this->assertInstanceOf('Laminas\Mvc\Router\Console\RouteMatch', $match, "The route matches");
 
             foreach ($params as $key => $value) {
                 $this->assertEquals(
@@ -922,7 +921,7 @@ class SimpleTest extends TestCase
     {
         $tester = new FactoryTester($this);
         $tester->testFactory(
-            'Zend\Mvc\Router\Http\Segment',
+            'Laminas\Mvc\Router\Http\Segment',
             array(
                 'route' => 'Missing "route" in options array'
             ),
@@ -940,7 +939,7 @@ class SimpleTest extends TestCase
         $request = new ConsoleRequest($arguments);
         $route = new Simple('--foo=');
         $match = $route->match($request);
-        $this->assertInstanceOf('Zend\Mvc\Router\Console\RouteMatch', $match, "The route matches");
+        $this->assertInstanceOf('Laminas\Mvc\Router\Console\RouteMatch', $match, "The route matches");
         $this->assertEquals('bar', $match->getParam('foo'));
     }
 
@@ -950,7 +949,7 @@ class SimpleTest extends TestCase
         array_unshift($arguments, 'scriptname.php');
         $request = new ConsoleRequest($arguments);
 
-        $routeMatcher = $this->getMock('Zend\Console\RouteMatcher\RouteMatcherInterface', array('match'));
+        $routeMatcher = $this->getMock('Laminas\Console\RouteMatcher\RouteMatcherInterface', array('match'));
         $routeMatcher->expects($this->once())->method('match')
             ->with(array('--foo=bar'));
 
@@ -960,7 +959,7 @@ class SimpleTest extends TestCase
 
     public function testConstructorThrowsExceptionWhenFirstArgumentIsNotStringNorRouteMatcherInterface()
     {
-        $this->setExpectedException('Zend\Mvc\Exception\InvalidArgumentException');
+        $this->setExpectedException('Laminas\Mvc\Exception\InvalidArgumentException');
 
         new Simple(new \stdClass());
     }

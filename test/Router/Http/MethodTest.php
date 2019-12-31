@@ -1,19 +1,18 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Router\Http;
+namespace LaminasTest\Mvc\Router\Http;
 
+use Laminas\Http\Request as Request;
+use Laminas\Mvc\Router\Http\Method as HttpMethod;
+use Laminas\Stdlib\Request as BaseRequest;
+use LaminasTest\Mvc\Router\FactoryTester;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Http\Request as Request;
-use Zend\Stdlib\Request as BaseRequest;
-use Zend\Mvc\Router\Http\Method as HttpMethod;
-use ZendTest\Mvc\Router\FactoryTester;
 
 class MethodTest extends TestCase
 {
@@ -54,7 +53,7 @@ class MethodTest extends TestCase
         $request->setMethod($verb);
 
         $match = $route->match($request);
-        $this->assertInstanceOf('Zend\Mvc\Router\Http\RouteMatch', $match);
+        $this->assertInstanceOf('Laminas\Mvc\Router\Http\RouteMatch', $match);
     }
 
     public function testNoMatchWithoutVerb()
@@ -69,7 +68,7 @@ class MethodTest extends TestCase
     {
         $tester = new FactoryTester($this);
         $tester->testFactory(
-            'Zend\Mvc\Router\Http\Method',
+            'Laminas\Mvc\Router\Http\Method',
             array(
                 'verb' => 'Missing "verb" in options array'
             ),
