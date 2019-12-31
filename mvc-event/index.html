@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Laminas's event-driven MVC layer, including MVC Applications, Controllers, and Plugins.">  
+    <link rel="canonical" href="https://docs.laminas.dev/mvc-event/">
+    <link rel="shortcut icon" href="/img/trademark-laminas-foundation-rgb.svg">
+
+    <title>The MVC Event - laminas-mvc - Laminas Docs</title>
+
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body id="page-top" class="mvc">
+
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        
+        <a class="logo-link navbar-brand offset-md-2" href="https://getlaminas.org/" data-tooltip data-placement="bottom" title="Go to the Laminas homepage">
+            <img src="../img/laminas-foundation-white.svg" height="28" alt="Lamnias">
+        </a>
+        <a class="navbar-title" href="https://docs.laminas.dev/" data-tooltip data-placement="bottom" title="Go to the Laminas Documentation">
+            Documentation
+        </a>
+
+        
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a href="https://getlaminas.org/about" class="nav-link">About</a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://getlaminas.org/blog" class="nav-link">Blog</a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://docs.laminas.dev" class="nav-link">All Docs</a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://getlaminas.org/participate" class="nav-link">Community</a>
+                </li>
+            </ul>
+
+            
+            
+                <div class="d-block d-sm-none">
+                    
+    <div class="subnavigation hidden-print">
+        <h4 class="subnavigation__title">
+            <a href="..">laminas-mvc</a>
+        </h4>
+
+        <h5 class="subnavigation__subtitle">Table of Contents</h5>
+
+        <ul class="subnavigation__list">
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item ">
+                                <a href="../intro/" class="subnavigation__link">Introduction</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item ">
+                                <a href="../quick-start/" class="subnavigation__link">Quick Start</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item">
+                                <span class="subnavigation__headline">Reference</span>
+                                <ul class="subnavigation__list">
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../services/" class="subnavigation__link">Default Services</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../routing/" class="subnavigation__link">Routing</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item subnavigation__list-item--active">
+        <a href="./" class="subnavigation__link">The MVC Event</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../send-response-event/" class="subnavigation__link">The SendResponse Event</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../controllers/" class="subnavigation__link">Available Controllers</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../plugins/" class="subnavigation__link">Controller Plugins</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../examples/" class="subnavigation__link">Examples</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../middleware/" class="subnavigation__link">Dispatching PSR-7 Middleware</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item">
+        <span class="subnavigation__headline">Migration</span>
+        <ul class="subnavigation__list">
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../migration/" class="subnavigation__link">Migration Overview</a>
+    </li>
+
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../migration/to-v2-7/" class="subnavigation__link">v2.X to v2.7</a>
+    </li>
+
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../migration/to-v3-0/" class="subnavigation__link">v2.X to v3.0</a>
+    </li>
+
+            
+        </ul>
+    </li>
+
+                                    
+                                </ul>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item">
+                                <span class="subnavigation__headline">Cookbook</span>
+                                <ul class="subnavigation__list">
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../cookbook/automating-controller-factories/" class="subnavigation__link">Automating controller factories</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../cookbook/middleware-in-listeners/" class="subnavigation__link">Using middleware within event listeners</a>
+    </li>
+
+                                    
+                                </ul>
+                            </li>
+                        
+                    
+                
+            
+        </ul>
+    </div>
+
+                </div>
+            
+
+            
+            <div class="d-block d-sm-none">
+                <div class="component-selector">
+    
+    <h5 class="component-selector__subtitle">Find documentation…</h5>
+    <select class="form-control component-selector__control">
+        <option value="/">Overview</option>
+        <optgroup label="Components"></optgroup>
+    </select>
+</div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    
+    <header class="header">
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="col-6 offset-md-2">
+                <h1 class="header__title">
+                    Mvc
+
+                    
+                        <small class="header__subtitle">laminas-mvc</small>
+                    
+                </h1>
+            </div>
+
+            
+            <div class="col-4 text-sm-right">
+                
+                    
+
+                    <a href="#" class="header__link header__link--search" data-toggle="modal" data-target="#mkdocs_search_modal" title="Open search">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                    <a href="https://github.com/laminas/laminas-mvc/" class="header__link header__link--github" title="Go to repository of laminas-mvc">
+                        <i class="fa fa-github"></i> GitHub
+                    </a>
+                
+            </div>
+        </div>
+    </div>
+</header>
+
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2 col-sm-12">
+                
+    
+
+    
+    
+        <div class="toc">
+            <h6 class="toc__headline">On this page</h6>
+            <ul class="toc__list">
+                
+                    <li class="toc__entry">
+                        <a href="#order-of-events" class="toc__link">Order of events</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#mvceventevent_bootstrap-bootstrap" class="toc__link">MvcEvent::EVENT_BOOTSTRAP ("bootstrap")</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#mvceventevent_route-route" class="toc__link">MvcEvent::EVENT_ROUTE ("route")</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#mvceventevent_dispatch-dispatch" class="toc__link">MvcEvent::EVENT_DISPATCH ("dispatch")</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#mvceventevent_dispatch_error-dispatcherror" class="toc__link">MvcEvent::EVENT_DISPATCH_ERROR ("dispatch.error")</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#mvceventevent_render-render" class="toc__link">MvcEvent::EVENT_RENDER ("render")</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#mvceventevent_render_error-rendererror" class="toc__link">MvcEvent::EVENT_RENDER_ERROR ("render.error")</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#mvceventevent_finish-finish" class="toc__link">MvcEvent::EVENT_FINISH ("finish")</a>
+                    </li>
+                
+            </ul>
+        </div>
+    
+
+            </div>
+            <div class="col-md-7 col-sm-12 content" role="main" data-spy="scroll" data-target=".toc">
+                
+                    <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        
+            <li class="breadcrumb-item"><a href="">Overview</a></li>
+
+            
+                <li class="breadcrumb-item"><a href="..">laminas-mvc</a></li>
+
+                
+                    
+                        
+                        
+                            <li class="breadcrumb-item">Reference</li>
+                        
+                    
+                
+
+                <li class="breadcrumb-item active" aria-current="page">The MVC Event</li>
+            
+        
+    </ol>
+</nav>
+
+
+
+
+
+
+    
+    
+        <h2 class="chapter__headline">Reference</h2>
+    
+
+    <h1 id="the-mvcevent">The MvcEvent</h1>
+<p>laminas-mvc defines and utilizes a custom <code>Laminas\EventManager\Event</code> implementation,
+<code>Laminas\Mvc\MvcEvent</code>. This event is created during <code>Laminas\Mvc\Application::bootstrap()</code>
+and is passed when triggering all application events.  Additionally, if your
+controllers implement the <code>Laminas\Mvc\InjectApplicationEventInterface</code>, <code>MvcEvent</code>
+will be injected into those controllers.</p>
+<p>The <code>MvcEvent</code> adds accessors and mutators for the following:</p>
+<ul>
+<li><code>Application</code> object.</li>
+<li><code>Request</code> object.</li>
+<li><code>Response</code> object.</li>
+<li><code>Router</code> object.</li>
+<li><code>RouteMatch</code> object.</li>
+<li>Result - usually the result of dispatching a controller.</li>
+<li><code>ViewModel</code> object, typically representing the layout view model.</li>
+</ul>
+<p>The methods it defines are:</p>
+<ul>
+<li><code>setApplication($application)</code></li>
+<li><code>getApplication()</code></li>
+<li><code>setRequest($request)</code></li>
+<li><code>getRequest()</code></li>
+<li><code>setResponse($response)</code></li>
+<li><code>getResponse()</code></li>
+<li><code>setRouter($router)</code></li>
+<li><code>getRouter()</code></li>
+<li><code>setRouteMatch($routeMatch)</code></li>
+<li><code>getRouteMatch()</code></li>
+<li><code>setResult($result)</code></li>
+<li><code>getResult()</code></li>
+<li><code>setViewModel($viewModel)</code></li>
+<li><code>getViewModel()</code></li>
+<li><code>isError()</code></li>
+<li><code>setError()</code></li>
+<li><code>getError()</code></li>
+<li><code>getController()</code></li>
+<li><code>setController($name)</code></li>
+<li><code>getControllerClass()</code></li>
+<li><code>setControllerClass($class)</code></li>
+</ul>
+<p>The <code>Application</code>, <code>Request</code>, <code>Response</code>, <code>Router</code>, and <code>ViewModel</code> are all
+injected during the <code>bootstrap</code> event. Following the <code>route</code> event, it will be
+injected also with the <code>RouteMatch</code> object encapsulating the results of routing.</p>
+<p>Since this object is passed around throughout the MVC, it is a common location
+for retrieving the results of routing, the router, and the request and response
+objects. Additionally, we encourage setting the results of execution in the
+event, to allow event listeners to introspect them and utilize them within their
+execution. As an example, the results could be passed into a view renderer.</p>
+<h2 id="order-of-events">Order of events</h2>
+<p>The following events are triggered, in the following order:</p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Constant</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bootstrap</code></td>
+<td><code>MvcEvent::EVENT_BOOTSTRAP</code></td>
+<td>Bootstrap the application by creating the ViewManager.</td>
+</tr>
+<tr>
+<td><code>route</code></td>
+<td><code>MvcEvent::EVENT_ROUTE</code></td>
+<td>Perform routing (or route-related actions).</td>
+</tr>
+<tr>
+<td><code>dispatch</code></td>
+<td><code>MvcEvent::EVENT_DISPATCH</code></td>
+<td>Dispatch the matched route to a controller/action.</td>
+</tr>
+<tr>
+<td><code>dispatch.error</code></td>
+<td><code>MvcEvent::EVENT_DISPATCH_ERROR</code></td>
+<td>Event triggered in case of a problem during dispatch process (e.g., unknown controller).</td>
+</tr>
+<tr>
+<td><code>render</code></td>
+<td><code>MvcEvent::EVENT_RENDER</code></td>
+<td>Prepare the data and delegate the rendering to the view layer.</td>
+</tr>
+<tr>
+<td><code>render.error</code></td>
+<td><code>MvcEvent::EVENT_RENDER_ERROR</code></td>
+<td>Event triggered in case of a problem during the render process (e.g., no renderer found).</td>
+</tr>
+<tr>
+<td><code>finish</code></td>
+<td><code>MvcEvent::EVENT_FINISH</code></td>
+<td>Perform tasks once everything else is done.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The following sections provide more detail on each event.</p>
+<h2 id="mvceventevent_bootstrap-bootstrap"><code>MvcEvent::EVENT_BOOTSTRAP</code> ("bootstrap")</h2>
+<h3>Listeners</h3>
+<p>The following classes listen to this event (sorted from higher priority to lower
+priority):</p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>Class</th>
+<th align="right">Priority</th>
+<th>Method Called</th>
+<th>Triggers</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Laminas\Mvc\View\Http\ViewManager</code></td>
+<td align="right">10000</td>
+<td><code>onBootstrap</code></td>
+<td>none</td>
+<td>Prepares the view layer (instantiate a <code>Laminas\Mvc\View\Http\ViewManager</code>).</td>
+</tr>
+</tbody>
+</table></div>
+<h3>Triggered By</h3>
+<p>This event is triggered by the following classes:</p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>Class</th>
+<th>In Method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Laminas\Mvc\Application</code></td>
+<td><code>bootstrap</code></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="mvceventevent_route-route"><code>MvcEvent::EVENT_ROUTE</code> ("route")</h2>
+<h3>Listeners</h3>
+<p>The following classes listen to this event (sorted from higher priority to lower
+priority):</p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>Class</th>
+<th align="right">Priority</th>
+<th>Method Called</th>
+<th>Triggers</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Laminas\Mvc\ModuleRouteListener</code></td>
+<td align="right">1</td>
+<td><code>onRoute</code></td>
+<td>none</td>
+<td>Determines if the module namespace should be prepended to the controller name. This is the case if the route match contains a parameter key matching the <code>MODULE_NAMESPACE</code> constant.</td>
+</tr>
+<tr>
+<td><code>Laminas\Mvc\RouteListener</code></td>
+<td align="right">1</td>
+<td><code>onRoute</code></td>
+<td><code>MvcEvent::EVENT_DISPATCH_ERROR</code> (if no route is matched)</td>
+<td>Tries to match the request to the router and return a <code>RouteMatch</code> object.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>Triggered By</h3>
+<p>This event is triggered by the following classes:</p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>Class</th>
+<th>In Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Laminas\Mvc\Application</code></td>
+<td><code>run</code></td>
+<td>Uses a short circuit callback that allows halting propagation of the event if an error is raised during routing.</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="mvceventevent_dispatch-dispatch"><code>MvcEvent::EVENT_DISPATCH</code> ("dispatch")</h2>
+<h3>Listeners</h3>
+<p>The following classes listen to this event (sorted from higher priority to lower
+priority):</p>
+<h4>Console context only</h4>
+<p>The following listeners are only attached in a console context:</p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>Class</th>
+<th align="right">Priority</th>
+<th>Method Called</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Laminas\Mvc\View\Console\InjectNamedConsoleParamsListener</code></td>
+<td align="right">1000</td>
+<td><code>injectNamedParams</code></td>
+<td>Merge all params (route match params and params in the command), and add them to the <code>Request</code> object.</td>
+</tr>
+<tr>
+<td><code>Laminas\Mvc\View\Console\CreateViewModelListener</code></td>
+<td align="right">-80</td>
+<td><code>createViewModelFromArray</code></td>
+<td>If the controller action returns an associative array, this listener casts it to a <code>ConsoleModel</code> object.</td>
+</tr>
+<tr>
+<td><code>Laminas\Mvc\View\Console\CreateViewModelListener</code></td>
+<td align="right">-80</td>
+<td><code>createViewModelFromString</code></td>
+<td>If the controller action returns a string, this listener casts it to a <code>ConsoleModel</code> object.</td>
+</tr>
+<tr>
+<td><code>Laminas\Mvc\View\Console\CreateViewModelListener</code></td>
+<td align="right">-80</td>
+<td><code>createViewModelFromNull</code></td>
+<td>If the controller action returns null, this listener casts it to a <code>ConsoleModel</code> object.</td>
+</tr>
+<tr>
+<td><code>Laminas\Mvc\View\Console\InjectViewModelListener</code></td>
+<td align="right">-100</td>
+<td><code>injectViewModel</code></td>
+<td>Inserts the <code>ViewModel</code> (in this case, a <code>ConsoleModel</code>) and adds it to the MvcEvent object. It either (a) adds it as a child to the default, composed view model, or (b) replaces it if the result is marked as terminal.</td>
+</tr>
+</tbody>
+</table></div>
+<h4>HTTP context only</h4>
+<p>The following listeners are only attached in an HTTP context:</p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>Class</th>
+<th align="right">Priority</th>
+<th>Method Called</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Laminas\Mvc\View\Http\CreateViewModelListener</code></td>
+<td align="right">-80</td>
+<td><code>createViewModelFromArray</code></td>
+<td>If the controller action returns an associative array, this listener casts it to a <code>ViewModel</code> object.</td>
+</tr>
+<tr>
+<td><code>Laminas\Mvc\View\Http\CreateViewModelListener</code></td>
+<td align="right">-80</td>
+<td><code>createViewModelFromNull</code></td>
+<td>If the controller action returns null, this listener casts it to a <code>ViewModel</code> object.</td>
+</tr>
+<tr>
+<td><code>Laminas\Mvc\View\Http\RouteNotFoundStrategy</code></td>
+<td align="right">-90</td>
+<td><code>prepareNotFoundViewModel</code></td>
+<td>Creates and return a 404 <code>ViewModel</code>.</td>
+</tr>
+<tr>
+<td><code>Laminas\Mvc\View\Http\InjectTemplateListener</code></td>
+<td align="right">-90</td>
+<td><code>injectTemplate</code></td>
+<td>Injects a template into the view model, if none present. Template name is derived from the controller found in the route match, and, optionally, the action, if present.</td>
+</tr>
+<tr>
+<td><code>Laminas\Mvc\View\Http\InjectViewModelListener</code></td>
+<td align="right">-100</td>
+<td><code>injectViewModel</code></td>
+<td>Inserts the <code>ViewModel</code> (in this case, a <code>ViewModel</code>) and adds it to the <code>MvcEvent</code> object. It either (a) adds it as a child to the default, composed view model, or (b) replaces it if the result is marked as terminable.</td>
+</tr>
+</tbody>
+</table></div>
+<h4>All contexts</h4>
+<p>The following listeners are attached for all contexts (sorted from higher
+priority to lower priority):</p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>Class</th>
+<th align="right">Priority</th>
+<th>Method Called</th>
+<th>Triggers</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Laminas\Mvc\MiddlewareListener</code></td>
+<td align="right">1</td>
+<td><code>onDispatch</code></td>
+<td><code>MvcEvent::EVENT_DISPATCH_ERROR</code> (if an exception is raised during dispatch processes)</td>
+<td>Load and dispatch the matched PSR-7 middleware from the service manager (and throws various exceptions if it does not).</td>
+</tr>
+<tr>
+<td><code>Laminas\Mvc\DispatchListener</code></td>
+<td align="right">1</td>
+<td><code>onDispatch</code></td>
+<td><code>MvcEvent::EVENT_DISPATCH_ERROR</code> (if an exception is raised during dispatch processes)</td>
+<td>Load and dispatch the matched controller from the service manager (and throws various exceptions if it does not).</td>
+</tr>
+<tr>
+<td><code>Laminas\Mvc\AbstractController</code></td>
+<td align="right">1</td>
+<td><code>onDispatch</code></td>
+<td>none</td>
+<td>The <code>onDispatch</code> method of the <code>AbstractController</code> is an abstract method. In <code>AbstractActionController</code>, for instance, it calls the action method.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>Triggered By</h3>
+<p>This event is triggered by the following classes:</p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>Class</th>
+<th>In Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Laminas\Mvc\Application</code></td>
+<td><code>run</code></td>
+<td>Uses a short circuit callback to halt propagation of the event if an error is raised during routing.</td>
+</tr>
+<tr>
+<td><code>Laminas\Mvc\Controller\AbstractController</code></td>
+<td><code>dispatch</code></td>
+<td>If a listener returns a <code>Response</code> object, it halts propagation. Note: every <code>AbstractController</code> listens to this event and executes the <code>onDispatch</code> method when it is triggered.</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="mvceventevent_dispatch_error-dispatcherror"><code>MvcEvent::EVENT_DISPATCH_ERROR</code> ("dispatch.error")</h2>
+<h3>Listeners</h3>
+<p>The following classes listen to this event (sorted from higher priority to lower
+priority):</p>
+<h4>Console context only</h4>
+<p>The following listeners are only attached in a console context:</p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>Class</th>
+<th align="right">Priority</th>
+<th>Method Called</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Laminas\Mvc\View\Console\RouteNotFoundStrategy</code></td>
+<td align="right">1</td>
+<td><code>handleRouteNotFoundError</code></td>
+<td>Detect if an error is a "route not found" condition. If a “controller not found” or “invalid controller” error type is encountered, sets the response status code to 404.</td>
+</tr>
+<tr>
+<td><code>Laminas\Mvc\View\Console\ExceptionStrategy</code></td>
+<td align="right">1</td>
+<td><code>prepareExceptionViewModel</code></td>
+<td>Create an exception view model, and sets the status code to 404.</td>
+</tr>
+<tr>
+<td><code>Laminas\Mvc\View\Console\InjectViewModelListener</code></td>
+<td align="right">-100</td>
+<td><code>injectViewModel</code></td>
+<td>Inserts the <code>ViewModel</code> (in this case, a <code>ConsoleModel</code>) and adds it to the <code>MvcEvent</code> object. It either (a) adds it as a child to the default, composed view model, or (b) replaces it if the result is marked as terminable.</td>
+</tr>
+</tbody>
+</table></div>
+<h4>HTTP context only</h4>
+<p>The following listeners are only attached in an HTTP context:</p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>Class</th>
+<th align="right">Priority</th>
+<th>Method Called</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Laminas\Mvc\View\Http\RouteNotFoundStrategy</code></td>
+<td align="right">1</td>
+<td><code>detectNotFoundError</code></td>
+<td>Detect if an error is a 404 condition. If a “controller not found” or “invalid controller” error type is encountered, sets the response status code to 404.</td>
+</tr>
+<tr>
+<td><code>Laminas\Mvc\View\Http\RouteNotFoundStrategy</code></td>
+<td align="right">1</td>
+<td><code>prepareNotFoundViewModel</code></td>
+<td>Create and return a 404 view model.</td>
+</tr>
+<tr>
+<td><code>Laminas\Mvc\View\Http\ExceptionStrategy</code></td>
+<td align="right">1</td>
+<td><code>prepareExceptionViewModel</code></td>
+<td>Create an exception view model and set the status code to 404.</td>
+</tr>
+<tr>
+<td><code>Laminas\Mvc\View\Http\InjectViewModelListener</code></td>
+<td align="right">-100</td>
+<td><code>injectViewModel</code></td>
+<td>Inserts the <code>ViewModel</code> (in this case, a <code>ViewModel</code>) and adds it to the MvcEvent object. It either (a) adds it as a child to the default, composed view model, or (b) replaces it if the result is marked as terminable.</td>
+</tr>
+</tbody>
+</table></div>
+<h4>All contexts</h4>
+<p>The following listeners are attached for all contexts:</p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>Class</th>
+<th align="right">Priority</th>
+<th>Method Called</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Laminas\Mvc\DispatchListener</code></td>
+<td align="right">1</td>
+<td><code>reportMonitorEvent</code></td>
+<td>Used for monitoring when Zend Server is used.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>Triggered By</h3>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>Class</th>
+<th>In Method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Laminas\Mvc\MiddlewareListener</code></td>
+<td><code>onDispatch</code></td>
+</tr>
+<tr>
+<td><code>Laminas\Mvc\DispatchListener</code></td>
+<td><code>onDispatch</code></td>
+</tr>
+<tr>
+<td><code>Laminas\Mvc\DispatchListener</code></td>
+<td><code>marshallControllerNotFoundEvent</code></td>
+</tr>
+<tr>
+<td><code>Laminas\Mvc\DispatchListener</code></td>
+<td><code>marshallBadControllerEvent</code></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="mvceventevent_render-render"><code>MvcEvent::EVENT_RENDER</code> ("render")</h2>
+<h3>Listeners</h3>
+<p>The following classes listen to this event (sorted from higher priority to lower
+priority):</p>
+<h4>Console context only</h4>
+<p>The following listeners are only attached in a console context:</p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>Class</th>
+<th align="right">Priority</th>
+<th>Method Called</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Laminas\Mvc\View\Console\DefaultRenderingStrategy</code></td>
+<td align="right">-10000</td>
+<td><code>render</code></td>
+<td>Render the view.</td>
+</tr>
+</tbody>
+</table></div>
+<h4>HTTP context only</h4>
+<p>The following listeners are only attached in an HTTP context:</p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>Class</th>
+<th align="right">Priority</th>
+<th>Method Called</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Laminas\Mvc\View\Http\DefaultRenderingStrategy</code></td>
+<td align="right">-10000</td>
+<td><code>render</code></td>
+<td>Render the view.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>Triggered By</h3>
+<p>This event is triggered by the following classes:</p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>Class</th>
+<th>In Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Laminas\Mvc\Application</code></td>
+<td><code>completeRequest</code></td>
+<td>This event is triggered just before the <code>MvcEvent::FINISH</code> event.</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="mvceventevent_render_error-rendererror"><code>MvcEvent::EVENT_RENDER_ERROR</code> ("render.error")</h2>
+<h3>Listeners</h3>
+<p>The following classes listen to this event (sorted from higher priority to lower
+priority):</p>
+<h4>Console context only</h4>
+<p>The following listeners are only attached in a console context:</p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>Class</th>
+<th align="right">Priority</th>
+<th>Method Called</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Laminas\Mvc\View\Console\ExceptionStrategy</code></td>
+<td align="right">1</td>
+<td><code>prepareExceptionViewModel</code></td>
+<td>Create an exception view model and set the status code to 404.</td>
+</tr>
+<tr>
+<td><code>Laminas\Mvc\View\Console\InjectViewModelListener</code></td>
+<td align="right">-100</td>
+<td><code>injectViewModel</code></td>
+<td>Inserts the <code>ViewModel</code> (in this case, a <code>ConsoleModel</code>) and adds it to the <code>MvcEvent</code> object. It either (a) adds it as a child to the default, composed view model, or (b) replaces it if the result is marked as terminable.</td>
+</tr>
+</tbody>
+</table></div>
+<h4>HTTP context only</h4>
+<p>The following listeners are only attached in an HTTP context:</p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>Class</th>
+<th align="right">Priority</th>
+<th>Method Called</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Laminas\Mvc\View\Http\ExceptionStrategy</code></td>
+<td align="right">1</td>
+<td><code>prepareExceptionViewModel</code></td>
+<td>Create an exception view model and set the status code to 404.</td>
+</tr>
+<tr>
+<td><code>Laminas\Mvc\View\Http\InjectViewModelListener</code></td>
+<td align="right">-100</td>
+<td><code>injectViewModel</code></td>
+<td>Inserts the <code>ViewModel</code> (in this case, a <code>ViewModel</code>) and adds it to the MvcEvent object. It either (a) adds it as a child to the default, composed view model, or (b) replaces it if the result is marked as terminable.</td>
+</tr>
+<tr>
+<td><code>Laminas\Mvc\View\Http\DefaultRenderingStrategy</code></td>
+<td align="right">-10000</td>
+<td><code>render</code></td>
+<td>Render the view</td>
+</tr>
+</tbody>
+</table></div>
+<h3>Triggered By</h3>
+<p>This event is triggered by the following classes:</p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>Class</th>
+<th>In Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Laminas\Mvc\View\Http\DefaultRenderingStrategy</code></td>
+<td><code>render</code></td>
+<td>This event is triggered if an exception is raised during rendering.</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="mvceventevent_finish-finish"><code>MvcEvent::EVENT_FINISH</code> ("finish")</h2>
+<h3>Listeners</h3>
+<p>The following classes listen to this event (sorted from higher priority to lower
+priority):</p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>Class</th>
+<th align="right">Priority</th>
+<th>Method Called</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Laminas\Mvc\SendResponseListener</code></td>
+<td align="right">-10000</td>
+<td><code>sendResponse</code></td>
+<td>Triggers the <code>SendResponseEvent</code> in order to prepare the response (see the next chapter for more information about <code>SendResponseEvent</code>).</td>
+</tr>
+</tbody>
+</table></div>
+<h3>Triggered By</h3>
+<p>This event is triggered by the following classes:</p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>Class</th>
+<th>In Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Laminas\Mvc\Application</code></td>
+<td><code>run</code></td>
+<td>This event is triggered once the <code>MvcEvent::ROUTE</code> event returns a correct <code>ResponseInterface</code>.</td>
+</tr>
+<tr>
+<td><code>Laminas\Mvc\Application</code></td>
+<td><code>run</code></td>
+<td>This event is triggered once the <code>MvcEvent::DISPATCH</code> event returns a correct <code>ResponseInterface</code>.</td>
+</tr>
+<tr>
+<td><code>Laminas\Mvc\Application</code></td>
+<td><code>completeRequest</code></td>
+<td>This event is triggered after <code>MvcEvent::RENDER</code> (at this point, the view is already rendered).</td>
+</tr>
+</tbody>
+</table></div>
+
+
+
+
+    <nav>
+    <ul class="page-nav hidden-print">
+
+        
+        <li class="page-nav__item">
+            
+                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../routing/">
+                    <i class="fa fa-chevron-left"></i> Previous
+                </a>
+            
+        </li>
+
+        
+        <li class="page-nav__item">
+            
+                <a rel="next" class="page-nav__link page-nav__link--next" href="../send-response-event/">
+                    Next <i class="fa fa-chevron-right"></i>
+                </a>
+            
+        </li>
+    </ul>
+</nav>
+
+
+
+
+    <div class="help-wanted">
+        <p>
+            Found a mistake or want to contribute to the documentation?
+            <a href="https://github.com/laminas/laminas-mvc/edit/master/docs/book/mvc-event.md" target="_blank" class="help-wanted__link">
+                Edit this page on GitHub!
+            </a>
+        </p>
+    </div>
+
+                
+            </div>
+            <div class="col-md-3 col-sm-12 sidebar">
+                
+                    <div class="component-selector">
+    
+    <h5 class="component-selector__subtitle">Find documentation…</h5>
+    <select class="form-control component-selector__control">
+        <option value="/">Overview</option>
+        <optgroup label="Components"></optgroup>
+    </select>
+</div>
+                    
+    <div class="subnavigation hidden-print">
+        <h4 class="subnavigation__title">
+            <a href="..">laminas-mvc</a>
+        </h4>
+
+        <h5 class="subnavigation__subtitle">Table of Contents</h5>
+
+        <ul class="subnavigation__list">
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item ">
+                                <a href="../intro/" class="subnavigation__link">Introduction</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item ">
+                                <a href="../quick-start/" class="subnavigation__link">Quick Start</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item">
+                                <span class="subnavigation__headline">Reference</span>
+                                <ul class="subnavigation__list">
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../services/" class="subnavigation__link">Default Services</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../routing/" class="subnavigation__link">Routing</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item subnavigation__list-item--active">
+        <a href="./" class="subnavigation__link">The MVC Event</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../send-response-event/" class="subnavigation__link">The SendResponse Event</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../controllers/" class="subnavigation__link">Available Controllers</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../plugins/" class="subnavigation__link">Controller Plugins</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../examples/" class="subnavigation__link">Examples</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../middleware/" class="subnavigation__link">Dispatching PSR-7 Middleware</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item">
+        <span class="subnavigation__headline">Migration</span>
+        <ul class="subnavigation__list">
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../migration/" class="subnavigation__link">Migration Overview</a>
+    </li>
+
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../migration/to-v2-7/" class="subnavigation__link">v2.X to v2.7</a>
+    </li>
+
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../migration/to-v3-0/" class="subnavigation__link">v2.X to v3.0</a>
+    </li>
+
+            
+        </ul>
+    </li>
+
+                                    
+                                </ul>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item">
+                                <span class="subnavigation__headline">Cookbook</span>
+                                <ul class="subnavigation__list">
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../cookbook/automating-controller-factories/" class="subnavigation__link">Automating controller factories</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../cookbook/middleware-in-listeners/" class="subnavigation__link">Using middleware within event listeners</a>
+    </li>
+
+                                    
+                                </ul>
+                            </li>
+                        
+                    
+                
+            
+        </ul>
+    </div>
+
+                
+            </div>
+        </div>
+    </div>
+
+    
+    <footer class="footer">
+    <div class="container">
+
+        
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <a class="footer__button" href="#page-top"><i class="fa fa-chevron-up" aria-hidden="true"></i></a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-7 offset-md-2">
+                <h5>Laminas</h5>
+                <ul>
+                    <li>Laminas Project <a href="https://getlaminas.org/">Components and MVC for Enterprise Applications</a></li>
+                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 Middleware in Minutes</a></li>
+                    <li>Laminas API Tools: <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+
+            
+            <div class="col-md-4 offset-md-2">
+                <h4 class="footer__headline">Support</h4>
+                <ul class="support__list">
+                    <li class="support__list-item">
+                        <a href="https://discourse.laminas.dev" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://laminas.dev/chat" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://github.com/laminas" class="support__link" title="Github"><i class="fa fa-github"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://twitter.com/getlaminas" class="support__link" title="Twitter"><i class="fa fa-twitter"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://getlaminas.org/blog/feed-rss.xml" class="support__link" title="Blog feed"><i class="fa fa-rss"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://getlaminas.org/security/feed" class="support__link" title="Security feed"><i class="fa fa-rss-square"></i></a>
+                    </li>
+                </ul>
+            </div>
+
+            
+            <div class="col-md-3">
+                <h4 class="footer__headline">License</h4>
+                <p>
+                    Code licensed under <a
+                        href="https://github.com/laminas/laminas-mvc//blob/master/LICENSE.md">BSD 3-Clause</a>.
+                </p>
+            </div>
+
+            
+            <div class="col-md-3">
+                <h4 class="footer__headline">Copyright</h4>
+                <p>
+                    <!--Built with love by the Laminas team with the help of our
+                    <a href="https://github.com/laminas/laminas-mvc//graphs/contributors">contributors</a>.<br>-->
+                    &copy; 2019-2019 by <a href="https://getlaminas.org/">The Laminas Project</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script>
+        let base_url = '..',
+            project  = "mvc",
+            siteName = 'laminas-mvc';
+    </script>
+    <script src="/js/scripts.js"></script>
+        <script src="../search/main.js"></script>
+
+    
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Search</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search in laminas-mvc" id="mkdocs-search-query">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+
+</html>

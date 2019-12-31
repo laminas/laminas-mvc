@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Laminas's event-driven MVC layer, including MVC Applications, Controllers, and Plugins.">  
+    <link rel="canonical" href="https://docs.laminas.dev/routing/">
+    <link rel="shortcut icon" href="/img/trademark-laminas-foundation-rgb.svg">
+
+    <title>Routing - laminas-mvc - Laminas Docs</title>
+
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body id="page-top" class="mvc">
+
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        
+        <a class="logo-link navbar-brand offset-md-2" href="https://getlaminas.org/" data-tooltip data-placement="bottom" title="Go to the Laminas homepage">
+            <img src="../img/laminas-foundation-white.svg" height="28" alt="Lamnias">
+        </a>
+        <a class="navbar-title" href="https://docs.laminas.dev/" data-tooltip data-placement="bottom" title="Go to the Laminas Documentation">
+            Documentation
+        </a>
+
+        
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a href="https://getlaminas.org/about" class="nav-link">About</a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://getlaminas.org/blog" class="nav-link">Blog</a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://docs.laminas.dev" class="nav-link">All Docs</a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://getlaminas.org/participate" class="nav-link">Community</a>
+                </li>
+            </ul>
+
+            
+            
+                <div class="d-block d-sm-none">
+                    
+    <div class="subnavigation hidden-print">
+        <h4 class="subnavigation__title">
+            <a href="..">laminas-mvc</a>
+        </h4>
+
+        <h5 class="subnavigation__subtitle">Table of Contents</h5>
+
+        <ul class="subnavigation__list">
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item ">
+                                <a href="../intro/" class="subnavigation__link">Introduction</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item ">
+                                <a href="../quick-start/" class="subnavigation__link">Quick Start</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item">
+                                <span class="subnavigation__headline">Reference</span>
+                                <ul class="subnavigation__list">
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../services/" class="subnavigation__link">Default Services</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item subnavigation__list-item--active">
+        <a href="./" class="subnavigation__link">Routing</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../mvc-event/" class="subnavigation__link">The MVC Event</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../send-response-event/" class="subnavigation__link">The SendResponse Event</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../controllers/" class="subnavigation__link">Available Controllers</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../plugins/" class="subnavigation__link">Controller Plugins</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../examples/" class="subnavigation__link">Examples</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../middleware/" class="subnavigation__link">Dispatching PSR-7 Middleware</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item">
+        <span class="subnavigation__headline">Migration</span>
+        <ul class="subnavigation__list">
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../migration/" class="subnavigation__link">Migration Overview</a>
+    </li>
+
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../migration/to-v2-7/" class="subnavigation__link">v2.X to v2.7</a>
+    </li>
+
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../migration/to-v3-0/" class="subnavigation__link">v2.X to v3.0</a>
+    </li>
+
+            
+        </ul>
+    </li>
+
+                                    
+                                </ul>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item">
+                                <span class="subnavigation__headline">Cookbook</span>
+                                <ul class="subnavigation__list">
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../cookbook/automating-controller-factories/" class="subnavigation__link">Automating controller factories</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../cookbook/middleware-in-listeners/" class="subnavigation__link">Using middleware within event listeners</a>
+    </li>
+
+                                    
+                                </ul>
+                            </li>
+                        
+                    
+                
+            
+        </ul>
+    </div>
+
+                </div>
+            
+
+            
+            <div class="d-block d-sm-none">
+                <div class="component-selector">
+    
+    <h5 class="component-selector__subtitle">Find documentation…</h5>
+    <select class="form-control component-selector__control">
+        <option value="/">Overview</option>
+        <optgroup label="Components"></optgroup>
+    </select>
+</div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    
+    <header class="header">
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="col-6 offset-md-2">
+                <h1 class="header__title">
+                    Mvc
+
+                    
+                        <small class="header__subtitle">laminas-mvc</small>
+                    
+                </h1>
+            </div>
+
+            
+            <div class="col-4 text-sm-right">
+                
+                    
+
+                    <a href="#" class="header__link header__link--search" data-toggle="modal" data-target="#mkdocs_search_modal" title="Open search">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                    <a href="https://github.com/laminas/laminas-mvc/" class="header__link header__link--github" title="Go to repository of laminas-mvc">
+                        <i class="fa fa-github"></i> GitHub
+                    </a>
+                
+            </div>
+        </div>
+    </div>
+</header>
+
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2 col-sm-12">
+                
+    
+
+    
+    
+        <div class="toc">
+            <h6 class="toc__headline">On this page</h6>
+            <ul class="toc__list">
+                
+                    <li class="toc__entry">
+                        <a href="#router-types" class="toc__link">Router Types</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#http-route-types" class="toc__link">HTTP Route Types</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#http-routing-examples" class="toc__link">HTTP Routing Examples</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#console-route-types" class="toc__link">Console Route Types</a>
+                    </li>
+                
+            </ul>
+        </div>
+    
+
+            </div>
+            <div class="col-md-7 col-sm-12 content" role="main" data-spy="scroll" data-target=".toc">
+                
+                    <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        
+            <li class="breadcrumb-item"><a href="">Overview</a></li>
+
+            
+                <li class="breadcrumb-item"><a href="..">laminas-mvc</a></li>
+
+                
+                    
+                        
+                        
+                            <li class="breadcrumb-item">Reference</li>
+                        
+                    
+                
+
+                <li class="breadcrumb-item active" aria-current="page">Routing</li>
+            
+        
+    </ol>
+</nav>
+
+
+
+
+
+
+    
+    
+        <h2 class="chapter__headline">Reference</h2>
+    
+
+    <h1 id="routing">Routing</h1>
+<p>Routing is the act of matching a request to a given controller.</p>
+<p>Typically, routing will examine the request URI, and attempt to match the URI
+path segment against provided constraints. If the constraints match, a set of
+"matches" are returned, one of which should be the controller name to execute.
+Routing can utilize other portions of the request URI or environment as well.
+For example, the host or scheme, query parameters, headers, request method, and
+more.</p>
+<p>The base unit of routing is a <code>Route</code>:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>namespace Laminas\Router;</span>
+
+<span class=x>use Laminas\Stdlib\RequestInterface as Request;</span>
+
+<span class=x>interface RouteInterface</span>
+<span class=x>{</span>
+<span class=x>    public static function factory(array $options = []);</span>
+<span class=x>    public function match(Request $request);</span>
+<span class=x>    public function assemble(array $params = [], array $options = []);</span>
+<span class=x>}</span>
+</pre></div></p>
+<p>A <code>Route</code> accepts a <code>Request</code>, and determines if it matches. If so, it returns a
+<code>RouteMatch</code> object:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>namespace Laminas\Router;</span>
+
+<span class=x>class RouteMatch</span>
+<span class=x>{</span>
+<span class=x>    public function __construct(array $params);</span>
+<span class=x>    public function setMatchedRouteName($name);</span>
+<span class=x>    public function getMatchedRouteName();</span>
+<span class=x>    public function setParam($name, $value);</span>
+<span class=x>    public function getParams();</span>
+<span class=x>    public function getParam($name, $default = null);</span>
+<span class=x>}</span>
+</pre></div></p>
+<p>Typically, when a <code>Route</code> matches, it will define one or more parameters. These
+are passed into the <code>RouteMatch</code>, and objects may query the <code>RouteMatch</code> for
+their values.</p>
+<p> <div class=codehilite><pre><span></span><span class=x>$id = $routeMatch-&gt;getParam(&#39;id&#39;, false);</span>
+<span class=x>if (! $id) {</span>
+<span class=x>    throw new Exception(&#39;Required identifier is missing!&#39;);</span>
+<span class=x>}</span>
+<span class=x>$entity = $resource-&gt;get($id);</span>
+</pre></div></p>
+<p>Usually you will have multiple routes you wish to test against. In order to
+facilitate this, you will use a route aggregate, usually implementing
+<code>RouteStack</code>:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>namespace Laminas\Router;</span>
+
+<span class=x>interface RouteStackInterface extends RouteInterface</span>
+<span class=x>{</span>
+<span class=x>    public function addRoute($name, $route, $priority = null);</span>
+<span class=x>    public function addRoutes(array $routes);</span>
+<span class=x>    public function removeRoute($name);</span>
+<span class=x>    public function setRoutes(array $routes);</span>
+<span class=x>}</span>
+</pre></div></p>
+<p>Routes will be queried in a LIFO order, and hence the reason behind the name
+<code>RouteStack</code>. laminas-mvc provides two implementations of this interface,
+<code>SimpleRouteStack</code> and <code>TreeRouteStack</code>. In each, you register routes either one
+at a time using <code>addRoute()</code>, or in bulk using <code>addRoutes()</code>.</p>
+<p> <div class=codehilite><pre><span></span><span class=x>// One at a time:</span>
+<span class=x>$route = Literal::factory([</span>
+<span class=x>    &#39;route&#39; =&gt; &#39;/foo&#39;,</span>
+<span class=x>    &#39;defaults&#39; =&gt; [</span>
+<span class=x>        &#39;controller&#39; =&gt; &#39;foo-index&#39;,</span>
+<span class=x>        &#39;action&#39;     =&gt; &#39;index&#39;,</span>
+<span class=x>    ],</span>
+<span class=x>]);</span>
+<span class=x>$router-&gt;addRoute(&#39;foo&#39;, $route);</span>
+
+<span class=x>// In bulk:</span>
+<span class=x>$router-&gt;addRoutes([</span>
+<span class=x>    // using already instantiated routes:</span>
+<span class=x>    &#39;foo&#39; =&gt; $route,</span>
+
+<span class=x>    // providing configuration to allow lazy-loading routes:</span>
+<span class=x>    &#39;bar&#39; =&gt; [</span>
+<span class=x>        &#39;type&#39; =&gt; &#39;literal&#39;,</span>
+<span class=x>        &#39;options&#39; =&gt; [</span>
+<span class=x>            &#39;route&#39; =&gt; &#39;/bar&#39;,</span>
+<span class=x>            &#39;defaults&#39; =&gt; [</span>
+<span class=x>                &#39;controller&#39; =&gt; &#39;bar-index&#39;,</span>
+<span class=x>                &#39;action&#39;     =&gt; &#39;index&#39;,</span>
+<span class=x>            ],</span>
+<span class=x>        ],</span>
+<span class=x>    ],</span>
+<span class=x>]);</span>
+</pre></div></p>
+<h2 id="router-types">Router Types</h2>
+<p>Two routers are provided, the <code>SimpleRouteStack</code> and <code>TreeRouteStack</code>. Each
+works with the above interface, but utilize slightly different options and
+execution paths. By default, the laminas-mvc uses the <code>TreeRouteStack</code> as the
+router.</p>
+<h3>SimpleRouteStack</h3>
+<p>This router takes individual routes that provide their full matching logic in
+one go, and loops through them in LIFO order until a match is found. As such,
+routes that will match most often should be registered last, and least common
+routes first. Additionally, you will need to ensure that routes that potentially
+overlap are registered such that the most specific match will match first (i.e.,
+register later). Alternatively, you can set priorities by giving the priority as
+third parameter to the <code>addRoute()</code> method, specifying the priority in the route
+specifications or setting the priority property within a route instance before
+adding it to the route stack.</p>
+<h3>TreeRouteStack</h3>
+<p><code>Laminas\Router\Http\TreeRouteStack</code> provides the ability to register trees of
+routes, and uses a B-tree algorithm to match routes. As such, you register a
+single route with many children.</p>
+<p>A <code>TreeRouteStack</code> will consist of the following configuration:</p>
+<ul>
+<li>A base "route", which describes the base match needed, the root of the tree.</li>
+<li>An optional <code>route_plugins</code>, which is a configured
+  <code>Laminas\Router\RoutePluginManager</code> that can lazy-load routes.</li>
+<li>The option <code>may_terminate</code>, which hints to the router that no other segments
+  will follow it.</li>
+<li>An optional <code>child_routes</code> array, which contains additional routes that stem
+  from the base "route" (i.e., build from it). Each child route can itself be a
+  <code>TreeRouteStack</code> if desired; in fact, the <code>Part</code> route works exactly this way.</li>
+</ul>
+<p>When a route matches against a <code>TreeRouteStack</code>, the matched parameters from
+each segment of the tree will be returned.</p>
+<p>A <code>TreeRouteStack</code> can be your sole route for your application, or describe
+particular path segments of the application.</p>
+<p>An example of a <code>TreeRouteStack</code> is provided in the documentation of the <code>Part</code>
+route.</p>
+<h2 id="http-route-types">HTTP Route Types</h2>
+<p>laminas-mvc ships with the following HTTP route types.</p>
+<h3>Laminas\Router\Http\Hostname</h3>
+<p>The <code>Hostname</code> route attempts to match the hostname registered in the request
+against specific criteria. Typically, this will be in one of the following
+forms:</p>
+<ul>
+<li><code>subdomain.domain.tld</code></li>
+<li><code>:subdomain.domain.tld</code></li>
+</ul>
+<p>In the above, the second route would return a "subdomain" key as part of the
+route match.</p>
+<p>For any given hostname segment, you may also provide a constraint. As an
+example, if the "subdomain" segment needed to match only if it started with "fw"
+and contained exactly 2 digits following, the following route would be needed:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>$route = Hostname::factory([</span>
+<span class=x>    &#39;route&#39; =&gt; &#39;:subdomain.domain.tld&#39;,</span>
+<span class=x>    &#39;constraints&#39; =&gt; [</span>
+<span class=x>        &#39;subdomain&#39; =&gt; &#39;fw\d{2}&#39;,</span>
+<span class=x>    ],</span>
+<span class=x>]);</span>
+</pre></div></p>
+<p>In the above example, only a "subdomain" key will be returned in the
+<code>RouteMatch</code>. If you wanted to also provide other information based on matching,
+or a default value to return for the subdomain, you need to also provide
+defaults.</p>
+<p> <div class=codehilite><pre><span></span><span class=x>$route = Hostname::factory([</span>
+<span class=x>    &#39;route&#39; =&gt; &#39;:subdomain.domain.tld&#39;,</span>
+<span class=x>    &#39;constraints&#39; =&gt; [</span>
+<span class=x>        &#39;subdomain&#39; =&gt; &#39;fw\d{2}&#39;,</span>
+<span class=x>    ],</span>
+<span class=x>    &#39;defaults&#39; =&gt; [</span>
+<span class=x>        &#39;type&#39; =&gt; &#39;json&#39;,</span>
+<span class=x>    ],</span>
+<span class=x>]);</span>
+</pre></div></p>
+<p>When matched, the above will return two keys in the <code>RouteMatch</code>, "subdomain"
+and "type".</p>
+<h3>Laminas\Router\Http\Literal</h3>
+<p>The <code>Literal</code> route is for doing exact matching of the URI path. Configuration
+therefore is solely the path you want to match, and the "defaults", or
+parameters you want returned on a match.</p>
+<p> <div class=codehilite><pre><span></span><span class=x>$route = Literal::factory([</span>
+<span class=x>    &#39;route&#39; =&gt; &#39;/foo&#39;,</span>
+<span class=x>    &#39;defaults&#39; =&gt; [</span>
+<span class=x>        &#39;controller&#39; =&gt; &#39;Application\Controller\IndexController&#39;,</span>
+<span class=x>        &#39;action&#39; =&gt; &#39;foo&#39;,</span>
+<span class=x>    ],</span>
+<span class=x>]);</span>
+</pre></div></p>
+<p>The above route would match a path "/foo", and return the key "action" in the
+<code>RouteMatch</code>, with the value "foo".</p>
+<h3>Laminas\Router\Http\Method</h3>
+<p>The <code>Method</code> route is used to match the HTTP method or 'verb' specified in the
+request (See RFC 2616 Sec. 5.1.1). It can optionally be configured to match
+against multiple methods by providing a comma-separated list of method tokens.</p>
+<p> <div class=codehilite><pre><span></span><span class=x>$route = Method::factory([</span>
+<span class=x>    &#39;verb&#39; =&gt; &#39;post,put&#39;,</span>
+<span class=x>    &#39;defaults&#39; =&gt; [</span>
+<span class=x>        &#39;controller&#39; =&gt; &#39;Application\Controller\IndexController&#39;,</span>
+<span class=x>        &#39;action&#39; =&gt; &#39;form-submit&#39;,</span>
+<span class=x>    ],</span>
+<span class=x>]);</span>
+</pre></div></p>
+<p>The above route would match an http "POST" or "PUT" request and return a
+<code>RouteMatch</code> object containing a key "action" with a value of "form-submit".</p>
+<h3>Laminas\Router\Http\Part</h3>
+<p>A <code>Part</code> route allows crafting a tree of possible routes based on segments of
+the URI path. It actually extends the <code>TreeRouteStack</code>.</p>
+<p><code>Part</code> routes are difficult to describe, so we'll simply provide a sample one
+here.</p>
+<p> <div class=codehilite><pre><span></span><span class=x>$route = Part::factory([</span>
+<span class=x>    &#39;route&#39; =&gt; [</span>
+<span class=x>        &#39;type&#39; =&gt; &#39;literal&#39;,</span>
+<span class=x>        &#39;options&#39; =&gt; [</span>
+<span class=x>            &#39;route&#39; =&gt; &#39;/&#39;,</span>
+<span class=x>            &#39;defaults&#39; =&gt; [</span>
+<span class=x>                &#39;controller&#39; =&gt; &#39;Application\Controller\IndexController&#39;,</span>
+<span class=x>                &#39;action&#39; =&gt; &#39;index&#39;,</span>
+<span class=x>            ],</span>
+<span class=x>        ],</span>
+<span class=x>    ],</span>
+<span class=x>    &#39;route_plugins&#39; =&gt; $routePlugins,</span>
+<span class=x>    &#39;may_terminate&#39; =&gt; true,</span>
+<span class=x>    &#39;child_routes&#39; =&gt; [</span>
+<span class=x>        &#39;blog&#39; =&gt; [</span>
+<span class=x>            &#39;type&#39; =&gt; &#39;literal&#39;,</span>
+<span class=x>            &#39;options&#39; =&gt; [</span>
+<span class=x>                &#39;route&#39; =&gt; &#39;/blog&#39;,</span>
+<span class=x>                &#39;defaults&#39; =&gt; [</span>
+<span class=x>                    &#39;controller&#39; =&gt; &#39;Application\Controller\BlogController&#39;,</span>
+<span class=x>                    &#39;action&#39; =&gt; &#39;index&#39;,</span>
+<span class=x>                ],</span>
+<span class=x>            ],</span>
+<span class=x>            &#39;may_terminate&#39; =&gt; true,</span>
+<span class=x>            &#39;child_routes&#39; =&gt; [</span>
+<span class=x>                &#39;rss&#39; =&gt; [</span>
+<span class=x>                    &#39;type&#39; =&gt; &#39;literal&#39;,</span>
+<span class=x>                    &#39;options&#39; =&gt; [</span>
+<span class=x>                        &#39;route&#39; =&gt; &#39;/rss&#39;,</span>
+<span class=x>                        &#39;defaults&#39; =&gt; [</span>
+<span class=x>                            &#39;action&#39; =&gt; &#39;rss&#39;,</span>
+<span class=x>                        ]</span>
+<span class=x>                    ],</span>
+<span class=x>                    &#39;may_terminate&#39; =&gt; true,</span>
+<span class=x>                    &#39;child_routes&#39; =&gt; [</span>
+<span class=x>                        &#39;subrss&#39; =&gt; [</span>
+<span class=x>                            &#39;type&#39; =&gt; &#39;literal&#39;,</span>
+<span class=x>                            &#39;options&#39; =&gt; [</span>
+<span class=x>                                &#39;route&#39; =&gt; &#39;/sub&#39;,</span>
+<span class=x>                                &#39;defaults&#39; =&gt; [</span>
+<span class=x>                                    &#39;action&#39; =&gt; &#39;subrss&#39;,</span>
+<span class=x>                                ],</span>
+<span class=x>                            ],</span>
+<span class=x>                        ],</span>
+<span class=x>                    ],</span>
+<span class=x>                ],</span>
+<span class=x>            ],</span>
+<span class=x>        ],</span>
+<span class=x>        &#39;forum&#39; =&gt; [</span>
+<span class=x>            &#39;type&#39; =&gt; &#39;literal&#39;,</span>
+<span class=x>            &#39;options&#39; =&gt; [</span>
+<span class=x>                &#39;route&#39; =&gt; &#39;forum&#39;,</span>
+<span class=x>                &#39;defaults&#39; =&gt; [</span>
+<span class=x>                    &#39;controller&#39; =&gt; &#39;Application\Controller\ForumController&#39;,</span>
+<span class=x>                    &#39;action&#39; =&gt; &#39;index&#39;,</span>
+<span class=x>                ],</span>
+<span class=x>            ],</span>
+<span class=x>        ],</span>
+<span class=x>    ],</span>
+<span class=x>]);</span>
+</pre></div></p>
+<p>The above would match the following:</p>
+<ul>
+<li><code>/</code> would load the "Index" controller, "index" action.</li>
+<li><code>/blog</code> would load the "Blog" controller, "index" action.</li>
+<li><code>/blog/rss</code> would load the "Blog" controller, "rss" action.</li>
+<li><code>/blog/rss/sub</code> would load the "Blog" controller, "subrss" action.</li>
+<li><code>/forum</code> would load the "Forum" controller, "index" action.</li>
+</ul>
+<p>You may use any route type as a child route of a <code>Part</code> route.</p>
+<blockquote>
+<h3>Part routes are an implementation detail</h3>
+<p><code>Part</code> routes are not meant to be used directly. When you add definitions for
+<code>child_routes</code> to any route type, that route will become a <code>Part</code> route. As
+already said, describing <code>Part</code> routes with words is difficult, so hopefully
+the additional <a href="#http-routing-examples">examples at the end</a> will provide
+further insight.</p>
+<h3>Route plugins</h3>
+<p>In the above example, the <code>$routePlugins</code> is an instance of
+<code>Laminas\Router\RoutePluginManager</code>, containing essentially the following
+configuration:</p>
+<pre class=codehilite><code class=language-php>
+$routePlugins = new Laminas\Router\RoutePluginManager();
+$plugins = [
+    'hostname' =&gt; 'Laminas\Router\Http\Hostname',
+    'literal'  =&gt; 'Laminas\Router\Http\Literal',
+    'part'     =&gt; 'Laminas\Router\Http\Part',
+    'regex'    =&gt; 'Laminas\Router\Http\Regex',
+    'scheme'   =&gt; 'Laminas\Router\Http\Scheme',
+    'segment'  =&gt; 'Laminas\Router\Http\Segment',
+    'wildcard' =&gt; 'Laminas\Router\Http\Wildcard',
+    'query'    =&gt; 'Laminas\Router\Http\Query',
+    'method'   =&gt; 'Laminas\Router\Http\Method',
+];
+foreach ($plugins as $name =&gt; $class) {
+    $routePlugins-&gt;setInvokableClass($name, $class);
+}
+</code></pre>
+<p>When using <code>Laminas\Router\Http\TreeRouteStack</code>, the <code>RoutePluginManager</code> is
+set up by default, and the developer does not need to worry about autoloading
+of standard HTTP routes.</p>
+</blockquote>
+<h3>Laminas\Router\Http\Regex</h3>
+<p>A <code>Regex</code> route utilizes a regular expression to match against the URI path. Any
+valid regular expression is allowed; our recommendation is to use named captures
+for any values you want to return in the <code>RouteMatch</code>.</p>
+<p>Since regular expression routes are often complex, you must specify a "spec" or
+specification to use when assembling URLs from regex routes. The spec is simply
+a string; replacements are identified using <code>%keyname%</code> within the string, with
+the keys coming from either the captured values or named parameters passed to
+the <code>assemble()</code> method.</p>
+<p>Just like other routes, the <code>Regex</code> route can accept "defaults", parameters to
+include in the <code>RouteMatch</code> when successfully matched.</p>
+<p> <div class=codehilite><pre><span></span><span class=x>$route = Regex::factory([</span>
+<span class=x>    &#39;regex&#39; =&gt; &#39;/blog/(?&lt;id&gt;[a-zA-Z0-9_-]+)(\.(?&lt;format&gt;(json|html|xml|rss)))?&#39;,</span>
+<span class=x>    &#39;defaults&#39; =&gt; [</span>
+<span class=x>        &#39;controller&#39; =&gt; &#39;Application\Controller\BlogController&#39;,</span>
+<span class=x>        &#39;action&#39;     =&gt; &#39;view&#39;,</span>
+<span class=x>        &#39;format&#39;     =&gt; &#39;html&#39;,</span>
+<span class=x>    ],</span>
+<span class=x>    &#39;spec&#39; =&gt; &#39;/blog/%id%.%format%&#39;,</span>
+<span class=x>]);</span>
+</pre></div></p>
+<p>The above would match <code>/blog/001-some-blog_slug-here.html</code>, and return four
+items in the <code>RouteMatch</code>, an "id", the "controller", the "action", and the
+"format". When assembling a URL from this route, the "id" and "format" values
+would be used to fill the specification.</p>
+<h3>Laminas\Router\Http\Scheme</h3>
+<p>The <code>Scheme</code> route matches the URI scheme only, and must be an exact match. As
+such, this route, like the <code>Literal</code> route, simply takes what you want to match
+and the "defaults", parameters to return on a match.</p>
+<p> <div class=codehilite><pre><span></span><span class=x>$route = Scheme::factory([</span>
+<span class=x>    &#39;scheme&#39; =&gt; &#39;https&#39;,</span>
+<span class=x>    &#39;defaults&#39; =&gt; [</span>
+<span class=x>        &#39;https&#39; =&gt; true,</span>
+<span class=x>    ],</span>
+<span class=x>]);</span>
+</pre></div></p>
+<p>The above route would match the "https" scheme, and return the key "https" in
+the <code>RouteMatch</code> with a boolean <code>true</code> value.</p>
+<h3>Laminas\Router\Http\Segment</h3>
+<p>A <code>Segment</code> route allows matching any segment of a URI path. Segments are
+denoted using a colon, followed by alphanumeric characters; if a segment is
+optional, it should be surrounded by brackets.  As an example, <code>/:foo[/:bar]</code>
+would match a <code>/</code> followed by text and assign it to the key "foo"; if any
+additional <code>/</code> characters are found, any text following the last one will be
+assigned to the key "bar".</p>
+<p>The separation between literal and named segments can be anything. For example,
+the above could be done as <code>/:foo{-}[-:bar]</code> as well. The <code>{-}</code> after the <code>:foo</code>
+parameter indicates a set of one or more delimiters, after which matching of the
+parameter itself ends.</p>
+<p>Each segment may have constraints associated with it. Each constraint should
+simply be a regular expression expressing the conditions under which that
+segment should match.</p>
+<p>Also, as you can in other routes, you may provide defaults to use; these are
+particularly useful when using optional segments.</p>
+<p>As a complex example:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>$route = Segment::factory([</span>
+<span class=x>    &#39;route&#39; =&gt; &#39;/:controller[/:action]&#39;,</span>
+<span class=x>    &#39;constraints&#39; =&gt; [</span>
+<span class=x>        &#39;controller&#39; =&gt; &#39;[a-zA-Z][a-zA-Z0-9_-]+&#39;,</span>
+<span class=x>        &#39;action&#39;     =&gt; &#39;[a-zA-Z][a-zA-Z0-9_-]+&#39;,</span>
+<span class=x>    ],</span>
+<span class=x>    &#39;defaults&#39; =&gt; [</span>
+<span class=x>        &#39;controller&#39; =&gt; &#39;Application\Controller\IndexController&#39;,</span>
+<span class=x>        &#39;action&#39;     =&gt; &#39;index&#39;,</span>
+<span class=x>    ],</span>
+<span class=x>]);</span>
+</pre></div></p>
+<h3>Laminas\Router\Http\Query (Deprecated)</h3>
+<blockquote>
+<h4>Potential security issue</h4>
+<p>Misuse of this route can lead to potential security issues.</p>
+<h4>Deprecated</h4>
+<p>This route part is deprecated since you can now add query parameters without a
+query route. It was removed in version 3 of the router.</p>
+</blockquote>
+<p>The <code>Query</code> route part allows you to specify and capture query string parameters
+for a given route.</p>
+<p>The intention of the <code>Query</code> part is that you do not instantiate it in its own
+right, but use it as a child of another route part.</p>
+<p>An example of its usage would be:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>$route = Part::factory([</span>
+<span class=x>    &#39;route&#39; =&gt; [</span>
+<span class=x>        &#39;type&#39;    =&gt; &#39;literal&#39;,</span>
+<span class=x>        &#39;options&#39; =&gt; [</span>
+<span class=x>            &#39;route&#39;    =&gt; &#39;page&#39;,</span>
+<span class=x>            &#39;defaults&#39; =&gt; [],</span>
+<span class=x>        ],</span>
+<span class=x>    ],</span>
+<span class=x>    &#39;may_terminate&#39; =&gt; true,</span>
+<span class=x>    &#39;route_plugins&#39; =&gt; $routePlugins,</span>
+<span class=x>    &#39;child_routes&#39;  =&gt; [</span>
+<span class=x>        &#39;query&#39; =&gt; [</span>
+<span class=x>            &#39;type&#39; =&gt; &#39;Query&#39;,</span>
+<span class=x>            &#39;options&#39; =&gt; [</span>
+<span class=x>                &#39;defaults&#39; =&gt; [</span>
+<span class=x>                    &#39;foo&#39; =&gt; &#39;bar&#39;,</span>
+<span class=x>                ],</span>
+<span class=x>            ],</span>
+<span class=x>        ],</span>
+<span class=x>    ],</span>
+<span class=x>]);</span>
+</pre></div></p>
+<p>This then allows you to create query strings using the url view helper.</p>
+<p> <div class=codehilite><pre><span></span><span class=x>$this-&gt;url(</span>
+<span class=x>    &#39;page/query&#39;,</span>
+<span class=x>    [</span>
+<span class=x>        &#39;name&#39;   =&gt; &#39;my-test-page&#39;,</span>
+<span class=x>        &#39;format&#39; =&gt; &#39;rss&#39;,</span>
+<span class=x>        &#39;limit&#39;  =&gt; 10,</span>
+<span class=x>    ]</span>
+<span class=x>);</span>
+</pre></div></p>
+<p>Per the above example, you must add <code>/query</code> (the name we gave to our query
+route segment) to your route name in order to append a query string. If you do
+not specify <code>/query</code> in the route name, then no query string will be appended.</p>
+<p>Our example "page" route has only one defined parameter of "name"
+(<code>/page[/:name]</code>), meaning that the remaining parameters of "format" and "limit"
+will then be appended as a query string.</p>
+<p>The output from our example should then be
+<code>/page/my-test-page?format=rss&amp;limit=10</code></p>
+<h3>Laminas\Router\Http\Wildcard (Deprecated)</h3>
+<blockquote>
+<h4>Potential security issue</h4>
+<p>Misuse of this route type can lead to potential security issues.</p>
+<h4>Deprecated</h4>
+<p>This route type is deprecated. Use the <code>Segment</code> route type.</p>
+</blockquote>
+<p>The <code>Wildcard</code> route type matches all remaining segments of a URI path.</p>
+<h2 id="http-routing-examples">HTTP Routing Examples</h2>
+<p>Most of the routing definitions will be done in module configuration files, so
+the following examples will show how to set up routes in config files.</p>
+<h3>Simple example with two literal routes</h3>
+<p> <div class=codehilite><pre><span></span><span class=x>return [</span>
+<span class=x>    &#39;router&#39; =&gt; [</span>
+<span class=x>        &#39;routes&#39; =&gt; [</span>
+<span class=x>            // Literal route named &quot;home&quot;</span>
+<span class=x>            &#39;home&#39; =&gt; [</span>
+<span class=x>                &#39;type&#39; =&gt; &#39;literal&#39;,</span>
+<span class=x>                &#39;options&#39; =&gt; [</span>
+<span class=x>                    &#39;route&#39; =&gt; &#39;/&#39;,</span>
+<span class=x>                    &#39;defaults&#39; =&gt; [</span>
+<span class=x>                        &#39;controller&#39; =&gt; &#39;Application\Controller\IndexController&#39;,</span>
+<span class=x>                        &#39;action&#39; =&gt; &#39;index&#39;,</span>
+<span class=x>                    ],</span>
+<span class=x>                ],</span>
+<span class=x>            ],</span>
+<span class=x>            // Literal route named &quot;contact&quot;</span>
+<span class=x>            &#39;contact&#39; =&gt; [</span>
+<span class=x>                &#39;type&#39; =&gt; &#39;literal&#39;,</span>
+<span class=x>                &#39;options&#39; =&gt; [</span>
+<span class=x>                    &#39;route&#39; =&gt; &#39;contact&#39;,</span>
+<span class=x>                    &#39;defaults&#39; =&gt; [</span>
+<span class=x>                        &#39;controller&#39; =&gt; &#39;Application\Controller\ContactController&#39;,</span>
+<span class=x>                        &#39;action&#39; =&gt; &#39;form&#39;,</span>
+<span class=x>                    ],</span>
+<span class=x>                ],</span>
+<span class=x>            ],</span>
+<span class=x>        ],</span>
+<span class=x>    ],</span>
+<span class=x>];</span>
+</pre></div></p>
+<h3>A complex example with child routes</h3>
+<p> <div class=codehilite><pre><span></span><span class=x>return [</span>
+<span class=x>    &#39;router&#39; =&gt; [</span>
+<span class=x>        &#39;routes&#39; =&gt; [</span>
+<span class=x>            // Literal route named &quot;home&quot;</span>
+<span class=x>            &#39;home&#39; =&gt; [</span>
+<span class=x>                &#39;type&#39; =&gt; &#39;literal&#39;,</span>
+<span class=x>                &#39;options&#39; =&gt; [</span>
+<span class=x>                    &#39;route&#39; =&gt; &#39;/&#39;,</span>
+<span class=x>                    &#39;defaults&#39; =&gt; [</span>
+<span class=x>                        &#39;controller&#39; =&gt; &#39;Application\Controller\IndexController&#39;,</span>
+<span class=x>                        &#39;action&#39; =&gt; &#39;index&#39;,</span>
+<span class=x>                    ],</span>
+<span class=x>                ],</span>
+<span class=x>            ],</span>
+<span class=x>            // Literal route named &quot;blog&quot;, with child routes</span>
+<span class=x>            &#39;blog&#39; =&gt; [</span>
+<span class=x>                &#39;type&#39; =&gt; &#39;literal&#39;,</span>
+<span class=x>                &#39;options&#39; =&gt; [</span>
+<span class=x>                    &#39;route&#39; =&gt; &#39;/blog&#39;,</span>
+<span class=x>                    &#39;defaults&#39; =&gt; [</span>
+<span class=x>                        &#39;controller&#39; =&gt; &#39;Application\Controller\BlogController&#39;,</span>
+<span class=x>                        &#39;action&#39; =&gt; &#39;index&#39;,</span>
+<span class=x>                    ],</span>
+<span class=x>                ],</span>
+<span class=x>                &#39;may_terminate&#39; =&gt; true,</span>
+<span class=x>                &#39;child_routes&#39; =&gt; [</span>
+<span class=x>                    // Segment route for viewing one blog post</span>
+<span class=x>                    &#39;post&#39; =&gt; [</span>
+<span class=x>                        &#39;type&#39; =&gt; &#39;segment&#39;,</span>
+<span class=x>                        &#39;options&#39; =&gt; [</span>
+<span class=x>                            &#39;route&#39; =&gt; &#39;/[:slug]&#39;,</span>
+<span class=x>                            &#39;constraints&#39; =&gt; [</span>
+<span class=x>                                &#39;slug&#39; =&gt; &#39;[a-zA-Z0-9_-]+&#39;,</span>
+<span class=x>                            ],</span>
+<span class=x>                            &#39;defaults&#39; =&gt; [</span>
+<span class=x>                                &#39;action&#39; =&gt; &#39;view&#39;,</span>
+<span class=x>                            ],</span>
+<span class=x>                        ],</span>
+<span class=x>                    ],</span>
+<span class=x>                    // Literal route for viewing blog RSS feed</span>
+<span class=x>                    &#39;rss&#39; =&gt; [</span>
+<span class=x>                        &#39;type&#39; =&gt; &#39;literal&#39;,</span>
+<span class=x>                        &#39;options&#39; =&gt; [</span>
+<span class=x>                            &#39;route&#39; =&gt; &#39;/rss&#39;,</span>
+<span class=x>                            &#39;defaults&#39; =&gt; [</span>
+<span class=x>                                &#39;action&#39; =&gt; &#39;rss&#39;,</span>
+<span class=x>                            ],</span>
+<span class=x>                        ],</span>
+<span class=x>                    ],</span>
+<span class=x>                ],</span>
+<span class=x>            ],</span>
+<span class=x>        ],</span>
+<span class=x>    ],</span>
+<span class=x>];</span>
+</pre></div></p>
+<p>When using child routes, naming of the routes follows the <code>parent/child</code>
+pattern, so to use the child routes from the above example:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>echo $this-&gt;url(&#39;blog&#39;); // gives &quot;/blog&quot;</span>
+<span class=x>echo $this-&gt;url(&#39;blog/post&#39;, [&#39;slug&#39; =&gt; &#39;my-post&#39;]); // gives &quot;/blog/my-post&quot;</span>
+<span class=x>echo $this-&gt;url(&#39;blog/rss&#39;); // gives &quot;/blog/rss&quot;</span>
+</pre></div></p>
+<h3>An example with multiple Hostnames and subdomains within a single application</h3>
+<p> <div class=codehilite><pre><span></span><span class=x>return [</span>
+<span class=x>    &#39;router&#39; =&gt; [</span>
+<span class=x>        &#39;routes&#39; =&gt; [</span>
+<span class=x>            &#39;modules.laminas.dev&#39; =&gt; [</span>
+<span class=x>                &#39;type&#39; =&gt; &#39;Laminas\Router\Http\Hostname&#39;,</span>
+<span class=x>                &#39;options&#39; =&gt; [</span>
+<span class=x>                    &#39;route&#39; =&gt; &#39;:4th.[:3rd.]:2nd.:1st&#39;, // domain levels from right to left</span>
+<span class=x>                    &#39;constraints&#39; =&gt; [</span>
+<span class=x>                        &#39;4th&#39; =&gt; &#39;modules&#39;,</span>
+<span class=x>                        &#39;3rd&#39; =&gt; &#39;.*?&#39;, // optional 3rd level domain such as .ci, .dev or .test</span>
+<span class=x>                        &#39;2nd&#39; =&gt; &#39;laminas&#39;,</span>
+<span class=x>                        &#39;1st&#39; =&gt; &#39;com&#39;,</span>
+<span class=x>                    ],</span>
+<span class=x>                    // Purposely omit default controller and action</span>
+<span class=x>                    // to let the child routes control the route match</span>
+<span class=x>                ],</span>
+<span class=x>                // child route controllers may span multiple modules as desired</span>
+<span class=x>                &#39;child_routes&#39; =&gt; [</span>
+<span class=x>                    &#39;index&#39; =&gt; [</span>
+<span class=x>                        &#39;type&#39; =&gt; &#39;Laminas\Router\Http\Literal&#39;,</span>
+<span class=x>                        &#39;options&#39; =&gt; [</span>
+<span class=x>                            &#39;route&#39; =&gt; &#39;/&#39;,</span>
+<span class=x>                            &#39;defaults&#39; =&gt; [</span>
+<span class=x>                                &#39;controller&#39; =&gt; &#39;Module\Controller\Index&#39;,</span>
+<span class=x>                                &#39;action&#39; = &gt; &#39;index&#39;,</span>
+<span class=x>                            ],</span>
+<span class=x>                        ],</span>
+<span class=x>                        &#39;may_terminate&#39; =&gt; true,</span>
+<span class=x>                    ],</span>
+<span class=x>                ],</span>
+<span class=x>            ],</span>
+<span class=x>            &#39;packages.laminas.dev&#39; =&gt; [</span>
+<span class=x>                &#39;type&#39; =&gt; &#39;Laminas\Router\Http\Hostname&#39;,</span>
+<span class=x>                &#39;options&#39; =&gt; [</span>
+<span class=x>                    &#39;route&#39; =&gt; &#39;:4th.[:3rd.]:2nd.:1st&#39;, // domain levels from right to left</span>
+<span class=x>                    &#39;constraints&#39; =&gt; [</span>
+<span class=x>                        &#39;4th&#39; =&gt; &#39;packages&#39;,</span>
+<span class=x>                        &#39;3rd&#39; =&gt; &#39;.*?&#39;, // optional 3rd level domain such as .ci, .dev or .test</span>
+<span class=x>                        &#39;2nd&#39; =&gt; &#39;laminas&#39;,</span>
+<span class=x>                        &#39;1st&#39; =&gt; &#39;com&#39;,</span>
+<span class=x>                    ],</span>
+<span class=x>                    // Purposely omit default controller and action</span>
+<span class=x>                    // to let the child routes control the route match</span>
+<span class=x>                ],</span>
+<span class=x>                // child route controllers may span multiple modules as desired</span>
+<span class=x>                &#39;child_routes&#39; =&gt; [</span>
+<span class=x>                    &#39;index&#39; =&gt; [</span>
+<span class=x>                        &#39;type&#39; =&gt; &#39;Laminas\Router\Http\Literal&#39;,</span>
+<span class=x>                        &#39;options&#39; =&gt; [</span>
+<span class=x>                            &#39;route&#39; =&gt; &#39;/&#39;,</span>
+<span class=x>                            &#39;defaults&#39; =&gt; [</span>
+<span class=x>                                &#39;controller&#39; =&gt; &#39;Package\Controller\Index&#39;,</span>
+<span class=x>                                &#39;action&#39; = &gt; &#39;index&#39;,</span>
+<span class=x>                            ],</span>
+<span class=x>                        ],</span>
+<span class=x>                        &#39;may_terminate&#39; =&gt; true,</span>
+<span class=x>                    ],</span>
+<span class=x>                ],</span>
+<span class=x>            ],</span>
+<span class=x>        ],</span>
+<span class=x>    ],</span>
+<span class=x>];</span>
+</pre></div></p>
+<p>The above would match the following:</p>
+<ul>
+<li><code>modules.laminas.dev</code> would dispatch the <code>Index</code> controller's <code>index</code>
+  action of the <code>Module</code> module.</li>
+<li><code>modules.ci.laminas.dev</code> would dispatch the <code>Index</code> controller's <code>index</code>
+  action of the <code>Module</code> module.</li>
+<li><code>packages.laminas.dev</code> would dispatch the <code>Index</code> controller's <code>index</code>
+  action of the <code>Package</code> module.</li>
+<li><code>packages.dev.laminas.dev</code> would dispatch the <code>Index</code> controller's
+  <code>index</code> action of the <code>Package</code> module.</li>
+</ul>
+<p>The <code>Url</code> controller plugin or view helper may be used to generate URLs
+following the above example:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>// reuse the route matched parameters to generate URLs</span>
+<span class=x>echo $this-&gt;url(&#39;modules.laminas.dev/index&#39;, [], [], true);</span>
+<span class=x>echo $this-&gt;url(&#39;packages.laminas.dev/index&#39;, [], [], true);</span>
+</pre></div></p>
+<blockquote>
+<h3>may_terminate and child_routes placement</h3>
+<p>When defining child routes pay attention that the <code>may_terminate</code> and
+<code>child_routes</code> definitions are in same level as the <code>options</code> and <code>type</code>
+definitions. A common pitfall is to have those two definitions nested in
+<code>options</code>, which will not result in the desired routes.</p>
+</blockquote>
+<h2 id="console-route-types">Console Route Types</h2>
+<p>laminas-mvc also allows routing Console based applications; console routes are
+explained in the <a href="http://docs.laminas.dev/laminas-console/routes/">laminas-console routing documentation</a>.</p>
+
+
+
+
+    <nav>
+    <ul class="page-nav hidden-print">
+
+        
+        <li class="page-nav__item">
+            
+                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../services/">
+                    <i class="fa fa-chevron-left"></i> Previous
+                </a>
+            
+        </li>
+
+        
+        <li class="page-nav__item">
+            
+                <a rel="next" class="page-nav__link page-nav__link--next" href="../mvc-event/">
+                    Next <i class="fa fa-chevron-right"></i>
+                </a>
+            
+        </li>
+    </ul>
+</nav>
+
+
+
+
+    <div class="help-wanted">
+        <p>
+            Found a mistake or want to contribute to the documentation?
+            <a href="https://github.com/laminas/laminas-mvc/edit/master/docs/book/routing.md" target="_blank" class="help-wanted__link">
+                Edit this page on GitHub!
+            </a>
+        </p>
+    </div>
+
+                
+            </div>
+            <div class="col-md-3 col-sm-12 sidebar">
+                
+                    <div class="component-selector">
+    
+    <h5 class="component-selector__subtitle">Find documentation…</h5>
+    <select class="form-control component-selector__control">
+        <option value="/">Overview</option>
+        <optgroup label="Components"></optgroup>
+    </select>
+</div>
+                    
+    <div class="subnavigation hidden-print">
+        <h4 class="subnavigation__title">
+            <a href="..">laminas-mvc</a>
+        </h4>
+
+        <h5 class="subnavigation__subtitle">Table of Contents</h5>
+
+        <ul class="subnavigation__list">
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item ">
+                                <a href="../intro/" class="subnavigation__link">Introduction</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item ">
+                                <a href="../quick-start/" class="subnavigation__link">Quick Start</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item">
+                                <span class="subnavigation__headline">Reference</span>
+                                <ul class="subnavigation__list">
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../services/" class="subnavigation__link">Default Services</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item subnavigation__list-item--active">
+        <a href="./" class="subnavigation__link">Routing</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../mvc-event/" class="subnavigation__link">The MVC Event</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../send-response-event/" class="subnavigation__link">The SendResponse Event</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../controllers/" class="subnavigation__link">Available Controllers</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../plugins/" class="subnavigation__link">Controller Plugins</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../examples/" class="subnavigation__link">Examples</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../middleware/" class="subnavigation__link">Dispatching PSR-7 Middleware</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item">
+        <span class="subnavigation__headline">Migration</span>
+        <ul class="subnavigation__list">
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../migration/" class="subnavigation__link">Migration Overview</a>
+    </li>
+
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../migration/to-v2-7/" class="subnavigation__link">v2.X to v2.7</a>
+    </li>
+
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../migration/to-v3-0/" class="subnavigation__link">v2.X to v3.0</a>
+    </li>
+
+            
+        </ul>
+    </li>
+
+                                    
+                                </ul>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item">
+                                <span class="subnavigation__headline">Cookbook</span>
+                                <ul class="subnavigation__list">
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../cookbook/automating-controller-factories/" class="subnavigation__link">Automating controller factories</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../cookbook/middleware-in-listeners/" class="subnavigation__link">Using middleware within event listeners</a>
+    </li>
+
+                                    
+                                </ul>
+                            </li>
+                        
+                    
+                
+            
+        </ul>
+    </div>
+
+                
+            </div>
+        </div>
+    </div>
+
+    
+    <footer class="footer">
+    <div class="container">
+
+        
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <a class="footer__button" href="#page-top"><i class="fa fa-chevron-up" aria-hidden="true"></i></a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-7 offset-md-2">
+                <h5>Laminas</h5>
+                <ul>
+                    <li>Laminas Project <a href="https://getlaminas.org/">Components and MVC for Enterprise Applications</a></li>
+                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 Middleware in Minutes</a></li>
+                    <li>Laminas API Tools: <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+
+            
+            <div class="col-md-4 offset-md-2">
+                <h4 class="footer__headline">Support</h4>
+                <ul class="support__list">
+                    <li class="support__list-item">
+                        <a href="https://discourse.laminas.dev" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://laminas.dev/chat" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://github.com/laminas" class="support__link" title="Github"><i class="fa fa-github"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://twitter.com/getlaminas" class="support__link" title="Twitter"><i class="fa fa-twitter"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://getlaminas.org/blog/feed-rss.xml" class="support__link" title="Blog feed"><i class="fa fa-rss"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://getlaminas.org/security/feed" class="support__link" title="Security feed"><i class="fa fa-rss-square"></i></a>
+                    </li>
+                </ul>
+            </div>
+
+            
+            <div class="col-md-3">
+                <h4 class="footer__headline">License</h4>
+                <p>
+                    Code licensed under <a
+                        href="https://github.com/laminas/laminas-mvc//blob/master/LICENSE.md">BSD 3-Clause</a>.
+                </p>
+            </div>
+
+            
+            <div class="col-md-3">
+                <h4 class="footer__headline">Copyright</h4>
+                <p>
+                    <!--Built with love by the Laminas team with the help of our
+                    <a href="https://github.com/laminas/laminas-mvc//graphs/contributors">contributors</a>.<br>-->
+                    &copy; 2019-2019 by <a href="https://getlaminas.org/">The Laminas Project</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script>
+        let base_url = '..',
+            project  = "mvc",
+            siteName = 'laminas-mvc';
+    </script>
+    <script src="/js/scripts.js"></script>
+        <script src="../search/main.js"></script>
+
+    
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Search</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search in laminas-mvc" id="mkdocs-search-query">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+
+</html>

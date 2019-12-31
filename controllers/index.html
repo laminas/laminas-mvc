@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Laminas's event-driven MVC layer, including MVC Applications, Controllers, and Plugins.">  
+    <link rel="canonical" href="https://docs.laminas.dev/controllers/">
+    <link rel="shortcut icon" href="/img/trademark-laminas-foundation-rgb.svg">
+
+    <title>Available Controllers - laminas-mvc - Laminas Docs</title>
+
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body id="page-top" class="mvc">
+
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        
+        <a class="logo-link navbar-brand offset-md-2" href="https://getlaminas.org/" data-tooltip data-placement="bottom" title="Go to the Laminas homepage">
+            <img src="../img/laminas-foundation-white.svg" height="28" alt="Lamnias">
+        </a>
+        <a class="navbar-title" href="https://docs.laminas.dev/" data-tooltip data-placement="bottom" title="Go to the Laminas Documentation">
+            Documentation
+        </a>
+
+        
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a href="https://getlaminas.org/about" class="nav-link">About</a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://getlaminas.org/blog" class="nav-link">Blog</a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://docs.laminas.dev" class="nav-link">All Docs</a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://getlaminas.org/participate" class="nav-link">Community</a>
+                </li>
+            </ul>
+
+            
+            
+                <div class="d-block d-sm-none">
+                    
+    <div class="subnavigation hidden-print">
+        <h4 class="subnavigation__title">
+            <a href="..">laminas-mvc</a>
+        </h4>
+
+        <h5 class="subnavigation__subtitle">Table of Contents</h5>
+
+        <ul class="subnavigation__list">
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item ">
+                                <a href="../intro/" class="subnavigation__link">Introduction</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item ">
+                                <a href="../quick-start/" class="subnavigation__link">Quick Start</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item">
+                                <span class="subnavigation__headline">Reference</span>
+                                <ul class="subnavigation__list">
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../services/" class="subnavigation__link">Default Services</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../routing/" class="subnavigation__link">Routing</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../mvc-event/" class="subnavigation__link">The MVC Event</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../send-response-event/" class="subnavigation__link">The SendResponse Event</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item subnavigation__list-item--active">
+        <a href="./" class="subnavigation__link">Available Controllers</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../plugins/" class="subnavigation__link">Controller Plugins</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../examples/" class="subnavigation__link">Examples</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../middleware/" class="subnavigation__link">Dispatching PSR-7 Middleware</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item">
+        <span class="subnavigation__headline">Migration</span>
+        <ul class="subnavigation__list">
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../migration/" class="subnavigation__link">Migration Overview</a>
+    </li>
+
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../migration/to-v2-7/" class="subnavigation__link">v2.X to v2.7</a>
+    </li>
+
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../migration/to-v3-0/" class="subnavigation__link">v2.X to v3.0</a>
+    </li>
+
+            
+        </ul>
+    </li>
+
+                                    
+                                </ul>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item">
+                                <span class="subnavigation__headline">Cookbook</span>
+                                <ul class="subnavigation__list">
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../cookbook/automating-controller-factories/" class="subnavigation__link">Automating controller factories</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../cookbook/middleware-in-listeners/" class="subnavigation__link">Using middleware within event listeners</a>
+    </li>
+
+                                    
+                                </ul>
+                            </li>
+                        
+                    
+                
+            
+        </ul>
+    </div>
+
+                </div>
+            
+
+            
+            <div class="d-block d-sm-none">
+                <div class="component-selector">
+    
+    <h5 class="component-selector__subtitle">Find documentation…</h5>
+    <select class="form-control component-selector__control">
+        <option value="/">Overview</option>
+        <optgroup label="Components"></optgroup>
+    </select>
+</div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    
+    <header class="header">
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="col-6 offset-md-2">
+                <h1 class="header__title">
+                    Mvc
+
+                    
+                        <small class="header__subtitle">laminas-mvc</small>
+                    
+                </h1>
+            </div>
+
+            
+            <div class="col-4 text-sm-right">
+                
+                    
+
+                    <a href="#" class="header__link header__link--search" data-toggle="modal" data-target="#mkdocs_search_modal" title="Open search">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                    <a href="https://github.com/laminas/laminas-mvc/" class="header__link header__link--github" title="Go to repository of laminas-mvc">
+                        <i class="fa fa-github"></i> GitHub
+                    </a>
+                
+            </div>
+        </div>
+    </div>
+</header>
+
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2 col-sm-12">
+                
+    
+
+    
+    
+        <div class="toc">
+            <h6 class="toc__headline">On this page</h6>
+            <ul class="toc__list">
+                
+                    <li class="toc__entry">
+                        <a href="#common-interfaces-used-with-controllers" class="toc__link">Common Interfaces Used With Controllers</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#abstractactioncontroller" class="toc__link">AbstractActionController</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#abstractrestfulcontroller" class="toc__link">AbstractRestfulController</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#abstractconsolecontroller" class="toc__link">AbstractConsoleController</a>
+                    </li>
+                
+            </ul>
+        </div>
+    
+
+            </div>
+            <div class="col-md-7 col-sm-12 content" role="main" data-spy="scroll" data-target=".toc">
+                
+                    <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        
+            <li class="breadcrumb-item"><a href="">Overview</a></li>
+
+            
+                <li class="breadcrumb-item"><a href="..">laminas-mvc</a></li>
+
+                
+                    
+                        
+                        
+                            <li class="breadcrumb-item">Reference</li>
+                        
+                    
+                
+
+                <li class="breadcrumb-item active" aria-current="page">Available Controllers</li>
+            
+        
+    </ol>
+</nav>
+
+
+
+
+
+
+    
+    
+        <h2 class="chapter__headline">Reference</h2>
+    
+
+    <h1 id="available-controllers">Available Controllers</h1>
+<p>Controllers in laminas-mvc are objects implementing <code>Laminas\Stdlib\DispatchableInterface</code>.
+That interface describes a single method:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>use Laminas\Stdlib\DispatchableInterface;</span>
+<span class=x>use Laminas\Stdlib\RequestInterface as Request;</span>
+<span class=x>use Laminas\Stdlib\ResponseInterface as Response;</span>
+
+<span class=x>class Foo implements DispatchableInterface</span>
+<span class=x>{</span>
+<span class=x>    public function dispatch(Request $request, Response $response = null)</span>
+<span class=x>    {</span>
+<span class=x>        // ... do something, and preferably return a Response ...</span>
+<span class=x>    }</span>
+<span class=x>}</span>
+</pre></div></p>
+<p>While the pattern is straight-forward, chances are you don't want to implement
+custom dispatch logic for every controller, particularly as it's not unusual or
+uncommon for a single controller to handle several related types of requests.</p>
+<p>To provide convenience, laminas-mvc also defines several interfaces that, when
+implemented, can provide controllers with additional capabilities.</p>
+<h2 id="common-interfaces-used-with-controllers">Common Interfaces Used With Controllers</h2>
+<h3>InjectApplicationEvent</h3>
+<p>The <code>Laminas\Mvc\InjectApplicationEventInterface</code> hints to the <code>Application</code>
+instance that it should inject its <code>MvcEvent</code> into the controller itself. Why
+would this be useful?</p>
+<p>Recall that the <code>MvcEvent</code> composes a number of objects: the <code>Request</code> and
+<code>Response</code>, naturally, but also the router, the route matches (a <code>RouteMatch</code>
+instance), and potentially the "result" of dispatching.</p>
+<p>A controller that has the <code>MvcEvent</code> injected, then, can retrieve or inject
+these. As an example:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>$matches = $this-&gt;getEvent()-&gt;getRouteMatch();</span>
+<span class=x>$id      = $matches-&gt;getParam(&#39;id&#39;, false);</span>
+<span class=x>if (! $id) {</span>
+<span class=x>    $response = $this-&gt;getResponse();</span>
+<span class=x>    $response-&gt;setStatusCode(500);</span>
+<span class=x>    $this-&gt;getEvent()-&gt;setResult(&#39;Invalid identifier; cannot complete request&#39;);</span>
+<span class=x>    return;</span>
+<span class=x>}</span>
+</pre></div></p>
+<p>The <code>InjectApplicationEventInterface</code> defines two methods:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>public function setEvent(Laminas\EventManager\EventInterface $event);</span>
+<span class=x>public function getEvent();</span>
+</pre></div></p>
+<h3>ServiceLocatorAware</h3>
+<p>In most cases, you should define your controllers such that dependencies are
+injected by the application's <code>ServiceManager</code>, via either constructor arguments
+or setter methods.</p>
+<p>However, occasionally you may have objects you wish to use in your controller
+that are only valid for certain code paths. Examples include forms, paginators,
+navigation, etc. In these cases, you may decide that it doesn't make sense to
+inject those objects every time the controller is used.</p>
+<p>The <code>ServiceLocatorAwareInterface</code> interface hints to the <code>ServiceManager</code> that it should inject
+itself into the controller. It defines two simple methods:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>use Laminas\ServiceManager\ServiceLocatorInterface;</span>
+<span class=x>use Laminas\ServiceManager\ServiceLocatorAwareInterface;</span>
+
+<span class=x>public function setServiceLocator(ServiceLocatorInterface $serviceLocator);</span>
+<span class=x>public function getServiceLocator();</span>
+</pre></div></p>
+<blockquote>
+<h4>ServiceLocatorInterface is deprecated</h4>
+<p><code>ServiceLocatorAwareInterface</code> <a href="http://docs.laminas.dev/laminas-servicemanager/migration/#miscellaneous-interfaces-traits-and-classes">was removed from laminas-servicemanager v3.0</a>,
+and, as such, starting in laminas-mvc 2.7.0, the <code>AbstractController</code>
+implementation no longer implements the interface, though it implements the
+methods the interface defines; this allows forwards compatibility with
+laminas-servicemanager v3.</p>
+<p>However, also starting with the laminas-mvc 2.7.0 release, <code>ServiceLocatorAwareInterface</code>
+usage is deprecated. We recommend injecting dependencies explicitly instead of
+pulling them from a composed <code>ServiceManager</code> instance.</p>
+<p>In cases where an object will not be used in all code paths, we recommend
+splitting into discrete controllers, or using <a href="http://docs.laminas.dev/laminas-servicemanager/lazy-services/">lazy services</a>.</p>
+</blockquote>
+<h3>EventManagerAware</h3>
+<p>Typically, it's nice to be able to tie into a controller's workflow without
+needing to extend it or hardcode behavior into it. The solution for this is to
+use the <code>EventManager</code>.</p>
+<p>You can hint to the <code>ServiceManager</code> that you want an <code>EventManager</code> injected by
+implementing the interface <code>EventManagerAwareInterface</code>, which tells the
+<code>ServiceManager</code> to inject an <code>EventManager</code>.</p>
+<p>To do this, you define two methods. The first, a setter, should also set any
+<code>SharedEventManager</code> identifiers you want to listen on, and the second, a getter,
+should return the composed <code>EventManager</code> instance.</p>
+<p> <div class=codehilite><pre><span></span><span class=x>use Laminas\EventManager\EventManagerAwareInterface;</span>
+<span class=x>use Laminas\EventManager\EventManagerInterface;</span>
+
+<span class=x>public function setEventManager(EventManagerInterface $events);</span>
+<span class=x>public function getEventManager();</span>
+</pre></div></p>
+<h3>Controller Plugins</h3>
+<p>Code re-use is a common goal for developers. Another common goal is convenience.
+However, this is often difficult to achieve cleanly in abstract, general
+systems.</p>
+<p>Within your controllers, you'll often find yourself repeating tasks from one
+controller to another.  Some common examples:</p>
+<ul>
+<li>Generating URLs.</li>
+<li>Redirecting.</li>
+<li>Setting and retrieving flash messages (self-expiring session messages).</li>
+<li>Invoking and dispatching additional controllers.</li>
+</ul>
+<p>To facilitate these actions while also making them available to alternate
+controller implementations, we've created a <code>PluginManager</code> implementation for
+the controller layer, <code>Laminas\Mvc\Controller\PluginManager</code>, building on the
+<code>Laminas\ServiceManager\AbstractPluginManager</code> functionality. To utilize it,
+implement the <code>setPluginManager(PluginManager $plugins)</code> method, and set up your
+code to use the controller-specific implementation by default:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>use Laminas\Mvc\Controller\PluginManager;</span>
+
+<span class=x>public function setPluginManager(PluginManager $plugins)</span>
+<span class=x>{</span>
+<span class=x>    $this-&gt;plugins = $plugins;</span>
+<span class=x>    $this-&gt;plugins-&gt;setController($this);</span>
+
+<span class=x>    return $this;</span>
+<span class=x>}</span>
+
+<span class=x>public function getPluginManager()</span>
+<span class=x>{</span>
+<span class=x>    if (!$this-&gt;plugins) {</span>
+<span class=x>        $this-&gt;setPluginManager(new PluginManager());</span>
+<span class=x>    }</span>
+
+<span class=x>    return $this-&gt;plugins;</span>
+<span class=x>}</span>
+
+<span class=x>public function plugin($name, array $options = null)</span>
+<span class=x>{</span>
+<span class=x>    return $this-&gt;getPluginManager()-&gt;get($name, $options);</span>
+<span class=x>}</span>
+</pre></div></p>
+<h2 id="abstractactioncontroller">AbstractActionController</h2>
+<p>Implementing each of the above interfaces is a lesson in redundancy; you won't
+often want to do it.  As such, we've developed abstract, base controllers you
+can extend to get started.</p>
+<p>The first is <code>Laminas\Mvc\Controller\AbstractActionController</code>. This controller
+implements each of the above interfaces, and uses the following assumptions:</p>
+<ul>
+<li>An "action" parameter is expected in the <code>RouteMatch</code> object composed in the
+  attached <code>MvcEvent</code>.  If none is found, a <code>notFoundAction()</code> is invoked.</li>
+<li>The "action" parameter is converted to a camelCased format and appended with
+  the word "Action" to create a method name. As examples: "foo" maps to
+  <code>fooAction</code>, "foo-bar" or "foo.bar" or "foo_bar" to <code>fooBarAction</code>. The
+  controller then checks to see if that method exists. If not, the
+  <code>notFoundAction()</code> method is invoked; otherwise, the discovered method is
+  called.</li>
+<li>The results of executing the given action method are injected into the
+  <code>MvcEvent</code>'s "result" property (via <code>setResult()</code>, and accessible via
+  <code>getResult()</code>).</li>
+</ul>
+<p>Essentially, a route mapping to an <code>AbstractActionController</code> needs to return
+both the "controller" and "action" keys in its matches.</p>
+<p>Creation of action controllers looks like the following example:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>namespace Foo\Controller;</span>
+
+<span class=x>use Laminas\Mvc\Controller\AbstractActionController;</span>
+
+<span class=x>class BarController extends AbstractActionController</span>
+<span class=x>{</span>
+<span class=x>    public function bazAction()</span>
+<span class=x>    {</span>
+<span class=x>        return [&#39;title&#39; =&gt; __METHOD__];</span>
+<span class=x>    }</span>
+
+<span class=x>    public function batAction()</span>
+<span class=x>    {</span>
+<span class=x>        return [&#39;title&#39; =&gt; __METHOD__];</span>
+<span class=x>    }</span>
+<span class=x>}</span>
+</pre></div></p>
+<h3>Interfaces and Collaborators</h3>
+<p><code>AbstractActionController</code> implements each of the following interfaces:</p>
+<ul>
+<li><code>Laminas\Stdlib\DispatchableInterface</code></li>
+<li><code>Laminas\Mvc\InjectApplicationEventInterface</code></li>
+<li><code>Laminas\ServiceManager\ServiceLocatorAwareInterface</code> (starting with laminas-mvc
+  2.7.0, only the methods defined by the interface, not the interface itself)</li>
+<li><code>Laminas\EventManager\EventManagerAwareInterface</code></li>
+</ul>
+<p>The composed <code>EventManager</code> will be configured to listen on the following contexts:</p>
+<ul>
+<li><code>Laminas\Stdlib\DispatchableInterface</code></li>
+<li><code>Laminas\Mvc\Controller\AbstractActionController</code></li>
+<li><code>Laminas\Mvc\Controller\AbstractController</code></li>
+</ul>
+<p>Additionally, if you extend the class, it will listen on the name of the
+extending class.</p>
+<h2 id="abstractrestfulcontroller">AbstractRestfulController</h2>
+<p><code>Laminas\Mvc\Controller\AbstractRestfulController</code> provides a native RESTful
+implementation that maps HTTP request methods to controller methods, using the
+following matrix:</p>
+<ul>
+<li><strong>GET</strong> maps to either <code>get()</code> or <code>getList()</code>, depending on whether or not an
+  "id" parameter is found in the route matches. If one is, it is passed as an
+  argument to <code>get()</code>; if not, <code>getList()</code> is invoked. In the former case, you
+  should provide a representation of the given entity with that identification;
+  in the latter, you should provide a list of entities.</li>
+<li><strong>POST</strong> maps to <code>create()</code>. That method expects a <code>$data</code> argument, usually
+  the <code>$_POST</code> superglobal array. The data should be used to create a new
+  entity, and the response should typically be an HTTP 201 response with the
+  Location header indicating the URI of the newly created entity and the
+  response body providing the representation.</li>
+<li><strong>PUT</strong> maps to <code>update()</code>, and requires that an "id" parameter exists in the
+  route matches; that value is passed as an argument to the method. It should
+  attempt to update the given entity, and, if successful, return either a 200 or
+  202 response status, as well as the representation of the entity.</li>
+<li><strong>DELETE</strong> maps to <code>delete()</code>, and requires that an "id" parameter exists in
+  the route matches; that value is passed as an argument to the method. It
+  should attempt to delete the given entity, and, if successful, return either a
+  200 or 204 response status.</li>
+</ul>
+<p>Additionally, you can map "action" methods to the <code>AbstractRestfulController</code>,
+just as you would in the <code>AbstractActionController</code>; these methods will be
+suffixed with "Action", differentiating them from the RESTful methods listed
+above. This allows you to perform such actions as providing forms used to submit
+to the various RESTful methods, or to add RPC methods to your RESTful API.</p>
+<h3>Interfaces and Collaborators</h3>
+<p><code>AbstractRestfulController</code> implements each of the following interfaces:</p>
+<ul>
+<li><code>Laminas\Stdlib\DispatchableInterface</code></li>
+<li><code>Laminas\Mvc\InjectApplicationEventInterface</code></li>
+<li><code>Laminas\ServiceManager\ServiceLocatorAwareInterface</code> (starting with laminas-mvc
+  2.7.0, only the methods defined by the interface, not the interface itself)</li>
+<li><code>Laminas\EventManager\EventManagerAwareInterface</code></li>
+</ul>
+<p>The composed <code>EventManager</code> will be configured to listen on the following contexts:</p>
+<ul>
+<li><code>Laminas\Stdlib\DispatchableInterface</code></li>
+<li><code>Laminas\Mvc\Controller\AbstractRestfulController</code></li>
+<li><code>Laminas\Mvc\Controller\AbstractController</code></li>
+</ul>
+<p>Additionally, if you extend the class, it will listen on the name of the
+extending class.</p>
+<h2 id="abstractconsolecontroller">AbstractConsoleController</h2>
+<blockquote>
+<p>For version 3, the integration component <a href="https://docs.laminas.dev/laminas-mvc-console/">laminas-mvc-console</a> must be installed. It can be done via Composer:
+<code>`bash
+composer require laminas/laminas-mvc-console</code>
+If you are not using the component installer, you will need to <a href="https://docs.laminas.dev/laminas-mvc-console/intro/#manual-installation">add this component as a module</a>.</p>
+</blockquote>
+<p><code>Laminas\Mvc\Console\Controller\AbstractConsoleController</code> extends from <a href="#abstractactioncontroller">AbstractActionController</a>
+and provides the following functionality:</p>
+<ul>
+<li>The method <code>setConsole(Laminas\Console\Adapter\AdapterInterface $console)</code> allows
+  injecting a console adapter representing the current console environment. By
+  default, the <code>ControllerManager</code> will inject this for you as part of
+  controller instantiation.</li>
+<li>The method <code>getConsole()</code> allows you to retrieve the current console adapter
+  instance, allowing you to retrieve console capabilities and generate console
+  output.</li>
+<li>The <code>dispatch()</code> method will throw an exception if invoked in a non-console
+  environment, ensuring that you do not need to do any checks within your action
+  methods for the environment.</li>
+</ul>
+<h3>Interfaces and Collaborators</h3>
+<p><code>AbstractRestfulController</code> implements each of the following interfaces:</p>
+<ul>
+<li><code>Laminas\Stdlib\DispatchableInterface</code></li>
+<li><code>Laminas\Mvc\InjectApplicationEventInterface</code></li>
+<li><code>Laminas\ServiceManager\ServiceLocatorAwareInterface</code> (starting with laminas-mvc
+  2.7.0, only the methods defined by the interface, not the interface itself)</li>
+<li><code>Laminas\EventManager\EventManagerAwareInterface</code></li>
+</ul>
+<p>The composed <code>EventManager</code> will be configured to listen on the following contexts:</p>
+<ul>
+<li><code>Laminas\Stdlib\DispatchableInterface</code></li>
+<li><code>Laminas\Mvc\Console\Controller\AbstractConsoleController</code></li>
+<li><code>Laminas\Mvc\Controller\AbstractActionController</code></li>
+<li><code>Laminas\Mvc\Controller\AbstractController</code></li>
+</ul>
+<p>Additionally, if you extend the class, it will listen on the name of the
+extending class.</p>
+
+
+
+
+    <nav>
+    <ul class="page-nav hidden-print">
+
+        
+        <li class="page-nav__item">
+            
+                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../send-response-event/">
+                    <i class="fa fa-chevron-left"></i> Previous
+                </a>
+            
+        </li>
+
+        
+        <li class="page-nav__item">
+            
+                <a rel="next" class="page-nav__link page-nav__link--next" href="../plugins/">
+                    Next <i class="fa fa-chevron-right"></i>
+                </a>
+            
+        </li>
+    </ul>
+</nav>
+
+
+
+
+    <div class="help-wanted">
+        <p>
+            Found a mistake or want to contribute to the documentation?
+            <a href="https://github.com/laminas/laminas-mvc/edit/master/docs/book/controllers.md" target="_blank" class="help-wanted__link">
+                Edit this page on GitHub!
+            </a>
+        </p>
+    </div>
+
+                
+            </div>
+            <div class="col-md-3 col-sm-12 sidebar">
+                
+                    <div class="component-selector">
+    
+    <h5 class="component-selector__subtitle">Find documentation…</h5>
+    <select class="form-control component-selector__control">
+        <option value="/">Overview</option>
+        <optgroup label="Components"></optgroup>
+    </select>
+</div>
+                    
+    <div class="subnavigation hidden-print">
+        <h4 class="subnavigation__title">
+            <a href="..">laminas-mvc</a>
+        </h4>
+
+        <h5 class="subnavigation__subtitle">Table of Contents</h5>
+
+        <ul class="subnavigation__list">
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item ">
+                                <a href="../intro/" class="subnavigation__link">Introduction</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item ">
+                                <a href="../quick-start/" class="subnavigation__link">Quick Start</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item">
+                                <span class="subnavigation__headline">Reference</span>
+                                <ul class="subnavigation__list">
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../services/" class="subnavigation__link">Default Services</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../routing/" class="subnavigation__link">Routing</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../mvc-event/" class="subnavigation__link">The MVC Event</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../send-response-event/" class="subnavigation__link">The SendResponse Event</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item subnavigation__list-item--active">
+        <a href="./" class="subnavigation__link">Available Controllers</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../plugins/" class="subnavigation__link">Controller Plugins</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../examples/" class="subnavigation__link">Examples</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../middleware/" class="subnavigation__link">Dispatching PSR-7 Middleware</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item">
+        <span class="subnavigation__headline">Migration</span>
+        <ul class="subnavigation__list">
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../migration/" class="subnavigation__link">Migration Overview</a>
+    </li>
+
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../migration/to-v2-7/" class="subnavigation__link">v2.X to v2.7</a>
+    </li>
+
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../migration/to-v3-0/" class="subnavigation__link">v2.X to v3.0</a>
+    </li>
+
+            
+        </ul>
+    </li>
+
+                                    
+                                </ul>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item">
+                                <span class="subnavigation__headline">Cookbook</span>
+                                <ul class="subnavigation__list">
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../cookbook/automating-controller-factories/" class="subnavigation__link">Automating controller factories</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../cookbook/middleware-in-listeners/" class="subnavigation__link">Using middleware within event listeners</a>
+    </li>
+
+                                    
+                                </ul>
+                            </li>
+                        
+                    
+                
+            
+        </ul>
+    </div>
+
+                
+            </div>
+        </div>
+    </div>
+
+    
+    <footer class="footer">
+    <div class="container">
+
+        
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <a class="footer__button" href="#page-top"><i class="fa fa-chevron-up" aria-hidden="true"></i></a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-7 offset-md-2">
+                <h5>Laminas</h5>
+                <ul>
+                    <li>Laminas Project <a href="https://getlaminas.org/">Components and MVC for Enterprise Applications</a></li>
+                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 Middleware in Minutes</a></li>
+                    <li>Laminas API Tools: <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+
+            
+            <div class="col-md-4 offset-md-2">
+                <h4 class="footer__headline">Support</h4>
+                <ul class="support__list">
+                    <li class="support__list-item">
+                        <a href="https://discourse.laminas.dev" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://laminas.dev/chat" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://github.com/laminas" class="support__link" title="Github"><i class="fa fa-github"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://twitter.com/getlaminas" class="support__link" title="Twitter"><i class="fa fa-twitter"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://getlaminas.org/blog/feed-rss.xml" class="support__link" title="Blog feed"><i class="fa fa-rss"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://getlaminas.org/security/feed" class="support__link" title="Security feed"><i class="fa fa-rss-square"></i></a>
+                    </li>
+                </ul>
+            </div>
+
+            
+            <div class="col-md-3">
+                <h4 class="footer__headline">License</h4>
+                <p>
+                    Code licensed under <a
+                        href="https://github.com/laminas/laminas-mvc//blob/master/LICENSE.md">BSD 3-Clause</a>.
+                </p>
+            </div>
+
+            
+            <div class="col-md-3">
+                <h4 class="footer__headline">Copyright</h4>
+                <p>
+                    <!--Built with love by the Laminas team with the help of our
+                    <a href="https://github.com/laminas/laminas-mvc//graphs/contributors">contributors</a>.<br>-->
+                    &copy; 2019-2019 by <a href="https://getlaminas.org/">The Laminas Project</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script>
+        let base_url = '..',
+            project  = "mvc",
+            siteName = 'laminas-mvc';
+    </script>
+    <script src="/js/scripts.js"></script>
+        <script src="../search/main.js"></script>
+
+    
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Search</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search in laminas-mvc" id="mkdocs-search-query">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+
+</html>

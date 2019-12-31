@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Laminas's event-driven MVC layer, including MVC Applications, Controllers, and Plugins.">  
+    <link rel="canonical" href="https://docs.laminas.dev/plugins/">
+    <link rel="shortcut icon" href="/img/trademark-laminas-foundation-rgb.svg">
+
+    <title>Controller Plugins - laminas-mvc - Laminas Docs</title>
+
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body id="page-top" class="mvc">
+
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        
+        <a class="logo-link navbar-brand offset-md-2" href="https://getlaminas.org/" data-tooltip data-placement="bottom" title="Go to the Laminas homepage">
+            <img src="../img/laminas-foundation-white.svg" height="28" alt="Lamnias">
+        </a>
+        <a class="navbar-title" href="https://docs.laminas.dev/" data-tooltip data-placement="bottom" title="Go to the Laminas Documentation">
+            Documentation
+        </a>
+
+        
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a href="https://getlaminas.org/about" class="nav-link">About</a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://getlaminas.org/blog" class="nav-link">Blog</a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://docs.laminas.dev" class="nav-link">All Docs</a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://getlaminas.org/participate" class="nav-link">Community</a>
+                </li>
+            </ul>
+
+            
+            
+                <div class="d-block d-sm-none">
+                    
+    <div class="subnavigation hidden-print">
+        <h4 class="subnavigation__title">
+            <a href="..">laminas-mvc</a>
+        </h4>
+
+        <h5 class="subnavigation__subtitle">Table of Contents</h5>
+
+        <ul class="subnavigation__list">
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item ">
+                                <a href="../intro/" class="subnavigation__link">Introduction</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item ">
+                                <a href="../quick-start/" class="subnavigation__link">Quick Start</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item">
+                                <span class="subnavigation__headline">Reference</span>
+                                <ul class="subnavigation__list">
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../services/" class="subnavigation__link">Default Services</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../routing/" class="subnavigation__link">Routing</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../mvc-event/" class="subnavigation__link">The MVC Event</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../send-response-event/" class="subnavigation__link">The SendResponse Event</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../controllers/" class="subnavigation__link">Available Controllers</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item subnavigation__list-item--active">
+        <a href="./" class="subnavigation__link">Controller Plugins</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../examples/" class="subnavigation__link">Examples</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../middleware/" class="subnavigation__link">Dispatching PSR-7 Middleware</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item">
+        <span class="subnavigation__headline">Migration</span>
+        <ul class="subnavigation__list">
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../migration/" class="subnavigation__link">Migration Overview</a>
+    </li>
+
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../migration/to-v2-7/" class="subnavigation__link">v2.X to v2.7</a>
+    </li>
+
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../migration/to-v3-0/" class="subnavigation__link">v2.X to v3.0</a>
+    </li>
+
+            
+        </ul>
+    </li>
+
+                                    
+                                </ul>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item">
+                                <span class="subnavigation__headline">Cookbook</span>
+                                <ul class="subnavigation__list">
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../cookbook/automating-controller-factories/" class="subnavigation__link">Automating controller factories</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../cookbook/middleware-in-listeners/" class="subnavigation__link">Using middleware within event listeners</a>
+    </li>
+
+                                    
+                                </ul>
+                            </li>
+                        
+                    
+                
+            
+        </ul>
+    </div>
+
+                </div>
+            
+
+            
+            <div class="d-block d-sm-none">
+                <div class="component-selector">
+    
+    <h5 class="component-selector__subtitle">Find documentation…</h5>
+    <select class="form-control component-selector__control">
+        <option value="/">Overview</option>
+        <optgroup label="Components"></optgroup>
+    </select>
+</div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    
+    <header class="header">
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="col-6 offset-md-2">
+                <h1 class="header__title">
+                    Mvc
+
+                    
+                        <small class="header__subtitle">laminas-mvc</small>
+                    
+                </h1>
+            </div>
+
+            
+            <div class="col-4 text-sm-right">
+                
+                    
+
+                    <a href="#" class="header__link header__link--search" data-toggle="modal" data-target="#mkdocs_search_modal" title="Open search">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                    <a href="https://github.com/laminas/laminas-mvc/" class="header__link header__link--github" title="Go to repository of laminas-mvc">
+                        <i class="fa fa-github"></i> GitHub
+                    </a>
+                
+            </div>
+        </div>
+    </div>
+</header>
+
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2 col-sm-12">
+                
+    
+
+    
+    
+        <div class="toc">
+            <h6 class="toc__headline">On this page</h6>
+            <ul class="toc__list">
+                
+                    <li class="toc__entry">
+                        <a href="#acceptableviewmodelselector-plugin" class="toc__link">AcceptableViewModelSelector Plugin</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#forward-plugin" class="toc__link">Forward Plugin</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#layout-plugin" class="toc__link">Layout Plugin</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#params-plugin" class="toc__link">Params Plugin</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#redirect-plugin" class="toc__link">Redirect Plugin</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#url-plugin" class="toc__link">Url Plugin</a>
+                    </li>
+                
+            </ul>
+        </div>
+    
+
+            </div>
+            <div class="col-md-7 col-sm-12 content" role="main" data-spy="scroll" data-target=".toc">
+                
+                    <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        
+            <li class="breadcrumb-item"><a href="">Overview</a></li>
+
+            
+                <li class="breadcrumb-item"><a href="..">laminas-mvc</a></li>
+
+                
+                    
+                        
+                        
+                            <li class="breadcrumb-item">Reference</li>
+                        
+                    
+                
+
+                <li class="breadcrumb-item active" aria-current="page">Controller Plugins</li>
+            
+        
+    </ol>
+</nav>
+
+
+
+
+
+
+    
+    
+        <h2 class="chapter__headline">Reference</h2>
+    
+
+    <h1 id="controller-plugins">Controller Plugins</h1>
+<p>When using any of the abstract controller implementations shipped with laminas-mvc,
+or if you implement the <code>setPluginManager</code> method in your custom controllers,
+you have access to a number of pre-built plugins. Additionally, you can register
+your own custom plugins with the manager.</p>
+<p>The built-in plugins are:</p>
+<ul>
+<li><a href="#acceptableviewmodelselector-plugin">Laminas\Mvc\Controller\Plugin\AcceptableViewModelSelector</a></li>
+<li><a href="#forward-plugin">Laminas\Mvc\Controller\Plugin\Forward</a></li>
+<li><a href="#layout-plugin">Laminas\Mvc\Controller\Plugin\Layout</a></li>
+<li><a href="#params-plugin">Laminas\Mvc\Controller\Plugin\Params</a></li>
+<li><a href="#redirect-plugin">Laminas\Mvc\Controller\Plugin\Redirect</a></li>
+<li><a href="#url-plugin">Laminas\Mvc\Controller\Plugin\Url</a></li>
+</ul>
+<p>If your controller implements the <code>setPluginManager()</code>, <code>getPluginManager()</code> and
+<code>plugin()</code> methods, you can access these using their shortname via the <code>plugin()</code>
+method:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>$plugin = $this-&gt;plugin(&#39;url&#39;);</span>
+</pre></div></p>
+<p>For an extra layer of convenience, this shipped abstract controller
+implementations have <code>__call()</code> methods defined that allow you to retrieve
+plugins via method calls:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>$plugin = $this-&gt;url();</span>
+</pre></div></p>
+<h2 id="acceptableviewmodelselector-plugin">AcceptableViewModelSelector Plugin</h2>
+<p>The <code>AcceptableViewModelSelector</code> is a helper that can be used to select an
+appropriate view model based on user defined criteria will be tested against the
+Accept header in the request.</p>
+<p>As an example:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>use Laminas\Mvc\Controller\AbstractActionController;</span>
+
+<span class=x>class SomeController extends AbstractActionController</span>
+<span class=x>{</span>
+<span class=x>    protected $acceptCriteria = [</span>
+<span class=x>        \Laminas\View\Model\ViewModel::class =&gt; [</span>
+<span class=x>            &#39;text/html&#39;,</span>
+<span class=x>            &#39;application/xhtml+xml&#39;,</span>
+<span class=x>        ],</span>
+<span class=x>        \Laminas\View\Model\JsonModel::class =&gt; [</span>
+<span class=x>            &#39;application/json&#39;,</span>
+<span class=x>            &#39;application/javascript&#39;,</span>
+<span class=x>        ],</span>
+<span class=x>        \Laminas\View\Model\FeedModel::class =&gt; [</span>
+<span class=x>            &#39;application/rss+xml&#39;,</span>
+<span class=x>            &#39;application/atom+xml&#39;,</span>
+<span class=x>        ],</span>
+<span class=x>    ];</span>
+
+<span class=x>    public function apiAction()</span>
+<span class=x>    {</span>
+<span class=x>        $viewModel = $this-&gt;acceptableViewModelSelector($this-&gt;acceptCriteria);</span>
+
+<span class=x>        // Potentially vary execution based on model returned</span>
+<span class=x>        if ($viewModel instanceof \Laminas\View\Model\JsonModel) {</span>
+<span class=x>            // ...</span>
+<span class=x>        }</span>
+<span class=x>    }</span>
+<span class=x>}</span>
+</pre></div></p>
+<p>The above would return a standard <code>Laminas\View\Model\ViewModel</code> instance if no
+criterias are met, and the specified view model types if a specific criteria
+is met. Rules are matched in order, with the first match "winning".
+Make sure to put your fallback view model <em>first</em> as a fallback for unknown
+content types or <code>*/*</code>.</p>
+<blockquote>
+<p>Browsers are sending <code>*/*</code> as last content type of the Accept header so you have to define every
+acceptable view model and their content type.</p>
+</blockquote>
+<h2 id="forward-plugin">Forward Plugin</h2>
+<p>Occasionally, you may want to dispatch additional controllers from within the
+matched controller. For example, you might use this approach to build up
+"widgetized" content. The <code>Forward</code> plugin helps enable this.</p>
+<p>For the <code>Forward</code> plugin to work, the controller calling it must be
+<code>ServiceLocatorAware</code>; otherwise, the plugin will be unable to retrieve a
+configured and injected instance of the requested controller.</p>
+<p>The plugin exposes a single method, <code>dispatch()</code>, which takes two arguments:</p>
+<ul>
+<li><code>$name</code>, the name of the controller to invoke. This may be either the fully
+  qualified class name, or an alias defined and recognized by the
+  <code>ServiceManager</code> instance attached to the invoking controller.</li>
+<li><code>$params</code> is an optional array of parameters with which to seed a <code>RouteMatch</code>
+  object for purposes of this specific request. Meaning the parameters will be
+  matched by their key to the routing identifiers in the config (otherwise
+  non-matching keys are ignored)</li>
+</ul>
+<p><code>Forward</code> returns the results of dispatching the requested controller; it is up
+to the developer to determine what, if anything, to do with those results. One
+recommendation is to aggregate them in any return value from the invoking
+controller.</p>
+<p>As an example:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>$foo = $this-&gt;forward()-&gt;dispatch(&#39;foo&#39;, [&#39;action&#39; =&gt; &#39;process&#39;]);</span>
+<span class=x>return [</span>
+<span class=x>    &#39;somekey&#39; =&gt; $somevalue,</span>
+<span class=x>    &#39;foo&#39;     =&gt; $foo,</span>
+<span class=x>];</span>
+</pre></div></p>
+<h2 id="layout-plugin">Layout Plugin</h2>
+<p>The <code>Layout</code> plugin allows changing layout templates from within controller actions.</p>
+<p>It exposes a single method, <code>setTemplate()</code>, which takes one argument,
+<code>$template</code>, the name of the template to set.</p>
+<p>As an example:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>$this-&gt;layout()-&gt;setTemplate(&#39;layout/newlayout&#39;);</span>
+</pre></div></p>
+<p>It also implements the <code>__invoke</code> magic method, which allows calling the plugin
+as a method call:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>$this-&gt;layout(&#39;layout/newlayout&#39;);</span>
+</pre></div></p>
+<h2 id="params-plugin">Params Plugin</h2>
+<p>The <code>Params</code> plugin allows accessing parameters in actions from different sources.</p>
+<p>It exposes several methods, one for each parameter source:</p>
+<ul>
+<li>
+<p><code>fromFiles(string $name = null, mixed $default = null): array|ArrayAccess|null</code>:
+  For retrieving all or one single <strong>file</strong>. If <code>$name</code> is null, all files will
+  be returned.</p>
+</li>
+<li>
+<p><code>fromHeader(string $header = null, mixed $default = null) : null|Laminas\Http\Header\HeaderInterface</code>:
+  For retrieving all or one single <strong>header</strong> parameter. If <code>$header</code> is null,
+  all header parameters will be returned.</p>
+</li>
+<li>
+<p><code>fromPost(string $param = null, mixed $default = null) : mixed</code>: For
+  retrieving all or one single <strong>post</strong> parameter. If <code>$param</code> is null, all post
+  parameters will be returned.</p>
+</li>
+<li>
+<p><code>fromQuery(string $param = null, mixed $default = null) : mixed</code>: For
+  retrieving all or one single <strong>query</strong> parameter. If <code>$param</code> is null, all
+  query parameters will be returned.</p>
+</li>
+<li>
+<p><code>fromRoute(string $param = null, mixed $default = null) : mixed</code>: For
+  retrieving all or one single <strong>route</strong> parameter. If <code>$param</code> is null, all
+  route parameters will be returned.</p>
+</li>
+</ul>
+<p>The plugin also implements the <code>__invoke</code> magic method, providing a shortcut
+for invoking the <code>fromRoute</code> method:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>$this-&gt;params()-&gt;fromRoute(&#39;param&#39;, $default);</span>
+<span class=x>// or</span>
+<span class=x>$this-&gt;params(&#39;param&#39;, $default);</span>
+</pre></div></p>
+<h2 id="redirect-plugin">Redirect Plugin</h2>
+<p>Redirections are quite common operations within applications. If done manually,
+you will need to do the following steps:</p>
+<ul>
+<li>Assemble a url using the router.</li>
+<li>Create and inject a "Location" header into the <code>Response</code> object, pointing to
+  the assembled URL.</li>
+<li>Set the status code of the <code>Response</code> object to one of the 3xx HTTP statuses.</li>
+</ul>
+<p>The <code>Redirect</code> plugin does this work for you. It offers three methods:</p>
+<ul>
+<li>
+<p><code>toRoute(string $route = null, array $params = array(), array $options = array(), boolean $reuseMatchedParams = false) : Laminas\Http\Response</code>:
+  Redirects to a named route, using the provided <code>$params</code> and <code>$options</code> to
+  assembled the URL.</p>
+</li>
+<li>
+<p><code>toUrl(string $url) : Laminas\Http\Response</code>: Simply redirects to the given URL.</p>
+</li>
+<li>
+<p><code>refresh() : Laminas\Http\Response</code>: Refresh to current route.</p>
+</li>
+</ul>
+<p>In each case, the <code>Response</code> object is returned. If you return this immediately,
+you can effectively short-circuit execution of the request.</p>
+<blockquote>
+<h3>Requires MvcEvent</h3>
+<p>This plugin requires that the controller invoking it implements
+<code>InjectApplicationEventInterface</code>, and thus has an <code>MvcEvent</code> composed, as it
+retrieves the router from the event object.</p>
+</blockquote>
+<p>As an example:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>return $this-&gt;redirect()-&gt;toRoute(&#39;login-success&#39;);</span>
+</pre></div></p>
+<h2 id="url-plugin">Url Plugin</h2>
+<p>You may need to generate URLs from route definitions within your controllers;
+for example, to seed the view, generate headers, etc. While the <code>MvcEvent</code>
+object composes the router, doing so manually would require this workflow:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>$router = $this-&gt;getEvent()-&gt;getRouter();</span>
+<span class=x>$url    = $router-&gt;assemble($params, [&#39;name&#39; =&gt; &#39;route-name&#39;]);</span>
+</pre></div></p>
+<p>The <code>Url</code> helper makes this slightly more convenient:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>$url = $this-&gt;url()-&gt;fromRoute(&#39;route-name&#39;, $params);</span>
+</pre></div></p>
+<p>The <code>fromRoute()</code> method is the only public method defined, and is used to
+generate a URL string from the provided parameters. It has the following
+signature:</p>
+<ul>
+<li><code>fromRoute(string $route = null, array $params = [], array $options = [], bool $reuseMatchedParams = false): string</code>, where:</li>
+<li><code>$name</code>: the name of the route to use for URL generation.</li>
+<li><code>$params</code>: Any parameter substitutions to use with the named route.</li>
+<li><code>$options</code>: Options used by the router when generating the URL (e.g., <code>force_canonical</code>, <code>query</code>, etc.).</li>
+<li><code>$reuseMatchedParams</code>: Whether or not to use route match parameters from the
+    current URL when generating the new URL. This will only affect cases where
+    the specified <code>$name</code> matches the currently matched route; the default is
+    <code>true</code>.</li>
+</ul>
+<blockquote>
+<h3>Requires MvcEvent</h3>
+<p>This plugin requires that the controller invoking it implements
+<code>InjectApplicationEventInterface</code>, and thus has an <code>MvcEvent</code> composed, as it
+retrieves the router from the event object.</p>
+</blockquote>
+
+
+
+
+    <nav>
+    <ul class="page-nav hidden-print">
+
+        
+        <li class="page-nav__item">
+            
+                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../controllers/">
+                    <i class="fa fa-chevron-left"></i> Previous
+                </a>
+            
+        </li>
+
+        
+        <li class="page-nav__item">
+            
+                <a rel="next" class="page-nav__link page-nav__link--next" href="../examples/">
+                    Next <i class="fa fa-chevron-right"></i>
+                </a>
+            
+        </li>
+    </ul>
+</nav>
+
+
+
+
+    <div class="help-wanted">
+        <p>
+            Found a mistake or want to contribute to the documentation?
+            <a href="https://github.com/laminas/laminas-mvc/edit/master/docs/book/plugins.md" target="_blank" class="help-wanted__link">
+                Edit this page on GitHub!
+            </a>
+        </p>
+    </div>
+
+                
+            </div>
+            <div class="col-md-3 col-sm-12 sidebar">
+                
+                    <div class="component-selector">
+    
+    <h5 class="component-selector__subtitle">Find documentation…</h5>
+    <select class="form-control component-selector__control">
+        <option value="/">Overview</option>
+        <optgroup label="Components"></optgroup>
+    </select>
+</div>
+                    
+    <div class="subnavigation hidden-print">
+        <h4 class="subnavigation__title">
+            <a href="..">laminas-mvc</a>
+        </h4>
+
+        <h5 class="subnavigation__subtitle">Table of Contents</h5>
+
+        <ul class="subnavigation__list">
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item ">
+                                <a href="../intro/" class="subnavigation__link">Introduction</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item ">
+                                <a href="../quick-start/" class="subnavigation__link">Quick Start</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item">
+                                <span class="subnavigation__headline">Reference</span>
+                                <ul class="subnavigation__list">
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../services/" class="subnavigation__link">Default Services</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../routing/" class="subnavigation__link">Routing</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../mvc-event/" class="subnavigation__link">The MVC Event</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../send-response-event/" class="subnavigation__link">The SendResponse Event</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../controllers/" class="subnavigation__link">Available Controllers</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item subnavigation__list-item--active">
+        <a href="./" class="subnavigation__link">Controller Plugins</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../examples/" class="subnavigation__link">Examples</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../middleware/" class="subnavigation__link">Dispatching PSR-7 Middleware</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item">
+        <span class="subnavigation__headline">Migration</span>
+        <ul class="subnavigation__list">
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../migration/" class="subnavigation__link">Migration Overview</a>
+    </li>
+
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../migration/to-v2-7/" class="subnavigation__link">v2.X to v2.7</a>
+    </li>
+
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../migration/to-v3-0/" class="subnavigation__link">v2.X to v3.0</a>
+    </li>
+
+            
+        </ul>
+    </li>
+
+                                    
+                                </ul>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item">
+                                <span class="subnavigation__headline">Cookbook</span>
+                                <ul class="subnavigation__list">
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../cookbook/automating-controller-factories/" class="subnavigation__link">Automating controller factories</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../cookbook/middleware-in-listeners/" class="subnavigation__link">Using middleware within event listeners</a>
+    </li>
+
+                                    
+                                </ul>
+                            </li>
+                        
+                    
+                
+            
+        </ul>
+    </div>
+
+                
+            </div>
+        </div>
+    </div>
+
+    
+    <footer class="footer">
+    <div class="container">
+
+        
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <a class="footer__button" href="#page-top"><i class="fa fa-chevron-up" aria-hidden="true"></i></a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-7 offset-md-2">
+                <h5>Laminas</h5>
+                <ul>
+                    <li>Laminas Project <a href="https://getlaminas.org/">Components and MVC for Enterprise Applications</a></li>
+                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 Middleware in Minutes</a></li>
+                    <li>Laminas API Tools: <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+
+            
+            <div class="col-md-4 offset-md-2">
+                <h4 class="footer__headline">Support</h4>
+                <ul class="support__list">
+                    <li class="support__list-item">
+                        <a href="https://discourse.laminas.dev" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://laminas.dev/chat" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://github.com/laminas" class="support__link" title="Github"><i class="fa fa-github"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://twitter.com/getlaminas" class="support__link" title="Twitter"><i class="fa fa-twitter"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://getlaminas.org/blog/feed-rss.xml" class="support__link" title="Blog feed"><i class="fa fa-rss"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://getlaminas.org/security/feed" class="support__link" title="Security feed"><i class="fa fa-rss-square"></i></a>
+                    </li>
+                </ul>
+            </div>
+
+            
+            <div class="col-md-3">
+                <h4 class="footer__headline">License</h4>
+                <p>
+                    Code licensed under <a
+                        href="https://github.com/laminas/laminas-mvc//blob/master/LICENSE.md">BSD 3-Clause</a>.
+                </p>
+            </div>
+
+            
+            <div class="col-md-3">
+                <h4 class="footer__headline">Copyright</h4>
+                <p>
+                    <!--Built with love by the Laminas team with the help of our
+                    <a href="https://github.com/laminas/laminas-mvc//graphs/contributors">contributors</a>.<br>-->
+                    &copy; 2019-2019 by <a href="https://getlaminas.org/">The Laminas Project</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script>
+        let base_url = '..',
+            project  = "mvc",
+            siteName = 'laminas-mvc';
+    </script>
+    <script src="/js/scripts.js"></script>
+        <script src="../search/main.js"></script>
+
+    
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Search</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search in laminas-mvc" id="mkdocs-search-query">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+
+</html>

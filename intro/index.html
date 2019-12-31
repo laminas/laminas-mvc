@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Laminas's event-driven MVC layer, including MVC Applications, Controllers, and Plugins.">  
+    <link rel="canonical" href="https://docs.laminas.dev/intro/">
+    <link rel="shortcut icon" href="/img/trademark-laminas-foundation-rgb.svg">
+
+    <title>Introduction - laminas-mvc - Laminas Docs</title>
+
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body id="page-top" class="mvc">
+
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        
+        <a class="logo-link navbar-brand offset-md-2" href="https://getlaminas.org/" data-tooltip data-placement="bottom" title="Go to the Laminas homepage">
+            <img src="../img/laminas-foundation-white.svg" height="28" alt="Lamnias">
+        </a>
+        <a class="navbar-title" href="https://docs.laminas.dev/" data-tooltip data-placement="bottom" title="Go to the Laminas Documentation">
+            Documentation
+        </a>
+
+        
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a href="https://getlaminas.org/about" class="nav-link">About</a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://getlaminas.org/blog" class="nav-link">Blog</a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://docs.laminas.dev" class="nav-link">All Docs</a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://getlaminas.org/participate" class="nav-link">Community</a>
+                </li>
+            </ul>
+
+            
+            
+                <div class="d-block d-sm-none">
+                    
+    <div class="subnavigation hidden-print">
+        <h4 class="subnavigation__title">
+            <a href="..">laminas-mvc</a>
+        </h4>
+
+        <h5 class="subnavigation__subtitle">Table of Contents</h5>
+
+        <ul class="subnavigation__list">
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item subnavigation__list-item--active">
+                                <a href="./" class="subnavigation__link">Introduction</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item ">
+                                <a href="../quick-start/" class="subnavigation__link">Quick Start</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item">
+                                <span class="subnavigation__headline">Reference</span>
+                                <ul class="subnavigation__list">
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../services/" class="subnavigation__link">Default Services</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../routing/" class="subnavigation__link">Routing</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../mvc-event/" class="subnavigation__link">The MVC Event</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../send-response-event/" class="subnavigation__link">The SendResponse Event</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../controllers/" class="subnavigation__link">Available Controllers</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../plugins/" class="subnavigation__link">Controller Plugins</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../examples/" class="subnavigation__link">Examples</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../middleware/" class="subnavigation__link">Dispatching PSR-7 Middleware</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item">
+        <span class="subnavigation__headline">Migration</span>
+        <ul class="subnavigation__list">
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../migration/" class="subnavigation__link">Migration Overview</a>
+    </li>
+
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../migration/to-v2-7/" class="subnavigation__link">v2.X to v2.7</a>
+    </li>
+
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../migration/to-v3-0/" class="subnavigation__link">v2.X to v3.0</a>
+    </li>
+
+            
+        </ul>
+    </li>
+
+                                    
+                                </ul>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item">
+                                <span class="subnavigation__headline">Cookbook</span>
+                                <ul class="subnavigation__list">
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../cookbook/automating-controller-factories/" class="subnavigation__link">Automating controller factories</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../cookbook/middleware-in-listeners/" class="subnavigation__link">Using middleware within event listeners</a>
+    </li>
+
+                                    
+                                </ul>
+                            </li>
+                        
+                    
+                
+            
+        </ul>
+    </div>
+
+                </div>
+            
+
+            
+            <div class="d-block d-sm-none">
+                <div class="component-selector">
+    
+    <h5 class="component-selector__subtitle">Find documentation…</h5>
+    <select class="form-control component-selector__control">
+        <option value="/">Overview</option>
+        <optgroup label="Components"></optgroup>
+    </select>
+</div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    
+    <header class="header">
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="col-6 offset-md-2">
+                <h1 class="header__title">
+                    Mvc
+
+                    
+                        <small class="header__subtitle">laminas-mvc</small>
+                    
+                </h1>
+            </div>
+
+            
+            <div class="col-4 text-sm-right">
+                
+                    
+
+                    <a href="#" class="header__link header__link--search" data-toggle="modal" data-target="#mkdocs_search_modal" title="Open search">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                    <a href="https://github.com/laminas/laminas-mvc/" class="header__link header__link--github" title="Go to repository of laminas-mvc">
+                        <i class="fa fa-github"></i> GitHub
+                    </a>
+                
+            </div>
+        </div>
+    </div>
+</header>
+
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2 col-sm-12">
+                
+    
+
+    
+    
+        <div class="toc">
+            <h6 class="toc__headline">On this page</h6>
+            <ul class="toc__list">
+                
+                    <li class="toc__entry">
+                        <a href="#basic-application-structure" class="toc__link">Basic Application Structure</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#basic-module-structure" class="toc__link">Basic Module Structure</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#bootstrapping-an-application" class="toc__link">Bootstrapping an Application</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#bootstrapping-a-modular-application" class="toc__link">Bootstrapping a Modular Application</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#conclusion" class="toc__link">Conclusion</a>
+                    </li>
+                
+            </ul>
+        </div>
+    
+
+            </div>
+            <div class="col-md-7 col-sm-12 content" role="main" data-spy="scroll" data-target=".toc">
+                
+                    <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        
+            <li class="breadcrumb-item"><a href="">Overview</a></li>
+
+            
+                <li class="breadcrumb-item"><a href="..">laminas-mvc</a></li>
+
+                
+
+                <li class="breadcrumb-item active" aria-current="page">Introduction</li>
+            
+        
+    </ol>
+</nav>
+
+
+
+
+
+
+    
+    
+
+    <h1 id="introduction">Introduction</h1>
+<p>laminas-mvc is the MVC layer shipped with Laminas and above, and focuses
+on performance and flexibility.</p>
+<p>The MVC layer is built on top of the following components:</p>
+<ul>
+<li>laminas-servicemanager - laminas-mvc provides a set of default service definitions,
+  used to create and configure the application instance and workflow.</li>
+<li>laminas-eventmanager - The MVC is event driven, and uses events for the initial
+  bootstrapping of the application, for returning response and request calls,
+  for matching routes, and even for rendering views.</li>
+<li>laminas-http - specifically the request and response objects from the
+  <code>Laminas\Http\PhpEnvironment</code> namespace, which provide objects that ensure the
+  request is injected with the current environment (including query parameters,
+  POST parameters, HTTP headers, etc.), and that the response will interact
+  correctly with the SAPI and output buffering.</li>
+<li>laminas-stdlib - specifically <code>Laminas\Stdlib\DispatchableInterface</code>. All
+  "controllers" are simply dispatchable objects.</li>
+<li>laminas-router - provides routing of a request. In other
+  words, it matches the request to its respective controller (or dispatchable).</li>
+</ul>
+<p>Within the MVC layer, several sub-components are exposed:</p>
+<ul>
+<li><code>Laminas\Mvc\Controller</code>, a set of abstract "controller" classes with basic
+  responsibilities such as event wiring, action dispatching, etc., as well as
+  controller plugins.</li>
+<li><code>Laminas\Mvc\Service</code> provides a set of laminas-servicemanager factories and
+  definitions for the default application workflow.</li>
+<li><code>Laminas\Mvc\View</code> provides default wiring for renderer selection, view script
+  resolution, helper registration, and more; additionally, it provides a
+  number of listeners that tie into the MVC workflow, providing features such
+  as automated template name resolution, automated view model creation and
+  injection, etc.</li>
+</ul>
+<p>The gateway to the MVC is the <a href="https://github.com/laminas/laminas-mvc/blob/master/src/Application.php">Laminas\Mvc\Application</a>
+object (referred to as <code>Application</code> henceforth). Its primary responsibilities
+are to <strong>bootstrap</strong> resources, to <strong>route</strong> the request, and to retrieve and
+<strong>dispatch</strong> the controller matched during routing. Once accomplished, it will
+<strong>render</strong> the view, and <strong>finish</strong> the request, returning and sending the
+response.</p>
+<h2 id="basic-application-structure">Basic Application Structure</h2>
+<p>The basic application structure follows:</p>
+<p> <div class=codehilite><pre><span></span>application_root/
+    config/
+        application.config.php
+        autoload/
+            global.php
+            local.php
+            // etc.
+    data/
+    module/
+    vendor/
+    public/
+        .htaccess
+        index.php
+    init_autoloader.php
+</pre></div></p>
+<p>The <code>public/index.php</code> script marshals all user requests to your website,
+retrieving an array of configuration from <code>config/application.config.php</code>. On
+return, it <code>run()</code>s the <code>Application</code>, processing the request and returning a
+response to the user.</p>
+<p>The <code>config</code> directory as described above contains configuration used by
+laminas-modulemanager to load modules and merge configuration (e.g., database
+configuration and credentials); we will detail this more later.</p>
+<p>The <code>vendor</code> sub-directory should contain any third-party modules or libraries
+on which your application depends. This might include Laminas, custom
+libraries from your organization, or other third-party libraries from other
+projects. Libraries and modules placed in the <code>vendor</code> sub-directory should not
+be modified from their original, distributed state.  Typically, this directory
+will be managed by <a href="https://getcomposer.org">Composer</a>.</p>
+<p>Finally, the <code>module</code> directory will contain one or more modules delivering your
+application's functionality.</p>
+<p>Let's now turn to modules, as they are the basic units of a web application.</p>
+<h2 id="basic-module-structure">Basic Module Structure</h2>
+<p>A module may contain anything: PHP code, including MVC functionality; library
+code; view scripts; and/or or public assets such as images, CSS, and JavaScript.
+The only requirement &mdash; and even this is optional &mdash; is that a module
+acts as a PHP namespace and that it contains a <code>Module</code> class under that
+namespace.  This class is eventually consumed by laminas-modulemanager to perform a
+number of tasks.</p>
+<p>The recommended module structure follows:</p>
+<p> <div class=codehilite><pre><span></span>module_root&lt;named-after-module-namespace&gt;/
+    Module.php
+    autoload_classmap.php
+    autoload_function.php
+    autoload_register.php
+    config/
+        module.config.php
+    public/
+        images/
+        css/
+        js/
+    src/
+        &lt;module_namespace&gt;/
+            &lt;code files&gt;
+    test/
+        phpunit.xml
+        bootstrap.php
+        &lt;module_namespace&gt;/
+            &lt;<span class=nb>test</span> code files&gt;
+    view/
+        &lt;dir-named-after-module-namespace&gt;/
+            &lt;dir-named-after-a-controller&gt;/
+                &lt;.phtml files&gt;
+</pre></div></p>
+<p>Since a module acts as a namespace, the module root directory should be that
+namespace. This namespace could also include a vendor prefix of sorts. As an
+example a module centered around "User" functionality delivered by Laminas might be
+named "LaminasUser", and this is also what the module root directory will be named.</p>
+<blockquote>
+<h3>Source and test code organization</h3>
+<p>The above details a <a href="http://www.php-fig.org/psr/psr-0/">PSR-0</a> structure for
+the source and test code directories. You can also use
+<a href="http://www.php-fig.org/psr/psr-4/">PSR-4</a> so long as you have setup
+autoloading correctly to do so.</p>
+</blockquote>
+<p>The <code>Module.php</code> file directly under the module root directory will be in the
+module namespace shown below.</p>
+<p> <div class=codehilite><pre><span></span><span class=x>namespace LaminasUser;</span>
+
+<span class=x>class Module</span>
+<span class=x>{</span>
+<span class=x>}</span>
+</pre></div></p>
+<blockquote>
+<h3>Module class location</h3>
+<p>If you have an autoloader defined, such as detailed later around the various
+<code>autoload_*.php</code> files or using Composer's <a href="https://getcomposer.org/doc/01-basic-usage.md#autoloading">autoloading features</a>,
+then your <code>Module.php</code> file can be co-located with your source code.</p>
+<p>Our current recommendation is to define autoloading for your
+application-specific modules via Composer.</p>
+</blockquote>
+<p>When an <code>init()</code> method is defined, this method will be triggered by a
+laminas-modulemanager listener when it loads the module class, and passed a
+<code>ModuleManager</code> instance by default. This allows you to perform tasks such as
+setting up module-specific event listeners. But be cautious, the <code>init()</code> method
+is called for <strong>every</strong> module on <strong>every</strong> page request and should <strong>only</strong> be
+used for performing <strong>lightweight</strong> tasks such as registering event listeners.
+Similarly, an <code>onBootstrap()</code> method (which accepts an <code>MvcEvent</code> instance) may
+be defined; it is also triggered for every page request, and should be used for
+lightweight tasks as well.</p>
+<p>The three <code>autoload_*.php</code> files are not required, but recommended if you are
+not using Composer to provide autoloading for your module. They provide the
+following:</p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>File</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>autoload_classmap.php</code></td>
+<td>Should return an array classmap of class name/filename pairs (with the filenames resolved via the <code>__DIR__</code> magic constant).</td>
+</tr>
+<tr>
+<td><code>autoload_function.php</code></td>
+<td>Should return a PHP callback that can be passed to <code>spl_autoload_register()</code>. Typically, this callback should utilize the map returned by <code>autoload_classmap.php.</code></td>
+</tr>
+<tr>
+<td><code>autoload_register.php</code></td>
+<td>should register a PHP callback (is typically returned by <code>autoload_function.php</code> with <code>spl_autoload_register()</code>.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The point of these three files is to provide reasonable default mechanisms for autoloading the
+classes contained in the module, thus providing a trivial way to consume the module without
+requiring laminas-modulemanager (e.g., for use outside a Laminas application).</p>
+<p>The <code>config</code> directory should contain any module-specific configuration. These
+files may be in any format laminas-config supports. We recommend naming the main
+configuration <code>module.config.&lt;format&gt;</code> (e.g., for PHP-based configuration,
+<code>module.config.php</code>). Typically, you will create configuration for the router as
+well as for the service manager.</p>
+<p>The <code>src</code> directory should be a <a href="http://www.php-fig.org/psr/psr-0/">PSR-0</a> or
+<a href="http://www.php-fig.org/psr/psr-4/">PSR-4</a> compliant directory structure with
+your module's source code.</p>
+<p>The <code>test</code> directory should contain your unit tests. Typically, these are written using
+<a href="http://phpunit.de">PHPUnit</a>.</p>
+<p>The <code>public</code> directory can be used for assets that you may want to expose in
+your application's document root. These might include images, CSS files,
+JavaScript files, etc. How these are exposed is left to the developer.</p>
+<p>The <code>view</code> directory contains view scripts related to your controllers.</p>
+<h2 id="bootstrapping-an-application">Bootstrapping an Application</h2>
+<p>The <code>Application</code> has seven basic dependencies.</p>
+<ul>
+<li><strong>configuration</strong>, usually an array or object implementing <code>Traversable</code>.</li>
+<li><strong>ServiceManager</strong> instance.</li>
+<li><strong>EventManager</strong> instance, which, by default, is pulled from the
+  <code>ServiceManager</code>, by the service name "EventManager".</li>
+<li><strong>SharedEventManager</strong> instance, which, by default, is pulled from the
+  <code>ServiceManager</code>, by the service name "SharedEventManager"; this is injected
+  into the <code>EventManager</code> instance, and then pushed into every new
+  <code>EventManager</code> instance created.</li>
+<li><strong>ModuleManager</strong> instance, which, by default, is pulled from the
+  <code>ServiceManager</code>, by the service name "ModuleManager".</li>
+<li><strong>Request</strong> instance, which, by default, is pulled from the <code>ServiceManager</code>,
+  by the service name "Request".</li>
+<li><strong>Response</strong> instance, which, by default, is pulled from the <code>ServiceManager</code>,
+  by the service name "Response".</li>
+</ul>
+<p>These may be satisfied at instantiation:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>use Laminas\EventManager\EventManager;</span>
+<span class=x>use Laminas\EventManager\SharedEventManager;</span>
+<span class=x>use Laminas\Http\PhpEnvironment;</span>
+<span class=x>use Laminas\ModuleManager\ModuleManager;</span>
+<span class=x>use Laminas\Mvc\Application;</span>
+<span class=x>use Laminas\ServiceManager\ServiceManager;</span>
+
+<span class=x>$config = include &#39;config/application.config.php&#39;;</span>
+
+<span class=x>$serviceManager = new ServiceManager();</span>
+<span class=x>$serviceManager-&gt;setService(&#39;SharedEventManager&#39;, new SharedEventManager());</span>
+<span class=x>$serviceManager-&gt;setService(&#39;ModuleManager&#39;, new ModuleManager($config));</span>
+<span class=x>$serviceManager-&gt;setService(&#39;Request&#39;, new PhpEnvironment\Request());</span>
+<span class=x>$serviceManager-&gt;setService(&#39;Response&#39;, new PhpEnvironment\Response());</span>
+<span class=x>$serviceManager-&gt;setFactory(&#39;EventManager&#39;, function ($serviceManager) {</span>
+<span class=x>    return new EventManager($serviceManager-&gt;get(&#39;SharedEventManager&#39;));</span>
+<span class=x>});</span>
+<span class=x>$serviceManager-&gt;setShared(&#39;EventManager&#39;, false);</span>
+
+<span class=x>$application = new Application($config, $serviceManager);</span>
+</pre></div></p>
+<p>Once you've done this, there are two additional actions you can take. The first is to "bootstrap"
+the application. In the default implementation, this does the following:</p>
+<ul>
+<li>Attaches the default route listener (<code>Laminas\Mvc\RouteListener</code>).</li>
+<li>Attaches the middleware dispatch listener (<code>Laminas\Mvc\MiddlewareListener</code>)
+  (v2.7.0 and up).</li>
+<li>Attaches the default dispatch listener (<code>Laminas\Mvc\DispatchListener</code>).</li>
+<li>Attaches the <code>ViewManager</code> listener (<code>Laminas\Mvc\View\ViewManager</code>).</li>
+<li>Creates the <code>MvcEvent</code>, and injects it with the application, request, and
+  response; it also retrieves the router (<code>Laminas\Router\Http\TreeRouteStack</code>)
+  at this time and attaches it to the event.</li>
+<li>Triggers the "bootstrap" event.</li>
+</ul>
+<p>If you do not want these actions, or want to provide alternatives, you can do so by extending the
+<code>Application</code> class and/or manually coding what actions you want to occur.</p>
+<p>The second action you can take with the configured <code>Application</code> is to <code>run()</code>
+it. Calling this method performs the following:</p>
+<ul>
+<li>it triggers the "route" event,</li>
+<li>followed by the "dispatch" event, and, depending on execution,</li>
+<li>the "render" event</li>
+</ul>
+<p>When done, it triggers the "finish" event, and then returns the response
+instance. If an error occurs during either the "route" or "dispatch" event, a
+"dispatch.error" event is triggered as well.</p>
+<p>This is a lot to remember in order to bootstrap the application; in fact, we haven't covered all the
+services available by default yet. You can greatly simplify things by using the default
+<code>ServiceManager</code> configuration shipped with the MVC.</p>
+<p> <div class=codehilite><pre><span></span><span class=x>use Laminas\Loader\AutoloaderFactory;</span>
+<span class=x>use Laminas\Mvc\Service\ServiceManagerConfig;</span>
+<span class=x>use Laminas\ServiceManager\ServiceManager;</span>
+
+<span class=x>// setup autoloader</span>
+<span class=x>AutoloaderFactory::factory();</span>
+
+<span class=x>// get application stack configuration</span>
+<span class=x>$configuration = include &#39;config/application.config.php&#39;;</span>
+
+<span class=x>// setup service manager</span>
+<span class=x>$serviceManager = new ServiceManager(new ServiceManagerConfig());</span>
+<span class=x>$serviceManager-&gt;setService(&#39;ApplicationConfig&#39;, $configuration);</span>
+
+<span class=x>// load modules -- which will provide services, configuration, and more</span>
+<span class=x>$serviceManager-&gt;get(&#39;ModuleManager&#39;)-&gt;loadModules();</span>
+
+<span class=x>// bootstrap and run application</span>
+<span class=x>$application = $serviceManager-&gt;get(&#39;Application&#39;);</span>
+<span class=x>$application-&gt;bootstrap();</span>
+<span class=x>$application-&gt;run();</span>
+</pre></div></p>
+<p>You can make this even simpler by using the <code>init()</code> method of the
+<code>Application</code>. This is a static method for quick and easy initialization of the
+<code>Application</code> instance.</p>
+<p> <div class=codehilite><pre><span></span><span class=x>use Laminas\Loader\AutoloaderFactory;</span>
+<span class=x>use Laminas\Mvc\Application;</span>
+<span class=x>use Laminas\Mvc\Service\ServiceManagerConfig;</span>
+<span class=x>use Laminas\ServiceManager\ServiceManager;</span>
+
+<span class=x>// setup autoloader</span>
+<span class=x>AutoloaderFactory::factory();</span>
+
+<span class=x>// get application stack configuration</span>
+<span class=x>$configuration = include &#39;config/application.config.php&#39;;</span>
+
+<span class=x>// The init() method does something very similar with the previous example.</span>
+<span class=x>Application::init($configuration)-&gt;run();</span>
+</pre></div></p>
+<p>The <code>init()</code> does the following:</p>
+<ul>
+<li>Grabs the application configuration and pulls from the <code>service_manager</code> key,
+  creating a <code>ServiceManager</code> instance with it and with the default services
+  shipped with laminas-mvc;</li>
+<li>Creates a service named <code>ApplicationConfig</code> with the application configuration array;</li>
+<li>Grabs the <code>ModuleManager</code> service and loads the modules;</li>
+<li><code>bootstrap()</code>s the <code>Application</code> and returns its instance.</li>
+</ul>
+<blockquote>
+<h3>ApplicationConfig service</h3>
+<p>If you use the <code>init()</code> method, you cannot specify a service with the name of
+'ApplicationConfig' in your service manager config. This name is reserved to
+hold the array from <code>application.config.php</code>.  The following services can only
+be overridden from <code>application.config.php</code>:</p>
+<ul>
+<li><code>ModuleManager</code></li>
+<li><code>SharedEventManager</code></li>
+<li><code>EventManager</code> and <code>Laminas\EventManager\EventManagerInterface</code></li>
+</ul>
+<p>All other services are configured after module loading, thus can be overridden
+by modules.</p>
+</blockquote>
+<p>You'll note that you have a great amount of control over the workflow. Using the
+<code>ServiceManager</code>, you have fine-grained control over what services are
+available, how they are instantiated, and what dependencies are injected into
+them. Using the <code>EventManager</code>'s priority system, you can intercept any of the
+application events ("bootstrap", "route", "dispatch", "dispatch.error",
+"render", and "finish") anywhere during execution, allowing you to craft your
+own application workflows as needed.</p>
+<h2 id="bootstrapping-a-modular-application">Bootstrapping a Modular Application</h2>
+<p>While the previous approach largely works, where does the configuration come
+from? When we create a modular application, the assumption will be that it's
+from the modules themselves. How do we get that information and aggregate it,
+then?</p>
+<p>The answer is via laminas-modulemanager. This component allows you to specify what
+modules the application will use; it then locates each module and initializes
+it. Module classes can tie into various listeners in order to provide
+configuration, services, listeners, and more to the application. Sounds
+complicated? It's not.</p>
+<h3>Configuring the Module Manager</h3>
+<p>The first step is configuring the module manager. Inform the module manager
+which modules to load, and potentially provide configuration for the module
+listeners.</p>
+<p>Remember the <code>application.config.php</code> from earlier? We're going to provide some
+configuration.</p>
+<p> <div class=codehilite><pre><span></span><span class=x>// config/application.config.php</span>
+<span class=x>return array(</span>
+<span class=x>    &#39;modules&#39; =&gt; array(</span>
+<span class=x>        /* ... */</span>
+<span class=x>    ),</span>
+<span class=x>    &#39;module_listener_options&#39; =&gt; array(</span>
+<span class=x>        &#39;module_paths&#39; =&gt; array(</span>
+<span class=x>            &#39;./module&#39;,</span>
+<span class=x>            &#39;./vendor&#39;,</span>
+<span class=x>        ),</span>
+<span class=x>    ),</span>
+<span class=x>);</span>
+</pre></div></p>
+<p>As we add modules to the system, we'll add items to the <code>modules</code> array.</p>
+<p>Each <code>Module</code> class that has configuration it wants the <code>Application</code> to know
+about should define a <code>getConfig()</code> method. That method should return an array
+or <code>Traversable</code> object such as a <code>Laminas\Config\Config</code> instance. As an example:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>namespace LaminasUser;</span>
+
+<span class=x>class Module</span>
+<span class=x>{</span>
+<span class=x>    public function getConfig()</span>
+<span class=x>    {</span>
+<span class=x>        return include __DIR__ . &#39;/config/module.config.php&#39;</span>
+<span class=x>    }</span>
+<span class=x>}</span>
+</pre></div></p>
+<p>There are a number of other methods you can define for tasks ranging from
+providing autoloader configuration, to providing services to the
+<code>ServiceManager</code>, to listening to the bootstrap event.  The
+<a href="https://docs.laminas.dev/laminas-modulemanager/">ModuleManager documentation</a>
+goes into more detail on these.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>laminas-mvc is incredibly flexible, offering an opt-in, easy to create modular
+infrastructure, as well as the ability to craft your own application workflows
+via the <code>ServiceManager</code> and <code>EventManager</code>. The <code>ModuleManager</code> is a
+lightweight and simple approach to enforcing a modular architecture that
+encourages clean separation of concerns and code re-use.</p>
+
+
+
+
+    <nav>
+    <ul class="page-nav hidden-print">
+
+        
+        <li class="page-nav__item">
+            
+                <a rel="prev" class="page-nav__link page-nav__link--prev" href="..">
+                    <i class="fa fa-chevron-left"></i> Previous
+                </a>
+            
+        </li>
+
+        
+        <li class="page-nav__item">
+            
+                <a rel="next" class="page-nav__link page-nav__link--next" href="../quick-start/">
+                    Next <i class="fa fa-chevron-right"></i>
+                </a>
+            
+        </li>
+    </ul>
+</nav>
+
+
+
+
+    <div class="help-wanted">
+        <p>
+            Found a mistake or want to contribute to the documentation?
+            <a href="https://github.com/laminas/laminas-mvc/edit/master/docs/book/intro.md" target="_blank" class="help-wanted__link">
+                Edit this page on GitHub!
+            </a>
+        </p>
+    </div>
+
+                
+            </div>
+            <div class="col-md-3 col-sm-12 sidebar">
+                
+                    <div class="component-selector">
+    
+    <h5 class="component-selector__subtitle">Find documentation…</h5>
+    <select class="form-control component-selector__control">
+        <option value="/">Overview</option>
+        <optgroup label="Components"></optgroup>
+    </select>
+</div>
+                    
+    <div class="subnavigation hidden-print">
+        <h4 class="subnavigation__title">
+            <a href="..">laminas-mvc</a>
+        </h4>
+
+        <h5 class="subnavigation__subtitle">Table of Contents</h5>
+
+        <ul class="subnavigation__list">
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item subnavigation__list-item--active">
+                                <a href="./" class="subnavigation__link">Introduction</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item ">
+                                <a href="../quick-start/" class="subnavigation__link">Quick Start</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item">
+                                <span class="subnavigation__headline">Reference</span>
+                                <ul class="subnavigation__list">
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../services/" class="subnavigation__link">Default Services</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../routing/" class="subnavigation__link">Routing</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../mvc-event/" class="subnavigation__link">The MVC Event</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../send-response-event/" class="subnavigation__link">The SendResponse Event</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../controllers/" class="subnavigation__link">Available Controllers</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../plugins/" class="subnavigation__link">Controller Plugins</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../examples/" class="subnavigation__link">Examples</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../middleware/" class="subnavigation__link">Dispatching PSR-7 Middleware</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item">
+        <span class="subnavigation__headline">Migration</span>
+        <ul class="subnavigation__list">
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../migration/" class="subnavigation__link">Migration Overview</a>
+    </li>
+
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../migration/to-v2-7/" class="subnavigation__link">v2.X to v2.7</a>
+    </li>
+
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../migration/to-v3-0/" class="subnavigation__link">v2.X to v3.0</a>
+    </li>
+
+            
+        </ul>
+    </li>
+
+                                    
+                                </ul>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item">
+                                <span class="subnavigation__headline">Cookbook</span>
+                                <ul class="subnavigation__list">
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../cookbook/automating-controller-factories/" class="subnavigation__link">Automating controller factories</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../cookbook/middleware-in-listeners/" class="subnavigation__link">Using middleware within event listeners</a>
+    </li>
+
+                                    
+                                </ul>
+                            </li>
+                        
+                    
+                
+            
+        </ul>
+    </div>
+
+                
+            </div>
+        </div>
+    </div>
+
+    
+    <footer class="footer">
+    <div class="container">
+
+        
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <a class="footer__button" href="#page-top"><i class="fa fa-chevron-up" aria-hidden="true"></i></a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-7 offset-md-2">
+                <h5>Laminas</h5>
+                <ul>
+                    <li>Laminas Project <a href="https://getlaminas.org/">Components and MVC for Enterprise Applications</a></li>
+                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 Middleware in Minutes</a></li>
+                    <li>Laminas API Tools: <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+
+            
+            <div class="col-md-4 offset-md-2">
+                <h4 class="footer__headline">Support</h4>
+                <ul class="support__list">
+                    <li class="support__list-item">
+                        <a href="https://discourse.laminas.dev" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://laminas.dev/chat" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://github.com/laminas" class="support__link" title="Github"><i class="fa fa-github"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://twitter.com/getlaminas" class="support__link" title="Twitter"><i class="fa fa-twitter"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://getlaminas.org/blog/feed-rss.xml" class="support__link" title="Blog feed"><i class="fa fa-rss"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://getlaminas.org/security/feed" class="support__link" title="Security feed"><i class="fa fa-rss-square"></i></a>
+                    </li>
+                </ul>
+            </div>
+
+            
+            <div class="col-md-3">
+                <h4 class="footer__headline">License</h4>
+                <p>
+                    Code licensed under <a
+                        href="https://github.com/laminas/laminas-mvc//blob/master/LICENSE.md">BSD 3-Clause</a>.
+                </p>
+            </div>
+
+            
+            <div class="col-md-3">
+                <h4 class="footer__headline">Copyright</h4>
+                <p>
+                    <!--Built with love by the Laminas team with the help of our
+                    <a href="https://github.com/laminas/laminas-mvc//graphs/contributors">contributors</a>.<br>-->
+                    &copy; 2019-2019 by <a href="https://getlaminas.org/">The Laminas Project</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script>
+        let base_url = '..',
+            project  = "mvc",
+            siteName = 'laminas-mvc';
+    </script>
+    <script src="/js/scripts.js"></script>
+        <script src="../search/main.js"></script>
+
+    
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Search</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search in laminas-mvc" id="mkdocs-search-query">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+
+</html>
