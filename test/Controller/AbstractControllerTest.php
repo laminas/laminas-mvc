@@ -1,24 +1,23 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Controller;
+namespace LaminasTest\Mvc\Controller;
 
 use PHPUnit_Framework_TestCase as TestCase;
 use ReflectionProperty;
 
 /**
- * @covers \Zend\Mvc\Controller\AbstractController
+ * @covers \Laminas\Mvc\Controller\AbstractController
  */
 class AbstractControllerTest extends TestCase
 {
     /**
-     * @var \Zend\Mvc\Controller\AbstractController|\PHPUnit_Framework_MockObject_MockObject
+     * @var \Laminas\Mvc\Controller\AbstractController|\PHPUnit_Framework_MockObject_MockObject
      */
     private $controller;
 
@@ -27,7 +26,7 @@ class AbstractControllerTest extends TestCase
      */
     protected function setUp()
     {
-        $this->controller = $this->getMockForAbstractClass('Zend\\Mvc\\Controller\\AbstractController');
+        $this->controller = $this->getMockForAbstractClass('Laminas\\Mvc\\Controller\\AbstractController');
     }
 
     /**
@@ -35,8 +34,8 @@ class AbstractControllerTest extends TestCase
      */
     public function testSetEventManagerWithDefaultIdentifiers()
     {
-        /* @var $eventManager \Zend\EventManager\EventManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $eventManager = $this->getMock('Zend\\EventManager\\EventManagerInterface');
+        /* @var $eventManager \Laminas\EventManager\EventManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $eventManager = $this->getMock('Laminas\\EventManager\\EventManagerInterface');
 
         $eventManager
             ->expects($this->once())
@@ -51,8 +50,8 @@ class AbstractControllerTest extends TestCase
      */
     public function testSetEventManagerWithCustomStringIdentifier()
     {
-        /* @var $eventManager \Zend\EventManager\EventManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $eventManager = $this->getMock('Zend\\EventManager\\EventManagerInterface');
+        /* @var $eventManager \Laminas\EventManager\EventManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $eventManager = $this->getMock('Laminas\\EventManager\\EventManagerInterface');
 
         $eventManager->expects($this->once())->method('setIdentifiers')->with($this->contains('customEventIdentifier'));
 
@@ -69,8 +68,8 @@ class AbstractControllerTest extends TestCase
      */
     public function testSetEventManagerWithMultipleCustomStringIdentifier()
     {
-        /* @var $eventManager \Zend\EventManager\EventManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $eventManager = $this->getMock('Zend\\EventManager\\EventManagerInterface');
+        /* @var $eventManager \Laminas\EventManager\EventManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $eventManager = $this->getMock('Laminas\\EventManager\\EventManagerInterface');
 
         $eventManager->expects($this->once())->method('setIdentifiers')->with($this->logicalAnd(
             $this->contains('customEventIdentifier1'),
@@ -90,16 +89,16 @@ class AbstractControllerTest extends TestCase
      */
     public function testSetEventManagerWithDefaultIdentifiersIncludesImplementedInterfaces()
     {
-        /* @var $eventManager \Zend\EventManager\EventManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $eventManager = $this->getMock('Zend\\EventManager\\EventManagerInterface');
+        /* @var $eventManager \Laminas\EventManager\EventManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $eventManager = $this->getMock('Laminas\\EventManager\\EventManagerInterface');
 
         $eventManager
             ->expects($this->once())
             ->method('setIdentifiers')
             ->with($this->logicalAnd(
-                $this->contains('Zend\\EventManager\\EventManagerAwareInterface'),
-                $this->contains('Zend\\Stdlib\\DispatchableInterface'),
-                $this->contains('Zend\\Mvc\\InjectApplicationEventInterface')
+                $this->contains('Laminas\\EventManager\\EventManagerAwareInterface'),
+                $this->contains('Laminas\\Stdlib\\DispatchableInterface'),
+                $this->contains('Laminas\\Mvc\\InjectApplicationEventInterface')
             ));
 
         $this->controller->setEventManager($eventManager);

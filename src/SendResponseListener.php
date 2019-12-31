@@ -1,23 +1,22 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc;
+namespace Laminas\Mvc;
 
-use Zend\EventManager\AbstractListenerAggregate;
-use Zend\EventManager\EventManager;
-use Zend\EventManager\EventManagerAwareInterface;
-use Zend\EventManager\EventManagerInterface;
-use Zend\Mvc\ResponseSender\HttpResponseSender;
-use Zend\Mvc\ResponseSender\PhpEnvironmentResponseSender;
-use Zend\Mvc\ResponseSender\SendResponseEvent;
-use Zend\Mvc\ResponseSender\SimpleStreamResponseSender;
-use Zend\Stdlib\ResponseInterface as Response;
+use Laminas\EventManager\AbstractListenerAggregate;
+use Laminas\EventManager\EventManager;
+use Laminas\EventManager\EventManagerAwareInterface;
+use Laminas\EventManager\EventManagerInterface;
+use Laminas\Mvc\ResponseSender\HttpResponseSender;
+use Laminas\Mvc\ResponseSender\PhpEnvironmentResponseSender;
+use Laminas\Mvc\ResponseSender\SendResponseEvent;
+use Laminas\Mvc\ResponseSender\SimpleStreamResponseSender;
+use Laminas\Stdlib\ResponseInterface as Response;
 
 class SendResponseListener extends AbstractListenerAggregate implements
     EventManagerAwareInterface
