@@ -1,26 +1,25 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Service;
+namespace LaminasTest\Mvc\Service;
 
 use ArrayObject;
+use Laminas\Mvc\Exception;
+use Laminas\Mvc\Service\ControllerLoaderFactory;
+use Laminas\Mvc\Service\ControllerPluginManagerFactory;
+use Laminas\Mvc\Service\DiAbstractServiceFactoryFactory;
+use Laminas\Mvc\Service\DiFactory;
+use Laminas\Mvc\Service\DiServiceInitializerFactory;
+use Laminas\Mvc\Service\DiStrictAbstractServiceFactoryFactory;
+use Laminas\Mvc\Service\EventManagerFactory;
+use Laminas\ServiceManager\Config;
+use Laminas\ServiceManager\ServiceManager;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Mvc\Service\ControllerLoaderFactory;
-use Zend\Mvc\Service\ControllerPluginManagerFactory;
-use Zend\Mvc\Service\DiFactory;
-use Zend\Mvc\Service\DiStrictAbstractServiceFactoryFactory;
-use Zend\Mvc\Service\DiAbstractServiceFactoryFactory;
-use Zend\Mvc\Service\DiServiceInitializerFactory;
-use Zend\Mvc\Service\EventManagerFactory;
-use Zend\ServiceManager\Config;
-use Zend\ServiceManager\ServiceManager;
-use Zend\Mvc\Exception;
 
 class ControllerLoaderFactoryTest extends TestCase
 {
@@ -30,7 +29,7 @@ class ControllerLoaderFactoryTest extends TestCase
     protected $services;
 
     /**
-     * @var \Zend\Mvc\Controller\ControllerManager
+     * @var \Laminas\Mvc\Controller\ControllerManager
      */
     protected $loader;
 
@@ -39,7 +38,7 @@ class ControllerLoaderFactoryTest extends TestCase
         $loaderFactory  = new ControllerLoaderFactory();
         $config         = new ArrayObject(array('di' => array()));
         $this->services = new ServiceManager();
-        $this->services->setService('Zend\ServiceManager\ServiceLocatorInterface', $this->services);
+        $this->services->setService('Laminas\ServiceManager\ServiceLocatorInterface', $this->services);
         $this->services->setFactory('ControllerLoader', $loaderFactory);
         $this->services->setService('Config', $config);
         $this->services->setFactory('ControllerPluginManager', new ControllerPluginManagerFactory());
@@ -48,7 +47,7 @@ class ControllerLoaderFactoryTest extends TestCase
         $this->services->setFactory('DiAbstractServiceFactory', new DiAbstractServiceFactoryFactory());
         $this->services->setFactory('DiServiceInitializer', new DiServiceInitializerFactory());
         $this->services->setFactory('EventManager', new EventManagerFactory());
-        $this->services->setInvokableClass('SharedEventManager', 'Zend\EventManager\SharedEventManager');
+        $this->services->setInvokableClass('SharedEventManager', 'Laminas\EventManager\SharedEventManager');
     }
 
     public function testCannotLoadInvalidDispatchable()
@@ -56,10 +55,10 @@ class ControllerLoaderFactoryTest extends TestCase
         $this->loader = $this->services->get('ControllerLoader');
 
         // Ensure the class exists and can be autoloaded
-        $this->assertTrue(class_exists('ZendTest\Mvc\Service\TestAsset\InvalidDispatchableClass'));
+        $this->assertTrue(class_exists('LaminasTest\Mvc\Service\TestAsset\InvalidDispatchableClass'));
 
         try {
-            $this->loader->get('ZendTest\Mvc\Service\TestAsset\InvalidDispatchableClass');
+            $this->loader->get('LaminasTest\Mvc\Service\TestAsset\InvalidDispatchableClass');
             $this->fail('Retrieving the invalid dispatchable should fail');
         } catch (\Exception $e) {
             do {
@@ -73,7 +72,7 @@ class ControllerLoaderFactoryTest extends TestCase
         $this->loader = $this->services->get('ControllerLoader');
         $this->services->setService('foo', $this);
 
-        $this->setExpectedException('Zend\ServiceManager\Exception\ExceptionInterface');
+        $this->setExpectedException('Laminas\ServiceManager\Exception\ExceptionInterface');
         $this->loader->get('foo');
     }
 
@@ -82,14 +81,14 @@ class ControllerLoaderFactoryTest extends TestCase
         $this->loader = $this->services->get('ControllerLoader');
         $config = array(
             'invokables' => array(
-                'ZendTest\Dispatchable' => 'ZendTest\Mvc\Service\TestAsset\Dispatchable',
+                'LaminasTest\Dispatchable' => 'LaminasTest\Mvc\Service\TestAsset\Dispatchable',
             ),
         );
         $config = new Config($config);
         $config->configureServiceManager($this->loader);
 
-        $controller = $this->loader->get('ZendTest\Dispatchable');
-        $this->assertInstanceOf('ZendTest\Mvc\Service\TestAsset\Dispatchable', $controller);
+        $controller = $this->loader->get('LaminasTest\Dispatchable');
+        $this->assertInstanceOf('LaminasTest\Mvc\Service\TestAsset\Dispatchable', $controller);
         $this->assertSame($this->services, $controller->getServiceLocator());
         $this->assertSame($this->services->get('EventManager'), $controller->getEventManager());
         $this->assertSame($this->services->get('ControllerPluginManager'), $controller->getPluginManager());
@@ -115,7 +114,7 @@ class ControllerLoaderFactoryTest extends TestCase
 
         $this->assertTrue($this->loader->has('my-controller'));
         // invalid controller exception (because we're getting an \stdClass after all)
-        $this->setExpectedException('Zend\Mvc\Exception\InvalidControllerException');
+        $this->setExpectedException('Laminas\Mvc\Exception\InvalidControllerException');
         $this->loader->get('my-controller');
     }
 
@@ -136,7 +135,7 @@ class ControllerLoaderFactoryTest extends TestCase
         $this->services->setAllowOverride(true);
         $this->services->setService('Config', $config);
         $this->loader = $this->services->get('ControllerLoader');
-        $this->setExpectedException('Zend\ServiceManager\Exception\ServiceNotFoundException');
+        $this->setExpectedException('Laminas\ServiceManager\Exception\ServiceNotFoundException');
         $this->loader->get('evil-controller');
     }
 
@@ -164,7 +163,7 @@ class ControllerLoaderFactoryTest extends TestCase
 
         $testService = new \stdClass();
         $this->services->setService('stdClass', $testService);
-        // invalid controller exception (because we're not getting a \Zend\Stdlib\DispatchableInterface after all)
+        // invalid controller exception (because we're not getting a \Laminas\Stdlib\DispatchableInterface after all)
         $controller = $this->loader->get($controllerName);
         $this->assertSame($testService, $controller->injectedValue);
     }
@@ -172,9 +171,9 @@ class ControllerLoaderFactoryTest extends TestCase
     public function testCallPluginWithControllerPluginManager()
     {
         $controllerpluginManager = $this->services->get('ControllerPluginManager');
-        $controllerpluginManager->setInvokableClass('samplePlugin', 'ZendTest\Mvc\Controller\Plugin\TestAsset\SamplePlugin');
+        $controllerpluginManager->setInvokableClass('samplePlugin', 'LaminasTest\Mvc\Controller\Plugin\TestAsset\SamplePlugin');
 
-        $controller    = new \ZendTest\Mvc\Controller\TestAsset\SampleController;
+        $controller    = new \LaminasTest\Mvc\Controller\TestAsset\SampleController;
         $controllerpluginManager->setController($controller);
 
         $plugin = $controllerpluginManager->get('samplePlugin');
