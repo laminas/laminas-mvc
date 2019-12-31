@@ -1,21 +1,19 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Mvc
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Controller\Plugin;
+namespace LaminasTest\Mvc\Controller\Plugin;
 
-use Zend\Mvc\Controller\Plugin\FlashMessenger;
-use ZendTest\Session\TestAsset\TestManager as SessionManager;
+use Laminas\Mvc\Controller\Plugin\FlashMessenger;
+use LaminasTest\Session\TestAsset\TestManager as SessionManager;
 
 /**
- * @category   Zend
- * @package    Zend_Mvc
+ * @category   Laminas
+ * @package    Laminas_Mvc
  * @subpackage UnitTests
  */
 class FlashMessengerTest extends \PHPUnit_Framework_TestCase
@@ -48,7 +46,7 @@ class FlashMessengerTest extends \PHPUnit_Framework_TestCase
     {
         $helper  = new FlashMessenger();
         $session = $helper->getSessionManager();
-        $this->assertInstanceOf('Zend\Session\SessionManager', $session);
+        $this->assertInstanceOf('Laminas\Session\SessionManager', $session);
     }
 
     public function testSessionManagerIsMutable()

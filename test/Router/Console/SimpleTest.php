@@ -1,10 +1,10 @@
 <?php
-namespace ZendTest\Mvc\Router\Console;
+namespace LaminasTest\Mvc\Router\Console;
 
+use Laminas\Console\Request as ConsoleRequest;
+use Laminas\Mvc\Router\Console\Simple;
+use LaminasTest\Mvc\Router\FactoryTester;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Console\Request as ConsoleRequest;
-use Zend\Mvc\Router\Console\Simple;
-use ZendTest\Mvc\Router\FactoryTester;
 
 class SimpleTestTest extends TestCase
 {
@@ -624,7 +624,7 @@ class SimpleTestTest extends TestCase
         if ($params === null) {
             $this->assertNull($match, "The route must not match");
         } else {
-            $this->assertInstanceOf('Zend\Mvc\Router\Console\RouteMatch', $match, "The route matches");
+            $this->assertInstanceOf('Laminas\Mvc\Router\Console\RouteMatch', $match, "The route matches");
 
             foreach ($params as $key => $value) {
                 $this->assertEquals(
@@ -685,7 +685,7 @@ class SimpleTestTest extends TestCase
     {
         $tester = new FactoryTester($this);
         $tester->testFactory(
-            'Zend\Mvc\Router\Http\Segment',
+            'Laminas\Mvc\Router\Http\Segment',
             array(
                 'route' => 'Missing "route" in options array'
             ),
@@ -706,7 +706,7 @@ class SimpleTestTest extends TestCase
         $route = new Simple('foo controller', array(), $defaults);
         $match = $route->match($request);
 
-        $this->assertInstanceOf('Zend\Mvc\Router\Console\RouteMatch', $match);
+        $this->assertInstanceOf('Laminas\Mvc\Router\Console\RouteMatch', $match);
         $this->assertEquals($defaults['controller'], $match->getParam('controller'));
     }
 }
