@@ -1,23 +1,24 @@
 <?php
+
 /**
- * @link      http://github.com/zendframework/zend-mvc for the canonical source repository
- * @copyright Copyright (c) 2016 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Service;
+namespace LaminasTest\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
+use Laminas\EventManager\EventManagerInterface;
+use Laminas\EventManager\SharedEventManagerInterface;
+use Laminas\Mvc\ResponseSender\HttpResponseSender;
+use Laminas\Mvc\ResponseSender\PhpEnvironmentResponseSender;
+use Laminas\Mvc\ResponseSender\SendResponseEvent;
+use Laminas\Mvc\ResponseSender\SimpleStreamResponseSender;
+use Laminas\Mvc\SendResponseListener;
+use Laminas\Mvc\Service\SendResponseListenerFactory;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
-use Zend\EventManager\EventManagerInterface;
-use Zend\EventManager\SharedEventManagerInterface;
-use Zend\Mvc\ResponseSender\HttpResponseSender;
-use Zend\Mvc\ResponseSender\PhpEnvironmentResponseSender;
-use Zend\Mvc\ResponseSender\SendResponseEvent;
-use Zend\Mvc\ResponseSender\SimpleStreamResponseSender;
-use Zend\Mvc\SendResponseListener;
-use Zend\Mvc\Service\SendResponseListenerFactory;
 
 class SendResponseListenerFactoryTest extends TestCase
 {

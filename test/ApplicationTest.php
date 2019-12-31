@@ -1,35 +1,34 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc;
+namespace LaminasTest\Mvc;
 
+use Laminas\EventManager\EventManager;
+use Laminas\EventManager\SharedEventManager;
+use Laminas\EventManager\Test\EventListenerIntrospectionTrait;
+use Laminas\Http\PhpEnvironment;
+use Laminas\Http\PhpEnvironment\Response;
+use Laminas\ModuleManager\Listener\ConfigListener;
+use Laminas\ModuleManager\ModuleEvent;
+use Laminas\Mvc\Application;
+use Laminas\Mvc\Controller\ControllerManager;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Mvc\Service\ServiceListenerFactory;
+use Laminas\Mvc\Service\ServiceManagerConfig;
+use Laminas\Router;
+use Laminas\ServiceManager\ServiceManager;
+use Laminas\Stdlib\ArrayUtils;
+use Laminas\Stdlib\ResponseInterface;
+use Laminas\View\Model\ViewModel;
 use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
 use ReflectionProperty;
 use stdClass;
-use Zend\EventManager\EventManager;
-use Zend\EventManager\SharedEventManager;
-use Zend\EventManager\Test\EventListenerIntrospectionTrait;
-use Zend\Http\PhpEnvironment;
-use Zend\Http\PhpEnvironment\Response;
-use Zend\ModuleManager\Listener\ConfigListener;
-use Zend\ModuleManager\ModuleEvent;
-use Zend\Mvc\Application;
-use Zend\Mvc\Controller\ControllerManager;
-use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Service\ServiceManagerConfig;
-use Zend\Mvc\Service\ServiceListenerFactory;
-use Zend\Router;
-use Zend\ServiceManager\ServiceManager;
-use Zend\Stdlib\ArrayUtils;
-use Zend\Stdlib\ResponseInterface;
-use Zend\View\Model\ViewModel;
 
 class ApplicationTest extends TestCase
 {
@@ -74,7 +73,7 @@ class ApplicationTest extends TestCase
                     'config' => [],
                     'ApplicationConfig' => [
                         'modules' => [
-                            'Zend\Router',
+                            'Laminas\Router',
                         ],
                         'module_listener_options' => [
                             'config_cache_enabled' => false,
@@ -427,7 +426,7 @@ class ApplicationTest extends TestCase
     }
 
     /**
-     * @group ZF2-171
+     * @group Laminas-171
      */
     public function testFinishShouldRunEvenIfRouteEventReturnsResponse()
     {
@@ -449,7 +448,7 @@ class ApplicationTest extends TestCase
     }
 
     /**
-     * @group ZF2-171
+     * @group Laminas-171
      */
     public function testFinishShouldRunEvenIfDispatchEventReturnsResponse()
     {

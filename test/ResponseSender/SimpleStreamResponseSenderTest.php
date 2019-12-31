@@ -1,19 +1,18 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\ResponseSender;
+namespace LaminasTest\Mvc\ResponseSender;
 
+use Laminas\Http\Response;
+use Laminas\Mvc\ResponseSender;
+use Laminas\Mvc\ResponseSender\SimpleStreamResponseSender;
+use Laminas\Stdlib;
 use PHPUnit\Framework\TestCase;
-use Zend\Http\Response;
-use Zend\Mvc\ResponseSender;
-use Zend\Mvc\ResponseSender\SimpleStreamResponseSender;
-use Zend\Stdlib;
 
 class SimpleStreamResponseSenderTest extends TestCase
 {

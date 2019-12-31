@@ -1,22 +1,21 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Service;
+namespace LaminasTest\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
+use Laminas\Mvc\Service\HttpMethodListenerFactory;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use Zend\Mvc\Service\HttpMethodListenerFactory;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * @covers Zend\Mvc\Service\HttpMethodListenerFactory
+ * @covers Laminas\Mvc\Service\HttpMethodListenerFactory
  */
 class HttpMethodListenerFactoryTest extends TestCase
 {

@@ -1,28 +1,27 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Service;
+namespace LaminasTest\Mvc\Service;
 
+use Laminas\EventManager\EventManager;
+use Laminas\EventManager\EventManagerAwareInterface;
+use Laminas\EventManager\SharedEventManagerInterface;
+use Laminas\Mvc\Controller\PluginManager;
+use Laminas\Mvc\Service\ServiceManagerConfig;
+use Laminas\ServiceManager\Factory\InvokableFactory;
+use Laminas\ServiceManager\ServiceManager;
+use LaminasTest\Mvc\Service\TestAsset\EventManagerAwareObject;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use stdClass;
-use Zend\EventManager\EventManager;
-use Zend\EventManager\EventManagerAwareInterface;
-use Zend\EventManager\SharedEventManagerInterface;
-use Zend\Mvc\Controller\PluginManager;
-use Zend\Mvc\Service\ServiceManagerConfig;
-use Zend\ServiceManager\Factory\InvokableFactory;
-use Zend\ServiceManager\ServiceManager;
-use ZendTest\Mvc\Service\TestAsset\EventManagerAwareObject;
 
 /**
- * @covers \Zend\Mvc\Service\ServiceManagerConfig
+ * @covers \Laminas\Mvc\Service\ServiceManagerConfig
  */
 class ServiceManagerConfigTest extends TestCase
 {

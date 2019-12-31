@@ -1,25 +1,24 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Controller\Plugin;
+namespace LaminasTest\Mvc\Controller\Plugin;
 
+use Laminas\Http\Response;
+use Laminas\Mvc\Controller\Plugin\Redirect as RedirectPlugin;
+use Laminas\Mvc\Exception\DomainException;
+use Laminas\Mvc\Exception\RuntimeException;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Router\Http\Literal as LiteralRoute;
+use Laminas\Router\Http\Segment as SegmentRoute;
+use Laminas\Router\RouteMatch;
+use Laminas\Router\SimpleRouteStack;
+use LaminasTest\Mvc\Controller\TestAsset\SampleController;
 use PHPUnit\Framework\TestCase;
-use Zend\Http\Response;
-use Zend\Mvc\Controller\Plugin\Redirect as RedirectPlugin;
-use Zend\Mvc\Exception\DomainException;
-use Zend\Mvc\Exception\RuntimeException;
-use Zend\Mvc\MvcEvent;
-use Zend\Router\Http\Literal as LiteralRoute;
-use Zend\Router\Http\Segment as SegmentRoute;
-use Zend\Router\RouteMatch;
-use Zend\Router\SimpleRouteStack;
-use ZendTest\Mvc\Controller\TestAsset\SampleController;
 
 class RedirectTest extends TestCase
 {
