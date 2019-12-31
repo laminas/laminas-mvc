@@ -1,22 +1,21 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc;
+namespace LaminasTest\Mvc;
 
+use Laminas\Mvc\Application;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Mvc\Router;
+use Laminas\Mvc\Service\ServiceListenerFactory;
+use Laminas\Mvc\Service\ServiceManagerConfig;
+use Laminas\ServiceManager\ServiceManager;
+use Laminas\Stdlib\ArrayUtils;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Mvc\Application;
-use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router;
-use Zend\Mvc\Service\ServiceManagerConfig;
-use Zend\Mvc\Service\ServiceListenerFactory;
-use Zend\ServiceManager\ServiceManager;
-use Zend\Stdlib\ArrayUtils;
 
 class DispatchListenerTest extends TestCase
 {
@@ -37,11 +36,11 @@ class DispatchListenerTest extends TestCase
             [
                 'allow_override' => true,
                 'invokables' => [
-                    'Request'              => 'Zend\Http\PhpEnvironment\Request',
-                    'Response'             => 'Zend\Http\PhpEnvironment\Response',
-                    'ViewManager'          => 'ZendTest\Mvc\TestAsset\MockViewManager',
-                    'SendResponseListener' => 'ZendTest\Mvc\TestAsset\MockSendResponseListener',
-                    'BootstrapListener'    => 'ZendTest\Mvc\TestAsset\StubBootstrapListener',
+                    'Request'              => 'Laminas\Http\PhpEnvironment\Request',
+                    'Response'             => 'Laminas\Http\PhpEnvironment\Response',
+                    'ViewManager'          => 'LaminasTest\Mvc\TestAsset\MockViewManager',
+                    'SendResponseListener' => 'LaminasTest\Mvc\TestAsset\MockSendResponseListener',
+                    'BootstrapListener'    => 'LaminasTest\Mvc\TestAsset\StubBootstrapListener',
                 ],
                 'aliases' => [
                     'Router'                 => 'HttpRouter',
@@ -84,7 +83,7 @@ class DispatchListenerTest extends TestCase
         $this->setupPathController();
 
         $controllerLoader = $this->serviceManager->get('ControllerLoader');
-        $controllerLoader->addAbstractFactory('ZendTest\Mvc\Controller\TestAsset\ControllerLoaderAbstractFactory');
+        $controllerLoader->addAbstractFactory('LaminasTest\Mvc\Controller\TestAsset\ControllerLoaderAbstractFactory');
 
         $log = [];
         $this->application->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) use (&$log) {
@@ -98,7 +97,7 @@ class DispatchListenerTest extends TestCase
         $return = $dispatchListener->onDispatch($event);
 
         $this->assertEmpty($log);
-        $this->assertInstanceOf('Zend\Http\PhpEnvironment\Response', $return);
+        $this->assertInstanceOf('Laminas\Http\PhpEnvironment\Response', $return);
         $this->assertSame(200, $return->getStatusCode());
     }
 
@@ -107,7 +106,7 @@ class DispatchListenerTest extends TestCase
         $this->setupPathController();
 
         $controllerLoader = $this->serviceManager->get('ControllerLoader');
-        $controllerLoader->addAbstractFactory('ZendTest\Mvc\Controller\TestAsset\UnlocatableControllerLoaderAbstractFactory');
+        $controllerLoader->addAbstractFactory('LaminasTest\Mvc\Controller\TestAsset\UnlocatableControllerLoaderAbstractFactory');
 
         $log = [];
         $this->application->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) use (&$log) {

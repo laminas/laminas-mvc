@@ -1,19 +1,18 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Service;
+namespace LaminasTest\Mvc\Service;
 
+use Laminas\Hydrator\HydratorPluginManager as LaminasHydratorManager;
+use Laminas\Mvc\Service\HydratorManagerFactory;
+use Laminas\ServiceManager\ServiceLocatorInterface;
+use Laminas\Stdlib\Hydrator\HydratorPluginManager;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Hydrator\HydratorPluginManager as ZendHydratorManager;
-use Zend\Mvc\Service\HydratorManagerFactory;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\Stdlib\Hydrator\HydratorPluginManager;
 
 class HydratorManagerFactoryTest extends TestCase
 {
@@ -24,16 +23,16 @@ class HydratorManagerFactoryTest extends TestCase
         $this->services->get('Config')->willReturn([]);
     }
 
-    public function testFactoryReturnsZendHydratorManagerInstance()
+    public function testFactoryReturnsLaminasHydratorManagerInstance()
     {
         $hydrators = $this->factory->createService($this->services->reveal());
-        $this->assertInstanceOf(ZendHydratorManager::class, $hydrators);
+        $this->assertInstanceOf(LaminasHydratorManager::class, $hydrators);
         return $hydrators;
     }
 
     /**
      * @todo Remove for 3.0
-     * @depends testFactoryReturnsZendHydratorManagerInstance
+     * @depends testFactoryReturnsLaminasHydratorManagerInstance
      */
     public function testFactoryReturnsStdlibHydratorManagerInstance($hydrators)
     {
