@@ -1,28 +1,26 @@
 <?php
 
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Controller\Plugin;
+namespace LaminasTest\Mvc\Controller\Plugin;
 
+use Laminas\Http\Request;
+use Laminas\Http\Response;
+use Laminas\Mvc\ModuleRouteListener;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Mvc\Router\Http\Literal as LiteralRoute;
+use Laminas\Mvc\Router\Http\Segment as SegmentRoute;
+use Laminas\Mvc\Router\Http\TreeRouteStack;
+use Laminas\Mvc\Router\RouteMatch;
+use Laminas\Mvc\Router\SimpleRouteStack;
+use Laminas\Stdlib\Parameters;
+use LaminasTest\Mvc\Controller\TestAsset\SampleController;
+use LaminasTest\Session\TestAsset\TestManager as SessionManager;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Http\Request;
-use Zend\Http\Response;
-use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router\Http\Literal as LiteralRoute;
-use Zend\Mvc\Router\Http\Segment as SegmentRoute;
-use Zend\Mvc\Router\RouteMatch;
-use Zend\Mvc\Router\SimpleRouteStack;
-use Zend\Mvc\Router\Http\TreeRouteStack;
-use Zend\Mvc\ModuleRouteListener;
-use Zend\Stdlib\Parameters;
-use ZendTest\Mvc\Controller\TestAsset\SampleController;
-use ZendTest\Session\TestAsset\TestManager as SessionManager;
 
 class PostRedirectGetTest extends TestCase
 {
@@ -37,7 +35,7 @@ class PostRedirectGetTest extends TestCase
         $router->addRoute('home', LiteralRoute::factory(array(
             'route'    => '/',
             'defaults' => array(
-                'controller' => 'ZendTest\Mvc\Controller\TestAsset\SampleController',
+                'controller' => 'LaminasTest\Mvc\Controller\TestAsset\SampleController',
             )
         )));
 
@@ -51,7 +49,7 @@ class PostRedirectGetTest extends TestCase
         $router->addRoute('ctl', SegmentRoute::factory(array(
             'route' => '/ctl/:controller',
             'defaults' => array(
-                '__NAMESPACE__' => 'ZendTest\Mvc\Controller\TestAsset',
+                '__NAMESPACE__' => 'LaminasTest\Mvc\Controller\TestAsset',
                 'controller' => 'sample'
             )
         )));
@@ -91,7 +89,7 @@ class PostRedirectGetTest extends TestCase
         $result         = $this->controller->dispatch($this->request, $this->response);
         $prgResultUrl   = $this->controller->prg('/test/getPage', true);
 
-        $this->assertInstanceOf('Zend\Http\Response', $prgResultUrl);
+        $this->assertInstanceOf('Laminas\Http\Response', $prgResultUrl);
         $this->assertTrue($prgResultUrl->getHeaders()->has('Location'));
         $this->assertEquals('/test/getPage', $prgResultUrl->getHeaders()->get('Location')->getUri());
         $this->assertEquals(303, $prgResultUrl->getStatusCode());
@@ -107,7 +105,7 @@ class PostRedirectGetTest extends TestCase
         $result         = $this->controller->dispatch($this->request, $this->response);
         $prgResultRoute = $this->controller->prg('home');
 
-        $this->assertInstanceOf('Zend\Http\Response', $prgResultRoute);
+        $this->assertInstanceOf('Laminas\Http\Response', $prgResultRoute);
         $this->assertTrue($prgResultRoute->getHeaders()->has('Location'));
         $this->assertEquals('/', $prgResultRoute->getHeaders()->get('Location')->getUri());
         $this->assertEquals(303, $prgResultRoute->getStatusCode());
@@ -124,7 +122,7 @@ class PostRedirectGetTest extends TestCase
         $result         = $this->controller->dispatch($this->request, $this->response);
         $prgResultRoute = $this->controller->prg('home');
 
-        $this->assertInstanceOf('Zend\Http\Response', $prgResultRoute);
+        $this->assertInstanceOf('Laminas\Http\Response', $prgResultRoute);
         $this->assertTrue($prgResultRoute->getHeaders()->has('Location'));
         $this->assertEquals('/', $prgResultRoute->getHeaders()->get('Location')->getUri());
         $this->assertEquals(303, $prgResultRoute->getStatusCode());
@@ -145,7 +143,7 @@ class PostRedirectGetTest extends TestCase
     }
 
     /**
-     * @expectedException Zend\Mvc\Exception\RuntimeException
+     * @expectedException Laminas\Mvc\Exception\RuntimeException
      */
     public function testThrowsExceptionOnRouteWithoutRouter()
     {
@@ -173,7 +171,7 @@ class PostRedirectGetTest extends TestCase
         $result         = $this->controller->dispatch($this->request, $this->response);
         $prgResultRoute = $this->controller->prg();
 
-        $this->assertInstanceOf('Zend\Http\Response', $prgResultRoute);
+        $this->assertInstanceOf('Laminas\Http\Response', $prgResultRoute);
         $this->assertTrue($prgResultRoute->getHeaders()->has('Location'));
         $this->assertEquals('/', $prgResultRoute->getHeaders()->get('Location')->getUri());
         $this->assertEquals(303, $prgResultRoute->getStatusCode());
@@ -191,7 +189,7 @@ class PostRedirectGetTest extends TestCase
         $this->controller->dispatch($this->request, $this->response);
         $prgResultRoute = $this->controller->prg();
 
-        $this->assertInstanceOf('Zend\Http\Response', $prgResultRoute);
+        $this->assertInstanceOf('Laminas\Http\Response', $prgResultRoute);
         $this->assertTrue($prgResultRoute->getHeaders()->has('Location'));
         $this->assertEquals('/foo/1', $prgResultRoute->getHeaders()->get('Location')->getUri());
         $this->assertEquals(303, $prgResultRoute->getStatusCode());
@@ -215,7 +213,7 @@ class PostRedirectGetTest extends TestCase
         $this->controller->dispatch($this->request, $this->response);
         $prgResultRoute = $this->controller->prg();
 
-        $this->assertInstanceOf('Zend\Http\Response', $prgResultRoute);
+        $this->assertInstanceOf('Laminas\Http\Response', $prgResultRoute);
         $this->assertTrue($prgResultRoute->getHeaders()->has('Location'));
         $this->assertEquals($expects, $prgResultRoute->getHeaders()->get('Location')->getUri(), 'expects to redirect for the same url');
         $this->assertEquals(303, $prgResultRoute->getStatusCode());
@@ -239,7 +237,7 @@ class PostRedirectGetTest extends TestCase
         $this->controller->dispatch($this->request, $this->response);
         $prgResultRoute = $this->controller->prg();
 
-        $this->assertInstanceOf('Zend\Http\Response', $prgResultRoute);
+        $this->assertInstanceOf('Laminas\Http\Response', $prgResultRoute);
         $this->assertTrue($prgResultRoute->getHeaders()->has('Location'));
         $this->assertEquals($expects . '?id=123', $prgResultRoute->getHeaders()->get('Location')->getUri(), 'expects to redirect for the same url');
         $this->assertEquals(303, $prgResultRoute->getStatusCode());

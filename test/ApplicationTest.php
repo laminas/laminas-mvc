@@ -1,26 +1,25 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc;
+namespace LaminasTest\Mvc;
 
 use ArrayObject;
+use Laminas\Http\PhpEnvironment\Response;
+use Laminas\Mvc\Application;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Mvc\Router;
+use Laminas\Mvc\Service\ServiceListenerFactory;
+use Laminas\Mvc\Service\ServiceManagerConfig;
+use Laminas\ServiceManager\ServiceManager;
+use Laminas\Stdlib\ArrayUtils;
 use PHPUnit_Framework_TestCase as TestCase;
 use ReflectionObject;
 use stdClass;
-use Zend\Http\PhpEnvironment\Response;
-use Zend\Mvc\Application;
-use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router;
-use Zend\Mvc\Service\ServiceManagerConfig;
-use Zend\Mvc\Service\ServiceListenerFactory;
-use Zend\ServiceManager\ServiceManager;
-use Zend\Stdlib\ArrayUtils;
 
 class ApplicationTest extends TestCase
 {
@@ -41,11 +40,11 @@ class ApplicationTest extends TestCase
             array(
                 'allow_override' => true,
                 'invokables' => array(
-                    'Request'              => 'Zend\Http\PhpEnvironment\Request',
-                    'Response'             => 'Zend\Http\PhpEnvironment\Response',
-                    'ViewManager'          => 'ZendTest\Mvc\TestAsset\MockViewManager',
-                    'SendResponseListener' => 'ZendTest\Mvc\TestAsset\MockSendResponseListener',
-                    'BootstrapListener'    => 'ZendTest\Mvc\TestAsset\StubBootstrapListener',
+                    'Request'              => 'Laminas\Http\PhpEnvironment\Request',
+                    'Response'             => 'Laminas\Http\PhpEnvironment\Response',
+                    'ViewManager'          => 'LaminasTest\Mvc\TestAsset\MockViewManager',
+                    'SendResponseListener' => 'LaminasTest\Mvc\TestAsset\MockSendResponseListener',
+                    'BootstrapListener'    => 'LaminasTest\Mvc\TestAsset\StubBootstrapListener',
                 ),
                 'aliases' => array(
                     'Router'                 => 'HttpRouter',
@@ -77,7 +76,7 @@ class ApplicationTest extends TestCase
                 continue;
             }
             $object = array_shift($callback);
-            if (!$object instanceof \Zend\ModuleManager\Listener\ConfigListener) {
+            if (!$object instanceof \Laminas\ModuleManager\Listener\ConfigListener) {
                 continue;
             }
             return $object;
@@ -101,7 +100,7 @@ class ApplicationTest extends TestCase
         $events       = $this->serviceManager->get('EventManager');
         $sharedEvents = $events->getSharedManager();
         $appEvents    = $this->application->getEventManager();
-        $this->assertInstanceOf('Zend\EventManager\EventManager', $appEvents);
+        $this->assertInstanceOf('Laminas\EventManager\EventManager', $appEvents);
         $this->assertNotSame($events, $appEvents);
         $this->assertSame($sharedEvents, $appEvents->getSharedManager());
     }
@@ -110,7 +109,7 @@ class ApplicationTest extends TestCase
     {
         $events      = $this->application->getEventManager();
         $identifiers = $events->getIdentifiers();
-        $expected    = array('Zend\Mvc\Application');
+        $expected    = array('Laminas\Mvc\Application');
         $this->assertEquals($expected, array_values($identifiers));
     }
 
@@ -205,7 +204,7 @@ class ApplicationTest extends TestCase
         $this->assertNull($this->application->getMvcEvent());
         $this->application->bootstrap();
         $event = $this->application->getMvcEvent();
-        $this->assertInstanceOf('Zend\Mvc\MvcEvent', $event);
+        $this->assertInstanceOf('Laminas\Mvc\MvcEvent', $event);
 
         $request  = $this->application->getRequest();
         $response = $this->application->getResponse();
@@ -302,7 +301,7 @@ class ApplicationTest extends TestCase
 
         $this->application->run();
         $this->assertArrayHasKey('route-match', $log);
-        $this->assertInstanceOf('Zend\Mvc\Router\RouteMatch', $log['route-match']);
+        $this->assertInstanceOf('Laminas\Mvc\Router\RouteMatch', $log['route-match']);
     }
 
     public function testAllowsReturningEarlyFromRouting()
@@ -337,7 +336,7 @@ class ApplicationTest extends TestCase
 
         $events  = $this->application->getEventManager()->getSharedManager();
         $storage = new ArrayObject();
-        $events->attach('ZendTest\Mvc\Controller\TestAsset\SampleController', MvcEvent::EVENT_DISPATCH, function ($e) use ($storage) {
+        $events->attach('LaminasTest\Mvc\Controller\TestAsset\SampleController', MvcEvent::EVENT_DISPATCH, function ($e) use ($storage) {
             $controller = $e->getTarget();
             $storage['locator'] = $controller->getServiceLocator();
             return $e->getResponse();
@@ -508,7 +507,7 @@ class ApplicationTest extends TestCase
     }
 
     /**
-     * @group ZF2-171
+     * @group Laminas-171
      */
     public function testFinishShouldRunEvenIfRouteEventReturnsResponse()
     {
@@ -530,7 +529,7 @@ class ApplicationTest extends TestCase
     }
 
     /**
-     * @group ZF2-171
+     * @group Laminas-171
      */
     public function testFinishShouldRunEvenIfDispatchEventReturnsResponse()
     {
@@ -564,21 +563,21 @@ class ApplicationTest extends TestCase
         });
 
         $this->application->run();
-        $this->assertContains('Zend\Mvc\Application', $response->getContent());
+        $this->assertContains('Laminas\Mvc\Application', $response->getContent());
     }
 
     public function testOnDispatchErrorEventPassedToTriggersShouldBeTheOriginalOne()
     {
         $this->setupPathController(false);
         $controllerLoader = $this->serviceManager->get('ControllerLoader');
-        $model = $this->getMock('Zend\View\Model\ViewModel');
+        $model = $this->getMock('Laminas\View\Model\ViewModel');
         $this->application->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) use ($model) {
             $e->setResult($model);
         });
 
         $this->application->run();
         $event = $this->application->getMvcEvent();
-        $this->assertInstanceOf('Zend\View\Model\ViewModel', $event->getResult());
+        $this->assertInstanceOf('Laminas\View\Model\ViewModel', $event->getResult());
     }
 
     /**
@@ -649,7 +648,7 @@ class ApplicationTest extends TestCase
     {
         $this->application->bootstrap();
 
-        $response     = $this->getMock('Zend\Stdlib\ResponseInterface');
+        $response     = $this->getMock('Laminas\Stdlib\ResponseInterface');
         $finishMock   = $this->getMock('stdClass', array('__invoke'));
         $routeMock    = $this->getMock('stdClass', array('__invoke'));
         $dispatchMock = $this->getMock('stdClass', array('__invoke'));
@@ -675,7 +674,7 @@ class ApplicationTest extends TestCase
     {
         $this->application->bootstrap();
 
-        $response     = $this->getMock('Zend\Stdlib\ResponseInterface');
+        $response     = $this->getMock('Laminas\Stdlib\ResponseInterface');
         $errorMock    = $this->getMock('stdClass', array('__invoke'));
         $finishMock   = $this->getMock('stdClass', array('__invoke'));
         $routeMock    = $this->getMock('stdClass', array('__invoke'));
