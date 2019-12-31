@@ -1,17 +1,16 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Controller\Plugin;
+namespace LaminasTest\Mvc\Controller\Plugin;
 
-use Zend\Authentication\AuthenticationService;
-use Zend\Authentication\Storage\NonPersistent as NonPersistentStorage;
-use Zend\Mvc\Controller\Plugin\Identity as IdentityPlugin;
+use Laminas\Authentication\AuthenticationService;
+use Laminas\Authentication\Storage\NonPersistent as NonPersistentStorage;
+use Laminas\Mvc\Controller\Plugin\Identity as IdentityPlugin;
 
 /**
  * Tests Identity plugin
