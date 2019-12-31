@@ -1,40 +1,38 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Mvc
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Router\Http;
+namespace LaminasTest\Mvc\Router\Http;
 
-use PHPUnit_Framework_TestCase as TestCase;
 use ArrayIterator;
-use Zend\Http\Request as Request;
-use Zend\Http\PhpEnvironment\Request as PhpRequest;
-use Zend\Stdlib\Request as BaseRequest;
-use Zend\Uri\Http as HttpUri;
-use Zend\Mvc\Router\Http\TreeRouteStack;
-use Zend\Mvc\Router\Http\Hostname;
-use ZendTest\Mvc\Router\FactoryTester;
+use Laminas\Http\PhpEnvironment\Request as PhpRequest;
+use Laminas\Http\Request as Request;
+use Laminas\Mvc\Router\Http\Hostname;
+use Laminas\Mvc\Router\Http\TreeRouteStack;
+use Laminas\Stdlib\Request as BaseRequest;
+use Laminas\Uri\Http as HttpUri;
+use LaminasTest\Mvc\Router\FactoryTester;
+use PHPUnit_Framework_TestCase as TestCase;
 
 class TreeRouteStackTest extends TestCase
 {
     public function testAddRouteRequiresHttpSpecificRoute()
     {
-        $this->setExpectedException('Zend\Mvc\Router\Exception\InvalidArgumentException', 'Route definition must be an array or Traversable object');
+        $this->setExpectedException('Laminas\Mvc\Router\Exception\InvalidArgumentException', 'Route definition must be an array or Traversable object');
         $stack = new TreeRouteStack();
-        $stack->addRoute('foo', new \ZendTest\Mvc\Router\TestAsset\DummyRoute());
+        $stack->addRoute('foo', new \LaminasTest\Mvc\Router\TestAsset\DummyRoute());
     }
 
     public function testAddRouteViaStringRequiresHttpSpecificRoute()
     {
-        $this->setExpectedException('Zend\Mvc\Router\Exception\RuntimeException', 'Given route does not implement HTTP route interface');
+        $this->setExpectedException('Laminas\Mvc\Router\Exception\RuntimeException', 'Given route does not implement HTTP route interface');
         $stack = new TreeRouteStack();
         $stack->addRoute('foo', array(
-            'type' => '\ZendTest\Mvc\Router\TestAsset\DummyRoute'
+            'type' => '\LaminasTest\Mvc\Router\TestAsset\DummyRoute'
         ));
     }
 
@@ -42,7 +40,7 @@ class TreeRouteStackTest extends TestCase
     {
         $stack = new TreeRouteStack();
         $stack->addRoute('foo', new ArrayIterator(array(
-            'type' => '\ZendTest\Mvc\Router\Http\TestAsset\DummyRoute'
+            'type' => '\LaminasTest\Mvc\Router\Http\TestAsset\DummyRoute'
         )));
     }
 
@@ -74,7 +72,7 @@ class TreeRouteStackTest extends TestCase
         $stack = new TreeRouteStack();
         $stack->setBaseUrl('/foo');
         $stack->addRoute('foo', array(
-            'type' => '\ZendTest\Mvc\Router\Http\TestAsset\DummyRoute'
+            'type' => '\LaminasTest\Mvc\Router\Http\TestAsset\DummyRoute'
         ));
 
         $this->assertEquals(4, $stack->match(new Request())->getParam('offset'));
@@ -84,7 +82,7 @@ class TreeRouteStackTest extends TestCase
     {
         $stack = new TreeRouteStack();
         $stack->addRoute('foo', array(
-            'type' => '\ZendTest\Mvc\Router\Http\TestAsset\DummyRoute'
+            'type' => '\LaminasTest\Mvc\Router\Http\TestAsset\DummyRoute'
         ));
 
         $this->assertEquals(null, $stack->match(new Request())->getParam('offset'));
@@ -99,7 +97,7 @@ class TreeRouteStackTest extends TestCase
 
     public function testAssembleCanonicalUriWithoutRequestUri()
     {
-        $this->setExpectedException('Zend\Mvc\Router\Exception\RuntimeException', 'Request URI has not been set');
+        $this->setExpectedException('Laminas\Mvc\Router\Exception\RuntimeException', 'Request URI has not been set');
         $stack = new TreeRouteStack();
 
         $stack->addRoute('foo', new TestAsset\DummyRoute());
@@ -137,7 +135,7 @@ class TreeRouteStackTest extends TestCase
 
     public function testAssembleCanonicalUriWithHostnameRouteWithoutScheme()
     {
-        $this->setExpectedException('Zend\Mvc\Router\Exception\RuntimeException', 'Request URI has not been set');
+        $this->setExpectedException('Laminas\Mvc\Router\Exception\RuntimeException', 'Request URI has not been set');
         $stack = new TreeRouteStack();
         $stack->addRoute('foo', new Hostname('example.com'));
         $uri   = new HttpUri();
@@ -246,14 +244,14 @@ class TreeRouteStackTest extends TestCase
 
     public function testAssembleWithoutNameOption()
     {
-        $this->setExpectedException('Zend\Mvc\Router\Exception\InvalidArgumentException', 'Missing "name" option');
+        $this->setExpectedException('Laminas\Mvc\Router\Exception\InvalidArgumentException', 'Missing "name" option');
         $stack = new TreeRouteStack();
         $stack->assemble();
     }
 
     public function testAssembleNonExistentRoute()
     {
-        $this->setExpectedException('Zend\Mvc\Router\Exception\RuntimeException', 'Route with name "foo" not found');
+        $this->setExpectedException('Laminas\Mvc\Router\Exception\RuntimeException', 'Route with name "foo" not found');
         $stack = new TreeRouteStack();
         $stack->assemble(array(), array('name' => 'foo'));
     }
@@ -354,7 +352,7 @@ class TreeRouteStackTest extends TestCase
     {
         $tester = new FactoryTester($this);
         $tester->testFactory(
-            'Zend\Mvc\Router\Http\TreeRouteStack',
+            'Laminas\Mvc\Router\Http\TreeRouteStack',
             array(),
             array()
         );

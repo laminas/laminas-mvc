@@ -1,22 +1,20 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_ServiceManager
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Service;
+namespace Laminas\Mvc\Service;
 
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\ServiceManager\AbstractFactoryInterface;
-use Zend\ServiceManager\AbstractPluginManager;
-use Zend\ServiceManager\Exception;
-use Zend\Di\Di;
-use Zend\Di\Exception\ClassNotFoundException;
-use Zend\Mvc\Exception\DomainException;
+use Laminas\Di\Di;
+use Laminas\Di\Exception\ClassNotFoundException;
+use Laminas\Mvc\Exception\DomainException;
+use Laminas\ServiceManager\AbstractFactoryInterface;
+use Laminas\ServiceManager\AbstractPluginManager;
+use Laminas\ServiceManager\Exception;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 class DiStrictAbstractServiceFactory extends Di implements AbstractFactoryInterface
 {
@@ -100,7 +98,7 @@ class DiStrictAbstractServiceFactory extends Di implements AbstractFactoryInterf
     }
 
     /**
-     * Overrides Zend\Di to allow the given serviceLocator's services to be reused by Di itself
+     * Overrides Laminas\Di to allow the given serviceLocator's services to be reused by Di itself
      *
      * {@inheritDoc}
      *

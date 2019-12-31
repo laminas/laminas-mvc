@@ -1,21 +1,19 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Mvc
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Router\Http;
+namespace LaminasTest\Mvc\Router\Http;
 
+use Laminas\Http\Request as Request;
+use Laminas\Mvc\Router\Http\Query;
+use Laminas\Stdlib\Request as BaseRequest;
+use Laminas\Uri\Http;
+use LaminasTest\Mvc\Router\FactoryTester;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Http\Request as Request;
-use Zend\Stdlib\Request as BaseRequest;
-use Zend\Mvc\Router\Http\Query;
-use ZendTest\Mvc\Router\FactoryTester;
-use Zend\Uri\Http;
 
 class QueryTest extends TestCase
 {
@@ -73,7 +71,7 @@ class QueryTest extends TestCase
         $request = new Request();
         $request->setUri('http://example.com?' . $path);
         $match = $route->match($request, $offset);
-        $this->assertInstanceOf('Zend\Mvc\Router\RouteMatch', $match);
+        $this->assertInstanceOf('Laminas\Mvc\Router\RouteMatch', $match);
     }
 
     /**
@@ -106,7 +104,7 @@ class QueryTest extends TestCase
         $route   = new Query();
         $request = new BaseRequest();
         $match   = $route->match($request);
-        $this->assertInstanceOf('Zend\Mvc\Router\RouteMatch', $match);
+        $this->assertInstanceOf('Laminas\Mvc\Router\RouteMatch', $match);
         $this->assertEquals(array(), $match->getParams());
     }
 
@@ -124,7 +122,7 @@ class QueryTest extends TestCase
     {
         $tester = new FactoryTester($this);
         $tester->testFactory(
-            'Zend\Mvc\Router\Http\Query',
+            'Laminas\Mvc\Router\Http\Query',
             array(),
             array()
         );
