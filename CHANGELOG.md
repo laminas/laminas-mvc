@@ -6,10 +6,10 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- [#30](https://github.com/zendframework/zend-mvc/pull/30) updates the component
-  to use zend-hydrator for hydrator functionality; this provides forward
-  compatibility with zend-hydrator, and backwards compatibility with
-  hydrators from older versions of zend-stdlib.
+- [zendframework/zend-mvc#30](https://github.com/zendframework/zend-mvc/pull/30) updates the component
+  to use laminas-hydrator for hydrator functionality; this provides forward
+  compatibility with laminas-hydrator, and backwards compatibility with
+  hydrators from older versions of laminas-stdlib.
 
 ### Deprecated
 
@@ -39,9 +39,9 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- [#29](https://github.com/zendframework/zend-mvc/pull/29) updates the
-  zend-stdlib dependency to reference `>=2.5.0,<2.7.0` to ensure hydrators
-  will work as expected following extraction of hydrators to the zend-hydrator
+- [zendframework/zend-mvc#29](https://github.com/zendframework/zend-mvc/pull/29) updates the
+  laminas-stdlib dependency to reference `>=2.5.0,<2.7.0` to ensure hydrators
+  will work as expected following extraction of hydrators to the laminas-hydrator
   repository.
 
 ## 2.5.2 - 2015-09-14
@@ -60,6 +60,6 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- [#27](https://github.com/zendframework/zend-mvc/pull/27) fixes a condition
+- [zendframework/zend-mvc#27](https://github.com/zendframework/zend-mvc/pull/27) fixes a condition
   where non-view model results from controllers could cause errors to be
   raisedin the `DefaultRenderingStrategy`.
