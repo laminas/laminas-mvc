@@ -1,19 +1,18 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Router\Http;
+namespace LaminasTest\Mvc\Router\Http;
 
+use Laminas\Http\Request as Request;
+use Laminas\I18n\Translator\Translator;
+use Laminas\Mvc\Router\Http\TranslatorAwareTreeRouteStack;
+use Laminas\Uri\Http as HttpUri;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\I18n\Translator\Translator;
-use Zend\Http\Request as Request;
-use Zend\Mvc\Router\Http\TranslatorAwareTreeRouteStack;
-use Zend\Uri\Http as HttpUri;
 
 class TranslatorAwareTreeRouteStackTest extends TestCase
 {
@@ -59,7 +58,7 @@ class TranslatorAwareTreeRouteStackTest extends TestCase
     public function testTranslatorAwareInterfaceImplementation()
     {
         $stack = new TranslatorAwareTreeRouteStack();
-        $this->assertInstanceOf('Zend\I18n\Translator\TranslatorAwareInterface', $stack);
+        $this->assertInstanceOf('Laminas\I18n\Translator\TranslatorAwareInterface', $stack);
 
         // Defaults
         $this->assertNull($stack->getTranslator());
@@ -98,7 +97,7 @@ class TranslatorAwareTreeRouteStackTest extends TestCase
         $translator = new Translator();
         $request    = new Request();
 
-        $route = $this->getMock('Zend\Mvc\Router\Http\RouteInterface');
+        $route = $this->getMock('Laminas\Mvc\Router\Http\RouteInterface');
         $route->expects($this->once())
               ->method('match')
               ->with(
@@ -118,7 +117,7 @@ class TranslatorAwareTreeRouteStackTest extends TestCase
         $translator = new Translator();
         $uri        = new HttpUri();
 
-        $route = $this->getMock('Zend\Mvc\Router\Http\RouteInterface');
+        $route = $this->getMock('Laminas\Mvc\Router\Http\RouteInterface');
         $route->expects($this->once())
               ->method('assemble')
               ->with(
