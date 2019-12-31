@@ -1,22 +1,21 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\ResponseSender;
+namespace LaminasTest\Mvc\ResponseSender;
 
+use Laminas\Mvc\ResponseSender\PhpEnvironmentResponseSender;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Mvc\ResponseSender\PhpEnvironmentResponseSender;
 
 class PhpEnvironmentResponseSenderTest extends TestCase
 {
     public function testSendResponseIgnoresInvalidResponseTypes()
     {
-        $mockResponse = $this->getMockForAbstractClass('Zend\Stdlib\ResponseInterface');
+        $mockResponse = $this->getMockForAbstractClass('Laminas\Stdlib\ResponseInterface');
         $mockSendResponseEvent = $this->getSendResponseEventMock();
         $mockSendResponseEvent->expects($this->any())->method('getResponse')->will($this->returnValue($mockResponse));
         $responseSender = new PhpEnvironmentResponseSender();
@@ -28,7 +27,7 @@ class PhpEnvironmentResponseSenderTest extends TestCase
 
     public function testSendResponseTwoTimesPrintsResponseOnlyOnce()
     {
-        $mockResponse = $this->getMock('Zend\Http\PhpEnvironment\Response');
+        $mockResponse = $this->getMock('Laminas\Http\PhpEnvironment\Response');
         $mockResponse->expects($this->any())->method('getContent')->will($this->returnValue('body'));
         $mockSendResponseEvent = $this->getSendResponseEventMock();
         $mockSendResponseEvent->expects($this->any())->method('getResponse')->will($this->returnValue($mockResponse));
@@ -49,7 +48,7 @@ class PhpEnvironmentResponseSenderTest extends TestCase
     {
         $returnValue = false;
         $mockSendResponseEvent = $this->getMock(
-            'Zend\Mvc\ResponseSender\SendResponseEvent',
+            'Laminas\Mvc\ResponseSender\SendResponseEvent',
             ['getResponse', 'contentSent', 'setContentSent']
         );
         $mockSendResponseEvent->expects($this->any())

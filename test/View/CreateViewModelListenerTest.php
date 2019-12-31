@@ -1,20 +1,19 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\View;
+namespace LaminasTest\Mvc\View;
 
+use Laminas\EventManager\EventManager;
+use Laminas\EventManager\Test\EventListenerIntrospectionTrait;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Mvc\View\Http\CreateViewModelListener;
 use PHPUnit_Framework_TestCase as TestCase;
 use stdClass;
-use Zend\EventManager\EventManager;
-use Zend\EventManager\Test\EventListenerIntrospectionTrait;
-use Zend\Mvc\MvcEvent;
-use Zend\Mvc\View\Http\CreateViewModelListener;
 
 class CreateViewModelListenerTest extends TestCase
 {
@@ -35,7 +34,7 @@ class CreateViewModelListenerTest extends TestCase
         $this->listener->createViewModelFromArray($this->event);
 
         $test = $this->event->getResult();
-        $this->assertInstanceOf('Zend\View\Model\ViewModel', $test);
+        $this->assertInstanceOf('Laminas\View\Model\ViewModel', $test);
         $this->assertEquals($array, $test->getVariables());
     }
 
@@ -106,7 +105,7 @@ class CreateViewModelListenerTest extends TestCase
         $this->event->setResult([]);
         $this->listener->createViewModelFromArray($this->event);
         $result = $this->event->getResult();
-        $this->assertInstanceOf('Zend\View\Model\ViewModel', $result);
+        $this->assertInstanceOf('Laminas\View\Model\ViewModel', $result);
     }
 
     public function testViewModelCreatesViewModelWithNullResult()
@@ -114,6 +113,6 @@ class CreateViewModelListenerTest extends TestCase
         $this->event->setResult(null);
         $this->listener->createViewModelFromNull($this->event);
         $result = $this->event->getResult();
-        $this->assertInstanceOf('Zend\View\Model\ViewModel', $result);
+        $this->assertInstanceOf('Laminas\View\Model\ViewModel', $result);
     }
 }
