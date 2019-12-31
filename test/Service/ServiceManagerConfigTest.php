@@ -1,25 +1,24 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Service;
+namespace LaminasTest\Mvc\Service;
 
+use Laminas\EventManager\EventManager;
+use Laminas\Mvc\Service\ServiceManagerConfig;
+use Laminas\ServiceManager\Factory\InvokableFactory;
+use Laminas\ServiceManager\ServiceManager;
 use PHPUnit_Framework_Error_Deprecated;
 use PHPUnit_Framework_TestCase as TestCase;
 use ReflectionClass;
 use stdClass;
-use Zend\EventManager\EventManager;
-use Zend\Mvc\Service\ServiceManagerConfig;
-use Zend\ServiceManager\Factory\InvokableFactory;
-use Zend\ServiceManager\ServiceManager;
 
 /**
- * @covers \Zend\Mvc\Service\ServiceManagerConfig
+ * @covers \Laminas\Mvc\Service\ServiceManagerConfig
  */
 class ServiceManagerConfigTest extends TestCase
 {
@@ -47,9 +46,9 @@ class ServiceManagerConfigTest extends TestCase
     }
 
     /**
-     * Create an event manager instance based on zend-eventmanager version
+     * Create an event manager instance based on laminas-eventmanager version
      *
-     * @param null|\Zend\EventManager\SharedEventManagerInterface
+     * @param null|\Laminas\EventManager\SharedEventManagerInterface
      * @return EventManager
      */
     protected function createEventManager($sharedManager = null)
@@ -139,7 +138,7 @@ class ServiceManagerConfigTest extends TestCase
         /*
          * Create delegator closure
          *
-         * The signature for delegators differs between zend-servicemanager
+         * The signature for delegators differs between laminas-servicemanager
          * v2 and v3, so we must vary the closure used based on the version
          * being used when testing.
          */
@@ -184,7 +183,7 @@ class ServiceManagerConfigTest extends TestCase
      */
     public function testEventManagerInitializerCanBeReplaced()
     {
-        $instance       = $this->getMock('Zend\EventManager\EventManagerAwareInterface');
+        $instance       = $this->getMock('Laminas\EventManager\EventManagerAwareInterface');
         $initializer    = $this->getMock(stdClass::class, ['__invoke']);
         $config         = new ServiceManagerConfig([
             'initializers' => [
@@ -201,7 +200,7 @@ class ServiceManagerConfigTest extends TestCase
 
         /*
          * Need to vary the order of arguments the initializer receives based on
-         * which zend-servicemanager version is being tested against.
+         * which laminas-servicemanager version is being tested against.
          */
         if (method_exists($this->services, 'configure')) {
             // v3
