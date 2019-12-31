@@ -1,22 +1,21 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Controller\Plugin;
+namespace Laminas\Mvc\Controller\Plugin;
 
-use Zend\Http\Header\Accept\FieldValuePart\AbstractFieldValuePart;
-use Zend\Http\Request;
-use Zend\Mvc\Controller\Plugin\AbstractPlugin;
-use Zend\Mvc\InjectApplicationEventInterface;
-use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Exception\DomainException;
-use Zend\Mvc\Exception\InvalidArgumentException;
-use Zend\View\Model\ModelInterface;
+use Laminas\Http\Header\Accept\FieldValuePart\AbstractFieldValuePart;
+use Laminas\Http\Request;
+use Laminas\Mvc\Controller\Plugin\AbstractPlugin;
+use Laminas\Mvc\Exception\DomainException;
+use Laminas\Mvc\Exception\InvalidArgumentException;
+use Laminas\Mvc\InjectApplicationEventInterface;
+use Laminas\Mvc\MvcEvent;
+use Laminas\View\Model\ModelInterface;
 
 /**
  * Controller Plugin to assist in selecting an appropriate View Model type based on the
@@ -32,13 +31,13 @@ class AcceptableViewModelSelector extends AbstractPlugin
 
     /**
      *
-     * @var \Zend\Mvc\MvcEvent
+     * @var \Laminas\Mvc\MvcEvent
      */
     protected $event;
 
     /**
      *
-     * @var \Zend\Http\Request
+     * @var \Laminas\Http\Request
      */
     protected $request;
 
@@ -53,7 +52,7 @@ class AcceptableViewModelSelector extends AbstractPlugin
      *
      * @var string Default ViewModel
      */
-    protected $defaultViewModelName = 'Zend\View\Model\ViewModel';
+    protected $defaultViewModelName = 'Laminas\View\Model\ViewModel';
 
     /**
      * Detects an appropriate viewmodel for request.
@@ -149,7 +148,7 @@ class AcceptableViewModelSelector extends AbstractPlugin
             }
         }
 
-        /** @var $accept \Zend\Http\Header\Accept */
+        /** @var $accept \Laminas\Http\Header\Accept */
         $accept = $headers->get('Accept');
         if (($res = $accept->match($matchAgainstString)) === false) {
             return null;

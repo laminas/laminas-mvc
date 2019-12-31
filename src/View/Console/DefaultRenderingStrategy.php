@@ -1,21 +1,20 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\View\Console;
+namespace Laminas\Mvc\View\Console;
 
-use Zend\Console\Response as ConsoleResponse;
-use Zend\EventManager\AbstractListenerAggregate;
-use Zend\EventManager\EventManagerInterface;
-use Zend\EventManager\ListenerAggregateInterface;
-use Zend\Mvc\MvcEvent;
-use Zend\Stdlib\ResponseInterface as Response;
-use Zend\View\Model\ConsoleModel as ConsoleViewModel;
+use Laminas\Console\Response as ConsoleResponse;
+use Laminas\EventManager\AbstractListenerAggregate;
+use Laminas\EventManager\EventManagerInterface;
+use Laminas\EventManager\ListenerAggregateInterface;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Stdlib\ResponseInterface as Response;
+use Laminas\View\Model\ConsoleModel as ConsoleViewModel;
 
 class DefaultRenderingStrategy extends AbstractListenerAggregate
 {

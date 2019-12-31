@@ -1,24 +1,22 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Mvc
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Controller\Plugin;
+namespace LaminasTest\Mvc\Controller\Plugin;
 
-use Zend\Mvc\Controller\Plugin\AcceptableViewModelSelector;
-use Zend\Http\Request;
-use Zend\Mvc\MvcEvent;
-use Zend\Http\Header\Accept;
-use ZendTest\Mvc\Controller\TestAsset\SampleController;
+use Laminas\Http\Header\Accept;
+use Laminas\Http\Request;
+use Laminas\Mvc\Controller\Plugin\AcceptableViewModelSelector;
+use Laminas\Mvc\MvcEvent;
+use LaminasTest\Mvc\Controller\TestAsset\SampleController;
 
 /**
- * @category   Zend
- * @package    Zend_Mvc
+ * @category   Laminas
+ * @package    Laminas_Mvc
  * @subpackage UnitTests
  */
 class AcceptableViewModelSelectorTest extends \PHPUnit_Framework_TestCase
@@ -40,36 +38,36 @@ class AcceptableViewModelSelectorTest extends \PHPUnit_Framework_TestCase
     public function testHonorsAcceptPrecedenceAndPriorityWhenInvoked()
     {
         $arr = array(
-            'Zend\View\Model\JsonModel' => array(
+            'Laminas\View\Model\JsonModel' => array(
                 'application/json',
                 'application/javascript'
             ),
-            'Zend\View\Model\FeedModel' => array(
+            'Laminas\View\Model\FeedModel' => array(
                 'application/rss+xml',
                 'application/atom+xml'
             ),
-            'Zend\View\Model\ViewModel' => '*/*'
+            'Laminas\View\Model\ViewModel' => '*/*'
         );
 
         $header   = Accept::fromString('Accept: text/plain; q=0.5, text/html, text/xml; q=0, text/x-dvi; q=0.8, text/x-c');
         $this->request->getHeaders()->addHeader($header);
         $plugin   = $this->plugin;
-        $plugin->setDefaultViewModelName('Zend\View\Model\FeedModel');
+        $plugin->setDefaultViewModelName('Laminas\View\Model\FeedModel');
         $result   = $plugin($arr);
 
-        $this->assertInstanceOf('Zend\View\Model\ViewModel', $result);
-        $this->assertNotInstanceOf('Zend\View\Model\FeedModel', $result); // Ensure the default wasn't selected
-        $this->assertNotInstanceOf('Zend\View\Model\JsonModel', $result);
+        $this->assertInstanceOf('Laminas\View\Model\ViewModel', $result);
+        $this->assertNotInstanceOf('Laminas\View\Model\FeedModel', $result); // Ensure the default wasn't selected
+        $this->assertNotInstanceOf('Laminas\View\Model\JsonModel', $result);
     }
 
     public function testDefaultViewModelName()
     {
         $arr = array(
-            'Zend\View\Model\JsonModel' => array(
+            'Laminas\View\Model\JsonModel' => array(
                 'application/json',
                 'application/javascript'
             ),
-            'Zend\View\Model\FeedModel' => array(
+            'Laminas\View\Model\FeedModel' => array(
                 'application/rss+xml',
                 'application/atom+xml'
             ),
@@ -80,25 +78,25 @@ class AcceptableViewModelSelectorTest extends \PHPUnit_Framework_TestCase
         $plugin   = $this->plugin;
         $result   = $plugin->getViewModelName($arr);
 
-        $this->assertEquals('Zend\View\Model\ViewModel', $result); //   Default Default View Model Name
+        $this->assertEquals('Laminas\View\Model\ViewModel', $result); //   Default Default View Model Name
 
-        $plugin->setDefaultViewModelName('Zend\View\Model\FeedModel');
-        $this->assertEquals($plugin->getDefaultViewModelName(), 'Zend\View\Model\FeedModel'); // Test getter along the way
-        $this->assertInstanceOf('Zend\View\Model\FeedModel', $plugin($arr));
+        $plugin->setDefaultViewModelName('Laminas\View\Model\FeedModel');
+        $this->assertEquals($plugin->getDefaultViewModelName(), 'Laminas\View\Model\FeedModel'); // Test getter along the way
+        $this->assertInstanceOf('Laminas\View\Model\FeedModel', $plugin($arr));
     }
 
     public function testSelectsViewModelBasedOnAcceptHeaderWhenInvokedAsFunctor()
     {
         $arr = array(
-                'Zend\View\Model\JsonModel' => array(
+                'Laminas\View\Model\JsonModel' => array(
                         'application/json',
                         'application/javascript'
                 ),
-                'Zend\View\Model\FeedModel' => array(
+                'Laminas\View\Model\FeedModel' => array(
                         'application/rss+xml',
                         'application/atom+xml'
                 ),
-                'Zend\View\Model\ViewModel' => '*/*'
+                'Laminas\View\Model\ViewModel' => '*/*'
         );
 
         $plugin   = $this->plugin;
@@ -106,18 +104,18 @@ class AcceptableViewModelSelectorTest extends \PHPUnit_Framework_TestCase
         $this->request->getHeaders()->addHeader($header);
         $result = $plugin($arr);
 
-        $this->assertInstanceOf('Zend\View\Model\FeedModel', $result);
+        $this->assertInstanceOf('Laminas\View\Model\FeedModel', $result);
     }
 
 
     public function testInvokeWithoutDefaultsReturnsNullWhenNoMatchesOccur()
     {
         $arr = array(
-                'Zend\View\Model\JsonModel' => array(
+                'Laminas\View\Model\JsonModel' => array(
                         'application/json',
                         'application/javascript'
                 ),
-                'Zend\View\Model\FeedModel' => array(
+                'Laminas\View\Model\FeedModel' => array(
                         'application/rss+xml',
                         'application/atom+xml'
                 ),
@@ -138,21 +136,21 @@ class AcceptableViewModelSelectorTest extends \PHPUnit_Framework_TestCase
         $this->request->getHeaders()->addHeader($header);
 
         $ref = null;
-        $result = $plugin(array( 'Zend\View\Model\ViewModel' => '*/*'), false, $ref);
-        $this->assertInstanceOf('Zend\View\Model\ViewModel', $result);
-        $this->assertNotInstanceOf('Zend\View\Model\JsonModel', $result);
-        $this->assertNotInstanceOf('Zend\View\Model\FeedModel', $result);
-        $this->assertInstanceOf('Zend\Http\Header\Accept\FieldValuePart\AcceptFieldValuePart', $ref);
+        $result = $plugin(array( 'Laminas\View\Model\ViewModel' => '*/*'), false, $ref);
+        $this->assertInstanceOf('Laminas\View\Model\ViewModel', $result);
+        $this->assertNotInstanceOf('Laminas\View\Model\JsonModel', $result);
+        $this->assertNotInstanceOf('Laminas\View\Model\FeedModel', $result);
+        $this->assertInstanceOf('Laminas\Http\Header\Accept\FieldValuePart\AcceptFieldValuePart', $ref);
     }
 
     public function testGetViewModelNameWithoutDefaults()
     {
         $arr = array(
-                'Zend\View\Model\JsonModel' => array(
+                'Laminas\View\Model\JsonModel' => array(
                         'application/json',
                         'application/javascript'
                 ),
-                'Zend\View\Model\FeedModel' => array(
+                'Laminas\View\Model\FeedModel' => array(
                         'application/rss+xml',
                         'application/atom+xml'
                 ),
@@ -166,9 +164,9 @@ class AcceptableViewModelSelectorTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($result);
 
         $ref = null;
-        $result = $plugin->getViewModelName(array( 'Zend\View\Model\ViewModel' => '*/*'), false, $ref);
-        $this->assertEquals('Zend\View\Model\ViewModel', $result);
-        $this->assertInstanceOf('Zend\Http\Header\Accept\FieldValuePart\AcceptFieldValuePart', $ref);
+        $result = $plugin->getViewModelName(array( 'Laminas\View\Model\ViewModel' => '*/*'), false, $ref);
+        $this->assertEquals('Laminas\View\Model\ViewModel', $result);
+        $this->assertInstanceOf('Laminas\Http\Header\Accept\FieldValuePart\AcceptFieldValuePart', $ref);
     }
 
     public function testMatch()
@@ -177,12 +175,12 @@ class AcceptableViewModelSelectorTest extends \PHPUnit_Framework_TestCase
         $header   = Accept::fromString('Accept: text/html; version=0.2');
         $this->request->getHeaders()->addHeader($header);
 
-        $arr = array( 'Zend\View\Model\ViewModel' => '*/*');
+        $arr = array( 'Laminas\View\Model\ViewModel' => '*/*');
         $plugin->setDefaultMatchAgainst($arr);
         $this->assertEquals($plugin->getDefaultMatchAgainst(), $arr);
         $result = $plugin->match();
         $this->assertInstanceOf(
-                'Zend\Http\Header\Accept\FieldValuePart\AcceptFieldValuePart',
+                'Laminas\Http\Header\Accept\FieldValuePart\AcceptFieldValuePart',
                 $result
         );
         $this->assertEquals($plugin->getDefaultMatchAgainst(), $arr);
@@ -194,7 +192,7 @@ class AcceptableViewModelSelectorTest extends \PHPUnit_Framework_TestCase
         $header   = Accept::fromString('Accept: */*');
         $this->request->getHeaders()->addHeader($header);
 
-        $this->setExpectedException('\Zend\Mvc\Exception\InvalidArgumentException');
+        $this->setExpectedException('\Laminas\Mvc\Exception\InvalidArgumentException');
 
         $this->plugin->getViewModel($arr);
     }
