@@ -1,30 +1,28 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Mvc
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\View\Console;
+namespace Laminas\Mvc\View\Console;
 
 use ArrayAccess;
-use Zend\Mvc\MvcEvent;
-use Zend\Mvc\View\Http\ViewManager as BaseViewManager;
-use Zend\Mvc\View\SendResponseListener;
-use Zend\ServiceManager\ServiceManager;
-use Zend\Stdlib\ArrayUtils;
-use Zend\View\Helper as ViewHelper;
-use Zend\View\Resolver as ViewResolver;
-use Zend\View\View;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Mvc\View\Http\ViewManager as BaseViewManager;
+use Laminas\Mvc\View\SendResponseListener;
+use Laminas\ServiceManager\ServiceManager;
+use Laminas\Stdlib\ArrayUtils;
+use Laminas\View\Helper as ViewHelper;
+use Laminas\View\Resolver as ViewResolver;
+use Laminas\View\View;
 
 /**
  * Prepares the view layer for console applications
  *
- * @category   Zend
- * @package    Zend_Mvc
+ * @category   Laminas
+ * @package    Laminas_Mvc
  * @subpackage View
  */
 class ViewManager extends BaseViewManager
@@ -70,11 +68,11 @@ class ViewManager extends BaseViewManager
         $events->attach($mvcRenderingStrategy);
         $events->attach($sendResponseListener);
 
-        $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($injectParamsListener,  'injectNamedParams'), 1000);
-        $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($createViewModelListener, 'createViewModelFromArray'), -80);
-        $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($createViewModelListener, 'createViewModelFromString'), -80);
-        $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($createViewModelListener, 'createViewModelFromNull'), -80);
-        $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($injectViewModelListener, 'injectViewModel'), -100);
+        $sharedEvents->attach('Laminas\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($injectParamsListener,  'injectNamedParams'), 1000);
+        $sharedEvents->attach('Laminas\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($createViewModelListener, 'createViewModelFromArray'), -80);
+        $sharedEvents->attach('Laminas\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($createViewModelListener, 'createViewModelFromString'), -80);
+        $sharedEvents->attach('Laminas\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($createViewModelListener, 'createViewModelFromNull'), -80);
+        $sharedEvents->attach('Laminas\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($injectViewModelListener, 'injectViewModel'), -100);
     }
 
     /**
@@ -94,8 +92,8 @@ class ViewManager extends BaseViewManager
         $this->mvcRenderingStrategy = new DefaultRenderingStrategy();
 
         $this->services->setService('DefaultRenderingStrategy', $this->mvcRenderingStrategy);
-        $this->services->setAlias('Zend\Mvc\View\DefaultRenderingStrategy', 'DefaultRenderingStrategy');
-        $this->services->setAlias('Zend\Mvc\View\Console\DefaultRenderingStrategy', 'DefaultRenderingStrategy');
+        $this->services->setAlias('Laminas\Mvc\View\DefaultRenderingStrategy', 'DefaultRenderingStrategy');
+        $this->services->setAlias('Laminas\Mvc\View\Console\DefaultRenderingStrategy', 'DefaultRenderingStrategy');
 
         return $this->mvcRenderingStrategy;
     }
@@ -124,8 +122,8 @@ class ViewManager extends BaseViewManager
         }
 
         $this->services->setService('ExceptionStrategy', $this->exceptionStrategy);
-        $this->services->setAlias('Zend\Mvc\View\ExceptionStrategy', 'ExceptionStrategy');
-        $this->services->setAlias('Zend\Mvc\View\Console\ExceptionStrategy', 'ExceptionStrategy');
+        $this->services->setAlias('Laminas\Mvc\View\ExceptionStrategy', 'ExceptionStrategy');
+        $this->services->setAlias('Laminas\Mvc\View\Console\ExceptionStrategy', 'ExceptionStrategy');
 
         return $this->exceptionStrategy;
     }
@@ -147,8 +145,8 @@ class ViewManager extends BaseViewManager
         $this->routeNotFoundStrategy = new RouteNotFoundStrategy();
 
         $this->services->setService('RouteNotFoundStrategy', $this->routeNotFoundStrategy);
-        $this->services->setAlias('Zend\Mvc\View\RouteNotFoundStrategy', 'RouteNotFoundStrategy');
-        $this->services->setAlias('Zend\Mvc\View\Console\RouteNotFoundStrategy', 'RouteNotFoundStrategy');
+        $this->services->setAlias('Laminas\Mvc\View\RouteNotFoundStrategy', 'RouteNotFoundStrategy');
+        $this->services->setAlias('Laminas\Mvc\View\Console\RouteNotFoundStrategy', 'RouteNotFoundStrategy');
         $this->services->setAlias('404Strategy', 'RouteNotFoundStrategy');
 
         return $this->routeNotFoundStrategy;

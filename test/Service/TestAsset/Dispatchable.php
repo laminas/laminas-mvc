@@ -1,7 +1,7 @@
 <?php
-namespace ZendTest\Mvc\Service\TestAsset;
+namespace LaminasTest\Mvc\Service\TestAsset;
 
-use Zend\Mvc\Controller\AbstractActionController;
+use Laminas\Mvc\Controller\AbstractActionController;
 
 class Dispatchable extends AbstractActionController
 {

@@ -1,25 +1,23 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Mvc
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Router;
+namespace Laminas\Mvc\Router;
 
 use ArrayAccess;
 use ArrayIterator;
+use Laminas\Stdlib\ArrayUtils;
+use Laminas\Stdlib\RequestInterface as Request;
 use Traversable;
-use Zend\Stdlib\ArrayUtils;
-use Zend\Stdlib\RequestInterface as Request;
 
 /**
  * Simple route stack implementation.
  *
- * @package    Zend_Mvc_Router
+ * @package    Laminas_Mvc_Router
  */
 class SimpleRouteStack implements RouteStackInterface
 {
