@@ -1,17 +1,16 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Router;
+namespace Laminas\Mvc\Router;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\AbstractPluginManager;
-use Zend\ServiceManager\Exception\InvalidServiceException;
+use Laminas\ServiceManager\AbstractPluginManager;
+use Laminas\ServiceManager\Exception\InvalidServiceException;
 
 /**
  * Plugin manager implementation for routes
@@ -52,7 +51,7 @@ class RoutePluginManager extends AbstractPluginManager
      * Ensure that the instance is seeded with the RouteInvokableFactory as an
      * abstract factory.
      *
-     * @param ContainerInterface|\Zend\ServiceManager\ConfigInterface $configOrContainerInstance
+     * @param ContainerInterface|\Laminas\ServiceManager\ConfigInterface $configOrContainerInstance
      * @param array $v3config
      */
     public function __construct($configOrContainerInstance, array $v3config = [])

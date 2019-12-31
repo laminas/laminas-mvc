@@ -1,19 +1,18 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc;
+namespace Laminas\Mvc;
 
+use Laminas\EventManager\AbstractListenerAggregate;
+use Laminas\EventManager\EventManagerInterface;
+use Laminas\Psr7Bridge\Psr7Response;
+use Laminas\Psr7Bridge\Psr7ServerRequest as Psr7Request;
 use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
-use Zend\EventManager\AbstractListenerAggregate;
-use Zend\EventManager\EventManagerInterface;
-use Zend\Psr7Bridge\Psr7ServerRequest as Psr7Request;
-use Zend\Psr7Bridge\Psr7Response;
 
 class MiddlewareListener extends AbstractListenerAggregate
 {
@@ -57,7 +56,7 @@ class MiddlewareListener extends AbstractListenerAggregate
             return $return;
         }
         try {
-            $return = $middleware(Psr7Request::fromZend($request), Psr7Response::fromZend($response));
+            $return = $middleware(Psr7Request::fromLaminas($request), Psr7Response::fromLaminas($response));
         } catch (\Exception $exception) {
             $event->setName(MvcEvent::EVENT_DISPATCH_ERROR);
             $event->setError($application::ERROR_EXCEPTION);
@@ -77,7 +76,7 @@ class MiddlewareListener extends AbstractListenerAggregate
             $event->setResult($return);
             return $return;
         }
-        $response = Psr7Response::toZend($return);
+        $response = Psr7Response::toLaminas($return);
         $event->setResult($response);
         return $response;
     }
