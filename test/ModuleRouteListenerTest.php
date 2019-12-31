@@ -1,22 +1,20 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Mvc
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc;
+namespace LaminasTest\Mvc;
 
+use Laminas\EventManager\EventManager;
+use Laminas\Http\PhpEnvironment\Request;
+use Laminas\Mvc\ModuleRouteListener;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Mvc\RouteListener;
+use Laminas\Mvc\Router;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\EventManager\EventManager;
-use Zend\Http\PhpEnvironment\Request;
-use Zend\Mvc\MvcEvent;
-use Zend\Mvc\ModuleRouteListener;
-use Zend\Mvc\RouteListener;
-use Zend\Mvc\Router;
 
 class ModuleRouteListenerTest extends TestCase
 {
@@ -51,7 +49,7 @@ class ModuleRouteListenerTest extends TestCase
         $this->events->trigger('route', $event);
 
         $matches = $event->getRouteMatch();
-        $this->assertInstanceOf('Zend\Mvc\Router\RouteMatch', $matches);
+        $this->assertInstanceOf('Laminas\Mvc\Router\RouteMatch', $matches);
         $this->assertEquals('Foo\Index', $matches->getParam('controller'));
         $this->assertEquals('Index', $matches->getParam(ModuleRouteListener::ORIGINAL_CONTROLLER));
     }
@@ -74,7 +72,7 @@ class ModuleRouteListenerTest extends TestCase
         $this->events->trigger('route', $event);
 
         $matches = $event->getRouteMatch();
-        $this->assertInstanceOf('Zend\Mvc\Router\RouteMatch', $matches);
+        $this->assertInstanceOf('Laminas\Mvc\Router\RouteMatch', $matches);
         $this->assertEquals('Index', $matches->getParam('controller'));
     }
 
@@ -100,7 +98,7 @@ class ModuleRouteListenerTest extends TestCase
         $this->events->trigger('route', $event);
 
         $matches = $event->getRouteMatch();
-        $this->assertInstanceOf('Zend\Mvc\Router\RouteMatch', $matches);
+        $this->assertInstanceOf('Laminas\Mvc\Router\RouteMatch', $matches);
         $this->assertEquals('Foo\Index', $matches->getParam('controller'));
         $this->assertEquals('Index', $matches->getParam(ModuleRouteListener::ORIGINAL_CONTROLLER));
     }
@@ -128,7 +126,7 @@ class ModuleRouteListenerTest extends TestCase
         $this->events->trigger('route', $event);
 
         $matches = $event->getRouteMatch();
-        $this->assertInstanceOf('Zend\Mvc\Router\RouteMatch', $matches);
+        $this->assertInstanceOf('Laminas\Mvc\Router\RouteMatch', $matches);
         $this->assertEquals('Foo\SomeIndex', $matches->getParam('controller'));
         $this->assertEquals('some-index', $matches->getParam(ModuleRouteListener::ORIGINAL_CONTROLLER));
     }
