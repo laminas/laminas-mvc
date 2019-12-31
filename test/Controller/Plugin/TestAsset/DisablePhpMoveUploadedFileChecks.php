@@ -1,6 +1,6 @@
 <?php
 
-namespace Zend\Filter\File;
+namespace Laminas\Filter\File;
 
 function move_uploaded_file($source, $dest)
 {

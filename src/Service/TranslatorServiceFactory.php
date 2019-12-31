@@ -1,20 +1,19 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Service;
+namespace Laminas\Mvc\Service;
 
+use Laminas\I18n\Translator\Translator;
+use Laminas\Mvc\I18n\DummyTranslator;
+use Laminas\Mvc\I18n\Translator as MvcTranslator;
+use Laminas\ServiceManager\FactoryInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 use Traversable;
-use Zend\I18n\Translator\Translator;
-use Zend\Mvc\I18n\DummyTranslator;
-use Zend\Mvc\I18n\Translator as MvcTranslator;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Overrides the translator factory from the i18n component in order to
@@ -30,8 +29,8 @@ class TranslatorServiceFactory implements FactoryInterface
     {
         // Assume that if a user has registered a service for the
         // TranslatorInterface, it must be valid
-        if ($serviceLocator->has('Zend\I18n\Translator\TranslatorInterface')) {
-            return new MvcTranslator($serviceLocator->get('Zend\I18n\Translator\TranslatorInterface'));
+        if ($serviceLocator->has('Laminas\I18n\Translator\TranslatorInterface')) {
+            return new MvcTranslator($serviceLocator->get('Laminas\I18n\Translator\TranslatorInterface'));
         }
 
         // If ext/intl is not loaded, return a dummy translator
@@ -54,7 +53,7 @@ class TranslatorServiceFactory implements FactoryInterface
                     || $config['translator'] instanceof Traversable)
             ) {
                 $i18nTranslator = Translator::factory($config['translator']);
-                $serviceLocator->setService('Zend\I18n\Translator\TranslatorInterface', $i18nTranslator);
+                $serviceLocator->setService('Laminas\I18n\Translator\TranslatorInterface', $i18nTranslator);
                 return new MvcTranslator($i18nTranslator);
             }
         }

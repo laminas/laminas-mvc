@@ -1,21 +1,20 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Controller;
+namespace LaminasTest\Mvc\Controller;
 
+use Laminas\Console\Adapter\Virtual as ConsoleAdapter;
+use Laminas\EventManager\EventManager;
+use Laminas\EventManager\SharedEventManager;
+use Laminas\Mvc\Controller\ControllerManager;
+use Laminas\Mvc\Controller\PluginManager as ControllerPluginManager;
+use Laminas\ServiceManager\ServiceManager;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\EventManager\EventManager;
-use Zend\EventManager\SharedEventManager;
-use Zend\Mvc\Controller\ControllerManager;
-use Zend\Mvc\Controller\PluginManager as ControllerPluginManager;
-use Zend\ServiceManager\ServiceManager;
-use Zend\Console\Adapter\Virtual as ConsoleAdapter;
 
 class ControllerManagerTest extends TestCase
 {
@@ -29,7 +28,7 @@ class ControllerManagerTest extends TestCase
         $this->plugins  = new ControllerPluginManager();
         $this->services = new ServiceManager();
         $this->services->setService('Console', $this->consoleAdapter);
-        $this->services->setService('Zend\ServiceManager\ServiceLocatorInterface', $this->services);
+        $this->services->setService('Laminas\ServiceManager\ServiceLocatorInterface', $this->services);
         $this->services->setService('EventManager', $this->events);
         $this->services->setService('SharedEventManager', $this->sharedEvents);
         $this->services->setService('ControllerPluginManager', $this->plugins);
@@ -50,7 +49,7 @@ class ControllerManagerTest extends TestCase
         // instance, which means we need to check that that instance gets injected
         // with the shared EM instance.
         $events = $controller->getEventManager();
-        $this->assertInstanceOf('Zend\EventManager\EventManagerInterface', $events);
+        $this->assertInstanceOf('Laminas\EventManager\EventManagerInterface', $events);
         $this->assertSame($this->sharedEvents, $events->getSharedManager());
     }
 
@@ -58,7 +57,7 @@ class ControllerManagerTest extends TestCase
     {
         $controller = new TestAsset\ConsoleController();
         $this->controllers->injectControllerDependencies($controller, $this->controllers);
-        $this->assertInstanceOf('Zend\Console\Adapter\AdapterInterface', $controller->getConsole());
+        $this->assertInstanceOf('Laminas\Console\Adapter\AdapterInterface', $controller->getConsole());
     }
 
     public function testInjectControllerDependenciesWillNotOverwriteExistingEventManager()
@@ -72,13 +71,13 @@ class ControllerManagerTest extends TestCase
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::has
-     * @covers Zend\ServiceManager\AbstractPluginManager::get
+     * @covers Laminas\ServiceManager\ServiceManager::has
+     * @covers Laminas\ServiceManager\AbstractPluginManager::get
      */
     public function testDoNotUsePeeringServiceManagers()
     {
         $this->assertFalse($this->controllers->has('EventManager'));
-        $this->setExpectedException('Zend\ServiceManager\Exception\ServiceNotFoundException');
+        $this->setExpectedException('Laminas\ServiceManager\Exception\ServiceNotFoundException');
         $this->controllers->get('EventManager');
     }
 }
