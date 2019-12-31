@@ -1,16 +1,14 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Mvc
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Controller\TestAsset;
+namespace LaminasTest\Mvc\Controller\TestAsset;
 
-use Zend\Mvc\Controller\AbstractRestfulController;
+use Laminas\Mvc\Controller\AbstractRestfulController;
 
 class RestfulTestController extends AbstractRestfulController
 {
@@ -43,7 +41,7 @@ class RestfulTestController extends AbstractRestfulController
     /**
      * Delete the collection
      *
-     * @return \Zend\Http\Response
+     * @return \Laminas\Http\Response
      */
     public function deleteList()
     {
@@ -86,7 +84,7 @@ class RestfulTestController extends AbstractRestfulController
     /**
      * Return list of allowed HTTP methods
      *
-     * @return \Zend\Http\Response
+     * @return \Laminas\Http\Response
      */
     public function options()
     {

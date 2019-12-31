@@ -1,22 +1,20 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Mvc
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\ResponseSender\TestAsset;
+namespace LaminasTest\Mvc\ResponseSender\TestAsset;
 
-use Zend\Console\Response;
-use Zend\Mvc\ResponseSender\ConsoleResponseSender as BaseConsoleResponseSender;
-use Zend\Mvc\ResponseSender\SendResponseEvent;
+use Laminas\Console\Response;
+use Laminas\Mvc\ResponseSender\ConsoleResponseSender as BaseConsoleResponseSender;
+use Laminas\Mvc\ResponseSender\SendResponseEvent;
 
 /**
- * @category   Zend
- * @package    Zend_Mvc
+ * @category   Laminas
+ * @package    Laminas_Mvc
  * @subpackage UnitTest
  */
 class ConsoleResponseSender extends BaseConsoleResponseSender

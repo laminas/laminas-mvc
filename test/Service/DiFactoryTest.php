@@ -1,17 +1,15 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_ServiceManager
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Service;
+namespace LaminasTest\Mvc\Service;
 
-use Zend\Mvc\Service\DiFactory;
-use Zend\ServiceManager\ServiceManager;
+use Laminas\Mvc\Service\DiFactory;
+use Laminas\ServiceManager\ServiceManager;
 
 class DiFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -22,6 +20,6 @@ class DiFactoryTest extends \PHPUnit_Framework_TestCase
         $serviceManager->setFactory('Di', new DiFactory());
 
         $di = $serviceManager->get('Di');
-        $this->assertInstanceOf('Zend\Di\Di', $di);
+        $this->assertInstanceOf('Laminas\Di\Di', $di);
     }
 }
