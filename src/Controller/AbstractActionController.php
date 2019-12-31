@@ -1,19 +1,18 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Controller;
+namespace Laminas\Mvc\Controller;
 
-use Zend\Http\Response as HttpResponse;
-use Zend\Mvc\Exception;
-use Zend\Mvc\MvcEvent;
-use Zend\View\Model\ConsoleModel;
-use Zend\View\Model\ViewModel;
+use Laminas\Http\Response as HttpResponse;
+use Laminas\Mvc\Exception;
+use Laminas\Mvc\MvcEvent;
+use Laminas\View\Model\ConsoleModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * Basic action controller
@@ -89,7 +88,7 @@ abstract class AbstractActionController extends AbstractController
     }
 
     /**
-     * @deprecated please use the {@see \Zend\Mvc\Controller\Plugin\CreateHttpNotFoundModel} plugin instead: this
+     * @deprecated please use the {@see \Laminas\Mvc\Controller\Plugin\CreateHttpNotFoundModel} plugin instead: this
      *             method will be removed in release 2.5 or later.
      *
      * {@inheritDoc}
@@ -100,7 +99,7 @@ abstract class AbstractActionController extends AbstractController
     }
 
     /**
-     * @deprecated please use the {@see \Zend\Mvc\Controller\Plugin\CreateConsoleNotFoundModel} plugin instead: this
+     * @deprecated please use the {@see \Laminas\Mvc\Controller\Plugin\CreateConsoleNotFoundModel} plugin instead: this
      *             method will be removed in release 2.5 or later.
      *
      * {@inheritDoc}

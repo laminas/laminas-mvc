@@ -1,21 +1,20 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Router\Http;
+namespace LaminasTest\Mvc\Router\Http;
 
+use Laminas\Http\Request;
+use Laminas\I18n\Translator\TextDomain;
+use Laminas\I18n\Translator\Translator;
+use Laminas\Mvc\Router\Http\Segment;
+use Laminas\Stdlib\Request as BaseRequest;
+use LaminasTest\Mvc\Router\FactoryTester;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Http\Request;
-use Zend\I18n\Translator\TextDomain;
-use Zend\I18n\Translator\Translator;
-use Zend\Stdlib\Request as BaseRequest;
-use Zend\Mvc\Router\Http\Segment;
-use ZendTest\Mvc\Router\FactoryTester;
 
 class SegmentTest extends TestCase
 {
@@ -172,15 +171,15 @@ class SegmentTest extends TestCase
     public function l10nRouteProvider()
     {
         $this->markTestIncomplete(
-            'Translation tests need to be updated once zend-i18n is updated for zend-servicemanager v3'
+            'Translation tests need to be updated once laminas-i18n is updated for laminas-servicemanager v3'
         );
 
         // @codingStandardsIgnoreStart
         $translator = new Translator();
         $translator->setLocale('en-US');
-        $enLoader     = $this->getMock('Zend\I18n\Translator\Loader\FileLoaderInterface');
-        $deLoader     = $this->getMock('Zend\I18n\Translator\Loader\FileLoaderInterface');
-        $domainLoader = $this->getMock('Zend\I18n\Translator\Loader\FileLoaderInterface');
+        $enLoader     = $this->getMock('Laminas\I18n\Translator\Loader\FileLoaderInterface');
+        $deLoader     = $this->getMock('Laminas\I18n\Translator\Loader\FileLoaderInterface');
+        $domainLoader = $this->getMock('Laminas\I18n\Translator\Loader\FileLoaderInterface');
         $enLoader->expects($this->any())->method('load')->willReturn(new TextDomain(['fw' => 'framework']));
         $deLoader->expects($this->any())->method('load')->willReturn(new TextDomain(['fw' => 'baukasten']));
         $domainLoader->expects($this->any())->method('load')->willReturn(new TextDomain(['fw' => 'fw-alternative']));
@@ -229,22 +228,22 @@ class SegmentTest extends TestCase
         return [
             'unbalanced-brackets' => [
                 '[',
-                'Zend\Mvc\Router\Exception\RuntimeException',
+                'Laminas\Mvc\Router\Exception\RuntimeException',
                 'Found unbalanced brackets'
             ],
             'closing-bracket-without-opening-bracket' => [
                 ']',
-                'Zend\Mvc\Router\Exception\RuntimeException',
+                'Laminas\Mvc\Router\Exception\RuntimeException',
                 'Found closing bracket without matching opening bracket'
             ],
             'empty-parameter-name' => [
                 ':',
-                'Zend\Mvc\Router\Exception\RuntimeException',
+                'Laminas\Mvc\Router\Exception\RuntimeException',
                 'Found empty parameter name'
             ],
             'translated-literal-without-closing-backet' => [
                 '{test',
-                'Zend\Mvc\Router\Exception\RuntimeException',
+                'Laminas\Mvc\Router\Exception\RuntimeException',
                 'Translated literal missing closing bracket'
             ],
         ];
@@ -267,7 +266,7 @@ class SegmentTest extends TestCase
         if ($params === null) {
             $this->assertNull($match);
         } else {
-            $this->assertInstanceOf('Zend\Mvc\Router\Http\RouteMatch', $match);
+            $this->assertInstanceOf('Laminas\Mvc\Router\Http\RouteMatch', $match);
 
             if ($offset === null) {
                 $this->assertEquals(strlen($path), $match->getLength());
@@ -320,7 +319,7 @@ class SegmentTest extends TestCase
         if ($params === null) {
             $this->assertNull($match);
         } else {
-            $this->assertInstanceOf('Zend\Mvc\Router\Http\RouteMatch', $match);
+            $this->assertInstanceOf('Laminas\Mvc\Router\Http\RouteMatch', $match);
 
             if ($offset === null) {
                 $this->assertEquals(strlen($path), $match->getLength());
@@ -370,21 +369,21 @@ class SegmentTest extends TestCase
 
     public function testAssemblingWithMissingParameterInRoot()
     {
-        $this->setExpectedException('Zend\Mvc\Router\Exception\InvalidArgumentException', 'Missing parameter "foo"');
+        $this->setExpectedException('Laminas\Mvc\Router\Exception\InvalidArgumentException', 'Missing parameter "foo"');
         $route = new Segment('/:foo');
         $route->assemble();
     }
 
     public function testTranslatedAssemblingThrowsExceptionWithoutTranslator()
     {
-        $this->setExpectedException('Zend\Mvc\Router\Exception\RuntimeException', 'No translator provided');
+        $this->setExpectedException('Laminas\Mvc\Router\Exception\RuntimeException', 'No translator provided');
         $route = new Segment('/{foo}');
         $route->assemble();
     }
 
     public function testTranslatedMatchingThrowsExceptionWithoutTranslator()
     {
-        $this->setExpectedException('Zend\Mvc\Router\Exception\RuntimeException', 'No translator provided');
+        $this->setExpectedException('Laminas\Mvc\Router\Exception\RuntimeException', 'No translator provided');
         $route = new Segment('/{foo}');
         $route->match(new Request());
     }
@@ -409,7 +408,7 @@ class SegmentTest extends TestCase
     {
         $tester = new FactoryTester($this);
         $tester->testFactory(
-            'Zend\Mvc\Router\Http\Segment',
+            'Laminas\Mvc\Router\Http\Segment',
             [
                 'route' => 'Missing "route" in options array'
             ],

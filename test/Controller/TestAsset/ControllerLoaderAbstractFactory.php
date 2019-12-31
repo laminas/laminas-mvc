@@ -1,22 +1,21 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Controller\TestAsset;
+namespace LaminasTest\Mvc\Controller\TestAsset;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\AbstractFactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\ServiceManager\AbstractFactoryInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 class ControllerLoaderAbstractFactory implements AbstractFactoryInterface
 {
     protected $classmap = array(
-        'path' => 'ZendTest\Mvc\TestAsset\PathController',
+        'path' => 'LaminasTest\Mvc\TestAsset\PathController',
     );
 
     public function canCreate(ContainerInterface $container, $name)
@@ -43,7 +42,7 @@ class ControllerLoaderAbstractFactory implements AbstractFactoryInterface
     /**
      * Create and return DispatchableInterface instance
      *
-     * For use with zend-servicemanager v2; proxies to __invoke().
+     * For use with laminas-servicemanager v2; proxies to __invoke().
      *
      * {@inheritDoc}
      *
