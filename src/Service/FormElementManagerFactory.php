@@ -1,21 +1,20 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Service;
+namespace Laminas\Mvc\Service;
 
-use Zend\Form\Form;
-use Zend\Form\FormElementManager;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\Form\Form;
+use Laminas\Form\FormElementManager;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 class FormElementManagerFactory extends AbstractPluginManagerFactory
 {
-    const PLUGIN_MANAGER_CLASS = 'Zend\Form\FormElementManager';
+    const PLUGIN_MANAGER_CLASS = 'Laminas\Form\FormElementManager';
 
     /**
      * Create and return the MVC controller plugin manager
@@ -29,9 +28,9 @@ class FormElementManagerFactory extends AbstractPluginManagerFactory
         if ($serviceLocator->has('Di')) {
             $di = $serviceLocator->get('Di');
             $im = $di->instanceManager();
-            if (!$im->getTypePreferences('Zend\Form\FormInterface')) {
+            if (!$im->getTypePreferences('Laminas\Form\FormInterface')) {
                 $form = new Form;
-                $im->setTypePreference('Zend\Form\FormInterface', array($form));
+                $im->setTypePreference('Laminas\Form\FormInterface', array($form));
             }
             $plugins->addPeeringServiceManager($serviceLocator);
             $plugins->setRetrieveFromPeeringManagerFirst(true);
