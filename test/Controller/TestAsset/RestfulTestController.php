@@ -1,15 +1,14 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Controller\TestAsset;
+namespace LaminasTest\Mvc\Controller\TestAsset;
 
-use Zend\Mvc\Controller\AbstractRestfulController;
+use Laminas\Mvc\Controller\AbstractRestfulController;
 
 class RestfulTestController extends AbstractRestfulController
 {
@@ -17,7 +16,7 @@ class RestfulTestController extends AbstractRestfulController
     public $entity   = array();
 
     /**
-     * @var \Zend\Stdlib\ResponseInterface|null
+     * @var \Laminas\Stdlib\ResponseInterface|null
      */
     public $headResponse;
 
@@ -47,7 +46,7 @@ class RestfulTestController extends AbstractRestfulController
     /**
      * Delete the collection
      *
-     * @return \Zend\Http\Response
+     * @return \Laminas\Http\Response
      */
     public function deleteList()
     {
@@ -86,7 +85,7 @@ class RestfulTestController extends AbstractRestfulController
     public function head($id = null)
     {
         if ($id) {
-            $this->getResponse()->getHeaders()->addHeaderLine('X-ZF2-Id', $id);
+            $this->getResponse()->getHeaders()->addHeaderLine('X-Laminas-Id', $id);
         }
 
         if ($this->headResponse) {
@@ -97,7 +96,7 @@ class RestfulTestController extends AbstractRestfulController
     /**
      * Return list of allowed HTTP methods
      *
-     * @return \Zend\Http\Response
+     * @return \Laminas\Http\Response
      */
     public function options()
     {

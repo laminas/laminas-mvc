@@ -1,20 +1,19 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Router\Http;
+namespace LaminasTest\Mvc\Router\Http;
 
+use Laminas\Http\Request as Request;
+use Laminas\Mvc\Router\Http\Scheme;
+use Laminas\Stdlib\Request as BaseRequest;
+use Laminas\Uri\Http as HttpUri;
+use LaminasTest\Mvc\Router\FactoryTester;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Http\Request as Request;
-use Zend\Stdlib\Request as BaseRequest;
-use Zend\Uri\Http as HttpUri;
-use Zend\Mvc\Router\Http\Scheme;
-use ZendTest\Mvc\Router\FactoryTester;
 
 class SchemeTest extends TestCase
 {
@@ -26,7 +25,7 @@ class SchemeTest extends TestCase
         $route = new Scheme('https');
         $match = $route->match($request);
 
-        $this->assertInstanceOf('Zend\Mvc\Router\Http\RouteMatch', $match);
+        $this->assertInstanceOf('Laminas\Mvc\Router\Http\RouteMatch', $match);
     }
 
     public function testNoMatchingOnDifferentScheme()
@@ -70,7 +69,7 @@ class SchemeTest extends TestCase
     {
         $tester = new FactoryTester($this);
         $tester->testFactory(
-            'Zend\Mvc\Router\Http\Scheme',
+            'Laminas\Mvc\Router\Http\Scheme',
             array(
                 'scheme' => 'Missing "scheme" in options array',
             ),
