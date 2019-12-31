@@ -1,30 +1,28 @@
 <?php
 
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Controller\Plugin;
+namespace LaminasTest\Mvc\Controller\Plugin;
 
+use Laminas\Form\Element\Collection;
+use Laminas\Form\Form;
+use Laminas\Http\Request;
+use Laminas\Http\Response;
+use Laminas\InputFilter\InputFilter;
+use Laminas\Mvc\ModuleRouteListener;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Mvc\Router\Http\Literal as LiteralRoute;
+use Laminas\Mvc\Router\Http\Segment as SegmentRoute;
+use Laminas\Mvc\Router\RouteMatch;
+use Laminas\Mvc\Router\SimpleRouteStack;
+use Laminas\Stdlib\Parameters;
+use Laminas\Validator\NotEmpty;
+use LaminasTest\Mvc\Controller\TestAsset\SampleController;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Form\Element\Collection;
-use Zend\Form\Form;
-use Zend\Http\Request;
-use Zend\Http\Response;
-use Zend\InputFilter\InputFilter;
-use Zend\Mvc\ModuleRouteListener;
-use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router\Http\Literal as LiteralRoute;
-use Zend\Mvc\Router\Http\Segment as SegmentRoute;
-use Zend\Mvc\Router\RouteMatch;
-use Zend\Mvc\Router\SimpleRouteStack;
-use Zend\Stdlib\Parameters;
-use Zend\Validator\NotEmpty;
-use ZendTest\Mvc\Controller\TestAsset\SampleController;
 
 class FilePostRedirectGetTest extends TestCase
 {
@@ -37,7 +35,7 @@ class FilePostRedirectGetTest extends TestCase
 
     public function setUp()
     {
-        $this->markTestIncomplete('Re-enable when zend-form has been updated to zend-servicemanager v3');
+        $this->markTestIncomplete('Re-enable when laminas-form has been updated to laminas-servicemanager v3');
 
         $this->form = new Form();
 
@@ -45,7 +43,7 @@ class FilePostRedirectGetTest extends TestCase
                 'count' => 1,
                 'allow_add' => true,
                 'target_element' => [
-                    'type' => 'ZendTest\Mvc\Controller\Plugin\TestAsset\LinksFieldset',
+                    'type' => 'LaminasTest\Mvc\Controller\Plugin\TestAsset\LinksFieldset',
                 ],
         ]);
 
@@ -53,7 +51,7 @@ class FilePostRedirectGetTest extends TestCase
         $router->addRoute('home', LiteralRoute::factory([
             'route'    => '/',
             'defaults' => [
-                'controller' => 'ZendTest\Mvc\Controller\TestAsset\SampleController',
+                'controller' => 'LaminasTest\Mvc\Controller\TestAsset\SampleController',
             ]
         ]));
 
@@ -67,7 +65,7 @@ class FilePostRedirectGetTest extends TestCase
         $router->addRoute('ctl', SegmentRoute::factory([
             'route' => '/ctl/:controller',
             'defaults' => [
-                '__NAMESPACE__' => 'ZendTest\Mvc\Controller\TestAsset',
+                '__NAMESPACE__' => 'LaminasTest\Mvc\Controller\TestAsset',
             ]
         ]));
 
@@ -101,7 +99,7 @@ class FilePostRedirectGetTest extends TestCase
         $this->controller->dispatch($this->request, $this->response);
         $prgResultUrl = $this->controller->fileprg($this->form, '/test/getPage', true);
 
-        $this->assertInstanceOf('Zend\Http\Response', $prgResultUrl);
+        $this->assertInstanceOf('Laminas\Http\Response', $prgResultUrl);
         $this->assertTrue($prgResultUrl->getHeaders()->has('Location'));
         $this->assertEquals('/test/getPage', $prgResultUrl->getHeaders()->get('Location')->getUri());
         $this->assertEquals(303, $prgResultUrl->getStatusCode());
@@ -117,14 +115,14 @@ class FilePostRedirectGetTest extends TestCase
         $this->controller->dispatch($this->request, $this->response);
         $prgResultRoute = $this->controller->fileprg($this->form, 'home');
 
-        $this->assertInstanceOf('Zend\Http\Response', $prgResultRoute);
+        $this->assertInstanceOf('Laminas\Http\Response', $prgResultRoute);
         $this->assertTrue($prgResultRoute->getHeaders()->has('Location'));
         $this->assertEquals('/', $prgResultRoute->getHeaders()->get('Location')->getUri());
         $this->assertEquals(303, $prgResultRoute->getStatusCode());
     }
 
     /**
-     * @expectedException Zend\Mvc\Exception\RuntimeException
+     * @expectedException Laminas\Mvc\Exception\RuntimeException
      */
     public function testThrowsExceptionOnRouteWithoutRouter()
     {
@@ -152,7 +150,7 @@ class FilePostRedirectGetTest extends TestCase
         $this->controller->dispatch($this->request, $this->response);
         $prgResultRoute = $this->controller->fileprg($this->form);
 
-        $this->assertInstanceOf('Zend\Http\Response', $prgResultRoute);
+        $this->assertInstanceOf('Laminas\Http\Response', $prgResultRoute);
         $this->assertTrue($prgResultRoute->getHeaders()->has('Location'));
         $this->assertEquals('/', $prgResultRoute->getHeaders()->get('Location')->getUri());
         $this->assertEquals(303, $prgResultRoute->getStatusCode());
@@ -170,7 +168,7 @@ class FilePostRedirectGetTest extends TestCase
         $this->controller->dispatch($this->request, $this->response);
         $prgResultRoute = $this->controller->fileprg($this->form);
 
-        $this->assertInstanceOf('Zend\Http\Response', $prgResultRoute);
+        $this->assertInstanceOf('Laminas\Http\Response', $prgResultRoute);
         $this->assertTrue($prgResultRoute->getHeaders()->has('Location'));
         $this->assertEquals('/foo/1', $prgResultRoute->getHeaders()->get('Location')->getUri());
         $this->assertEquals(303, $prgResultRoute->getStatusCode());
@@ -192,7 +190,7 @@ class FilePostRedirectGetTest extends TestCase
         $this->controller->dispatch($this->request, $this->response);
         $prgResultUrl = $this->controller->fileprg($this->form, '/test/getPage', true);
 
-        $this->assertInstanceOf('Zend\Http\Response', $prgResultUrl);
+        $this->assertInstanceOf('Laminas\Http\Response', $prgResultUrl);
         $this->assertTrue($prgResultUrl->getHeaders()->has('Location'));
         $this->assertEquals('/test/getPage', $prgResultUrl->getHeaders()->get('Location')->getUri());
         $this->assertEquals(303, $prgResultUrl->getStatusCode());
@@ -232,7 +230,7 @@ class FilePostRedirectGetTest extends TestCase
 
         $this->controller->dispatch($this->request, $this->response);
         $prgResultUrl = $this->controller->fileprg($this->form, '/test/getPage', true);
-        $this->assertInstanceOf('Zend\Http\Response', $prgResultUrl);
+        $this->assertInstanceOf('Laminas\Http\Response', $prgResultUrl);
         $this->assertTrue($prgResultUrl->getHeaders()->has('Location'));
         $this->assertEquals('/test/getPage', $prgResultUrl->getHeaders()->get('Location')->getUri());
         $this->assertEquals(303, $prgResultUrl->getStatusCode());
@@ -265,7 +263,7 @@ class FilePostRedirectGetTest extends TestCase
         $this->controller->dispatch($this->request, $this->response);
         $prgResultRoute = $this->controller->fileprg($this->form);
 
-        $this->assertInstanceOf('Zend\Http\Response', $prgResultRoute);
+        $this->assertInstanceOf('Laminas\Http\Response', $prgResultRoute);
         $this->assertTrue($prgResultRoute->getHeaders()->has('Location'));
         $this->assertEquals($expects, $prgResultRoute->getHeaders()->get('Location')->getUri(), 'redirect to the same url');
         $this->assertEquals(303, $prgResultRoute->getStatusCode());

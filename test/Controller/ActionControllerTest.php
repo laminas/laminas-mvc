@@ -1,25 +1,24 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Controller;
+namespace LaminasTest\Mvc\Controller;
 
+use Laminas\Console\Response as ConsoleResponse;
+use Laminas\EventManager\EventManager;
+use Laminas\EventManager\SharedEventManager;
+use Laminas\Http\Request;
+use Laminas\Http\Response;
+use Laminas\Mvc\Controller\PluginManager;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Mvc\Router\RouteMatch;
+use Laminas\ServiceManager\ServiceManager;
 use PHPUnit_Framework_TestCase as TestCase;
 use ReflectionClass;
-use Zend\Console\Response as ConsoleResponse;
-use Zend\EventManager\EventManager;
-use Zend\EventManager\SharedEventManager;
-use Zend\Http\Request;
-use Zend\Http\Response;
-use Zend\Mvc\Controller\PluginManager;
-use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router\RouteMatch;
-use Zend\ServiceManager\ServiceManager;
 
 class ActionControllerTest extends TestCase
 {
@@ -44,7 +43,7 @@ class ActionControllerTest extends TestCase
     }
 
     /**
-     * Create an event manager instance based on zend-eventmanager version
+     * Create an event manager instance based on laminas-eventmanager version
      *
      * @param SharedEventManager
      * @return EventManager
@@ -67,7 +66,7 @@ class ActionControllerTest extends TestCase
         $result = $this->controller->dispatch($this->request, $this->response);
         $response = $this->controller->getResponse();
         $this->assertEquals(404, $response->getStatusCode());
-        $this->assertInstanceOf('Zend\View\Model\ModelInterface', $result);
+        $this->assertInstanceOf('Laminas\View\Model\ModelInterface', $result);
         $this->assertEquals('content', $result->captureTo());
         $vars = $result->getVariables();
         $this->assertArrayHasKey('content', $vars, var_export($vars, 1));
@@ -80,7 +79,7 @@ class ActionControllerTest extends TestCase
         $result = $this->controller->dispatch($this->request, $this->response);
         $response = $this->controller->getResponse();
         $this->assertEquals(404, $response->getStatusCode());
-        $this->assertInstanceOf('Zend\View\Model\ModelInterface', $result);
+        $this->assertInstanceOf('Laminas\View\Model\ModelInterface', $result);
         $this->assertEquals('content', $result->captureTo());
         $vars = $result->getVariables();
         $this->assertArrayHasKey('content', $vars, var_export($vars, 1));
@@ -130,7 +129,7 @@ class ActionControllerTest extends TestCase
         $response = new Response();
         $response->setContent('short circuited!');
         $sharedEvents = $this->controller->getEventManager()->getSharedManager();
-        $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
+        $sharedEvents->attach('Laminas\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
             return $response;
         }, 10);
         $result = $this->controller->dispatch($this->request, $this->response);
@@ -142,7 +141,7 @@ class ActionControllerTest extends TestCase
         $response = new Response();
         $response->setContent('short circuited!');
         $sharedEvents = $this->controller->getEventManager()->getSharedManager();
-        $sharedEvents->attach('Zend\Mvc\Controller\AbstractActionController', MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
+        $sharedEvents->attach('Laminas\Mvc\Controller\AbstractActionController', MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
             return $response;
         }, 10);
         $result = $this->controller->dispatch($this->request, $this->response);
@@ -166,7 +165,7 @@ class ActionControllerTest extends TestCase
         $response = new Response();
         $response->setContent('short circuited!');
         $sharedEvents = $this->controller->getEventManager()->getSharedManager();
-        $sharedEvents->attach('ZendTest\\Mvc\\Controller\\TestAsset\\SampleInterface', MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
+        $sharedEvents->attach('LaminasTest\\Mvc\\Controller\\TestAsset\\SampleInterface', MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
             return $response;
         }, 10);
         $result = $this->controller->dispatch($this->request, $this->response);
@@ -183,7 +182,7 @@ class ActionControllerTest extends TestCase
 
     public function testControllerIsEventAware()
     {
-        $this->assertInstanceOf('Zend\Mvc\InjectApplicationEventInterface', $this->controller);
+        $this->assertInstanceOf('Laminas\Mvc\InjectApplicationEventInterface', $this->controller);
     }
 
     public function testControllerIsPluggable()
@@ -194,7 +193,7 @@ class ActionControllerTest extends TestCase
     public function testComposesPluginManagerByDefault()
     {
         $plugins = $this->controller->getPluginManager();
-        $this->assertInstanceOf('Zend\Mvc\Controller\PluginManager', $plugins);
+        $this->assertInstanceOf('Laminas\Mvc\Controller\PluginManager', $plugins);
     }
 
     public function testPluginManagerComposesController()
@@ -216,7 +215,7 @@ class ActionControllerTest extends TestCase
     public function testMethodOverloadingShouldReturnPluginWhenFound()
     {
         $plugin = $this->controller->url();
-        $this->assertInstanceOf('Zend\Mvc\Controller\Plugin\Url', $plugin);
+        $this->assertInstanceOf('Laminas\Mvc\Controller\Plugin\Url', $plugin);
     }
 
     public function testMethodOverloadingShouldInvokePluginAsFunctorIfPossible()
@@ -235,7 +234,7 @@ class ActionControllerTest extends TestCase
         $result       = $this->controller->dispatch($this->request, $response);
         $testResponse = $this->controller->getResponse();
         $this->assertSame($response, $testResponse);
-        $this->assertInstanceOf('Zend\View\Model\ConsoleModel', $result);
+        $this->assertInstanceOf('Laminas\View\Model\ConsoleModel', $result);
         $vars = $result->getVariables();
         $this->assertTrue(isset($vars['result']));
         $this->assertContains('Page not found', $vars['result']);

@@ -1,18 +1,17 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Service;
+namespace LaminasTest\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
+use Laminas\Hydrator\HydratorPluginManager;
+use Laminas\Mvc\Service\HydratorManagerFactory;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Hydrator\HydratorPluginManager;
-use Zend\Mvc\Service\HydratorManagerFactory;
 
 class HydratorManagerFactoryTest extends TestCase
 {
@@ -24,7 +23,7 @@ class HydratorManagerFactoryTest extends TestCase
         $this->services->get('config')->willReturn([]);
     }
 
-    public function testFactoryReturnsZendHydratorManagerInstance()
+    public function testFactoryReturnsLaminasHydratorManagerInstance()
     {
         $hydrators = $this->factory->__invoke($this->services->reveal(), null);
         $this->assertInstanceOf(HydratorPluginManager::class, $hydrators);
