@@ -1,5 +1,5 @@
 <?php
-namespace ZendTest\Mvc\Service\TestAsset;
+namespace LaminasTest\Mvc\Service\TestAsset;
 
 use DomainException;
 

@@ -1,38 +1,36 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Mvc
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\View;
+namespace LaminasTest\Mvc\View;
 
+use Laminas\EventManager\Event;
+use Laminas\EventManager\EventManager;
+use Laminas\Http\Request;
+use Laminas\Http\Response;
+use Laminas\Mvc\Application;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Mvc\View\Http\DefaultRenderingStrategy;
+use Laminas\View\Helper\Placeholder\Registry as PlaceholderRegistry;
+use Laminas\View\Model\ModelInterface as Model;
+use Laminas\View\Model\ViewModel;
+use Laminas\View\Renderer\FeedRenderer;
+use Laminas\View\Renderer\JsonRenderer;
+use Laminas\View\Renderer\PhpRenderer;
+use Laminas\View\Resolver\TemplateMapResolver;
+use Laminas\View\View;
+use Laminas\View\ViewEvent;
 use PHPUnit_Framework_TestCase as TestCase;
 use ReflectionClass;
 use stdClass;
-use Zend\EventManager\Event;
-use Zend\EventManager\EventManager;
-use Zend\Http\Request;
-use Zend\Http\Response;
-use Zend\Mvc\Application;
-use Zend\Mvc\MvcEvent;
-use Zend\Mvc\View\Http\DefaultRenderingStrategy;
-use Zend\View\Helper\Placeholder\Registry as PlaceholderRegistry;
-use Zend\View\Model\ModelInterface as Model;
-use Zend\View\Renderer\FeedRenderer;
-use Zend\View\Renderer\JsonRenderer;
-use Zend\View\Renderer\PhpRenderer;
-use Zend\View\Resolver\TemplateMapResolver;
-use Zend\View\View;
-use Zend\View\ViewEvent;
-use Zend\View\Model\ViewModel;
 
 /**
- * @category   Zend
- * @package    Zend_Mvc
+ * @category   Laminas
+ * @package    Laminas_Mvc
  * @subpackage UnitTest
  */
 class DefaultRenderingStrategyTest extends TestCase

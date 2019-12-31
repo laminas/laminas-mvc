@@ -1,25 +1,23 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Mvc
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Service;
+namespace Laminas\Mvc\Service;
 
-use Zend\Mvc\Exception\RuntimeException;
-use Zend\Mvc\Exception\InvalidArgumentException;
-use Zend\ModuleManager\Listener\ServiceListener;
-use Zend\ModuleManager\Listener\ServiceListenerInterface;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\ModuleManager\Listener\ServiceListener;
+use Laminas\ModuleManager\Listener\ServiceListenerInterface;
+use Laminas\Mvc\Exception\InvalidArgumentException;
+use Laminas\Mvc\Exception\RuntimeException;
+use Laminas\ServiceManager\FactoryInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 /**
- * @category   Zend
- * @package    Zend_Mvc
+ * @category   Laminas
+ * @package    Laminas_Mvc
  * @subpackage Service
  */
 class ServiceListenerFactory implements FactoryInterface
@@ -41,43 +39,43 @@ class ServiceListenerFactory implements FactoryInterface
      */
     protected $defaultServiceConfig = array(
         'invokables' => array(
-            'DispatchListener' => 'Zend\Mvc\DispatchListener',
-            'RouteListener'    => 'Zend\Mvc\RouteListener',
+            'DispatchListener' => 'Laminas\Mvc\DispatchListener',
+            'RouteListener'    => 'Laminas\Mvc\RouteListener',
         ),
         'factories' => array(
-            'Application'             => 'Zend\Mvc\Service\ApplicationFactory',
-            'Config'                  => 'Zend\Mvc\Service\ConfigFactory',
-            'ControllerLoader'        => 'Zend\Mvc\Service\ControllerLoaderFactory',
-            'ControllerPluginManager' => 'Zend\Mvc\Service\ControllerPluginManagerFactory',
-            'ConsoleAdapter'          => 'Zend\Mvc\Service\ConsoleAdapterFactory',
-            'ConsoleRouter'           => 'Zend\Mvc\Service\RouterFactory',
-            'DependencyInjector'      => 'Zend\Mvc\Service\DiFactory',
-            'HttpRouter'              => 'Zend\Mvc\Service\RouterFactory',
-            'Request'                 => 'Zend\Mvc\Service\RequestFactory',
-            'Response'                => 'Zend\Mvc\Service\ResponseFactory',
-            'Router'                  => 'Zend\Mvc\Service\RouterFactory',
-            'ViewHelperManager'       => 'Zend\Mvc\Service\ViewHelperManagerFactory',
-            'ViewFeedRenderer'        => 'Zend\Mvc\Service\ViewFeedRendererFactory',
-            'ViewFeedStrategy'        => 'Zend\Mvc\Service\ViewFeedStrategyFactory',
-            'ViewJsonRenderer'        => 'Zend\Mvc\Service\ViewJsonRendererFactory',
-            'ViewJsonStrategy'        => 'Zend\Mvc\Service\ViewJsonStrategyFactory',
-            'ViewManager'             => 'Zend\Mvc\Service\ViewManagerFactory',
-            'ViewResolver'            => 'Zend\Mvc\Service\ViewResolverFactory',
-            'ViewTemplateMapResolver' => 'Zend\Mvc\Service\ViewTemplateMapResolverFactory',
-            'ViewTemplatePathStack'   => 'Zend\Mvc\Service\ViewTemplatePathStackFactory',
+            'Application'             => 'Laminas\Mvc\Service\ApplicationFactory',
+            'Config'                  => 'Laminas\Mvc\Service\ConfigFactory',
+            'ControllerLoader'        => 'Laminas\Mvc\Service\ControllerLoaderFactory',
+            'ControllerPluginManager' => 'Laminas\Mvc\Service\ControllerPluginManagerFactory',
+            'ConsoleAdapter'          => 'Laminas\Mvc\Service\ConsoleAdapterFactory',
+            'ConsoleRouter'           => 'Laminas\Mvc\Service\RouterFactory',
+            'DependencyInjector'      => 'Laminas\Mvc\Service\DiFactory',
+            'HttpRouter'              => 'Laminas\Mvc\Service\RouterFactory',
+            'Request'                 => 'Laminas\Mvc\Service\RequestFactory',
+            'Response'                => 'Laminas\Mvc\Service\ResponseFactory',
+            'Router'                  => 'Laminas\Mvc\Service\RouterFactory',
+            'ViewHelperManager'       => 'Laminas\Mvc\Service\ViewHelperManagerFactory',
+            'ViewFeedRenderer'        => 'Laminas\Mvc\Service\ViewFeedRendererFactory',
+            'ViewFeedStrategy'        => 'Laminas\Mvc\Service\ViewFeedStrategyFactory',
+            'ViewJsonRenderer'        => 'Laminas\Mvc\Service\ViewJsonRendererFactory',
+            'ViewJsonStrategy'        => 'Laminas\Mvc\Service\ViewJsonStrategyFactory',
+            'ViewManager'             => 'Laminas\Mvc\Service\ViewManagerFactory',
+            'ViewResolver'            => 'Laminas\Mvc\Service\ViewResolverFactory',
+            'ViewTemplateMapResolver' => 'Laminas\Mvc\Service\ViewTemplateMapResolverFactory',
+            'ViewTemplatePathStack'   => 'Laminas\Mvc\Service\ViewTemplatePathStackFactory',
         ),
         'aliases' => array(
             'Configuration'                          => 'Config',
             'Console'                                => 'ConsoleAdapter',
             'ControllerPluginBroker'                 => 'ControllerPluginManager',
             'Di'                                     => 'DependencyInjector',
-            'Zend\Di\LocatorInterface'               => 'DependencyInjector',
-            'Zend\Mvc\Controller\PluginBroker'       => 'ControllerPluginBroker',
-            'Zend\Mvc\Controller\PluginManager'      => 'ControllerPluginManager',
-            'Zend\View\Resolver\TemplateMapResolver' => 'ViewTemplateMapResolver',
-            'Zend\View\Resolver\TemplatePathStack'   => 'ViewTemplatePathStack',
-            'Zend\View\Resolver\AggregateResolver'   => 'ViewResolver',
-            'Zend\View\Resolver\ResolverInterface'   => 'ViewResolver',
+            'Laminas\Di\LocatorInterface'               => 'DependencyInjector',
+            'Laminas\Mvc\Controller\PluginBroker'       => 'ControllerPluginBroker',
+            'Laminas\Mvc\Controller\PluginManager'      => 'ControllerPluginManager',
+            'Laminas\View\Resolver\TemplateMapResolver' => 'ViewTemplateMapResolver',
+            'Laminas\View\Resolver\TemplatePathStack'   => 'ViewTemplatePathStack',
+            'Laminas\View\Resolver\AggregateResolver'   => 'ViewResolver',
+            'Laminas\View\Resolver\ResolverInterface'   => 'ViewResolver',
         ),
     );
 
@@ -85,7 +83,7 @@ class ServiceListenerFactory implements FactoryInterface
      * Create the service listener service
      *
      * Tries to get a service named ServiceListenerInterface from the service
-     * locator, otherwise creates a Zend\ModuleManager\Listener\ServiceListener
+     * locator, otherwise creates a Laminas\ModuleManager\Listener\ServiceListener
      * service, passing it the service locator instance and the default service
      * configuration, which can be overridden by modules.
      *
@@ -113,7 +111,7 @@ class ServiceListenerFactory implements FactoryInterface
             if (!$serviceListener instanceof ServiceListenerInterface) {
                 throw new RuntimeException(
                     'The service named ServiceListenerInterface must implement ' .
-                    'Zend\ModuleManager\Listener\ServiceListenerInterface'
+                    'Laminas\ModuleManager\Listener\ServiceListenerInterface'
                 );
             }
 

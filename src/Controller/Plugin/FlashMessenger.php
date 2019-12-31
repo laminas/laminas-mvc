@@ -1,28 +1,26 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Mvc
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Controller\Plugin;
+namespace Laminas\Mvc\Controller\Plugin;
 
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
-use Zend\Session\Container;
-use Zend\Session\ManagerInterface as Manager;
-use Zend\Session\SessionManager;
-use Zend\Stdlib\SplQueue;
+use Laminas\Session\Container;
+use Laminas\Session\ManagerInterface as Manager;
+use Laminas\Session\SessionManager;
+use Laminas\Stdlib\SplQueue;
 
 /**
  * Flash Messenger - implement session-based messages
  *
- * @category   Zend
- * @package    Zend_Mvc
+ * @category   Laminas
+ * @package    Laminas_Mvc
  * @subpackage Controller\Plugin
  */
 class FlashMessenger extends AbstractPlugin implements IteratorAggregate, Countable

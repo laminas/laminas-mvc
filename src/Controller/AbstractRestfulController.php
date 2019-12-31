@@ -1,27 +1,25 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Mvc
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Controller;
+namespace Laminas\Mvc\Controller;
 
-use Zend\Http\PhpEnvironment\Response as HttpResponse;
-use Zend\Http\Request as HttpRequest;
-use Zend\Mvc\Exception;
-use Zend\Mvc\MvcEvent;
-use Zend\Stdlib\RequestInterface as Request;
-use Zend\Stdlib\ResponseInterface as Response;
+use Laminas\Http\PhpEnvironment\Response as HttpResponse;
+use Laminas\Http\Request as HttpRequest;
+use Laminas\Mvc\Exception;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Stdlib\RequestInterface as Request;
+use Laminas\Stdlib\ResponseInterface as Response;
 
 /**
  * Abstract RESTful controller
  *
- * @category   Zend
- * @package    Zend_Mvc
+ * @category   Laminas
+ * @package    Laminas_Mvc
  * @subpackage Controller
  */
 abstract class AbstractRestfulController extends AbstractController
