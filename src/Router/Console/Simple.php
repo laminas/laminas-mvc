@@ -1,32 +1,31 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
 /**
  * @namespace
  */
-namespace Zend\Mvc\Router\Console;
+namespace Laminas\Mvc\Router\Console;
 
+use Laminas\Console\Request as ConsoleRequest;
+use Laminas\Console\RouteMatcher\DefaultRouteMatcher;
+use Laminas\Console\RouteMatcher\RouteMatcherInterface;
+use Laminas\Filter\FilterChain;
+use Laminas\Mvc\Router\Exception;
+use Laminas\Stdlib\ArrayUtils;
+use Laminas\Stdlib\RequestInterface as Request;
+use Laminas\Validator\ValidatorChain;
 use Traversable;
-use Zend\Console\RouteMatcher\DefaultRouteMatcher;
-use Zend\Console\Request as ConsoleRequest;
-use Zend\Console\RouteMatcher\RouteMatcherInterface;
-use Zend\Filter\FilterChain;
-use Zend\Mvc\Router\Exception;
-use Zend\Stdlib\ArrayUtils;
-use Zend\Stdlib\RequestInterface as Request;
-use Zend\Validator\ValidatorChain;
 
 /**
  * Segment route.
  *
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @copyright  Copyright (c) 2005-2010 Laminas (https://www.zend.com)
+ * @license    https://getlaminas.org/license/new-bsd     New BSD License
  * @see        http://guides.rubyonrails.org/routing.html
  */
 class Simple implements RouteInterface
@@ -77,7 +76,7 @@ class Simple implements RouteInterface
     /**
      * factory(): defined by Route interface.
      *
-     * @see    \Zend\Mvc\Router\RouteInterface::factory()
+     * @see    \Laminas\Mvc\Router\RouteInterface::factory()
      * @param  array|Traversable $options
      * @throws Exception\InvalidArgumentException
      * @return self
@@ -148,7 +147,7 @@ class Simple implements RouteInterface
     /**
      * assemble(): Defined by Route interface.
      *
-     * @see    \Zend\Mvc\Router\RouteInterface::assemble()
+     * @see    \Laminas\Mvc\Router\RouteInterface::assemble()
      * @param  array $params
      * @param  array $options
      * @return mixed

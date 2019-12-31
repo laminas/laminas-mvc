@@ -1,51 +1,50 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Router;
+namespace LaminasTest\Mvc\Router;
 
-use Zend\Di\Di;
-use Zend\Mvc\Router\RoutePluginManager;
-use Zend\ServiceManager\Di\DiAbstractServiceFactory;
+use Laminas\Di\Di;
+use Laminas\Mvc\Router\RoutePluginManager;
+use Laminas\ServiceManager\Di\DiAbstractServiceFactory;
 use PHPUnit_Framework_TestCase as TestCase;
 
 /**
- * @group      Zend_Router
+ * @group      Laminas_Router
  */
 class RoutePluginManagerTest extends TestCase
 {
     public function testLoadNonExistentRoute()
     {
         $routes = new RoutePluginManager();
-        $this->setExpectedException('Zend\ServiceManager\Exception\ServiceNotFoundException');
+        $this->setExpectedException('Laminas\ServiceManager\Exception\ServiceNotFoundException');
         $routes->get('foo');
     }
 
     public function testCanLoadAnyRoute()
     {
         $routes = new RoutePluginManager();
-        $routes->setInvokableClass('DummyRoute', 'ZendTest\Mvc\Router\TestAsset\DummyRoute');
+        $routes->setInvokableClass('DummyRoute', 'LaminasTest\Mvc\Router\TestAsset\DummyRoute');
         $route = $routes->get('DummyRoute');
 
-        $this->assertInstanceOf('ZendTest\Mvc\Router\TestAsset\DummyRoute', $route);
+        $this->assertInstanceOf('LaminasTest\Mvc\Router\TestAsset\DummyRoute', $route);
     }
 
     public function shippedRoutes()
     {
         return array(
-            'hostname' => array('Zend\Mvc\Router\Http\Hostname', array('route' => 'example.com')),
-            'literal'  => array('Zend\Mvc\Router\Http\Literal', array('route' => '/example')),
-            'regex'    => array('Zend\Mvc\Router\Http\Regex', array('regex' => '[a-z]+', 'spec' => '%s')),
-            'scheme'   => array('Zend\Mvc\Router\Http\Scheme', array('scheme' => 'http')),
-            'segment'  => array('Zend\Mvc\Router\Http\Segment', array('route' => '/:segment')),
-            'wildcard' => array('Zend\Mvc\Router\Http\Wildcard', array()),
-            //'query'    => array('Zend\Mvc\Router\Http\Query', array()),
-            'method'   => array('Zend\Mvc\Router\Http\Method', array('verb' => 'GET')),
+            'hostname' => array('Laminas\Mvc\Router\Http\Hostname', array('route' => 'example.com')),
+            'literal'  => array('Laminas\Mvc\Router\Http\Literal', array('route' => '/example')),
+            'regex'    => array('Laminas\Mvc\Router\Http\Regex', array('regex' => '[a-z]+', 'spec' => '%s')),
+            'scheme'   => array('Laminas\Mvc\Router\Http\Scheme', array('scheme' => 'http')),
+            'segment'  => array('Laminas\Mvc\Router\Http\Segment', array('route' => '/:segment')),
+            'wildcard' => array('Laminas\Mvc\Router\Http\Wildcard', array()),
+            //'query'    => array('Laminas\Mvc\Router\Http\Query', array()),
+            'method'   => array('Laminas\Mvc\Router\Http\Method', array('verb' => 'GET')),
         );
     }
 
