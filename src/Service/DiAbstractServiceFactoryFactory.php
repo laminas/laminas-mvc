@@ -1,26 +1,25 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Service;
+namespace Laminas\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
-use Zend\Mvc\Exception;
-use Zend\ServiceManager\Di\DiAbstractServiceFactory;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\ServiceManager\ServiceManager;
+use Laminas\Mvc\Exception;
+use Laminas\ServiceManager\Di\DiAbstractServiceFactory;
+use Laminas\ServiceManager\FactoryInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
+use Laminas\ServiceManager\ServiceManager;
 
 /**
- * @deprecated Since 2.7.9. The factory is now defined in zend-servicemanager-di,
- *     and removed in 3.0.0. Use Zend\ServiceManager\Di\DiAbstractServiceFactoryFactory
- *     from zend-servicemanager-di if you are using zend-servicemanager v3, and/or when
- *     ready to migrate to zend-mvc 3.0.
+ * @deprecated Since 2.7.9. The factory is now defined in laminas-servicemanager-di,
+ *     and removed in 3.0.0. Use Laminas\ServiceManager\Di\DiAbstractServiceFactoryFactory
+ *     from laminas-servicemanager-di if you are using laminas-servicemanager v3, and/or when
+ *     ready to migrate to laminas-mvc 3.0.
  */
 class DiAbstractServiceFactoryFactory implements FactoryInterface
 {
@@ -31,15 +30,15 @@ class DiAbstractServiceFactoryFactory implements FactoryInterface
      * @param string $name
      * @param null|array $options
      * @return DiAbstractServiceFactory
-     * @throws Exception\RuntimeException if zend-servicemanager v3 is in use.
+     * @throws Exception\RuntimeException if laminas-servicemanager v3 is in use.
      */
     public function __invoke(ContainerInterface $container, $name, array $options = null)
     {
         if (! class_exists(DiAbstractServiceFactory::class)) {
             throw new Exception\RuntimeException(sprintf(
-                "%s is not compatible with zend-servicemanager v3, which you are currently using. \n"
-                . "Please run 'composer require zendframework/zend-servicemanager-di', and then update\n"
-                . "your configuration to use Zend\ServiceManager\Di\DiAbstractServiceFactoryFactory instead.",
+                "%s is not compatible with laminas-servicemanager v3, which you are currently using. \n"
+                . "Please run 'composer require laminas/laminas-servicemanager-di', and then update\n"
+                . "your configuration to use Laminas\ServiceManager\Di\DiAbstractServiceFactoryFactory instead.",
                 __CLASS__
             ));
         }
@@ -56,7 +55,7 @@ class DiAbstractServiceFactoryFactory implements FactoryInterface
     /**
      * Create and return DiAbstractServiceFactory instance
      *
-     * For use with zend-servicemanager v2; proxies to __invoke().
+     * For use with laminas-servicemanager v2; proxies to __invoke().
      *
      * @param ServiceLocatorInterface $container
      * @return DiAbstractServiceFactory

@@ -1,13 +1,14 @@
 <?php
+
 /**
- * @see       https://github.com/zendframework/zend-mvc for the canonical source repository
- * @copyright Copyright (c) 2018 Zend Technologies USA Inc. (https://www.zend.com)
- * @license   https://github.com/zendframework/zend-mvc/blob/master/LICENSE.md New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc;
+namespace Laminas\Mvc;
 
-use Zend\ServiceManager\PluginManagerInterface;
+use Laminas\ServiceManager\PluginManagerInterface;
 
 if (class_exists(PluginManagerInterface::class)) {
     class_alias(Controller\PluginManagerSM3::class, Controller\PluginManager::class, true);
