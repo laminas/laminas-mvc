@@ -1,6 +1,6 @@
 <?php
 
-namespace Zend\Validator\File;
+namespace Laminas\Validator\File;
 
 function is_uploaded_file($filename)
 {
