@@ -1,24 +1,23 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Controller;
+namespace LaminasTest\Mvc\Controller;
 
+use Laminas\EventManager\EventManagerAwareInterface;
+use Laminas\EventManager\EventManagerInterface;
+use Laminas\Mvc\Controller\AbstractController;
+use Laminas\Mvc\InjectApplicationEventInterface;
+use Laminas\Stdlib\DispatchableInterface;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
-use Zend\EventManager\EventManagerAwareInterface;
-use Zend\EventManager\EventManagerInterface;
-use Zend\Mvc\Controller\AbstractController;
-use Zend\Mvc\InjectApplicationEventInterface;
-use Zend\Stdlib\DispatchableInterface;
 
 /**
- * @covers \Zend\Mvc\Controller\AbstractController
+ * @covers \Laminas\Mvc\Controller\AbstractController
  */
 class AbstractControllerTest extends TestCase
 {

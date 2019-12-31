@@ -18,7 +18,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- [#247](https://github.com/zendframework/zend-mvc/pull/247) fixes bug in
+- [zendframework/zend-mvc#247](https://github.com/zendframework/zend-mvc/pull/247) fixes bug in
   controller plugin Forward, introduced in 2.1.0, where problem listeners were
   not detached for forwarded controller dispatch
 
@@ -26,23 +26,23 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- [#217](https://github.com/zendframework/zend-mvc/pull/217) adds support for
+- [zendframework/zend-mvc#217](https://github.com/zendframework/zend-mvc/pull/217) adds support for
   middleware _pipelines_ when using the `MiddlewareListener`. You can now
   specify an _array` of middleware for the `middleware` attached to a route, and
-  it will be marshaled into a `Zend\Stratigility\MiddlewarePipe` instance, using
+  it will be marshaled into a `Laminas\Stratigility\MiddlewarePipe` instance, using
   the same rules as if you specified a single middleware.
 
-- [#236](https://github.com/zendframework/zend-mvc/pull/236) adds the ability to
+- [zendframework/zend-mvc#236](https://github.com/zendframework/zend-mvc/pull/236) adds the ability to
   attach dispatch listeners to middleware when using the `MiddlewareListener`.
-  Attach shared events to the class identifier `Zend\Mvc\Controller\MiddlewareController`.
+  Attach shared events to the class identifier `Laminas\Mvc\Controller\MiddlewareController`.
   This feature helps ensure that listeners that should run for every controller
   (e.g., authentication or authorization listeners) will run even for
   middleware.
 
-- [#231](https://github.com/zendframework/zend-mvc/pull/231) adds a
+- [zendframework/zend-mvc#231](https://github.com/zendframework/zend-mvc/pull/231) adds a
   `composer.json` suggestion for zendframework/zend-paginator.
 
-- [#232](https://github.com/zendframework/zend-mvc/pull/232) adds a
+- [zendframework/zend-mvc#232](https://github.com/zendframework/zend-mvc/pull/232) adds a
   `composer.json` suggestion for zendframework/zend-log.
 
 ### Deprecated
@@ -51,13 +51,13 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Removed
 
-- [#211](https://github.com/zendframework/zend-mvc/pull/211) Removed unused
-  zend-servicemanager v2 and zend-eventmanager v2 compatibility code since
-  zend-mvc requires v3 of those components.
+- [zendframework/zend-mvc#211](https://github.com/zendframework/zend-mvc/pull/211) Removed unused
+  laminas-servicemanager v2 and laminas-eventmanager v2 compatibility code since
+  laminas-mvc requires v3 of those components.
 
 ### Fixed
 
-- [#237](https://github.com/zendframework/zend-mvc/pull/237) fixes the return
+- [zendframework/zend-mvc#237](https://github.com/zendframework/zend-mvc/pull/237) fixes the return
   annotations for `HttpDefaultRenderingStrategyFactory::createService` and
   `injectLayoutTemplate()` to be `HttpDefaultRenderingStrategy` and not
   `HttpDefaultRendererStrategy`.
@@ -78,7 +78,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- [#210](https://github.com/zendframework/zend-mvc/pull/210) copies the 
+- [zendframework/zend-mvc#210](https://github.com/zendframework/zend-mvc/pull/210) copies the 
   `RouteMatch` and its parameters to the PSR-7 `ServerRequest` object so that
   they are available to middleware.
 
@@ -86,7 +86,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- [#198](https://github.com/zendframework/zend-mvc/pull/198) adds a factory for
+- [zendframework/zend-mvc#198](https://github.com/zendframework/zend-mvc/pull/198) adds a factory for
   the `SendResponseListener`, to ensure that it is injected with an event
   manager instance from the outset; this fixes issues with delegator factories
   that registered listeners with it in previous versions.
@@ -101,10 +101,10 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- [#184](https://github.com/zendframework/zend-mvc/pull/184) provides a
+- [zendframework/zend-mvc#184](https://github.com/zendframework/zend-mvc/pull/184) provides a
   performance optimization for `DELETE` requests to `AbstractRestfulController`
   instances.
-- [#187](https://github.com/zendframework/zend-mvc/pull/187) removes a typehint
+- [zendframework/zend-mvc#187](https://github.com/zendframework/zend-mvc/pull/187) removes a typehint
   for `Exception` from an argument in
   `DispatchListener::marshalControllerNotFoundEvent()`, allowing it to be used
   with PHP 7 `Throwable` instances.
@@ -113,7 +113,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- [#163](https://github.com/zendframework/zend-mvc/pull/163) adds support to the
+- [zendframework/zend-mvc#163](https://github.com/zendframework/zend-mvc/pull/163) adds support to the
   `AcceptableViewModelSelector` plugin for controller maps in the `view_manager`
   configuration in the format:
 
@@ -123,9 +123,9 @@ All notable changes to this project will be documented in this file, in reverse 
   ]
   ```
 
-  This fixes an issue observed when running with Apigility.
+  This fixes an issue observed when running with Laminas API Tools.
 
-- [#163](https://github.com/zendframework/zend-mvc/pull/163) adds support to the
+- [zendframework/zend-mvc#163](https://github.com/zendframework/zend-mvc/pull/163) adds support to the
   `InjectTemplateListener` for specifying whether or not to prefer the
   controller matched during routing via routing configuration:
 
@@ -155,7 +155,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- [#161](https://github.com/zendframework/zend-mvc/pull/161) fixes the
+- [zendframework/zend-mvc#161](https://github.com/zendframework/zend-mvc/pull/161) fixes the
   `DispatchListener::marshalBadControllerEvent()` method to allow either
   `Throwable` or `Exception` types for the `$exception` argument.
 
@@ -163,7 +163,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- [#165](https://github.com/zendframework/zend-mvc/pull/165) adds a new
+- [zendframework/zend-mvc#165](https://github.com/zendframework/zend-mvc/pull/165) adds a new
   controller factory, `LazyControllerAbstractFactory`, that provides a
   Reflection-based approach to instantiating controllers. You may register it
   either as an abstract factory or as a named factory in your controller
@@ -172,10 +172,10 @@ All notable changes to this project will be documented in this file, in reverse 
   ```php
   'controllers' => [
       'abstract_factories' => [
-          'Zend\Mvc\Controller\LazyControllerAbstractFactory`,
+          'Laminas\Mvc\Controller\LazyControllerAbstractFactory`,
       ],
       'factories' => [
-          'MyModule\Controller\FooController' => 'Zend\Mvc\Controller\LazyControllerAbstractFactory`,
+          'MyModule\Controller\FooController' => 'Laminas\Mvc\Controller\LazyControllerAbstractFactory`,
       ],
   ],
   ```
@@ -216,103 +216,103 @@ for full details on how to migrate your v2 application.
 
 ### Removed
 
-- [#99](https://github.com/zendframework/zend-mvc/pull/99) removes all router
-  functionality (everything in the `Zend\Mvc\Router` namespace. This
-  functionality is now provided by the [zend-router](https://zendframework.github.io/zend-router/)
-  component, which becomes a requirement of zend-mvc. The removal also includes
-  all service factories related to routing, as they are provided by zend-router.
-- [#99](https://github.com/zendframework/zend-mvc/pull/99) removes all
+- [zendframework/zend-mvc#99](https://github.com/zendframework/zend-mvc/pull/99) removes all router
+  functionality (everything in the `Laminas\Mvc\Router` namespace. This
+  functionality is now provided by the [laminas-router](https://docs.laminas.dev/laminas-router/)
+  component, which becomes a requirement of laminas-mvc. The removal also includes
+  all service factories related to routing, as they are provided by laminas-router.
+- [zendframework/zend-mvc#99](https://github.com/zendframework/zend-mvc/pull/99) removes all
   console-related functionality, including the `AbstractConsoleController`, the
   `CreateConsoleNotFoundModel` controller plugin, the `ConsoleResponseSender`,
-  and all classes under the `Zend\Mvc\View\Console` namespace; these are now
-  provided by the [zend-mvc-console](https://zendframework.github.io/zend-mvc-console/)
+  and all classes under the `Laminas\Mvc\View\Console` namespace; these are now
+  provided by the [laminas-mvc-console](https://docs.laminas.dev/laminas-mvc-console/)
   component. (That component also includes console-specific routes, which were
-  removed from zend-router.) All service factories related to console
-  functionality are also now provided by zend-mvc-console.
-- [#104](https://github.com/zendframework/zend-mvc/pull/104) removes the `prg()`
+  removed from laminas-router.) All service factories related to console
+  functionality are also now provided by laminas-mvc-console.
+- [zendframework/zend-mvc#104](https://github.com/zendframework/zend-mvc/pull/104) removes the `prg()`
   plugin. It can now be installed separately via the
   zendframework/zend-mvc-plugin-prg package.
-- [#108](https://github.com/zendframework/zend-mvc/pull/108) removes the
+- [zendframework/zend-mvc#108](https://github.com/zendframework/zend-mvc/pull/108) removes the
   `fileprg()`, `flashMessenger()`, and `identity()` plugins. These can be
-  installed via, respectively, the zendframework/zend-mvc-plugin-fileprg,
-  zendframework/zend-mvc-plugin-flashmessenger, and
+  installed via, respectively, the laminas/laminas-mvc-plugin-fileprg,
+  laminas/laminas-mvc-plugin-flashmessenger, and
   zendframework/zend-mvc-plugin-identity packages.
-- [#110](https://github.com/zendframework/zend-mvc/pull/110) removes the
+- [zendframework/zend-mvc#110](https://github.com/zendframework/zend-mvc/pull/110) removes the
   internationalization functionality from the component, including factories for
   the translator and translator loader manager. This functionality is
-  now provided by the [zend-i18n](https://zendframework.github.io/zend-i18n/)
-  and [zend-mvc-i18n](https://zendframework.github.io/zend-mvc-i18n/) packages;
+  now provided by the [laminas-i18n](https://docs.laminas.dev/laminas-i18n/)
+  and [laminas-mvc-i18n](https://docs.laminas.dev/laminas-mvc-i18n/) packages;
   installing `zendframework/zend-mvc-i18n` will restore i18n functionality in
   your application.
-- [#115](https://github.com/zendframework/zend-mvc/pull/115) removes the
-  requirement for zend-filter in the `InjectTemplateListener` by inlining the
-  logic from `Zend\Filter\Word\CamelCaseToDash`.
-- [#116](https://github.com/zendframework/zend-mvc/pull/116) removes the
-  functionality related to integrating zend-servicemanager and zend-di. If you
+- [zendframework/zend-mvc#115](https://github.com/zendframework/zend-mvc/pull/115) removes the
+  requirement for laminas-filter in the `InjectTemplateListener` by inlining the
+  logic from `Laminas\Filter\Word\CamelCaseToDash`.
+- [zendframework/zend-mvc#116](https://github.com/zendframework/zend-mvc/pull/116) removes the
+  functionality related to integrating laminas-servicemanager and laminas-di. If you
   used this functionality previously, it is now available via a separate
-  package, [zend-servicemanager-di](https://zendframework.github.io/zend-servicemanager-di/]).
-- [#117](https://github.com/zendframework/zend-mvc/pull/117) removes the
-  functionality related to exposing and configuring the zend-filter
+  package, [laminas-servicemanager-di](https://docs.laminas.dev/laminas-servicemanager-di/]).
+- [zendframework/zend-mvc#117](https://github.com/zendframework/zend-mvc/pull/117) removes the
+  functionality related to exposing and configuring the laminas-filter
   `FilterPluginManager`. That functionality is now exposed directly by the
-  zend-filter component.
-- [#118](https://github.com/zendframework/zend-mvc/pull/118) removes the
-  functionality related to exposing and configuring the zend-validator
+  laminas-filter component.
+- [zendframework/zend-mvc#118](https://github.com/zendframework/zend-mvc/pull/118) removes the
+  functionality related to exposing and configuring the laminas-validator
   `ValidatorPluginManager`. That functionality is now exposed directly by the
-  zend-validator component.
-- [#119](https://github.com/zendframework/zend-mvc/pull/119) removes the
-  functionality related to exposing and configuring the zend-serializer
+  laminas-validator component.
+- [zendframework/zend-mvc#119](https://github.com/zendframework/zend-mvc/pull/119) removes the
+  functionality related to exposing and configuring the laminas-serializer
   `SerializerAdapterManager`. That functionality is now exposed directly by the
-  zend-serializer component.
-- [#120](https://github.com/zendframework/zend-mvc/pull/120) removes the
-  functionality related to exposing and configuring the zend-hydrator
+  laminas-serializer component.
+- [zendframework/zend-mvc#120](https://github.com/zendframework/zend-mvc/pull/120) removes the
+  functionality related to exposing and configuring the laminas-hydrator
   `HydratorManager`. That functionality is now exposed directly by the
-  zend-hydrator component.
-- [#54](https://github.com/zendframework/zend-mvc/pull/54) removes the
+  laminas-hydrator component.
+- [zendframework/zend-mvc#54](https://github.com/zendframework/zend-mvc/pull/54) removes the
   `$configuration` argument (first required argument) from the
-  `Zend\Mvc\Application` constructor. If you were directly instantiating an
+  `Laminas\Mvc\Application` constructor. If you were directly instantiating an
   `Application` instance previously (whether in your bootstrap, a factory, or
   tests), you will need to update how you instantiate the instance. (The
   argument was removed as the value was never used.)
-- [#121](https://github.com/zendframework/zend-mvc/pull/121) removes the
-  functionality related to exposing and configuring the zend-log
+- [zendframework/zend-mvc#121](https://github.com/zendframework/zend-mvc/pull/121) removes the
+  functionality related to exposing and configuring the laminas-log
   `ProcessorPluginManager` and `WriterPluginManager`. That functionality is now
-  exposed directly by the zend-log component (with the addition of exposing the
+  exposed directly by the laminas-log component (with the addition of exposing the
   `FilterPluginManager` and `FormatterPluginManager` as well).
-- [#123](https://github.com/zendframework/zend-mvc/pull/123) removes the
-  functionality related to exposing and configuring the zend-inputfilter
+- [zendframework/zend-mvc#123](https://github.com/zendframework/zend-mvc/pull/123) removes the
+  functionality related to exposing and configuring the laminas-inputfilter
   `InputFilterManager`. That functionality is now exposed directly by the
-  zend-inputfilter component.
-- [#124](https://github.com/zendframework/zend-mvc/pull/124) removes the
-  functionality related to exposing and configuring zend-form, including the
+  laminas-inputfilter component.
+- [zendframework/zend-mvc#124](https://github.com/zendframework/zend-mvc/pull/124) removes the
+  functionality related to exposing and configuring laminas-form, including the
   `FormElementManager`, `FormAnnotationBuilder`, and the
   `FormAbstractServiceFactory`. The functionality is now exposed directly by the
-  zend-form component.
-- [#125](https://github.com/zendframework/zend-mvc/pull/125) removes the
+  laminas-form component.
+- [zendframework/zend-mvc#125](https://github.com/zendframework/zend-mvc/pull/125) removes the
   functionality from the `ViewHelperManager` factory for fetching configuration
   classes from other components and using them to configure the instance. In all
   cases, this is now done by the components themselves.
-- [#128](https://github.com/zendframework/zend-mvc/pull/128) removes the
+- [zendframework/zend-mvc#128](https://github.com/zendframework/zend-mvc/pull/128) removes the
   `ControllerLoaderFactory`, and the `ControllerLoader` service alias; use
   `ControllerManagerFactory` and `ControllerManager`, respectively, instead.
-- [#128](https://github.com/zendframework/zend-mvc/pull/128) removes
-  `Zend\Mvc\View\SendResponseListener`; use `Zend\Mvc\SendResponseListener`
+- [zendframework/zend-mvc#128](https://github.com/zendframework/zend-mvc/pull/128) removes
+  `Laminas\Mvc\View\SendResponseListener`; use `Laminas\Mvc\SendResponseListener`
   instead.
-- [#128](https://github.com/zendframework/zend-mvc/pull/128) removes
+- [zendframework/zend-mvc#128](https://github.com/zendframework/zend-mvc/pull/128) removes
   `Application::send()`, which has been a no-op since 2.2.
-- [#128](https://github.com/zendframework/zend-mvc/pull/128) removes
+- [zendframework/zend-mvc#128](https://github.com/zendframework/zend-mvc/pull/128) removes
   `DispatchListener::marshallControllerNotFoundEvent()`, which has proxied to
   `marshalControllerNotFoundEvent()` since 2.2.
-- [#128](https://github.com/zendframework/zend-mvc/pull/128) removes
+- [zendframework/zend-mvc#128](https://github.com/zendframework/zend-mvc/pull/128) removes
   the `ServiceLocatorAwareInterface` implementation
   (`setServiceLocator()`/`getServiceLocator()` methods) from
   `AbstractController`. You will need to inject your dependencies specifically
   going forward.
-- [#128](https://github.com/zendframework/zend-mvc/pull/128) removes
+- [zendframework/zend-mvc#128](https://github.com/zendframework/zend-mvc/pull/128) removes
   the `ServiceLocatorAwareInterface` initializers defined in
-  `Zend\Mvc\Service\ServiceManagerConfig` and
-  `Zend\Mvc\Controller\ControllerManager`. You will need to inject your
+  `Laminas\Mvc\Service\ServiceManagerConfig` and
+  `Laminas\Mvc\Controller\ControllerManager`. You will need to inject your
   dependencies specifically going forward.
-- [#139](https://github.com/zendframework/zend-mvc/pull/139) removes support for
+- [zendframework/zend-mvc#139](https://github.com/zendframework/zend-mvc/pull/139) removes support for
   pseudo-module template resolution using the `__NAMESPACE__` routing
   configuration option, as it often led to conflicts when multiple modules
   shared a common top-level namespace. Auto-resolution now always takes into
@@ -320,42 +320,42 @@ for full details on how to migrate your v2 application.
 
 ### Fixed
 
-- [#113](https://github.com/zendframework/zend-mvc/pull/113) updates
-  `AbstractRestfulController` to make usage of zend-json for deserializing JSON
+- [zendframework/zend-mvc#113](https://github.com/zendframework/zend-mvc/pull/113) updates
+  `AbstractRestfulController` to make usage of laminas-json for deserializing JSON
   requests optional. `json_decode()` is now used by default, falling back to
-  `Zend\Json\Json::decode()` if it is available. If neither are available, an
+  `Laminas\Json\Json::decode()` if it is available. If neither are available, an
   exception is now thrown.
-- [#115](https://github.com/zendframework/zend-mvc/pull/115) and
-  [#128](https://github.com/zendframework/zend-mvc/pull/128) update the
-  dependency list, per https://github.com/zendframework/maintainers/wiki/zend-mvc-v3-refactor:-reduce-components#required-components,
+- [zendframework/zend-mvc#115](https://github.com/zendframework/zend-mvc/pull/115) and
+  [zendframework/zend-mvc#128](https://github.com/zendframework/zend-mvc/pull/128) update the
+  dependency list, per https://github.com/laminas/maintainers/wiki/laminas-mvc-v3-refactor:-reduce-components#required-components,
   to do the following:
   - Makes the following components required:
-    - zend-http
-    - zend-modulemanager
-    - zend-router
-    - zend-view
+    - laminas-http
+    - laminas-modulemanager
+    - laminas-router
+    - laminas-view
   - Makes the following components optional:
-    - zend-json
-    - zend-psr7bridge
+    - laminas-json
+    - laminas-psr7bridge
   - And pares the suggestion list down to:
-    - zend-mvc-console
-    - zend-mvc-i18n
-    - zend-mvc-plugin-fileprg
-    - zend-mvc-plugin-flashmessenger
-    - zend-mvc-plugin-identity
-    - zend-mvc-plugin-prg
-    - zend-servicemanager-di
-- [#128](https://github.com/zendframework/zend-mvc/pull/128) bumps the minimum
-  supported version of zend-eventmanager, zend-servicemanager, and zend-stdlib
+    - laminas-mvc-console
+    - laminas-mvc-i18n
+    - laminas-mvc-plugin-fileprg
+    - laminas-mvc-plugin-flashmessenger
+    - laminas-mvc-plugin-identity
+    - laminas-mvc-plugin-prg
+    - laminas-servicemanager-di
+- [zendframework/zend-mvc#128](https://github.com/zendframework/zend-mvc/pull/128) bumps the minimum
+  supported version of laminas-eventmanager, laminas-servicemanager, and laminas-stdlib
   to their v3 releases.
-- [#128](https://github.com/zendframework/zend-mvc/pull/128) bumps the minimum
+- [zendframework/zend-mvc#128](https://github.com/zendframework/zend-mvc/pull/128) bumps the minimum
   supported PHP version to 5.6.
 
 ## 2.7.8 - 2016-05-31
 
 ### Added
 
-- [#138](https://github.com/zendframework/zend-mvc/pull/138) adds support for
+- [zendframework/zend-mvc#138](https://github.com/zendframework/zend-mvc/pull/138) adds support for
   PHP 7 `Throwable`s within each of:
   - `DispatchListener`
   - `MiddlewareListener`
@@ -390,7 +390,7 @@ for full details on how to migrate your v2 application.
 
 ### Fixed
 
-- [#122](https://github.com/zendframework/zend-mvc/pull/122) fixes the
+- [zendframework/zend-mvc#122](https://github.com/zendframework/zend-mvc/pull/122) fixes the
   `FormAnnotationBuilderFactory` to use the container's `get()` method instead
   of `build()` to retrieve the event manager instance.
 
@@ -398,7 +398,7 @@ for full details on how to migrate your v2 application.
 
 ### Added
 
-- [#94](https://github.com/zendframework/zend-mvc/pull/94) adds a documentation
+- [zendframework/zend-mvc#94](https://github.com/zendframework/zend-mvc/pull/94) adds a documentation
   recipe for using middleware withing MVC event listeners.
 
 ### Deprecated
@@ -411,12 +411,12 @@ for full details on how to migrate your v2 application.
 
 ### Fixed
 
-- [#107](https://github.com/zendframework/zend-mvc/pull/107) fixes an incorrect
+- [zendframework/zend-mvc#107](https://github.com/zendframework/zend-mvc/pull/107) fixes an incorrect
   import statement in the `DiStrictAbstractServiceFactoryFactory` that prevented
   it from working.
-- [#112](https://github.com/zendframework/zend-mvc/pull/112) fixes how the
+- [zendframework/zend-mvc#112](https://github.com/zendframework/zend-mvc/pull/112) fixes how the
   `Forward` plugin detects and detaches event listeners to ensure it works
-  against either v2 or v3 releases of zend-eventmanager.
+  against either v2 or v3 releases of laminas-eventmanager.
 
 ## 2.7.5 - 2016-04-06
 
@@ -434,7 +434,7 @@ for full details on how to migrate your v2 application.
 
 ### Fixed
 
-- [#111](https://github.com/zendframework/zend-mvc/pull/111) fixes a bug in how
+- [zendframework/zend-mvc#111](https://github.com/zendframework/zend-mvc/pull/111) fixes a bug in how
   the `ConsoleExceptionStrategyFactory` whereby it was overwriting the default
   exception message template with an empty string when no configuration for it
   was provided.
@@ -455,9 +455,9 @@ for full details on how to migrate your v2 application.
 
 ### Fixed
 
-- [#114](https://github.com/zendframework/zend-mvc/pull/114) fixes an issue in
+- [zendframework/zend-mvc#114](https://github.com/zendframework/zend-mvc/pull/114) fixes an issue in
   the `ServiceLocatorAware` initializer whereby plugin manager instances were
-  falsely identified as the container instance when under zend-servicemanager v2.
+  falsely identified as the container instance when under laminas-servicemanager v2.
 
 ## 2.7.3 - 2016-03-08
 
@@ -475,7 +475,7 @@ for full details on how to migrate your v2 application.
 
 ### Fixed
 
-- [#97](https://github.com/zendframework/zend-mvc/pull/97) re-introduces the
+- [zendframework/zend-mvc#97](https://github.com/zendframework/zend-mvc/pull/97) re-introduces the
   `ServiceManager` factory definition inside `ServiceManagerConfig`, to ensure
   backwards compatibility.
 
@@ -495,19 +495,19 @@ for full details on how to migrate your v2 application.
 
 ### Fixed
 
-- [#95](https://github.com/zendframework/zend-mvc/pull/95) re-introduces the
-  various zend-di aliases and factories in `Zend\Mvc\Service\ServiceListenerFactory`,
+- [zendframework/zend-mvc#95](https://github.com/zendframework/zend-mvc/pull/95) re-introduces the
+  various laminas-di aliases and factories in `Laminas\Mvc\Service\ServiceListenerFactory`,
   which were accidently removed in the 2.7.0 release.
-- [#96](https://github.com/zendframework/zend-mvc/pull/96) fixes shared event
+- [zendframework/zend-mvc#96](https://github.com/zendframework/zend-mvc/pull/96) fixes shared event
   detachment/attachment within the `Forward` plugin to work with both v2 and v3
-  of zend-eventmanager.
-- [#93](https://github.com/zendframework/zend-mvc/pull/93) ensures that the
+  of laminas-eventmanager.
+- [zendframework/zend-mvc#93](https://github.com/zendframework/zend-mvc/pull/93) ensures that the
   Console `Catchall` route factory will not fail when the `defaults` `$options`
   array key is missing.
-- [#43](https://github.com/zendframework/zend-mvc/pull/43) updates the
+- [zendframework/zend-mvc#43](https://github.com/zendframework/zend-mvc/pull/43) updates the
   `AbstractRestfulController` to ensure it can accept textual (e.g., XML, YAML)
   data.
-- [#79](https://github.com/zendframework/zend-mvc/pull/79) updates the
+- [zendframework/zend-mvc#79](https://github.com/zendframework/zend-mvc/pull/79) updates the
   continuous integration configuration to ensure we test against lowest and
   highest accepted dependencies, and those in the current lockfile.
 
@@ -527,7 +527,7 @@ for full details on how to migrate your v2 application.
 
 ### Fixed
 
-- [#88](https://github.com/zendframework/zend-mvc/pull/88) addresses backwards
+- [zendframework/zend-mvc#88](https://github.com/zendframework/zend-mvc/pull/88) addresses backwards
   compatibility concerns raised by users due to the new deprecation notices
   emitted by `ServiceLocatorAware` initializers; in particular, all
   `AbstractController` implementations were raising a deprecation wen first
@@ -551,14 +551,14 @@ for full details on how to migrate your v2 application.
 
 ### Added
 
-- [#31](https://github.com/zendframework/zend-mvc/pull/31) adds three new
-  optional arguments to the `Zend\Mvc\Application` constructor: an EventManager
+- [zendframework/zend-mvc#31](https://github.com/zendframework/zend-mvc/pull/31) adds three new
+  optional arguments to the `Laminas\Mvc\Application` constructor: an EventManager
   instance, a Request instance, and a Response instance.
-- [#36](https://github.com/zendframework/zend-mvc/pull/36) adds more than a
+- [zendframework/zend-mvc#36](https://github.com/zendframework/zend-mvc/pull/36) adds more than a
   dozen service factories, primarily to separate conditional factories into
   discrete factories.
-- [#32](https://github.com/zendframework/zend-mvc/pull/32) adds
-  `Zend\Mvc\MiddlewareListener`, which allows dispatching PSR-7-based middleware
+- [zendframework/zend-mvc#32](https://github.com/zendframework/zend-mvc/pull/32) adds
+  `Laminas\Mvc\MiddlewareListener`, which allows dispatching PSR-7-based middleware
   implementing the signature `function (ServerRequestInterface $request,
   ResponseInterface $response)`. To dispatch such middleware, point the
   `middleware` "default" for a given route to a service name or callable that
@@ -581,43 +581,43 @@ for full details on how to migrate your v2 application.
   This new listener listens at the same priority as the `DispatchListener`, but,
   due to being registered earlier, will invoke first; if the route match does
   not resolve to middleware, it will fall through to the original
-  `DispatchListener`, allowing normal ZF2-style controller dispatch.
-- [#84](https://github.com/zendframework/zend-mvc/pull/84) publishes the
-  documentation to https://zendframework.github.io/zend-mvc/
+  `DispatchListener`, allowing normal Laminas-style controller dispatch.
+- [zendframework/zend-mvc#84](https://github.com/zendframework/zend-mvc/pull/84) publishes the
+  documentation to https://docs.laminas.dev/laminas-mvc/
 
 ### Deprecated
 
-- Two initializers registered by `Zend\Mvc\Service\ServiceManagerConfig` are now
+- Two initializers registered by `Laminas\Mvc\Service\ServiceManagerConfig` are now
   deprecated, and will be removed starting in version 3.0:
   - `ServiceManagerAwareInitializer`, which injects classes implementing
-    `Zend\ServiceManager\ServiceManagerAwareInterface` with the service manager
+    `Laminas\ServiceManager\ServiceManagerAwareInterface` with the service manager
     instance. Users should create factories for such classes that directly
     inject their dependencies instead.
   - `ServiceLocatorAwareInitializer`, which injects classes implementing
-    `Zend\ServiceManager\ServiceLocatorAwareInterface` with the service manager
+    `Laminas\ServiceManager\ServiceLocatorAwareInterface` with the service manager
     instance. Users should create factories for such classes that directly
     inject their dependencies instead.
 
 ### Removed
 
-- `Zend\Mvc\Controller\AbstractController` no longer directly implements
-  `Zend\ServiceManager\ServiceLocatorAwareInterface`, but still implements the
+- `Laminas\Mvc\Controller\AbstractController` no longer directly implements
+  `Laminas\ServiceManager\ServiceLocatorAwareInterface`, but still implements the
   methods defined in that interface. This was done to provide
-  forwards-compatibility, as zend-servicemanager v3 no longer defines the
+  forwards-compatibility, as laminas-servicemanager v3 no longer defines the
   interface. All initializers that do `ServiceLocatorInterface` injection were
   updated to also inject when just the methods are present.
 
 ### Fixed
 
-- [#31](https://github.com/zendframework/zend-mvc/pull/31) and
-  [#76](https://github.com/zendframework/zend-mvc/pull/76) update the component
-  to be forwards-compatible with zend-eventmanager v3.
-- [#36](https://github.com/zendframework/zend-mvc/pull/36),
-  [#76](https://github.com/zendframework/zend-mvc/pull/76),
-  [#80](https://github.com/zendframework/zend-mvc/pull/80),
-  [#81](https://github.com/zendframework/zend-mvc/pull/81), and
-  [#82](https://github.com/zendframework/zend-mvc/pull/82) update the component
-  to be forwards-compatible with zend-servicemanager v3. Several changes were
+- [zendframework/zend-mvc#31](https://github.com/zendframework/zend-mvc/pull/31) and
+  [zendframework/zend-mvc#76](https://github.com/zendframework/zend-mvc/pull/76) update the component
+  to be forwards-compatible with laminas-eventmanager v3.
+- [zendframework/zend-mvc#36](https://github.com/zendframework/zend-mvc/pull/36),
+  [zendframework/zend-mvc#76](https://github.com/zendframework/zend-mvc/pull/76),
+  [zendframework/zend-mvc#80](https://github.com/zendframework/zend-mvc/pull/80),
+  [zendframework/zend-mvc#81](https://github.com/zendframework/zend-mvc/pull/81), and
+  [zendframework/zend-mvc#82](https://github.com/zendframework/zend-mvc/pull/82) update the component
+  to be forwards-compatible with laminas-servicemanager v3. Several changes were
   introduced to support this effort:
   - Added a `RouteInvokableFactory`, which can act as either a
     `FactoryInterface` or `AbstractFactoryInterface` for loading invokable route
@@ -644,7 +644,7 @@ for full details on how to migrate your v2 application.
 
 ### Fixed
 
-- [#74](https://github.com/zendframework/zend-mvc/pull/74) fixes the
+- [zendframework/zend-mvc#74](https://github.com/zendframework/zend-mvc/pull/74) fixes the
   `FormAnnotationBuilderFactory`'s usage of the
   `FormElementManager::injectFactory()` method to ensure it works correctly on
   all versions.
@@ -665,11 +665,11 @@ for full details on how to migrate your v2 application.
 
 ### Fixed
 
-- [#71](https://github.com/zendframework/zend-mvc/pull/71) fixes the
+- [zendframework/zend-mvc#71](https://github.com/zendframework/zend-mvc/pull/71) fixes the
   `ViewHelperManagerFactory` to be backwards-compatible with v2 by ensuring that
   the factories for each of the `url`, `basepath`, and `doctype` view helpers
   are registered using the fully qualified class names present in
-  `Zend\View\HelperPluginManager`; these changes ensure requests for these
+  `Laminas\View\HelperPluginManager`; these changes ensure requests for these
   helpers resolve to these override factories, instead of the
   `InvokableFactory`.
 
@@ -689,26 +689,26 @@ for full details on how to migrate your v2 application.
 
 ### Fixed
 
-- [#69](https://github.com/zendframework/zend-mvc/pull/69) largely reverts
-  [#30](https://github.com/zendframework/zend-mvc/pull/30), having the component
-  utilize the `HydratorPluginManager` from zend-stdlib 2.7.5. This was done to
-  provide backwards compatibility; while zend-stdlib Hydrator types can be used
-  in place of zend-hydrator types, the reverse is not true.
+- [zendframework/zend-mvc#69](https://github.com/zendframework/zend-mvc/pull/69) largely reverts
+  [zendframework/zend-mvc#30](https://github.com/zendframework/zend-mvc/pull/30), having the component
+  utilize the `HydratorPluginManager` from laminas-stdlib 2.7.5. This was done to
+  provide backwards compatibility; while laminas-stdlib Hydrator types can be used
+  in place of laminas-hydrator types, the reverse is not true.
 
   You can make your code forwards-compatible with version 3, where the
-  `HydratorPluginManager` will be pulled from zend-hydrator, by updating your
-  typehints to use the zend-hydrator classes instead of those from zend-stdlib;
-  the instances returned from the zend-stdlib `HydratorPluginManager`, because
-  they extend those from zend-hydrator, remain compatible. 
+  `HydratorPluginManager` will be pulled from laminas-hydrator, by updating your
+  typehints to use the laminas-hydrator classes instead of those from laminas-stdlib;
+  the instances returned from the laminas-stdlib `HydratorPluginManager`, because
+  they extend those from laminas-hydrator, remain compatible. 
 
 ## 2.6.0 - 2015-09-22
 
 ### Added
 
-- [#30](https://github.com/zendframework/zend-mvc/pull/30) updates the component
-  to use zend-hydrator for hydrator functionality; this provides forward
-  compatibility with zend-hydrator, and backwards compatibility with
-  hydrators from older versions of zend-stdlib.
+- [zendframework/zend-mvc#30](https://github.com/zendframework/zend-mvc/pull/30) updates the component
+  to use laminas-hydrator for hydrator functionality; this provides forward
+  compatibility with laminas-hydrator, and backwards compatibility with
+  hydrators from older versions of laminas-stdlib.
 
 ### Deprecated
 
@@ -738,9 +738,9 @@ for full details on how to migrate your v2 application.
 
 ### Fixed
 
-- [#29](https://github.com/zendframework/zend-mvc/pull/29) updates the
-  zend-stdlib dependency to reference `>=2.5.0,<2.7.0` to ensure hydrators
-  will work as expected following extraction of hydrators to the zend-hydrator
+- [zendframework/zend-mvc#29](https://github.com/zendframework/zend-mvc/pull/29) updates the
+  laminas-stdlib dependency to reference `>=2.5.0,<2.7.0` to ensure hydrators
+  will work as expected following extraction of hydrators to the laminas-hydrator
   repository.
 
 ## 2.5.2 - 2015-09-14
@@ -759,6 +759,6 @@ for full details on how to migrate your v2 application.
 
 ### Fixed
 
-- [#27](https://github.com/zendframework/zend-mvc/pull/27) fixes a condition
+- [zendframework/zend-mvc#27](https://github.com/zendframework/zend-mvc/pull/27) fixes a condition
   where non-view model results from controllers could cause errors to be
   raisedin the `DefaultRenderingStrategy`.

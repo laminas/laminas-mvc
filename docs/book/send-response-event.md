@@ -1,7 +1,7 @@
 # The SendResponse Event
 
-zend-mvc defines and utilizes a custom `Zend\EventManager\Event` for updating
-the response object prior to emitting it, `Zend\Mvc\ResponseSender\SendResponseEvent`.
+laminas-mvc defines and utilizes a custom `Laminas\EventManager\Event` for updating
+the response object prior to emitting it, `Laminas\Mvc\ResponseSender\SendResponseEvent`.
 The event allows listeners to set response headers and content.
 
 The methods it defines are:
@@ -20,9 +20,9 @@ listener is used most.
 
 Class                                                        | Priority | Method Called | Description
 ------------------------------------------------------------ | -------: | ------------- | -----------
-`Zend\Mvc\SendResponseListener\PhpEnvironmentResponseSender` | -1000    | `__invoke`    | This is used in HTTP contexts (this is the most often used).
-`Zend\Mvc\SendResponseListener\ConsoleResponseSender`        | -2000    | `__invoke`    | This is used in console contexts.
-`Zend\Mvc\SendResponseListener\SimpleStreamResponseSender`   | -3000    | `__invoke`    |
+`Laminas\Mvc\SendResponseListener\PhpEnvironmentResponseSender` | -1000    | `__invoke`    | This is used in HTTP contexts (this is the most often used).
+`Laminas\Mvc\SendResponseListener\ConsoleResponseSender`        | -2000    | `__invoke`    | This is used in console contexts.
+`Laminas\Mvc\SendResponseListener\SimpleStreamResponseSender`   | -3000    | `__invoke`    |
 
 Because each listener has negative priority, adding your own logic to modify the
 `Response` involves adding a new listener without priority (as priority defaults

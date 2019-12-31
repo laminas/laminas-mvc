@@ -1,32 +1,31 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Controller;
+namespace LaminasTest\Mvc\Controller;
 
+use Laminas\EventManager\EventManager;
+use Laminas\EventManager\SharedEventManager;
+use Laminas\EventManager\SharedEventManagerInterface;
+use Laminas\Http\Response;
+use Laminas\Mvc\Controller\AbstractRestfulController;
+use Laminas\Mvc\Controller\Plugin\Url;
+use Laminas\Mvc\InjectApplicationEventInterface;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Router\RouteMatch;
+use Laminas\Stdlib\DispatchableInterface;
+use LaminasTest\Mvc\Controller\TestAsset\Request;
+use LaminasTest\Mvc\Controller\TestAsset\RestfulContentTypeTestController;
+use LaminasTest\Mvc\Controller\TestAsset\RestfulMethodNotAllowedTestController;
+use LaminasTest\Mvc\Controller\TestAsset\RestfulTestController;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionObject;
 use stdClass;
-use Zend\EventManager\EventManager;
-use Zend\EventManager\SharedEventManager;
-use Zend\EventManager\SharedEventManagerInterface;
-use Zend\Http\Response;
-use Zend\Mvc\Controller\AbstractRestfulController;
-use Zend\Mvc\Controller\Plugin\Url;
-use Zend\Mvc\InjectApplicationEventInterface;
-use Zend\Mvc\MvcEvent;
-use Zend\Router\RouteMatch;
-use Zend\Stdlib\DispatchableInterface;
-use ZendTest\Mvc\Controller\TestAsset\Request;
-use ZendTest\Mvc\Controller\TestAsset\RestfulContentTypeTestController;
-use ZendTest\Mvc\Controller\TestAsset\RestfulMethodNotAllowedTestController;
-use ZendTest\Mvc\Controller\TestAsset\RestfulTestController;
 
 class RestfulControllerTest extends TestCase
 {
@@ -281,8 +280,8 @@ class RestfulControllerTest extends TestCase
         $this->assertEquals('head', $this->routeMatch->getParam('action'));
 
         $headers = $this->controller->getResponse()->getHeaders();
-        $this->assertTrue($headers->has('X-ZF2-Id'));
-        $header  = $headers->get('X-ZF2-Id');
+        $this->assertTrue($headers->has('X-Laminas-Id'));
+        $header  = $headers->get('X-Laminas-Id');
         $this->assertEquals(1, $header->getFieldValue());
     }
 

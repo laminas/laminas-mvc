@@ -1,25 +1,24 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Service;
+namespace LaminasTest\Mvc\Service;
 
 use ArrayObject;
 use Interop\Container\ContainerInterface;
+use Laminas\Mvc\Service\InjectTemplateListenerFactory;
+use Laminas\Mvc\View\Http\InjectTemplateListener;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 use PHPUnit\Framework\TestCase;
-use Zend\Mvc\Service\InjectTemplateListenerFactory;
-use Zend\Mvc\View\Http\InjectTemplateListener;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * Tests for {@see \Zend\Mvc\Service\InjectTemplateListenerFactory}
+ * Tests for {@see \Laminas\Mvc\Service\InjectTemplateListenerFactory}
  *
- * @covers \Zend\Mvc\Service\InjectTemplateListenerFactory
+ * @covers \Laminas\Mvc\Service\InjectTemplateListenerFactory
  */
 class InjectTemplateListenerFactoryTest extends TestCase
 {
@@ -58,7 +57,7 @@ class InjectTemplateListenerFactoryTest extends TestCase
     /**
      * @param mixed $config
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject|\Zend\Mvc\View\Http\InjectTemplateListener
+     * @return \PHPUnit_Framework_MockObject_MockObject|\Laminas\Mvc\View\Http\InjectTemplateListener
      */
     private function buildInjectTemplateListenerWithConfig($config)
     {

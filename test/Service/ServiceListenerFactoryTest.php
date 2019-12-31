@@ -1,19 +1,18 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Service;
+namespace LaminasTest\Mvc\Service;
 
+use Laminas\Mvc\Service\ServiceListenerFactory;
+use Laminas\ServiceManager\ServiceManager;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionProperty;
-use Zend\Mvc\Service\ServiceListenerFactory;
-use Zend\ServiceManager\ServiceManager;
 
 class ServiceListenerFactoryTest extends TestCase
 {
@@ -27,7 +26,7 @@ class ServiceListenerFactoryTest extends TestCase
     }
 
     /**
-     * @expectedException        Zend\ServiceManager\Exception\ServiceNotCreatedException
+     * @expectedException        Laminas\ServiceManager\Exception\ServiceNotCreatedException
      * @expectedExceptionMessage The value of service_listener_options must be an array, string given.
      */
     public function testInvalidOptionType()
@@ -40,7 +39,7 @@ class ServiceListenerFactoryTest extends TestCase
     }
 
     /**
-     * @expectedException        Zend\ServiceManager\Exception\ServiceNotCreatedException
+     * @expectedException        Laminas\ServiceManager\Exception\ServiceNotCreatedException
      * @expectedExceptionMessage Invalid service listener options detected, 0 array must contain service_manager key.
      */
     public function testMissingServiceManager()
@@ -58,7 +57,7 @@ class ServiceListenerFactoryTest extends TestCase
     }
 
     /**
-     * @expectedException        Zend\ServiceManager\Exception\ServiceNotCreatedException
+     * @expectedException        Laminas\ServiceManager\Exception\ServiceNotCreatedException
      * @expectedExceptionMessage Invalid service listener options detected, service_manager must be a string,
      *                           integer given.
      */
@@ -77,7 +76,7 @@ class ServiceListenerFactoryTest extends TestCase
     }
 
     /**
-     * @expectedException        Zend\ServiceManager\Exception\ServiceNotCreatedException
+     * @expectedException        Laminas\ServiceManager\Exception\ServiceNotCreatedException
      * @expectedExceptionMessage Invalid service listener options detected, 0 array must contain config_key key.
      */
     public function testMissingConfigKey()
@@ -95,7 +94,7 @@ class ServiceListenerFactoryTest extends TestCase
     }
 
     /**
-     * @expectedException        Zend\ServiceManager\Exception\ServiceNotCreatedException
+     * @expectedException        Laminas\ServiceManager\Exception\ServiceNotCreatedException
      * @expectedExceptionMessage Invalid service listener options detected, config_key must be a string, integer given.
      */
     public function testInvalidTypeConfigKey()
@@ -113,7 +112,7 @@ class ServiceListenerFactoryTest extends TestCase
     }
 
     /**
-     * @expectedException        Zend\ServiceManager\Exception\ServiceNotCreatedException
+     * @expectedException        Laminas\ServiceManager\Exception\ServiceNotCreatedException
      * @expectedExceptionMessage Invalid service listener options detected, 0 array must contain interface key.
      */
     public function testMissingInterface()
@@ -131,7 +130,7 @@ class ServiceListenerFactoryTest extends TestCase
     }
 
     /**
-     * @expectedException        Zend\ServiceManager\Exception\ServiceNotCreatedException
+     * @expectedException        Laminas\ServiceManager\Exception\ServiceNotCreatedException
      * @expectedExceptionMessage Invalid service listener options detected, interface must be a string, integer given.
      */
     public function testInvalidTypeInterface()
@@ -149,7 +148,7 @@ class ServiceListenerFactoryTest extends TestCase
     }
 
     /**
-     * @expectedException        Zend\ServiceManager\Exception\ServiceNotCreatedException
+     * @expectedException        Laminas\ServiceManager\Exception\ServiceNotCreatedException
      * @expectedExceptionMessage Invalid service listener options detected, 0 array must contain method key.
      */
     public function testMissingMethod()
@@ -167,7 +166,7 @@ class ServiceListenerFactoryTest extends TestCase
     }
 
     /**
-     * @expectedException        Zend\ServiceManager\Exception\ServiceNotCreatedException
+     * @expectedException        Laminas\ServiceManager\Exception\ServiceNotCreatedException
      * @expectedExceptionMessage Invalid service listener options detected, method must be a string, integer given.
      */
     public function testInvalidTypeMethod()

@@ -1,9 +1,9 @@
 # Upgrading to 3.0
 
-With the release of Zend Framework 2, all components current at that time,
+With the release of Laminas, all components current at that time,
 regardless of history, were tagged as v2 releases; in reality, it was the first
-version of a new framework, as it was a completely new architecture from Zend
-Framework 1. As such, zend-mvc 3.0 marks the second major release of the
+version of a new framework, as it was a completely new architecture from Laminas
+Framework 1. As such, laminas-mvc 3.0 marks the second major release of the
 component.
 
 The primary goal for version 3 was to reduce the number of dependencies, and to
@@ -21,15 +21,15 @@ however, raised another problem: you now have to register components as modules
 in your application.
 
 To solve this new problem, we created a new component,
-[zend-component-installer](http://docs.zendframework.com/zend-component-installer/).
+[laminas-component-installer](http://docs.laminas.dev/laminas-component-installer/).
 Install this in your application now:
 
 ```bash
-$ composer require --dev zendframework/zend-component-installer
+$ composer require --dev laminas/laminas-component-installer
 ```
 
 Once installed, the component acts as a Composer plugin, and will intercept
-packages marked as components or Zend Framework modules, and register them with
+packages marked as components or Laminas modules, and register them with
 your application configuration. Components are pushed to the top of the module
 list, while modules are pushed to the end. As a development component, it will
 not be installed in your production distributions.
@@ -38,28 +38,28 @@ not be installed in your production distributions.
 
 The v3 release now *requires*:
 
-- zend-http
-- zend-modulemanager
-- zend-router
-- zend-view
+- laminas-http
+- laminas-modulemanager
+- laminas-router
+- laminas-view
 
 Additionally, the following components require their v3 releases:
 
-- zend-eventmanager
-- zend-servicemanager
-- zend-stdlib
+- laminas-eventmanager
+- laminas-servicemanager
+- laminas-stdlib
 
 The minimum supported PHP version was bumped to 5.6.
 
 ## Application class
 
-The following changes were made to the `Zend\Mvc\Application` constructor:
+The following changes were made to the `Laminas\Mvc\Application` constructor:
 
 - The first `$configuration` argument was removed, as it was not used.
 - Three additional, optional arguments were added:
-  - `Zend\EventManager\EventManagerInterface $events = null`
-  - `Zend\Stdlib\RequestInterface $request = null`
-  - `Zend\Stdlib\ResponseInterface $response = null`
+  - `Laminas\EventManager\EventManagerInterface $events = null`
+  - `Laminas\Stdlib\RequestInterface $request = null`
+  - `Laminas\Stdlib\ResponseInterface $response = null`
 
 End-users using the skeleton application and the default `Application` factory
 will not notice a change. Those who are directly instantiating the `Application`
@@ -82,45 +82,45 @@ service alias.
 
 ## DI-ServiceManager integration
 
-The integration between [zend-servicemanager](https://docs.zendframework.com/zend-servicemanager) and
-[zend-di](https://github.com/zendframework/zend-di) has been moved to a new
-standalone component, [zend-servicemanager-di](https://docs.zendframework.com/zend-servicemanager-di/).
+The integration between [laminas-servicemanager](https://docs.laminas.dev/laminas-servicemanager) and
+[laminas-di](https://github.com/laminas/laminas-di) has been moved to a new
+standalone component, [laminas-servicemanager-di](https://docs.laminas.dev/laminas-servicemanager-di/).
 In most cases, installing the component will restore the original behavior:
 
 ```bash
-$ composer require zendframework/zend-servicemanager-di
+$ composer require laminas/laminas-servicemanager-di
 ```
 
 > ### Manual installation
 >
 > The above assumes you're using the new component installer detailed in the
 > [dependency reduction](#dependency-reduction) section, above. If you are not,
-> you will need to inject the zend-servicemanager-di module into your
-> application manually; follow the [instructions in the zend-servicemanager-di documentation](https://docs.zendframework.com/zend-servicemanager-di/)
+> you will need to inject the laminas-servicemanager-di module into your
+> application manually; follow the [instructions in the laminas-servicemanager-di documentation](https://docs.laminas.dev/laminas-servicemanager-di/)
 > to do so.
 
-The new component also contains a [migration document](https://docs.zendframework.com/zend-servicemanager-di/migration/v2-to-v3/)
+The new component also contains a [migration document](https://docs.laminas.dev/laminas-servicemanager-di/migration/v2-to-v3/)
 detailing potential issues for users migrating to version 3.
 
 ## DispatchListener
 
-The `marshallControllerNotFoundEvent()` method was deprecated early in the ZF2
+The `marshallControllerNotFoundEvent()` method was deprecated early in the Laminas
 lifecycle, and has proxied to `marshalControllerNotFoundEvent()`. It is removed
 with the v3 release.
 
 ## Routing
 
-Routing was removed from zend-mvc, and moved to a new component,
-[zend-router](https://docs.zendframework.com/zend-router/), which is now a
-dependency of zend-mvc.
+Routing was removed from laminas-mvc, and moved to a new component,
+[laminas-router](https://docs.laminas.dev/laminas-router/), which is now a
+dependency of laminas-mvc.
 
 The changes that will impact users are:
 
-- [Query route removal](http://docs.zendframework.com/zend-router/migration/v2-to-v3/#query-route-removal);
+- [Query route removal](http://docs.laminas.dev/laminas-router/migration/v2-to-v3/#query-route-removal);
   this route had been deprecated since 2.3.0, and removed for the 3.0 release.
-- [Namespace changes](http://docs.zendframework.com/zend-router/migration/v2-to-v3/#namespace-change);
-  with the separation to the zend-router component, all routes changed
-  namespaces from `Zend\Mvc\Router` to `Zend\Router`.
+- [Namespace changes](http://docs.laminas.dev/laminas-router/migration/v2-to-v3/#namespace-change);
+  with the separation to the laminas-router component, all routes changed
+  namespaces from `Laminas\Mvc\Router` to `Laminas\Router`.
 
 Follow the links above for more details on these changes, and how to migrate
 your code.
@@ -128,107 +128,107 @@ your code.
 ## Console tooling
 
 Console tooling, including console routes, were split off to a new component,
-[zend-mvc-console](https://docs.zendframework.com/zend-mvc-console/). If you
-were using the console tooling, install zend-mvc-console:
+[laminas-mvc-console](https://docs.laminas.dev/laminas-mvc-console/). If you
+were using the console tooling, install laminas-mvc-console:
 
 ```bash
-$ composer require zendframework/zend-mvc-console
+$ composer require laminas/laminas-mvc-console
 ```
 
-(Make sure you've already installed zend-component-installer before you do, to
+(Make sure you've already installed laminas-component-installer before you do, to
 ensure the component is registered with your application!)
 
-zend-mvc-console exposes all of the same functionality as was in the v2 series
-of zend-mvc, but most components are in different namespaces. Please read the
-[zend-mvc-console migration guide](http://docs.zendframework.com/zend-mvc-console/migration/v2-to-v3/)
+laminas-mvc-console exposes all of the same functionality as was in the v2 series
+of laminas-mvc, but most components are in different namespaces. Please read the
+[laminas-mvc-console migration guide](http://docs.laminas.dev/laminas-mvc-console/migration/v2-to-v3/)
 for full details of what changes you may need to make to your application to
 ensure console tooling continues to work.
 
 > ### Migrate your console tooling
 >
 > Due to the amount of integration required to support console tooling via the
-> MVC, we do not plan on supporting zend-mvc-console long-term. As such, we
+> MVC, we do not plan on supporting laminas-mvc-console long-term. As such, we
 > recommend migrating your code to use standalone tools such as
 > [zf-console](https://github.com/zfcampus/zf-console) or
 > [Aura.Cli](https://github.com/auraphp/Aura.Cli).
 
 ## Filter integration
 
-In version 2, zend-mvc exposed a `FilterManager` service by default, and
-provided specifications to zend-modulemanager's `ServiceListener`
+In version 2, laminas-mvc exposed a `FilterManager` service by default, and
+provided specifications to laminas-modulemanager's `ServiceListener`
 to allow modules to provide filter configuration.
 
-This functionality is now removed from zend-mvc. It is now exposed directly by
-the [zend-filter](https://docs.zendframework.com/zend-filter/) component
-itself. To add it, install zend-filter:
+This functionality is now removed from laminas-mvc. It is now exposed directly by
+the [laminas-filter](https://docs.laminas.dev/laminas-filter/) component
+itself. To add it, install laminas-filter:
 
 ```bash
-$ composer require zendframework/zend-filter
+$ composer require laminas/laminas-filter
 ```
 
-Note: the above assumes you have already installed zend-component-installer, per
+Note: the above assumes you have already installed laminas-component-installer, per
 the section above on [dependency reduction](#dependency-reduction).
 
 ## Form integration
 
-In version 2, zend-mvc exposed several facilities related to zend-form:
+In version 2, laminas-mvc exposed several facilities related to laminas-form:
 
-- `FormElementManager` mapped to a factory in zend-mvc, but created a
-  `Zend\Form\FormElementManager` instance.
-- `FormAnnotationBuilder` mapped to a factory in zend-mvc, but created a
-  `Zend\Form\Annotation\AnnotationBuilder` instance.
-- The `ServiceListenerFactory` registered `Zend\Form\FormAbstractServiceFactory`
+- `FormElementManager` mapped to a factory in laminas-mvc, but created a
+  `Laminas\Form\FormElementManager` instance.
+- `FormAnnotationBuilder` mapped to a factory in laminas-mvc, but created a
+  `Laminas\Form\Annotation\AnnotationBuilder` instance.
+- The `ServiceListenerFactory` registered `Laminas\Form\FormAbstractServiceFactory`
   as an abstract factory.
 - The `ModuleManagerFactory` registered specifications with the
-  zend-modulemanager `ServiceListener` to allow modules to provide form element
+  laminas-modulemanager `ServiceListener` to allow modules to provide form element
   configuration.
 
-The above functionality is now removed from zend-mvc, and exposed directly by
-the [zend-form](https://github.com/zendframework/zend-form) component. To
-add/enable it, install zend-form:
+The above functionality is now removed from laminas-mvc, and exposed directly by
+the [laminas-form](https://github.com/laminas/laminas-form) component. To
+add/enable it, install laminas-form:
 
 ```bash
-$ composer require zendframework/zend-form
+$ composer require laminas/laminas-form
 ```
 
-Note: the above assumes you have already installed zend-component-installer, per
+Note: the above assumes you have already installed laminas-component-installer, per
 the section above on [dependency reduction](#dependency-reduction).
 
 ## Hydrator integration
 
-In version 2, zend-mvc exposed a `HydratorManager` service by default, and
-provided specifications to zend-modulemanager's `ServiceListener`
+In version 2, laminas-mvc exposed a `HydratorManager` service by default, and
+provided specifications to laminas-modulemanager's `ServiceListener`
 to allow modules to provide hydrator configuration.
 
-This functionality is now removed from zend-mvc. It is now exposed directly by
-the [zend-hydrator](https://docs.zendframework.com/zend-hydrator/) component
-itself. To add it, install zend-hydrator:
+This functionality is now removed from laminas-mvc. It is now exposed directly by
+the [laminas-hydrator](https://docs.laminas.dev/laminas-hydrator/) component
+itself. To add it, install laminas-hydrator:
 
 ```bash
-$ composer require zendframework/zend-hydrator
+$ composer require laminas/laminas-hydrator
 ```
 
-Note: the above assumes you have already installed zend-component-installer, per
+Note: the above assumes you have already installed laminas-component-installer, per
 the section above on [dependency reduction](#dependency-reduction).
 
 ## InputFilter integration
 
-In version 2, zend-mvc exposed a `InputFilterManager` service by default, and
-provided specifications to zend-modulemanager's `ServiceListener`
+In version 2, laminas-mvc exposed a `InputFilterManager` service by default, and
+provided specifications to laminas-modulemanager's `ServiceListener`
 to allow modules to provide validator configuration.
 
-This functionality is now removed from zend-mvc. It is now exposed directly by
-the [zend-inputfilter](https://docs.zendframework.com/zend-inputfilter/) component
-itself. To add it, install zend-inputfilter:
+This functionality is now removed from laminas-mvc. It is now exposed directly by
+the [laminas-inputfilter](https://docs.laminas.dev/laminas-inputfilter/) component
+itself. To add it, install laminas-inputfilter:
 
 ```bash
-$ composer require zendframework/zend-inputfilter
+$ composer require laminas/laminas-inputfilter
 ```
 
-Note: the above assumes you have already installed zend-component-installer, per
+Note: the above assumes you have already installed laminas-component-installer, per
 the section above on [dependency reduction](#dependency-reduction).
 
-zend-inputfilter now also exposes the `InputFilterAbstractServiceFactory` as an
+laminas-inputfilter now also exposes the `InputFilterAbstractServiceFactory` as an
 abstract factory by default.
 
 ## i18n integration
@@ -240,63 +240,63 @@ Internationalization tooling, including:
 - the `TranslatorAwareTreeRouteStack` implementation
 - factories for the translator and translator loader managers
 
-were removed, and re-assigned to the [zend-i18n](https://docs.zendframework.com/zend-i18n/)
-and [zend-mvc-i18n](https://docs.zendframework.com/zend-mvc-i18n/) packages.
-In most cases, you can install `zendframework/zend-mvc-i18n` to restore i18n
+were removed, and re-assigned to the [laminas-i18n](https://docs.laminas.dev/laminas-i18n/)
+and [laminas-mvc-i18n](https://docs.laminas.dev/laminas-mvc-i18n/) packages.
+In most cases, you can install `laminas/laminas-mvc-i18n` to restore i18n
 functionality to your application:
 
 ```bash
-$ composer require zendframework/zend-mvc-i18n
+$ composer require laminas/laminas-mvc-i18n
 ```
 
 There are two categories of changes that could affect you on upgrading.
 
 First, if you were using the `TranslatorAwareTreeRouteStack`, the class name has
-changed from `Zend\Mvc\Router\Http\TranslatorAwareTreeRouteStack` to
-`Zend\Mvc\I18n\Router\TranslatorAwareTreeRouteStack`; updating your code to
+changed from `Laminas\Mvc\Router\Http\TranslatorAwareTreeRouteStack` to
+`Laminas\Mvc\I18n\Router\TranslatorAwareTreeRouteStack`; updating your code to
 reflect that will allow it to work again.
 
 Second, if you were extending one of the service factories for either the
 `MvcTranslator` or the `TranslatorPluginManager`, the namespaces for the
 factories have changed. In such situations, you have two options:
 
-- Update your extensions to extend the new classes. See the [zend-mvc-i18n
-  migration guide](https://docs.zendframework.com/zend-mvc-i18n/migration/v2-to-v3/)
+- Update your extensions to extend the new classes. See the [laminas-mvc-i18n
+  migration guide](https://docs.laminas.dev/laminas-mvc-i18n/migration/v2-to-v3/)
   to determine what names have changed.
-- Instead of extending, consider using [delegator factories](https://docs.zendframework.com/zend-servicemanager/delegators/),
+- Instead of extending, consider using [delegator factories](https://docs.laminas.dev/laminas-servicemanager/delegators/),
   as these decorate the service factory, regardless of what factory is used.
 
 ## Log integration
 
-In version 2, zend-mvc exposed `LogProcessorManager` and `LogWriterManager`
-services by default, and provided specifications to zend-modulemanager's
+In version 2, laminas-mvc exposed `LogProcessorManager` and `LogWriterManager`
+services by default, and provided specifications to laminas-modulemanager's
 `ServiceListener` to allow modules to provide configuration for each.
 
-This functionality is now removed from zend-mvc. It is now exposed directly by
-the [zend-log](https://docs.zendframework.com/zend-log/) component
-itself. To add it, install zend-log:
+This functionality is now removed from laminas-mvc. It is now exposed directly by
+the [laminas-log](https://docs.laminas.dev/laminas-log/) component
+itself. To add it, install laminas-log:
 
 ```bash
-$ composer require zendframework/zend-log
+$ composer require laminas/laminas-log
 ```
 
-Note: the above assumes you have already installed zend-component-installer, per
+Note: the above assumes you have already installed laminas-component-installer, per
 the section above on [dependency reduction](#dependency-reduction).
 
-zend-log now also exposes `LogFilterManager` and `LogFormatterManager`,
+laminas-log now also exposes `LogFilterManager` and `LogFormatterManager`,
 corresponding to the following:
 
 Service | Config Key | Provider Interface | Provider Method
 ------- | ---------- | ------------------ | ---------------
-LogFilterManager | `log_filters` | `Zend\Log\Filter\LogFilterProviderInterface` | `getLogFilterConfig()`
-LogFormatterManager | `log_formatters` | `Zend\Log\Formatter\LogFormatterProviderInterface` | `getLogFormatterConfig()`
+LogFilterManager | `log_filters` | `Laminas\Log\Filter\LogFilterProviderInterface` | `getLogFilterConfig()`
+LogFormatterManager | `log_formatters` | `Laminas\Log\Formatter\LogFormatterProviderInterface` | `getLogFormatterConfig()`
 
-This additions allow you to provide additional plugins for every aspect zend-log
+This additions allow you to provide additional plugins for every aspect laminas-log
 exposes.
 
 ## Plugins
 
-The following plugins have been removed from the main zend-mvc repository, and
+The following plugins have been removed from the main laminas-mvc repository, and
 into their own standalone repositories. In all cases, please be sure to install
 the [component installer as detailed above](#dependency-reduction) before
 installing the plugins, to automate injection into your application
@@ -305,87 +305,87 @@ configuration.
 ### fileprg()
 
 The `fileprg()` plugin is now provided via the
-[zend-mvc-plugin-fileprg](https://github.com/zendframework/zend-mvc-plugin-fileprg)
+[laminas-mvc-plugin-fileprg](https://github.com/laminas/laminas-mvc-plugin-fileprg)
 component.
 
 ```bash
-$ composer require zendframework/zend-mvc-plugin-fileprg
+$ composer require laminas/laminas-mvc-plugin-fileprg
 ```
 
-`Zend\Mvc\Controller\Plugin\FilePostRedirectGet` becomes
-`Zend\Mvc\Plugin\FilePrg\FilePostRedirectGet`. However, it is still mapped as
+`Laminas\Mvc\Controller\Plugin\FilePostRedirectGet` becomes
+`Laminas\Mvc\Plugin\FilePrg\FilePostRedirectGet`. However, it is still mapped as
 `fileprg()`.
 
 ### flashMessenger()
 
 The `flashMessenger()` plugin is now provided via the
-[zend-mvc-plugin-flashmessenger](https://github.com/zendframework/zend-mvc-plugin-flashmessenger)
+[laminas-mvc-plugin-flashmessenger](https://github.com/laminas/laminas-mvc-plugin-flashmessenger)
 component.
 
 ```bash
-$ composer require zendframework/zend-mvc-plugin-flashmessenger
+$ composer require laminas/laminas-mvc-plugin-flashmessenger
 ```
 
-`Zend\Mvc\Controller\Plugin\FlashMessenger` becomes
-`Zend\Mvc\Plugin\FlashMessenger\FlashMessenger`. However, it is still mapped as
+`Laminas\Mvc\Controller\Plugin\FlashMessenger` becomes
+`Laminas\Mvc\Plugin\FlashMessenger\FlashMessenger`. However, it is still mapped as
 `flashMessenger()` and `flashmessenger()`.
 
 ### identity()
 
 The `identity()` plugin is now provided via the
-[zend-mvc-plugin-identity](https://github.com/zendframework/zend-mvc-plugin-identity)
+[laminas-mvc-plugin-identity](https://github.com/laminas/laminas-mvc-plugin-identity)
 component.
 
 ```bash
-$ composer require zendframework/zend-mvc-plugin-identity
+$ composer require laminas/laminas-mvc-plugin-identity
 ```
 
-`Zend\Mvc\Controller\Plugin\Identity` becomes
-`Zend\Mvc\Plugin\Identity\Identity`. However, it is still mapped as
+`Laminas\Mvc\Controller\Plugin\Identity` becomes
+`Laminas\Mvc\Plugin\Identity\Identity`. However, it is still mapped as
 `identity()`.
 
-Additionally, `Zend\Mvc\Controller\Plugin\Service\IdentityFactory` now becomes
-`Zend\Mvc\Plugin\Identity\IdentityFactory`.
+Additionally, `Laminas\Mvc\Controller\Plugin\Service\IdentityFactory` now becomes
+`Laminas\Mvc\Plugin\Identity\IdentityFactory`.
 
 ### prg()
 
 The `prg()` plugin is now provided via the
-[zend-mvc-plugin-prg](https://github.com/zendframework/zend-mvc-plugin-prg)
+[laminas-mvc-plugin-prg](https://github.com/laminas/laminas-mvc-plugin-prg)
 component.
 
 ```bash
-$ composer require zendframework/zend-mvc-plugin-prg
+$ composer require laminas/laminas-mvc-plugin-prg
 ```
 
-`Zend\Mvc\Controller\Plugin\PostRedirectGet` becomes
-`Zend\Mvc\Plugin\Prg\PostRedirectGet`. However, it is still mapped as `prg()`.
+`Laminas\Mvc\Controller\Plugin\PostRedirectGet` becomes
+`Laminas\Mvc\Plugin\Prg\PostRedirectGet`. However, it is still mapped as `prg()`.
 
 ## Serializer integration
 
-In version 2, zend-mvc exposed a `SerializerAdapterManager` service by default, and
-provided specifications to zend-modulemanager's `ServiceListener`
+In version 2, laminas-mvc exposed a `SerializerAdapterManager` service by default, and
+provided specifications to laminas-modulemanager's `ServiceListener`
 to allow modules to provide serializer configuration.
 
-This functionality is now removed from zend-mvc. It is now exposed directly by
-the [zend-serializer](https://github.com/zendframework/zend-serializer) component
-itself. To add it, install zend-serializer
+This functionality is now removed from laminas-mvc. It is now exposed directly by
+the [laminas-serializer](https://github.com/laminas/laminas-serializer) component
+itself. To add it, install laminas-serializer
 
 ```bash
-$ composer require zendframework/zend-serializer
+$ composer require laminas/laminas-serializer
 ```
 
-Note: the above assumes you have already installed zend-component-installer, per
+Note: the above assumes you have already installed laminas-component-installer, per
 the section above on [dependency reduction](#dependency-reduction).
 
 ## ServiceLocatorAware initializers
 
-Starting with zend-servicemanager v3, that component no longer defines the
-`ServiceLocatorAwareInterface`. Since zend-mvc pins against zend-servicemanager
+Starting with laminas-servicemanager v3, that component no longer defines the
+`ServiceLocatorAwareInterface`. Since laminas-mvc pins against laminas-servicemanager
 v3 with its own v3 release, the initializers that injected the application
 container into implementations of that interface are no longer relevant. As
 such, they have now been removed from each of the
-`Zend\Mvc\Service\ServiceManagerConfig` and
-`Zend\Mvc\Controller\ControllerManager` classes.
+`Laminas\Mvc\Service\ServiceManagerConfig` and
+`Laminas\Mvc\Controller\ControllerManager` classes.
 
 Additionally, the duck-typed `ServiceLocatorAwareInterface` implementation in
 `AbstractController` was removed, as messaged in the 2.7 release.
@@ -395,22 +395,22 @@ use factories to inject your *actual* dependencies.
 
 ## Validator integration
 
-In version 2, zend-mvc exposed a `ValidatorManager` service by default, and
-provided specifications to zend-modulemanager's `ServiceListener`
+In version 2, laminas-mvc exposed a `ValidatorManager` service by default, and
+provided specifications to laminas-modulemanager's `ServiceListener`
 to allow modules to provide validator configuration.
 
-This functionality is now removed from zend-mvc. It is now exposed directly by
-the [zend-validator](https://docs.zendframework.com/zend-validator/) component
-itself. To add it, install zend-validator:
+This functionality is now removed from laminas-mvc. It is now exposed directly by
+the [laminas-validator](https://docs.laminas.dev/laminas-validator/) component
+itself. To add it, install laminas-validator:
 
 ```bash
-$ composer require zendframework/zend-validator
+$ composer require laminas/laminas-validator
 ```
 
-Note: the above assumes you have already installed zend-component-installer, per
+Note: the above assumes you have already installed laminas-component-installer, per
 the section above on [dependency reduction](#dependency-reduction).
 
-## Zend\Mvc\View\InjectTemplateListener
+## Laminas\Mvc\View\InjectTemplateListener
 
 The `InjectTemplateListener` attempts to map a controller name to a
 template using a variety of heuristics, including an explicit map provided
@@ -419,7 +419,7 @@ during configuration, or auto-detection based on the controller class name.
 In version 2, the autodetection took into consideration the `__NAMESPACE__`
 route match parameter to derive subnamespaces, or would omit them completely if
 `__NAMESPACE__` was not present. This caused issues when multiple modules shared
-a top-level namespace (e.g., `ZF\Apigility` and `ZF\Apigility\Admin`) and each
+a top-level namespace (e.g., `Laminas\ApiTools` and `Laminas\ApiTools\Admin`) and each
 had a controller with the same name.
 
 To avoid naming conflicts, version 3 removes this aspect of autodetection, and
@@ -441,8 +441,8 @@ provided in routing configuration.
 If needed, you can emulate the version 2 behavior in version 3 via namespace
 whitelisting in the controller &lt;=&gt; template map.
 
-## Zend\Mvc\View\SendResponseListener
+## Laminas\Mvc\View\SendResponseListener
 
-`Zend\Mvc\View\SendResponseListener` was deprecated with the 2.2 release, and
-has been an extension of `Zend\Mvc\SendResponseListener` ever since. It is
+`Laminas\Mvc\View\SendResponseListener` was deprecated with the 2.2 release, and
+has been an extension of `Laminas\Mvc\SendResponseListener` ever since. It is
 removed with the v3 release.

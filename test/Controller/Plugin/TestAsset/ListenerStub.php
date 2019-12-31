@@ -1,5 +1,5 @@
 <?php
-namespace ZendTest\Mvc\Controller\Plugin\TestAsset;
+namespace LaminasTest\Mvc\Controller\Plugin\TestAsset;
 
 class ListenerStub
 {

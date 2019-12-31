@@ -12,9 +12,9 @@ more.
 The base unit of routing is a `Route`:
 
 ```php
-namespace Zend\Router;
+namespace Laminas\Router;
 
-use Zend\Stdlib\RequestInterface as Request;
+use Laminas\Stdlib\RequestInterface as Request;
 
 interface RouteInterface
 {
@@ -28,7 +28,7 @@ A `Route` accepts a `Request`, and determines if it matches. If so, it returns a
 `RouteMatch` object:
 
 ```php
-namespace Zend\Router;
+namespace Laminas\Router;
 
 class RouteMatch
 {
@@ -58,7 +58,7 @@ facilitate this, you will use a route aggregate, usually implementing
 `RouteStack`:
 
 ```php
-namespace Zend\Router;
+namespace Laminas\Router;
 
 interface RouteStackInterface extends RouteInterface
 {
@@ -70,7 +70,7 @@ interface RouteStackInterface extends RouteInterface
 ```
 
 Routes will be queried in a LIFO order, and hence the reason behind the name
-`RouteStack`. zend-mvc provides two implementations of this interface,
+`RouteStack`. laminas-mvc provides two implementations of this interface,
 `SimpleRouteStack` and `TreeRouteStack`. In each, you register routes either one
 at a time using `addRoute()`, or in bulk using `addRoutes()`.
 
@@ -108,7 +108,7 @@ $router->addRoutes([
 
 Two routers are provided, the `SimpleRouteStack` and `TreeRouteStack`. Each
 works with the above interface, but utilize slightly different options and
-execution paths. By default, the zend-mvc uses the `TreeRouteStack` as the
+execution paths. By default, the laminas-mvc uses the `TreeRouteStack` as the
 router.
 
 ### SimpleRouteStack
@@ -125,7 +125,7 @@ adding it to the route stack.
 
 ### TreeRouteStack
 
-`Zend\Router\Http\TreeRouteStack` provides the ability to register trees of
+`Laminas\Router\Http\TreeRouteStack` provides the ability to register trees of
 routes, and uses a B-tree algorithm to match routes. As such, you register a
 single route with many children.
 
@@ -133,7 +133,7 @@ A `TreeRouteStack` will consist of the following configuration:
 
 - A base "route", which describes the base match needed, the root of the tree.
 - An optional `route_plugins`, which is a configured
-  `Zend\Router\RoutePluginManager` that can lazy-load routes.
+  `Laminas\Router\RoutePluginManager` that can lazy-load routes.
 - The option `may_terminate`, which hints to the router that no other segments
   will follow it.
 - An optional `child_routes` array, which contains additional routes that stem
@@ -151,9 +151,9 @@ route.
 
 ## HTTP Route Types
 
-zend-mvc ships with the following HTTP route types.
+laminas-mvc ships with the following HTTP route types.
 
-### Zend\\Router\\Http\\Hostname
+### Laminas\\Router\\Http\\Hostname
 
 The `Hostname` route attempts to match the hostname registered in the request
 against specific criteria. Typically, this will be in one of the following
@@ -198,7 +198,7 @@ $route = Hostname::factory([
 When matched, the above will return two keys in the `RouteMatch`, "subdomain"
 and "type".
 
-### Zend\\Router\\Http\\Literal
+### Laminas\\Router\\Http\\Literal
 
 The `Literal` route is for doing exact matching of the URI path. Configuration
 therefore is solely the path you want to match, and the "defaults", or
@@ -217,7 +217,7 @@ $route = Literal::factory([
 The above route would match a path "/foo", and return the key "action" in the
 `RouteMatch`, with the value "foo".
 
-### Zend\\Router\\Http\\Method
+### Laminas\\Router\\Http\\Method
 
 The `Method` route is used to match the HTTP method or 'verb' specified in the
 request (See RFC 2616 Sec. 5.1.1). It can optionally be configured to match
@@ -236,7 +236,7 @@ $route = Method::factory([
 The above route would match an http "POST" or "PUT" request and return a
 `RouteMatch` object containing a key "action" with a value of "form-submit".
 
-### Zend\\Router\\Http\\Part
+### Laminas\\Router\\Http\\Part
 
 A `Part` route allows crafting a tree of possible routes based on segments of
 the URI path. It actually extends the `TreeRouteStack`.
@@ -328,32 +328,32 @@ You may use any route type as a child route of a `Part` route.
 > ### Route plugins
 >
 > In the above example, the `$routePlugins` is an instance of
-> `Zend\Router\RoutePluginManager`, containing essentially the following
+> `Laminas\Router\RoutePluginManager`, containing essentially the following
 > configuration:
 >
 > ```php
-> $routePlugins = new Zend\Router\RoutePluginManager();
+> $routePlugins = new Laminas\Router\RoutePluginManager();
 > $plugins = [
->     'hostname' => 'Zend\Router\Http\Hostname',
->     'literal'  => 'Zend\Router\Http\Literal',
->     'part'     => 'Zend\Router\Http\Part',
->     'regex'    => 'Zend\Router\Http\Regex',
->     'scheme'   => 'Zend\Router\Http\Scheme',
->     'segment'  => 'Zend\Router\Http\Segment',
->     'wildcard' => 'Zend\Router\Http\Wildcard',
->     'query'    => 'Zend\Router\Http\Query',
->     'method'   => 'Zend\Router\Http\Method',
+>     'hostname' => 'Laminas\Router\Http\Hostname',
+>     'literal'  => 'Laminas\Router\Http\Literal',
+>     'part'     => 'Laminas\Router\Http\Part',
+>     'regex'    => 'Laminas\Router\Http\Regex',
+>     'scheme'   => 'Laminas\Router\Http\Scheme',
+>     'segment'  => 'Laminas\Router\Http\Segment',
+>     'wildcard' => 'Laminas\Router\Http\Wildcard',
+>     'query'    => 'Laminas\Router\Http\Query',
+>     'method'   => 'Laminas\Router\Http\Method',
 > ];
 > foreach ($plugins as $name => $class) {
 >     $routePlugins->setInvokableClass($name, $class);
 > }
 > ```
 >
-> When using `Zend\Router\Http\TreeRouteStack`, the `RoutePluginManager` is
+> When using `Laminas\Router\Http\TreeRouteStack`, the `RoutePluginManager` is
 > set up by default, and the developer does not need to worry about autoloading
 > of standard HTTP routes.
 
-### Zend\\Router\\Http\\Regex
+### Laminas\\Router\\Http\\Regex
 
 A `Regex` route utilizes a regular expression to match against the URI path. Any
 valid regular expression is allowed; our recommendation is to use named captures
@@ -385,7 +385,7 @@ items in the `RouteMatch`, an "id", the "controller", the "action", and the
 "format". When assembling a URL from this route, the "id" and "format" values
 would be used to fill the specification.
 
-### Zend\\Router\\Http\\Scheme
+### Laminas\\Router\\Http\\Scheme
 
 The `Scheme` route matches the URI scheme only, and must be an exact match. As
 such, this route, like the `Literal` route, simply takes what you want to match
@@ -403,7 +403,7 @@ $route = Scheme::factory([
 The above route would match the "https" scheme, and return the key "https" in
 the `RouteMatch` with a boolean `true` value.
 
-### Zend\\Router\\Http\\Segment
+### Laminas\\Router\\Http\\Segment
 
 A `Segment` route allows matching any segment of a URI path. Segments are
 denoted using a colon, followed by alphanumeric characters; if a segment is
@@ -440,7 +440,7 @@ $route = Segment::factory([
 ]);
 ```
 
-### Zend\\Router\\Http\\Query (Deprecated)
+### Laminas\\Router\\Http\\Query (Deprecated)
 
 > #### Potential security issue
 >
@@ -507,7 +507,7 @@ will then be appended as a query string.
 The output from our example should then be
 `/page/my-test-page?format=rss&limit=10`
 
-### Zend\\Router\\Http\\Wildcard (Deprecated)
+### Laminas\\Router\\Http\\Wildcard (Deprecated)
 
 > #### Potential security issue
 >
@@ -631,14 +631,14 @@ echo $this->url('blog/rss'); // gives "/blog/rss"
 return [
     'router' => [
         'routes' => [
-            'modules.zendframework.com' => [
-                'type' => 'Zend\Router\Http\Hostname',
+            'modules.laminas.dev' => [
+                'type' => 'Laminas\Router\Http\Hostname',
                 'options' => [
                     'route' => ':4th.[:3rd.]:2nd.:1st', // domain levels from right to left
                     'constraints' => [
                         '4th' => 'modules',
                         '3rd' => '.*?', // optional 3rd level domain such as .ci, .dev or .test
-                        '2nd' => 'zendframework',
+                        '2nd' => 'laminas',
                         '1st' => 'com',
                     ],
                     // Purposely omit default controller and action
@@ -647,7 +647,7 @@ return [
                 // child route controllers may span multiple modules as desired
                 'child_routes' => [
                     'index' => [
-                        'type' => 'Zend\Router\Http\Literal',
+                        'type' => 'Laminas\Router\Http\Literal',
                         'options' => [
                             'route' => '/',
                             'defaults' => [
@@ -659,14 +659,14 @@ return [
                     ],
                 ],
             ],
-            'packages.zendframework.com' => [
-                'type' => 'Zend\Router\Http\Hostname',
+            'packages.laminas.dev' => [
+                'type' => 'Laminas\Router\Http\Hostname',
                 'options' => [
                     'route' => ':4th.[:3rd.]:2nd.:1st', // domain levels from right to left
                     'constraints' => [
                         '4th' => 'packages',
                         '3rd' => '.*?', // optional 3rd level domain such as .ci, .dev or .test
-                        '2nd' => 'zendframework',
+                        '2nd' => 'laminas',
                         '1st' => 'com',
                     ],
                     // Purposely omit default controller and action
@@ -675,7 +675,7 @@ return [
                 // child route controllers may span multiple modules as desired
                 'child_routes' => [
                     'index' => [
-                        'type' => 'Zend\Router\Http\Literal',
+                        'type' => 'Laminas\Router\Http\Literal',
                         'options' => [
                             'route' => '/',
                             'defaults' => [
@@ -694,13 +694,13 @@ return [
 
 The above would match the following:
 
-- `modules.zendframework.com` would dispatch the `Index` controller's `index`
+- `modules.laminas.dev` would dispatch the `Index` controller's `index`
   action of the `Module` module.
-- `modules.ci.zendframework.com` would dispatch the `Index` controller's `index`
+- `modules.ci.laminas.dev` would dispatch the `Index` controller's `index`
   action of the `Module` module.
-- `packages.zendframework.com` would dispatch the `Index` controller's `index`
+- `packages.laminas.dev` would dispatch the `Index` controller's `index`
   action of the `Package` module.
-- `packages.dev.zendframework.com` would dispatch the `Index` controller's
+- `packages.dev.laminas.dev` would dispatch the `Index` controller's
   `index` action of the `Package` module.
 
 The `Url` controller plugin or view helper may be used to generate URLs
@@ -708,8 +708,8 @@ following the above example:
 
 ```php
 // reuse the route matched parameters to generate URLs
-echo $this->url('modules.zendframework.com/index', [], [], true);
-echo $this->url('packages.zendframework.com/index', [], [], true);
+echo $this->url('modules.laminas.dev/index', [], [], true);
+echo $this->url('packages.laminas.dev/index', [], [], true);
 ```
 
 > ### may_terminate and child_routes placement
@@ -721,5 +721,5 @@ echo $this->url('packages.zendframework.com/index', [], [], true);
 
 ## Console Route Types
 
-zend-mvc also allows routing Console based applications; console routes are
-explained in the [zend-console routing documentation](http://docs.zendframework.com/zend-console/routes/).
+laminas-mvc also allows routing Console based applications; console routes are
+explained in the [laminas-console routing documentation](http://docs.laminas.dev/laminas-console/routes/).

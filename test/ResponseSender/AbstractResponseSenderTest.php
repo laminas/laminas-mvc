@@ -1,19 +1,18 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\ResponseSender;
+namespace LaminasTest\Mvc\ResponseSender;
 
+use Laminas\Http\Headers;
+use Laminas\Http\Response;
+use Laminas\Mvc\ResponseSender\AbstractResponseSender;
+use Laminas\Mvc\ResponseSender\SendResponseEvent;
 use PHPUnit\Framework\TestCase;
-use Zend\Http\Headers;
-use Zend\Http\Response;
-use Zend\Mvc\ResponseSender\AbstractResponseSender;
-use Zend\Mvc\ResponseSender\SendResponseEvent;
 
 class AbstractResponseSenderTest extends TestCase
 {
@@ -97,7 +96,7 @@ class AbstractResponseSenderTest extends TestCase
         $this->assertEquals(
             'X-Test: HTTP/1.1 202 Accepted',
             $sentHeaders[1],
-            'Status header is sent last to prevent header() from overwriting the ZF status code when a Location '
+            'Status header is sent last to prevent header() from overwriting the Laminas status code when a Location '
             . 'header is used'
         );
     }
