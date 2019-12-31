@@ -1,18 +1,17 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
 namespace Application;
 
-use Zend\Http\PhpEnvironment\Request as HttpRequest;
-use Zend\Http\PhpEnvironment\Response as HttpResponse;
-use Zend\Mvc\Service\HttpRouterFactory;
-use Zend\Mvc\Service\HttpViewManagerFactory;
+use Laminas\Http\PhpEnvironment\Request as HttpRequest;
+use Laminas\Http\PhpEnvironment\Response as HttpResponse;
+use Laminas\Mvc\Service\HttpRouterFactory;
+use Laminas\Mvc\Service\HttpViewManagerFactory;
 
 return [
     'controllers' => [
