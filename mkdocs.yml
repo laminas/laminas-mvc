@@ -1,6 +1,6 @@
 docs_dir: docs/book
 site_dir: docs/html
-pages:
+nav:
     - Home: index.md
     - Introduction: intro.md
     - 'Quick Start': quick-start.md
@@ -20,6 +20,6 @@ pages:
     - Cookbook:
       - 'Automating controller factories': cookbook/automating-controller-factories.md
       - 'Using middleware within event listeners': cookbook/middleware-in-listeners.md
-site_name: zend-mvc
-site_description: "Zend Framework's event-driven MVC layer, including MVC Applications, Controllers, and Plugins."
-repo_url: 'https://github.com/zendframework/zend-mvc'
+site_name: laminas-mvc
+site_description: "Laminas's event-driven MVC layer, including MVC Applications, Controllers, and Plugins."
+repo_url: 'https://github.com/laminas/laminas-mvc'

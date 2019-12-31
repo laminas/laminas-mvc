@@ -1,9 +1,9 @@
 # The MvcEvent
 
-zend-mvc defines and utilizes a custom `Zend\EventManager\Event` implementation,
-`Zend\Mvc\MvcEvent`. This event is created during `Zend\Mvc\Application::bootstrap()`
+laminas-mvc defines and utilizes a custom `Laminas\EventManager\Event` implementation,
+`Laminas\Mvc\MvcEvent`. This event is created during `Laminas\Mvc\Application::bootstrap()`
 and is passed when triggering all application events.  Additionally, if your
-controllers implement the `Zend\Mvc\InjectApplicationEventInterface`, `MvcEvent`
+controllers implement the `Laminas\Mvc\InjectApplicationEventInterface`, `MvcEvent`
 will be injected into those controllers.
 
 The `MvcEvent` adds accessors and mutators for the following:
@@ -75,7 +75,7 @@ priority):
 
 Class                            | Priority | Method Called | Triggers | Description
 ---------------------------------|---------:|---------------|----------|------------
-`Zend\Mvc\View\Http\ViewManager` | 10000    | `onBootstrap` | none     | Prepares the view layer (instantiate a `Zend\Mvc\View\Http\ViewManager`).
+`Laminas\Mvc\View\Http\ViewManager` | 10000    | `onBootstrap` | none     | Prepares the view layer (instantiate a `Laminas\Mvc\View\Http\ViewManager`).
 
 ### Triggered By
 
@@ -83,7 +83,7 @@ This event is triggered by the following classes:
 
 Class                  | In Method
 -----------------------|----------
-`Zend\Mvc\Application` | `bootstrap`
+`Laminas\Mvc\Application` | `bootstrap`
 
 ## `MvcEvent::EVENT_ROUTE` ("route")
 
@@ -94,8 +94,8 @@ priority):
 
 Class                          | Priority | Method Called | Triggers | Description
 -------------------------------|---------:|---------------|----------|------------
-`Zend\Mvc\ModuleRouteListener` | 1        | `onRoute`     | none     | Determines if the module namespace should be prepended to the controller name. This is the case if the route match contains a parameter key matching the `MODULE_NAMESPACE` constant.
-`Zend\Mvc\RouteListener`       | 1        | `onRoute`     | `MvcEvent::EVENT_DISPATCH_ERROR` (if no route is matched) | Tries to match the request to the router and return a `RouteMatch` object.
+`Laminas\Mvc\ModuleRouteListener` | 1        | `onRoute`     | none     | Determines if the module namespace should be prepended to the controller name. This is the case if the route match contains a parameter key matching the `MODULE_NAMESPACE` constant.
+`Laminas\Mvc\RouteListener`       | 1        | `onRoute`     | `MvcEvent::EVENT_DISPATCH_ERROR` (if no route is matched) | Tries to match the request to the router and return a `RouteMatch` object.
 
 ### Triggered By
 
@@ -103,7 +103,7 @@ This event is triggered by the following classes:
 
 Class                  | In Method | Description
 -----------------------|-----------|------------
-`Zend\Mvc\Application` | `run`     | Uses a short circuit callback that allows halting propagation of the event if an error is raised during routing.
+`Laminas\Mvc\Application` | `run`     | Uses a short circuit callback that allows halting propagation of the event if an error is raised during routing.
 
 ## `MvcEvent::EVENT_DISPATCH` ("dispatch")
 
@@ -118,11 +118,11 @@ The following listeners are only attached in a console context:
 
 Class                                                    | Priority | Method Called               | Description
 ---------------------------------------------------------|---------:|-----------------------------|------------
-`Zend\Mvc\View\Console\InjectNamedConsoleParamsListener` | 1000     | `injectNamedParams`         | Merge all params (route match params and params in the command), and add them to the `Request` object.
-`Zend\Mvc\View\Console\CreateViewModelListener`          | -80      | `createViewModelFromArray`  | If the controller action returns an associative array, this listener casts it to a `ConsoleModel` object.
-`Zend\Mvc\View\Console\CreateViewModelListener`          | -80      | `createViewModelFromString` | If the controller action returns a string, this listener casts it to a `ConsoleModel` object.
-`Zend\Mvc\View\Console\CreateViewModelListener`          | -80      | `createViewModelFromNull`   | If the controller action returns null, this listener casts it to a `ConsoleModel` object.
-`Zend\Mvc\View\Console\InjectViewModelListener`          | -100     | `injectViewModel`           | Inserts the `ViewModel` (in this case, a `ConsoleModel`) and adds it to the MvcEvent object. It either (a) adds it as a child to the default, composed view model, or (b) replaces it if the result is marked as terminal.
+`Laminas\Mvc\View\Console\InjectNamedConsoleParamsListener` | 1000     | `injectNamedParams`         | Merge all params (route match params and params in the command), and add them to the `Request` object.
+`Laminas\Mvc\View\Console\CreateViewModelListener`          | -80      | `createViewModelFromArray`  | If the controller action returns an associative array, this listener casts it to a `ConsoleModel` object.
+`Laminas\Mvc\View\Console\CreateViewModelListener`          | -80      | `createViewModelFromString` | If the controller action returns a string, this listener casts it to a `ConsoleModel` object.
+`Laminas\Mvc\View\Console\CreateViewModelListener`          | -80      | `createViewModelFromNull`   | If the controller action returns null, this listener casts it to a `ConsoleModel` object.
+`Laminas\Mvc\View\Console\InjectViewModelListener`          | -100     | `injectViewModel`           | Inserts the `ViewModel` (in this case, a `ConsoleModel`) and adds it to the MvcEvent object. It either (a) adds it as a child to the default, composed view model, or (b) replaces it if the result is marked as terminal.
 
 #### HTTP context only
 
@@ -130,11 +130,11 @@ The following listeners are only attached in an HTTP context:
 
 Class                                        | Priority | Method Called              | Description
 ---------------------------------------------|---------:|----------------------------|------------
-`Zend\Mvc\View\Http\CreateViewModelListener` | -80      | `createViewModelFromArray` | If the controller action returns an associative array, this listener casts it to a `ViewModel` object.
-`Zend\Mvc\View\Http\CreateViewModelListener` | -80      | `createViewModelFromNull`  | If the controller action returns null, this listener casts it to a `ViewModel` object.
-`Zend\Mvc\View\Http\RouteNotFoundStrategy`   | -90      | `prepareNotFoundViewModel` | Creates and return a 404 `ViewModel`.
-`Zend\Mvc\View\Http\InjectTemplateListener`  | -90      | `injectTemplate`           | Injects a template into the view model, if none present. Template name is derived from the controller found in the route match, and, optionally, the action, if present.
-`Zend\Mvc\View\Http\InjectViewModelListener` | -100     | `injectViewModel`          | Inserts the `ViewModel` (in this case, a `ViewModel`) and adds it to the `MvcEvent` object. It either (a) adds it as a child to the default, composed view model, or (b) replaces it if the result is marked as terminable.
+`Laminas\Mvc\View\Http\CreateViewModelListener` | -80      | `createViewModelFromArray` | If the controller action returns an associative array, this listener casts it to a `ViewModel` object.
+`Laminas\Mvc\View\Http\CreateViewModelListener` | -80      | `createViewModelFromNull`  | If the controller action returns null, this listener casts it to a `ViewModel` object.
+`Laminas\Mvc\View\Http\RouteNotFoundStrategy`   | -90      | `prepareNotFoundViewModel` | Creates and return a 404 `ViewModel`.
+`Laminas\Mvc\View\Http\InjectTemplateListener`  | -90      | `injectTemplate`           | Injects a template into the view model, if none present. Template name is derived from the controller found in the route match, and, optionally, the action, if present.
+`Laminas\Mvc\View\Http\InjectViewModelListener` | -100     | `injectViewModel`          | Inserts the `ViewModel` (in this case, a `ViewModel`) and adds it to the `MvcEvent` object. It either (a) adds it as a child to the default, composed view model, or (b) replaces it if the result is marked as terminable.
 
 #### All contexts
 
@@ -143,9 +143,9 @@ priority to lower priority):
 
 Class                         | Priority | Method Called | Triggers | Description
 ------------------------------|---------:|---------------|----------|------------
-`Zend\Mvc\MiddlewareListener` | 1        | `onDispatch`  | `MvcEvent::EVENT_DISPATCH_ERROR` (if an exception is raised during dispatch processes) | Load and dispatch the matched PSR-7 middleware from the service manager (and throws various exceptions if it does not).
-`Zend\Mvc\DispatchListener`   | 1        | `onDispatch`  | `MvcEvent::EVENT_DISPATCH_ERROR` (if an exception is raised during dispatch processes) |  Load and dispatch the matched controller from the service manager (and throws various exceptions if it does not).
-`Zend\Mvc\AbstractController` | 1        | `onDispatch`  | none     | The `onDispatch` method of the `AbstractController` is an abstract method. In `AbstractActionController`, for instance, it calls the action method.
+`Laminas\Mvc\MiddlewareListener` | 1        | `onDispatch`  | `MvcEvent::EVENT_DISPATCH_ERROR` (if an exception is raised during dispatch processes) | Load and dispatch the matched PSR-7 middleware from the service manager (and throws various exceptions if it does not).
+`Laminas\Mvc\DispatchListener`   | 1        | `onDispatch`  | `MvcEvent::EVENT_DISPATCH_ERROR` (if an exception is raised during dispatch processes) |  Load and dispatch the matched controller from the service manager (and throws various exceptions if it does not).
+`Laminas\Mvc\AbstractController` | 1        | `onDispatch`  | none     | The `onDispatch` method of the `AbstractController` is an abstract method. In `AbstractActionController`, for instance, it calls the action method.
 
 ### Triggered By
 
@@ -153,8 +153,8 @@ This event is triggered by the following classes:
 
 Class                                    | In Method   | Description
 -----------------------------------------|-------------|------------
-`Zend\Mvc\Application`                   | `run`       | Uses a short circuit callback to halt propagation of the event if an error is raised during routing.
-`Zend\Mvc\Controller\AbstractController` | `dispatch`  | If a listener returns a `Response` object, it halts propagation. Note: every `AbstractController` listens to this event and executes the `onDispatch` method when it is triggered.
+`Laminas\Mvc\Application`                   | `run`       | Uses a short circuit callback to halt propagation of the event if an error is raised during routing.
+`Laminas\Mvc\Controller\AbstractController` | `dispatch`  | If a listener returns a `Response` object, it halts propagation. Note: every `AbstractController` listens to this event and executes the `onDispatch` method when it is triggered.
 
 ## `MvcEvent::EVENT_DISPATCH_ERROR` ("dispatch.error")
 
@@ -169,9 +169,9 @@ The following listeners are only attached in a console context:
 
 Class                                           | Priority | Method Called               | Description
 ------------------------------------------------|---------:|-----------------------------|------------
-`Zend\Mvc\View\Console\RouteNotFoundStrategy`   | 1        | `handleRouteNotFoundError ` | Detect if an error is a "route not found" condition. If a “controller not found” or “invalid controller” error type is encountered, sets the response status code to 404.
-`Zend\Mvc\View\Console\ExceptionStrategy`       | 1        | `prepareExceptionViewModel` | Create an exception view model, and sets the status code to 404.
-`Zend\Mvc\View\Console\InjectViewModelListener` | -100     | `injectViewModel`           | Inserts the `ViewModel` (in this case, a `ConsoleModel`) and adds it to the `MvcEvent` object. It either (a) adds it as a child to the default, composed view model, or (b) replaces it if the result is marked as terminable.
+`Laminas\Mvc\View\Console\RouteNotFoundStrategy`   | 1        | `handleRouteNotFoundError ` | Detect if an error is a "route not found" condition. If a “controller not found” or “invalid controller” error type is encountered, sets the response status code to 404.
+`Laminas\Mvc\View\Console\ExceptionStrategy`       | 1        | `prepareExceptionViewModel` | Create an exception view model, and sets the status code to 404.
+`Laminas\Mvc\View\Console\InjectViewModelListener` | -100     | `injectViewModel`           | Inserts the `ViewModel` (in this case, a `ConsoleModel`) and adds it to the `MvcEvent` object. It either (a) adds it as a child to the default, composed view model, or (b) replaces it if the result is marked as terminable.
 
 #### HTTP context only
 
@@ -179,10 +179,10 @@ The following listeners are only attached in an HTTP context:
 
 Class                                        | Priority | Method Called               | Description
 ---------------------------------------------|---------:|-----------------------------|------------
-`Zend\Mvc\View\Http\RouteNotFoundStrategy`   | 1        | `detectNotFoundError`       | Detect if an error is a 404 condition. If a “controller not found” or “invalid controller” error type is encountered, sets the response status code to 404.
-`Zend\Mvc\View\Http\RouteNotFoundStrategy`   | 1        | `prepareNotFoundViewModel`  | Create and return a 404 view model.
-`Zend\Mvc\View\Http\ExceptionStrategy`       | 1        | `prepareExceptionViewModel` | Create an exception view model and set the status code to 404.
-`Zend\Mvc\View\Http\InjectViewModelListener` | -100     | `injectViewModel`           | Inserts the `ViewModel` (in this case, a `ViewModel`) and adds it to the MvcEvent object. It either (a) adds it as a child to the default, composed view model, or (b) replaces it if the result is marked as terminable.
+`Laminas\Mvc\View\Http\RouteNotFoundStrategy`   | 1        | `detectNotFoundError`       | Detect if an error is a 404 condition. If a “controller not found” or “invalid controller” error type is encountered, sets the response status code to 404.
+`Laminas\Mvc\View\Http\RouteNotFoundStrategy`   | 1        | `prepareNotFoundViewModel`  | Create and return a 404 view model.
+`Laminas\Mvc\View\Http\ExceptionStrategy`       | 1        | `prepareExceptionViewModel` | Create an exception view model and set the status code to 404.
+`Laminas\Mvc\View\Http\InjectViewModelListener` | -100     | `injectViewModel`           | Inserts the `ViewModel` (in this case, a `ViewModel`) and adds it to the MvcEvent object. It either (a) adds it as a child to the default, composed view model, or (b) replaces it if the result is marked as terminable.
 
 #### All contexts
 
@@ -190,16 +190,16 @@ The following listeners are attached for all contexts:
 
 Class                       | Priority | Method Called        | Description
 ----------------------------|---------:|----------------------|------------
-`Zend\Mvc\DispatchListener` | 1        | `reportMonitorEvent` | Used for monitoring when Zend Server is used.
+`Laminas\Mvc\DispatchListener` | 1        | `reportMonitorEvent` | Used for monitoring when Zend Server is used.
 
 ### Triggered By
 
 Class                         | In Method
 ------------------------------|----------
-`Zend\Mvc\MiddlewareListener` | `onDispatch`
-`Zend\Mvc\DispatchListener`   | `onDispatch`
-`Zend\Mvc\DispatchListener`   | `marshallControllerNotFoundEvent`
-`Zend\Mvc\DispatchListener`   | `marshallBadControllerEvent`
+`Laminas\Mvc\MiddlewareListener` | `onDispatch`
+`Laminas\Mvc\DispatchListener`   | `onDispatch`
+`Laminas\Mvc\DispatchListener`   | `marshallControllerNotFoundEvent`
+`Laminas\Mvc\DispatchListener`   | `marshallBadControllerEvent`
 
 ## `MvcEvent::EVENT_RENDER` ("render")
 
@@ -214,7 +214,7 @@ The following listeners are only attached in a console context:
 
 Class                                            | Priority | Method Called | Description
 -------------------------------------------------|---------:|---------------|------------
-`Zend\Mvc\View\Console\DefaultRenderingStrategy` | -10000   | `render`      | Render the view.
+`Laminas\Mvc\View\Console\DefaultRenderingStrategy` | -10000   | `render`      | Render the view.
 
 #### HTTP context only
 
@@ -222,7 +222,7 @@ The following listeners are only attached in an HTTP context:
 
 Class                                         | Priority | Method Called | Description
 ----------------------------------------------|---------:|---------------|------------
-`Zend\Mvc\View\Http\DefaultRenderingStrategy` | -10000   | `render`      | Render the view.
+`Laminas\Mvc\View\Http\DefaultRenderingStrategy` | -10000   | `render`      | Render the view.
 
 ### Triggered By
 
@@ -230,7 +230,7 @@ This event is triggered by the following classes:
 
 Class                  | In Method         | Description
 -----------------------|-------------------|------------
-`Zend\Mvc\Application` | `completeRequest` | This event is triggered just before the `MvcEvent::FINISH` event.
+`Laminas\Mvc\Application` | `completeRequest` | This event is triggered just before the `MvcEvent::FINISH` event.
 
 ## `MvcEvent::EVENT_RENDER_ERROR` ("render.error")
 
@@ -245,8 +245,8 @@ The following listeners are only attached in a console context:
 
 Class                                           | Priority | Method Called               | Description
 ------------------------------------------------|---------:|-----------------------------|------------
-`Zend\Mvc\View\Console\ExceptionStrategy`       | 1        | `prepareExceptionViewModel` | Create an exception view model and set the status code to 404.
-`Zend\Mvc\View\Console\InjectViewModelListener` | -100     | `injectViewModel`           | Inserts the `ViewModel` (in this case, a `ConsoleModel`) and adds it to the `MvcEvent` object. It either (a) adds it as a child to the default, composed view model, or (b) replaces it if the result is marked as terminable.
+`Laminas\Mvc\View\Console\ExceptionStrategy`       | 1        | `prepareExceptionViewModel` | Create an exception view model and set the status code to 404.
+`Laminas\Mvc\View\Console\InjectViewModelListener` | -100     | `injectViewModel`           | Inserts the `ViewModel` (in this case, a `ConsoleModel`) and adds it to the `MvcEvent` object. It either (a) adds it as a child to the default, composed view model, or (b) replaces it if the result is marked as terminable.
 
 #### HTTP context only
 
@@ -254,9 +254,9 @@ The following listeners are only attached in an HTTP context:
 
 Class                                           | Priority | Method Called               | Description
 ------------------------------------------------|---------:|-----------------------------|------------
-`Zend\Mvc\View\Http\ExceptionStrategy`          | 1        | `prepareExceptionViewModel` | Create an exception view model and set the status code to 404.
-`Zend\Mvc\View\Http\InjectViewModelListener`    | -100     | `injectViewModel`           | Inserts the `ViewModel` (in this case, a `ViewModel`) and adds it to the MvcEvent object. It either (a) adds it as a child to the default, composed view model, or (b) replaces it if the result is marked as terminable.
-`Zend\Mvc\View\Http\DefaultRenderingStrategy`   | -10000   | `render`                    | Render the view
+`Laminas\Mvc\View\Http\ExceptionStrategy`          | 1        | `prepareExceptionViewModel` | Create an exception view model and set the status code to 404.
+`Laminas\Mvc\View\Http\InjectViewModelListener`    | -100     | `injectViewModel`           | Inserts the `ViewModel` (in this case, a `ViewModel`) and adds it to the MvcEvent object. It either (a) adds it as a child to the default, composed view model, or (b) replaces it if the result is marked as terminable.
+`Laminas\Mvc\View\Http\DefaultRenderingStrategy`   | -10000   | `render`                    | Render the view
 
 ### Triggered By
 
@@ -264,7 +264,7 @@ This event is triggered by the following classes:
 
 Class                                         | In Method | Description
 ----------------------------------------------|-----------|------------
-`Zend\Mvc\View\Http\DefaultRenderingStrategy` | `render`  | This event is triggered if an exception is raised during rendering.
+`Laminas\Mvc\View\Http\DefaultRenderingStrategy` | `render`  | This event is triggered if an exception is raised during rendering.
 
 ## `MvcEvent::EVENT_FINISH` ("finish")
 
@@ -275,7 +275,7 @@ priority):
 
 Class                           | Priority | Method Called  | Description
 --------------------------------|---------:|----------------|------------
-`Zend\Mvc\SendResponseListener` | -10000   | `sendResponse` | Triggers the `SendResponseEvent` in order to prepare the response (see the next chapter for more information about `SendResponseEvent`).
+`Laminas\Mvc\SendResponseListener` | -10000   | `sendResponse` | Triggers the `SendResponseEvent` in order to prepare the response (see the next chapter for more information about `SendResponseEvent`).
 
 ### Triggered By
 
@@ -283,6 +283,6 @@ This event is triggered by the following classes:
 
 Class                  | In Method         | Description
 -----------------------|-------------------|------------
-`Zend\Mvc\Application` | `run`             | This event is triggered once the `MvcEvent::ROUTE` event returns a correct `ResponseInterface`.
-`Zend\Mvc\Application` | `run`             | This event is triggered once the `MvcEvent::DISPATCH` event returns a correct `ResponseInterface`.
-`Zend\Mvc\Application` | `completeRequest` | This event is triggered after `MvcEvent::RENDER` (at this point, the view is already rendered).
+`Laminas\Mvc\Application` | `run`             | This event is triggered once the `MvcEvent::ROUTE` event returns a correct `ResponseInterface`.
+`Laminas\Mvc\Application` | `run`             | This event is triggered once the `MvcEvent::DISPATCH` event returns a correct `ResponseInterface`.
+`Laminas\Mvc\Application` | `completeRequest` | This event is triggered after `MvcEvent::RENDER` (at this point, the view is already rendered).

@@ -2,14 +2,14 @@
 
 ## Middleware
 
-zend-mvc now registers `Zend\Mvc\MiddlewareListener` as a dispatch listener at
-a priority higher than `Zend\Mvc\DispatchListener`, allowing dispatch of
+laminas-mvc now registers `Laminas\Mvc\MiddlewareListener` as a dispatch listener at
+a priority higher than `Laminas\Mvc\DispatchListener`, allowing dispatch of
 [PSR-7](http://www.php-fig.org/psr/psr-7/) middleware. Read the
 [middleware chapter](../middleware.md) for details on how to use this new feature.
 
 ## Application
 
-The constructor signature of `Zend\Mvc\Application` has changed. Previously, it
+The constructor signature of `Laminas\Mvc\Application` has changed. Previously, it
 was:
 
 ```php
@@ -35,7 +35,7 @@ __construct(
 This change makes all dependencies explicit. Starting in v3.0, the new arguments
 will be *required*.
 
-The factory `Zend\Mvc\Service\ApplicationFactory` was updated to follow the new
+The factory `Laminas\Mvc\Service\ApplicationFactory` was updated to follow the new
 signature.
 
 This change should only affect users who are manually instantiating the
@@ -43,12 +43,12 @@ This change should only affect users who are manually instantiating the
 
 ## EventManagerAware initializers
 
-zend-mvc provides two mechanisms for injecting event managers into
+laminas-mvc provides two mechanisms for injecting event managers into
 `EventManagerAware` objects. One is the "EventManagerAwareInitializer"
-registered in `Zend\Mvc\Service\ServiceManagerConfig`, and the other is the
-`Zend\Mvc\Controller\ControllerManager::injectEventManager()` initializer. In
+registered in `Laminas\Mvc\Service\ServiceManagerConfig`, and the other is the
+`Laminas\Mvc\Controller\ControllerManager::injectEventManager()` initializer. In
 both cases, the logic was updated to be forwards compatible with
-zend-eventmanager v3.
+laminas-eventmanager v3.
 
 Previously each would check if the instance's `getEventManager()` method
 returned an event manager instance, and, if so, inject the shared event manager:
@@ -60,7 +60,7 @@ if ($events instanceof EventManagerInterface) {
 }
 ```
 
-In zend-eventmanager v3, event managers are now injected with the shared
+In laminas-eventmanager v3, event managers are now injected with the shared
 manager at instantiation, and no setter exists for providing the shared manager.
 As such, the above logic changed to:
 
@@ -80,9 +80,9 @@ state.
 
 ## ServiceLocatorAware initializers
 
-zend-servicemanager v3.0 removes `Zend\ServiceManager\ServiceLocatorAwareInterface`.
-Since zend-mvc provides initializers around that interface, they needed updates
-to allow both forwards compatibility with zend-servicemanager v3 as well as
+laminas-servicemanager v3.0 removes `Laminas\ServiceManager\ServiceLocatorAwareInterface`.
+Since laminas-mvc provides initializers around that interface, they needed updates
+to allow both forwards compatibility with laminas-servicemanager v3 as well as
 backwards compatibility with existing applications.
 
 This was accomplished in two ways:
@@ -90,8 +90,8 @@ This was accomplished in two ways:
 - The abstract controller implementations no longer implement
   `ServiceLocatorAwareInterface`, but continue to define the methods that the
   interface defines (namely `setServiceLocator()` and `getServiceLocator()`.
-- The initializers registered by `Zend\Mvc\Service\ServiceManagerConfig` and
-  `Zend\Mvc\Controller\ControllerManager` now use duck-typing to determine if
+- The initializers registered by `Laminas\Mvc\Service\ServiceManagerConfig` and
+  `Laminas\Mvc\Controller\ControllerManager` now use duck-typing to determine if
   an instance requires container injection; if so it will do so.
 
 However, we also maintain that service locator injection is an anti-pattern;
@@ -99,7 +99,7 @@ dependencies should be injected directly into instances instead. As such,
 starting in 2.7.0, we now emit a deprecation notice any time an instance is
 injected by one of these initializers, and we plan to remove the initializers
 for version 3.0. The deprecation notice includes the name of the class, to help
-you identify what instances you will need to update before the zend-mvc v3
+you identify what instances you will need to update before the laminas-mvc v3
 release.
 
 To prepare your code, you will need to do the following within your controller:
@@ -129,8 +129,8 @@ To update your controller, you will:
 The controller then might look like the following:
 
 ```php
-use Zend\Db\Adapter\AdapterInterface;
-use Zend\Mvc\Controller\AbstractActionController;
+use Laminas\Db\Adapter\AdapterInterface;
+use Laminas\Mvc\Controller\AbstractActionController;
 
 class YourController extends AbstractActionController
 {
@@ -194,7 +194,7 @@ two approaches you can use:
   specific controllers. This way you don't need to inject dependencies that are
   only used in some actions. (We recommend doing this regardless, as it helps
   keep your code more maintainable.)
-- Use [lazy services](http://docs.zendframework.com/zend-servicemanager/lazy-services/).
-  When you configure these, zend-servicemanager gives you a proxy instance that,
+- Use [lazy services](http://docs.laminas.dev/laminas-servicemanager/lazy-services/).
+  When you configure these, laminas-servicemanager gives you a proxy instance that,
   on first access, loads the full service. This allows you to delay the most
   expensive operations until absolutely needed.

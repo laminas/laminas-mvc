@@ -1,18 +1,18 @@
 # Controller Plugins
 
-When using any of the abstract controller implementations shipped with zend-mvc,
+When using any of the abstract controller implementations shipped with laminas-mvc,
 or if you implement the `setPluginManager` method in your custom controllers,
 you have access to a number of pre-built plugins. Additionally, you can register
 your own custom plugins with the manager.
 
 The built-in plugins are:
 
-- [Zend\\Mvc\\Controller\\Plugin\\AcceptableViewModelSelector](#acceptableviewmodelselector-plugin)
-- [Zend\\Mvc\\Controller\\Plugin\\Forward](#forward-plugin)
-- [Zend\\Mvc\\Controller\\Plugin\\Layout](#layout-plugin)
-- [Zend\\Mvc\\Controller\\Plugin\\Params](#params-plugin)
-- [Zend\\Mvc\\Controller\\Plugin\\Redirect](#redirect-plugin)
-- [Zend\\Mvc\\Controller\\Plugin\\Url](#url-plugin)
+- [Laminas\\Mvc\\Controller\\Plugin\\AcceptableViewModelSelector](#acceptableviewmodelselector-plugin)
+- [Laminas\\Mvc\\Controller\\Plugin\\Forward](#forward-plugin)
+- [Laminas\\Mvc\\Controller\\Plugin\\Layout](#layout-plugin)
+- [Laminas\\Mvc\\Controller\\Plugin\\Params](#params-plugin)
+- [Laminas\\Mvc\\Controller\\Plugin\\Redirect](#redirect-plugin)
+- [Laminas\\Mvc\\Controller\\Plugin\\Url](#url-plugin)
 
 If your controller implements the `setPluginManager()`, `getPluginManager()` and
 `plugin()` methods, you can access these using their shortname via the `plugin()`
@@ -39,20 +39,20 @@ Accept header in the request.
 As an example:
 
 ```php
-use Zend\Mvc\Controller\AbstractActionController;
+use Laminas\Mvc\Controller\AbstractActionController;
 
 class SomeController extends AbstractActionController
 {
     protected $acceptCriteria = [
-        \Zend\View\Model\ViewModel::class => [
+        \Laminas\View\Model\ViewModel::class => [
             'text/html',
             'application/xhtml+xml',
         ],
-        \Zend\View\Model\JsonModel::class => [
+        \Laminas\View\Model\JsonModel::class => [
             'application/json',
             'application/javascript',
         ],
-        \Zend\View\Model\FeedModel::class => [
+        \Laminas\View\Model\FeedModel::class => [
             'application/rss+xml',
             'application/atom+xml',
         ],
@@ -63,14 +63,14 @@ class SomeController extends AbstractActionController
         $viewModel = $this->acceptableViewModelSelector($this->acceptCriteria);
 
         // Potentially vary execution based on model returned
-        if ($viewModel instanceof \Zend\View\Model\JsonModel) {
+        if ($viewModel instanceof \Laminas\View\Model\JsonModel) {
             // ...
         }
     }
 }
 ```
 
-The above would return a standard `Zend\View\Model\ViewModel` instance if no
+The above would return a standard `Laminas\View\Model\ViewModel` instance if no
 criterias are met, and the specified view model types if a specific criteria
 is met. Rules are matched in order, with the first match "winning".
 Make sure to put your fallback view model *first* as a fallback for unknown
@@ -144,7 +144,7 @@ It exposes several methods, one for each parameter source:
   For retrieving all or one single **file**. If `$name` is null, all files will
   be returned.
 
-- `fromHeader(string $header = null, mixed $default = null) : null|Zend\Http\Header\HeaderInterface`:
+- `fromHeader(string $header = null, mixed $default = null) : null|Laminas\Http\Header\HeaderInterface`:
   For retrieving all or one single **header** parameter. If `$header` is null,
   all header parameters will be returned.
 
@@ -181,13 +181,13 @@ you will need to do the following steps:
 
 The `Redirect` plugin does this work for you. It offers three methods:
 
-- `toRoute(string $route = null, array $params = array(), array $options = array(), boolean $reuseMatchedParams = false) : Zend\Http\Response`:
+- `toRoute(string $route = null, array $params = array(), array $options = array(), boolean $reuseMatchedParams = false) : Laminas\Http\Response`:
   Redirects to a named route, using the provided `$params` and `$options` to
   assembled the URL.
 
-- `toUrl(string $url) : Zend\Http\Response`: Simply redirects to the given URL.
+- `toUrl(string $url) : Laminas\Http\Response`: Simply redirects to the given URL.
 
-- `refresh() : Zend\Http\Response`: Refresh to current route.
+- `refresh() : Laminas\Http\Response`: Refresh to current route.
 
 In each case, the `Response` object is returned. If you return this immediately,
 you can effectively short-circuit execution of the request.

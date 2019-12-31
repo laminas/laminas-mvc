@@ -1,23 +1,24 @@
 <?php
+
 /**
- * @link      http://github.com/zendframework/zend-mvc for the canonical source repository
- * @copyright Copyright (c) 2005-2018 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   https://github.com/zendframework/zend-mvc/blob/master/LICENSE.md New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Controller;
+namespace Laminas\Mvc\Controller;
 
+use Laminas\EventManager\EventManagerInterface;
+use Laminas\Http\Request;
+use Laminas\Mvc\Exception\ReachedFinalHandlerException;
+use Laminas\Mvc\Exception\RuntimeException;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Psr7Bridge\Psr7ServerRequest;
+use Laminas\Router\RouteMatch;
+use Laminas\Stratigility\Delegate\CallableDelegateDecorator;
+use Laminas\Stratigility\MiddlewarePipe;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\EventManager\EventManagerInterface;
-use Zend\Http\Request;
-use Zend\Mvc\Exception\ReachedFinalHandlerException;
-use Zend\Mvc\Exception\RuntimeException;
-use Zend\Mvc\MvcEvent;
-use Zend\Psr7Bridge\Psr7ServerRequest;
-use Zend\Router\RouteMatch;
-use Zend\Stratigility\Delegate\CallableDelegateDecorator;
-use Zend\Stratigility\MiddlewarePipe;
 
 /**
  * @internal don't use this in your codebase, or else @ocramius will hunt you
@@ -27,9 +28,9 @@ use Zend\Stratigility\MiddlewarePipe;
  *     Specifically, it will receive a @see MiddlewarePipe and a
  *     @see ResponseInterface prototype, and then dispatch the pipe whilst still
  *     behaving like a normal controller. That is needed for any events
- *     attached to the @see \Zend\Stdlib\DispatchableInterface identifier to
+ *     attached to the @see \Laminas\Stdlib\DispatchableInterface identifier to
  *     reach their listeners on any attached
- *     @see \Zend\EventManager\SharedEventManagerInterface
+ *     @see \Laminas\EventManager\SharedEventManagerInterface
  */
 final class MiddlewareController extends AbstractController
 {
@@ -83,7 +84,7 @@ final class MiddlewareController extends AbstractController
     }
 
     /**
-     * @return \Zend\Diactoros\ServerRequest
+     * @return \Laminas\Diactoros\ServerRequest
      *
      * @throws RuntimeException
      */
@@ -99,7 +100,7 @@ final class MiddlewareController extends AbstractController
             ));
         }
 
-        return Psr7ServerRequest::fromZend($request);
+        return Psr7ServerRequest::fromLaminas($request);
     }
 
     /**

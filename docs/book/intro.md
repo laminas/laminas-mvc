@@ -1,39 +1,39 @@
 # Introduction
 
-zend-mvc is the MVC layer shipped with Zend Framework 2 and above, and focuses
+laminas-mvc is the MVC layer shipped with Laminas and above, and focuses
 on performance and flexibility.
 
 The MVC layer is built on top of the following components:
 
-- zend-servicemanager - zend-mvc provides a set of default service definitions,
+- laminas-servicemanager - laminas-mvc provides a set of default service definitions,
   used to create and configure the application instance and workflow.
-- zend-eventmanager - The MVC is event driven, and uses events for the initial
+- laminas-eventmanager - The MVC is event driven, and uses events for the initial
   bootstrapping of the application, for returning response and request calls,
   for matching routes, and even for rendering views.
-- zend-http - specifically the request and response objects from the
-  `Zend\Http\PhpEnvironment` namespace, which provide objects that ensure the
+- laminas-http - specifically the request and response objects from the
+  `Laminas\Http\PhpEnvironment` namespace, which provide objects that ensure the
   request is injected with the current environment (including query parameters,
   POST parameters, HTTP headers, etc.), and that the response will interact
   correctly with the SAPI and output buffering.
-- zend-stdlib - specifically `Zend\Stdlib\DispatchableInterface`. All
+- laminas-stdlib - specifically `Laminas\Stdlib\DispatchableInterface`. All
   "controllers" are simply dispatchable objects.
-- zend-router - provides routing of a request. In other
+- laminas-router - provides routing of a request. In other
   words, it matches the request to its respective controller (or dispatchable).
 
 Within the MVC layer, several sub-components are exposed:
 
-- `Zend\Mvc\Controller`, a set of abstract "controller" classes with basic
+- `Laminas\Mvc\Controller`, a set of abstract "controller" classes with basic
   responsibilities such as event wiring, action dispatching, etc., as well as
   controller plugins.
-- `Zend\Mvc\Service` provides a set of zend-servicemanager factories and
+- `Laminas\Mvc\Service` provides a set of laminas-servicemanager factories and
   definitions for the default application workflow.
-- `Zend\Mvc\View` provides default wiring for renderer selection, view script
+- `Laminas\Mvc\View` provides default wiring for renderer selection, view script
   resolution, helper registration, and more; additionally, it provides a
   number of listeners that tie into the MVC workflow, providing features such
   as automated template name resolution, automated view model creation and
   injection, etc.
 
-The gateway to the MVC is the [Zend\\Mvc\\Application](https://github.com/zendframework/zend-mvc/blob/master/src/Application.php)
+The gateway to the MVC is the [Laminas\\Mvc\\Application](https://github.com/laminas/laminas-mvc/blob/master/src/Application.php)
 object (referred to as `Application` henceforth). Its primary responsibilities
 are to **bootstrap** resources, to **route** the request, and to retrieve and
 **dispatch** the controller matched during routing. Once accomplished, it will
@@ -67,11 +67,11 @@ return, it `run()`s the `Application`, processing the request and returning a
 response to the user.
 
 The `config` directory as described above contains configuration used by
-zend-modulemanager to load modules and merge configuration (e.g., database
+laminas-modulemanager to load modules and merge configuration (e.g., database
 configuration and credentials); we will detail this more later.
 
 The `vendor` sub-directory should contain any third-party modules or libraries
-on which your application depends. This might include Zend Framework, custom
+on which your application depends. This might include Laminas, custom
 libraries from your organization, or other third-party libraries from other
 projects. Libraries and modules placed in the `vendor` sub-directory should not
 be modified from their original, distributed state.  Typically, this directory
@@ -88,7 +88,7 @@ A module may contain anything: PHP code, including MVC functionality; library
 code; view scripts; and/or or public assets such as images, CSS, and JavaScript.
 The only requirement &mdash; and even this is optional &mdash; is that a module
 acts as a PHP namespace and that it contains a `Module` class under that
-namespace.  This class is eventually consumed by zend-modulemanager to perform a
+namespace.  This class is eventually consumed by laminas-modulemanager to perform a
 number of tasks.
 
 The recommended module structure follows:
@@ -121,8 +121,8 @@ module_root<named-after-module-namespace>/
 
 Since a module acts as a namespace, the module root directory should be that
 namespace. This namespace could also include a vendor prefix of sorts. As an
-example a module centered around "User" functionality delivered by Zend might be
-named "ZendUser", and this is also what the module root directory will be named.
+example a module centered around "User" functionality delivered by Laminas might be
+named "LaminasUser", and this is also what the module root directory will be named.
 
 > ### Source and test code organization
 >
@@ -135,7 +135,7 @@ The `Module.php` file directly under the module root directory will be in the
 module namespace shown below.
 
 ```php
-namespace ZendUser;
+namespace LaminasUser;
 
 class Module
 {
@@ -152,7 +152,7 @@ class Module
 > application-specific modules via Composer.
 
 When an `init()` method is defined, this method will be triggered by a
-zend-modulemanager listener when it loads the module class, and passed a
+laminas-modulemanager listener when it loads the module class, and passed a
 `ModuleManager` instance by default. This allows you to perform tasks such as
 setting up module-specific event listeners. But be cautious, the `init()` method
 is called for **every** module on **every** page request and should **only** be
@@ -173,10 +173,10 @@ following:
 
 The point of these three files is to provide reasonable default mechanisms for autoloading the
 classes contained in the module, thus providing a trivial way to consume the module without
-requiring zend-modulemanager (e.g., for use outside a ZF2 application).
+requiring laminas-modulemanager (e.g., for use outside a Laminas application).
 
 The `config` directory should contain any module-specific configuration. These
-files may be in any format zend-config supports. We recommend naming the main
+files may be in any format laminas-config supports. We recommend naming the main
 configuration `module.config.<format>` (e.g., for PHP-based configuration,
 `module.config.php`). Typically, you will create configuration for the router as
 well as for the service manager.
@@ -216,12 +216,12 @@ The `Application` has seven basic dependencies.
 These may be satisfied at instantiation:
 
 ```php
-use Zend\EventManager\EventManager;
-use Zend\EventManager\SharedEventManager;
-use Zend\Http\PhpEnvironment;
-use Zend\ModuleManager\ModuleManager;
-use Zend\Mvc\Application;
-use Zend\ServiceManager\ServiceManager;
+use Laminas\EventManager\EventManager;
+use Laminas\EventManager\SharedEventManager;
+use Laminas\Http\PhpEnvironment;
+use Laminas\ModuleManager\ModuleManager;
+use Laminas\Mvc\Application;
+use Laminas\ServiceManager\ServiceManager;
 
 $config = include 'config/application.config.php';
 
@@ -241,13 +241,13 @@ $application = new Application($config, $serviceManager);
 Once you've done this, there are two additional actions you can take. The first is to "bootstrap"
 the application. In the default implementation, this does the following:
 
-- Attaches the default route listener (`Zend\Mvc\RouteListener`).
-- Attaches the middleware dispatch listener (`Zend\Mvc\MiddlewareListener`)
+- Attaches the default route listener (`Laminas\Mvc\RouteListener`).
+- Attaches the middleware dispatch listener (`Laminas\Mvc\MiddlewareListener`)
   (v2.7.0 and up).
-- Attaches the default dispatch listener (`Zend\Mvc\DispatchListener`).
-- Attaches the `ViewManager` listener (`Zend\Mvc\View\ViewManager`).
+- Attaches the default dispatch listener (`Laminas\Mvc\DispatchListener`).
+- Attaches the `ViewManager` listener (`Laminas\Mvc\View\ViewManager`).
 - Creates the `MvcEvent`, and injects it with the application, request, and
-  response; it also retrieves the router (`Zend\Router\Http\TreeRouteStack`)
+  response; it also retrieves the router (`Laminas\Router\Http\TreeRouteStack`)
   at this time and attaches it to the event.
 - Triggers the "bootstrap" event.
 
@@ -270,9 +270,9 @@ services available by default yet. You can greatly simplify things by using the 
 `ServiceManager` configuration shipped with the MVC.
 
 ```php
-use Zend\Loader\AutoloaderFactory;
-use Zend\Mvc\Service\ServiceManagerConfig;
-use Zend\ServiceManager\ServiceManager;
+use Laminas\Loader\AutoloaderFactory;
+use Laminas\Mvc\Service\ServiceManagerConfig;
+use Laminas\ServiceManager\ServiceManager;
 
 // setup autoloader
 AutoloaderFactory::factory();
@@ -298,10 +298,10 @@ You can make this even simpler by using the `init()` method of the
 `Application` instance.
 
 ```php
-use Zend\Loader\AutoloaderFactory;
-use Zend\Mvc\Application;
-use Zend\Mvc\Service\ServiceManagerConfig;
-use Zend\ServiceManager\ServiceManager;
+use Laminas\Loader\AutoloaderFactory;
+use Laminas\Mvc\Application;
+use Laminas\Mvc\Service\ServiceManagerConfig;
+use Laminas\ServiceManager\ServiceManager;
 
 // setup autoloader
 AutoloaderFactory::factory();
@@ -317,7 +317,7 @@ The `init()` does the following:
 
 - Grabs the application configuration and pulls from the `service_manager` key,
   creating a `ServiceManager` instance with it and with the default services
-  shipped with zend-mvc;
+  shipped with laminas-mvc;
 - Creates a service named `ApplicationConfig` with the application configuration array;
 - Grabs the `ModuleManager` service and loads the modules;
 - `bootstrap()`s the `Application` and returns its instance.
@@ -331,7 +331,7 @@ The `init()` does the following:
 >
 > - `ModuleManager`
 > - `SharedEventManager`
-> - `EventManager` and `Zend\EventManager\EventManagerInterface`
+> - `EventManager` and `Laminas\EventManager\EventManagerInterface`
 >
 > All other services are configured after module loading, thus can be overridden
 > by modules.
@@ -351,7 +351,7 @@ from? When we create a modular application, the assumption will be that it's
 from the modules themselves. How do we get that information and aggregate it,
 then?
 
-The answer is via zend-modulemanager. This component allows you to specify what
+The answer is via laminas-modulemanager. This component allows you to specify what
 modules the application will use; it then locates each module and initializes
 it. Module classes can tie into various listeners in order to provide
 configuration, services, listeners, and more to the application. Sounds
@@ -385,10 +385,10 @@ As we add modules to the system, we'll add items to the `modules` array.
 
 Each `Module` class that has configuration it wants the `Application` to know
 about should define a `getConfig()` method. That method should return an array
-or `Traversable` object such as a `Zend\Config\Config` instance. As an example:
+or `Traversable` object such as a `Laminas\Config\Config` instance. As an example:
 
 ```php
-namespace ZendUser;
+namespace LaminasUser;
 
 class Module
 {
@@ -402,12 +402,12 @@ class Module
 There are a number of other methods you can define for tasks ranging from
 providing autoloader configuration, to providing services to the
 `ServiceManager`, to listening to the bootstrap event.  The
-[ModuleManager documentation](https://docs.zendframework.com/zend-modulemanager/)
+[ModuleManager documentation](https://docs.laminas.dev/laminas-modulemanager/)
 goes into more detail on these.
 
 ## Conclusion
 
-zend-mvc is incredibly flexible, offering an opt-in, easy to create modular
+laminas-mvc is incredibly flexible, offering an opt-in, easy to create modular
 infrastructure, as well as the ability to craft your own application workflows
 via the `ServiceManager` and `EventManager`. The `ModuleManager` is a
 lightweight and simple approach to enforcing a modular architecture that

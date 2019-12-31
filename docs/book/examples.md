@@ -33,7 +33,7 @@ The above can be useful when composing event listeners into your controller.
 ### Accessing routing parameters
 
 The parameters returned when routing completes are wrapped in a
-`Zend\Router\RouteMatch` object.  This object is detailed in the section on
+`Laminas\Router\RouteMatch` object.  This object is detailed in the section on
 [Routing](routing.md).
 
 Within your controller, if you implement `InjectApplicationEventInterface` (as
@@ -88,7 +88,7 @@ namespace SomeCustomModule;
 class Module
 {
     /**
-     * @param  \Zend\Mvc\MvcEvent $e The MvcEvent instance
+     * @param  \Laminas\Mvc\MvcEvent $e The MvcEvent instance
      * @return void
      */
     public function onBootstrap($e)
