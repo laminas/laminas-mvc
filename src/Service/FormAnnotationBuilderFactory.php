@@ -1,19 +1,18 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Service;
+namespace Laminas\Mvc\Service;
 
-use Zend\EventManager\ListenerAggregateInterface;
-use Zend\Form\Annotation\AnnotationBuilder;
-use Zend\ServiceManager\Exception\RuntimeException;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\EventManager\ListenerAggregateInterface;
+use Laminas\Form\Annotation\AnnotationBuilder;
+use Laminas\ServiceManager\Exception\RuntimeException;
+use Laminas\ServiceManager\FactoryInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 class FormAnnotationBuilderFactory implements FactoryInterface
 {
@@ -21,7 +20,7 @@ class FormAnnotationBuilderFactory implements FactoryInterface
      * Create service
      *
      * @param ServiceLocatorInterface $serviceLocator
-     * @throws \Zend\ServiceManager\Exception\RuntimeException
+     * @throws \Laminas\ServiceManager\Exception\RuntimeException
      * @return mixed
      */
     public function createService(ServiceLocatorInterface $serviceLocator)

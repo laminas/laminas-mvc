@@ -1,23 +1,22 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Service;
+namespace Laminas\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
-use Zend\Console\Console;
-use Zend\Mvc\Exception;
-use Zend\Mvc\Router\RouteMatch;
-use Zend\ServiceManager\ConfigInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\View\Helper as ViewHelper;
-use Zend\View\HelperPluginManager;
-use Zend\View\Helper\HelperInterface as ViewHelperInterface;
+use Laminas\Console\Console;
+use Laminas\Mvc\Exception;
+use Laminas\Mvc\Router\RouteMatch;
+use Laminas\ServiceManager\ConfigInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
+use Laminas\View\Helper as ViewHelper;
+use Laminas\View\Helper\HelperInterface as ViewHelperInterface;
+use Laminas\View\HelperPluginManager;
 
 class ViewHelperManagerFactory extends AbstractPluginManagerFactory
 {
@@ -29,9 +28,9 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
      * @var array
      */
     protected $defaultHelperMapClasses = [
-        'Zend\Form\View\HelperConfig',
-        'Zend\I18n\View\HelperConfig',
-        'Zend\Navigation\View\HelperConfig'
+        'Laminas\Form\View\HelperConfig',
+        'Laminas\I18n\View\HelperConfig',
+        'Laminas\Navigation\View\HelperConfig'
     ];
 
     /**
@@ -76,7 +75,7 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
                 throw new Exception\RuntimeException(sprintf(
                     'Invalid service manager configuration class provided; received "%s", expected class implementing %s',
                     $configClass,
-                    'Zend\ServiceManager\ConfigInterface'
+                    'Laminas\ServiceManager\ConfigInterface'
                 ));
             }
 
@@ -98,17 +97,17 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
         // Configure URL view helper
         $urlFactory = $this->createUrlHelperFactory($services);
         $plugins->setFactory(ViewHelper\Url::class, $urlFactory);
-        $plugins->setFactory('zendviewhelperurl', $urlFactory);
+        $plugins->setFactory('laminasviewhelperurl', $urlFactory);
 
         // Configure base path helper
         $basePathFactory = $this->createBasePathHelperFactory($services);
         $plugins->setFactory(ViewHelper\BasePath::class, $basePathFactory);
-        $plugins->setFactory('zendviewhelperbasepath', $basePathFactory);
+        $plugins->setFactory('laminasviewhelperbasepath', $basePathFactory);
 
         // Configure doctype view helper
         $doctypeFactory = $this->createDoctypeHelperFactory($services);
         $plugins->setFactory(ViewHelper\doctype::class, $doctypeFactory);
-        $plugins->setFactory('zendviewhelperdoctype', $doctypeFactory);
+        $plugins->setFactory('laminasviewhelperdoctype', $doctypeFactory);
 
         return $plugins;
     }

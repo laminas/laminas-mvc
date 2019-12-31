@@ -32,8 +32,8 @@ The above can be useful when composing event listeners into your controller.
 
 ### Accessing routing parameters
 
-The parameters returned when routing completes are wrapped in a `Zend\Mvc\Router\RouteMatch` object.
-This object is detailed in the section on \[Routing\](zend.mvc.routing).
+The parameters returned when routing completes are wrapped in a `Laminas\Mvc\Router\RouteMatch` object.
+This object is detailed in the section on \[Routing\](laminas.mvc.routing).
 
 Within your controller, if you implement `InjectApplicationEventInterface` (as both
 `AbstractActionController` and `AbstractRestfulController` do), you can access this object from the
@@ -46,7 +46,7 @@ $matches = $event->getRouteMatch();
 
 Once you have the `RouteMatch` object, you can pull parameters from it.
 
-The same can be done using the Params plugin&lt;zend.mvc.controller-plugins.params&gt;.
+The same can be done using the Params plugin&lt;laminas.mvc.controller-plugins.params&gt;.
 
 ### Returning early
 
@@ -72,7 +72,7 @@ module-specific configuration here, or setup event listeners for you module here
 be used for performing **lightweight** tasks such as registering event listeners.
 
 The base `Application` class shipped with the framework has an `EventManager` associated with it,
-and once the modules are initialized, it triggers the \[bootstrap\](zend.mvc.mvc-event.bootstrap)
+and once the modules are initialized, it triggers the \[bootstrap\](laminas.mvc.mvc-event.bootstrap)
 event, with a `getApplication()` method on the event.
 
 So, one way to accomplish module-specific listeners is to listen to that event, and register
@@ -84,7 +84,7 @@ namespace SomeCustomModule;
 class Module
 {
     /**
-     * @param  \Zend\Mvc\MvcEvent $e The MvcEvent instance
+     * @param  \Laminas\Mvc\MvcEvent $e The MvcEvent instance
      * @return void
      */
     public function onBootstrap($e)
@@ -104,7 +104,7 @@ class Module
 ```
 
 The above demonstrates several things. First, it demonstrates a listener on the application's
-\[bootstrap\](zend.mvc.mvc-event.bootstrap) event (the `onBootstrap()` method). Second, it
+\[bootstrap\](laminas.mvc.mvc-event.bootstrap) event (the `onBootstrap()` method). Second, it
 demonstrates that listener, and how it can be used to register listeners with the application. It
 grabs the `Application` instance; from the `Application`, it is able to grab the attached service
 manager and configuration. These are then used to retrieve the view, configure some helpers, and

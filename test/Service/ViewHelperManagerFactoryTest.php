@@ -1,24 +1,23 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Service;
+namespace LaminasTest\Mvc\Service;
 
+use Laminas\Console\Request as ConsoleRequest;
+use Laminas\Http\PhpEnvironment\Request;
+use Laminas\Mvc\Application;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Mvc\Router\RouteMatch;
+use Laminas\Mvc\Router\RouteStackInterface;
+use Laminas\Mvc\Service\ViewHelperManagerFactory;
+use Laminas\ServiceManager\ServiceManager;
+use Laminas\View\Helper;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Console\Request as ConsoleRequest;
-use Zend\Http\PhpEnvironment\Request;
-use Zend\Mvc\Application;
-use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router\RouteMatch;
-use Zend\Mvc\Router\RouteStackInterface;
-use Zend\Mvc\Service\ViewHelperManagerFactory;
-use Zend\ServiceManager\ServiceManager;
-use Zend\View\Helper;
 
 class ViewHelperManagerFactoryTest extends TestCase
 {
@@ -49,9 +48,9 @@ class ViewHelperManagerFactoryTest extends TestCase
     {
         $this->services->setService('config', $config);
         $manager = $this->factory->createService($this->services);
-        $this->assertInstanceof('Zend\View\HelperPluginManager', $manager);
+        $this->assertInstanceof('Laminas\View\HelperPluginManager', $manager);
         $doctype = $manager->get('doctype');
-        $this->assertInstanceof('Zend\View\Helper\Doctype', $doctype);
+        $this->assertInstanceof('Laminas\View\Helper\Doctype', $doctype);
     }
 
     public function testConsoleRequestsResultInSilentFailure()
@@ -62,10 +61,10 @@ class ViewHelperManagerFactoryTest extends TestCase
         $manager = $this->factory->createService($this->services);
 
         $doctype = $manager->get('doctype');
-        $this->assertInstanceof('Zend\View\Helper\Doctype', $doctype);
+        $this->assertInstanceof('Laminas\View\Helper\Doctype', $doctype);
 
         $basePath = $manager->get('basepath');
-        $this->assertInstanceof('Zend\View\Helper\BasePath', $basePath);
+        $this->assertInstanceof('Laminas\View\Helper\BasePath', $basePath);
     }
 
     /**
@@ -92,7 +91,7 @@ class ViewHelperManagerFactoryTest extends TestCase
             ['url'],
             ['Url'],
             [Helper\Url::class],
-            ['zendviewhelperurl'],
+            ['laminasviewhelperurl'],
         ];
     }
 
@@ -125,7 +124,7 @@ class ViewHelperManagerFactoryTest extends TestCase
 
     public function basePathConfiguration()
     {
-        $names = ['basepath', 'basePath', 'BasePath', Helper\BasePath::class, 'zendviewhelperbasepath'];
+        $names = ['basepath', 'basePath', 'BasePath', Helper\BasePath::class, 'laminasviewhelperbasepath'];
 
         $configurations = [
             'console' => [[
@@ -190,7 +189,7 @@ class ViewHelperManagerFactoryTest extends TestCase
             ['doctype'],
             ['Doctype'],
             [Helper\Doctype::class],
-            ['zendviewhelperdoctype'],
+            ['laminasviewhelperdoctype'],
         ];
     }
 

@@ -1,9 +1,9 @@
 # The MvcEvent
 
-The MVC layer of Zend Framework 2 incorporates and utilizes a custom `Zend\EventManager\Event`
-implementation -`Zend\Mvc\MvcEvent`. This event is created during
-`Zend\Mvc\Application::bootstrap()` and is passed directly to all the events that method triggers.
-Additionally, if your controllers implement the `Zend\Mvc\InjectApplicationEventInterface`,
+The MVC layer of Laminas incorporates and utilizes a custom `Laminas\EventManager\Event`
+implementation -`Laminas\Mvc\MvcEvent`. This event is created during
+`Laminas\Mvc\Application::bootstrap()` and is passed directly to all the events that method triggers.
+Additionally, if your controllers implement the `Laminas\Mvc\InjectApplicationEventInterface`,
 `MvcEvent` will be injected into those controllers.
 
 The `MvcEvent` adds accessors and mutators for the following:
