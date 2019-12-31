@@ -1,28 +1,26 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Mvc
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Router\Http;
+namespace Laminas\Mvc\Router\Http;
 
+use Laminas\Mvc\Router\Exception;
+use Laminas\Mvc\Router\Http\RouteInterface;
+use Laminas\Mvc\Router\RouteInterface as BaseRoute;
+use Laminas\Mvc\Router\SimpleRouteStack;
+use Laminas\Stdlib\ArrayUtils;
+use Laminas\Stdlib\RequestInterface as Request;
+use Laminas\Uri\Http as HttpUri;
 use Traversable;
-use Zend\Mvc\Router\Exception;
-use Zend\Mvc\Router\Http\RouteInterface;
-use Zend\Mvc\Router\RouteInterface as BaseRoute;
-use Zend\Mvc\Router\SimpleRouteStack;
-use Zend\Stdlib\ArrayUtils;
-use Zend\Stdlib\RequestInterface as Request;
-use Zend\Uri\Http as HttpUri;
 
 /**
  * Tree search implementation.
  *
- * @package    Zend_Mvc_Router
+ * @package    Laminas_Mvc_Router
  * @subpackage Http
  */
 class TreeRouteStack extends SimpleRouteStack

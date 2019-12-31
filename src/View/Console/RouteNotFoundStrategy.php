@@ -1,42 +1,40 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Mvc
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\View\Console;
+namespace Laminas\Mvc\View\Console;
 
-use Zend\Mvc\Application;
-use Zend\Mvc\MvcEvent;
-use Zend\EventManager\EventManagerInterface;
-use Zend\EventManager\ListenerAggregateInterface;
-use Zend\ServiceManager\ServiceManager;
-use Zend\ServiceManager\Exception\ServiceNotFoundException;
-use Zend\ModuleManager\ModuleManagerInterface;
-use Zend\ModuleManager\Feature\ConsoleBannerProviderInterface;
-use Zend\ModuleManager\Feature\ConsoleUsageProviderInterface;
-use Zend\Mvc\Exception\RuntimeException;
-use Zend\Console\Response as ConsoleResponse;
-use Zend\Console\Request as ConsoleRequest;
-use Zend\Console\Adapter\AdapterInterface as ConsoleAdapter;
-use Zend\Mvc\Router\RouteInterface;
-use Zend\View\Model\ConsoleModel;
+use Laminas\Console\Adapter\AdapterInterface as ConsoleAdapter;
+use Laminas\Console\Request as ConsoleRequest;
+use Laminas\Console\Response as ConsoleResponse;
+use Laminas\EventManager\EventManagerInterface;
+use Laminas\EventManager\ListenerAggregateInterface;
+use Laminas\ModuleManager\Feature\ConsoleBannerProviderInterface;
+use Laminas\ModuleManager\Feature\ConsoleUsageProviderInterface;
+use Laminas\ModuleManager\ModuleManagerInterface;
+use Laminas\Mvc\Application;
+use Laminas\Mvc\Exception\RuntimeException;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Mvc\Router\RouteInterface;
+use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Laminas\ServiceManager\ServiceManager;
+use Laminas\Stdlib\ResponseInterface as Response;
+use Laminas\View\Model\ConsoleModel;
 use Zend\Version\Version;
-use Zend\Stdlib\ResponseInterface as Response;
 
 /**
- * @category   Zend
- * @package    Zend_Mvc
+ * @category   Laminas
+ * @package    Laminas_Mvc
  * @subpackage View
  */
 class RouteNotFoundStrategy implements ListenerAggregateInterface
 {
     /**
-     * @var \Zend\Stdlib\CallbackHandler[]
+     * @var \Laminas\Stdlib\CallbackHandler[]
      */
     protected $listeners = array();
 
@@ -200,7 +198,7 @@ class RouteNotFoundStrategy implements ListenerAggregateInterface
          * Handle an application with no defined banners
          */
         if (!count($banners)) {
-            return "Zend Framework ".Version::VERSION." application.\nUsage:\n";
+            return "Laminas ".Version::VERSION." application.\nUsage:\n";
         }
 
         /**
@@ -375,14 +373,14 @@ class RouteNotFoundStrategy implements ListenerAggregateInterface
         }
 
         /**
-         * Use Zend\Text\Table to render the table.
+         * Use Laminas\Text\Table to render the table.
          * The last column will use the remaining space in console window (minus 1 character to prevent double
          * wrapping at the edge of the screen).
          */
         $maxW[$cols] = $consoleWidth - $width -1;
-        $table = new \Zend\Text\Table\Table();
+        $table = new \Laminas\Text\Table\Table();
         $table->setColumnWidths($maxW);
-        $table->setDecorator(new \Zend\Text\Table\Decorator\Blank());
+        $table->setDecorator(new \Laminas\Text\Table\Decorator\Blank());
         $table->setPadding(2);
 
         foreach ($data as $row) {
