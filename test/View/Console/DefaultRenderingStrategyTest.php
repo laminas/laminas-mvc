@@ -1,21 +1,20 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\View\Console;
+namespace LaminasTest\Mvc\View\Console;
 
+use Laminas\EventManager\EventManager;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Mvc\View\Console\DefaultRenderingStrategy;
+use Laminas\ServiceManager\ServiceManager;
+use Laminas\Stdlib\Response;
+use Laminas\View\Model;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\EventManager\EventManager;
-use Zend\Mvc\MvcEvent;
-use Zend\Mvc\View\Console\DefaultRenderingStrategy;
-use Zend\ServiceManager\ServiceManager;
-use Zend\Stdlib\Response;
-use Zend\View\Model;
 
 class DefaultRenderingStrategyTest extends TestCase
 {
@@ -60,7 +59,7 @@ class DefaultRenderingStrategyTest extends TestCase
 
     public function testIgnoresNonConsoleModelNotContainingResultKeyWhenObtainingResult()
     {
-        $console = $this->getMock('Zend\Console\Adapter\AbstractAdapter');
+        $console = $this->getMock('Laminas\Console\Adapter\AbstractAdapter');
         $console
             ->expects($this->any())
             ->method('encodeText')
@@ -71,8 +70,8 @@ class DefaultRenderingStrategyTest extends TestCase
         $sm = new ServiceManager();
         $sm->setService('console', $console);
 
-        /** @var \PHPUnit_Framework_MockObject_MockObject|\Zend\Mvc\ApplicationInterface $mockApplication */
-        $mockApplication = $this->getMock('Zend\Mvc\ApplicationInterface');
+        /** @var \PHPUnit_Framework_MockObject_MockObject|\Laminas\Mvc\ApplicationInterface $mockApplication */
+        $mockApplication = $this->getMock('Laminas\Mvc\ApplicationInterface');
         $mockApplication
             ->expects($this->any())
             ->method('getServiceManager')
