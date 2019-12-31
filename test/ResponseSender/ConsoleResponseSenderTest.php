@@ -1,22 +1,21 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\ResponseSender;
+namespace LaminasTest\Mvc\ResponseSender;
 
+use LaminasTest\Mvc\ResponseSender\TestAsset\ConsoleResponseSender;
 use PHPUnit_Framework_TestCase as TestCase;
-use ZendTest\Mvc\ResponseSender\TestAsset\ConsoleResponseSender;
 
 class ConsoleResponseSenderTest extends TestCase
 {
     public function testSendResponseIgnoresInvalidResponseTypes()
     {
-        $mockResponse = $this->getMockForAbstractClass('Zend\Stdlib\ResponseInterface');
+        $mockResponse = $this->getMockForAbstractClass('Laminas\Stdlib\ResponseInterface');
         $mockSendResponseEvent = $this->getSendResponseEventMock($mockResponse);
         $responseSender = new ConsoleResponseSender();
         ob_start();
@@ -29,7 +28,7 @@ class ConsoleResponseSenderTest extends TestCase
     public function testSendResponseTwoTimesPrintsResponseOnceAndReturnsErrorLevel()
     {
         $returnValue = false;
-        $mockResponse = $this->getMock('Zend\Console\Response');
+        $mockResponse = $this->getMock('Laminas\Console\Response');
         $mockResponse->expects($this->once())->method('getContent')->will($this->returnValue('body'));
         $mockResponse->expects($this->exactly(2))->method('getMetadata')->with('errorLevel', 0)->will($this->returnValue(0));
         $mockSendResponseEvent = $this->getSendResponseEventMock($mockResponse);
@@ -58,7 +57,7 @@ class ConsoleResponseSenderTest extends TestCase
 
     protected function getSendResponseEventMock($response)
     {
-        $mockSendResponseEvent = $this->getMock('Zend\Mvc\ResponseSender\SendResponseEvent', ['getResponse', 'contentSent', 'setContentSent']);
+        $mockSendResponseEvent = $this->getMock('Laminas\Mvc\ResponseSender\SendResponseEvent', ['getResponse', 'contentSent', 'setContentSent']);
         $mockSendResponseEvent->expects($this->any())->method('getResponse')->will($this->returnValue($response));
         return $mockSendResponseEvent;
     }
