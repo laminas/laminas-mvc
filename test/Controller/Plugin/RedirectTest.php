@@ -1,24 +1,22 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Mvc
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Controller\Plugin;
+namespace LaminasTest\Mvc\Controller\Plugin;
 
+use Laminas\Http\Response;
+use Laminas\Mvc\Controller\Plugin\Redirect as RedirectPlugin;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Mvc\Router\Http\Literal as LiteralRoute;
+use Laminas\Mvc\Router\Http\Segment as SegmentRoute;
+use Laminas\Mvc\Router\RouteMatch;
+use Laminas\Mvc\Router\SimpleRouteStack;
+use LaminasTest\Mvc\Controller\TestAsset\SampleController;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Http\Response;
-use Zend\Mvc\Controller\Plugin\Redirect as RedirectPlugin;
-use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router\Http\Literal as LiteralRoute;
-use Zend\Mvc\Router\Http\Segment as SegmentRoute;
-use Zend\Mvc\Router\RouteMatch;
-use Zend\Mvc\Router\SimpleRouteStack;
-use ZendTest\Mvc\Controller\TestAsset\SampleController;
 
 class RedirectTest extends TestCase
 {
@@ -30,7 +28,7 @@ class RedirectTest extends TestCase
         $router->addRoute('home', LiteralRoute::factory(array(
             'route'    => '/',
             'defaults' => array(
-                'controller' => 'ZendTest\Mvc\Controller\TestAsset\SampleController',
+                'controller' => 'LaminasTest\Mvc\Controller\TestAsset\SampleController',
             ),
         )));
         $this->router = $router;
@@ -67,7 +65,7 @@ class RedirectTest extends TestCase
     public function testPluginWithoutControllerRaisesDomainException()
     {
         $plugin = new RedirectPlugin();
-        $this->setExpectedException('Zend\Mvc\Exception\DomainException', 'requires a controller');
+        $this->setExpectedException('Laminas\Mvc\Exception\DomainException', 'requires a controller');
         $plugin->toRoute('home');
     }
 
@@ -75,7 +73,7 @@ class RedirectTest extends TestCase
     {
         $controller = new SampleController();
         $plugin     = $controller->plugin('redirect');
-        $this->setExpectedException('Zend\Mvc\Exception\DomainException', 'event compose');
+        $this->setExpectedException('Laminas\Mvc\Exception\DomainException', 'event compose');
         $plugin->toRoute('home');
     }
 
@@ -85,7 +83,7 @@ class RedirectTest extends TestCase
         $event      = new MvcEvent();
         $controller->setEvent($event);
         $plugin = $controller->plugin('redirect');
-        $this->setExpectedException('Zend\Mvc\Exception\DomainException', 'event compose');
+        $this->setExpectedException('Laminas\Mvc\Exception\DomainException', 'event compose');
         $plugin->toRoute('home');
     }
 
@@ -96,13 +94,13 @@ class RedirectTest extends TestCase
         $event->setResponse($this->response);
         $controller->setEvent($event);
         $plugin = $controller->plugin('redirect');
-        $this->setExpectedException('Zend\Mvc\Exception\DomainException', 'event compose a router');
+        $this->setExpectedException('Laminas\Mvc\Exception\DomainException', 'event compose a router');
         $plugin->toRoute('home');
     }
 
     public function testPluginWithoutRouteMatchesInEventRaisesExceptionWhenNoRouteProvided()
     {
-        $this->setExpectedException('Zend\Mvc\Exception\RuntimeException', 'RouteMatch');
+        $this->setExpectedException('Laminas\Mvc\Exception\RuntimeException', 'RouteMatch');
         $url = $this->plugin->toRoute();
     }
 
@@ -110,7 +108,7 @@ class RedirectTest extends TestCase
     {
         $event = $this->controller->getEvent();
         $event->setRouteMatch(new RouteMatch(array()));
-        $this->setExpectedException('Zend\Mvc\Exception\RuntimeException', 'matched');
+        $this->setExpectedException('Laminas\Mvc\Exception\RuntimeException', 'matched');
         $url = $this->plugin->toRoute();
     }
 
@@ -130,7 +128,7 @@ class RedirectTest extends TestCase
         $this->router->addRoute('replace', SegmentRoute::factory(array(
             'route'    => '/:controller/:action',
             'defaults' => array(
-                'controller' => 'ZendTest\Mvc\Controller\TestAsset\SampleController',
+                'controller' => 'LaminasTest\Mvc\Controller\TestAsset\SampleController',
             ),
         )));
         $routeMatch = new RouteMatch(array(
@@ -149,7 +147,7 @@ class RedirectTest extends TestCase
         $this->router->addRoute('replace', SegmentRoute::factory(array(
             'route'    => '/:controller/:action',
             'defaults' => array(
-                'controller' => 'ZendTest\Mvc\Controller\TestAsset\SampleController',
+                'controller' => 'LaminasTest\Mvc\Controller\TestAsset\SampleController',
             ),
         )));
         $routeMatch = new RouteMatch(array(

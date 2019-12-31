@@ -1,28 +1,26 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Mvc
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Controller\Plugin;
+namespace LaminasTest\Mvc\Controller\Plugin;
 
+use Laminas\EventManager\StaticEventManager;
+use Laminas\Http\Request;
+use Laminas\Http\Response;
+use Laminas\Mvc\Controller\Plugin\Forward as ForwardPlugin;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Mvc\Router\RouteMatch;
+use LaminasTest\Mvc\Controller\TestAsset\ForwardController;
+use LaminasTest\Mvc\Controller\TestAsset\SampleController;
+use LaminasTest\Mvc\Controller\TestAsset\UneventfulController;
+use LaminasTest\Mvc\Controller\TestAsset\UnlocatableEventfulController;
+use LaminasTest\Mvc\TestAsset\Locator;
 use PHPUnit_Framework_TestCase as TestCase;
 use stdClass;
-use Zend\EventManager\StaticEventManager;
-use Zend\Http\Request;
-use Zend\Http\Response;
-use Zend\Mvc\Controller\Plugin\Forward as ForwardPlugin;
-use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router\RouteMatch;
-use ZendTest\Mvc\Controller\TestAsset\ForwardController;
-use ZendTest\Mvc\Controller\TestAsset\SampleController;
-use ZendTest\Mvc\Controller\TestAsset\UneventfulController;
-use ZendTest\Mvc\Controller\TestAsset\UnlocatableEventfulController;
-use ZendTest\Mvc\TestAsset\Locator;
 
 class ForwardTest extends TestCase
 {
@@ -30,11 +28,11 @@ class ForwardTest extends TestCase
     {
         StaticEventManager::resetInstance();
 
-        $mockSharedEventManager = $this->getMock('Zend\EventManager\SharedEventManagerInterface');
+        $mockSharedEventManager = $this->getMock('Laminas\EventManager\SharedEventManagerInterface');
         $mockSharedEventManager->expects($this->any())->method('getListeners')->will($this->returnValue(array()));
-        $mockEventManager = $this->getMock('Zend\EventManager\EventManagerInterface');
+        $mockEventManager = $this->getMock('Laminas\EventManager\EventManagerInterface');
         $mockEventManager->expects($this->any())->method('getSharedManager')->will($this->returnValue($mockSharedEventManager));
-        $mockApplication = $this->getMock('Zend\Mvc\ApplicationInterface');
+        $mockApplication = $this->getMock('Laminas\Mvc\ApplicationInterface');
         $mockApplication->expects($this->any())->method('getEventManager')->will($this->returnValue($mockEventManager));
 
         $event   = new MvcEvent();
@@ -68,7 +66,7 @@ class ForwardTest extends TestCase
         $controller = new UneventfulController();
         $plugin     = new ForwardPlugin();
         $plugin->setController($controller);
-        $this->setExpectedException('Zend\Mvc\Exception\DomainException', 'InjectApplicationEventInterface');
+        $this->setExpectedException('Laminas\Mvc\Exception\DomainException', 'InjectApplicationEventInterface');
         $plugin->dispatch('forward');
     }
 
@@ -78,7 +76,7 @@ class ForwardTest extends TestCase
         $controller->setEvent($this->controller->getEvent());
         $plugin     = new ForwardPlugin();
         $plugin->setController($controller);
-        $this->setExpectedException('Zend\Mvc\Exception\DomainException', 'implements ServiceLocatorAwareInterface');
+        $this->setExpectedException('Laminas\Mvc\Exception\DomainException', 'implements ServiceLocatorAwareInterface');
         $plugin->dispatch('forward');
     }
 
@@ -86,7 +84,7 @@ class ForwardTest extends TestCase
     {
         $controller = new SampleController();
         $plugin     = $controller->plugin('forward');
-        $this->setExpectedException('Zend\Mvc\Exception\DomainException', 'composes Locator');
+        $this->setExpectedException('Laminas\Mvc\Exception\DomainException', 'composes Locator');
         $plugin->dispatch('forward');
     }
 
@@ -96,13 +94,13 @@ class ForwardTest extends TestCase
         $locator->add('bogus', function () {
             return new stdClass;
         });
-        $this->setExpectedException('Zend\Mvc\Exception\DomainException', 'DispatchableInterface');
+        $this->setExpectedException('Laminas\Mvc\Exception\DomainException', 'DispatchableInterface');
         $this->plugin->dispatch('bogus');
     }
 
     public function testDispatchRaisesDomainExceptionIfCircular()
     {
-        $this->setExpectedException('Zend\Mvc\Exception\DomainException', 'Circular forwarding');
+        $this->setExpectedException('Laminas\Mvc\Exception\DomainException', 'Circular forwarding');
         $sampleController = $this->controller;
         $sampleController->getServiceLocator()->add('sample', function () use ($sampleController) {
             return $sampleController;
@@ -114,7 +112,7 @@ class ForwardTest extends TestCase
     {
         $result = $this->plugin->dispatch('forward');
         $this->assertInternalType('array', $result);
-        $this->assertEquals(array('content' => 'ZendTest\Mvc\Controller\TestAsset\ForwardController::testAction'), $result);
+        $this->assertEquals(array('content' => 'LaminasTest\Mvc\Controller\TestAsset\ForwardController::testAction'), $result);
     }
 
     public function testDispatchWillSeedRouteMatchWithPassedParameters()

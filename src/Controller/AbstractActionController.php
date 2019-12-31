@@ -1,26 +1,24 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Mvc
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Controller;
+namespace Laminas\Mvc\Controller;
 
-use Zend\Http\Response as HttpResponse;
-use Zend\Mvc\Exception;
-use Zend\Mvc\MvcEvent;
-use Zend\View\Model\ConsoleModel;
-use Zend\View\Model\ViewModel;
+use Laminas\Http\Response as HttpResponse;
+use Laminas\Mvc\Exception;
+use Laminas\Mvc\MvcEvent;
+use Laminas\View\Model\ConsoleModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * Basic action controller
  *
- * @category   Zend
- * @package    Zend_Mvc
+ * @category   Laminas
+ * @package    Laminas_Mvc
  * @subpackage Controller
  */
 abstract class AbstractActionController extends AbstractController
@@ -109,7 +107,7 @@ abstract class AbstractActionController extends AbstractController
     /**
      * Create a console view model representing a "not found" action
      *
-     * @param  \Zend\Stdlib\ResponseInterface $response
+     * @param  \Laminas\Stdlib\ResponseInterface $response
      * @return ConsoleModel
      */
     protected function createConsoleNotFoundModel($response)
