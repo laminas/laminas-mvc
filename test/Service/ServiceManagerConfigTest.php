@@ -1,22 +1,21 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Service;
+namespace LaminasTest\Mvc\Service;
 
+use Laminas\EventManager\EventManager;
+use Laminas\Mvc\Service\ServiceManagerConfig;
+use Laminas\ServiceManager\ServiceLocatorInterface;
+use Laminas\ServiceManager\ServiceManager;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\EventManager\EventManager;
-use Zend\Mvc\Service\ServiceManagerConfig;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\ServiceManager\ServiceManager;
 
 /**
- * @covers \Zend\Mvc\Service\ServiceManagerConfig
+ * @covers \Laminas\Mvc\Service\ServiceManagerConfig
  */
 class ServiceManagerConfigTest extends TestCase
 {
@@ -166,7 +165,7 @@ class ServiceManagerConfigTest extends TestCase
      */
     public function testServiceManagerInitializerIsUsedForServiceManagerAwareObjects()
     {
-        $instance = $this->getMock('Zend\ServiceManager\ServiceManagerAwareInterface');
+        $instance = $this->getMock('Laminas\ServiceManager\ServiceManagerAwareInterface');
 
         $instance->expects($this->once())->method('setServiceManager')->with($this->services);
 
@@ -185,7 +184,7 @@ class ServiceManagerConfigTest extends TestCase
      */
     public function testServiceManagerInitializerCanBeReplaced()
     {
-        $instance       = $this->getMock('Zend\ServiceManager\ServiceManagerAwareInterface');
+        $instance       = $this->getMock('Laminas\ServiceManager\ServiceManagerAwareInterface');
         $initializer    = $this->getMock('stdClass', ['__invoke']);
         $serviceManager = new ServiceManager(new ServiceManagerConfig([
             'initializers' => [
@@ -209,7 +208,7 @@ class ServiceManagerConfigTest extends TestCase
      */
     public function testServiceLocatorInitializerIsUsedForServiceLocatorAwareObjects()
     {
-        $instance = $this->getMock('Zend\ServiceManager\ServiceLocatorAwareInterface');
+        $instance = $this->getMock('Laminas\ServiceManager\ServiceLocatorAwareInterface');
 
         $instance->expects($this->once())->method('setServiceLocator')->with($this->services);
 
@@ -228,7 +227,7 @@ class ServiceManagerConfigTest extends TestCase
      */
     public function testServiceLocatorInitializerCanBeReplaced()
     {
-        $instance       = $this->getMock('Zend\ServiceManager\ServiceLocatorAwareInterface');
+        $instance       = $this->getMock('Laminas\ServiceManager\ServiceLocatorAwareInterface');
         $initializer    = $this->getMock('stdClass', ['__invoke']);
         $serviceManager = new ServiceManager(new ServiceManagerConfig([
             'initializers' => [
@@ -252,7 +251,7 @@ class ServiceManagerConfigTest extends TestCase
      */
     public function testEventManagerInitializerCanBeReplaced()
     {
-        $instance       = $this->getMock('Zend\EventManager\EventManagerAwareInterface');
+        $instance       = $this->getMock('Laminas\EventManager\EventManagerAwareInterface');
         $initializer    = $this->getMock('stdClass', ['__invoke']);
         $serviceManager = new ServiceManager(new ServiceManagerConfig([
             'initializers' => [

@@ -1,12 +1,12 @@
 # Available Controllers
 
 Controllers in the MVC layer simply need to be objects implementing
-`Zend\Stdlib\DispatchableInterface`. That interface describes a single method:
+`Laminas\Stdlib\DispatchableInterface`. That interface describes a single method:
 
 ```php
-use Zend\Stdlib\DispatchableInterface;
-use Zend\Stdlib\RequestInterface as Request;
-use Zend\Stdlib\ResponseInterface as Response;
+use Laminas\Stdlib\DispatchableInterface;
+use Laminas\Stdlib\RequestInterface as Request;
+use Laminas\Stdlib\ResponseInterface as Response;
 
 class Foo implements DispatchableInterface
 {
@@ -28,7 +28,7 @@ additional capabilities.
 
 ### InjectApplicationEvent
 
-The `Zend\Mvc\InjectApplicationEventInterface` hints to the `Application` instance that it should
+The `Laminas\Mvc\InjectApplicationEventInterface` hints to the `Application` instance that it should
 inject its `MvcEvent` into the controller itself. Why would this be useful?
 
 Recall that the `MvcEvent` composes a number of objects: the `Request` and `Response`, naturally,
@@ -51,7 +51,7 @@ if (!$id) {
 The `InjectApplicationEventInterface` defines simply two methods:
 
 ```php
-public function setEvent(Zend\EventManager\EventInterface $event);
+public function setEvent(Laminas\EventManager\EventInterface $event);
 public function getEvent();
 ```
 
@@ -68,8 +68,8 @@ The `ServiceLocatorAwareInterface` interface hints to the `ServiceManager` that 
 itself into the controller. It defines two simple methods:
 
 ```php
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
+use Laminas\ServiceManager\ServiceLocatorAwareInterface;
 
 public function setServiceLocator(ServiceLocatorInterface $serviceLocator);
 public function getServiceLocator();
@@ -89,8 +89,8 @@ You define two methods. The first, a setter, should also set any `EventManager` 
 to listen on, and the second, a getter, should simply return the composed `EventManager` instance.
 
 ```php
-use Zend\EventManager\EventManagerAwareInterface;
-use Zend\EventManager\EventManagerInterface;
+use Laminas\EventManager\EventManagerAwareInterface;
+use Laminas\EventManager\EventManagerInterface;
 
 public function setEventManager(EventManagerInterface $events);
 public function getEventManager();
@@ -111,12 +111,12 @@ Some common examples:
 
 To facilitate these actions while also making them available to alternate controller
 implementations, we've created a `PluginManager` implementation for the controller layer,
-`Zend\Mvc\Controller\PluginManager`, building on the `Zend\ServiceManager\AbstractPluginManager`
+`Laminas\Mvc\Controller\PluginManager`, building on the `Laminas\ServiceManager\AbstractPluginManager`
 functionality. To utilize it, you simply need to implement the `setPluginManager(PluginManager
 $plugins)` method, and set up your code to use the controller-specific implementation by default:
 
 ```php
-use Zend\Mvc\Controller\PluginManager;
+use Laminas\Mvc\Controller\PluginManager;
 
 public function setPluginManager(PluginManager $plugins)
 {
@@ -146,7 +146,7 @@ public function plugin($name, array $options = null)
 Implementing each of the above interfaces is a lesson in redundancy; you won't often want to do it.
 As such, we've developed two abstract, base controllers you can extend to get started.
 
-The first is `Zend\Mvc\Controller\AbstractActionController`. This controller implements each of the
+The first is `Laminas\Mvc\Controller\AbstractActionController`. This controller implements each of the
 above interfaces, and uses the following assumptions:
 
 - An "action" parameter is expected in the `RouteMatch` object composed in the attached `MvcEvent`.
@@ -166,7 +166,7 @@ Creation of action controllers is then reasonably trivial:
 ```php
 namespace Foo\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
+use Laminas\Mvc\Controller\AbstractActionController;
 
 class BarController extends AbstractActionController
 {
@@ -186,22 +186,22 @@ class BarController extends AbstractActionController
 
 `AbstractActionController` implements each of the following interfaces:
 
-- `Zend\Stdlib\DispatchableInterface`
-- `Zend\Mvc\InjectApplicationEventInterface`
-- `Zend\ServiceManager\ServiceLocatorAwareInterface`
-- `Zend\EventManager\EventManagerAwareInterface`
+- `Laminas\Stdlib\DispatchableInterface`
+- `Laminas\Mvc\InjectApplicationEventInterface`
+- `Laminas\ServiceManager\ServiceLocatorAwareInterface`
+- `Laminas\EventManager\EventManagerAwareInterface`
 
 The composed `EventManager` will be configured to listen on the following contexts:
 
-- `Zend\Stdlib\DispatchableInterface`
-- `Zend\Mvc\Controller\AbstractActionController`
-- `Zend\Mvc\Controller\AbstractController`
+- `Laminas\Stdlib\DispatchableInterface`
+- `Laminas\Mvc\Controller\AbstractActionController`
+- `Laminas\Mvc\Controller\AbstractController`
 
 Additionally, if you extend the class, it will listen on the extending class's name.
 
 ## The AbstractRestfulController
 
-The second abstract controller ZF2 provides is `Zend\Mvc\Controller\AbstractRestfulController`. This
+The second abstract controller Laminas provides is `Laminas\Mvc\Controller\AbstractRestfulController`. This
 controller provides a native RESTful implementation that simply maps HTTP request methods to
 controller methods, using the following matrix:
 
@@ -229,15 +229,15 @@ used to submit to the various RESTful methods, or to add RPC methods to your RES
 
 `AbstractRestfulController` implements each of the following interfaces:
 
-- `Zend\Stdlib\DispatchableInterface`
-- `Zend\Mvc\InjectApplicationEventInterface`
-- `Zend\ServiceManager\ServiceLocatorAwareInterface`
-- `Zend\EventManager\EventManagerAwareInterface`
+- `Laminas\Stdlib\DispatchableInterface`
+- `Laminas\Mvc\InjectApplicationEventInterface`
+- `Laminas\ServiceManager\ServiceLocatorAwareInterface`
+- `Laminas\EventManager\EventManagerAwareInterface`
 
 The composed `EventManager` will be configured to listen on the following contexts:
 
-- `Zend\Stdlib\DispatchableInterface`
-- `Zend\Mvc\Controller\AbstractRestfulController`
-- `Zend\Mvc\Controller\AbstractController`
+- `Laminas\Stdlib\DispatchableInterface`
+- `Laminas\Mvc\Controller\AbstractRestfulController`
+- `Laminas\Mvc\Controller\AbstractController`
 
 Additionally, if you extend the class, it will listen on the extending class's name.

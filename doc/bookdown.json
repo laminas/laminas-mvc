@@ -1,15 +1,15 @@
 {
-    "title": "Zend\\Mvc",
+    "title": "Laminas\\Mvc",
     "target": "html/",
     "content": [
-        "book/zend.mvc.intro.md",
-        "book/zend.mvc.quick-start.md",
-        "book/zend.mvc.services.md",
-        "book/zend.mvc.routing.md",
-        "book/zend.mvc.mvc-event.md",
-        "book/zend.mvc.send-response-event.md",
-        "book/zend.mvc.controllers.md",
-        "book/zend.mvc.plugins.md",
-        "book/zend.mvc.examples.md"
+        "book/laminas.mvc.intro.md",
+        "book/laminas.mvc.quick-start.md",
+        "book/laminas.mvc.services.md",
+        "book/laminas.mvc.routing.md",
+        "book/laminas.mvc.mvc-event.md",
+        "book/laminas.mvc.send-response-event.md",
+        "book/laminas.mvc.controllers.md",
+        "book/laminas.mvc.plugins.md",
+        "book/laminas.mvc.examples.md"
     ]
 }
