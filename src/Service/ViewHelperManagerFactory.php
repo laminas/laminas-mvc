@@ -1,19 +1,18 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Service;
+namespace Laminas\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
-use Zend\Router\RouteMatch;
-use Zend\ServiceManager\Exception\ServiceNotCreatedException;
-use Zend\View\Helper as ViewHelper;
-use Zend\View\HelperPluginManager;
+use Laminas\Router\RouteMatch;
+use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
+use Laminas\View\Helper as ViewHelper;
+use Laminas\View\HelperPluginManager;
 
 class ViewHelperManagerFactory extends AbstractPluginManagerFactory
 {
@@ -61,17 +60,17 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
         // Configure URL view helper
         $urlFactory = $this->createUrlHelperFactory($services);
         $plugins->setFactory(ViewHelper\Url::class, $urlFactory);
-        $plugins->setFactory('zendviewhelperurl', $urlFactory);
+        $plugins->setFactory('laminasviewhelperurl', $urlFactory);
 
         // Configure base path helper
         $basePathFactory = $this->createBasePathHelperFactory($services);
         $plugins->setFactory(ViewHelper\BasePath::class, $basePathFactory);
-        $plugins->setFactory('zendviewhelperbasepath', $basePathFactory);
+        $plugins->setFactory('laminasviewhelperbasepath', $basePathFactory);
 
         // Configure doctype view helper
         $doctypeFactory = $this->createDoctypeHelperFactory($services);
         $plugins->setFactory(ViewHelper\Doctype::class, $doctypeFactory);
-        $plugins->setFactory('zendviewhelperdoctype', $doctypeFactory);
+        $plugins->setFactory('laminasviewhelperdoctype', $doctypeFactory);
 
         return $plugins;
     }

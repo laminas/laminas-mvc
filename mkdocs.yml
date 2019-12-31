@@ -1,6 +1,6 @@
 docs_dir: doc/book
 site_dir: doc/html
-pages:
+nav:
     - index.md
     - Introduction: intro.md
     - 'Quick Start': quick-start.md
@@ -19,7 +19,6 @@ pages:
           - 'v2.X to v3.0': migration/to-v3-0.md
     - Cookbook:
       - 'Using middleware within event listeners': cookbook/middleware-in-listeners.md
-site_name: zend-mvc
-site_description: 'zend-mvc: MVC application provider'
-repo_url: 'https://github.com/zendframework/zend-mvc'
-copyright: 'Copyright (c) 2016 <a href="http://www.zend.com/">Zend Technologies USA Inc.</a>'
+site_name: laminas-mvc
+site_description: 'laminas-mvc: MVC application provider'
+repo_url: 'https://github.com/laminas/laminas-mvc'
