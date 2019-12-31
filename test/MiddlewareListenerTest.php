@@ -1,26 +1,25 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc;
+namespace LaminasTest\Mvc;
 
 use Interop\Container\ContainerInterface;
+use Laminas\EventManager\EventManager;
+use Laminas\Http\Request;
+use Laminas\Http\Response;
+use Laminas\Mvc\Application;
+use Laminas\Mvc\MiddlewareListener;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Router\RouteMatch;
+use Laminas\ServiceManager\ServiceManager;
 use PHPUnit_Framework_TestCase as TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\EventManager\EventManager;
-use Zend\Http\Request;
-use Zend\Http\Response;
-use Zend\Mvc\Application;
-use Zend\Mvc\MiddlewareListener;
-use Zend\Mvc\MvcEvent;
-use Zend\Router\RouteMatch;
-use Zend\ServiceManager\ServiceManager;
 
 class MiddlewareListenerTest extends TestCase
 {
@@ -83,7 +82,7 @@ class MiddlewareListenerTest extends TestCase
         $return   = $listener->onDispatch($event);
         $this->assertInstanceOf(Response::class, $return);
 
-        $this->assertInstanceOf('Zend\Http\Response', $return);
+        $this->assertInstanceOf('Laminas\Http\Response', $return);
         $this->assertSame(200, $return->getStatusCode());
         $this->assertEquals('Test!', $return->getBody());
     }
@@ -182,7 +181,7 @@ class MiddlewareListenerTest extends TestCase
         $return   = $listener->onDispatch($event);
         $this->assertInstanceOf(Response::class, $return);
 
-        $this->assertInstanceOf('Zend\Http\Response', $return);
+        $this->assertInstanceOf('Laminas\Http\Response', $return);
         $this->assertSame(200, $return->getStatusCode());
         $this->assertEquals(TestAsset\Middleware::class, $return->getBody());
     }

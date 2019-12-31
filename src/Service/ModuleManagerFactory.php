@@ -1,21 +1,20 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Service;
+namespace Laminas\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
-use Zend\ModuleManager\Listener\DefaultListenerAggregate;
-use Zend\ModuleManager\Listener\ListenerOptions;
-use Zend\ModuleManager\ModuleEvent;
-use Zend\ModuleManager\ModuleManager;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\ModuleManager\Listener\DefaultListenerAggregate;
+use Laminas\ModuleManager\Listener\ListenerOptions;
+use Laminas\ModuleManager\ModuleEvent;
+use Laminas\ModuleManager\ModuleManager;
+use Laminas\ServiceManager\FactoryInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 class ModuleManagerFactory implements FactoryInterface
 {
@@ -45,32 +44,32 @@ class ModuleManagerFactory implements FactoryInterface
         $serviceListener->addServiceManager(
             $container,
             'service_manager',
-            'Zend\ModuleManager\Feature\ServiceProviderInterface',
+            'Laminas\ModuleManager\Feature\ServiceProviderInterface',
             'getServiceConfig'
         );
 
         $serviceListener->addServiceManager(
             'ControllerManager',
             'controllers',
-            'Zend\ModuleManager\Feature\ControllerProviderInterface',
+            'Laminas\ModuleManager\Feature\ControllerProviderInterface',
             'getControllerConfig'
         );
         $serviceListener->addServiceManager(
             'ControllerPluginManager',
             'controller_plugins',
-            'Zend\ModuleManager\Feature\ControllerPluginProviderInterface',
+            'Laminas\ModuleManager\Feature\ControllerPluginProviderInterface',
             'getControllerPluginConfig'
         );
         $serviceListener->addServiceManager(
             'ViewHelperManager',
             'view_helpers',
-            'Zend\ModuleManager\Feature\ViewHelperProviderInterface',
+            'Laminas\ModuleManager\Feature\ViewHelperProviderInterface',
             'getViewHelperConfig'
         );
         $serviceListener->addServiceManager(
             'RoutePluginManager',
             'route_manager',
-            'Zend\ModuleManager\Feature\RouteProviderInterface',
+            'Laminas\ModuleManager\Feature\RouteProviderInterface',
             'getRouteConfig'
         );
 
@@ -90,7 +89,7 @@ class ModuleManagerFactory implements FactoryInterface
     /**
      * Create and return ModuleManager instance
      *
-     * For use with zend-servicemanager v2; proxies to __invoke().
+     * For use with laminas-servicemanager v2; proxies to __invoke().
      *
      * @param ServiceLocatorInterface $container
      * @return ModuleManager

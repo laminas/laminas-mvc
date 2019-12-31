@@ -1,39 +1,38 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Controller;
+namespace Laminas\Mvc\Controller;
 
-use Zend\EventManager\EventInterface as Event;
-use Zend\EventManager\EventManager;
-use Zend\EventManager\EventManagerAwareInterface;
-use Zend\EventManager\EventManagerInterface;
-use Zend\Http\PhpEnvironment\Response as HttpResponse;
-use Zend\Http\Request as HttpRequest;
-use Zend\Mvc\InjectApplicationEventInterface;
-use Zend\Mvc\MvcEvent;
-use Zend\ServiceManager\ServiceManager;
-use Zend\Stdlib\DispatchableInterface as Dispatchable;
-use Zend\Stdlib\RequestInterface as Request;
-use Zend\Stdlib\ResponseInterface as Response;
+use Laminas\EventManager\EventInterface as Event;
+use Laminas\EventManager\EventManager;
+use Laminas\EventManager\EventManagerAwareInterface;
+use Laminas\EventManager\EventManagerInterface;
+use Laminas\Http\PhpEnvironment\Response as HttpResponse;
+use Laminas\Http\Request as HttpRequest;
+use Laminas\Mvc\InjectApplicationEventInterface;
+use Laminas\Mvc\MvcEvent;
+use Laminas\ServiceManager\ServiceManager;
+use Laminas\Stdlib\DispatchableInterface as Dispatchable;
+use Laminas\Stdlib\RequestInterface as Request;
+use Laminas\Stdlib\ResponseInterface as Response;
 
 /**
  * Abstract controller
  *
  * Convenience methods for pre-built plugins (@see __call):
  *
- * @method \Zend\View\Model\ModelInterface acceptableViewModelSelector(array $matchAgainst = null, bool $returnDefault = true, \Zend\Http\Header\Accept\FieldValuePart\AbstractFieldValuePart $resultReference = null)
- * @method \Zend\Mvc\Controller\Plugin\Forward forward()
- * @method \Zend\Mvc\Controller\Plugin\Layout|\Zend\View\Model\ModelInterface layout(string $template = null)
- * @method \Zend\Mvc\Controller\Plugin\Params|mixed params(string $param = null, mixed $default = null)
- * @method \Zend\Mvc\Controller\Plugin\Redirect redirect()
- * @method \Zend\Mvc\Controller\Plugin\Url url()
- * @method \Zend\View\Model\ViewModel createHttpNotFoundModel(Response $response)
+ * @method \Laminas\View\Model\ModelInterface acceptableViewModelSelector(array $matchAgainst = null, bool $returnDefault = true, \Laminas\Http\Header\Accept\FieldValuePart\AbstractFieldValuePart $resultReference = null)
+ * @method \Laminas\Mvc\Controller\Plugin\Forward forward()
+ * @method \Laminas\Mvc\Controller\Plugin\Layout|\Laminas\View\Model\ModelInterface layout(string $template = null)
+ * @method \Laminas\Mvc\Controller\Plugin\Params|mixed params(string $param = null, mixed $default = null)
+ * @method \Laminas\Mvc\Controller\Plugin\Redirect redirect()
+ * @method \Laminas\Mvc\Controller\Plugin\Url url()
+ * @method \Laminas\View\Model\ViewModel createHttpNotFoundModel(Response $response)
  */
 abstract class AbstractController implements
     Dispatchable,

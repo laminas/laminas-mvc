@@ -1,17 +1,18 @@
 <?php
+
 /**
- * @link      http://github.com/zendframework/zend-mvc for the canonical source repository
- * @copyright Copyright (c) 2005-2016 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Controller;
+namespace LaminasTest\Mvc\Controller;
 
 use Interop\Container\ContainerInterface;
+use Laminas\Mvc\Controller\LazyControllerAbstractFactory;
+use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Laminas\Validator\ValidatorPluginManager;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Mvc\Controller\LazyControllerAbstractFactory;
-use Zend\ServiceManager\Exception\ServiceNotFoundException;
-use Zend\Validator\ValidatorPluginManager;
 
 class LazyControllerAbstractFactoryTest extends TestCase
 {
@@ -59,6 +60,7 @@ class LazyControllerAbstractFactoryTest extends TestCase
     public function testFactoryRaisesExceptionWhenUnableToResolveATypeHintedService()
     {
         $this->container->has(TestAsset\SampleInterface::class)->willReturn(false);
+        $this->container->has(\ZendTest\Mvc\Controller\TestAsset\SampleInterface::class)->willReturn(false);
         $factory = new LazyControllerAbstractFactory();
         $this->setExpectedException(
             ServiceNotFoundException::class,
