@@ -1,26 +1,24 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Mvc
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\View;
+namespace LaminasTest\Mvc\View;
 
+use Laminas\EventManager\EventManager;
+use Laminas\Http\Response;
+use Laminas\Mvc\Application;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Mvc\View\Http\RouteNotFoundStrategy;
+use Laminas\View\Model\ViewModel;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\EventManager\EventManager;
-use Zend\Http\Response;
-use Zend\Mvc\Application;
-use Zend\Mvc\MvcEvent;
-use Zend\Mvc\View\Http\RouteNotFoundStrategy;
-use Zend\View\Model\ViewModel;
 
 /**
- * @category   Zend
- * @package    Zend_Mvc
+ * @category   Laminas
+ * @package    Laminas_Mvc
  * @subpackage UnitTest
  */
 class RouteNotFoundStrategyTest extends TestCase
@@ -54,7 +52,7 @@ class RouteNotFoundStrategyTest extends TestCase
         $this->strategy->prepareNotFoundViewModel($event);
 
         $viewModel = $event->getResult();
-        $this->assertInstanceOf('Zend\View\Model\ModelInterface', $viewModel);
+        $this->assertInstanceOf('Laminas\View\Model\ModelInterface', $viewModel);
 
         $variables = $viewModel->getVariables();
         switch ($assertion) {
@@ -107,7 +105,7 @@ class RouteNotFoundStrategyTest extends TestCase
                 $this->strategy->detectNotFoundError($event);
                 $this->strategy->prepareNotFoundViewModel($event);
                 $viewModel = $event->getResult();
-                $this->assertInstanceOf('Zend\View\Model\ModelInterface', $viewModel);
+                $this->assertInstanceOf('Laminas\View\Model\ModelInterface', $viewModel);
                 $variables = $viewModel->getVariables();
                 if ($allow) {
                     $this->assertTrue(isset($variables['reason']));
@@ -177,7 +175,7 @@ class RouteNotFoundStrategyTest extends TestCase
 
         $this->strategy->prepareNotFoundViewModel($event);
         $model = $event->getResult();
-        $this->assertInstanceOf('Zend\View\Model\ModelInterface', $model);
+        $this->assertInstanceOf('Laminas\View\Model\ModelInterface', $model);
         $this->assertEquals($this->strategy->getNotFoundTemplate(), $model->getTemplate());
         $variables = $model->getVariables();
         $this->assertTrue(isset($variables['message']));
@@ -195,7 +193,7 @@ class RouteNotFoundStrategyTest extends TestCase
             $event->setResponse($response);
             $this->strategy->prepareNotFoundViewModel($event);
             $model = $event->getResult();
-            $this->assertInstanceOf('Zend\View\Model\ModelInterface', $model);
+            $this->assertInstanceOf('Laminas\View\Model\ModelInterface', $model);
             $variables = $model->getVariables();
             if ($allow) {
                 $this->assertTrue(isset($variables['reason']));
@@ -220,7 +218,7 @@ class RouteNotFoundStrategyTest extends TestCase
             $event->setResponse($response);
             $this->strategy->prepareNotFoundViewModel($event);
             $model = $event->getResult();
-            $this->assertInstanceOf('Zend\View\Model\ModelInterface', $model);
+            $this->assertInstanceOf('Laminas\View\Model\ModelInterface', $model);
             $variables = $model->getVariables();
             if ($allow) {
                 $this->assertTrue(isset($variables['exception']));
@@ -248,7 +246,7 @@ class RouteNotFoundStrategyTest extends TestCase
                 $event->setResponse($response);
                 $this->strategy->prepareNotFoundViewModel($event);
                 $model = $event->getResult();
-                $this->assertInstanceOf('Zend\View\Model\ModelInterface', $model);
+                $this->assertInstanceOf('Laminas\View\Model\ModelInterface', $model);
                 $variables = $model->getVariables();
                 if ($allow) {
                     $this->assertTrue(isset($variables['controller']));
@@ -274,7 +272,7 @@ class RouteNotFoundStrategyTest extends TestCase
             $event->setError($error);
             $this->strategy->detectNotFoundError($event);
             $response = $event->getResponse();
-            $this->assertInstanceOf('Zend\Http\Response', $response);
+            $this->assertInstanceOf('Laminas\Http\Response', $response);
             $this->assertTrue($response->isNotFound(), 'Failed asserting against ' . $key);
         }
     }
