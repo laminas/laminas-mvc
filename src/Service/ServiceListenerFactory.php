@@ -1,19 +1,20 @@
 <?php
+
 /**
- * @link      http://github.com/zendframework/zend-mvc for the canonical source repository
- * @copyright Copyright (c) 2005-2018 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   https://github.com/zendframework/zend-mvc/blob/master/LICENSE.md New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Service;
+namespace Laminas\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
-use Zend\ModuleManager\Listener\ServiceListener;
-use Zend\ModuleManager\Listener\ServiceListenerInterface;
-use Zend\Mvc\View;
-use Zend\ServiceManager\Exception\ServiceNotCreatedException;
-use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\ServiceManager\Factory\InvokableFactory;
+use Laminas\ModuleManager\Listener\ServiceListener;
+use Laminas\ModuleManager\Listener\ServiceListenerInterface;
+use Laminas\Mvc\View;
+use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
+use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\InvokableFactory;
 
 class ServiceListenerFactory implements FactoryInterface
 {
@@ -39,57 +40,57 @@ class ServiceListenerFactory implements FactoryInterface
             'configuration'                              => 'config',
             'Configuration'                              => 'config',
             'HttpDefaultRenderingStrategy'               => View\Http\DefaultRenderingStrategy::class,
-            'MiddlewareListener'                         => 'Zend\Mvc\MiddlewareListener',
+            'MiddlewareListener'                         => 'Laminas\Mvc\MiddlewareListener',
             'request'                                    => 'Request',
             'response'                                   => 'Response',
-            'RouteListener'                              => 'Zend\Mvc\RouteListener',
-            'SendResponseListener'                       => 'Zend\Mvc\SendResponseListener',
-            'View'                                       => 'Zend\View\View',
-            'ViewFeedRenderer'                           => 'Zend\View\Renderer\FeedRenderer',
-            'ViewJsonRenderer'                           => 'Zend\View\Renderer\JsonRenderer',
-            'ViewPhpRendererStrategy'                    => 'Zend\View\Strategy\PhpRendererStrategy',
-            'ViewPhpRenderer'                            => 'Zend\View\Renderer\PhpRenderer',
-            'ViewRenderer'                               => 'Zend\View\Renderer\PhpRenderer',
-            'Zend\Mvc\Controller\PluginManager'          => 'ControllerPluginManager',
-            'Zend\Mvc\View\Http\InjectTemplateListener'  => 'InjectTemplateListener',
-            'Zend\View\Renderer\RendererInterface'       => 'Zend\View\Renderer\PhpRenderer',
-            'Zend\View\Resolver\TemplateMapResolver'     => 'ViewTemplateMapResolver',
-            'Zend\View\Resolver\TemplatePathStack'       => 'ViewTemplatePathStack',
-            'Zend\View\Resolver\AggregateResolver'       => 'ViewResolver',
-            'Zend\View\Resolver\ResolverInterface'       => 'ViewResolver',
+            'RouteListener'                              => 'Laminas\Mvc\RouteListener',
+            'SendResponseListener'                       => 'Laminas\Mvc\SendResponseListener',
+            'View'                                       => 'Laminas\View\View',
+            'ViewFeedRenderer'                           => 'Laminas\View\Renderer\FeedRenderer',
+            'ViewJsonRenderer'                           => 'Laminas\View\Renderer\JsonRenderer',
+            'ViewPhpRendererStrategy'                    => 'Laminas\View\Strategy\PhpRendererStrategy',
+            'ViewPhpRenderer'                            => 'Laminas\View\Renderer\PhpRenderer',
+            'ViewRenderer'                               => 'Laminas\View\Renderer\PhpRenderer',
+            'Laminas\Mvc\Controller\PluginManager'          => 'ControllerPluginManager',
+            'Laminas\Mvc\View\Http\InjectTemplateListener'  => 'InjectTemplateListener',
+            'Laminas\View\Renderer\RendererInterface'       => 'Laminas\View\Renderer\PhpRenderer',
+            'Laminas\View\Resolver\TemplateMapResolver'     => 'ViewTemplateMapResolver',
+            'Laminas\View\Resolver\TemplatePathStack'       => 'ViewTemplatePathStack',
+            'Laminas\View\Resolver\AggregateResolver'       => 'ViewResolver',
+            'Laminas\View\Resolver\ResolverInterface'       => 'ViewResolver',
         ],
         'invokables' => [],
         'factories'  => [
             'Application'                    => ApplicationFactory::class,
-            'config'                         => 'Zend\Mvc\Service\ConfigFactory',
-            'ControllerManager'              => 'Zend\Mvc\Service\ControllerManagerFactory',
-            'ControllerPluginManager'        => 'Zend\Mvc\Service\ControllerPluginManagerFactory',
-            'DispatchListener'               => 'Zend\Mvc\Service\DispatchListenerFactory',
+            'config'                         => 'Laminas\Mvc\Service\ConfigFactory',
+            'ControllerManager'              => 'Laminas\Mvc\Service\ControllerManagerFactory',
+            'ControllerPluginManager'        => 'Laminas\Mvc\Service\ControllerPluginManagerFactory',
+            'DispatchListener'               => 'Laminas\Mvc\Service\DispatchListenerFactory',
             'HttpExceptionStrategy'          => HttpExceptionStrategyFactory::class,
-            'HttpMethodListener'             => 'Zend\Mvc\Service\HttpMethodListenerFactory',
+            'HttpMethodListener'             => 'Laminas\Mvc\Service\HttpMethodListenerFactory',
             'HttpRouteNotFoundStrategy'      => HttpRouteNotFoundStrategyFactory::class,
-            'HttpViewManager'                => 'Zend\Mvc\Service\HttpViewManagerFactory',
-            'InjectTemplateListener'         => 'Zend\Mvc\Service\InjectTemplateListenerFactory',
-            'PaginatorPluginManager'         => 'Zend\Mvc\Service\PaginatorPluginManagerFactory',
-            'Request'                        => 'Zend\Mvc\Service\RequestFactory',
-            'Response'                       => 'Zend\Mvc\Service\ResponseFactory',
-            'ViewHelperManager'              => 'Zend\Mvc\Service\ViewHelperManagerFactory',
+            'HttpViewManager'                => 'Laminas\Mvc\Service\HttpViewManagerFactory',
+            'InjectTemplateListener'         => 'Laminas\Mvc\Service\InjectTemplateListenerFactory',
+            'PaginatorPluginManager'         => 'Laminas\Mvc\Service\PaginatorPluginManagerFactory',
+            'Request'                        => 'Laminas\Mvc\Service\RequestFactory',
+            'Response'                       => 'Laminas\Mvc\Service\ResponseFactory',
+            'ViewHelperManager'              => 'Laminas\Mvc\Service\ViewHelperManagerFactory',
             View\Http\DefaultRenderingStrategy::class => HttpDefaultRenderingStrategyFactory::class,
-            'ViewFeedStrategy'               => 'Zend\Mvc\Service\ViewFeedStrategyFactory',
-            'ViewJsonStrategy'               => 'Zend\Mvc\Service\ViewJsonStrategyFactory',
-            'ViewManager'                    => 'Zend\Mvc\Service\ViewManagerFactory',
-            'ViewResolver'                   => 'Zend\Mvc\Service\ViewResolverFactory',
-            'ViewTemplateMapResolver'        => 'Zend\Mvc\Service\ViewTemplateMapResolverFactory',
-            'ViewTemplatePathStack'          => 'Zend\Mvc\Service\ViewTemplatePathStackFactory',
-            'ViewPrefixPathStackResolver'    => 'Zend\Mvc\Service\ViewPrefixPathStackResolverFactory',
-            'Zend\Mvc\MiddlewareListener'    => InvokableFactory::class,
-            'Zend\Mvc\RouteListener'         => InvokableFactory::class,
-            'Zend\Mvc\SendResponseListener'  => SendResponseListenerFactory::class,
-            'Zend\View\Renderer\FeedRenderer' => InvokableFactory::class,
-            'Zend\View\Renderer\JsonRenderer' => InvokableFactory::class,
-            'Zend\View\Renderer\PhpRenderer' => ViewPhpRendererFactory::class,
-            'Zend\View\Strategy\PhpRendererStrategy' => ViewPhpRendererStrategyFactory::class,
-            'Zend\View\View'                 => ViewFactory::class,
+            'ViewFeedStrategy'               => 'Laminas\Mvc\Service\ViewFeedStrategyFactory',
+            'ViewJsonStrategy'               => 'Laminas\Mvc\Service\ViewJsonStrategyFactory',
+            'ViewManager'                    => 'Laminas\Mvc\Service\ViewManagerFactory',
+            'ViewResolver'                   => 'Laminas\Mvc\Service\ViewResolverFactory',
+            'ViewTemplateMapResolver'        => 'Laminas\Mvc\Service\ViewTemplateMapResolverFactory',
+            'ViewTemplatePathStack'          => 'Laminas\Mvc\Service\ViewTemplatePathStackFactory',
+            'ViewPrefixPathStackResolver'    => 'Laminas\Mvc\Service\ViewPrefixPathStackResolverFactory',
+            'Laminas\Mvc\MiddlewareListener'    => InvokableFactory::class,
+            'Laminas\Mvc\RouteListener'         => InvokableFactory::class,
+            'Laminas\Mvc\SendResponseListener'  => SendResponseListenerFactory::class,
+            'Laminas\View\Renderer\FeedRenderer' => InvokableFactory::class,
+            'Laminas\View\Renderer\JsonRenderer' => InvokableFactory::class,
+            'Laminas\View\Renderer\PhpRenderer' => ViewPhpRendererFactory::class,
+            'Laminas\View\Strategy\PhpRendererStrategy' => ViewPhpRendererStrategyFactory::class,
+            'Laminas\View\View'                 => ViewFactory::class,
         ],
     ];
 

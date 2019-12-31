@@ -1,24 +1,24 @@
-# zend-mvc
+# laminas-mvc
 
-[![Build Status](https://secure.travis-ci.org/zendframework/zend-mvc.svg?branch=master)](https://secure.travis-ci.org/zendframework/zend-mvc)
-[![Coverage Status](https://coveralls.io/repos/github/zendframework/zend-mvc/badge.svg?branch=master)](https://coveralls.io/github/zendframework/zend-mvc?branch=master)
+[![Build Status](https://travis-ci.org/laminas/laminas-mvc.svg?branch=master)](https://travis-ci.org/laminas/laminas-mvc)
+[![Coverage Status](https://coveralls.io/repos/github/laminas/laminas-mvc/badge.svg?branch=master)](https://coveralls.io/github/laminas/laminas-mvc?branch=master)
 
-`Zend\Mvc` is a brand new MVC implementation designed from the ground up for
-Zend Framework 2, focusing on performance and flexibility.
+`Laminas\Mvc` is a brand new MVC implementation designed from the ground up for
+Laminas, focusing on performance and flexibility.
 
 The MVC layer is built on top of the following components:
 
-- `Zend\ServiceManager` - Zend Framework provides a set of default service
-  definitions set up at `Zend\Mvc\Service`. The ServiceManager creates and
+- `Laminas\ServiceManager` - Laminas provides a set of default service
+  definitions set up at `Laminas\Mvc\Service`. The ServiceManager creates and
   configures your application instance and workflow.
-- `Zend\EventManager` - The MVC is event driven. This component is used
+- `Laminas\EventManager` - The MVC is event driven. This component is used
   everywhere from initial bootstrapping of the application, through returning
   response and request calls, to setting and retrieving routes and matched
   routes, as well as render views.
-- `Zend\Http` - specifically the request and response objects, used within:
-  `Zend\Stdlib\DispatchableInterface`. All “controllers” are simply dispatchable
+- `Laminas\Http` - specifically the request and response objects, used within:
+  `Laminas\Stdlib\DispatchableInterface`. All “controllers” are simply dispatchable
   objects.
 
 
-- File issues at https://github.com/zendframework/zend-mvc/issues
-- Documentation is at https://docs.zendframework.com/zend-mvc/
+- File issues at https://github.com/laminas/laminas-mvc/issues
+- Documentation is at https://docs.laminas.dev/laminas-mvc/

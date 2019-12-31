@@ -1,22 +1,23 @@
 <?php
+
 /**
- * @link      http://github.com/zendframework/zend-mvc for the canonical source repository
- * @copyright Copyright (c) 2005-2018 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   https://github.com/zendframework/zend-mvc/blob/master/LICENSE.md New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Service;
+namespace Laminas\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\View\Resolver as ViewResolver;
+use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\View\Resolver as ViewResolver;
 
 class ViewTemplatePathStackFactory implements FactoryInterface
 {
     /**
      * Create the template path stack view resolver
      *
-     * Creates a Zend\View\Resolver\TemplatePathStack and populates it with the
+     * Creates a Laminas\View\Resolver\TemplatePathStack and populates it with the
      * ['view_manager']['template_path_stack'] and sets the default suffix with the
      * ['view_manager']['default_template_suffix']
      *

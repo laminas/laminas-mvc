@@ -1,23 +1,24 @@
 <?php
+
 /**
- * @link      http://github.com/zendframework/zend-mvc for the canonical source repository
- * @copyright Copyright (c) 2005-2018 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   https://github.com/zendframework/zend-mvc/blob/master/LICENSE.md New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Controller;
+namespace LaminasTest\Mvc\Controller;
 
+use Laminas\EventManager\EventManagerAwareInterface;
+use Laminas\EventManager\EventManagerInterface;
+use Laminas\Mvc\Controller\AbstractController;
+use Laminas\Mvc\InjectApplicationEventInterface;
+use Laminas\Stdlib\DispatchableInterface;
+use LaminasTest\Mvc\Controller\TestAsset\AbstractControllerStub;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
-use Zend\EventManager\EventManagerAwareInterface;
-use Zend\EventManager\EventManagerInterface;
-use Zend\Mvc\Controller\AbstractController;
-use Zend\Mvc\InjectApplicationEventInterface;
-use Zend\Stdlib\DispatchableInterface;
-use ZendTest\Mvc\Controller\TestAsset\AbstractControllerStub;
 
 /**
- * @covers \Zend\Mvc\Controller\AbstractController
+ * @covers \Laminas\Mvc\Controller\AbstractController
  */
 class AbstractControllerTest extends TestCase
 {
@@ -120,8 +121,8 @@ class AbstractControllerTest extends TestCase
             ->with($this->logicalAnd(
                 $this->contains(AbstractController::class),
                 $this->contains(AbstractControllerStub::class),
-                $this->contains('ZendTest'),
-                $this->contains('ZendTest\\Mvc\\Controller\\TestAsset')
+                $this->contains('LaminasTest'),
+                $this->contains('LaminasTest\\Mvc\\Controller\\TestAsset')
             ));
 
         $this->controller->setEventManager($eventManager);

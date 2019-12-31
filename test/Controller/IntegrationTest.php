@@ -1,19 +1,20 @@
 <?php
+
 /**
- * @link      http://github.com/zendframework/zend-mvc for the canonical source repository
- * @copyright Copyright (c) 2005-2018 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   https://github.com/zendframework/zend-mvc/blob/master/LICENSE.md New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Controller;
+namespace LaminasTest\Mvc\Controller;
 
+use Laminas\EventManager\EventManager;
+use Laminas\EventManager\SharedEventManager;
+use Laminas\Mvc\Controller\ControllerManager;
+use Laminas\Mvc\Controller\PluginManager;
+use Laminas\ServiceManager\Config;
+use Laminas\ServiceManager\ServiceManager;
 use PHPUnit\Framework\TestCase;
-use Zend\EventManager\EventManager;
-use Zend\EventManager\SharedEventManager;
-use Zend\Mvc\Controller\ControllerManager;
-use Zend\Mvc\Controller\PluginManager;
-use Zend\ServiceManager\Config;
-use Zend\ServiceManager\ServiceManager;
 
 class IntegrationTest extends TestCase
 {

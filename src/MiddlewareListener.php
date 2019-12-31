@@ -1,23 +1,24 @@
 <?php
+
 /**
- * @link      http://github.com/zendframework/zend-mvc for the canonical source repository
- * @copyright Copyright (c) 2005-2018 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   https://github.com/zendframework/zend-mvc/blob/master/LICENSE.md New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc;
+namespace Laminas\Mvc;
 
 use Interop\Container\ContainerInterface;
 use Interop\Http\ServerMiddleware\MiddlewareInterface;
-use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
+use Laminas\EventManager\AbstractListenerAggregate;
+use Laminas\EventManager\EventManagerInterface;
+use Laminas\Mvc\Controller\MiddlewareController;
+use Laminas\Mvc\Exception\InvalidMiddlewareException;
+use Laminas\Psr7Bridge\Psr7Response;
+use Laminas\Stratigility\Delegate\CallableDelegateDecorator;
+use Laminas\Stratigility\MiddlewarePipe;
 use Psr\Http\Message\ResponseInterface;
-use Zend\EventManager\AbstractListenerAggregate;
-use Zend\EventManager\EventManagerInterface;
-use Zend\Mvc\Exception\InvalidMiddlewareException;
-use Zend\Mvc\Controller\MiddlewareController;
-use Zend\Psr7Bridge\Psr7Response;
-use Zend\Stratigility\Delegate\CallableDelegateDecorator;
-use Zend\Stratigility\MiddlewarePipe;
+use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
 
 class MiddlewareListener extends AbstractListenerAggregate
 {
@@ -56,7 +57,7 @@ class MiddlewareListener extends AbstractListenerAggregate
         $response       = $application->getResponse();
         $serviceManager = $application->getServiceManager();
 
-        $psr7ResponsePrototype = Psr7Response::fromZend($response);
+        $psr7ResponsePrototype = Psr7Response::fromLaminas($response);
 
         try {
             $pipe = $this->createPipeFromSpec(
@@ -109,7 +110,7 @@ class MiddlewareListener extends AbstractListenerAggregate
             $event->setResult($return);
             return $return;
         }
-        $response = Psr7Response::toZend($return);
+        $response = Psr7Response::toLaminas($return);
         $event->setResult($response);
         return $response;
     }

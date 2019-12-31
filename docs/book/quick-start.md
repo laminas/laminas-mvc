@@ -3,7 +3,7 @@
 Now that you have basic knowledge of applications, modules, and how they are
 each structured, we'll show you the easy way to get started.
 
-## Install the Zend Skeleton Application
+## Install the Laminas Skeleton Application
 
 The easiest way to get started is to install the skeleton application via
 Composer.
@@ -13,12 +13,12 @@ If you have not yet done so, [install Composer](https://getcomposer.org/doc/00-i
 Once you have, use the `create-project` command to create a new application:
 
 ```bash
-$ composer create-project -sdev zendframework/skeleton-application my-application
+$ composer create-project -sdev laminas/skeleton-application my-application
 ```
 
 ## Create a New Module
 
-By default, one module is provided with the `ZendSkeletonApplication`, named
+By default, one module is provided with the `LaminasSkeletonApplication`, named
 "Application". It provides a controller to handle the "home" page of the
 application, the layout template, and templates for 404 and error pages.
 
@@ -27,13 +27,13 @@ entry page for your site and/or alternate error page.
 
 Additional functionality will be provided by creating new modules.
 
-To get you started with modules, we recommend using the `ZendSkeletonModule` as
+To get you started with modules, we recommend using the `LaminasSkeletonModule` as
 a base. Download it from here:
 
-* [ZendSkeletonModule zip package](https://github.com/zendframework/ZendSkeletonModule/zipball/master)
-* [ZendSkeletonModule tarball](https://github.com/zendframework/ZendSkeletonModule/tarball/master)
+* [LaminasSkeletonModule zip package](https://github.com/laminas/LaminasSkeletonModule/zipball/master)
+* [LaminasSkeletonModule tarball](https://github.com/laminas/LaminasSkeletonModule/tarball/master)
 
-Deflate the package, and rename the directory "ZendSkeletonModule" to reflect
+Deflate the package, and rename the directory "LaminasSkeletonModule" to reflect
 the name of the new module you want to create; when done, move the module into
 your new project's `module/` directory.
 
@@ -68,26 +68,26 @@ return array(
 ```
 
 Fill in `module-name` with a lowercased, dash-separated version of your module
-name; e.g., "ZendUser" would become "zend-user".
+name; e.g., "LaminasUser" would become "laminas-user".
 
 Next, edit the namespace declaration of the `Module.php` file. Replace the
 following line:
 
 ```php
-namespace ZendSkeletonModule;
+namespace LaminasSkeletonModule;
 ```
 
 with the namespace you want to use for your application.
 
-Next, rename the directory `src/ZendSkeletonModule` to `src/<YourModuleName>`,
-and the directory `view/zend-skeleton-module` to `src/<your-module-name>`.
+Next, rename the directory `src/LaminasSkeletonModule` to `src/<YourModuleName>`,
+and the directory `view/laminas-skeleton-module` to `src/<your-module-name>`.
 
 At this point, you now have your module configured properly. Let's create a
 controller!
 
 ## Create a Controller
 
-Controllers are objects that implement `Zend\Stdlib\DispatchableInterface`. This
+Controllers are objects that implement `Laminas\Stdlib\DispatchableInterface`. This
 means they need to implement a `dispatch()` method that takes minimally a
 `Request` object as an argument.
 
@@ -95,11 +95,11 @@ In practice, though, this would mean writing logic to branch based on matched
 routing within every controller. As such, we've created several base controller
 classes for you to start with:
 
-- `Zend\Mvc\Controller\AbstractActionController` allows routes to match an
+- `Laminas\Mvc\Controller\AbstractActionController` allows routes to match an
   "action". When matched, a method named after the action will be called by the
   controller. As an example, if you had a route that returned "foo" for the
   "action" key, the "fooAction" method would be invoked.
-- `Zend\Mvc\Controller\AbstractRestfulController` introspects the `Request` to
+- `Laminas\Mvc\Controller\AbstractRestfulController` introspects the `Request` to
   determine what HTTP method was used, and calls a method according to that.
   - `GET` will call either the `getList()` method, or, if an "id" was matched
     during routing, the `get()` method (with that identifier value).
@@ -109,16 +109,16 @@ classes for you to start with:
     post body.
   - `DELETE` expects an "id" to be matched during routing, and will call the
     `delete()` method.
-- `Zend\Mvc\Console\Controller\AbstractConsoleController` extends from
+- `Laminas\Mvc\Console\Controller\AbstractConsoleController` extends from
   `AbstractActionController`, but provides methods for retrieving the
-  `Zend\Console\Adapter\AdapterInterface` instance, and ensuring that execution
+  `Laminas\Console\Adapter\AdapterInterface` instance, and ensuring that execution
   fails in non-console environments.
 
-> For version 3, the integration component [zend-mvc-console](https://docs.zendframework.com/zend-mvc-console/) must be installed. It can be done via Composer:
+> For version 3, the integration component [laminas-mvc-console](https://docs.laminas.dev/laminas-mvc-console/) must be installed. It can be done via Composer:
 > ````bash
-> composer require zendframework/zend-mvc-console
+> composer require laminas/laminas-mvc-console
 > ```
-> If you are not using the component installer, you will need to [add this component as a module](https://docs.zendframework.com/zend-mvc-console/intro/#manual-installation).
+> If you are not using the component installer, you will need to [add this component as a module](https://docs.laminas.dev/laminas-mvc-console/intro/#manual-installation).
 
 To get started, we'll create a "hello world"-style controller, with a single
 action. First, create the file `HelloController.php` in the directory
@@ -129,8 +129,8 @@ and insert the following contents:
 <?php
 namespace <module name>\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\View\Model\ViewModel;
 
 class HelloController extends AbstractActionController
 {
@@ -174,7 +174,7 @@ That's it. Save the file.
 
 > ### Escaping output
 >
-> What is the method `escapeHtml()`? It's actually a [view helper](https://docs.zendframework.com/zend-view/helpers/intro/),
+> What is the method `escapeHtml()`? It's actually a [view helper](https://docs.laminas.dev/laminas-view/helpers/intro/),
 > and it's designed to help mitigate XSS attacks. Never trust user input; if you
 > are at all uncertain about the source of a given variable in your view script,
 > escape it using one of the provided escape view helpers depending on the type
@@ -200,7 +200,7 @@ following configuration:
 
 (In v2 releases, the default was to strip subnamespaces, but optional mapping rules
 allowed whitelisting namespaces in module configuration to enable current
-resolver behavior. See the [migration guide](migration/to-v3-0.md#zendmvcviewinjecttemplatelistener)
+resolver behavior. See the [migration guide](migration/to-v3-0.md#laminasmvcviewinjecttemplatelistener)
 for more details.)
 
 ## Create a Route
@@ -209,22 +209,22 @@ Now that we have a controller and a view script, we need to create a route to it
 
 > ### Default routing
 >
-> `ZendSkeletonModule` ships with a "default route" that will likely get
+> `LaminasSkeletonModule` ships with a "default route" that will likely get
 > you to this action. That route is defined roughly as
 > `/{module}/{controller}/{action}`, which means that the path
-> `/zend-user/hello/world` will map to `ZendUser\Controller\HelloController::worldAction()`
-> (assuming the module name were `ZendUser`).
+> `/laminas-user/hello/world` will map to `LaminasUser\Controller\HelloController::worldAction()`
+> (assuming the module name were `LaminasUser`).
 >
 > We're going to create an explicit route in this example, as
 > creating explicit routes is a recommended practice. The application will look for a
-> `Zend\Router\RouteStackInterface` instance to setup routing. The default generated router is a
-> `Zend\Router\Http\TreeRouteStack`.
+> `Laminas\Router\RouteStackInterface` instance to setup routing. The default generated router is a
+> `Laminas\Router\Http\TreeRouteStack`.
 >
 > To use the "default route" functionality, you will need to edit the shipped
 > routing definition in the module's `config/module.config.php`, and replace:
 >
 > - `/module-specific-root` with a module-specific root path.
-> - `ZendSkeletonModule\Controller` with `<YourModuleName>\Controller`.
+> - `LaminasSkeletonModule\Controller` with `<YourModuleName>\Controller`.
 
 Additionally, we need to tell the application we have a controller:
 
@@ -311,7 +311,7 @@ Replace `<module namespace>` with the namespace of your module.
 
 Now we can test things out! Create a new vhost pointing its document root to the `public` directory
 of your application, and fire it up in a browser. You should see the default homepage template of
-ZendSkeletonApplication.
+LaminasSkeletonApplication.
 
 Now alter the location in your URL to append the path "/hello/world", and load the page. You should
 now get the following content:
@@ -330,4 +330,4 @@ Now alter the location to append "?message=bar" and load the page. You should no
 <p>You said "bar".</p>
 ```
 
-Congratulations! You've created your first ZF2 MVC module!
+Congratulations! You've created your first Laminas MVC module!
