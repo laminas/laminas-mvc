@@ -1,21 +1,20 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Controller\Plugin;
+namespace Laminas\Mvc\Controller\Plugin;
 
+use Laminas\EventManager\EventInterface;
+use Laminas\Mvc\Exception;
+use Laminas\Mvc\InjectApplicationEventInterface;
+use Laminas\Mvc\ModuleRouteListener;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Mvc\Router\RouteStackInterface;
 use Traversable;
-use Zend\EventManager\EventInterface;
-use Zend\Mvc\Exception;
-use Zend\Mvc\InjectApplicationEventInterface;
-use Zend\Mvc\ModuleRouteListener;
-use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router\RouteStackInterface;
 
 class Url extends AbstractPlugin
 {
@@ -28,9 +27,9 @@ class Url extends AbstractPlugin
      *                                                If boolean, and no fourth argument, used as $reuseMatchedParams.
      * @param  bool               $reuseMatchedParams Whether to reuse matched parameters
      *
-     * @throws \Zend\Mvc\Exception\RuntimeException
-     * @throws \Zend\Mvc\Exception\InvalidArgumentException
-     * @throws \Zend\Mvc\Exception\DomainException
+     * @throws \Laminas\Mvc\Exception\RuntimeException
+     * @throws \Laminas\Mvc\Exception\InvalidArgumentException
+     * @throws \Laminas\Mvc\Exception\DomainException
      * @return string
      */
     public function fromRoute($route = null, $params = array(), $options = array(), $reuseMatchedParams = false)

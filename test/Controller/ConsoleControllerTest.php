@@ -1,19 +1,18 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Controller;
+namespace LaminasTest\Mvc\Controller;
 
+use Laminas\Console\Request as ConsoleRequest;
+use Laminas\Http\Request;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Mvc\Router\RouteMatch;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Console\Request as ConsoleRequest;
-use Zend\Http\Request;
-use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router\RouteMatch;
 
 class ConsoleControllerTest extends TestCase
 {
@@ -41,7 +40,7 @@ class ConsoleControllerTest extends TestCase
 
     public function testDispatchIncorrectRequest()
     {
-        $this->setExpectedException('\Zend\Mvc\Exception\InvalidArgumentException');
+        $this->setExpectedException('\Laminas\Mvc\Exception\InvalidArgumentException');
 
         $request = new Request();
         $this->controller->dispatch($request);
@@ -56,12 +55,12 @@ class ConsoleControllerTest extends TestCase
 
     public function testGetInjectedConsole()
     {
-        $consoleAdapter = $this->getMock('\Zend\Console\Adapter\AdapterInterface');
+        $consoleAdapter = $this->getMock('\Laminas\Console\Adapter\AdapterInterface');
 
         $controller = $this->controller->setConsole($consoleAdapter);
         $console = $this->controller->getConsole();
 
-        $this->assertInstanceOf('\Zend\Mvc\Controller\AbstractConsoleController', $controller);
-        $this->assertInstanceOf('\Zend\Console\Adapter\AdapterInterface', $console);
+        $this->assertInstanceOf('\Laminas\Mvc\Controller\AbstractConsoleController', $controller);
+        $this->assertInstanceOf('\Laminas\Console\Adapter\AdapterInterface', $console);
     }
 }
