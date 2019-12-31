@@ -1,24 +1,23 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\TestAsset;
+namespace LaminasTest\Mvc\TestAsset;
 
-use Zend\EventManager\ListenerAggregateInterface;
-use Zend\EventManager\EventManagerInterface;
-use Zend\Mvc\MvcEvent;
+use Laminas\EventManager\EventManagerInterface;
+use Laminas\EventManager\ListenerAggregateInterface;
+use Laminas\Mvc\MvcEvent;
 
 class StubBootstrapListener implements ListenerAggregateInterface
 {
     protected $listeners = array();
 
     /**
-     * @see \Zend\EventManager\ListenerAggregateInterface::attach()
+     * @see \Laminas\EventManager\ListenerAggregateInterface::attach()
      */
     public function attach(EventManagerInterface $events)
     {
@@ -26,7 +25,7 @@ class StubBootstrapListener implements ListenerAggregateInterface
     }
 
     /**
-     * @see \Zend\EventManager\ListenerAggregateInterface::detach()
+     * @see \Laminas\EventManager\ListenerAggregateInterface::detach()
      */
     public function detach(EventManagerInterface $events)
     {
