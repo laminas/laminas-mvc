@@ -1,22 +1,22 @@
 # Controller Plugins
 
-When using any of the abstract controller implementations shipped with zend-mvc,
+When using any of the abstract controller implementations shipped with laminas-mvc,
 or if you implement the `setPluginManager` method in your custom controllers,
 you have access to a number of pre-built plugins. Additionally, you can register
 your own custom plugins with the manager.
 
 The built-in plugins are:
 
-- [Zend\\Mvc\\Controller\\Plugin\\AcceptableViewModelSelector](#acceptableviewmodelselector-plugin)
-- [Zend\\Mvc\\Controller\\Plugin\\FlashMessenger](#flashmessenger-plugin)
-- [Zend\\Mvc\\Controller\\Plugin\\Forward](#forward-plugin)
-- [Zend\\Mvc\\Controller\\Plugin\\Identity](#identity-plugin)
-- [Zend\\Mvc\\Controller\\Plugin\\Layout](#layout-plugin)
-- [Zend\\Mvc\\Controller\\Plugin\\Params](#params-plugin)
-- [Zend\\Mvc\\Controller\\Plugin\\PostRedirectGet](#postredirectget-plugin)
-- [Zend\\Mvc\\Controller\\Plugin\\FilePostRedirectGet](#file-postredirectget-plugin)
-- [Zend\\Mvc\\Controller\\Plugin\\Redirect](#redirect-plugin)
-- [Zend\\Mvc\\Controller\\Plugin\\Url](#url-plugin)
+- [Laminas\\Mvc\\Controller\\Plugin\\AcceptableViewModelSelector](#acceptableviewmodelselector-plugin)
+- [Laminas\\Mvc\\Controller\\Plugin\\FlashMessenger](#flashmessenger-plugin)
+- [Laminas\\Mvc\\Controller\\Plugin\\Forward](#forward-plugin)
+- [Laminas\\Mvc\\Controller\\Plugin\\Identity](#identity-plugin)
+- [Laminas\\Mvc\\Controller\\Plugin\\Layout](#layout-plugin)
+- [Laminas\\Mvc\\Controller\\Plugin\\Params](#params-plugin)
+- [Laminas\\Mvc\\Controller\\Plugin\\PostRedirectGet](#postredirectget-plugin)
+- [Laminas\\Mvc\\Controller\\Plugin\\FilePostRedirectGet](#file-postredirectget-plugin)
+- [Laminas\\Mvc\\Controller\\Plugin\\Redirect](#redirect-plugin)
+- [Laminas\\Mvc\\Controller\\Plugin\\Url](#url-plugin)
 
 If your controller implements the `setPluginManager()`, `getPluginManager()` and
 `plugin()` methods, you can access these using their shortname via the `plugin()`
@@ -43,16 +43,16 @@ Accept header in the request.
 As an example:
 
 ```php
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\JsonModel;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\View\Model\JsonModel;
 
 class SomeController extends AbstractActionController
 {
    protected $acceptCriteria = [
-      'Zend\View\Model\JsonModel' => [
+      'Laminas\View\Model\JsonModel' => [
          'application/json',
       ],
-      'Zend\View\Model\FeedModel' => [
+      'Laminas\View\Model\FeedModel' => [
          'application/rss+xml',
       ],
    ];
@@ -69,7 +69,7 @@ class SomeController extends AbstractActionController
 }
 ```
 
-The above would return a standard `Zend\View\Model\ViewModel` instance if the
+The above would return a standard `Laminas\View\Model\ViewModel` instance if the
 criteria is not met, and the specified view model types if the specific criteria
 is met. Rules are matched in order, with the first match "winning."
 
@@ -78,14 +78,14 @@ is met. Rules are matched in order, with the first match "winning."
 The `FlashMessenger` is a plugin designed to create and retrieve self-expiring,
 session-based messages. It exposes a number of methods:
 
-- `setSessionManager(Zend\Session\ManagerInterface $manager) : FlashMessenger`:
+- `setSessionManager(Laminas\Session\ManagerInterface $manager) : FlashMessenger`:
   Allows you to specify an alternate session manager, if desired.
 
-- `getSessionManager() : Zend\Session\ManagerInterface`: Allows you to retrieve
+- `getSessionManager() : Laminas\Session\ManagerInterface`: Allows you to retrieve
   the session manager registered.
 
-- `getContainer() : Zend\Session\Container`: Returns the
-  `Zend\Session\Container` instance in which the flash messages are stored.
+- `getContainer() : Laminas\Session\Container`: Returns the
+  `Laminas\Session\Container` instance in which the flash messages are stored.
 
 - `setNamespace(string $namespace = 'default') : FlashMessenger`:
   Allows you to specify a specific namespace in the container in which to store
@@ -212,7 +212,7 @@ return [
 The `Identity` plugin allows retrieving the identity from the
 `AuthenticationService`.
 
-For the `Identity` plugin to work, a `Zend\Authentication\AuthenticationService`
+For the `Identity` plugin to work, a `Laminas\Authentication\AuthenticationService`
 name or alias must be defined and recognized by the `ServiceManager`.
 
 `Identity` returns the identity in the `AuthenticationService` or `null` if no
@@ -232,12 +232,12 @@ public function testAction()
 ```
 
 When invoked, the `Identity` plugin will look for a service by the name or alias
-`Zend\Authentication\AuthenticationService` in the `ServiceManager`. You can
+`Laminas\Authentication\AuthenticationService` in the `ServiceManager`. You can
 provide this service to the `ServiceManager` in a configuration file:
 
 ```php
 // In a configuration file...
-use Zend\Authentication\AuthenticationService;
+use Laminas\Authentication\AuthenticationService;
 
 return [
     'service_manager' => [
@@ -289,7 +289,7 @@ It exposes several methods, one for each parameter source:
   For retrieving all or one single **file**. If `$name` is null, all files will
   be returned.
 
-- `fromHeader(string $header = null, mixed $default = null) : null|Zend\Http\Header\HeaderInterface`:
+- `fromHeader(string $header = null, mixed $default = null) : null|Laminas\Http\Header\HeaderInterface`:
   For retrieving all or one single **header** parameter. If `$header` is null,
   all header parameters will be returned.
 
@@ -339,7 +339,7 @@ When no arguments are provided, the current matched route is used.
 // Pass in the route/url you want to redirect to after the POST
 $prg = $this->prg('/user/register', true);
 
-if ($prg instanceof \Zend\Http\PhpEnvironment\Response) {
+if ($prg instanceof \Laminas\Http\PhpEnvironment\Response) {
     // Returned a response to redirect us.
     return $prg;
 }
@@ -372,7 +372,7 @@ into a new location (configured by the user).
 > ### Files must be relocated on upload
 >
 > You **must** attach a filter for moving the uploaded files to a new location, such as the
-> [RenameUpload Filter](http://zendframework.github.io/zend-filter/file/#renameupload),
+> [RenameUpload Filter](http://docs.laminas.dev/laminas-filter/file/#renameupload),
 > or else your files will be removed upon the redirect.
 
 This plugin is invoked with three arguments:
@@ -390,16 +390,16 @@ This plugin is invoked with three arguments:
 ### Example Usage
 
 ```php
-$myForm = new Zend\Form\Form('my-form');
+$myForm = new Laminas\Form\Form('my-form');
 $myForm->add([
-    'type' => 'Zend\Form\Element\File',
+    'type' => 'Laminas\Form\Element\File',
     'name' => 'file',
 ]);
 
 // NOTE: Without a filter to move the file,
 //       our files will disappear between the requests
 $myForm->getInputFilter()->getFilterChain()->attach(
-    new Zend\Filter\File\RenameUpload([
+    new Laminas\Filter\File\RenameUpload([
         'target'    => './data/tmpuploads/file',
         'randomize' => true,
     ])
@@ -408,7 +408,7 @@ $myForm->getInputFilter()->getFilterChain()->attach(
 // Pass in the form and optional the route/url you want to redirect to after the POST
 $prg = $this->fileprg($myForm, '/user/profile-pic', true);
 
-if ($prg instanceof \Zend\Http\PhpEnvironment\Response) {
+if ($prg instanceof \Laminas\Http\PhpEnvironment\Response) {
     // Returned a response to redirect us.
     return $prg;
 }
@@ -447,13 +447,13 @@ you will need to do the following steps:
 
 The `Redirect` plugin does this work for you. It offers three methods:
 
-- `toRoute(string $route = null, array $params = array(), array $options = array(), boolean $reuseMatchedParams = false) : Zend\Http\Response`:
+- `toRoute(string $route = null, array $params = array(), array $options = array(), boolean $reuseMatchedParams = false) : Laminas\Http\Response`:
   Redirects to a named route, using the provided `$params` and `$options` to
   assembled the URL.
 
-- `toUrl(string $url) : Zend\Http\Response`: Simply redirects to the given URL.
+- `toUrl(string $url) : Laminas\Http\Response`: Simply redirects to the given URL.
 
-- `refresh() : Zend\Http\Response`: Refresh to current route.
+- `refresh() : Laminas\Http\Response`: Refresh to current route.
 
 In each case, the `Response` object is returned. If you return this immediately,
 you can effectively short-circuit execution of the request.
