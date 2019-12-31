@@ -1,18 +1,17 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Router\Http;
+namespace Laminas\Mvc\Router\Http;
 
+use Laminas\Mvc\Router\Exception;
+use Laminas\Stdlib\ArrayUtils;
+use Laminas\Stdlib\RequestInterface as Request;
 use Traversable;
-use Zend\Mvc\Router\Exception;
-use Zend\Stdlib\ArrayUtils;
-use Zend\Stdlib\RequestInterface as Request;
 
 /**
  * Wildcard route.
@@ -66,9 +65,9 @@ class Wildcard implements RouteInterface
     /**
      * factory(): defined by RouteInterface interface.
      *
-     * @see    \Zend\Mvc\Router\RouteInterface::factory()
+     * @see    \Laminas\Mvc\Router\RouteInterface::factory()
      * @param  array|Traversable $options
-     * @throws \Zend\Mvc\Router\Exception\InvalidArgumentException
+     * @throws \Laminas\Mvc\Router\Exception\InvalidArgumentException
      * @return Wildcard
      */
     public static function factory($options = array())
@@ -97,7 +96,7 @@ class Wildcard implements RouteInterface
     /**
      * match(): defined by RouteInterface interface.
      *
-     * @see    \Zend\Mvc\Router\RouteInterface::match()
+     * @see    \Laminas\Mvc\Router\RouteInterface::match()
      * @param  Request $request
      * @param  int|null $pathOffset
      * @return RouteMatch
@@ -152,7 +151,7 @@ class Wildcard implements RouteInterface
     /**
      * assemble(): Defined by RouteInterface interface.
      *
-     * @see    \Zend\Mvc\Router\RouteInterface::assemble()
+     * @see    \Laminas\Mvc\Router\RouteInterface::assemble()
      * @param  array $params
      * @param  array $options
      * @return mixed

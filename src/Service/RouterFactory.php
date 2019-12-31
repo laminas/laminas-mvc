@@ -1,19 +1,18 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc\Service;
+namespace Laminas\Mvc\Service;
 
-use Zend\Mvc\Router\Http\TreeRouteStack as HttpRouter;
-use Zend\Mvc\Router\Console\SimpleRouteStack as ConsoleRouter;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\Console\Console;
+use Laminas\Console\Console;
+use Laminas\Mvc\Router\Console\SimpleRouteStack as ConsoleRouter;
+use Laminas\Mvc\Router\Http\TreeRouteStack as HttpRouter;
+use Laminas\ServiceManager\FactoryInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 class RouterFactory implements FactoryInterface
 {
@@ -27,7 +26,7 @@ class RouterFactory implements FactoryInterface
      * @param  ServiceLocatorInterface        $serviceLocator
      * @param  string|null                     $cName
      * @param  string|null                     $rName
-     * @return \Zend\Mvc\Router\RouteStackInterface
+     * @return \Laminas\Mvc\Router\RouteStackInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator, $cName = null, $rName = null)
     {

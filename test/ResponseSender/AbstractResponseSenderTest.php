@@ -1,22 +1,20 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Mvc
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\ResponseSender;
+namespace LaminasTest\Mvc\ResponseSender;
 
+use Laminas\Http\Headers;
+use Laminas\Http\Response;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Http\Headers;
-use Zend\Http\Response;
 
 /**
- * @category   Zend
- * @package    Zend_Mvc
+ * @category   Laminas
+ * @package    Laminas_Mvc
  * @subpackage UnitTest
  */
 class AbstractResponseSenderTest extends TestCase
@@ -36,10 +34,10 @@ class AbstractResponseSenderTest extends TestCase
         $response = new Response();
         $response->getHeaders()->addHeaders($headers);
 
-        $mockSendResponseEvent = $this->getMock('Zend\Mvc\ResponseSender\SendResponseEvent', array('getResponse'));
+        $mockSendResponseEvent = $this->getMock('Laminas\Mvc\ResponseSender\SendResponseEvent', array('getResponse'));
         $mockSendResponseEvent->expects($this->any())->method('getResponse')->will($this->returnValue($response));
 
-        $responseSender = $this->getMockForAbstractClass('Zend\Mvc\ResponseSender\AbstractResponseSender');
+        $responseSender = $this->getMockForAbstractClass('Laminas\Mvc\ResponseSender\AbstractResponseSender');
         $responseSender->sendHeaders($mockSendResponseEvent);
 
         $sentHeaders = xdebug_get_headers();
@@ -64,14 +62,14 @@ class AbstractResponseSenderTest extends TestCase
             $this->markTestSkipped('Xdebug extension needed, skipped test');
         }
 
-        $mockResponse = $this->getMock('Zend\Http\Response');
+        $mockResponse = $this->getMock('Laminas\Http\Response');
         $mockResponse->expects($this->once())->method('getHeaders')->will($this->returnValue(Headers::fromString('Location: example.com')));
         $mockResponse->expects($this->once())->method('renderStatusLine')->will($this->returnValue('X-Test: HTTP/1.1 202 Accepted'));
 
-        $mockSendResponseEvent = $this->getMock('Zend\Mvc\ResponseSender\SendResponseEvent', array('getResponse'));
+        $mockSendResponseEvent = $this->getMock('Laminas\Mvc\ResponseSender\SendResponseEvent', array('getResponse'));
         $mockSendResponseEvent->expects($this->any())->method('getResponse')->will($this->returnValue($mockResponse));
 
-        $responseSender = $this->getMockForAbstractClass('Zend\Mvc\ResponseSender\AbstractResponseSender');
+        $responseSender = $this->getMockForAbstractClass('Laminas\Mvc\ResponseSender\AbstractResponseSender');
         $responseSender->sendHeaders($mockSendResponseEvent);
 
         $sentHeaders = xdebug_get_headers();
@@ -81,7 +79,7 @@ class AbstractResponseSenderTest extends TestCase
         $this->assertEquals(
             'X-Test: HTTP/1.1 202 Accepted',
             $sentHeaders[1],
-            'Status header is sent last to prevent header() from overwriting the ZF status code when a Location header is used'
+            'Status header is sent last to prevent header() from overwriting the Laminas status code when a Location header is used'
         );
     }
 }
