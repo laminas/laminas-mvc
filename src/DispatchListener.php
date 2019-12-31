@@ -1,20 +1,18 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Mvc;
+namespace Laminas\Mvc;
 
 use ArrayObject;
-use Zend\EventManager\EventManagerInterface;
-use Zend\EventManager\ListenerAggregateInterface;
-use Zend\Mvc\Exception\InvalidControllerException;
-use Zend\Stdlib\ArrayUtils;
-
+use Laminas\EventManager\EventManagerInterface;
+use Laminas\EventManager\ListenerAggregateInterface;
+use Laminas\Mvc\Exception\InvalidControllerException;
+use Laminas\Stdlib\ArrayUtils;
 
 /**
  * Default dispatch listener
@@ -41,7 +39,7 @@ use Zend\Stdlib\ArrayUtils;
 class DispatchListener implements ListenerAggregateInterface
 {
     /**
-     * @var \Zend\Stdlib\CallbackHandler[]
+     * @var \Laminas\Stdlib\CallbackHandler[]
      */
     protected $listeners = array();
 
@@ -135,7 +133,7 @@ class DispatchListener implements ListenerAggregateInterface
         $error     = $e->getError();
         $exception = $e->getParam('exception');
         if ($exception instanceof \Exception) {
-            zend_monitor_custom_event_ex($error, $exception->getMessage(), 'Zend Framework Exception', array('code' => $exception->getCode(), 'trace' => $exception->getTraceAsString()));
+            zend_monitor_custom_event_ex($error, $exception->getMessage(), 'Laminas Exception', array('code' => $exception->getCode(), 'trace' => $exception->getTraceAsString()));
         }
     }
 
