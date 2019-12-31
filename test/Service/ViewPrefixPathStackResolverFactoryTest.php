@@ -1,22 +1,21 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Mvc\Service;
+namespace LaminasTest\Mvc\Service;
 
-use Zend\Mvc\Service\ViewPrefixPathStackResolverFactory;
+use Laminas\Mvc\Service\ViewPrefixPathStackResolverFactory;
 
 class ViewPrefixPathStackResolverFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testCreateService()
     {
-        /* @var $serviceLocator \Zend\ServiceManager\ServiceLocatorInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $serviceLocator = $this->getMock('Zend\ServiceManager\ServiceLocatorInterface');
+        /* @var $serviceLocator \Laminas\ServiceManager\ServiceLocatorInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $serviceLocator = $this->getMock('Laminas\ServiceManager\ServiceLocatorInterface');
 
         $serviceLocator->expects($this->once())
             ->method('get')
@@ -32,6 +31,6 @@ class ViewPrefixPathStackResolverFactoryTest extends \PHPUnit_Framework_TestCase
         $factory  = new ViewPrefixPathStackResolverFactory();
         $resolver = $factory->createService($serviceLocator);
 
-        $this->assertInstanceOf('Zend\View\Resolver\PrefixPathStackResolver', $resolver);
+        $this->assertInstanceOf('Laminas\View\Resolver\PrefixPathStackResolver', $resolver);
     }
 }
