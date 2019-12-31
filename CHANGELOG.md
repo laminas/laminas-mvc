@@ -18,6 +18,6 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- [#27](https://github.com/zendframework/zend-mvc/pull/27) fixes a condition
+- [zendframework/zend-mvc#27](https://github.com/zendframework/zend-mvc/pull/27) fixes a condition
   where non-view model results from controllers could cause errors to be
   raisedin the `DefaultRenderingStrategy`.
