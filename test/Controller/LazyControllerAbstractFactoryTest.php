@@ -60,7 +60,6 @@ class LazyControllerAbstractFactoryTest extends TestCase
     public function testFactoryRaisesExceptionWhenUnableToResolveATypeHintedService()
     {
         $this->container->has(TestAsset\SampleInterface::class)->willReturn(false);
-        $this->container->has(\ZendTest\Mvc\Controller\TestAsset\SampleInterface::class)->willReturn(false);
         $factory = new LazyControllerAbstractFactory();
         $this->expectException(ServiceNotFoundException::class);
         $this->expectExceptionMessage(
