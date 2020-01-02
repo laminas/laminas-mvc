@@ -10,10 +10,6 @@ namespace LaminasTest\Mvc\Controller\TestAsset;
 
 use Laminas\Http\Request as HttpRequest;
 
-/**
- * @copyright Copyright (c) 2005-2015 Laminas (https://www.zend.com)
- * @license   https://getlaminas.org/license/new-bsd New BSD License
- */
 class Request extends HttpRequest
 {
     /**

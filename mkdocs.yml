@@ -21,5 +21,8 @@ nav:
       - 'Automating controller factories': cookbook/automating-controller-factories.md
       - 'Using middleware within event listeners': cookbook/middleware-in-listeners.md
 site_name: laminas-mvc
-site_description: "Laminas's event-driven MVC layer, including MVC Applications, Controllers, and Plugins."
+site_description: "Laminas' event-driven MVC layer, including MVC Applications, Controllers, and Plugins."
 repo_url: 'https://github.com/laminas/laminas-mvc'
+extra:
+    project: Mvc
+    project_url: 'https://docs.laminas.dev'

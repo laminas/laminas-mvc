@@ -208,7 +208,10 @@ class ForwardTest extends TestCase
     {
         $result = $this->plugin->dispatch('forward');
         $this->assertInternalType('array', $result);
-        $this->assertEquals(['content' => 'LaminasTest\Mvc\Controller\TestAsset\ForwardController::testAction'], $result);
+        $this->assertEquals(
+            ['content' => 'LaminasTest\Mvc\Controller\TestAsset\ForwardController::testAction'],
+            $result
+        );
     }
 
     /**
@@ -232,7 +235,10 @@ class ForwardTest extends TestCase
 
         $result = $this->plugin->dispatch('forward');
         $this->assertInternalType('array', $result);
-        $this->assertEquals(['content' => 'LaminasTest\Mvc\Controller\TestAsset\ForwardController::testAction'], $result);
+        $this->assertEquals(
+            ['content' => 'LaminasTest\Mvc\Controller\TestAsset\ForwardController::testAction'],
+            $result
+        );
     }
 
     public function testProblemListenersAreDetachedAndReattachedWhenPluginDispatchesRequestedController()
@@ -242,12 +248,16 @@ class ForwardTest extends TestCase
 
         $myCallback = [new ListenerStub(),'myCallback'];
         $sharedEvents = $this->createMock(SharedEventManagerInterface::class);
-        $sharedEvents->expects($this->once())->method('detach')->with($myCallback, 'Laminas\Stdlib\DispatchableInterface');
+        $sharedEvents->expects($this->once())
+            ->method('detach')
+            ->with($myCallback, 'Laminas\Stdlib\DispatchableInterface');
         $sharedEvents
             ->expects($this->once())
             ->method('attach')
             ->with('Laminas\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, $myCallback, -50);
-        $sharedEvents->expects($this->any())->method('getListeners')->will($this->returnValue([-50 => [$myCallback]]));
+        $sharedEvents->expects($this->any())
+            ->method('getListeners')
+            ->will($this->returnValue([-50 => [$myCallback]]));
         $events = $this->createEventManager($sharedEvents);
 
         $application = $this->createMock(ApplicationInterface::class);
@@ -271,12 +281,16 @@ class ForwardTest extends TestCase
 
         $myCallback = new ListenerStub();
         $sharedEvents = $this->createMock(SharedEventManagerInterface::class);
-        $sharedEvents->expects($this->once())->method('detach')->with($myCallback, 'Laminas\Stdlib\DispatchableInterface');
+        $sharedEvents->expects($this->once())
+            ->method('detach')
+            ->with($myCallback, 'Laminas\Stdlib\DispatchableInterface');
         $sharedEvents
             ->expects($this->once())
             ->method('attach')
             ->with('Laminas\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, $myCallback, -50);
-        $sharedEvents->expects($this->any())->method('getListeners')->will($this->returnValue([-50 => [$myCallback]]));
+        $sharedEvents->expects($this->any())
+            ->method('getListeners')
+            ->will($this->returnValue([-50 => [$myCallback]]));
         $events = $this->createEventManager($sharedEvents);
 
         $application = $this->createMock(ApplicationInterface::class);
