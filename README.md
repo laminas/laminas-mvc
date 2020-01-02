@@ -3,8 +3,7 @@
 [![Build Status](https://travis-ci.org/laminas/laminas-mvc.svg?branch=master)](https://travis-ci.org/laminas/laminas-mvc)
 [![Coverage Status](https://coveralls.io/repos/github/laminas/laminas-mvc/badge.svg?branch=master)](https://coveralls.io/github/laminas/laminas-mvc?branch=master)
 
-`Laminas\Mvc` is a brand new MVC implementation designed from the ground up for
-Laminas, focusing on performance and flexibility.
+`Laminas\Mvc` is an MVC implementation focusing on performance and flexibility.
 
 The MVC layer is built on top of the following components:
 
