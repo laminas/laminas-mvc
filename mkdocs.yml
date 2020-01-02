@@ -1,13 +1,27 @@
 docs_dir: docs/book
 site_dir: docs/html
 nav:
-    - { Home: index.md }
-    - { Introduction: intro.md }
-    - { 'Quick Start': quick-start.md }
-    - { Reference: [{ 'Default Services': services.md }, { Routing: routing.md }, { 'The MVC Event': mvc-event.md }, { 'The SendResponse Event': send-response-event.md }, { 'Available Controllers': controllers.md }, { 'Controller Plugins': plugins.md }, { Examples: examples.md }, { 'Dispatching PSR-7 Middleware': middleware.md }, { Migration: [{ 'Migration Overview': migration/index.md }, { 'v2.X to v2.7': migration/to-v2-7.md }, { 'v2.X to v3.0': migration/to-v3-0.md }] }] }
-    - { Cookbook: [{ 'Automating controller factories': cookbook/automating-controller-factories.md }, { 'Using middleware within event listeners': cookbook/middleware-in-listeners.md }] }
+    - Home: index.md
+    - Introduction: intro.md
+    - 'Quick Start': quick-start.md
+    - Reference:
+      - 'Default Services': services.md
+      - Routing: routing.md
+      - 'The MVC Event': mvc-event.md
+      - 'The SendResponse Event': send-response-event.md
+      - 'Available Controllers': controllers.md
+      - 'Controller Plugins': plugins.md
+      - Examples: examples.md
+      - 'Dispatching PSR-7 Middleware': middleware.md
+      - Migration:
+          - "Migration Overview": migration/index.md
+          - 'v2.X to v2.7': migration/to-v2-7.md
+          - 'v2.X to v3.0': migration/to-v3-0.md
+    - Cookbook:
+      - 'Automating controller factories': cookbook/automating-controller-factories.md
+      - 'Using middleware within event listeners': cookbook/middleware-in-listeners.md
 site_name: laminas-mvc
-site_description: 'Laminas''s event-driven MVC layer, including MVC Applications, Controllers, and Plugins.'
+site_description: "Laminas' event-driven MVC layer, including MVC Applications, Controllers, and Plugins."
 repo_url: 'https://github.com/laminas/laminas-mvc'
 extra:
     project: Mvc
