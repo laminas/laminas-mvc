@@ -1,6 +1,6 @@
 # laminas-mvc
 
-[![Build Status](https://travis-ci.org/laminas/laminas-mvc.svg?branch=master)](https://travis-ci.org/laminas/laminas-mvc)
+[![Build Status](https://travis-ci.com/laminas/laminas-mvc.svg?branch=master)](https://travis-ci.com/laminas/laminas-mvc)
 [![Coverage Status](https://coveralls.io/repos/github/laminas/laminas-mvc/badge.svg?branch=master)](https://coveralls.io/github/laminas/laminas-mvc?branch=master)
 
 `Laminas\Mvc` is an MVC implementation focusing on performance and flexibility.
