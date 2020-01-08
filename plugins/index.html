@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Laminas's event-driven MVC layer, including MVC Applications, Controllers, and Plugins.">  
+    <meta name="description" content="Laminas' event-driven MVC layer, including MVC Applications, Controllers, and Plugins.">  
     <link rel="canonical" href="https://docs.laminas.dev/plugins/">
     <link rel="shortcut icon" href="/img/trademark-laminas-foundation-rgb.svg">
 
@@ -20,7 +20,7 @@
     <div class="container">
         
         <a class="logo-link navbar-brand offset-md-2" href="https://getlaminas.org/" data-tooltip data-placement="bottom" title="Go to the Laminas homepage">
-            <img src="../img/laminas-foundation-white.svg" height="28" alt="Lamnias">
+            <img src="../img/laminas-foundation-white.svg" height="28" alt="Laminas">
         </a>
         <a class="navbar-title" href="https://docs.laminas.dev/" data-tooltip data-placement="bottom" title="Go to the Laminas Documentation">
             Documentation
@@ -36,13 +36,17 @@
             
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a href="https://getlaminas.org/about" class="nav-link">About</a>
-                </li>
-                <li class="nav-item">
-                    <a href="https://getlaminas.org/blog" class="nav-link">Blog</a>
-                </li>
-                <li class="nav-item">
-                    <a href="https://docs.laminas.dev" class="nav-link">All Docs</a>
+                    <div class="dropdown">
+                        <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
+                            All Docs
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="https://docs.laminas.dev/components">Components</a>
+                            <a class="dropdown-item" href="https://docs.mezzio.dev/">Mezzio</a>
+                            <a class="dropdown-item" href="https://api-tools.getlaminas.org/docs">API Tools</a>
+                            <a class="dropdown-item" href="https://docs.laminas.dev/mvc">MVC</a>
+                        </div>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <a href="https://getlaminas.org/participate" class="nav-link">Community</a>
@@ -359,48 +363,45 @@ your own custom plugins with the manager.</p>
 <p>If your controller implements the <code>setPluginManager()</code>, <code>getPluginManager()</code> and
 <code>plugin()</code> methods, you can access these using their shortname via the <code>plugin()</code>
 method:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>$plugin = $this-&gt;plugin(&#39;url&#39;);</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>$plugin = $this-&gt;plugin('url');</code></pre>
 <p>For an extra layer of convenience, this shipped abstract controller
 implementations have <code>__call()</code> methods defined that allow you to retrieve
 plugins via method calls:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>$plugin = $this-&gt;url();</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>$plugin = $this-&gt;url();</code></pre>
 <h2 id="acceptableviewmodelselector-plugin">AcceptableViewModelSelector Plugin</h2>
 <p>The <code>AcceptableViewModelSelector</code> is a helper that can be used to select an
 appropriate view model based on user defined criteria will be tested against the
 Accept header in the request.</p>
 <p>As an example:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>use Laminas\Mvc\Controller\AbstractActionController;</span>
+<pre class=codehilite><code class=language-php>use Laminas\Mvc\Controller\AbstractActionController;
 
-<span class=x>class SomeController extends AbstractActionController</span>
-<span class=x>{</span>
-<span class=x>    protected $acceptCriteria = [</span>
-<span class=x>        \Laminas\View\Model\ViewModel::class =&gt; [</span>
-<span class=x>            &#39;text/html&#39;,</span>
-<span class=x>            &#39;application/xhtml+xml&#39;,</span>
-<span class=x>        ],</span>
-<span class=x>        \Laminas\View\Model\JsonModel::class =&gt; [</span>
-<span class=x>            &#39;application/json&#39;,</span>
-<span class=x>            &#39;application/javascript&#39;,</span>
-<span class=x>        ],</span>
-<span class=x>        \Laminas\View\Model\FeedModel::class =&gt; [</span>
-<span class=x>            &#39;application/rss+xml&#39;,</span>
-<span class=x>            &#39;application/atom+xml&#39;,</span>
-<span class=x>        ],</span>
-<span class=x>    ];</span>
+class SomeController extends AbstractActionController
+{
+    protected $acceptCriteria = [
+        \Laminas\View\Model\ViewModel::class =&gt; [
+            'text/html',
+            'application/xhtml+xml',
+        ],
+        \Laminas\View\Model\JsonModel::class =&gt; [
+            'application/json',
+            'application/javascript',
+        ],
+        \Laminas\View\Model\FeedModel::class =&gt; [
+            'application/rss+xml',
+            'application/atom+xml',
+        ],
+    ];
 
-<span class=x>    public function apiAction()</span>
-<span class=x>    {</span>
-<span class=x>        $viewModel = $this-&gt;acceptableViewModelSelector($this-&gt;acceptCriteria);</span>
+    public function apiAction()
+    {
+        $viewModel = $this-&gt;acceptableViewModelSelector($this-&gt;acceptCriteria);
 
-<span class=x>        // Potentially vary execution based on model returned</span>
-<span class=x>        if ($viewModel instanceof \Laminas\View\Model\JsonModel) {</span>
-<span class=x>            // ...</span>
-<span class=x>        }</span>
-<span class=x>    }</span>
-<span class=x>}</span>
-</pre></div></p>
+        // Potentially vary execution based on model returned
+        if ($viewModel instanceof \Laminas\View\Model\JsonModel) {
+            // ...
+        }
+    }
+}</code></pre>
 <p>The above would return a standard <code>Laminas\View\Model\ViewModel</code> instance if no
 criterias are met, and the specified view model types if a specific criteria
 is met. Rules are matched in order, with the first match "winning".
@@ -432,23 +433,20 @@ to the developer to determine what, if anything, to do with those results. One
 recommendation is to aggregate them in any return value from the invoking
 controller.</p>
 <p>As an example:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>$foo = $this-&gt;forward()-&gt;dispatch(&#39;foo&#39;, [&#39;action&#39; =&gt; &#39;process&#39;]);</span>
-<span class=x>return [</span>
-<span class=x>    &#39;somekey&#39; =&gt; $somevalue,</span>
-<span class=x>    &#39;foo&#39;     =&gt; $foo,</span>
-<span class=x>];</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>$foo = $this-&gt;forward()-&gt;dispatch('foo', ['action' =&gt; 'process']);
+return [
+    'somekey' =&gt; $somevalue,
+    'foo'     =&gt; $foo,
+];</code></pre>
 <h2 id="layout-plugin">Layout Plugin</h2>
 <p>The <code>Layout</code> plugin allows changing layout templates from within controller actions.</p>
 <p>It exposes a single method, <code>setTemplate()</code>, which takes one argument,
 <code>$template</code>, the name of the template to set.</p>
 <p>As an example:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>$this-&gt;layout()-&gt;setTemplate(&#39;layout/newlayout&#39;);</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>$this-&gt;layout()-&gt;setTemplate('layout/newlayout');</code></pre>
 <p>It also implements the <code>__invoke</code> magic method, which allows calling the plugin
 as a method call:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>$this-&gt;layout(&#39;layout/newlayout&#39;);</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>$this-&gt;layout('layout/newlayout');</code></pre>
 <h2 id="params-plugin">Params Plugin</h2>
 <p>The <code>Params</code> plugin allows accessing parameters in actions from different sources.</p>
 <p>It exposes several methods, one for each parameter source:</p>
@@ -481,10 +479,9 @@ as a method call:</p>
 </ul>
 <p>The plugin also implements the <code>__invoke</code> magic method, providing a shortcut
 for invoking the <code>fromRoute</code> method:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>$this-&gt;params()-&gt;fromRoute(&#39;param&#39;, $default);</span>
-<span class=x>// or</span>
-<span class=x>$this-&gt;params(&#39;param&#39;, $default);</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>$this-&gt;params()-&gt;fromRoute('param', $default);
+// or
+$this-&gt;params('param', $default);</code></pre>
 <h2 id="redirect-plugin">Redirect Plugin</h2>
 <p>Redirections are quite common operations within applications. If done manually,
 you will need to do the following steps:</p>
@@ -517,18 +514,15 @@ you can effectively short-circuit execution of the request.</p>
 retrieves the router from the event object.</p>
 </blockquote>
 <p>As an example:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>return $this-&gt;redirect()-&gt;toRoute(&#39;login-success&#39;);</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>return $this-&gt;redirect()-&gt;toRoute('login-success');</code></pre>
 <h2 id="url-plugin">Url Plugin</h2>
 <p>You may need to generate URLs from route definitions within your controllers;
 for example, to seed the view, generate headers, etc. While the <code>MvcEvent</code>
 object composes the router, doing so manually would require this workflow:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>$router = $this-&gt;getEvent()-&gt;getRouter();</span>
-<span class=x>$url    = $router-&gt;assemble($params, [&#39;name&#39; =&gt; &#39;route-name&#39;]);</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>$router = $this-&gt;getEvent()-&gt;getRouter();
+$url    = $router-&gt;assemble($params, ['name' =&gt; 'route-name']);</code></pre>
 <p>The <code>Url</code> helper makes this slightly more convenient:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>$url = $this-&gt;url()-&gt;fromRoute(&#39;route-name&#39;, $params);</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>$url = $this-&gt;url()-&gt;fromRoute('route-name', $params);</code></pre>
 <p>The <code>fromRoute()</code> method is the only public method defined, and is used to
 generate a URL string from the provided parameters. It has the following
 signature:</p>
@@ -781,9 +775,10 @@ retrieves the router from the event object.</p>
             <div class="col-md-7 offset-md-2">
                 <h5>Laminas</h5>
                 <ul>
-                    <li>Laminas Project <a href="https://getlaminas.org/">Components and MVC for Enterprise Applications</a></li>
-                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 Middleware in Minutes</a></li>
-                    <li>Laminas API Tools: <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
+                    <li>Laminas Project <a href="https://getlaminas.org/">The new foundation for the community-supported, open source continuation of Zend Framework</a></li>
+                    <li>Laminas Components and MVC <a href="https://docs.laminas.dev/">Components and MVC for enterprise applications</a></li>
+                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 middleware in minutes</a></li>
+                    <li>Laminas API Tools <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
                 </ul>
             </div>
         </div>
@@ -820,7 +815,7 @@ retrieves the router from the event object.</p>
                 <h4 class="footer__headline">License</h4>
                 <p>
                     Code licensed under <a
-                        href="https://github.com/laminas/laminas-mvc//blob/master/LICENSE.md">BSD 3-Clause</a>.
+                        href="https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md">BSD 3-Clause</a>.
                 </p>
             </div>
 
@@ -829,8 +824,8 @@ retrieves the router from the event object.</p>
                 <h4 class="footer__headline">Copyright</h4>
                 <p>
                     <!--Built with love by the Laminas team with the help of our
-                    <a href="https://github.com/laminas/laminas-mvc//graphs/contributors">contributors</a>.<br>-->
-                    &copy; 2019-2019 by <a href="https://getlaminas.org/">The Laminas Project</a>.
+                    <a href="https://github.com/laminas/laminas-mvc/graphs/contributors">contributors</a>.<br>-->
+                    &copy; 2019-2020 by <a href="https://getlaminas.org/">The Laminas Project</a>.
                 </p>
             </div>
         </div>

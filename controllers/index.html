@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Laminas's event-driven MVC layer, including MVC Applications, Controllers, and Plugins.">  
+    <meta name="description" content="Laminas' event-driven MVC layer, including MVC Applications, Controllers, and Plugins.">  
     <link rel="canonical" href="https://docs.laminas.dev/controllers/">
     <link rel="shortcut icon" href="/img/trademark-laminas-foundation-rgb.svg">
 
@@ -20,7 +20,7 @@
     <div class="container">
         
         <a class="logo-link navbar-brand offset-md-2" href="https://getlaminas.org/" data-tooltip data-placement="bottom" title="Go to the Laminas homepage">
-            <img src="../img/laminas-foundation-white.svg" height="28" alt="Lamnias">
+            <img src="../img/laminas-foundation-white.svg" height="28" alt="Laminas">
         </a>
         <a class="navbar-title" href="https://docs.laminas.dev/" data-tooltip data-placement="bottom" title="Go to the Laminas Documentation">
             Documentation
@@ -36,13 +36,17 @@
             
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a href="https://getlaminas.org/about" class="nav-link">About</a>
-                </li>
-                <li class="nav-item">
-                    <a href="https://getlaminas.org/blog" class="nav-link">Blog</a>
-                </li>
-                <li class="nav-item">
-                    <a href="https://docs.laminas.dev" class="nav-link">All Docs</a>
+                    <div class="dropdown">
+                        <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
+                            All Docs
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="https://docs.laminas.dev/components">Components</a>
+                            <a class="dropdown-item" href="https://docs.mezzio.dev/">Mezzio</a>
+                            <a class="dropdown-item" href="https://api-tools.getlaminas.org/docs">API Tools</a>
+                            <a class="dropdown-item" href="https://docs.laminas.dev/mvc">MVC</a>
+                        </div>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <a href="https://getlaminas.org/participate" class="nav-link">Community</a>
@@ -337,18 +341,17 @@
     <h1 id="available-controllers">Available Controllers</h1>
 <p>Controllers in laminas-mvc are objects implementing <code>Laminas\Stdlib\DispatchableInterface</code>.
 That interface describes a single method:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>use Laminas\Stdlib\DispatchableInterface;</span>
-<span class=x>use Laminas\Stdlib\RequestInterface as Request;</span>
-<span class=x>use Laminas\Stdlib\ResponseInterface as Response;</span>
+<pre class=codehilite><code class=language-php>use Laminas\Stdlib\DispatchableInterface;
+use Laminas\Stdlib\RequestInterface as Request;
+use Laminas\Stdlib\ResponseInterface as Response;
 
-<span class=x>class Foo implements DispatchableInterface</span>
-<span class=x>{</span>
-<span class=x>    public function dispatch(Request $request, Response $response = null)</span>
-<span class=x>    {</span>
-<span class=x>        // ... do something, and preferably return a Response ...</span>
-<span class=x>    }</span>
-<span class=x>}</span>
-</pre></div></p>
+class Foo implements DispatchableInterface
+{
+    public function dispatch(Request $request, Response $response = null)
+    {
+        // ... do something, and preferably return a Response ...
+    }
+}</code></pre>
 <p>While the pattern is straight-forward, chances are you don't want to implement
 custom dispatch logic for every controller, particularly as it's not unusual or
 uncommon for a single controller to handle several related types of requests.</p>
@@ -364,19 +367,17 @@ would this be useful?</p>
 instance), and potentially the "result" of dispatching.</p>
 <p>A controller that has the <code>MvcEvent</code> injected, then, can retrieve or inject
 these. As an example:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>$matches = $this-&gt;getEvent()-&gt;getRouteMatch();</span>
-<span class=x>$id      = $matches-&gt;getParam(&#39;id&#39;, false);</span>
-<span class=x>if (! $id) {</span>
-<span class=x>    $response = $this-&gt;getResponse();</span>
-<span class=x>    $response-&gt;setStatusCode(500);</span>
-<span class=x>    $this-&gt;getEvent()-&gt;setResult(&#39;Invalid identifier; cannot complete request&#39;);</span>
-<span class=x>    return;</span>
-<span class=x>}</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>$matches = $this-&gt;getEvent()-&gt;getRouteMatch();
+$id      = $matches-&gt;getParam('id', false);
+if (! $id) {
+    $response = $this-&gt;getResponse();
+    $response-&gt;setStatusCode(500);
+    $this-&gt;getEvent()-&gt;setResult('Invalid identifier; cannot complete request');
+    return;
+}</code></pre>
 <p>The <code>InjectApplicationEventInterface</code> defines two methods:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>public function setEvent(Laminas\EventManager\EventInterface $event);</span>
-<span class=x>public function getEvent();</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>public function setEvent(Laminas\EventManager\EventInterface $event);
+public function getEvent();</code></pre>
 <h3>ServiceLocatorAware</h3>
 <p>In most cases, you should define your controllers such that dependencies are
 injected by the application's <code>ServiceManager</code>, via either constructor arguments
@@ -387,12 +388,11 @@ navigation, etc. In these cases, you may decide that it doesn't make sense to
 inject those objects every time the controller is used.</p>
 <p>The <code>ServiceLocatorAwareInterface</code> interface hints to the <code>ServiceManager</code> that it should inject
 itself into the controller. It defines two simple methods:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>use Laminas\ServiceManager\ServiceLocatorInterface;</span>
-<span class=x>use Laminas\ServiceManager\ServiceLocatorAwareInterface;</span>
+<pre class=codehilite><code class=language-php>use Laminas\ServiceManager\ServiceLocatorInterface;
+use Laminas\ServiceManager\ServiceLocatorAwareInterface;
 
-<span class=x>public function setServiceLocator(ServiceLocatorInterface $serviceLocator);</span>
-<span class=x>public function getServiceLocator();</span>
-</pre></div></p>
+public function setServiceLocator(ServiceLocatorInterface $serviceLocator);
+public function getServiceLocator();</code></pre>
 <blockquote>
 <h4>ServiceLocatorInterface is deprecated</h4>
 <p><code>ServiceLocatorAwareInterface</code> <a href="http://docs.laminas.dev/laminas-servicemanager/migration/#miscellaneous-interfaces-traits-and-classes">was removed from laminas-servicemanager v3.0</a>,
@@ -416,12 +416,11 @@ implementing the interface <code>EventManagerAwareInterface</code>, which tells 
 <p>To do this, you define two methods. The first, a setter, should also set any
 <code>SharedEventManager</code> identifiers you want to listen on, and the second, a getter,
 should return the composed <code>EventManager</code> instance.</p>
-<p> <div class=codehilite><pre><span></span><span class=x>use Laminas\EventManager\EventManagerAwareInterface;</span>
-<span class=x>use Laminas\EventManager\EventManagerInterface;</span>
+<pre class=codehilite><code class=language-php>use Laminas\EventManager\EventManagerAwareInterface;
+use Laminas\EventManager\EventManagerInterface;
 
-<span class=x>public function setEventManager(EventManagerInterface $events);</span>
-<span class=x>public function getEventManager();</span>
-</pre></div></p>
+public function setEventManager(EventManagerInterface $events);
+public function getEventManager();</code></pre>
 <h3>Controller Plugins</h3>
 <p>Code re-use is a common goal for developers. Another common goal is convenience.
 However, this is often difficult to achieve cleanly in abstract, general
@@ -440,30 +439,29 @@ the controller layer, <code>Laminas\Mvc\Controller\PluginManager</code>, buildin
 <code>Laminas\ServiceManager\AbstractPluginManager</code> functionality. To utilize it,
 implement the <code>setPluginManager(PluginManager $plugins)</code> method, and set up your
 code to use the controller-specific implementation by default:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>use Laminas\Mvc\Controller\PluginManager;</span>
+<pre class=codehilite><code class=language-php>use Laminas\Mvc\Controller\PluginManager;
 
-<span class=x>public function setPluginManager(PluginManager $plugins)</span>
-<span class=x>{</span>
-<span class=x>    $this-&gt;plugins = $plugins;</span>
-<span class=x>    $this-&gt;plugins-&gt;setController($this);</span>
+public function setPluginManager(PluginManager $plugins)
+{
+    $this-&gt;plugins = $plugins;
+    $this-&gt;plugins-&gt;setController($this);
 
-<span class=x>    return $this;</span>
-<span class=x>}</span>
+    return $this;
+}
 
-<span class=x>public function getPluginManager()</span>
-<span class=x>{</span>
-<span class=x>    if (!$this-&gt;plugins) {</span>
-<span class=x>        $this-&gt;setPluginManager(new PluginManager());</span>
-<span class=x>    }</span>
+public function getPluginManager()
+{
+    if (!$this-&gt;plugins) {
+        $this-&gt;setPluginManager(new PluginManager());
+    }
 
-<span class=x>    return $this-&gt;plugins;</span>
-<span class=x>}</span>
+    return $this-&gt;plugins;
+}
 
-<span class=x>public function plugin($name, array $options = null)</span>
-<span class=x>{</span>
-<span class=x>    return $this-&gt;getPluginManager()-&gt;get($name, $options);</span>
-<span class=x>}</span>
-</pre></div></p>
+public function plugin($name, array $options = null)
+{
+    return $this-&gt;getPluginManager()-&gt;get($name, $options);
+}</code></pre>
 <h2 id="abstractactioncontroller">AbstractActionController</h2>
 <p>Implementing each of the above interfaces is a lesson in redundancy; you won't
 often want to do it.  As such, we've developed abstract, base controllers you
@@ -486,23 +484,22 @@ implements each of the above interfaces, and uses the following assumptions:</p>
 <p>Essentially, a route mapping to an <code>AbstractActionController</code> needs to return
 both the "controller" and "action" keys in its matches.</p>
 <p>Creation of action controllers looks like the following example:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>namespace Foo\Controller;</span>
+<pre class=codehilite><code class=language-php>namespace Foo\Controller;
 
-<span class=x>use Laminas\Mvc\Controller\AbstractActionController;</span>
+use Laminas\Mvc\Controller\AbstractActionController;
 
-<span class=x>class BarController extends AbstractActionController</span>
-<span class=x>{</span>
-<span class=x>    public function bazAction()</span>
-<span class=x>    {</span>
-<span class=x>        return [&#39;title&#39; =&gt; __METHOD__];</span>
-<span class=x>    }</span>
+class BarController extends AbstractActionController
+{
+    public function bazAction()
+    {
+        return ['title' =&gt; __METHOD__];
+    }
 
-<span class=x>    public function batAction()</span>
-<span class=x>    {</span>
-<span class=x>        return [&#39;title&#39; =&gt; __METHOD__];</span>
-<span class=x>    }</span>
-<span class=x>}</span>
-</pre></div></p>
+    public function batAction()
+    {
+        return ['title' =&gt; __METHOD__];
+    }
+}</code></pre>
 <h3>Interfaces and Collaborators</h3>
 <p><code>AbstractActionController</code> implements each of the following interfaces:</p>
 <ul>
@@ -838,9 +835,10 @@ extending class.</p>
             <div class="col-md-7 offset-md-2">
                 <h5>Laminas</h5>
                 <ul>
-                    <li>Laminas Project <a href="https://getlaminas.org/">Components and MVC for Enterprise Applications</a></li>
-                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 Middleware in Minutes</a></li>
-                    <li>Laminas API Tools: <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
+                    <li>Laminas Project <a href="https://getlaminas.org/">The new foundation for the community-supported, open source continuation of Zend Framework</a></li>
+                    <li>Laminas Components and MVC <a href="https://docs.laminas.dev/">Components and MVC for enterprise applications</a></li>
+                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 middleware in minutes</a></li>
+                    <li>Laminas API Tools <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
                 </ul>
             </div>
         </div>
@@ -877,7 +875,7 @@ extending class.</p>
                 <h4 class="footer__headline">License</h4>
                 <p>
                     Code licensed under <a
-                        href="https://github.com/laminas/laminas-mvc//blob/master/LICENSE.md">BSD 3-Clause</a>.
+                        href="https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md">BSD 3-Clause</a>.
                 </p>
             </div>
 
@@ -886,8 +884,8 @@ extending class.</p>
                 <h4 class="footer__headline">Copyright</h4>
                 <p>
                     <!--Built with love by the Laminas team with the help of our
-                    <a href="https://github.com/laminas/laminas-mvc//graphs/contributors">contributors</a>.<br>-->
-                    &copy; 2019-2019 by <a href="https://getlaminas.org/">The Laminas Project</a>.
+                    <a href="https://github.com/laminas/laminas-mvc/graphs/contributors">contributors</a>.<br>-->
+                    &copy; 2019-2020 by <a href="https://getlaminas.org/">The Laminas Project</a>.
                 </p>
             </div>
         </div>

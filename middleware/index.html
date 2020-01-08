@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Laminas's event-driven MVC layer, including MVC Applications, Controllers, and Plugins.">  
+    <meta name="description" content="Laminas' event-driven MVC layer, including MVC Applications, Controllers, and Plugins.">  
     <link rel="canonical" href="https://docs.laminas.dev/middleware/">
     <link rel="shortcut icon" href="/img/trademark-laminas-foundation-rgb.svg">
 
@@ -20,7 +20,7 @@
     <div class="container">
         
         <a class="logo-link navbar-brand offset-md-2" href="https://getlaminas.org/" data-tooltip data-placement="bottom" title="Go to the Laminas homepage">
-            <img src="../img/laminas-foundation-white.svg" height="28" alt="Lamnias">
+            <img src="../img/laminas-foundation-white.svg" height="28" alt="Laminas">
         </a>
         <a class="navbar-title" href="https://docs.laminas.dev/" data-tooltip data-placement="bottom" title="Go to the Laminas Documentation">
             Documentation
@@ -36,13 +36,17 @@
             
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a href="https://getlaminas.org/about" class="nav-link">About</a>
-                </li>
-                <li class="nav-item">
-                    <a href="https://getlaminas.org/blog" class="nav-link">Blog</a>
-                </li>
-                <li class="nav-item">
-                    <a href="https://docs.laminas.dev" class="nav-link">All Docs</a>
+                    <div class="dropdown">
+                        <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
+                            All Docs
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="https://docs.laminas.dev/components">Components</a>
+                            <a class="dropdown-item" href="https://docs.mezzio.dev/">Mezzio</a>
+                            <a class="dropdown-item" href="https://api-tools.getlaminas.org/docs">API Tools</a>
+                            <a class="dropdown-item" href="https://docs.laminas.dev/mvc">MVC</a>
+                        </div>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <a href="https://getlaminas.org/participate" class="nav-link">Community</a>
@@ -354,31 +358,30 @@ then invokes the middleware.</p>
 <p>The first step is to map a route to PSR-7 middleware. This looks like any other
 <a href="../routing/">routing</a> configuration, with one small change: instead of providing
 a "controller" in the routing defaults, you provide "middleware":</p>
-<p> <div class=codehilite><pre><span></span><span class=x>// Via configuration:</span>
-<span class=x>return [</span>
-<span class=x>    &#39;router&#39; =&gt;</span>
-<span class=x>        &#39;routes&#39; =&gt; [</span>
-<span class=x>            &#39;home&#39; =&gt; [</span>
-<span class=x>                &#39;type&#39; =&gt; &#39;literal&#39;,</span>
-<span class=x>                &#39;options&#39; =&gt; [</span>
-<span class=x>                    &#39;route&#39; =&gt; &#39;/&#39;,</span>
-<span class=x>                    &#39;defaults&#39; =&gt; [</span>
-<span class=x>                        &#39;middleware&#39; =&gt; &#39;Application\Middleware\IndexMiddleware&#39;,</span>
-<span class=x>                    ],</span>
-<span class=x>                ],</span>
-<span class=x>            ],</span>
-<span class=x>        ],</span>
-<span class=x>    ],</span>
-<span class=x>];</span>
+<pre class=codehilite><code class=language-php>// Via configuration:
+return [
+    'router' =&gt;
+        'routes' =&gt; [
+            'home' =&gt; [
+                'type' =&gt; 'literal',
+                'options' =&gt; [
+                    'route' =&gt; '/',
+                    'defaults' =&gt; [
+                        'middleware' =&gt; 'Application\Middleware\IndexMiddleware',
+                    ],
+                ],
+            ],
+        ],
+    ],
+];
 
-<span class=x>// Manually:</span>
-<span class=x>$route = Literal::factory([</span>
-<span class=x>    &#39;route&#39; =&gt; &#39;/&#39;,</span>
-<span class=x>    &#39;defaults&#39; =&gt; [</span>
-<span class=x>        &#39;middleware&#39; =&gt; &#39;Application\Middleware\IndexMiddleware&#39;,</span>
-<span class=x>    ],</span>
-<span class=x>]);</span>
-</pre></div></p>
+// Manually:
+$route = Literal::factory([
+    'route' =&gt; '/',
+    'defaults' =&gt; [
+        'middleware' =&gt; 'Application\Middleware\IndexMiddleware',
+    ],
+]);</code></pre>
 <p>Middleware may be provided as PHP callables, or as service names.</p>
 <p><strong>As of 3.1.0</strong> you may also specify an <code>array</code> of middleware, and middleware
 may be <a href="https://github.com/http-interop/http-middleware">http-interop/http-middleware</a>
@@ -401,19 +404,18 @@ create an error response if non-callable middleware is indicated.</p>
 <p>Prior to 3.1.0, when dispatching middleware, the <code>MiddlewareListener</code> calls it
 with two arguments, the PSR-7 request and response, respectively. As such, your
 middleware signature should look like the following:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>namespace Application\Middleware;</span>
+<pre class=codehilite><code class=language-php>namespace Application\Middleware;
 
-<span class=x>use Psr\Http\Message\ResponseInterface;</span>
-<span class=x>use Psr\Http\Message\ServerRequestInterface;</span>
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
-<span class=x>class IndexMiddleware</span>
-<span class=x>{</span>
-<span class=x>    public function __invoke(ServerRequestInterface $request, ResponseInterface $response)</span>
-<span class=x>    {</span>
-<span class=x>        // do some work</span>
-<span class=x>    }</span>
-<span class=x>}</span>
-</pre></div></p>
+class IndexMiddleware
+{
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        // do some work
+    }
+}</code></pre>
 <p>Starting in 3.1.0, the <code>MiddlewareListener</code> always adds middleware to a
 <code>Laminas\Stratigility\MiddlewarePipe</code> instance, and invokes it as
 <a href="https://github.com/http-interop/http-middleware">http-interop/http-middleware</a>,
@@ -421,27 +423,25 @@ passing it a PSR-7 <code>ServerRequestInterface</code> and an http-interop
 <code>DelegateInterface</code>.</p>
 <p>As such, ideally your middleware should implement the <code>MiddlewareInterface</code> from
 <a href="https://github.com/http-interop/http-middleware">http-interop/http-middleware</a>:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>namespace Application\Middleware;</span>
+<pre class=codehilite><code class=language-php>namespace Application\Middleware;
 
-<span class=x>use Interop\Http\ServerMiddleware\DelegateInterface;</span>
-<span class=x>use Interop\Http\ServerMiddleware\MiddlewareInterface;</span>
-<span class=x>use Psr\Http\Message\ServerRequestInterface;</span>
+use Interop\Http\ServerMiddleware\DelegateInterface;
+use Interop\Http\ServerMiddleware\MiddlewareInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
-<span class=x>class IndexMiddleware implements MiddlewareInterface</span>
-<span class=x>{</span>
-<span class=x>    public function process(ServerRequestInterface $request, DelegateInterface $delegate)</span>
-<span class=x>    {</span>
-<span class=x>        // do some work</span>
-<span class=x>    }</span>
-<span class=x>}</span>
-</pre></div></p>
+class IndexMiddleware implements MiddlewareInterface
+{
+    public function process(ServerRequestInterface $request, DelegateInterface $delegate)
+    {
+        // do some work
+    }
+}</code></pre>
 <p>Alternately, you may still write <code>callable</code> middleware using the following
 signature:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>function (ServerREquestInterface $request, ResponseInterface $response, callable $next)</span>
-<span class=x>{</span>
-<span class=x>    // do some work</span>
-<span class=x>}</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>function (ServerREquestInterface $request, ResponseInterface $response, callable $next)
+{
+    // do some work
+}</code></pre>
 <p>In the above case, the <code>DelegateInterface</code> is decorated as a callable.</p>
 <p>In all versions, within your middleware, you can pull information from the
 composed request, and return a response.</p>
@@ -694,9 +694,10 @@ manipulate the results.</p>
             <div class="col-md-7 offset-md-2">
                 <h5>Laminas</h5>
                 <ul>
-                    <li>Laminas Project <a href="https://getlaminas.org/">Components and MVC for Enterprise Applications</a></li>
-                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 Middleware in Minutes</a></li>
-                    <li>Laminas API Tools: <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
+                    <li>Laminas Project <a href="https://getlaminas.org/">The new foundation for the community-supported, open source continuation of Zend Framework</a></li>
+                    <li>Laminas Components and MVC <a href="https://docs.laminas.dev/">Components and MVC for enterprise applications</a></li>
+                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 middleware in minutes</a></li>
+                    <li>Laminas API Tools <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
                 </ul>
             </div>
         </div>
@@ -733,7 +734,7 @@ manipulate the results.</p>
                 <h4 class="footer__headline">License</h4>
                 <p>
                     Code licensed under <a
-                        href="https://github.com/laminas/laminas-mvc//blob/master/LICENSE.md">BSD 3-Clause</a>.
+                        href="https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md">BSD 3-Clause</a>.
                 </p>
             </div>
 
@@ -742,8 +743,8 @@ manipulate the results.</p>
                 <h4 class="footer__headline">Copyright</h4>
                 <p>
                     <!--Built with love by the Laminas team with the help of our
-                    <a href="https://github.com/laminas/laminas-mvc//graphs/contributors">contributors</a>.<br>-->
-                    &copy; 2019-2019 by <a href="https://getlaminas.org/">The Laminas Project</a>.
+                    <a href="https://github.com/laminas/laminas-mvc/graphs/contributors">contributors</a>.<br>-->
+                    &copy; 2019-2020 by <a href="https://getlaminas.org/">The Laminas Project</a>.
                 </p>
             </div>
         </div>

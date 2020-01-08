@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Laminas's event-driven MVC layer, including MVC Applications, Controllers, and Plugins.">  
+    <meta name="description" content="Laminas' event-driven MVC layer, including MVC Applications, Controllers, and Plugins.">  
     <link rel="canonical" href="https://docs.laminas.dev/quick-start/">
     <link rel="shortcut icon" href="/img/trademark-laminas-foundation-rgb.svg">
 
@@ -20,7 +20,7 @@
     <div class="container">
         
         <a class="logo-link navbar-brand offset-md-2" href="https://getlaminas.org/" data-tooltip data-placement="bottom" title="Go to the Laminas homepage">
-            <img src="../img/laminas-foundation-white.svg" height="28" alt="Lamnias">
+            <img src="../img/laminas-foundation-white.svg" height="28" alt="Laminas">
         </a>
         <a class="navbar-title" href="https://docs.laminas.dev/" data-tooltip data-placement="bottom" title="Go to the Laminas Documentation">
             Documentation
@@ -36,13 +36,17 @@
             
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a href="https://getlaminas.org/about" class="nav-link">About</a>
-                </li>
-                <li class="nav-item">
-                    <a href="https://getlaminas.org/blog" class="nav-link">Blog</a>
-                </li>
-                <li class="nav-item">
-                    <a href="https://docs.laminas.dev" class="nav-link">All Docs</a>
+                    <div class="dropdown">
+                        <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
+                            All Docs
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="https://docs.laminas.dev/components">Components</a>
+                            <a class="dropdown-item" href="https://docs.mezzio.dev/">Mezzio</a>
+                            <a class="dropdown-item" href="https://api-tools.getlaminas.org/docs">API Tools</a>
+                            <a class="dropdown-item" href="https://docs.laminas.dev/mvc">MVC</a>
+                        </div>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <a href="https://getlaminas.org/participate" class="nav-link">Community</a>
@@ -353,8 +357,7 @@ each structured, we'll show you the easy way to get started.</p>
 Composer.</p>
 <p>If you have not yet done so, <a href="https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx">install Composer</a>.</p>
 <p>Once you have, use the <code>create-project</code> command to create a new application:</p>
-<p> <div class=codehilite><pre><span></span>$ composer create-project -sdev laminas/skeleton-application my-application
-</pre></div></p>
+<pre class=codehilite><code class=language-bash>$ composer create-project -sdev laminas/laminas-mvc-skeleton my-application</code></pre>
 <h2 id="create-a-new-module">Create a New Module</h2>
 <p>By default, one module is provided with the <code>LaminasSkeletonApplication</code>, named
 "Application". It provides a controller to handle the "home" page of the
@@ -379,25 +382,22 @@ initialization. Since we're actively working on this module, the class list will
 be in flux; we probably want to be pretty lenient in our autoloading approach,
 so let's keep it flexible by using the <code>StandardAutoloader</code>. Let's begin.</p>
 <p>First, let's have <code>autoload_classmap.php</code> return an empty array:</p>
-<p> <div class=codehilite><pre><span></span><span class=cp>&lt;?php</span>
-<span class=c1>// autoload_classmap.php</span>
-<span class=k>return</span> <span class=k>array</span><span class=p>();</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>&lt;?php
+// autoload_classmap.php
+return array();</code></pre>
 <p>We'll also edit our <code>config/module.config.php</code> file to read as follows:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>return array(</span>
-<span class=x>    &#39;view_manager&#39; =&gt; array(</span>
-<span class=x>        &#39;template_path_stack&#39; =&gt; array(</span>
-<span class=x>            &#39;&lt;module-name&gt;&#39; =&gt; __DIR__ . &#39;/../view&#39;</span>
-<span class=x>        ),</span>
-<span class=x>    ),</span>
-<span class=x>);</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>return array(
+    'view_manager' =&gt; array(
+        'template_path_stack' =&gt; array(
+            '&lt;module-name&gt;' =&gt; __DIR__ . '/../view'
+        ),
+    ),
+);</code></pre>
 <p>Fill in <code>module-name</code> with a lowercased, dash-separated version of your module
 name; e.g., "LaminasUser" would become "laminas-user".</p>
 <p>Next, edit the namespace declaration of the <code>Module.php</code> file. Replace the
 following line:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>namespace LaminasSkeletonModule;</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>namespace LaminasSkeletonModule;</code></pre>
 <p>with the namespace you want to use for your application.</p>
 <p>Next, rename the directory <code>src/LaminasSkeletonModule</code> to <code>src/&lt;YourModuleName&gt;</code>,
 and the directory <code>view/laminas-skeleton-module</code> to <code>src/&lt;your-module-name&gt;</code>.</p>
@@ -440,21 +440,20 @@ If you are not using the component installer, you will need to <a href="https://
 action. First, create the file <code>HelloController.php</code> in the directory
 <code>src/&lt;module name&gt;/Controller</code>. Edit it in your favorite text editor or IDE,
 and insert the following contents:</p>
-<p> <div class=codehilite><pre><span></span><span class=cp>&lt;?php</span>
-<span class=k>namespace</span> <span class=o>&lt;</span><span class=nx>module</span> <span class=nx>name</span><span class=o>&gt;</span><span class=nx>\Controller</span><span class=p>;</span>
+<pre class=codehilite><code class=language-php>&lt;?php
+namespace &lt;module name&gt;\Controller;
 
-<span class=k>use</span> <span class=nx>Laminas\Mvc\Controller\AbstractActionController</span><span class=p>;</span>
-<span class=k>use</span> <span class=nx>Laminas\View\Model\ViewModel</span><span class=p>;</span>
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\View\Model\ViewModel;
 
-<span class=k>class</span> <span class=nc>HelloController</span> <span class=k>extends</span> <span class=nx>AbstractActionController</span>
-<span class=p>{</span>
-    <span class=k>public</span> <span class=k>function</span> <span class=nf>worldAction</span><span class=p>()</span>
-    <span class=p>{</span>
-        <span class=nv>$message</span> <span class=o>=</span> <span class=nv>$this</span><span class=o>-&gt;</span><span class=na>params</span><span class=p>()</span><span class=o>-&gt;</span><span class=na>fromQuery</span><span class=p>(</span><span class=s1>&#39;message&#39;</span><span class=p>,</span> <span class=s1>&#39;foo&#39;</span><span class=p>);</span>
-        <span class=k>return</span> <span class=k>new</span> <span class=nx>ViewModel</span><span class=p>([</span><span class=s1>&#39;message&#39;</span> <span class=o>=&gt;</span> <span class=nv>$message</span><span class=p>]);</span>
-    <span class=p>}</span>
-<span class=p>}</span>
-</pre></div></p>
+class HelloController extends AbstractActionController
+{
+    public function worldAction()
+    {
+        $message = $this-&gt;params()-&gt;fromQuery('message', 'foo');
+        return new ViewModel(['message' =&gt; $message]);
+    }
+}</code></pre>
 <p>So, what are we doing here?</p>
 <ul>
 <li>We're creating an action controller.</li>
@@ -473,10 +472,9 @@ to files with a ".phtml" suffix in your module's <code>view</code> directory.</p
 <h2 id="create-a-view-script">Create a View Script</h2>
 <p>Create the directory <code>view/&lt;module-name&gt;/hello</code>. Inside that directory, create a
 file named <code>world.phtml</code>. Inside that, paste in the following:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>&lt;h1&gt;Greetings!&lt;/h1&gt;</span>
+<pre class=codehilite><code class=language-php>&lt;h1&gt;Greetings!&lt;/h1&gt;
 
-<span class=x>&lt;p&gt;You said &quot;</span><span class=cp>&lt;?php</span> <span class=k>echo</span> <span class=nv>$this</span><span class=o>-&gt;</span><span class=na>escapeHtml</span><span class=p>(</span><span class=nv>$message</span><span class=p>)</span> <span class=cp>?&gt;</span><span class=x>&quot;.&lt;/p&gt;</span>
-</pre></div></p>
+&lt;p&gt;You said &quot;&lt;?php echo $this-&gt;escapeHtml($message) ?&gt;&quot;.&lt;/p&gt;</code></pre>
 <p>That's it. Save the file.</p>
 <blockquote>
 <h3>Escaping output</h3>
@@ -493,12 +491,11 @@ controller class names, stripping only the <code>\Controller\\</code> subnamespa
 present.  For example, <code>AwesomeMe\MyModule\Controller\HelloWorldController</code>
 resolves to the template name <code>awesome-me/my-module/hello-world</code> via the
 following configuration:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>&#39;view_manager&#39; =&gt; array(</span>
-<span class=x>    &#39;controller_map&#39; =&gt; array(</span>
-<span class=x>        &#39;AwesomeMe\MyModule&#39; =&gt; true,</span>
-<span class=x>    ),</span>
-<span class=x>),</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>'view_manager' =&gt; array(
+    'controller_map' =&gt; array(
+        'AwesomeMe\MyModule' =&gt; true,
+    ),
+),</code></pre>
 <p>(In v2 releases, the default was to strip subnamespaces, but optional mapping rules
 allowed whitelisting namespaces in module configuration to enable current
 resolver behavior. See the <a href="../migration/to-v3-0/#laminasmvcviewinjecttemplatelistener">migration guide</a>
@@ -524,17 +521,16 @@ routing definition in the module's <code>config/module.config.php</code>, and re
 </ul>
 </blockquote>
 <p>Additionally, we need to tell the application we have a controller:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>// module.config.php</span>
-<span class=x>return [</span>
-<span class=x>    &#39;controllers&#39; =&gt; [</span>
-<span class=x>        &#39;invokables&#39; =&gt; [</span>
-<span class=x>            &#39;&lt;module-namespace&gt;\Controller\Index&#39; =&gt; &#39;&lt;module-namespace&gt;\Controller\IndexController&#39;,</span>
-<span class=x>            // Do similar for each other controller in your module</span>
-<span class=x>        ],</span>
-<span class=x>    ],</span>
-<span class=x>   // ... other configuration ...</span>
-<span class=x>];</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>// module.config.php
+return [
+    'controllers' =&gt; [
+        'invokables' =&gt; [
+            '&lt;module-namespace&gt;\Controller\Index' =&gt; '&lt;module-namespace&gt;\Controller\IndexController',
+            // Do similar for each other controller in your module
+        ],
+    ],
+   // ... other configuration ...
+];</code></pre>
 <blockquote>
 <h3>Controller services</h3>
 <p>We inform the application about controllers we expect to have in the
@@ -546,50 +542,48 @@ factories.</p>
 </blockquote>
 <p>Open your <code>config/module.config.php</code> file, and modify it to add to the "routes"
 and "controller" parameters so it reads as follows:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>return [</span>
-<span class=x>    &#39;router&#39; =&gt; [</span>
-<span class=x>        &#39;routes&#39; =&gt; [</span>
-<span class=x>            &#39;&lt;module name&gt;-hello-world&#39; =&gt; [</span>
-<span class=x>                &#39;type&#39;    =&gt; &#39;Literal&#39;,</span>
-<span class=x>                    &#39;options&#39; =&gt; [</span>
-<span class=x>                    &#39;route&#39; =&gt; &#39;/hello/world&#39;,</span>
-<span class=x>                    &#39;defaults&#39; =&gt; [</span>
-<span class=x>                        &#39;controller&#39; =&gt; &#39;&lt;module name&gt;\Controller\Hello&#39;,</span>
-<span class=x>                        &#39;action&#39;     =&gt; &#39;world&#39;,</span>
-<span class=x>                    ],</span>
-<span class=x>                ],</span>
-<span class=x>            ],</span>
-<span class=x>        ],</span>
-<span class=x>    ],</span>
-<span class=x>    &#39;controllers&#39; =&gt; [</span>
-<span class=x>        &#39;invokables&#39; =&gt; [</span>
-<span class=x>            &#39;&lt;module namespace&gt;\Controller\Hello&#39; =&gt; &#39;&lt;module</span>
-<span class=x>namespace&gt;\Controller\HelloController&#39;,</span>
-<span class=x>        ],</span>
-<span class=x>    ],</span>
-<span class=x>    // ... other configuration ...</span>
-<span class=x>];</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>return [
+    'router' =&gt; [
+        'routes' =&gt; [
+            '&lt;module name&gt;-hello-world' =&gt; [
+                'type'    =&gt; 'Literal',
+                    'options' =&gt; [
+                    'route' =&gt; '/hello/world',
+                    'defaults' =&gt; [
+                        'controller' =&gt; '&lt;module name&gt;\Controller\Hello',
+                        'action'     =&gt; 'world',
+                    ],
+                ],
+            ],
+        ],
+    ],
+    'controllers' =&gt; [
+        'invokables' =&gt; [
+            '&lt;module namespace&gt;\Controller\Hello' =&gt; '&lt;module
+namespace&gt;\Controller\HelloController',
+        ],
+    ],
+    // ... other configuration ...
+];</code></pre>
 <h2 id="tell-the-application-about-our-module">Tell the Application About our Module</h2>
 <p>One problem: we haven't told our application about our new module!</p>
 <p>By default, modules are not utilized unless we tell the module manager about them.
 As such, we need to notify the application about them.</p>
 <p>Remember the <code>config/application.config.php</code> file? Let's modify it to add our
 new module. Once done, it should read as follows:</p>
-<p> <div class=codehilite><pre><span></span><span class=cp>&lt;?php</span>
-<span class=k>return</span> <span class=k>array</span><span class=p>(</span>
-    <span class=s1>&#39;modules&#39;</span> <span class=o>=&gt;</span> <span class=k>array</span><span class=p>(</span>
-        <span class=s1>&#39;Application&#39;</span><span class=p>,</span>
-        <span class=s1>&#39;&lt;module namespace&gt;&#39;</span><span class=p>,</span>
-    <span class=p>),</span>
-    <span class=s1>&#39;module_listener_options&#39;</span> <span class=o>=&gt;</span> <span class=k>array</span><span class=p>(</span>
-        <span class=s1>&#39;module_paths&#39;</span> <span class=o>=&gt;</span> <span class=k>array</span><span class=p>(</span>
-            <span class=s1>&#39;./module&#39;</span><span class=p>,</span>
-            <span class=s1>&#39;./vendor&#39;</span><span class=p>,</span>
-        <span class=p>),</span>
-    <span class=p>),</span>
-<span class=p>);</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>&lt;?php
+return array(
+    'modules' =&gt; array(
+        'Application',
+        '&lt;module namespace&gt;',
+    ),
+    'module_listener_options' =&gt; array(
+        'module_paths' =&gt; array(
+            './module',
+            './vendor',
+        ),
+    ),
+);</code></pre>
 <p>Replace <code>&lt;module namespace&gt;</code> with the namespace of your module.</p>
 <h2 id="test-it-out">Test it Out!</h2>
 <p>Now we can test things out! Create a new vhost pointing its document root to the <code>public</code> directory
@@ -597,15 +591,13 @@ of your application, and fire it up in a browser. You should see the default hom
 LaminasSkeletonApplication.</p>
 <p>Now alter the location in your URL to append the path "/hello/world", and load the page. You should
 now get the following content:</p>
-<p> <div class=codehilite><pre><span></span><span class=p>&lt;</span><span class=nt>h1</span><span class=p>&gt;</span>Greetings!<span class=p>&lt;/</span><span class=nt>h1</span><span class=p>&gt;</span>
+<pre class=codehilite><code class=language-html>&lt;h1&gt;Greetings!&lt;/h1&gt;
 
-<span class=p>&lt;</span><span class=nt>p</span><span class=p>&gt;</span>You said &quot;foo&quot;.<span class=p>&lt;/</span><span class=nt>p</span><span class=p>&gt;</span>
-</pre></div></p>
+&lt;p&gt;You said &quot;foo&quot;.&lt;/p&gt;</code></pre>
 <p>Now alter the location to append "?message=bar" and load the page. You should now get:</p>
-<p> <div class=codehilite><pre><span></span><span class=p>&lt;</span><span class=nt>h1</span><span class=p>&gt;</span>Greetings!<span class=p>&lt;/</span><span class=nt>h1</span><span class=p>&gt;</span>
+<pre class=codehilite><code class=language-html>&lt;h1&gt;Greetings!&lt;/h1&gt;
 
-<span class=p>&lt;</span><span class=nt>p</span><span class=p>&gt;</span>You said &quot;bar&quot;.<span class=p>&lt;/</span><span class=nt>p</span><span class=p>&gt;</span>
-</pre></div></p>
+&lt;p&gt;You said &quot;bar&quot;.&lt;/p&gt;</code></pre>
 <p>Congratulations! You've created your first Laminas MVC module!</p>
 
 
@@ -840,9 +832,10 @@ now get the following content:</p>
             <div class="col-md-7 offset-md-2">
                 <h5>Laminas</h5>
                 <ul>
-                    <li>Laminas Project <a href="https://getlaminas.org/">Components and MVC for Enterprise Applications</a></li>
-                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 Middleware in Minutes</a></li>
-                    <li>Laminas API Tools: <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
+                    <li>Laminas Project <a href="https://getlaminas.org/">The new foundation for the community-supported, open source continuation of Zend Framework</a></li>
+                    <li>Laminas Components and MVC <a href="https://docs.laminas.dev/">Components and MVC for enterprise applications</a></li>
+                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 middleware in minutes</a></li>
+                    <li>Laminas API Tools <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
                 </ul>
             </div>
         </div>
@@ -879,7 +872,7 @@ now get the following content:</p>
                 <h4 class="footer__headline">License</h4>
                 <p>
                     Code licensed under <a
-                        href="https://github.com/laminas/laminas-mvc//blob/master/LICENSE.md">BSD 3-Clause</a>.
+                        href="https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md">BSD 3-Clause</a>.
                 </p>
             </div>
 
@@ -888,8 +881,8 @@ now get the following content:</p>
                 <h4 class="footer__headline">Copyright</h4>
                 <p>
                     <!--Built with love by the Laminas team with the help of our
-                    <a href="https://github.com/laminas/laminas-mvc//graphs/contributors">contributors</a>.<br>-->
-                    &copy; 2019-2019 by <a href="https://getlaminas.org/">The Laminas Project</a>.
+                    <a href="https://github.com/laminas/laminas-mvc/graphs/contributors">contributors</a>.<br>-->
+                    &copy; 2019-2020 by <a href="https://getlaminas.org/">The Laminas Project</a>.
                 </p>
             </div>
         </div>

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Laminas's event-driven MVC layer, including MVC Applications, Controllers, and Plugins.">  
+    <meta name="description" content="Laminas' event-driven MVC layer, including MVC Applications, Controllers, and Plugins.">  
     <link rel="canonical" href="https://docs.laminas.dev/services/">
     <link rel="shortcut icon" href="/img/trademark-laminas-foundation-rgb.svg">
 
@@ -20,7 +20,7 @@
     <div class="container">
         
         <a class="logo-link navbar-brand offset-md-2" href="https://getlaminas.org/" data-tooltip data-placement="bottom" title="Go to the Laminas homepage">
-            <img src="../img/laminas-foundation-white.svg" height="28" alt="Lamnias">
+            <img src="../img/laminas-foundation-white.svg" height="28" alt="Laminas">
         </a>
         <a class="navbar-title" href="https://docs.laminas.dev/" data-tooltip data-placement="bottom" title="Go to the Laminas Documentation">
             Documentation
@@ -36,13 +36,17 @@
             
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a href="https://getlaminas.org/about" class="nav-link">About</a>
-                </li>
-                <li class="nav-item">
-                    <a href="https://getlaminas.org/blog" class="nav-link">Blog</a>
-                </li>
-                <li class="nav-item">
-                    <a href="https://docs.laminas.dev" class="nav-link">All Docs</a>
+                    <div class="dropdown">
+                        <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
+                            All Docs
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="https://docs.laminas.dev/components">Components</a>
+                            <a class="dropdown-item" href="https://docs.mezzio.dev/">Mezzio</a>
+                            <a class="dropdown-item" href="https://api-tools.getlaminas.org/docs">API Tools</a>
+                            <a class="dropdown-item" href="https://docs.laminas.dev/mvc">MVC</a>
+                        </div>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <a href="https://getlaminas.org/participate" class="nav-link">Community</a>
@@ -745,44 +749,42 @@ is the configuration to use to create the given service.</p>
 <h3>Laminas\Cache\Service\StorageCacheAbstractServiceFactory</h3>
 <p>This abstract factory is opt-in, but registered by default in the skeleton application. It uses the
 top-level configuration key "caches".</p>
-<p> <div class=codehilite><pre><span></span><span class=x>return [</span>
-<span class=x>    &#39;caches&#39; =&gt; [</span>
-<span class=x>        &#39;Cache\Transient&#39; =&gt; [</span>
-<span class=x>            &#39;adapter&#39; =&gt; &#39;redis&#39;,</span>
-<span class=x>            &#39;ttl&#39;     =&gt; 60,</span>
-<span class=x>            &#39;plugins&#39; =&gt; [</span>
-<span class=x>                &#39;exception_handler&#39; =&gt; [</span>
-<span class=x>                    &#39;throw_exceptions&#39; =&gt; false,</span>
-<span class=x>                ],</span>
-<span class=x>            ],</span>
-<span class=x>        ],</span>
-<span class=x>        &#39;Cache\Persistence&#39; =&gt; [</span>
-<span class=x>            &#39;adapter&#39; =&gt; &#39;filesystem&#39;,</span>
-<span class=x>            &#39;ttl&#39;     =&gt; 86400,</span>
-<span class=x>        ],</span>
-<span class=x>    ],</span>
-<span class=x>];</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>return [
+    'caches' =&gt; [
+        'Cache\Transient' =&gt; [
+            'adapter' =&gt; 'redis',
+            'ttl'     =&gt; 60,
+            'plugins' =&gt; [
+                'exception_handler' =&gt; [
+                    'throw_exceptions' =&gt; false,
+                ],
+            ],
+        ],
+        'Cache\Persistence' =&gt; [
+            'adapter' =&gt; 'filesystem',
+            'ttl'     =&gt; 86400,
+        ],
+    ],
+];</code></pre>
 <p>See the <a href="https://docs.laminas.dev/laminas-cache/storage/adapter/">cache documentation</a>
 for more configuration options.</p>
 <h3>Laminas\Db\Adapter\AdapterAbstractServiceFactory</h3>
 <p>This abstract factory is opt-in. It uses the top-level configuration key "db",
 with a subkey "adapters".</p>
-<p> <div class=codehilite><pre><span></span><span class=x>return [</span>
-<span class=x>    &#39;db&#39; =&gt; [&#39;adapters&#39; =&gt; [</span>
-<span class=x>        &#39;Db\ReadOnly&#39; =&gt; [</span>
-<span class=x>            &#39;driver&#39;   =&gt; &#39;Pdo_Sqlite&#39;,</span>
-<span class=x>            &#39;database&#39; =&gt; &#39;data/db/users.db&#39;,</span>
-<span class=x>        ],</span>
-<span class=x>        &#39;Db\Writeable&#39; =&gt; [</span>
-<span class=x>            &#39;driver&#39;   =&gt; &#39;Mysqli&#39;,</span>
-<span class=x>            &#39;database&#39; =&gt; &#39;users&#39;,</span>
-<span class=x>            &#39;username&#39; =&gt; &#39;developer&#39;,</span>
-<span class=x>            &#39;password&#39; =&gt; &#39;developer_password&#39;,</span>
-<span class=x>        ],</span>
-<span class=x>    ]],</span>
-<span class=x>];</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>return [
+    'db' =&gt; ['adapters' =&gt; [
+        'Db\ReadOnly' =&gt; [
+            'driver'   =&gt; 'Pdo_Sqlite',
+            'database' =&gt; 'data/db/users.db',
+        ],
+        'Db\Writeable' =&gt; [
+            'driver'   =&gt; 'Mysqli',
+            'database' =&gt; 'users',
+            'username' =&gt; 'developer',
+            'password' =&gt; 'developer_password',
+        ],
+    ]],
+];</code></pre>
 <p>See the <a href="https://docs.laminas.dev/laminas-db/adapter/">DB adapter documentation</a>
 for more configuration options.</p>
 <h3>Laminas\Form\FormAbstractServiceFactory</h3>
@@ -791,26 +793,25 @@ configuration key "forms". It makes use of the <code>FilterManager</code>,
 <code>FormElementManager</code>, <code>HydratorManager</code>, <code>InputFilterManager</code>, and
 <code>ValidatorManager</code> plugin managers in order to allow instantiation and creation
 of form objects and all related objects in the form hierarchy.</p>
-<p> <div class=codehilite><pre><span></span><span class=x>return [</span>
-<span class=x>    &#39;forms&#39; =&gt; [</span>
-<span class=x>        &#39;Form\Foo&#39; =&gt; [</span>
-<span class=x>            &#39;hydrator&#39; =&gt; &#39;ObjectProperty&#39;,</span>
-<span class=x>            &#39;type&#39;     =&gt; &#39;Laminas\Form\Form&#39;,</span>
-<span class=x>            &#39;elements&#39; =&gt; [</span>
-<span class=x>                [</span>
-<span class=x>                    &#39;spec&#39; =&gt; [</span>
-<span class=x>                        &#39;type&#39; =&gt; &#39;Laminas\Form\Element\Email&#39;,</span>
-<span class=x>                        &#39;name&#39; =&gt; &#39;email&#39;,</span>
-<span class=x>                        &#39;options&#39; =&gt; [</span>
-<span class=x>                            &#39;label&#39; =&gt; &#39;Your email address&#39;,</span>
-<span class=x>                        ],</span>
-<span class=x>                    ],</span>
-<span class=x>                ],</span>
-<span class=x>            ],</span>
-<span class=x>        ],</span>
-<span class=x>    ],</span>
-<span class=x>];</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>return [
+    'forms' =&gt; [
+        'Form\Foo' =&gt; [
+            'hydrator' =&gt; 'ObjectProperty',
+            'type'     =&gt; 'Laminas\Form\Form',
+            'elements' =&gt; [
+                [
+                    'spec' =&gt; [
+                        'type' =&gt; 'Laminas\Form\Element\Email',
+                        'name' =&gt; 'email',
+                        'options' =&gt; [
+                            'label' =&gt; 'Your email address',
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ],
+];</code></pre>
 <p>Form configuration follows the same configuration you would use with a form
 factory; the primary difference is that all plugin managers have already been
 injected for you, allowing you the possibility of custom objects or
@@ -820,22 +821,21 @@ for more configuration options.</p>
 <h3>Laminas\Log\LoggerAbstractServiceFactory</h3>
 <p>This abstract factory is opt-in, but registered by default in the skeleton
 application. It uses the top-level configuration key "log".</p>
-<p> <div class=codehilite><pre><span></span><span class=x>return [</span>
-<span class=x>    &#39;log&#39; =&gt; [</span>
-<span class=x>        &#39;Log\App&#39; =&gt; [</span>
-<span class=x>            &#39;writers&#39; =&gt; [</span>
-<span class=x>                [</span>
-<span class=x>                    &#39;name&#39; =&gt; &#39;stream&#39;,</span>
-<span class=x>                    &#39;priority&#39; =&gt; 1000,</span>
-<span class=x>                    &#39;options&#39; =&gt; [</span>
-<span class=x>                        &#39;stream&#39; =&gt; &#39;data/logs/app.log&#39;,</span>
-<span class=x>                    ],</span>
-<span class=x>                ],</span>
-<span class=x>            ],</span>
-<span class=x>        ],</span>
-<span class=x>    ],</span>
-<span class=x>];</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>return [
+    'log' =&gt; [
+        'Log\App' =&gt; [
+            'writers' =&gt; [
+                [
+                    'name' =&gt; 'stream',
+                    'priority' =&gt; 1000,
+                    'options' =&gt; [
+                        'stream' =&gt; 'data/logs/app.log',
+                    ],
+                ],
+            ],
+        ],
+    ],
+];</code></pre>
 <p>See the <a href="https://docs.laminas.dev/laminas-log/intro/">log documentation</a>
 for more configuration options.</p>
 <h2 id="plugin-managers">Plugin Managers</h2>
@@ -980,68 +980,67 @@ listeners, at a priority of 100 (allowing them to execute before the
 then find and aggregate the configuration used for the <code>Config</code> service, which
 is intended for configuring all other objects in the system. These configuration
 directives go to the <code>config/application.config.php</code> file.</p>
-<p> <div class=codehilite><pre><span></span><span class=cp>&lt;?php</span>
-<span class=k>return</span> <span class=p>[</span>
-    <span class=c1>// This should be an array of module namespaces used in the application.</span>
-    <span class=s1>&#39;modules&#39;</span> <span class=o>=&gt;</span> <span class=p>[</span>
-    <span class=p>],</span>
+<pre class=codehilite><code class=language-php>&lt;?php
+return [
+    // This should be an array of module namespaces used in the application.
+    'modules' =&gt; [
+    ],
 
-    <span class=c1>// These are various options for the listeners attached to the ModuleManager</span>
-    <span class=s1>&#39;module_listener_options&#39;</span> <span class=o>=&gt;</span> <span class=p>[</span>
-        <span class=c1>// This should be an array of paths in which modules reside.</span>
-        <span class=c1>// If a string key is provided, the listener will consider that a module</span>
-        <span class=c1>// namespace, the value of that key the specific path to that module&#39;s</span>
-        <span class=c1>// Module class.</span>
-        <span class=s1>&#39;module_paths&#39;</span> <span class=o>=&gt;</span> <span class=p>[</span>
-        <span class=p>],</span>
+    // These are various options for the listeners attached to the ModuleManager
+    'module_listener_options' =&gt; [
+        // This should be an array of paths in which modules reside.
+        // If a string key is provided, the listener will consider that a module
+        // namespace, the value of that key the specific path to that module's
+        // Module class.
+        'module_paths' =&gt; [
+        ],
 
-        <span class=c1>// An array of paths from which to glob configuration files after</span>
-        <span class=c1>// modules are loaded. These effectively override configuration</span>
-        <span class=c1>// provided by modules themselves. Paths may use GLOB_BRACE notation.</span>
-        <span class=s1>&#39;config_glob_paths&#39;</span> <span class=o>=&gt;</span> <span class=p>[</span>
-        <span class=p>],</span>
+        // An array of paths from which to glob configuration files after
+        // modules are loaded. These effectively override configuration
+        // provided by modules themselves. Paths may use GLOB_BRACE notation.
+        'config_glob_paths' =&gt; [
+        ],
 
-        <span class=c1>// Whether or not to enable a configuration cache.</span>
-        <span class=c1>// If enabled, the merged configuration will be cached and used in</span>
-        <span class=c1>// subsequent requests.</span>
-        <span class=s1>&#39;config_cache_enabled&#39;</span> <span class=o>=&gt;</span> <span class=nv>$booleanValue</span><span class=p>,</span>
+        // Whether or not to enable a configuration cache.
+        // If enabled, the merged configuration will be cached and used in
+        // subsequent requests.
+        'config_cache_enabled' =&gt; $booleanValue,
 
-        <span class=c1>// The key used to create the configuration cache file name.</span>
-        <span class=s1>&#39;config_cache_key&#39;</span> <span class=o>=&gt;</span> <span class=nv>$stringKey</span><span class=p>,</span>
+        // The key used to create the configuration cache file name.
+        'config_cache_key' =&gt; $stringKey,
 
-        <span class=c1>// Whether or not to enable a module class map cache.</span>
-        <span class=c1>// If enabled, creates a module class map cache which will be used</span>
-        <span class=c1>// by in future requests, to reduce the autoloading process.</span>
-        <span class=s1>&#39;module_map_cache_enabled&#39;</span> <span class=o>=&gt;</span> <span class=nv>$booleanValue</span><span class=p>,</span>
+        // Whether or not to enable a module class map cache.
+        // If enabled, creates a module class map cache which will be used
+        // by in future requests, to reduce the autoloading process.
+        'module_map_cache_enabled' =&gt; $booleanValue,
 
-        <span class=c1>// The key used to create the class map cache file name.</span>
-        <span class=s1>&#39;module_map_cache_key&#39;</span> <span class=o>=&gt;</span> <span class=nv>$stringKey</span><span class=p>,</span>
+        // The key used to create the class map cache file name.
+        'module_map_cache_key' =&gt; $stringKey,
 
-        <span class=c1>// The path in which to cache merged configuration.</span>
-        <span class=s1>&#39;cache_dir&#39;</span> <span class=o>=&gt;</span> <span class=nv>$stringPath</span><span class=p>,</span>
+        // The path in which to cache merged configuration.
+        'cache_dir' =&gt; $stringPath,
 
-        <span class=c1>// Whether or not to enable modules dependency checking.</span>
-        <span class=c1>// Enabled by default, prevents usage of modules that depend on other modules</span>
-        <span class=c1>// that weren&#39;t loaded.</span>
-        <span class=s1>&#39;check_dependencies&#39;</span> <span class=o>=&gt;</span> <span class=nv>$booleanValue</span><span class=p>,</span>
-    <span class=p>],</span>
+        // Whether or not to enable modules dependency checking.
+        // Enabled by default, prevents usage of modules that depend on other modules
+        // that weren't loaded.
+        'check_dependencies' =&gt; $booleanValue,
+    ],
 
-    <span class=c1>// Used to create an own service manager. May contain one or more child arrays.</span>
-    <span class=s1>&#39;service_listener_options&#39;</span> <span class=o>=&gt;</span> <span class=p>[</span>
-       <span class=p>[</span>
-         <span class=s1>&#39;service_manager&#39;</span> <span class=o>=&gt;</span> <span class=nv>$stringServiceManagerName</span><span class=p>,</span>
-         <span class=s1>&#39;config_key&#39;</span>      <span class=o>=&gt;</span> <span class=nv>$stringConfigKey</span><span class=p>,</span>
-         <span class=s1>&#39;interface&#39;</span>       <span class=o>=&gt;</span> <span class=nv>$stringOptionalInterface</span><span class=p>,</span>
-         <span class=s1>&#39;method&#39;</span>          <span class=o>=&gt;</span> <span class=nv>$stringRequiredMethodName</span><span class=p>,</span>
-       <span class=p>],</span>
-    <span class=p>]</span>
+    // Used to create an own service manager. May contain one or more child arrays.
+    'service_listener_options' =&gt; [
+       [
+         'service_manager' =&gt; $stringServiceManagerName,
+         'config_key'      =&gt; $stringConfigKey,
+         'interface'       =&gt; $stringOptionalInterface,
+         'method'          =&gt; $stringRequiredMethodName,
+       ],
+    ]
 
-    <span class=c1>// Initial configuration with which to seed the ServiceManager.</span>
-    <span class=c1>// Should be compatible with Laminas\ServiceManager\Config.</span>
-    <span class=s1>&#39;service_manager&#39;</span> <span class=o>=&gt;</span> <span class=p>[</span>
-    <span class=p>],</span>
-<span class=p>];</span>
-</pre></div></p>
+    // Initial configuration with which to seed the ServiceManager.
+    // Should be compatible with Laminas\ServiceManager\Config.
+    'service_manager' =&gt; [
+    ],
+];</code></pre>
 <p>For an example, see the
 <a href="https://github.com/laminas/LaminasSkeletonApplication/blob/master/config/application.config.php">LaminasSkeletonApplication configuration file</a>.</p>
 <h2 id="default-configuration-options">Default Configuration Options</h2>
@@ -1063,93 +1062,92 @@ database credentials, and as such, it is highly recommended to keep these
 local configuration files out of your VCS. The <code>LaminasSkeletonApplication</code>'s
 <code>config/autoload/.gitignore</code> file ignores <code>*.local.php</code> files by default.</p>
 </blockquote>
-<p> <div class=codehilite><pre><span></span><span class=cp>&lt;?php</span>
-<span class=k>return</span> <span class=p>[</span>
-    <span class=c1>// The following are used to configure controller loader</span>
-    <span class=c1>// Should be compatible with Laminas\ServiceManager\Config.</span>
-    <span class=s1>&#39;controllers&#39;</span> <span class=o>=&gt;</span> <span class=p>[</span>
-        <span class=c1>// Map of controller &quot;name&quot; to class</span>
-        <span class=c1>// This should be used if you do not need to inject any dependencies</span>
-        <span class=c1>// in your controller</span>
-        <span class=s1>&#39;invokables&#39;</span> <span class=o>=&gt;</span> <span class=p>[</span>
-        <span class=p>],</span>
+<pre class=codehilite><code class=language-php>&lt;?php
+return [
+    // The following are used to configure controller loader
+    // Should be compatible with Laminas\ServiceManager\Config.
+    'controllers' =&gt; [
+        // Map of controller &quot;name&quot; to class
+        // This should be used if you do not need to inject any dependencies
+        // in your controller
+        'invokables' =&gt; [
+        ],
 
-        <span class=c1>// Map of controller &quot;name&quot; to factory for creating controller instance</span>
-        <span class=c1>// You may provide either the class name of a factory, or a PHP callback.</span>
-        <span class=s1>&#39;factories&#39;</span> <span class=o>=&gt;</span> <span class=p>[</span>
-        <span class=p>],</span>
-    <span class=p>],</span>
+        // Map of controller &quot;name&quot; to factory for creating controller instance
+        // You may provide either the class name of a factory, or a PHP callback.
+        'factories' =&gt; [
+        ],
+    ],
 
-    <span class=c1>// The following are used to configure controller plugin loader</span>
-    <span class=c1>// Should be compatible with Laminas\ServiceManager\Config.</span>
-    <span class=s1>&#39;controller_plugins&#39;</span> <span class=o>=&gt;</span> <span class=p>[</span>
-    <span class=p>],</span>
+    // The following are used to configure controller plugin loader
+    // Should be compatible with Laminas\ServiceManager\Config.
+    'controller_plugins' =&gt; [
+    ],
 
-    <span class=c1>// The following are used to configure view helper manager</span>
-    <span class=c1>// Should be compatible with Laminas\ServiceManager\Config.</span>
-    <span class=s1>&#39;view_helpers&#39;</span> <span class=o>=&gt;</span> <span class=p>[</span>
-    <span class=p>],</span>
+    // The following are used to configure view helper manager
+    // Should be compatible with Laminas\ServiceManager\Config.
+    'view_helpers' =&gt; [
+    ],
 
-    <span class=c1>// The following is used to configure a Laminas\Di\Di instance.</span>
-    <span class=c1>// The array should be in a format that Laminas\Di\Config can understand.</span>
-    <span class=s1>&#39;di&#39;</span> <span class=o>=&gt;</span> <span class=p>[</span>
-    <span class=p>],</span>
+    // The following is used to configure a Laminas\Di\Di instance.
+    // The array should be in a format that Laminas\Di\Config can understand.
+    'di' =&gt; [
+    ],
 
-    <span class=c1>// Configuration for the Router service</span>
-    <span class=c1>// Can contain any router configuration, but typically will always define</span>
-    <span class=c1>// the routes for the application. See the router documentation for details</span>
-    <span class=c1>// on route configuration.</span>
-    <span class=s1>&#39;router&#39;</span> <span class=o>=&gt;</span> <span class=p>[</span>
-        <span class=s1>&#39;routes&#39;</span> <span class=o>=&gt;</span> <span class=p>[</span>
-        <span class=p>],</span>
-    <span class=p>],</span>
+    // Configuration for the Router service
+    // Can contain any router configuration, but typically will always define
+    // the routes for the application. See the router documentation for details
+    // on route configuration.
+    'router' =&gt; [
+        'routes' =&gt; [
+        ],
+    ],
 
-    <span class=c1>// ViewManager configuration</span>
-    <span class=s1>&#39;view_manager&#39;</span> <span class=o>=&gt;</span> <span class=p>[</span>
-        <span class=c1>// Base URL path to the application</span>
-        <span class=s1>&#39;base_path&#39;</span> <span class=o>=&gt;</span> <span class=nv>$stringBasePath</span><span class=p>,</span>
+    // ViewManager configuration
+    'view_manager' =&gt; [
+        // Base URL path to the application
+        'base_path' =&gt; $stringBasePath,
 
-        <span class=c1>// Doctype with which to seed the Doctype helper</span>
-        <span class=s1>&#39;doctype&#39;</span> <span class=o>=&gt;</span> <span class=nv>$doctypeHelperConstantString</span><span class=p>,</span> <span class=c1>// e.g. HTML5, XHTML1</span>
+        // Doctype with which to seed the Doctype helper
+        'doctype' =&gt; $doctypeHelperConstantString, // e.g. HTML5, XHTML1
 
-        <span class=c1>// TemplateMapResolver configuration</span>
-        <span class=c1>// template/path pairs</span>
-        <span class=s1>&#39;template_map&#39;</span> <span class=o>=&gt;</span> <span class=p>[</span>
-        <span class=p>],</span>
+        // TemplateMapResolver configuration
+        // template/path pairs
+        'template_map' =&gt; [
+        ],
 
-        <span class=c1>// TemplatePathStack configuration</span>
-        <span class=c1>// module/view script path pairs</span>
-        <span class=s1>&#39;template_path_stack&#39;</span> <span class=o>=&gt;</span> <span class=p>[</span>
-        <span class=p>],</span>
-        <span class=c1>// Default suffix to use when resolving template scripts, if none, &#39;phtml&#39; is used</span>
-        <span class=s1>&#39;default_template_suffix&#39;</span> <span class=o>=&gt;</span> <span class=nv>$templateSuffix</span><span class=p>,</span> <span class=c1>// e.g. &#39;php&#39;</span>
+        // TemplatePathStack configuration
+        // module/view script path pairs
+        'template_path_stack' =&gt; [
+        ],
+        // Default suffix to use when resolving template scripts, if none, 'phtml' is used
+        'default_template_suffix' =&gt; $templateSuffix, // e.g. 'php'
 
-        <span class=c1>// Controller namespace to template map</span>
-        <span class=s1>&#39;controller_map&#39;</span> <span class=o>=&gt;</span> <span class=p>[</span>
-        <span class=p>],</span>
+        // Controller namespace to template map
+        'controller_map' =&gt; [
+        ],
 
-        <span class=c1>// Layout template name</span>
-        <span class=s1>&#39;layout&#39;</span> <span class=o>=&gt;</span> <span class=nv>$layoutTemplateName</span><span class=p>,</span> <span class=c1>// e.g. &#39;layout/layout&#39;</span>
+        // Layout template name
+        'layout' =&gt; $layoutTemplateName, // e.g. 'layout/layout'
 
-        <span class=c1>// ExceptionStrategy configuration</span>
-        <span class=s1>&#39;display_exceptions&#39;</span> <span class=o>=&gt;</span> <span class=nv>$bool</span><span class=p>,</span> <span class=c1>// display exceptions in template</span>
-        <span class=s1>&#39;exception_template&#39;</span> <span class=o>=&gt;</span> <span class=nv>$stringTemplateName</span><span class=p>,</span> <span class=c1>// e.g. &#39;error&#39;</span>
+        // ExceptionStrategy configuration
+        'display_exceptions' =&gt; $bool, // display exceptions in template
+        'exception_template' =&gt; $stringTemplateName, // e.g. 'error'
 
-        <span class=c1>// RouteNotFoundStrategy configuration</span>
-        <span class=s1>&#39;display_not_found_reason&#39;</span> <span class=o>=&gt;</span> <span class=nv>$bool</span><span class=p>,</span> <span class=c1>// display 404 reason in template</span>
-        <span class=s1>&#39;not_found_template&#39;</span> <span class=o>=&gt;</span> <span class=nv>$stringTemplateName</span><span class=p>,</span> <span class=c1>// e.g. &#39;404&#39;</span>
+        // RouteNotFoundStrategy configuration
+        'display_not_found_reason' =&gt; $bool, // display 404 reason in template
+        'not_found_template' =&gt; $stringTemplateName, // e.g. '404'
 
-        <span class=c1>// Additional strategies to attach</span>
-        <span class=c1>// These should be class names or service names of View strategy classes</span>
-        <span class=c1>// that act as ListenerAggregates. They will be attached at priority 100,</span>
-        <span class=c1>// in the order registered.</span>
-        <span class=s1>&#39;strategies&#39;</span> <span class=o>=&gt;</span> <span class=p>[</span>
-            <span class=s1>&#39;ViewJsonStrategy&#39;</span><span class=p>,</span> <span class=c1>// register JSON renderer strategy</span>
-            <span class=s1>&#39;ViewFeedStrategy&#39;</span><span class=p>,</span> <span class=c1>// register Feed renderer strategy</span>
-        <span class=p>],</span>
-    <span class=p>],</span>
-<span class=p>];</span>
-</pre></div></p>
+        // Additional strategies to attach
+        // These should be class names or service names of View strategy classes
+        // that act as ListenerAggregates. They will be attached at priority 100,
+        // in the order registered.
+        'strategies' =&gt; [
+            'ViewJsonStrategy', // register JSON renderer strategy
+            'ViewFeedStrategy', // register Feed renderer strategy
+        ],
+    ],
+];</code></pre>
 <p>For an example, see the
 <a href="https://github.com/laminas/LaminasSkeletonApplication/blob/master/module/Application/config/module.config.php">Application module configuration file</a>
 in the LaminasSkeletonApplication.</p>
@@ -1386,9 +1384,10 @@ in the LaminasSkeletonApplication.</p>
             <div class="col-md-7 offset-md-2">
                 <h5>Laminas</h5>
                 <ul>
-                    <li>Laminas Project <a href="https://getlaminas.org/">Components and MVC for Enterprise Applications</a></li>
-                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 Middleware in Minutes</a></li>
-                    <li>Laminas API Tools: <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
+                    <li>Laminas Project <a href="https://getlaminas.org/">The new foundation for the community-supported, open source continuation of Zend Framework</a></li>
+                    <li>Laminas Components and MVC <a href="https://docs.laminas.dev/">Components and MVC for enterprise applications</a></li>
+                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 middleware in minutes</a></li>
+                    <li>Laminas API Tools <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
                 </ul>
             </div>
         </div>
@@ -1425,7 +1424,7 @@ in the LaminasSkeletonApplication.</p>
                 <h4 class="footer__headline">License</h4>
                 <p>
                     Code licensed under <a
-                        href="https://github.com/laminas/laminas-mvc//blob/master/LICENSE.md">BSD 3-Clause</a>.
+                        href="https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md">BSD 3-Clause</a>.
                 </p>
             </div>
 
@@ -1434,8 +1433,8 @@ in the LaminasSkeletonApplication.</p>
                 <h4 class="footer__headline">Copyright</h4>
                 <p>
                     <!--Built with love by the Laminas team with the help of our
-                    <a href="https://github.com/laminas/laminas-mvc//graphs/contributors">contributors</a>.<br>-->
-                    &copy; 2019-2019 by <a href="https://getlaminas.org/">The Laminas Project</a>.
+                    <a href="https://github.com/laminas/laminas-mvc/graphs/contributors">contributors</a>.<br>-->
+                    &copy; 2019-2020 by <a href="https://getlaminas.org/">The Laminas Project</a>.
                 </p>
             </div>
         </div>

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Laminas's event-driven MVC layer, including MVC Applications, Controllers, and Plugins.">  
+    <meta name="description" content="Laminas' event-driven MVC layer, including MVC Applications, Controllers, and Plugins.">  
     <link rel="canonical" href="https://docs.laminas.dev/examples/">
     <link rel="shortcut icon" href="/img/trademark-laminas-foundation-rgb.svg">
 
@@ -20,7 +20,7 @@
     <div class="container">
         
         <a class="logo-link navbar-brand offset-md-2" href="https://getlaminas.org/" data-tooltip data-placement="bottom" title="Go to the Laminas homepage">
-            <img src="../img/laminas-foundation-white.svg" height="28" alt="Lamnias">
+            <img src="../img/laminas-foundation-white.svg" height="28" alt="Laminas">
         </a>
         <a class="navbar-title" href="https://docs.laminas.dev/" data-tooltip data-placement="bottom" title="Go to the Laminas Documentation">
             Documentation
@@ -36,13 +36,17 @@
             
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a href="https://getlaminas.org/about" class="nav-link">About</a>
-                </li>
-                <li class="nav-item">
-                    <a href="https://getlaminas.org/blog" class="nav-link">Blog</a>
-                </li>
-                <li class="nav-item">
-                    <a href="https://docs.laminas.dev" class="nav-link">All Docs</a>
+                    <div class="dropdown">
+                        <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
+                            All Docs
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="https://docs.laminas.dev/components">Components</a>
+                            <a class="dropdown-item" href="https://docs.mezzio.dev/">Mezzio</a>
+                            <a class="dropdown-item" href="https://api-tools.getlaminas.org/docs">API Tools</a>
+                            <a class="dropdown-item" href="https://docs.laminas.dev/mvc">MVC</a>
+                        </div>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <a href="https://getlaminas.org/participate" class="nav-link">Community</a>
@@ -332,21 +336,19 @@
 <p>When using one of the abstract controller implementations, the request and
 response object are composed directly into the controller as soon as
 <code>dispatch()</code> is called. You may access them as follows:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>// Using explicit accessor methods</span>
-<span class=x>$request  = $this-&gt;getRequest();</span>
-<span class=x>$response = $this-&gt;getResponse();</span>
+<pre class=codehilite><code class=language-php>// Using explicit accessor methods
+$request  = $this-&gt;getRequest();
+$response = $this-&gt;getResponse();
 
-<span class=x>// Using direct property access</span>
-<span class=x>$request  = $this-&gt;request;</span>
-<span class=x>$response = $this-&gt;response;</span>
-</pre></div></p>
+// Using direct property access
+$request  = $this-&gt;request;
+$response = $this-&gt;response;</code></pre>
 <p>Additionally, if your controller implements <code>InjectApplicationEventInterface</code>
 (as all shipped abstract controllers do), you can access these objects from the
 attached <code>MvcEvent</code>:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>$event    = $this-&gt;getEvent();</span>
-<span class=x>$request  = $event-&gt;getRequest();</span>
-<span class=x>$response = $event-&gt;getResponse();</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>$event    = $this-&gt;getEvent();
+$request  = $event-&gt;getRequest();
+$response = $event-&gt;getResponse();</code></pre>
 <p>The above can be useful when composing event listeners into your controller.</p>
 <h3>Accessing routing parameters</h3>
 <p>The parameters returned when routing completes are wrapped in a
@@ -355,9 +357,8 @@ attached <code>MvcEvent</code>:</p>
 <p>Within your controller, if you implement <code>InjectApplicationEventInterface</code> (as
 all shipped abstract controllers do), you can access this object from the
 attached <code>MvcEvent</code>:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>$event   = $this-&gt;getEvent();</span>
-<span class=x>$matches = $event-&gt;getRouteMatch();</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>$event   = $this-&gt;getEvent();
+$matches = $event-&gt;getRouteMatch();</code></pre>
 <p>Once you have the <code>RouteMatch</code> object, you can pull parameters from it.</p>
 <p>The same can be done using the <a href="../plugins/#params-plugin">Params plugin</a>.</p>
 <h3>Returning early</h3>
@@ -384,29 +385,28 @@ associated with it, and once the modules are initialized, it triggers the
 provides a <code>getApplication()</code> method on the event.</p>
 <p>One way to accomplish module-specific listeners is to listen to that event, and
 register listeners at that time. As an example:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>namespace SomeCustomModule;</span>
+<pre class=codehilite><code class=language-php>namespace SomeCustomModule;
 
-<span class=x>class Module</span>
-<span class=x>{</span>
-<span class=x>    /**</span>
-<span class=x>     * @param  \Laminas\Mvc\MvcEvent $e The MvcEvent instance</span>
-<span class=x>     * @return void</span>
-<span class=x>     */</span>
-<span class=x>    public function onBootstrap($e)</span>
-<span class=x>    {</span>
-<span class=x>        $application = $e-&gt;getApplication();</span>
-<span class=x>        $config      = $application-&gt;getConfig();</span>
-<span class=x>        $view        = $application-&gt;getServiceManager()-&gt;get(&#39;ViewHelperManager&#39;);</span>
-<span class=x>        // You must have these keys in you application config</span>
-<span class=x>        $view-&gt;headTitle($config[&#39;view&#39;][&#39;base_title&#39;]);</span>
+class Module
+{
+    /**
+     * @param  \Laminas\Mvc\MvcEvent $e The MvcEvent instance
+     * @return void
+     */
+    public function onBootstrap($e)
+    {
+        $application = $e-&gt;getApplication();
+        $config      = $application-&gt;getConfig();
+        $view        = $application-&gt;getServiceManager()-&gt;get('ViewHelperManager');
+        // You must have these keys in you application config
+        $view-&gt;headTitle($config['view']['base_title']);
 
-<span class=x>        // This is your custom listener</span>
-<span class=x>        $listener   = new Listeners\ViewListener();</span>
-<span class=x>        $listener-&gt;setView($view);</span>
-<span class=x>        $listener-&gt;attach($application-&gt;getEventManager());</span>
-<span class=x>    }</span>
-<span class=x>}</span>
-</pre></div></p>
+        // This is your custom listener
+        $listener   = new Listeners\ViewListener();
+        $listener-&gt;setView($view);
+        $listener-&gt;attach($application-&gt;getEventManager());
+    }
+}</code></pre>
 <p>The above demonstrates several things. First, it demonstrates a listener on the
 application's <a href="../mvc-event/#mvceventevent_bootstrap-bootstrap">bootstrap</a> event
 (the <code>onBootstrap()</code> method). Second, it demonstrates that listener, and how it
@@ -648,9 +648,10 @@ application event manager.</p>
             <div class="col-md-7 offset-md-2">
                 <h5>Laminas</h5>
                 <ul>
-                    <li>Laminas Project <a href="https://getlaminas.org/">Components and MVC for Enterprise Applications</a></li>
-                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 Middleware in Minutes</a></li>
-                    <li>Laminas API Tools: <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
+                    <li>Laminas Project <a href="https://getlaminas.org/">The new foundation for the community-supported, open source continuation of Zend Framework</a></li>
+                    <li>Laminas Components and MVC <a href="https://docs.laminas.dev/">Components and MVC for enterprise applications</a></li>
+                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 middleware in minutes</a></li>
+                    <li>Laminas API Tools <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
                 </ul>
             </div>
         </div>
@@ -687,7 +688,7 @@ application event manager.</p>
                 <h4 class="footer__headline">License</h4>
                 <p>
                     Code licensed under <a
-                        href="https://github.com/laminas/laminas-mvc//blob/master/LICENSE.md">BSD 3-Clause</a>.
+                        href="https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md">BSD 3-Clause</a>.
                 </p>
             </div>
 
@@ -696,8 +697,8 @@ application event manager.</p>
                 <h4 class="footer__headline">Copyright</h4>
                 <p>
                     <!--Built with love by the Laminas team with the help of our
-                    <a href="https://github.com/laminas/laminas-mvc//graphs/contributors">contributors</a>.<br>-->
-                    &copy; 2019-2019 by <a href="https://getlaminas.org/">The Laminas Project</a>.
+                    <a href="https://github.com/laminas/laminas-mvc/graphs/contributors">contributors</a>.<br>-->
+                    &copy; 2019-2020 by <a href="https://getlaminas.org/">The Laminas Project</a>.
                 </p>
             </div>
         </div>

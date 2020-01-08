@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Laminas's event-driven MVC layer, including MVC Applications, Controllers, and Plugins.">  
+    <meta name="description" content="Laminas' event-driven MVC layer, including MVC Applications, Controllers, and Plugins.">  
     <link rel="canonical" href="https://docs.laminas.dev/intro/">
     <link rel="shortcut icon" href="/img/trademark-laminas-foundation-rgb.svg">
 
@@ -20,7 +20,7 @@
     <div class="container">
         
         <a class="logo-link navbar-brand offset-md-2" href="https://getlaminas.org/" data-tooltip data-placement="bottom" title="Go to the Laminas homepage">
-            <img src="../img/laminas-foundation-white.svg" height="28" alt="Lamnias">
+            <img src="../img/laminas-foundation-white.svg" height="28" alt="Laminas">
         </a>
         <a class="navbar-title" href="https://docs.laminas.dev/" data-tooltip data-placement="bottom" title="Go to the Laminas Documentation">
             Documentation
@@ -36,13 +36,17 @@
             
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a href="https://getlaminas.org/about" class="nav-link">About</a>
-                </li>
-                <li class="nav-item">
-                    <a href="https://getlaminas.org/blog" class="nav-link">Blog</a>
-                </li>
-                <li class="nav-item">
-                    <a href="https://docs.laminas.dev" class="nav-link">All Docs</a>
+                    <div class="dropdown">
+                        <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
+                            All Docs
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="https://docs.laminas.dev/components">Components</a>
+                            <a class="dropdown-item" href="https://docs.mezzio.dev/">Mezzio</a>
+                            <a class="dropdown-item" href="https://api-tools.getlaminas.org/docs">API Tools</a>
+                            <a class="dropdown-item" href="https://docs.laminas.dev/mvc">MVC</a>
+                        </div>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <a href="https://getlaminas.org/participate" class="nav-link">Community</a>
@@ -370,7 +374,7 @@ are to <strong>bootstrap</strong> resources, to <strong>route</strong> the reque
 response.</p>
 <h2 id="basic-application-structure">Basic Application Structure</h2>
 <p>The basic application structure follows:</p>
-<p> <div class=codehilite><pre><span></span>application_root/
+<pre class=codehilite><code class=language-bash>application_root/
     config/
         application.config.php
         autoload/
@@ -383,8 +387,7 @@ response.</p>
     public/
         .htaccess
         index.php
-    init_autoloader.php
-</pre></div></p>
+    init_autoloader.php</code></pre>
 <p>The <code>public/index.php</code> script marshals all user requests to your website,
 retrieving an array of configuration from <code>config/application.config.php</code>. On
 return, it <code>run()</code>s the <code>Application</code>, processing the request and returning a
@@ -409,7 +412,7 @@ acts as a PHP namespace and that it contains a <code>Module</code> class under t
 namespace.  This class is eventually consumed by laminas-modulemanager to perform a
 number of tasks.</p>
 <p>The recommended module structure follows:</p>
-<p> <div class=codehilite><pre><span></span>module_root&lt;named-after-module-namespace&gt;/
+<pre class=codehilite><code class=language-bash>module_root&lt;named-after-module-namespace&gt;/
     Module.php
     autoload_classmap.php
     autoload_function.php
@@ -427,12 +430,11 @@ number of tasks.</p>
         phpunit.xml
         bootstrap.php
         &lt;module_namespace&gt;/
-            &lt;<span class=nb>test</span> code files&gt;
+            &lt;test code files&gt;
     view/
         &lt;dir-named-after-module-namespace&gt;/
             &lt;dir-named-after-a-controller&gt;/
-                &lt;.phtml files&gt;
-</pre></div></p>
+                &lt;.phtml files&gt;</code></pre>
 <p>Since a module acts as a namespace, the module root directory should be that
 namespace. This namespace could also include a vendor prefix of sorts. As an
 example a module centered around "User" functionality delivered by Laminas might be
@@ -446,12 +448,11 @@ autoloading correctly to do so.</p>
 </blockquote>
 <p>The <code>Module.php</code> file directly under the module root directory will be in the
 module namespace shown below.</p>
-<p> <div class=codehilite><pre><span></span><span class=x>namespace LaminasUser;</span>
+<pre class=codehilite><code class=language-php>namespace LaminasUser;
 
-<span class=x>class Module</span>
-<span class=x>{</span>
-<span class=x>}</span>
-</pre></div></p>
+class Module
+{
+}</code></pre>
 <blockquote>
 <h3>Module class location</h3>
 <p>If you have an autoloader defined, such as detailed later around the various
@@ -530,27 +531,26 @@ JavaScript files, etc. How these are exposed is left to the developer.</p>
   by the service name "Response".</li>
 </ul>
 <p>These may be satisfied at instantiation:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>use Laminas\EventManager\EventManager;</span>
-<span class=x>use Laminas\EventManager\SharedEventManager;</span>
-<span class=x>use Laminas\Http\PhpEnvironment;</span>
-<span class=x>use Laminas\ModuleManager\ModuleManager;</span>
-<span class=x>use Laminas\Mvc\Application;</span>
-<span class=x>use Laminas\ServiceManager\ServiceManager;</span>
+<pre class=codehilite><code class=language-php>use Laminas\EventManager\EventManager;
+use Laminas\EventManager\SharedEventManager;
+use Laminas\Http\PhpEnvironment;
+use Laminas\ModuleManager\ModuleManager;
+use Laminas\Mvc\Application;
+use Laminas\ServiceManager\ServiceManager;
 
-<span class=x>$config = include &#39;config/application.config.php&#39;;</span>
+$config = include 'config/application.config.php';
 
-<span class=x>$serviceManager = new ServiceManager();</span>
-<span class=x>$serviceManager-&gt;setService(&#39;SharedEventManager&#39;, new SharedEventManager());</span>
-<span class=x>$serviceManager-&gt;setService(&#39;ModuleManager&#39;, new ModuleManager($config));</span>
-<span class=x>$serviceManager-&gt;setService(&#39;Request&#39;, new PhpEnvironment\Request());</span>
-<span class=x>$serviceManager-&gt;setService(&#39;Response&#39;, new PhpEnvironment\Response());</span>
-<span class=x>$serviceManager-&gt;setFactory(&#39;EventManager&#39;, function ($serviceManager) {</span>
-<span class=x>    return new EventManager($serviceManager-&gt;get(&#39;SharedEventManager&#39;));</span>
-<span class=x>});</span>
-<span class=x>$serviceManager-&gt;setShared(&#39;EventManager&#39;, false);</span>
+$serviceManager = new ServiceManager();
+$serviceManager-&gt;setService('SharedEventManager', new SharedEventManager());
+$serviceManager-&gt;setService('ModuleManager', new ModuleManager($config));
+$serviceManager-&gt;setService('Request', new PhpEnvironment\Request());
+$serviceManager-&gt;setService('Response', new PhpEnvironment\Response());
+$serviceManager-&gt;setFactory('EventManager', function ($serviceManager) {
+    return new EventManager($serviceManager-&gt;get('SharedEventManager'));
+});
+$serviceManager-&gt;setShared('EventManager', false);
 
-<span class=x>$application = new Application($config, $serviceManager);</span>
-</pre></div></p>
+$application = new Application($config, $serviceManager);</code></pre>
 <p>Once you've done this, there are two additional actions you can take. The first is to "bootstrap"
 the application. In the default implementation, this does the following:</p>
 <ul>
@@ -579,45 +579,43 @@ instance. If an error occurs during either the "route" or "dispatch" event, a
 <p>This is a lot to remember in order to bootstrap the application; in fact, we haven't covered all the
 services available by default yet. You can greatly simplify things by using the default
 <code>ServiceManager</code> configuration shipped with the MVC.</p>
-<p> <div class=codehilite><pre><span></span><span class=x>use Laminas\Loader\AutoloaderFactory;</span>
-<span class=x>use Laminas\Mvc\Service\ServiceManagerConfig;</span>
-<span class=x>use Laminas\ServiceManager\ServiceManager;</span>
+<pre class=codehilite><code class=language-php>use Laminas\Loader\AutoloaderFactory;
+use Laminas\Mvc\Service\ServiceManagerConfig;
+use Laminas\ServiceManager\ServiceManager;
 
-<span class=x>// setup autoloader</span>
-<span class=x>AutoloaderFactory::factory();</span>
+// setup autoloader
+AutoloaderFactory::factory();
 
-<span class=x>// get application stack configuration</span>
-<span class=x>$configuration = include &#39;config/application.config.php&#39;;</span>
+// get application stack configuration
+$configuration = include 'config/application.config.php';
 
-<span class=x>// setup service manager</span>
-<span class=x>$serviceManager = new ServiceManager(new ServiceManagerConfig());</span>
-<span class=x>$serviceManager-&gt;setService(&#39;ApplicationConfig&#39;, $configuration);</span>
+// setup service manager
+$serviceManager = new ServiceManager(new ServiceManagerConfig());
+$serviceManager-&gt;setService('ApplicationConfig', $configuration);
 
-<span class=x>// load modules -- which will provide services, configuration, and more</span>
-<span class=x>$serviceManager-&gt;get(&#39;ModuleManager&#39;)-&gt;loadModules();</span>
+// load modules -- which will provide services, configuration, and more
+$serviceManager-&gt;get('ModuleManager')-&gt;loadModules();
 
-<span class=x>// bootstrap and run application</span>
-<span class=x>$application = $serviceManager-&gt;get(&#39;Application&#39;);</span>
-<span class=x>$application-&gt;bootstrap();</span>
-<span class=x>$application-&gt;run();</span>
-</pre></div></p>
+// bootstrap and run application
+$application = $serviceManager-&gt;get('Application');
+$application-&gt;bootstrap();
+$application-&gt;run();</code></pre>
 <p>You can make this even simpler by using the <code>init()</code> method of the
 <code>Application</code>. This is a static method for quick and easy initialization of the
 <code>Application</code> instance.</p>
-<p> <div class=codehilite><pre><span></span><span class=x>use Laminas\Loader\AutoloaderFactory;</span>
-<span class=x>use Laminas\Mvc\Application;</span>
-<span class=x>use Laminas\Mvc\Service\ServiceManagerConfig;</span>
-<span class=x>use Laminas\ServiceManager\ServiceManager;</span>
+<pre class=codehilite><code class=language-php>use Laminas\Loader\AutoloaderFactory;
+use Laminas\Mvc\Application;
+use Laminas\Mvc\Service\ServiceManagerConfig;
+use Laminas\ServiceManager\ServiceManager;
 
-<span class=x>// setup autoloader</span>
-<span class=x>AutoloaderFactory::factory();</span>
+// setup autoloader
+AutoloaderFactory::factory();
 
-<span class=x>// get application stack configuration</span>
-<span class=x>$configuration = include &#39;config/application.config.php&#39;;</span>
+// get application stack configuration
+$configuration = include 'config/application.config.php';
 
-<span class=x>// The init() method does something very similar with the previous example.</span>
-<span class=x>Application::init($configuration)-&gt;run();</span>
-</pre></div></p>
+// The init() method does something very similar with the previous example.
+Application::init($configuration)-&gt;run();</code></pre>
 <p>The <code>init()</code> does the following:</p>
 <ul>
 <li>Grabs the application configuration and pulls from the <code>service_manager</code> key,
@@ -664,33 +662,31 @@ which modules to load, and potentially provide configuration for the module
 listeners.</p>
 <p>Remember the <code>application.config.php</code> from earlier? We're going to provide some
 configuration.</p>
-<p> <div class=codehilite><pre><span></span><span class=x>// config/application.config.php</span>
-<span class=x>return array(</span>
-<span class=x>    &#39;modules&#39; =&gt; array(</span>
-<span class=x>        /* ... */</span>
-<span class=x>    ),</span>
-<span class=x>    &#39;module_listener_options&#39; =&gt; array(</span>
-<span class=x>        &#39;module_paths&#39; =&gt; array(</span>
-<span class=x>            &#39;./module&#39;,</span>
-<span class=x>            &#39;./vendor&#39;,</span>
-<span class=x>        ),</span>
-<span class=x>    ),</span>
-<span class=x>);</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>// config/application.config.php
+return array(
+    'modules' =&gt; array(
+        /* ... */
+    ),
+    'module_listener_options' =&gt; array(
+        'module_paths' =&gt; array(
+            './module',
+            './vendor',
+        ),
+    ),
+);</code></pre>
 <p>As we add modules to the system, we'll add items to the <code>modules</code> array.</p>
 <p>Each <code>Module</code> class that has configuration it wants the <code>Application</code> to know
 about should define a <code>getConfig()</code> method. That method should return an array
 or <code>Traversable</code> object such as a <code>Laminas\Config\Config</code> instance. As an example:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>namespace LaminasUser;</span>
+<pre class=codehilite><code class=language-php>namespace LaminasUser;
 
-<span class=x>class Module</span>
-<span class=x>{</span>
-<span class=x>    public function getConfig()</span>
-<span class=x>    {</span>
-<span class=x>        return include __DIR__ . &#39;/config/module.config.php&#39;</span>
-<span class=x>    }</span>
-<span class=x>}</span>
-</pre></div></p>
+class Module
+{
+    public function getConfig()
+    {
+        return include __DIR__ . '/config/module.config.php'
+    }
+}</code></pre>
 <p>There are a number of other methods you can define for tasks ranging from
 providing autoloader configuration, to providing services to the
 <code>ServiceManager</code>, to listening to the bootstrap event.  The
@@ -935,9 +931,10 @@ encourages clean separation of concerns and code re-use.</p>
             <div class="col-md-7 offset-md-2">
                 <h5>Laminas</h5>
                 <ul>
-                    <li>Laminas Project <a href="https://getlaminas.org/">Components and MVC for Enterprise Applications</a></li>
-                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 Middleware in Minutes</a></li>
-                    <li>Laminas API Tools: <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
+                    <li>Laminas Project <a href="https://getlaminas.org/">The new foundation for the community-supported, open source continuation of Zend Framework</a></li>
+                    <li>Laminas Components and MVC <a href="https://docs.laminas.dev/">Components and MVC for enterprise applications</a></li>
+                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 middleware in minutes</a></li>
+                    <li>Laminas API Tools <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
                 </ul>
             </div>
         </div>
@@ -974,7 +971,7 @@ encourages clean separation of concerns and code re-use.</p>
                 <h4 class="footer__headline">License</h4>
                 <p>
                     Code licensed under <a
-                        href="https://github.com/laminas/laminas-mvc//blob/master/LICENSE.md">BSD 3-Clause</a>.
+                        href="https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md">BSD 3-Clause</a>.
                 </p>
             </div>
 
@@ -983,8 +980,8 @@ encourages clean separation of concerns and code re-use.</p>
                 <h4 class="footer__headline">Copyright</h4>
                 <p>
                     <!--Built with love by the Laminas team with the help of our
-                    <a href="https://github.com/laminas/laminas-mvc//graphs/contributors">contributors</a>.<br>-->
-                    &copy; 2019-2019 by <a href="https://getlaminas.org/">The Laminas Project</a>.
+                    <a href="https://github.com/laminas/laminas-mvc/graphs/contributors">contributors</a>.<br>-->
+                    &copy; 2019-2020 by <a href="https://getlaminas.org/">The Laminas Project</a>.
                 </p>
             </div>
         </div>

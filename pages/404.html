@@ -6,10 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Laminas' event-driven MVC layer, including MVC Applications, Controllers, and Plugins.">  
-    <link rel="canonical" href="https://docs.laminas.dev/migration/to-v2-7/">
     <link rel="shortcut icon" href="/img/trademark-laminas-foundation-rgb.svg">
 
-    <title>v2.X to v2.7 - laminas-mvc - Laminas Docs</title>
+    <title>laminas-mvc - Laminas Docs</title>
 
     <link rel="stylesheet" href="/css/styles.css">
 </head>
@@ -20,7 +19,7 @@
     <div class="container">
         
         <a class="logo-link navbar-brand offset-md-2" href="https://getlaminas.org/" data-tooltip data-placement="bottom" title="Go to the Laminas homepage">
-            <img src="../../img/laminas-foundation-white.svg" height="28" alt="Laminas">
+            <img src="../img/laminas-foundation-white.svg" height="28" alt="Laminas">
         </a>
         <a class="navbar-title" href="https://docs.laminas.dev/" data-tooltip data-placement="bottom" title="Go to the Laminas Documentation">
             Documentation
@@ -59,7 +58,7 @@
                     
     <div class="subnavigation hidden-print">
         <h4 class="subnavigation__title">
-            <a href="../..">laminas-mvc</a>
+            <a href="../.">laminas-mvc</a>
         </h4>
 
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
@@ -74,7 +73,7 @@
                     
                         
                             <li class="subnavigation__list-item ">
-                                <a href="../../intro/" class="subnavigation__link">Introduction</a>
+                                <a href="../intro/" class="subnavigation__link">Introduction</a>
                             </li>
                         
                     
@@ -88,7 +87,7 @@
                     
                         
                             <li class="subnavigation__list-item ">
-                                <a href="../../quick-start/" class="subnavigation__link">Quick Start</a>
+                                <a href="../quick-start/" class="subnavigation__link">Quick Start</a>
                             </li>
                         
                     
@@ -107,49 +106,49 @@
                                     
                                         
     <li class="subnavigation__list-item ">
-        <a href="../../services/" class="subnavigation__link">Default Services</a>
+        <a href="../services/" class="subnavigation__link">Default Services</a>
     </li>
 
                                     
                                         
     <li class="subnavigation__list-item ">
-        <a href="../../routing/" class="subnavigation__link">Routing</a>
+        <a href="../routing/" class="subnavigation__link">Routing</a>
     </li>
 
                                     
                                         
     <li class="subnavigation__list-item ">
-        <a href="../../mvc-event/" class="subnavigation__link">The MVC Event</a>
+        <a href="../mvc-event/" class="subnavigation__link">The MVC Event</a>
     </li>
 
                                     
                                         
     <li class="subnavigation__list-item ">
-        <a href="../../send-response-event/" class="subnavigation__link">The SendResponse Event</a>
+        <a href="../send-response-event/" class="subnavigation__link">The SendResponse Event</a>
     </li>
 
                                     
                                         
     <li class="subnavigation__list-item ">
-        <a href="../../controllers/" class="subnavigation__link">Available Controllers</a>
+        <a href="../controllers/" class="subnavigation__link">Available Controllers</a>
     </li>
 
                                     
                                         
     <li class="subnavigation__list-item ">
-        <a href="../../plugins/" class="subnavigation__link">Controller Plugins</a>
+        <a href="../plugins/" class="subnavigation__link">Controller Plugins</a>
     </li>
 
                                     
                                         
     <li class="subnavigation__list-item ">
-        <a href="../../examples/" class="subnavigation__link">Examples</a>
+        <a href="../examples/" class="subnavigation__link">Examples</a>
     </li>
 
                                     
                                         
     <li class="subnavigation__list-item ">
-        <a href="../../middleware/" class="subnavigation__link">Dispatching PSR-7 Middleware</a>
+        <a href="../middleware/" class="subnavigation__link">Dispatching PSR-7 Middleware</a>
     </li>
 
                                     
@@ -160,19 +159,19 @@
             
                 
     <li class="subnavigation__list-item ">
-        <a href="../" class="subnavigation__link">Migration Overview</a>
-    </li>
-
-            
-                
-    <li class="subnavigation__list-item subnavigation__list-item--active">
-        <a href="./" class="subnavigation__link">v2.X to v2.7</a>
+        <a href="../migration/" class="subnavigation__link">Migration Overview</a>
     </li>
 
             
                 
     <li class="subnavigation__list-item ">
-        <a href="../to-v3-0/" class="subnavigation__link">v2.X to v3.0</a>
+        <a href="../migration/to-v2-7/" class="subnavigation__link">v2.X to v2.7</a>
+    </li>
+
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../migration/to-v3-0/" class="subnavigation__link">v2.X to v3.0</a>
     </li>
 
             
@@ -199,13 +198,13 @@
                                     
                                         
     <li class="subnavigation__list-item ">
-        <a href="../../cookbook/automating-controller-factories/" class="subnavigation__link">Automating controller factories</a>
+        <a href="../cookbook/automating-controller-factories/" class="subnavigation__link">Automating controller factories</a>
     </li>
 
                                     
                                         
     <li class="subnavigation__list-item ">
-        <a href="../../cookbook/middleware-in-listeners/" class="subnavigation__link">Using middleware within event listeners</a>
+        <a href="../cookbook/middleware-in-listeners/" class="subnavigation__link">Using middleware within event listeners</a>
     </li>
 
                                     
@@ -274,269 +273,21 @@
         <div class="row">
             <div class="col-md-2 col-sm-12">
                 
-    
-
-    
-    
-        <div class="toc">
-            <h6 class="toc__headline">On this page</h6>
-            <ul class="toc__list">
-                
-                    <li class="toc__entry">
-                        <a href="#middleware" class="toc__link">Middleware</a>
-                    </li>
-                
-                    <li class="toc__entry">
-                        <a href="#application" class="toc__link">Application</a>
-                    </li>
-                
-                    <li class="toc__entry">
-                        <a href="#eventmanageraware-initializers" class="toc__link">EventManagerAware initializers</a>
-                    </li>
-                
-                    <li class="toc__entry">
-                        <a href="#servicelocatoraware-initializers" class="toc__link">ServiceLocatorAware initializers</a>
-                    </li>
-                
-            </ul>
-        </div>
-    
-
             </div>
             <div class="col-md-7 col-sm-12 content" role="main" data-spy="scroll" data-target=".toc">
                 
-                    <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        
-            <li class="breadcrumb-item"><a href="">Overview</a></li>
 
-            
-                <li class="breadcrumb-item"><a href="../..">laminas-mvc</a></li>
+<h1 class="content__title">404</h1>
+<blockquote>
+    <h3>Something went wrong!</h3>
+    <p>
+        We're sorry, but the page you are looking for does not exist.
+    </p>
+</blockquote>
 
-                
-                    
-                        
-                        
-                            <li class="breadcrumb-item">Reference</li>
-                        
-                    
-                
-                    
-                        
-                        
-                            <li class="breadcrumb-item">Migration</li>
-                        
-                    
-                
-
-                <li class="breadcrumb-item active" aria-current="page">v2.X to v2.7</li>
-            
-        
-    </ol>
-</nav>
+<a href="../." class="btn btn-default" role="button">Go to homepage</a>
 
 
-
-
-
-
-    
-    
-        <h2 class="chapter__headline">Migration</h2>
-    
-
-    <h1 id="upgrading-to-27">Upgrading to 2.7</h1>
-<h2 id="middleware">Middleware</h2>
-<p>laminas-mvc now registers <code>Laminas\Mvc\MiddlewareListener</code> as a dispatch listener at
-a priority higher than <code>Laminas\Mvc\DispatchListener</code>, allowing dispatch of
-<a href="http://www.php-fig.org/psr/psr-7/">PSR-7</a> middleware. Read the
-<a href="../../middleware/">middleware chapter</a> for details on how to use this new feature.</p>
-<h2 id="application">Application</h2>
-<p>The constructor signature of <code>Laminas\Mvc\Application</code> has changed. Previously, it
-was:</p>
-<pre class=codehilite><code class=language-php>__construct($configuration, ServiceManager $serviceManager)</code></pre>
-<p>and internally, it pulled the services <code>EventManager</code>, <code>Request</code>, and <code>Response</code>
-from the provided <code>$serviceManager</code> during initialization.</p>
-<p>The new constructor signature provides optional arguments for injecting the
-event manager, request, and response:</p>
-<pre class=codehilite><code class=language-php>__construct(
-    $configuration,
-    ServiceManager $serviceManager,
-    EventManager $events = null,
-    RequestInterface $request = null,
-    ResponseInterface $response = null
-)</code></pre>
-<p>This change makes all dependencies explicit. Starting in v3.0, the new arguments
-will be <em>required</em>.</p>
-<p>The factory <code>Laminas\Mvc\Service\ApplicationFactory</code> was updated to follow the new
-signature.</p>
-<p>This change should only affect users who are manually instantiating the
-<code>Application</code> instance.</p>
-<h2 id="eventmanageraware-initializers">EventManagerAware initializers</h2>
-<p>laminas-mvc provides two mechanisms for injecting event managers into
-<code>EventManagerAware</code> objects. One is the "EventManagerAwareInitializer"
-registered in <code>Laminas\Mvc\Service\ServiceManagerConfig</code>, and the other is the
-<code>Laminas\Mvc\Controller\ControllerManager::injectEventManager()</code> initializer. In
-both cases, the logic was updated to be forwards compatible with
-laminas-eventmanager v3.</p>
-<p>Previously each would check if the instance's <code>getEventManager()</code> method
-returned an event manager instance, and, if so, inject the shared event manager:</p>
-<pre class=codehilite><code class=language-php>$events = $instance-&gt;getEventManager();
-if ($events instanceof EventManagerInterface) {
-    $events-&gt;setSharedManager($container-&gt;get('SharedEventManager'));
-}</code></pre>
-<p>In laminas-eventmanager v3, event managers are now injected with the shared
-manager at instantiation, and no setter exists for providing the shared manager.
-As such, the above logic changed to:</p>
-<pre class=codehilite><code class=language-php>$events = $instance-&gt;getEventManager();
-if (! $events || ! $events-&gt;getSharedManager()) {
-    $instance-&gt;setEventManager($container-&gt;get('EventManager'));
-}</code></pre>
-<p>In other words, it re-injects with a new event manager instance if the instance
-pulled does not have a shared manager composed.</p>
-<p>This likely will not cause regressions in existing code, but may be something to
-be aware of if you were previously depending on lazy-loaded event manager
-state.</p>
-<h2 id="servicelocatoraware-initializers">ServiceLocatorAware initializers</h2>
-<p>laminas-servicemanager v3.0 removes <code>Laminas\ServiceManager\ServiceLocatorAwareInterface</code>.
-Since laminas-mvc provides initializers around that interface, they needed updates
-to allow both forwards compatibility with laminas-servicemanager v3 as well as
-backwards compatibility with existing applications.</p>
-<p>This was accomplished in two ways:</p>
-<ul>
-<li>The abstract controller implementations no longer implement
-  <code>ServiceLocatorAwareInterface</code>, but continue to define the methods that the
-  interface defines (namely <code>setServiceLocator()</code> and <code>getServiceLocator()</code>.</li>
-<li>The initializers registered by <code>Laminas\Mvc\Service\ServiceManagerConfig</code> and
-  <code>Laminas\Mvc\Controller\ControllerManager</code> now use duck-typing to determine if
-  an instance requires container injection; if so it will do so.</li>
-</ul>
-<p>However, we also maintain that service locator injection is an anti-pattern;
-dependencies should be injected directly into instances instead. As such,
-starting in 2.7.0, we now emit a deprecation notice any time an instance is
-injected by one of these initializers, and we plan to remove the initializers
-for version 3.0. The deprecation notice includes the name of the class, to help
-you identify what instances you will need to update before the laminas-mvc v3
-release.</p>
-<p>To prepare your code, you will need to do the following within your controller:</p>
-<ul>
-<li>Find all cases where you call <code>getServiceLocator()</code>, and identify the services
-  they retrieve.</li>
-<li>Update your controller to accept these services via the constructor.</li>
-<li>If you have not already, create a factory class for your controller.</li>
-<li>In the factory, pull the appropriate services and pass them to the
-  controller's constructor.</li>
-</ul>
-<p>As an example, consider the following code from a controller:</p>
-<pre class=codehilite><code class=language-php>$db = $this-&gt;getServiceLcoator()-&gt;get('Db\ApplicationAdapter');</code></pre>
-<p>To update your controller, you will:</p>
-<ul>
-<li>Add a <code>$db</code> property to your class.</li>
-<li>Update the constructor to accept the database adapter and assign it to the
-  <code>$db</code> property.</li>
-<li>Change the above line to either read <code>$db = $this-&gt;db;</code> <em>or just use the
-  property directly</em>.</li>
-<li>Add a factory that pulls the service and pushes it into the controller.</li>
-</ul>
-<p>The controller then might look like the following:</p>
-<pre class=codehilite><code class=language-php>use Laminas\Db\Adapter\AdapterInterface;
-use Laminas\Mvc\Controller\AbstractActionController;
-
-class YourController extends AbstractActionController
-{
-    private $db;
-
-    public function __construct(AdapterInterface $db)
-    {
-        $this-&gt;db = $db;
-    }
-
-    public function someAction()
-    {
-        $results = $this-&gt;db-&gt;query(/* ... */);
-        /* ... */
-    }
-}</code></pre>
-<p>A factory would look like the following:</p>
-<pre class=codehilite><code class=language-php>use Interop\Container\ContainerInterface;
-
-class YourControllerFactory
-{
-    public function __invoke(ContainerInterface $container)
-    {
-        return new YourController($container-&gt;get('Db\ApplicationAdapter'));
-    }
-}</code></pre>
-<p>You then also need to ensure the controller manager knows about the factory. It
-likely already does, as an invokable; you will redefine it as a factory in
-your <code>module.config.php</code>:</p>
-<pre class=codehilite><code class=language-php>return [
-    'controllers' =&gt; [
-        'factories' =&gt; [
-            YourController::class =&gt; YourControllerFactory::class,
-            /* ... */
-        ],
-        /* ... */
-    ],
-    /* ... */
-];</code></pre>
-<p>While this may seem like more steps, doing so ensures your code has no hidden
-dependencies, improves the testability of your code, and allows you to substitute
-alternatives for either the dependencies or the controller itself.</p>
-<h4>Optional dependencies</h4>
-<p>In some cases, you may have dependencies that are only required for some
-execution paths, such as forms, database adapters, etc. In these cases, you have
-two approaches you can use:</p>
-<ul>
-<li>Split your controller into separate responsibilities, and use the more
-  specific controllers. This way you don't need to inject dependencies that are
-  only used in some actions. (We recommend doing this regardless, as it helps
-  keep your code more maintainable.)</li>
-<li>Use <a href="http://docs.laminas.dev/laminas-servicemanager/lazy-services/">lazy services</a>.
-  When you configure these, laminas-servicemanager gives you a proxy instance that,
-  on first access, loads the full service. This allows you to delay the most
-  expensive operations until absolutely needed.</li>
-</ul>
-
-
-
-
-    <nav>
-    <ul class="page-nav hidden-print">
-
-        
-        <li class="page-nav__item">
-            
-                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../">
-                    <i class="fa fa-chevron-left"></i> Previous
-                </a>
-            
-        </li>
-
-        
-        <li class="page-nav__item">
-            
-                <a rel="next" class="page-nav__link page-nav__link--next" href="../to-v3-0/">
-                    Next <i class="fa fa-chevron-right"></i>
-                </a>
-            
-        </li>
-    </ul>
-</nav>
-
-
-
-
-    <div class="help-wanted">
-        <p>
-            Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/laminas/laminas-mvc/edit/master/docs/book/migration/to-v2-7.md" target="_blank" class="help-wanted__link">
-                Edit this page on GitHub!
-            </a>
-        </p>
-    </div>
-
-                
             </div>
             <div class="col-md-3 col-sm-12 sidebar">
                 
@@ -551,7 +302,7 @@ two approaches you can use:</p>
                     
     <div class="subnavigation hidden-print">
         <h4 class="subnavigation__title">
-            <a href="../..">laminas-mvc</a>
+            <a href="../.">laminas-mvc</a>
         </h4>
 
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
@@ -566,7 +317,7 @@ two approaches you can use:</p>
                     
                         
                             <li class="subnavigation__list-item ">
-                                <a href="../../intro/" class="subnavigation__link">Introduction</a>
+                                <a href="../intro/" class="subnavigation__link">Introduction</a>
                             </li>
                         
                     
@@ -580,7 +331,7 @@ two approaches you can use:</p>
                     
                         
                             <li class="subnavigation__list-item ">
-                                <a href="../../quick-start/" class="subnavigation__link">Quick Start</a>
+                                <a href="../quick-start/" class="subnavigation__link">Quick Start</a>
                             </li>
                         
                     
@@ -599,49 +350,49 @@ two approaches you can use:</p>
                                     
                                         
     <li class="subnavigation__list-item ">
-        <a href="../../services/" class="subnavigation__link">Default Services</a>
+        <a href="../services/" class="subnavigation__link">Default Services</a>
     </li>
 
                                     
                                         
     <li class="subnavigation__list-item ">
-        <a href="../../routing/" class="subnavigation__link">Routing</a>
+        <a href="../routing/" class="subnavigation__link">Routing</a>
     </li>
 
                                     
                                         
     <li class="subnavigation__list-item ">
-        <a href="../../mvc-event/" class="subnavigation__link">The MVC Event</a>
+        <a href="../mvc-event/" class="subnavigation__link">The MVC Event</a>
     </li>
 
                                     
                                         
     <li class="subnavigation__list-item ">
-        <a href="../../send-response-event/" class="subnavigation__link">The SendResponse Event</a>
+        <a href="../send-response-event/" class="subnavigation__link">The SendResponse Event</a>
     </li>
 
                                     
                                         
     <li class="subnavigation__list-item ">
-        <a href="../../controllers/" class="subnavigation__link">Available Controllers</a>
+        <a href="../controllers/" class="subnavigation__link">Available Controllers</a>
     </li>
 
                                     
                                         
     <li class="subnavigation__list-item ">
-        <a href="../../plugins/" class="subnavigation__link">Controller Plugins</a>
+        <a href="../plugins/" class="subnavigation__link">Controller Plugins</a>
     </li>
 
                                     
                                         
     <li class="subnavigation__list-item ">
-        <a href="../../examples/" class="subnavigation__link">Examples</a>
+        <a href="../examples/" class="subnavigation__link">Examples</a>
     </li>
 
                                     
                                         
     <li class="subnavigation__list-item ">
-        <a href="../../middleware/" class="subnavigation__link">Dispatching PSR-7 Middleware</a>
+        <a href="../middleware/" class="subnavigation__link">Dispatching PSR-7 Middleware</a>
     </li>
 
                                     
@@ -652,19 +403,19 @@ two approaches you can use:</p>
             
                 
     <li class="subnavigation__list-item ">
-        <a href="../" class="subnavigation__link">Migration Overview</a>
-    </li>
-
-            
-                
-    <li class="subnavigation__list-item subnavigation__list-item--active">
-        <a href="./" class="subnavigation__link">v2.X to v2.7</a>
+        <a href="../migration/" class="subnavigation__link">Migration Overview</a>
     </li>
 
             
                 
     <li class="subnavigation__list-item ">
-        <a href="../to-v3-0/" class="subnavigation__link">v2.X to v3.0</a>
+        <a href="../migration/to-v2-7/" class="subnavigation__link">v2.X to v2.7</a>
+    </li>
+
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../migration/to-v3-0/" class="subnavigation__link">v2.X to v3.0</a>
     </li>
 
             
@@ -691,13 +442,13 @@ two approaches you can use:</p>
                                     
                                         
     <li class="subnavigation__list-item ">
-        <a href="../../cookbook/automating-controller-factories/" class="subnavigation__link">Automating controller factories</a>
+        <a href="../cookbook/automating-controller-factories/" class="subnavigation__link">Automating controller factories</a>
     </li>
 
                                     
                                         
     <li class="subnavigation__list-item ">
-        <a href="../../cookbook/middleware-in-listeners/" class="subnavigation__link">Using middleware within event listeners</a>
+        <a href="../cookbook/middleware-in-listeners/" class="subnavigation__link">Using middleware within event listeners</a>
     </li>
 
                                     
@@ -788,12 +539,12 @@ two approaches you can use:</p>
 </footer>
 
     <script>
-        let base_url = '../..',
+        let base_url = '..',
             project  = "mvc",
             siteName = 'laminas-mvc';
     </script>
     <script src="/js/scripts.js"></script>
-        <script src="../../search/main.js"></script>
+        <script src="../search/main.js"></script>
 
     
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
