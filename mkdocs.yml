@@ -24,4 +24,4 @@ site_name: laminas-mvc
 site_description: "Laminas' event-driven MVC layer, including MVC Applications, Controllers, and Plugins."
 repo_url: 'https://github.com/laminas/laminas-mvc'
 extra:
-    project: Mvc
+    project: MVC
