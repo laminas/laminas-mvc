@@ -285,7 +285,7 @@
             <ul class="toc__list">
                 
                     <li class="toc__entry">
-                        <a href="#install-the-laminas-skeleton-application" class="toc__link">Install the Laminas Skeleton Application</a>
+                        <a href="#install-the-laminas-mvc-skeleton-application" class="toc__link">Install the Laminas MVC Skeleton Application</a>
                     </li>
                 
                     <li class="toc__entry">
@@ -356,16 +356,16 @@
     <h1 id="quick-start">Quick Start</h1>
 <p>Now that you have basic knowledge of applications, modules, and how they are
 each structured, we'll show you the easy way to get started.</p>
-<h2 id="install-the-laminas-skeleton-application">Install the Laminas Skeleton Application</h2>
+<h2 id="install-the-laminas-mvc-skeleton-application">Install the Laminas MVC Skeleton Application</h2>
 <p>The easiest way to get started is to install the skeleton application via
 Composer.</p>
 <p>If you have not yet done so, <a href="https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx">install Composer</a>.</p>
 <p>Once you have, use the <code>create-project</code> command to create a new application:</p>
 <pre class=codehilite><code class=language-bash>$ composer create-project -sdev laminas/laminas-mvc-skeleton my-application</code></pre>
 <h2 id="create-a-new-module">Create a New Module</h2>
-<p>By default, one module is provided with the <code>LaminasSkeletonApplication</code>, named
-"Application". It provides a controller to handle the "home" page of the
-application, the layout template, and templates for 404 and error pages.</p>
+<p>By default, one module is provided with the <a href="https://github.com/laminas/laminas-mvc-skeleton">laminas-mvc-skeleton</a>,
+named "Application". It provides a controller to handle the "home" page
+of the application, the layout template, and templates for 404 and error pages.</p>
 <p>Typically, you will not need to touch this other than to provide an alternate
 entry page for your site and/or alternate error page.</p>
 <p>Additional functionality will be provided by creating new modules.</p>
@@ -592,7 +592,7 @@ return array(
 <h2 id="test-it-out">Test it Out!</h2>
 <p>Now we can test things out! Create a new vhost pointing its document root to the <code>public</code> directory
 of your application, and fire it up in a browser. You should see the default homepage template of
-LaminasSkeletonApplication.</p>
+<a href="https://github.com/laminas/laminas-mvc-skeleton">laminas-mvc-skeleton</a>.</p>
 <p>Now alter the location in your URL to append the path "/hello/world", and load the page. You should
 now get the following content:</p>
 <pre class=codehilite><code class=language-html>&lt;h1&gt;Greetings!&lt;/h1&gt;
