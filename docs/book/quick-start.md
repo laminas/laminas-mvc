@@ -3,7 +3,7 @@
 Now that you have basic knowledge of applications, modules, and how they are
 each structured, we'll show you the easy way to get started.
 
-## Install the Laminas Skeleton Application
+## Install the Laminas MVC Skeleton Application
 
 The easiest way to get started is to install the skeleton application via
 Composer.
@@ -18,9 +18,9 @@ $ composer create-project -sdev laminas/laminas-mvc-skeleton my-application
 
 ## Create a New Module
 
-By default, one module is provided with the `LaminasSkeletonApplication`, named
-"Application". It provides a controller to handle the "home" page of the
-application, the layout template, and templates for 404 and error pages.
+By default, one module is provided with the [laminas-mvc-skeleton](https://github.com/laminas/laminas-mvc-skeleton),
+named "Application". It provides a controller to handle the "home" page
+of the application, the layout template, and templates for 404 and error pages.
 
 Typically, you will not need to touch this other than to provide an alternate
 entry page for your site and/or alternate error page.
@@ -311,7 +311,7 @@ Replace `<module namespace>` with the namespace of your module.
 
 Now we can test things out! Create a new vhost pointing its document root to the `public` directory
 of your application, and fire it up in a browser. You should see the default homepage template of
-LaminasSkeletonApplication.
+[laminas-mvc-skeleton](https://github.com/laminas/laminas-mvc-skeleton).
 
 Now alter the location in your URL to append the path "/hello/world", and load the page. You should
 now get the following content:
