@@ -666,7 +666,7 @@ return [
 ```
 
 For an example, see the
-[LaminasSkeletonApplication configuration file](https://github.com/laminas/LaminasSkeletonApplication/blob/master/config/application.config.php).
+[laminas-mvc-skeleton configuration file](https://github.com/laminas/laminas-mvc-skeleton/blob/master/config/application.config.php).
 
 ## Default Configuration Options
 
@@ -687,7 +687,7 @@ overrides the global configuration.
 >
 > Local configuration files are intended to keep sensitive information, such as
 > database credentials, and as such, it is highly recommended to keep these
-> local configuration files out of your VCS. The `LaminasSkeletonApplication`'s
+> local configuration files out of your VCS. The `laminas-mvc-skeleton`'s
 > `config/autoload/.gitignore` file ignores `*.local.php` files by default.
 
 ```php
@@ -780,5 +780,5 @@ return [
 ```
 
 For an example, see the
-[Application module configuration file](https://github.com/laminas/LaminasSkeletonApplication/blob/master/module/Application/config/module.config.php)
-in the LaminasSkeletonApplication.
+[Application module configuration file](https://github.com/laminas/laminas-mvc-skeleton/blob/master/module/Application/config/module.config.php)
+in the laminas-mvc-skeleton.
