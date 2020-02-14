@@ -388,15 +388,15 @@ so let's keep it flexible by using the <code>StandardAutoloader</code>. Let's be
 <p>First, let's have <code>autoload_classmap.php</code> return an empty array:</p>
 <pre class=codehilite><code class=language-php>&lt;?php
 // autoload_classmap.php
-return array();</code></pre>
+return [];</code></pre>
 <p>We'll also edit our <code>config/module.config.php</code> file to read as follows:</p>
-<pre class=codehilite><code class=language-php>return array(
-    'view_manager' =&gt; array(
-        'template_path_stack' =&gt; array(
-            '&lt;module-name&gt;' =&gt; __DIR__ . '/../view'
-        ),
-    ),
-);</code></pre>
+<pre class=codehilite><code class=language-php>return [
+    'view_manager' =&gt; [
+        'template_path_stack' =&gt; [
+            '&lt;module-name&gt;' =&gt; __DIR__ . '/../view',
+        ],
+    ],
+];</code></pre>
 <p>Fill in <code>module-name</code> with a lowercased, dash-separated version of your module
 name; e.g., "LaminasUser" would become "laminas-user".</p>
 <p>Next, edit the namespace declaration of the <code>Module.php</code> file. Replace the
