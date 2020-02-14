@@ -52,19 +52,19 @@ First, let's have `autoload_classmap.php` return an empty array:
 ```php
 <?php
 // autoload_classmap.php
-return array();
+return [];
 ```
 
 We'll also edit our `config/module.config.php` file to read as follows:
 
 ```php
-return array(
-    'view_manager' => array(
-        'template_path_stack' => array(
-            '<module-name>' => __DIR__ . '/../view'
-        ),
-    ),
-);
+return [
+    'view_manager' => [
+        'template_path_stack' => [
+            '<module-name>' => __DIR__ . '/../view',
+        ],
+    ],
+];
 ```
 
 Fill in `module-name` with a lowercased, dash-separated version of your module
