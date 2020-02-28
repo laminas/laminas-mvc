@@ -12,14 +12,15 @@
     <title>v2.X to v3.0 - laminas-mvc - Laminas Docs</title>
 
     <link rel="stylesheet" href="https://docs.laminas.dev/css/styles.css">
+    
 </head>
-<body id="page-top" class="mvc">
+<body id="page-top" class="mvc" data-spy="scroll" data-target=".toc" data-offset="20">
 
     
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container">
         
-        <a class="logo-link navbar-brand offset-md-2" href="https://getlaminas.org/" data-tooltip data-placement="bottom" title="Go to the Laminas homepage">
+        <a class="logo-link navbar-brand" href="https://getlaminas.org/" data-tooltip data-placement="bottom" title="Go to the Laminas homepage">
             <img src="https://docs.laminas.dev/img/laminas-foundation-white.svg" height="28" alt="Laminas">
         </a>
         <a class="navbar-title" href="https://docs.laminas.dev/" data-tooltip data-placement="bottom" title="Go to the Laminas Documentation">
@@ -242,7 +243,7 @@
         <div class="row">
 
             
-            <div class="col-6 offset-md-2">
+            <div class="col-8">
                 <h1 class="header__title">
                     MVC
 
@@ -272,7 +273,7 @@
     
     <div class="container">
         <div class="row">
-            <div class="col-md-2 col-sm-12">
+            <div class="col-md-9 col-sm-12 content" role="main">
                 
                 
                     
@@ -285,83 +286,83 @@
             <ul class="toc__list">
                 
                     <li class="toc__entry">
-                        <a href="#dependency-reduction" class="toc__link">Dependency reduction</a>
+                        <a href="#dependency-reduction" class="toc__link nav-link">Dependency reduction</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#updated-dependencies" class="toc__link">Updated dependencies</a>
+                        <a href="#updated-dependencies" class="toc__link nav-link">Updated dependencies</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#application-class" class="toc__link">Application class</a>
+                        <a href="#application-class" class="toc__link nav-link">Application class</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#controllerloader" class="toc__link">ControllerLoader</a>
+                        <a href="#controllerloader" class="toc__link nav-link">ControllerLoader</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#di-servicemanager-integration" class="toc__link">DI-ServiceManager integration</a>
+                        <a href="#di-servicemanager-integration" class="toc__link nav-link">DI-ServiceManager integration</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#dispatchlistener" class="toc__link">DispatchListener</a>
+                        <a href="#dispatchlistener" class="toc__link nav-link">DispatchListener</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#routing" class="toc__link">Routing</a>
+                        <a href="#routing" class="toc__link nav-link">Routing</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#console-tooling" class="toc__link">Console tooling</a>
+                        <a href="#console-tooling" class="toc__link nav-link">Console tooling</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#filter-integration" class="toc__link">Filter integration</a>
+                        <a href="#filter-integration" class="toc__link nav-link">Filter integration</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#form-integration" class="toc__link">Form integration</a>
+                        <a href="#form-integration" class="toc__link nav-link">Form integration</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#hydrator-integration" class="toc__link">Hydrator integration</a>
+                        <a href="#hydrator-integration" class="toc__link nav-link">Hydrator integration</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#inputfilter-integration" class="toc__link">InputFilter integration</a>
+                        <a href="#inputfilter-integration" class="toc__link nav-link">InputFilter integration</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#i18n-integration" class="toc__link">i18n integration</a>
+                        <a href="#i18n-integration" class="toc__link nav-link">i18n integration</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#log-integration" class="toc__link">Log integration</a>
+                        <a href="#log-integration" class="toc__link nav-link">Log integration</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#plugins" class="toc__link">Plugins</a>
+                        <a href="#plugins" class="toc__link nav-link">Plugins</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#serializer-integration" class="toc__link">Serializer integration</a>
+                        <a href="#serializer-integration" class="toc__link nav-link">Serializer integration</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#servicelocatoraware-initializers" class="toc__link">ServiceLocatorAware initializers</a>
+                        <a href="#servicelocatoraware-initializers" class="toc__link nav-link">ServiceLocatorAware initializers</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#validator-integration" class="toc__link">Validator integration</a>
+                        <a href="#validator-integration" class="toc__link nav-link">Validator integration</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#laminasmvcviewinjecttemplatelistener" class="toc__link">Laminas\Mvc\View\InjectTemplateListener</a>
+                        <a href="#laminasmvcviewinjecttemplatelistener" class="toc__link nav-link">Laminas\Mvc\View\InjectTemplateListener</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#laminasmvcviewsendresponselistener" class="toc__link">Laminas\Mvc\View\SendResponseListener</a>
+                        <a href="#laminasmvcviewsendresponselistener" class="toc__link nav-link">Laminas\Mvc\View\SendResponseListener</a>
                     </li>
                 
             </ul>
@@ -369,8 +370,7 @@
     
 
                 
-            </div>
-            <div class="col-md-7 col-sm-12 content" role="main" data-spy="scroll" data-target=".toc">
+
                 
                     <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -977,7 +977,7 @@ removed with the v3 release.</p>
         </div>
 
         <div class="row">
-            <div class="col-md-10 offset-md-2">
+            <div class="col-md-12">
                 <h5>Laminas</h5>
                 <ul>
                     <li>Laminas Project <a href="https://getlaminas.org/">The new foundation for the community-supported, open source continuation of Zend Framework</a></li>
@@ -989,7 +989,7 @@ removed with the v3 release.</p>
         </div>
 
         <div class="row">
-            <div class="col-md-10 offset-md-2"> 
+            <div class="col-md-12">
                 <div class="row">
 
                     
@@ -1047,7 +1047,9 @@ removed with the v3 release.</p>
             siteName = 'laminas-mvc';
     </script>
     <script src="https://docs.laminas.dev/js/scripts.js"></script>
+    
         <script src="../../search/main.js"></script>
+    
 
     
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">

@@ -12,14 +12,15 @@
     <title>The MVC Event - laminas-mvc - Laminas Docs</title>
 
     <link rel="stylesheet" href="https://docs.laminas.dev/css/styles.css">
+    
 </head>
-<body id="page-top" class="mvc">
+<body id="page-top" class="mvc" data-spy="scroll" data-target=".toc" data-offset="20">
 
     
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container">
         
-        <a class="logo-link navbar-brand offset-md-2" href="https://getlaminas.org/" data-tooltip data-placement="bottom" title="Go to the Laminas homepage">
+        <a class="logo-link navbar-brand" href="https://getlaminas.org/" data-tooltip data-placement="bottom" title="Go to the Laminas homepage">
             <img src="https://docs.laminas.dev/img/laminas-foundation-white.svg" height="28" alt="Laminas">
         </a>
         <a class="navbar-title" href="https://docs.laminas.dev/" data-tooltip data-placement="bottom" title="Go to the Laminas Documentation">
@@ -242,7 +243,7 @@
         <div class="row">
 
             
-            <div class="col-6 offset-md-2">
+            <div class="col-8">
                 <h1 class="header__title">
                     MVC
 
@@ -272,7 +273,7 @@
     
     <div class="container">
         <div class="row">
-            <div class="col-md-2 col-sm-12">
+            <div class="col-md-9 col-sm-12 content" role="main">
                 
                 
                     
@@ -285,35 +286,35 @@
             <ul class="toc__list">
                 
                     <li class="toc__entry">
-                        <a href="#order-of-events" class="toc__link">Order of events</a>
+                        <a href="#order-of-events" class="toc__link nav-link">Order of events</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#mvceventevent_bootstrap-bootstrap" class="toc__link">MvcEvent::EVENT_BOOTSTRAP ("bootstrap")</a>
+                        <a href="#mvceventevent_bootstrap-bootstrap" class="toc__link nav-link">MvcEvent::EVENT_BOOTSTRAP ("bootstrap")</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#mvceventevent_route-route" class="toc__link">MvcEvent::EVENT_ROUTE ("route")</a>
+                        <a href="#mvceventevent_route-route" class="toc__link nav-link">MvcEvent::EVENT_ROUTE ("route")</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#mvceventevent_dispatch-dispatch" class="toc__link">MvcEvent::EVENT_DISPATCH ("dispatch")</a>
+                        <a href="#mvceventevent_dispatch-dispatch" class="toc__link nav-link">MvcEvent::EVENT_DISPATCH ("dispatch")</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#mvceventevent_dispatch_error-dispatcherror" class="toc__link">MvcEvent::EVENT_DISPATCH_ERROR ("dispatch.error")</a>
+                        <a href="#mvceventevent_dispatch_error-dispatcherror" class="toc__link nav-link">MvcEvent::EVENT_DISPATCH_ERROR ("dispatch.error")</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#mvceventevent_render-render" class="toc__link">MvcEvent::EVENT_RENDER ("render")</a>
+                        <a href="#mvceventevent_render-render" class="toc__link nav-link">MvcEvent::EVENT_RENDER ("render")</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#mvceventevent_render_error-rendererror" class="toc__link">MvcEvent::EVENT_RENDER_ERROR ("render.error")</a>
+                        <a href="#mvceventevent_render_error-rendererror" class="toc__link nav-link">MvcEvent::EVENT_RENDER_ERROR ("render.error")</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#mvceventevent_finish-finish" class="toc__link">MvcEvent::EVENT_FINISH ("finish")</a>
+                        <a href="#mvceventevent_finish-finish" class="toc__link nav-link">MvcEvent::EVENT_FINISH ("finish")</a>
                     </li>
                 
             </ul>
@@ -321,8 +322,7 @@
     
 
                 
-            </div>
-            <div class="col-md-7 col-sm-12 content" role="main" data-spy="scroll" data-target=".toc">
+
                 
                     <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -1239,7 +1239,7 @@ priority):</p>
         </div>
 
         <div class="row">
-            <div class="col-md-10 offset-md-2">
+            <div class="col-md-12">
                 <h5>Laminas</h5>
                 <ul>
                     <li>Laminas Project <a href="https://getlaminas.org/">The new foundation for the community-supported, open source continuation of Zend Framework</a></li>
@@ -1251,7 +1251,7 @@ priority):</p>
         </div>
 
         <div class="row">
-            <div class="col-md-10 offset-md-2"> 
+            <div class="col-md-12">
                 <div class="row">
 
                     
@@ -1309,7 +1309,9 @@ priority):</p>
             siteName = 'laminas-mvc';
     </script>
     <script src="https://docs.laminas.dev/js/scripts.js"></script>
+    
         <script src="../search/main.js"></script>
+    
 
     
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">

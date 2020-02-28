@@ -12,14 +12,15 @@
     <title>Routing - laminas-mvc - Laminas Docs</title>
 
     <link rel="stylesheet" href="https://docs.laminas.dev/css/styles.css">
+    
 </head>
-<body id="page-top" class="mvc">
+<body id="page-top" class="mvc" data-spy="scroll" data-target=".toc" data-offset="20">
 
     
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container">
         
-        <a class="logo-link navbar-brand offset-md-2" href="https://getlaminas.org/" data-tooltip data-placement="bottom" title="Go to the Laminas homepage">
+        <a class="logo-link navbar-brand" href="https://getlaminas.org/" data-tooltip data-placement="bottom" title="Go to the Laminas homepage">
             <img src="https://docs.laminas.dev/img/laminas-foundation-white.svg" height="28" alt="Laminas">
         </a>
         <a class="navbar-title" href="https://docs.laminas.dev/" data-tooltip data-placement="bottom" title="Go to the Laminas Documentation">
@@ -242,7 +243,7 @@
         <div class="row">
 
             
-            <div class="col-6 offset-md-2">
+            <div class="col-8">
                 <h1 class="header__title">
                     MVC
 
@@ -272,7 +273,7 @@
     
     <div class="container">
         <div class="row">
-            <div class="col-md-2 col-sm-12">
+            <div class="col-md-9 col-sm-12 content" role="main">
                 
                 
                     
@@ -285,19 +286,19 @@
             <ul class="toc__list">
                 
                     <li class="toc__entry">
-                        <a href="#router-types" class="toc__link">Router Types</a>
+                        <a href="#router-types" class="toc__link nav-link">Router Types</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#http-route-types" class="toc__link">HTTP Route Types</a>
+                        <a href="#http-route-types" class="toc__link nav-link">HTTP Route Types</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#http-routing-examples" class="toc__link">HTTP Routing Examples</a>
+                        <a href="#http-routing-examples" class="toc__link nav-link">HTTP Routing Examples</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#console-route-types" class="toc__link">Console Route Types</a>
+                        <a href="#console-route-types" class="toc__link nav-link">Console Route Types</a>
                     </li>
                 
             </ul>
@@ -305,8 +306,7 @@
     
 
                 
-            </div>
-            <div class="col-md-7 col-sm-12 content" role="main" data-spy="scroll" data-target=".toc">
+
                 
                     <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -1163,7 +1163,7 @@ explained in the <a href="http://docs.laminas.dev/laminas-console/routes/">lamin
         </div>
 
         <div class="row">
-            <div class="col-md-10 offset-md-2">
+            <div class="col-md-12">
                 <h5>Laminas</h5>
                 <ul>
                     <li>Laminas Project <a href="https://getlaminas.org/">The new foundation for the community-supported, open source continuation of Zend Framework</a></li>
@@ -1175,7 +1175,7 @@ explained in the <a href="http://docs.laminas.dev/laminas-console/routes/">lamin
         </div>
 
         <div class="row">
-            <div class="col-md-10 offset-md-2"> 
+            <div class="col-md-12">
                 <div class="row">
 
                     
@@ -1233,7 +1233,9 @@ explained in the <a href="http://docs.laminas.dev/laminas-console/routes/">lamin
             siteName = 'laminas-mvc';
     </script>
     <script src="https://docs.laminas.dev/js/scripts.js"></script>
+    
         <script src="../search/main.js"></script>
+    
 
     
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
