@@ -115,9 +115,11 @@ classes for you to start with:
   fails in non-console environments.
 
 > For version 3, the integration component [laminas-mvc-console](https://docs.laminas.dev/laminas-mvc-console/) must be installed. It can be done via Composer:
-> ````bash
+>
+> ```bash
 > composer require laminas/laminas-mvc-console
 > ```
+> 
 > If you are not using the component installer, you will need to [add this component as a module](https://docs.laminas.dev/laminas-mvc-console/intro/#manual-installation).
 
 To get started, we'll create a "hello world"-style controller, with a single
