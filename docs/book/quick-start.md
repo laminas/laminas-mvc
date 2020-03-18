@@ -273,8 +273,7 @@ return [
     ],
     'controllers' => [
         'invokables' => [
-            '<module namespace>\Controller\Hello' => '<module
-namespace>\Controller\HelloController',
+            '<module-namespace>\Controller\Hello' => '<module-namespace>\Controller\HelloController',
         ],
     ],
     // ... other configuration ...
@@ -307,7 +306,7 @@ return [
 ];
 ```
 
-Replace `<module namespace>` with the namespace of your module.
+Replace `<module-namespace>` with the namespace of your module.
 
 ## Test it Out!
 
