@@ -260,7 +260,7 @@ return [
     'router' => [
         'routes' => [
             '<module name>-hello-world' => [
-                'type'    => 'Literal',
+                'type' => 'Literal',
                     'options' => [
                     'route' => '/hello/world',
                     'defaults' => [
