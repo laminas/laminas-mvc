@@ -551,11 +551,11 @@ controller class names, stripping only the <code>\Controller\\</code> subnamespa
 present.  For example, <code>AwesomeMe\MyModule\Controller\HelloWorldController</code>
 resolves to the template name <code>awesome-me/my-module/hello-world</code> via the
 following configuration:</p>
-<pre class=codehilite><code class=language-php>'view_manager' =&gt; array(
-    'controller_map' =&gt; array(
+<pre class=codehilite><code class=language-php>'view_manager' =&gt; [
+    'controller_map' =&gt; [
         'AwesomeMe\MyModule' =&gt; true,
-    ),
-),</code></pre>
+    ],
+],</code></pre>
 <p>(In v2 releases, the default was to strip subnamespaces, but optional mapping rules
 allowed whitelisting namespaces in module configuration to enable current
 resolver behavior. See the <a href="../migration/to-v3-0/#laminasmvcviewinjecttemplatelistener">migration guide</a>
@@ -606,7 +606,7 @@ and "controller" parameters so it reads as follows:</p>
     'router' =&gt; [
         'routes' =&gt; [
             '&lt;module name&gt;-hello-world' =&gt; [
-                'type'    =&gt; 'Literal',
+                'type' =&gt; 'Literal',
                     'options' =&gt; [
                     'route' =&gt; '/hello/world',
                     'defaults' =&gt; [
@@ -619,8 +619,7 @@ and "controller" parameters so it reads as follows:</p>
     ],
     'controllers' =&gt; [
         'invokables' =&gt; [
-            '&lt;module namespace&gt;\Controller\Hello' =&gt; '&lt;module
-namespace&gt;\Controller\HelloController',
+            '&lt;module-namespace&gt;\Controller\Hello' =&gt; '&lt;module-namespace&gt;\Controller\HelloController',
         ],
     ],
     // ... other configuration ...
@@ -632,19 +631,19 @@ As such, we need to notify the application about them.</p>
 <p>Remember the <code>config/application.config.php</code> file? Let's modify it to add our
 new module. Once done, it should read as follows:</p>
 <pre class=codehilite><code class=language-php>&lt;?php
-return array(
-    'modules' =&gt; array(
+return [
+    'modules' =&gt; [
         'Application',
-        '&lt;module namespace&gt;',
-    ),
-    'module_listener_options' =&gt; array(
-        'module_paths' =&gt; array(
+        '&lt;module-namespace&gt;',
+    ],
+    'module_listener_options' =&gt; [
+        'module_paths' =&gt; [
             './module',
             './vendor',
-        ),
-    ),
-);</code></pre>
-<p>Replace <code>&lt;module namespace&gt;</code> with the namespace of your module.</p>
+        ],
+    ],
+];</code></pre>
+<p>Replace <code>&lt;module-namespace&gt;</code> with the namespace of your module.</p>
 <h2 id="test-it-out">Test it Out!</h2>
 <p>Now we can test things out! Create a new vhost pointing its document root to the <code>public</code> directory
 of your application, and fire it up in a browser. You should see the default homepage template of

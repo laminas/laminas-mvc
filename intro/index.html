@@ -722,17 +722,17 @@ listeners.</p>
 <p>Remember the <code>application.config.php</code> from earlier? We're going to provide some
 configuration.</p>
 <pre class=codehilite><code class=language-php>// config/application.config.php
-return array(
-    'modules' =&gt; array(
+return [
+    'modules' =&gt; [
         /* ... */
-    ),
-    'module_listener_options' =&gt; array(
-        'module_paths' =&gt; array(
+    ],
+    'module_listener_options' =&gt; [
+        'module_paths' =&gt; [
             './module',
             './vendor',
-        ),
-    ),
-);</code></pre>
+        ],
+    ],
+];</code></pre>
 <p>As we add modules to the system, we'll add items to the <code>modules</code> array.</p>
 <p>Each <code>Module</code> class that has configuration it wants the <code>Application</code> to know
 about should define a <code>getConfig()</code> method. That method should return an array
@@ -741,7 +741,7 @@ or <code>Traversable</code> object such as a <code>Laminas\Config\Config</code> 
 
 class Module
 {
-    public function getConfig()
+    public function getConfig() : array
     {
         return include __DIR__ . '/config/module.config.php'
     }
