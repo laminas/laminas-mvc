@@ -193,11 +193,11 @@ resolves to the template name `awesome-me/my-module/hello-world` via the
 following configuration:
 
 ```php
-'view_manager' => array(
-    'controller_map' => array(
+'view_manager' => [
+    'controller_map' => [
         'AwesomeMe\MyModule' => true,
-    ),
-),
+    ],
+],
 ```
 
 (In v2 releases, the default was to strip subnamespaces, but optional mapping rules
@@ -260,7 +260,7 @@ return [
     'router' => [
         'routes' => [
             '<module name>-hello-world' => [
-                'type'    => 'Literal',
+                'type' => 'Literal',
                     'options' => [
                     'route' => '/hello/world',
                     'defaults' => [
@@ -273,8 +273,7 @@ return [
     ],
     'controllers' => [
         'invokables' => [
-            '<module namespace>\Controller\Hello' => '<module
-namespace>\Controller\HelloController',
+            '<module-namespace>\Controller\Hello' => '<module-namespace>\Controller\HelloController',
         ],
     ],
     // ... other configuration ...
@@ -293,21 +292,21 @@ new module. Once done, it should read as follows:
 
 ```php
 <?php
-return array(
-    'modules' => array(
+return [
+    'modules' => [
         'Application',
-        '<module namespace>',
-    ),
-    'module_listener_options' => array(
-        'module_paths' => array(
+        '<module-namespace>',
+    ],
+    'module_listener_options' => [
+        'module_paths' => [
             './module',
             './vendor',
-        ),
-    ),
-);
+        ],
+    ],
+];
 ```
 
-Replace `<module namespace>` with the namespace of your module.
+Replace `<module-namespace>` with the namespace of your module.
 
 ## Test it Out!
 
