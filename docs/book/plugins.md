@@ -181,7 +181,7 @@ you will need to do the following steps:
 
 The `Redirect` plugin does this work for you. It offers three methods:
 
-- `toRoute(string $route = null, array $params = array(), array $options = array(), boolean $reuseMatchedParams = false) : Laminas\Http\Response`:
+- `toRoute(string $route = null, array $params = [], array $options = [], bool $reuseMatchedParams = false) : Laminas\Http\Response`:
   Redirects to a named route, using the provided `$params` and `$options` to
   assembled the URL.
 
