@@ -368,17 +368,17 @@ configuration.
 
 ```php
 // config/application.config.php
-return array(
-    'modules' => array(
+return [
+    'modules' => [
         /* ... */
-    ),
-    'module_listener_options' => array(
-        'module_paths' => array(
+    ],
+    'module_listener_options' => [
+        'module_paths' => [
             './module',
             './vendor',
-        ),
-    ),
-);
+        ],
+    ],
+];
 ```
 
 As we add modules to the system, we'll add items to the `modules` array.
@@ -392,7 +392,7 @@ namespace LaminasUser;
 
 class Module
 {
-    public function getConfig()
+    public function getConfig() : array
     {
         return include __DIR__ . '/config/module.config.php'
     }
