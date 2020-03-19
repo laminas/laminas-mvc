@@ -624,10 +624,15 @@ to the various RESTful methods, or to add RPC methods to your RESTful API.</p>
 extending class.</p>
 <h2 id="abstractconsolecontroller">AbstractConsoleController</h2>
 <blockquote>
-<p>For version 3, the integration component <a href="https://docs.laminas.dev/laminas-mvc-console/">laminas-mvc-console</a> must be installed. It can be done via Composer:
-<code>`bash
-composer require laminas/laminas-mvc-console</code>
-If you are not using the component installer, you will need to <a href="https://docs.laminas.dev/laminas-mvc-console/intro/#manual-installation">add this component as a module</a>.</p>
+<h3>Installation Requirements</h3>
+<p>For version 3, the integration component
+<a href="https://docs.laminas.dev/laminas-mvc-console/">laminas-mvc-console</a> must be
+installed. It can be done via Composer:</p>
+<pre class="codehilite"><code class="language-bash">
+composer require laminas/laminas-mvc-console
+</code></pre>
+<p>If you are not using the component installer, you will need to
+<a href="https://docs.laminas.dev/laminas-mvc-console/#installation">add this component as a module</a>.</p>
 </blockquote>
 <p><code>Laminas\Mvc\Console\Controller\AbstractConsoleController</code> extends from <a href="#abstractactioncontroller">AbstractActionController</a>
 and provides the following functionality:</p>
