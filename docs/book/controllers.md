@@ -279,11 +279,18 @@ extending class.
 
 ## AbstractConsoleController
 
-> For version 3, the integration component [laminas-mvc-console](https://docs.laminas.dev/laminas-mvc-console/) must be installed. It can be done via Composer:
-> ````bash
+> ### Installation Requirements
+>
+> For version 3, the integration component
+> [laminas-mvc-console](https://docs.laminas.dev/laminas-mvc-console/) must be
+> installed. It can be done via Composer:
+>
+> ```bash
 > composer require laminas/laminas-mvc-console
 > ```
-> If you are not using the component installer, you will need to [add this component as a module](https://docs.laminas.dev/laminas-mvc-console/intro/#manual-installation).
+> 
+> If you are not using the component installer, you will need to
+> [add this component as a module](https://docs.laminas.dev/laminas-mvc-console/#installation).
 
 `Laminas\Mvc\Console\Controller\AbstractConsoleController` extends from [AbstractActionController](#abstractactioncontroller)
 and provides the following functionality:
