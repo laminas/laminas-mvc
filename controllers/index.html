@@ -400,7 +400,7 @@
     <h1 id="available-controllers">Available Controllers</h1>
 <p>Controllers in laminas-mvc are objects implementing <code>Laminas\Stdlib\DispatchableInterface</code>.
 That interface describes a single method:</p>
-<pre class=codehilite><code class=language-php>use Laminas\Stdlib\DispatchableInterface;
+<pre class="highlight"><code class="language-php">use Laminas\Stdlib\DispatchableInterface;
 use Laminas\Stdlib\RequestInterface as Request;
 use Laminas\Stdlib\ResponseInterface as Response;
 
@@ -411,6 +411,7 @@ class Foo implements DispatchableInterface
         // ... do something, and preferably return a Response ...
     }
 }</code></pre>
+
 <p>While the pattern is straight-forward, chances are you don't want to implement
 custom dispatch logic for every controller, particularly as it's not unusual or
 uncommon for a single controller to handle several related types of requests.</p>
@@ -426,7 +427,7 @@ would this be useful?</p>
 instance), and potentially the "result" of dispatching.</p>
 <p>A controller that has the <code>MvcEvent</code> injected, then, can retrieve or inject
 these. As an example:</p>
-<pre class=codehilite><code class=language-php>$matches = $this-&gt;getEvent()-&gt;getRouteMatch();
+<pre class="highlight"><code class="language-php">$matches = $this-&gt;getEvent()-&gt;getRouteMatch();
 $id      = $matches-&gt;getParam('id', false);
 if (! $id) {
     $response = $this-&gt;getResponse();
@@ -434,9 +435,11 @@ if (! $id) {
     $this-&gt;getEvent()-&gt;setResult('Invalid identifier; cannot complete request');
     return;
 }</code></pre>
+
 <p>The <code>InjectApplicationEventInterface</code> defines two methods:</p>
-<pre class=codehilite><code class=language-php>public function setEvent(Laminas\EventManager\EventInterface $event);
+<pre class="highlight"><code class="language-php">public function setEvent(Laminas\EventManager\EventInterface $event);
 public function getEvent();</code></pre>
+
 <h3>ServiceLocatorAware</h3>
 <p>In most cases, you should define your controllers such that dependencies are
 injected by the application's <code>ServiceManager</code>, via either constructor arguments
@@ -447,11 +450,12 @@ navigation, etc. In these cases, you may decide that it doesn't make sense to
 inject those objects every time the controller is used.</p>
 <p>The <code>ServiceLocatorAwareInterface</code> interface hints to the <code>ServiceManager</code> that it should inject
 itself into the controller. It defines two simple methods:</p>
-<pre class=codehilite><code class=language-php>use Laminas\ServiceManager\ServiceLocatorInterface;
+<pre class="highlight"><code class="language-php">use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\ServiceManager\ServiceLocatorAwareInterface;
 
 public function setServiceLocator(ServiceLocatorInterface $serviceLocator);
 public function getServiceLocator();</code></pre>
+
 <blockquote>
 <h4>ServiceLocatorInterface is deprecated</h4>
 <p><code>ServiceLocatorAwareInterface</code> <a href="http://docs.laminas.dev/laminas-servicemanager/migration/#miscellaneous-interfaces-traits-and-classes">was removed from laminas-servicemanager v3.0</a>,
@@ -475,11 +479,12 @@ implementing the interface <code>EventManagerAwareInterface</code>, which tells 
 <p>To do this, you define two methods. The first, a setter, should also set any
 <code>SharedEventManager</code> identifiers you want to listen on, and the second, a getter,
 should return the composed <code>EventManager</code> instance.</p>
-<pre class=codehilite><code class=language-php>use Laminas\EventManager\EventManagerAwareInterface;
+<pre class="highlight"><code class="language-php">use Laminas\EventManager\EventManagerAwareInterface;
 use Laminas\EventManager\EventManagerInterface;
 
 public function setEventManager(EventManagerInterface $events);
 public function getEventManager();</code></pre>
+
 <h3>Controller Plugins</h3>
 <p>Code re-use is a common goal for developers. Another common goal is convenience.
 However, this is often difficult to achieve cleanly in abstract, general
@@ -498,7 +503,7 @@ the controller layer, <code>Laminas\Mvc\Controller\PluginManager</code>, buildin
 <code>Laminas\ServiceManager\AbstractPluginManager</code> functionality. To utilize it,
 implement the <code>setPluginManager(PluginManager $plugins)</code> method, and set up your
 code to use the controller-specific implementation by default:</p>
-<pre class=codehilite><code class=language-php>use Laminas\Mvc\Controller\PluginManager;
+<pre class="highlight"><code class="language-php">use Laminas\Mvc\Controller\PluginManager;
 
 public function setPluginManager(PluginManager $plugins)
 {
@@ -521,6 +526,7 @@ public function plugin($name, array $options = null)
 {
     return $this-&gt;getPluginManager()-&gt;get($name, $options);
 }</code></pre>
+
 <h2 id="abstractactioncontroller">AbstractActionController</h2>
 <p>Implementing each of the above interfaces is a lesson in redundancy; you won't
 often want to do it.  As such, we've developed abstract, base controllers you
@@ -543,7 +549,7 @@ implements each of the above interfaces, and uses the following assumptions:</p>
 <p>Essentially, a route mapping to an <code>AbstractActionController</code> needs to return
 both the "controller" and "action" keys in its matches.</p>
 <p>Creation of action controllers looks like the following example:</p>
-<pre class=codehilite><code class=language-php>namespace Foo\Controller;
+<pre class="highlight"><code class="language-php">namespace Foo\Controller;
 
 use Laminas\Mvc\Controller\AbstractActionController;
 
@@ -559,6 +565,7 @@ class BarController extends AbstractActionController
         return ['title' =&gt; __METHOD__];
     }
 }</code></pre>
+
 <h3>Interfaces and Collaborators</h3>
 <p><code>AbstractActionController</code> implements each of the following interfaces:</p>
 <ul>
@@ -628,9 +635,8 @@ extending class.</p>
 <p>For version 3, the integration component
 <a href="https://docs.laminas.dev/laminas-mvc-console/">laminas-mvc-console</a> must be
 installed. It can be done via Composer:</p>
-<pre class="codehilite"><code class="language-bash">
-composer require laminas/laminas-mvc-console
-</code></pre>
+<pre class="highlight"><code class="language-bash">composer require laminas/laminas-mvc-console</code></pre>
+
 <p>If you are not using the component installer, you will need to
 <a href="https://docs.laminas.dev/laminas-mvc-console/#installation">add this component as a module</a>.</p>
 </blockquote>

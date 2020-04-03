@@ -808,7 +808,7 @@ is the configuration to use to create the given service.</p>
 <h3>Laminas\Cache\Service\StorageCacheAbstractServiceFactory</h3>
 <p>This abstract factory is opt-in, but registered by default in the skeleton application. It uses the
 top-level configuration key "caches".</p>
-<pre class=codehilite><code class=language-php>return [
+<pre class="highlight"><code class="language-php">return [
     'caches' =&gt; [
         'Cache\Transient' =&gt; [
             'adapter' =&gt; 'redis',
@@ -825,12 +825,13 @@ top-level configuration key "caches".</p>
         ],
     ],
 ];</code></pre>
+
 <p>See the <a href="https://docs.laminas.dev/laminas-cache/storage/adapter/">cache documentation</a>
 for more configuration options.</p>
 <h3>Laminas\Db\Adapter\AdapterAbstractServiceFactory</h3>
 <p>This abstract factory is opt-in. It uses the top-level configuration key "db",
 with a subkey "adapters".</p>
-<pre class=codehilite><code class=language-php>return [
+<pre class="highlight"><code class="language-php">return [
     'db' =&gt; ['adapters' =&gt; [
         'Db\ReadOnly' =&gt; [
             'driver'   =&gt; 'Pdo_Sqlite',
@@ -844,6 +845,7 @@ with a subkey "adapters".</p>
         ],
     ]],
 ];</code></pre>
+
 <p>See the <a href="https://docs.laminas.dev/laminas-db/adapter/">DB adapter documentation</a>
 for more configuration options.</p>
 <h3>Laminas\Form\FormAbstractServiceFactory</h3>
@@ -852,7 +854,7 @@ configuration key "forms". It makes use of the <code>FilterManager</code>,
 <code>FormElementManager</code>, <code>HydratorManager</code>, <code>InputFilterManager</code>, and
 <code>ValidatorManager</code> plugin managers in order to allow instantiation and creation
 of form objects and all related objects in the form hierarchy.</p>
-<pre class=codehilite><code class=language-php>return [
+<pre class="highlight"><code class="language-php">return [
     'forms' =&gt; [
         'Form\Foo' =&gt; [
             'hydrator' =&gt; 'ObjectProperty',
@@ -871,6 +873,7 @@ of form objects and all related objects in the form hierarchy.</p>
         ],
     ],
 ];</code></pre>
+
 <p>Form configuration follows the same configuration you would use with a form
 factory; the primary difference is that all plugin managers have already been
 injected for you, allowing you the possibility of custom objects or
@@ -880,7 +883,7 @@ for more configuration options.</p>
 <h3>Laminas\Log\LoggerAbstractServiceFactory</h3>
 <p>This abstract factory is opt-in, but registered by default in the skeleton
 application. It uses the top-level configuration key "log".</p>
-<pre class=codehilite><code class=language-php>return [
+<pre class="highlight"><code class="language-php">return [
     'log' =&gt; [
         'Log\App' =&gt; [
             'writers' =&gt; [
@@ -895,6 +898,7 @@ application. It uses the top-level configuration key "log".</p>
         ],
     ],
 ];</code></pre>
+
 <p>See the <a href="https://docs.laminas.dev/laminas-log/intro/">log documentation</a>
 for more configuration options.</p>
 <h2 id="plugin-managers">Plugin Managers</h2>
@@ -1039,7 +1043,7 @@ listeners, at a priority of 100 (allowing them to execute before the
 then find and aggregate the configuration used for the <code>Config</code> service, which
 is intended for configuring all other objects in the system. These configuration
 directives go to the <code>config/application.config.php</code> file.</p>
-<pre class=codehilite><code class=language-php>&lt;?php
+<pre class="highlight"><code class="language-php">&lt;?php
 return [
     // This should be an array of module namespaces used in the application.
     'modules' =&gt; [
@@ -1100,6 +1104,7 @@ return [
     'service_manager' =&gt; [
     ],
 ];</code></pre>
+
 <p>For an example, see the
 <a href="https://github.com/laminas/laminas-mvc-skeleton/blob/master/config/application.config.php">laminas-mvc-skeleton configuration file</a>.</p>
 <h2 id="default-configuration-options">Default Configuration Options</h2>
@@ -1121,18 +1126,18 @@ database credentials, and as such, it is highly recommended to keep these
 local configuration files out of your VCS. The <code>laminas-mvc-skeleton</code>'s
 <code>config/autoload/.gitignore</code> file ignores <code>*.local.php</code> files by default.</p>
 </blockquote>
-<pre class=codehilite><code class=language-php>&lt;?php
+<pre class="highlight"><code class="language-php">&lt;?php
 return [
     // The following are used to configure controller loader
     // Should be compatible with Laminas\ServiceManager\Config.
     'controllers' =&gt; [
-        // Map of controller &quot;name&quot; to class
+        // Map of controller "name" to class
         // This should be used if you do not need to inject any dependencies
         // in your controller
         'invokables' =&gt; [
         ],
 
-        // Map of controller &quot;name&quot; to factory for creating controller instance
+        // Map of controller "name" to factory for creating controller instance
         // You may provide either the class name of a factory, or a PHP callback.
         'factories' =&gt; [
         ],
@@ -1207,6 +1212,7 @@ return [
         ],
     ],
 ];</code></pre>
+
 <p>For an example, see the
 <a href="https://github.com/laminas/laminas-mvc-skeleton/blob/master/module/Application/config/module.config.php">Application module configuration file</a>
 in the laminas-mvc-skeleton.</p>

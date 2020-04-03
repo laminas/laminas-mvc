@@ -487,7 +487,8 @@ in your application.</p>
 <p>To solve this new problem, we created a new component,
 <a href="http://docs.laminas.dev/laminas-component-installer/">laminas-component-installer</a>.
 Install this in your application now:</p>
-<pre class=codehilite><code class=language-bash>$ composer require --dev laminas/laminas-component-installer</code></pre>
+<pre class="highlight"><code class="language-bash">$ composer require --dev laminas/laminas-component-installer</code></pre>
+
 <p>Once installed, the component acts as a Composer plugin, and will intercept
 packages marked as components or Laminas modules, and register them with
 your application configuration. Components are pushed to the top of the module
@@ -535,7 +536,8 @@ service alias.</p>
 <a href="https://github.com/laminas/laminas-di">laminas-di</a> has been moved to a new
 standalone component, <a href="https://docs.laminas.dev/laminas-servicemanager-di/">laminas-servicemanager-di</a>.
 In most cases, installing the component will restore the original behavior:</p>
-<pre class=codehilite><code class=language-bash>$ composer require laminas/laminas-servicemanager-di</code></pre>
+<pre class="highlight"><code class="language-bash">$ composer require laminas/laminas-servicemanager-di</code></pre>
+
 <blockquote>
 <h3>Manual installation</h3>
 <p>The above assumes you're using the new component installer detailed in the
@@ -568,7 +570,8 @@ your code.</p>
 <p>Console tooling, including console routes, were split off to a new component,
 <a href="https://docs.laminas.dev/laminas-mvc-console/">laminas-mvc-console</a>. If you
 were using the console tooling, install laminas-mvc-console:</p>
-<pre class=codehilite><code class=language-bash>$ composer require laminas/laminas-mvc-console</code></pre>
+<pre class="highlight"><code class="language-bash">$ composer require laminas/laminas-mvc-console</code></pre>
+
 <p>(Make sure you've already installed laminas-component-installer before you do, to
 ensure the component is registered with your application!)</p>
 <p>laminas-mvc-console exposes all of the same functionality as was in the v2 series
@@ -591,7 +594,8 @@ to allow modules to provide filter configuration.</p>
 <p>This functionality is now removed from laminas-mvc. It is now exposed directly by
 the <a href="https://docs.laminas.dev/laminas-filter/">laminas-filter</a> component
 itself. To add it, install laminas-filter:</p>
-<pre class=codehilite><code class=language-bash>$ composer require laminas/laminas-filter</code></pre>
+<pre class="highlight"><code class="language-bash">$ composer require laminas/laminas-filter</code></pre>
+
 <p>Note: the above assumes you have already installed laminas-component-installer, per
 the section above on <a href="#dependency-reduction">dependency reduction</a>.</p>
 <h2 id="form-integration">Form integration</h2>
@@ -610,7 +614,8 @@ the section above on <a href="#dependency-reduction">dependency reduction</a>.</
 <p>The above functionality is now removed from laminas-mvc, and exposed directly by
 the <a href="https://github.com/laminas/laminas-form">laminas-form</a> component. To
 add/enable it, install laminas-form:</p>
-<pre class=codehilite><code class=language-bash>$ composer require laminas/laminas-form</code></pre>
+<pre class="highlight"><code class="language-bash">$ composer require laminas/laminas-form</code></pre>
+
 <p>Note: the above assumes you have already installed laminas-component-installer, per
 the section above on <a href="#dependency-reduction">dependency reduction</a>.</p>
 <h2 id="hydrator-integration">Hydrator integration</h2>
@@ -620,7 +625,8 @@ to allow modules to provide hydrator configuration.</p>
 <p>This functionality is now removed from laminas-mvc. It is now exposed directly by
 the <a href="https://docs.laminas.dev/laminas-hydrator/">laminas-hydrator</a> component
 itself. To add it, install laminas-hydrator:</p>
-<pre class=codehilite><code class=language-bash>$ composer require laminas/laminas-hydrator</code></pre>
+<pre class="highlight"><code class="language-bash">$ composer require laminas/laminas-hydrator</code></pre>
+
 <p>Note: the above assumes you have already installed laminas-component-installer, per
 the section above on <a href="#dependency-reduction">dependency reduction</a>.</p>
 <h2 id="inputfilter-integration">InputFilter integration</h2>
@@ -630,7 +636,8 @@ to allow modules to provide validator configuration.</p>
 <p>This functionality is now removed from laminas-mvc. It is now exposed directly by
 the <a href="https://docs.laminas.dev/laminas-inputfilter/">laminas-inputfilter</a> component
 itself. To add it, install laminas-inputfilter:</p>
-<pre class=codehilite><code class=language-bash>$ composer require laminas/laminas-inputfilter</code></pre>
+<pre class="highlight"><code class="language-bash">$ composer require laminas/laminas-inputfilter</code></pre>
+
 <p>Note: the above assumes you have already installed laminas-component-installer, per
 the section above on <a href="#dependency-reduction">dependency reduction</a>.</p>
 <p>laminas-inputfilter now also exposes the <code>InputFilterAbstractServiceFactory</code> as an
@@ -647,7 +654,8 @@ abstract factory by default.</p>
 and <a href="https://docs.laminas.dev/laminas-mvc-i18n/">laminas-mvc-i18n</a> packages.
 In most cases, you can install <code>laminas/laminas-mvc-i18n</code> to restore i18n
 functionality to your application:</p>
-<pre class=codehilite><code class=language-bash>$ composer require laminas/laminas-mvc-i18n</code></pre>
+<pre class="highlight"><code class="language-bash">$ composer require laminas/laminas-mvc-i18n</code></pre>
+
 <p>There are two categories of changes that could affect you on upgrading.</p>
 <p>First, if you were using the <code>TranslatorAwareTreeRouteStack</code>, the class name has
 changed from <code>Laminas\Mvc\Router\Http\TranslatorAwareTreeRouteStack</code> to
@@ -670,7 +678,8 @@ services by default, and provided specifications to laminas-modulemanager's
 <p>This functionality is now removed from laminas-mvc. It is now exposed directly by
 the <a href="https://docs.laminas.dev/laminas-log/">laminas-log</a> component
 itself. To add it, install laminas-log:</p>
-<pre class=codehilite><code class=language-bash>$ composer require laminas/laminas-log</code></pre>
+<pre class="highlight"><code class="language-bash">$ composer require laminas/laminas-log</code></pre>
+
 <p>Note: the above assumes you have already installed laminas-component-installer, per
 the section above on <a href="#dependency-reduction">dependency reduction</a>.</p>
 <p>laminas-log now also exposes <code>LogFilterManager</code> and <code>LogFormatterManager</code>,
@@ -711,7 +720,8 @@ configuration.</p>
 <p>The <code>fileprg()</code> plugin is now provided via the
 <a href="https://github.com/laminas/laminas-mvc-plugin-fileprg">laminas-mvc-plugin-fileprg</a>
 component.</p>
-<pre class=codehilite><code class=language-bash>$ composer require laminas/laminas-mvc-plugin-fileprg</code></pre>
+<pre class="highlight"><code class="language-bash">$ composer require laminas/laminas-mvc-plugin-fileprg</code></pre>
+
 <p><code>Laminas\Mvc\Controller\Plugin\FilePostRedirectGet</code> becomes
 <code>Laminas\Mvc\Plugin\FilePrg\FilePostRedirectGet</code>. However, it is still mapped as
 <code>fileprg()</code>.</p>
@@ -719,7 +729,8 @@ component.</p>
 <p>The <code>flashMessenger()</code> plugin is now provided via the
 <a href="https://github.com/laminas/laminas-mvc-plugin-flashmessenger">laminas-mvc-plugin-flashmessenger</a>
 component.</p>
-<pre class=codehilite><code class=language-bash>$ composer require laminas/laminas-mvc-plugin-flashmessenger</code></pre>
+<pre class="highlight"><code class="language-bash">$ composer require laminas/laminas-mvc-plugin-flashmessenger</code></pre>
+
 <p><code>Laminas\Mvc\Controller\Plugin\FlashMessenger</code> becomes
 <code>Laminas\Mvc\Plugin\FlashMessenger\FlashMessenger</code>. However, it is still mapped as
 <code>flashMessenger()</code> and <code>flashmessenger()</code>.</p>
@@ -727,7 +738,8 @@ component.</p>
 <p>The <code>identity()</code> plugin is now provided via the
 <a href="https://github.com/laminas/laminas-mvc-plugin-identity">laminas-mvc-plugin-identity</a>
 component.</p>
-<pre class=codehilite><code class=language-bash>$ composer require laminas/laminas-mvc-plugin-identity</code></pre>
+<pre class="highlight"><code class="language-bash">$ composer require laminas/laminas-mvc-plugin-identity</code></pre>
+
 <p><code>Laminas\Mvc\Controller\Plugin\Identity</code> becomes
 <code>Laminas\Mvc\Plugin\Identity\Identity</code>. However, it is still mapped as
 <code>identity()</code>.</p>
@@ -737,7 +749,8 @@ component.</p>
 <p>The <code>prg()</code> plugin is now provided via the
 <a href="https://github.com/laminas/laminas-mvc-plugin-prg">laminas-mvc-plugin-prg</a>
 component.</p>
-<pre class=codehilite><code class=language-bash>$ composer require laminas/laminas-mvc-plugin-prg</code></pre>
+<pre class="highlight"><code class="language-bash">$ composer require laminas/laminas-mvc-plugin-prg</code></pre>
+
 <p><code>Laminas\Mvc\Controller\Plugin\PostRedirectGet</code> becomes
 <code>Laminas\Mvc\Plugin\Prg\PostRedirectGet</code>. However, it is still mapped as <code>prg()</code>.</p>
 <h2 id="serializer-integration">Serializer integration</h2>
@@ -747,7 +760,8 @@ to allow modules to provide serializer configuration.</p>
 <p>This functionality is now removed from laminas-mvc. It is now exposed directly by
 the <a href="https://github.com/laminas/laminas-serializer">laminas-serializer</a> component
 itself. To add it, install laminas-serializer</p>
-<pre class=codehilite><code class=language-bash>$ composer require laminas/laminas-serializer</code></pre>
+<pre class="highlight"><code class="language-bash">$ composer require laminas/laminas-serializer</code></pre>
+
 <p>Note: the above assumes you have already installed laminas-component-installer, per
 the section above on <a href="#dependency-reduction">dependency reduction</a>.</p>
 <h2 id="servicelocatoraware-initializers">ServiceLocatorAware initializers</h2>
@@ -769,7 +783,8 @@ to allow modules to provide validator configuration.</p>
 <p>This functionality is now removed from laminas-mvc. It is now exposed directly by
 the <a href="https://docs.laminas.dev/laminas-validator/">laminas-validator</a> component
 itself. To add it, install laminas-validator:</p>
-<pre class=codehilite><code class=language-bash>$ composer require laminas/laminas-validator</code></pre>
+<pre class="highlight"><code class="language-bash">$ composer require laminas/laminas-validator</code></pre>
+
 <p>Note: the above assumes you have already installed laminas-component-installer, per
 the section above on <a href="#dependency-reduction">dependency reduction</a>.</p>
 <h2 id="laminasmvcviewinjecttemplatelistener">Laminas\Mvc\View\InjectTemplateListener</h2>

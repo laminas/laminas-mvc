@@ -417,7 +417,7 @@ then invokes the middleware.</p>
 <p>The first step is to map a route to PSR-7 middleware. This looks like any other
 <a href="../routing/">routing</a> configuration, with one small change: instead of providing
 a "controller" in the routing defaults, you provide "middleware":</p>
-<pre class=codehilite><code class=language-php>// Via configuration:
+<pre class="highlight"><code class="language-php">// Via configuration:
 return [
     'router' =&gt;
         'routes' =&gt; [
@@ -441,6 +441,7 @@ $route = Literal::factory([
         'middleware' =&gt; 'Application\Middleware\IndexMiddleware',
     ],
 ]);</code></pre>
+
 <p>Middleware may be provided as PHP callables, or as service names.</p>
 <p><strong>As of 3.1.0</strong> you may also specify an <code>array</code> of middleware, and middleware
 may be <a href="https://github.com/http-interop/http-middleware">http-interop/http-middleware</a>
@@ -463,7 +464,7 @@ create an error response if non-callable middleware is indicated.</p>
 <p>Prior to 3.1.0, when dispatching middleware, the <code>MiddlewareListener</code> calls it
 with two arguments, the PSR-7 request and response, respectively. As such, your
 middleware signature should look like the following:</p>
-<pre class=codehilite><code class=language-php>namespace Application\Middleware;
+<pre class="highlight"><code class="language-php">namespace Application\Middleware;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -475,6 +476,7 @@ class IndexMiddleware
         // do some work
     }
 }</code></pre>
+
 <p>Starting in 3.1.0, the <code>MiddlewareListener</code> always adds middleware to a
 <code>Laminas\Stratigility\MiddlewarePipe</code> instance, and invokes it as
 <a href="https://github.com/http-interop/http-middleware">http-interop/http-middleware</a>,
@@ -482,7 +484,7 @@ passing it a PSR-7 <code>ServerRequestInterface</code> and an http-interop
 <code>DelegateInterface</code>.</p>
 <p>As such, ideally your middleware should implement the <code>MiddlewareInterface</code> from
 <a href="https://github.com/http-interop/http-middleware">http-interop/http-middleware</a>:</p>
-<pre class=codehilite><code class=language-php>namespace Application\Middleware;
+<pre class="highlight"><code class="language-php">namespace Application\Middleware;
 
 use Interop\Http\ServerMiddleware\DelegateInterface;
 use Interop\Http\ServerMiddleware\MiddlewareInterface;
@@ -495,12 +497,14 @@ class IndexMiddleware implements MiddlewareInterface
         // do some work
     }
 }</code></pre>
+
 <p>Alternately, you may still write <code>callable</code> middleware using the following
 signature:</p>
-<pre class=codehilite><code class=language-php>function (ServerREquestInterface $request, ResponseInterface $response, callable $next)
+<pre class="highlight"><code class="language-php">function (ServerREquestInterface $request, ResponseInterface $response, callable $next)
 {
     // do some work
 }</code></pre>
+
 <p>In the above case, the <code>DelegateInterface</code> is decorated as a callable.</p>
 <p>In all versions, within your middleware, you can pull information from the
 composed request, and return a response.</p>

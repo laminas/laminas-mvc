@@ -395,19 +395,21 @@
 <p>When using one of the abstract controller implementations, the request and
 response object are composed directly into the controller as soon as
 <code>dispatch()</code> is called. You may access them as follows:</p>
-<pre class=codehilite><code class=language-php>// Using explicit accessor methods
+<pre class="highlight"><code class="language-php">// Using explicit accessor methods
 $request  = $this-&gt;getRequest();
 $response = $this-&gt;getResponse();
 
 // Using direct property access
 $request  = $this-&gt;request;
 $response = $this-&gt;response;</code></pre>
+
 <p>Additionally, if your controller implements <code>InjectApplicationEventInterface</code>
 (as all shipped abstract controllers do), you can access these objects from the
 attached <code>MvcEvent</code>:</p>
-<pre class=codehilite><code class=language-php>$event    = $this-&gt;getEvent();
+<pre class="highlight"><code class="language-php">$event    = $this-&gt;getEvent();
 $request  = $event-&gt;getRequest();
 $response = $event-&gt;getResponse();</code></pre>
+
 <p>The above can be useful when composing event listeners into your controller.</p>
 <h3>Accessing routing parameters</h3>
 <p>The parameters returned when routing completes are wrapped in a
@@ -416,8 +418,9 @@ $response = $event-&gt;getResponse();</code></pre>
 <p>Within your controller, if you implement <code>InjectApplicationEventInterface</code> (as
 all shipped abstract controllers do), you can access this object from the
 attached <code>MvcEvent</code>:</p>
-<pre class=codehilite><code class=language-php>$event   = $this-&gt;getEvent();
+<pre class="highlight"><code class="language-php">$event   = $this-&gt;getEvent();
 $matches = $event-&gt;getRouteMatch();</code></pre>
+
 <p>Once you have the <code>RouteMatch</code> object, you can pull parameters from it.</p>
 <p>The same can be done using the <a href="../plugins/#params-plugin">Params plugin</a>.</p>
 <h3>Returning early</h3>
@@ -444,7 +447,7 @@ associated with it, and once the modules are initialized, it triggers the
 provides a <code>getApplication()</code> method on the event.</p>
 <p>One way to accomplish module-specific listeners is to listen to that event, and
 register listeners at that time. As an example:</p>
-<pre class=codehilite><code class=language-php>namespace SomeCustomModule;
+<pre class="highlight"><code class="language-php">namespace SomeCustomModule;
 
 class Module
 {
@@ -466,6 +469,7 @@ class Module
         $listener-&gt;attach($application-&gt;getEventManager());
     }
 }</code></pre>
+
 <p>The above demonstrates several things. First, it demonstrates a listener on the
 application's <a href="../mvc-event/#mvceventevent_bootstrap-bootstrap">bootstrap</a> event
 (the <code>onBootstrap()</code> method). Second, it demonstrates that listener, and how it

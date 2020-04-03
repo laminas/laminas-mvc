@@ -406,7 +406,7 @@ Routing can utilize other portions of the request URI or environment as well.
 For example, the host or scheme, query parameters, headers, request method, and
 more.</p>
 <p>The base unit of routing is a <code>Route</code>:</p>
-<pre class=codehilite><code class=language-php>namespace Laminas\Router;
+<pre class="highlight"><code class="language-php">namespace Laminas\Router;
 
 use Laminas\Stdlib\RequestInterface as Request;
 
@@ -416,9 +416,10 @@ interface RouteInterface
     public function match(Request $request);
     public function assemble(array $params = [], array $options = []);
 }</code></pre>
+
 <p>A <code>Route</code> accepts a <code>Request</code>, and determines if it matches. If so, it returns a
 <code>RouteMatch</code> object:</p>
-<pre class=codehilite><code class=language-php>namespace Laminas\Router;
+<pre class="highlight"><code class="language-php">namespace Laminas\Router;
 
 class RouteMatch
 {
@@ -429,18 +430,20 @@ class RouteMatch
     public function getParams();
     public function getParam($name, $default = null);
 }</code></pre>
+
 <p>Typically, when a <code>Route</code> matches, it will define one or more parameters. These
 are passed into the <code>RouteMatch</code>, and objects may query the <code>RouteMatch</code> for
 their values.</p>
-<pre class=codehilite><code class=language-php>$id = $routeMatch-&gt;getParam('id', false);
+<pre class="highlight"><code class="language-php">$id = $routeMatch-&gt;getParam('id', false);
 if (! $id) {
     throw new Exception('Required identifier is missing!');
 }
 $entity = $resource-&gt;get($id);</code></pre>
+
 <p>Usually you will have multiple routes you wish to test against. In order to
 facilitate this, you will use a route aggregate, usually implementing
 <code>RouteStack</code>:</p>
-<pre class=codehilite><code class=language-php>namespace Laminas\Router;
+<pre class="highlight"><code class="language-php">namespace Laminas\Router;
 
 interface RouteStackInterface extends RouteInterface
 {
@@ -449,11 +452,12 @@ interface RouteStackInterface extends RouteInterface
     public function removeRoute($name);
     public function setRoutes(array $routes);
 }</code></pre>
+
 <p>Routes will be queried in a LIFO order, and hence the reason behind the name
 <code>RouteStack</code>. laminas-mvc provides two implementations of this interface,
 <code>SimpleRouteStack</code> and <code>TreeRouteStack</code>. In each, you register routes either one
 at a time using <code>addRoute()</code>, or in bulk using <code>addRoutes()</code>.</p>
-<pre class=codehilite><code class=language-php>// One at a time:
+<pre class="highlight"><code class="language-php">// One at a time:
 $route = Literal::factory([
     'route' =&gt; '/foo',
     'defaults' =&gt; [
@@ -480,6 +484,7 @@ $router-&gt;addRoutes([
         ],
     ],
 ]);</code></pre>
+
 <h2 id="router-types">Router Types</h2>
 <p>Two routers are provided, the <code>SimpleRouteStack</code> and <code>TreeRouteStack</code>. Each
 works with the above interface, but utilize slightly different options and
@@ -531,17 +536,18 @@ route match.</p>
 <p>For any given hostname segment, you may also provide a constraint. As an
 example, if the "subdomain" segment needed to match only if it started with "fw"
 and contained exactly 2 digits following, the following route would be needed:</p>
-<pre class=codehilite><code class=language-php>$route = Hostname::factory([
+<pre class="highlight"><code class="language-php">$route = Hostname::factory([
     'route' =&gt; ':subdomain.domain.tld',
     'constraints' =&gt; [
         'subdomain' =&gt; 'fw\d{2}',
     ],
 ]);</code></pre>
+
 <p>In the above example, only a "subdomain" key will be returned in the
 <code>RouteMatch</code>. If you wanted to also provide other information based on matching,
 or a default value to return for the subdomain, you need to also provide
 defaults.</p>
-<pre class=codehilite><code class=language-php>$route = Hostname::factory([
+<pre class="highlight"><code class="language-php">$route = Hostname::factory([
     'route' =&gt; ':subdomain.domain.tld',
     'constraints' =&gt; [
         'subdomain' =&gt; 'fw\d{2}',
@@ -550,32 +556,35 @@ defaults.</p>
         'type' =&gt; 'json',
     ],
 ]);</code></pre>
+
 <p>When matched, the above will return two keys in the <code>RouteMatch</code>, "subdomain"
 and "type".</p>
 <h3>Laminas\Router\Http\Literal</h3>
 <p>The <code>Literal</code> route is for doing exact matching of the URI path. Configuration
 therefore is solely the path you want to match, and the "defaults", or
 parameters you want returned on a match.</p>
-<pre class=codehilite><code class=language-php>$route = Literal::factory([
+<pre class="highlight"><code class="language-php">$route = Literal::factory([
     'route' =&gt; '/foo',
     'defaults' =&gt; [
         'controller' =&gt; 'Application\Controller\IndexController',
         'action' =&gt; 'foo',
     ],
 ]);</code></pre>
+
 <p>The above route would match a path "/foo", and return the key "action" in the
 <code>RouteMatch</code>, with the value "foo".</p>
 <h3>Laminas\Router\Http\Method</h3>
 <p>The <code>Method</code> route is used to match the HTTP method or 'verb' specified in the
 request (See RFC 2616 Sec. 5.1.1). It can optionally be configured to match
 against multiple methods by providing a comma-separated list of method tokens.</p>
-<pre class=codehilite><code class=language-php>$route = Method::factory([
+<pre class="highlight"><code class="language-php">$route = Method::factory([
     'verb' =&gt; 'post,put',
     'defaults' =&gt; [
         'controller' =&gt; 'Application\Controller\IndexController',
         'action' =&gt; 'form-submit',
     ],
 ]);</code></pre>
+
 <p>The above route would match an http "POST" or "PUT" request and return a
 <code>RouteMatch</code> object containing a key "action" with a value of "form-submit".</p>
 <h3>Laminas\Router\Http\Part</h3>
@@ -583,7 +592,7 @@ against multiple methods by providing a comma-separated list of method tokens.</
 the URI path. It actually extends the <code>TreeRouteStack</code>.</p>
 <p><code>Part</code> routes are difficult to describe, so we'll simply provide a sample one
 here.</p>
-<pre class=codehilite><code class=language-php>$route = Part::factory([
+<pre class="highlight"><code class="language-php">$route = Part::factory([
     'route' =&gt; [
         'type' =&gt; 'literal',
         'options' =&gt; [
@@ -643,6 +652,7 @@ here.</p>
         ],
     ],
 ]);</code></pre>
+
 <p>The above would match the following:</p>
 <ul>
 <li><code>/</code> would load the "Index" controller, "index" action.</li>
@@ -663,8 +673,7 @@ further insight.</p>
 <p>In the above example, the <code>$routePlugins</code> is an instance of
 <code>Laminas\Router\RoutePluginManager</code>, containing essentially the following
 configuration:</p>
-<pre class="codehilite"><code class="language-php">
-$routePlugins = new Laminas\Router\RoutePluginManager();
+<pre class="highlight"><code class="language-php">$routePlugins = new Laminas\Router\RoutePluginManager();
 $plugins = [
     'hostname' =&gt; 'Laminas\Router\Http\Hostname',
     'literal'  =&gt; 'Laminas\Router\Http\Literal',
@@ -678,8 +687,8 @@ $plugins = [
 ];
 foreach ($plugins as $name =&gt; $class) {
     $routePlugins-&gt;setInvokableClass($name, $class);
-}
-</code></pre>
+}</code></pre>
+
 <p>When using <code>Laminas\Router\Http\TreeRouteStack</code>, the <code>RoutePluginManager</code> is
 set up by default, and the developer does not need to worry about autoloading
 of standard HTTP routes.</p>
@@ -695,7 +704,7 @@ the keys coming from either the captured values or named parameters passed to
 the <code>assemble()</code> method.</p>
 <p>Just like other routes, the <code>Regex</code> route can accept "defaults", parameters to
 include in the <code>RouteMatch</code> when successfully matched.</p>
-<pre class=codehilite><code class=language-php>$route = Regex::factory([
+<pre class="highlight"><code class="language-php">$route = Regex::factory([
     'regex' =&gt; '/blog/(?&lt;id&gt;[a-zA-Z0-9_-]+)(\.(?&lt;format&gt;(json|html|xml|rss)))?',
     'defaults' =&gt; [
         'controller' =&gt; 'Application\Controller\BlogController',
@@ -704,6 +713,7 @@ include in the <code>RouteMatch</code> when successfully matched.</p>
     ],
     'spec' =&gt; '/blog/%id%.%format%',
 ]);</code></pre>
+
 <p>The above would match <code>/blog/001-some-blog_slug-here.html</code>, and return four
 items in the <code>RouteMatch</code>, an "id", the "controller", the "action", and the
 "format". When assembling a URL from this route, the "id" and "format" values
@@ -712,12 +722,13 @@ would be used to fill the specification.</p>
 <p>The <code>Scheme</code> route matches the URI scheme only, and must be an exact match. As
 such, this route, like the <code>Literal</code> route, simply takes what you want to match
 and the "defaults", parameters to return on a match.</p>
-<pre class=codehilite><code class=language-php>$route = Scheme::factory([
+<pre class="highlight"><code class="language-php">$route = Scheme::factory([
     'scheme' =&gt; 'https',
     'defaults' =&gt; [
         'https' =&gt; true,
     ],
 ]);</code></pre>
+
 <p>The above route would match the "https" scheme, and return the key "https" in
 the <code>RouteMatch</code> with a boolean <code>true</code> value.</p>
 <h3>Laminas\Router\Http\Segment</h3>
@@ -737,7 +748,7 @@ segment should match.</p>
 <p>Also, as you can in other routes, you may provide defaults to use; these are
 particularly useful when using optional segments.</p>
 <p>As a complex example:</p>
-<pre class=codehilite><code class=language-php>$route = Segment::factory([
+<pre class="highlight"><code class="language-php">$route = Segment::factory([
     'route' =&gt; '/:controller[/:action]',
     'constraints' =&gt; [
         'controller' =&gt; '[a-zA-Z][a-zA-Z0-9_-]+',
@@ -748,6 +759,7 @@ particularly useful when using optional segments.</p>
         'action'     =&gt; 'index',
     ],
 ]);</code></pre>
+
 <h3>Laminas\Router\Http\Query (Deprecated)</h3>
 <blockquote>
 <h4>Potential security issue</h4>
@@ -761,7 +773,7 @@ for a given route.</p>
 <p>The intention of the <code>Query</code> part is that you do not instantiate it in its own
 right, but use it as a child of another route part.</p>
 <p>An example of its usage would be:</p>
-<pre class=codehilite><code class=language-php>$route = Part::factory([
+<pre class="highlight"><code class="language-php">$route = Part::factory([
     'route' =&gt; [
         'type'    =&gt; 'literal',
         'options' =&gt; [
@@ -782,8 +794,9 @@ right, but use it as a child of another route part.</p>
         ],
     ],
 ]);</code></pre>
+
 <p>This then allows you to create query strings using the url view helper.</p>
-<pre class=codehilite><code class=language-php>$this-&gt;url(
+<pre class="highlight"><code class="language-php">$this-&gt;url(
     'page/query',
     [
         'name'   =&gt; 'my-test-page',
@@ -791,6 +804,7 @@ right, but use it as a child of another route part.</p>
         'limit'  =&gt; 10,
     ]
 );</code></pre>
+
 <p>Per the above example, you must add <code>/query</code> (the name we gave to our query
 route segment) to your route name in order to append a query string. If you do
 not specify <code>/query</code> in the route name, then no query string will be appended.</p>
@@ -811,10 +825,10 @@ will then be appended as a query string.</p>
 <p>Most of the routing definitions will be done in module configuration files, so
 the following examples will show how to set up routes in config files.</p>
 <h3>Simple example with two literal routes</h3>
-<pre class=codehilite><code class=language-php>return [
+<pre class="highlight"><code class="language-php">return [
     'router' =&gt; [
         'routes' =&gt; [
-            // Literal route named &quot;home&quot;
+            // Literal route named "home"
             'home' =&gt; [
                 'type' =&gt; 'literal',
                 'options' =&gt; [
@@ -825,7 +839,7 @@ the following examples will show how to set up routes in config files.</p>
                     ],
                 ],
             ],
-            // Literal route named &quot;contact&quot;
+            // Literal route named "contact"
             'contact' =&gt; [
                 'type' =&gt; 'literal',
                 'options' =&gt; [
@@ -839,11 +853,12 @@ the following examples will show how to set up routes in config files.</p>
         ],
     ],
 ];</code></pre>
+
 <h3>A complex example with child routes</h3>
-<pre class=codehilite><code class=language-php>return [
+<pre class="highlight"><code class="language-php">return [
     'router' =&gt; [
         'routes' =&gt; [
-            // Literal route named &quot;home&quot;
+            // Literal route named "home"
             'home' =&gt; [
                 'type' =&gt; 'literal',
                 'options' =&gt; [
@@ -854,7 +869,7 @@ the following examples will show how to set up routes in config files.</p>
                     ],
                 ],
             ],
-            // Literal route named &quot;blog&quot;, with child routes
+            // Literal route named "blog", with child routes
             'blog' =&gt; [
                 'type' =&gt; 'literal',
                 'options' =&gt; [
@@ -894,13 +909,15 @@ the following examples will show how to set up routes in config files.</p>
         ],
     ],
 ];</code></pre>
+
 <p>When using child routes, naming of the routes follows the <code>parent/child</code>
 pattern, so to use the child routes from the above example:</p>
-<pre class=codehilite><code class=language-php>echo $this-&gt;url('blog'); // gives &quot;/blog&quot;
-echo $this-&gt;url('blog/post', ['slug' =&gt; 'my-post']); // gives &quot;/blog/my-post&quot;
-echo $this-&gt;url('blog/rss'); // gives &quot;/blog/rss&quot;</code></pre>
+<pre class="highlight"><code class="language-php">echo $this-&gt;url('blog'); // gives "/blog"
+echo $this-&gt;url('blog/post', ['slug' =&gt; 'my-post']); // gives "/blog/my-post"
+echo $this-&gt;url('blog/rss'); // gives "/blog/rss"</code></pre>
+
 <h3>An example with multiple Hostnames and subdomains within a single application</h3>
-<pre class=codehilite><code class=language-php>return [
+<pre class="highlight"><code class="language-php">return [
     'router' =&gt; [
         'routes' =&gt; [
             'modules.laminas.dev' =&gt; [
@@ -962,6 +979,7 @@ echo $this-&gt;url('blog/rss'); // gives &quot;/blog/rss&quot;</code></pre>
         ],
     ],
 ];</code></pre>
+
 <p>The above would match the following:</p>
 <ul>
 <li><code>modules.laminas.dev</code> would dispatch the <code>Index</code> controller's <code>index</code>
@@ -975,9 +993,10 @@ echo $this-&gt;url('blog/rss'); // gives &quot;/blog/rss&quot;</code></pre>
 </ul>
 <p>The <code>Url</code> controller plugin or view helper may be used to generate URLs
 following the above example:</p>
-<pre class=codehilite><code class=language-php>// reuse the route matched parameters to generate URLs
+<pre class="highlight"><code class="language-php">// reuse the route matched parameters to generate URLs
 echo $this-&gt;url('modules.laminas.dev/index', [], [], true);
 echo $this-&gt;url('packages.laminas.dev/index', [], [], true);</code></pre>
+
 <blockquote>
 <h3>may_terminate and child_routes placement</h3>
 <p>When defining child routes pay attention that the <code>may_terminate</code> and

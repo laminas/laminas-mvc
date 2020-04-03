@@ -416,7 +416,8 @@ each structured, we'll show you the easy way to get started.</p>
 Composer.</p>
 <p>If you have not yet done so, <a href="https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx">install Composer</a>.</p>
 <p>Once you have, use the <code>create-project</code> command to create a new application:</p>
-<pre class=codehilite><code class=language-bash>$ composer create-project -sdev laminas/laminas-mvc-skeleton my-application</code></pre>
+<pre class="highlight"><code class="language-bash">$ composer create-project -sdev laminas/laminas-mvc-skeleton my-application</code></pre>
+
 <h2 id="create-a-new-module">Create a New Module</h2>
 <p>By default, one module is provided with the <a href="https://github.com/laminas/laminas-mvc-skeleton">laminas-mvc-skeleton</a>,
 named "Application". It provides a controller to handle the "home" page
@@ -441,22 +442,25 @@ initialization. Since we're actively working on this module, the class list will
 be in flux; we probably want to be pretty lenient in our autoloading approach,
 so let's keep it flexible by using the <code>StandardAutoloader</code>. Let's begin.</p>
 <p>First, let's have <code>autoload_classmap.php</code> return an empty array:</p>
-<pre class=codehilite><code class=language-php>&lt;?php
+<pre class="highlight"><code class="language-php">&lt;?php
 // autoload_classmap.php
 return [];</code></pre>
+
 <p>We'll also edit our <code>config/module.config.php</code> file to read as follows:</p>
-<pre class=codehilite><code class=language-php>return [
+<pre class="highlight"><code class="language-php">return [
     'view_manager' =&gt; [
         'template_path_stack' =&gt; [
             '&lt;module-name&gt;' =&gt; __DIR__ . '/../view',
         ],
     ],
 ];</code></pre>
+
 <p>Fill in <code>module-name</code> with a lowercased, dash-separated version of your module
 name; e.g., "LaminasUser" would become "laminas-user".</p>
 <p>Next, edit the namespace declaration of the <code>Module.php</code> file. Replace the
 following line:</p>
-<pre class=codehilite><code class=language-php>namespace LaminasSkeletonModule;</code></pre>
+<pre class="highlight"><code class="language-php">namespace LaminasSkeletonModule;</code></pre>
+
 <p>with the namespace you want to use for your application.</p>
 <p>Next, rename the directory <code>src/LaminasSkeletonModule</code> to <code>src/&lt;YourModuleName&gt;</code>,
 and the directory <code>view/laminas-skeleton-module</code> to <code>src/&lt;your-module-name&gt;</code>.</p>
@@ -494,9 +498,8 @@ classes for you to start with:</p>
 <p>For version 3, the integration component
 <a href="https://docs.laminas.dev/laminas-mvc-console/">laminas-mvc-console</a> must be
 installed. It can be done via Composer:</p>
-<pre class="codehilite"><code class="language-bash">
-composer require laminas/laminas-mvc-console
-</code></pre>
+<pre class="highlight"><code class="language-bash">composer require laminas/laminas-mvc-console</code></pre>
+
 <p>If you are not using the component installer, you will need to
 <a href="https://docs.laminas.dev/laminas-mvc-console/#installation">add this component as a module</a>.</p>
 </blockquote>
@@ -504,7 +507,7 @@ composer require laminas/laminas-mvc-console
 action. First, create the file <code>HelloController.php</code> in the directory
 <code>src/&lt;module name&gt;/Controller</code>. Edit it in your favorite text editor or IDE,
 and insert the following contents:</p>
-<pre class=codehilite><code class=language-php>&lt;?php
+<pre class="highlight"><code class="language-php">&lt;?php
 namespace &lt;module name&gt;\Controller;
 
 use Laminas\Mvc\Controller\AbstractActionController;
@@ -518,6 +521,7 @@ class HelloController extends AbstractActionController
         return new ViewModel(['message' =&gt; $message]);
     }
 }</code></pre>
+
 <p>So, what are we doing here?</p>
 <ul>
 <li>We're creating an action controller.</li>
@@ -536,9 +540,10 @@ to files with a ".phtml" suffix in your module's <code>view</code> directory.</p
 <h2 id="create-a-view-script">Create a View Script</h2>
 <p>Create the directory <code>view/&lt;module-name&gt;/hello</code>. Inside that directory, create a
 file named <code>world.phtml</code>. Inside that, paste in the following:</p>
-<pre class=codehilite><code class=language-php>&lt;h1&gt;Greetings!&lt;/h1&gt;
+<pre class="highlight"><code class="language-php">&lt;h1&gt;Greetings!&lt;/h1&gt;
 
-&lt;p&gt;You said &quot;&lt;?php echo $this-&gt;escapeHtml($message) ?&gt;&quot;.&lt;/p&gt;</code></pre>
+&lt;p&gt;You said "&lt;?php echo $this-&gt;escapeHtml($message) ?&gt;".&lt;/p&gt;</code></pre>
+
 <p>That's it. Save the file.</p>
 <blockquote>
 <h3>Escaping output</h3>
@@ -555,11 +560,12 @@ controller class names, stripping only the <code>\Controller\\</code> subnamespa
 present.  For example, <code>AwesomeMe\MyModule\Controller\HelloWorldController</code>
 resolves to the template name <code>awesome-me/my-module/hello-world</code> via the
 following configuration:</p>
-<pre class=codehilite><code class=language-php>'view_manager' =&gt; [
+<pre class="highlight"><code class="language-php">'view_manager' =&gt; [
     'controller_map' =&gt; [
         'AwesomeMe\MyModule' =&gt; true,
     ],
 ],</code></pre>
+
 <p>(In v2 releases, the default was to strip subnamespaces, but optional mapping rules
 allowed whitelisting namespaces in module configuration to enable current
 resolver behavior. See the <a href="../migration/to-v3-0/#laminasmvcviewinjecttemplatelistener">migration guide</a>
@@ -585,7 +591,7 @@ routing definition in the module's <code>config/module.config.php</code>, and re
 </ul>
 </blockquote>
 <p>Additionally, we need to tell the application we have a controller:</p>
-<pre class=codehilite><code class=language-php>// module.config.php
+<pre class="highlight"><code class="language-php">// module.config.php
 return [
     'controllers' =&gt; [
         'invokables' =&gt; [
@@ -595,6 +601,7 @@ return [
     ],
    // ... other configuration ...
 ];</code></pre>
+
 <blockquote>
 <h3>Controller services</h3>
 <p>We inform the application about controllers we expect to have in the
@@ -606,7 +613,7 @@ factories.</p>
 </blockquote>
 <p>Open your <code>config/module.config.php</code> file, and modify it to add to the "routes"
 and "controller" parameters so it reads as follows:</p>
-<pre class=codehilite><code class=language-php>return [
+<pre class="highlight"><code class="language-php">return [
     'router' =&gt; [
         'routes' =&gt; [
             '&lt;module name&gt;-hello-world' =&gt; [
@@ -628,13 +635,14 @@ and "controller" parameters so it reads as follows:</p>
     ],
     // ... other configuration ...
 ];</code></pre>
+
 <h2 id="tell-the-application-about-our-module">Tell the Application About our Module</h2>
 <p>One problem: we haven't told our application about our new module!</p>
 <p>By default, modules are not utilized unless we tell the module manager about them.
 As such, we need to notify the application about them.</p>
 <p>Remember the <code>config/application.config.php</code> file? Let's modify it to add our
 new module. Once done, it should read as follows:</p>
-<pre class=codehilite><code class=language-php>&lt;?php
+<pre class="highlight"><code class="language-php">&lt;?php
 return [
     'modules' =&gt; [
         'Application',
@@ -647,6 +655,7 @@ return [
         ],
     ],
 ];</code></pre>
+
 <p>Replace <code>&lt;module-namespace&gt;</code> with the namespace of your module.</p>
 <h2 id="test-it-out">Test it Out!</h2>
 <p>Now we can test things out! Create a new vhost pointing its document root to the <code>public</code> directory
@@ -654,13 +663,15 @@ of your application, and fire it up in a browser. You should see the default hom
 <a href="https://github.com/laminas/laminas-mvc-skeleton">laminas-mvc-skeleton</a>.</p>
 <p>Now alter the location in your URL to append the path "/hello/world", and load the page. You should
 now get the following content:</p>
-<pre class=codehilite><code class=language-html>&lt;h1&gt;Greetings!&lt;/h1&gt;
+<pre class="highlight"><code class="language-html">&lt;h1&gt;Greetings!&lt;/h1&gt;
 
-&lt;p&gt;You said &quot;foo&quot;.&lt;/p&gt;</code></pre>
+&lt;p&gt;You said "foo".&lt;/p&gt;</code></pre>
+
 <p>Now alter the location to append "?message=bar" and load the page. You should now get:</p>
-<pre class=codehilite><code class=language-html>&lt;h1&gt;Greetings!&lt;/h1&gt;
+<pre class="highlight"><code class="language-html">&lt;h1&gt;Greetings!&lt;/h1&gt;
 
-&lt;p&gt;You said &quot;bar&quot;.&lt;/p&gt;</code></pre>
+&lt;p&gt;You said "bar".&lt;/p&gt;</code></pre>
+
 <p>Congratulations! You've created your first Laminas MVC module!</p>
 
 
