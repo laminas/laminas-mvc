@@ -90,6 +90,11 @@ final class EnableComposerAutoloadingCommand extends Command
             json_encode($composer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES, JSON_UNESCAPED_UNICODE)
         );
 
+        $output->writeln(sprintf(
+            '<comment>PSR-4 autoloading has been enabled for %s module.</comment> Running `composer dump-autoload`...',
+            $module
+        ));
+
         system('composer dump-autoload');
 
         return 0;

@@ -73,6 +73,11 @@ final class RegisterModuleCommand extends Command
             }
         });
 
+        $output->writeln(sprintf(
+            '<comment>Module %s has been registered in application</comment>',
+            $module
+        ));
+
         return 0;
     }
 }
