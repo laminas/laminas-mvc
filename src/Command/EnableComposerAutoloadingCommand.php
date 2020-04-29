@@ -1,19 +1,21 @@
 <?php
 
+/**
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
+ */
+
 declare(strict_types=1);
 
 namespace Laminas\Mvc\Command;
 
-use Laminas\Cli\CommandListenerInterface;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Event\ConsoleEvent;
 use Symfony\Component\Console\Helper\QuestionHelper;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 use function file_get_contents;
 use function file_put_contents;
@@ -24,7 +26,7 @@ use const JSON_PRETTY_PRINT;
 use const JSON_UNESCAPED_SLASHES;
 use const JSON_UNESCAPED_UNICODE;
 
-final class EnableComposerAutoloadingCommand extends Command implements CommandListenerInterface
+final class EnableComposerAutoloadingCommand extends Command
 {
     /** @var string */
     protected static $defaultName = 'mvc:module:enable-autoloading';
@@ -89,32 +91,6 @@ final class EnableComposerAutoloadingCommand extends Command implements CommandL
         );
 
         system('composer dump-autoload');
-
-        return 0;
-    }
-
-    public function __invoke(ConsoleEvent $event) : int
-    {
-        $input = $event->getInput();
-        $output = $event->getOutput();
-
-        /** @var QuestionHelper $helper */
-        $helper = $this->getHelper('question');
-
-        $question = new ConfirmationQuestion(sprintf(
-            PHP_EOL . 'Do you want to enable composer PSR-4 autoloading for %s module? [Y/n] ',
-            $input->getOption('name')
-        ));
-
-        if ($helper->ask($input, $output, $question)) {
-            $params = [
-                'command' => self::$defaultName,
-                '--module' => $input->getOption('name'),
-                '--dir' => $input->getOption('dir'),
-            ];
-
-            return $this->getApplication()->run(new ArrayInput($params), $output);
-        }
 
         return 0;
     }

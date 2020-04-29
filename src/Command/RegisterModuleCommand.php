@@ -1,10 +1,15 @@
 <?php
 
+/**
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
+ */
+
 declare(strict_types=1);
 
 namespace Laminas\Mvc\Command;
 
-use Laminas\Cli\CommandListenerInterface;
 use Laminas\ComponentInstaller\Collection;
 use Laminas\ComponentInstaller\ConfigDiscovery;
 use Laminas\ComponentInstaller\ConfigOption;
@@ -12,15 +17,11 @@ use Laminas\ComponentInstaller\Injector\DevelopmentConfigInjector;
 use Laminas\ComponentInstaller\Injector\DevelopmentWorkConfigInjector;
 use Laminas\ComponentInstaller\Injector\InjectorInterface;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Event\ConsoleEvent;
-use Symfony\Component\Console\Helper\QuestionHelper;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
 
-final class RegisterModuleCommand extends Command implements CommandListenerInterface
+final class RegisterModuleCommand extends Command
 {
     /** @var string */
     protected static $defaultName = 'mvc:module:register';
@@ -71,33 +72,6 @@ final class RegisterModuleCommand extends Command implements CommandListenerInte
                 $injector->inject($module, InjectorInterface::TYPE_MODULE);
             }
         });
-
-        return 0;
-    }
-
-    public function __invoke(ConsoleEvent $event) : int
-    {
-        $input = $event->getInput();
-        $output = $event->getOutput();
-
-        /** @var QuestionHelper $helper */
-        $helper = $this->getHelper('question');
-
-        $question = new ConfirmationQuestion(sprintf(
-            PHP_EOL . 'Do you want to register the %s module within the application? [Y/n] ',
-            $input->getOption('module')
-        ));
-
-        if ($helper->ask($input, $output, $question)) {
-            $params = [
-                'command' => self::$defaultName,
-                '--module' => $input->getOption('module'),
-                '--dir' => $input->getOption('dir'),
-                '--mode' => $input->getOption('mode'),
-            ];
-
-            return $this->getApplication()->run(new ArrayInput($params), $output);
-        }
 
         return 0;
     }

@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @see       https://github.com/laminas/laminas-mvc for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-mvc/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md New BSD License
+ */
+
 declare(strict_types=1);
 
 namespace Laminas\Mvc;
@@ -13,16 +19,23 @@ class Module
         return [
             'laminas-cli' => [
                 'commands' => [
-                    'mvc:module:register' => Command\RegisterModuleCommand::class,
+                    'mvc:module:register'           => Command\RegisterModuleCommand::class,
                     'mvc:module:enable-autoloading' => Command\EnableComposerAutoloadingCommand::class,
-                    'mvc:module:create' => Command\CreateModuleCommand::class,
+                    'mvc:module:create'             => Command\CreateModuleCommand::class,
                 ],
-                'listeners' => [
+                'chains' => [
                     Command\CreateModuleCommand::class => [
-                        Command\EnableComposerAutoloadingCommand::class,
+                        Command\EnableComposerAutoloadingCommand::class => [
+                            '--name' => '--module',
+                            '--dir'  => '--dir',
+                        ],
                     ],
                     Command\EnableComposerAutoloadingCommand::class => [
-                        Command\RegisterModuleCommand::class,
+                        Command\RegisterModuleCommand::class => [
+                            '--module' => '--module',
+                            '--dir'    => '--dir',
+                            '--mode'   => '--mode',
+                        ],
                     ],
                 ],
             ],
