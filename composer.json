@@ -18,13 +18,13 @@
     "config": {
         "sort-packages": true,
         "platform": {
-            "php": "7.3.99"
+            "php": "7.4.99"
         }
     },
     "extra": {
     },
     "require": {
-        "php": "^7.3 || ~8.0.0 || ~8.1.0",
+        "php": "^7.4 || ~8.0.0 || ~8.1.0",
         "container-interop/container-interop": "^1.2",
         "laminas/laminas-eventmanager": "^3.4",
         "laminas/laminas-http": "^2.15",
@@ -32,7 +32,8 @@
         "laminas/laminas-router": "^3.5",
         "laminas/laminas-servicemanager": "^3.7",
         "laminas/laminas-stdlib": "^3.6",
-        "laminas/laminas-view": "^2.14"
+        "laminas/laminas-view": "^2.14",
+        "psr/container": "^1.1 || ^2.0"
     },
     "require-dev": {
         "http-interop/http-middleware": "^0.4.1",
@@ -78,8 +79,5 @@
         "cs-fix": "phpcbf",
         "test": "phpunit --colors=always",
         "test-coverage": "phpunit --colors=always --coverage-clover clover.xml"
-    },
-    "conflict": {
-        "zendframework/zend-mvc": "*"
     }
 }
