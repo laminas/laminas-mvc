@@ -41,7 +41,8 @@
         "laminas/laminas-json": "^2.6.1 || ^3.0",
         "laminas/laminas-psr7bridge": "^1.0",
         "laminas/laminas-stratigility": ">=2.0.1 <2.2",
-        "phpunit/phpunit": "^7.5.18 || ^6.4.4 || ^5.7.14"
+        "phpspec/prophecy-phpunit": "^2.0",
+        "phpunit/phpunit": "^9.1.4"
     },
     "suggest": {
         "http-interop/http-middleware": "^0.4.1 to be used together with laminas-stratigility",

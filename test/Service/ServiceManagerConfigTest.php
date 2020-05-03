@@ -36,7 +36,7 @@ class ServiceManagerConfigTest extends TestCase
     /**
      * {@inheritDoc}
      */
-    protected function setUp()
+    protected function setUp() : void
     {
         $this->config   = new ServiceManagerConfig();
         $this->services = new ServiceManager();

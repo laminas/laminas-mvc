@@ -14,6 +14,7 @@ use Laminas\Mvc\Controller\AbstractController;
 use Laminas\Mvc\InjectApplicationEventInterface;
 use Laminas\Stdlib\DispatchableInterface;
 use LaminasTest\Mvc\Controller\TestAsset\AbstractControllerStub;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 
@@ -30,7 +31,7 @@ class AbstractControllerTest extends TestCase
     /**
      * {@inheritDoc}
      */
-    protected function setUp()
+    protected function setUp() : void
     {
         $this->controller = new AbstractControllerStub();
     }
@@ -40,13 +41,13 @@ class AbstractControllerTest extends TestCase
      */
     public function testSetEventManagerWithDefaultIdentifiers()
     {
-        /* @var $eventManager EventManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $eventManager EventManagerInterface&MockObject */
         $eventManager = $this->createMock(EventManagerInterface::class);
 
         $eventManager
             ->expects($this->once())
             ->method('setIdentifiers')
-            ->with($this->logicalNot($this->contains('customEventIdentifier')));
+            ->with($this->logicalNot($this->containsIdentical('customEventIdentifier')));
 
         $this->controller->setEventManager($eventManager);
     }
@@ -56,10 +57,13 @@ class AbstractControllerTest extends TestCase
      */
     public function testSetEventManagerWithCustomStringIdentifier()
     {
-        /* @var $eventManager EventManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $eventManager EventManagerInterface&MockObject */
         $eventManager = $this->createMock(EventManagerInterface::class);
 
-        $eventManager->expects($this->once())->method('setIdentifiers')->with($this->contains('customEventIdentifier'));
+        $eventManager
+            ->expects($this->once())
+            ->method('setIdentifiers')
+            ->with($this->containsIdentical('customEventIdentifier'));
 
         $reflection = new ReflectionProperty($this->controller, 'eventIdentifier');
 
@@ -74,12 +78,12 @@ class AbstractControllerTest extends TestCase
      */
     public function testSetEventManagerWithMultipleCustomStringIdentifier()
     {
-        /* @var $eventManager EventManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $eventManager EventManagerInterface&MockObject */
         $eventManager = $this->createMock(EventManagerInterface::class);
 
         $eventManager->expects($this->once())->method('setIdentifiers')->with($this->logicalAnd(
-            $this->contains('customEventIdentifier1'),
-            $this->contains('customEventIdentifier2')
+            $this->containsIdentical('customEventIdentifier1'),
+            $this->containsIdentical('customEventIdentifier2')
         ));
 
         $reflection = new ReflectionProperty($this->controller, 'eventIdentifier');
@@ -95,16 +99,16 @@ class AbstractControllerTest extends TestCase
      */
     public function testSetEventManagerWithDefaultIdentifiersIncludesImplementedInterfaces()
     {
-        /* @var $eventManager EventManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $eventManager EventManagerInterface&MockObject */
         $eventManager = $this->createMock(EventManagerInterface::class);
 
         $eventManager
             ->expects($this->once())
             ->method('setIdentifiers')
             ->with($this->logicalAnd(
-                $this->contains(EventManagerAwareInterface::class),
-                $this->contains(DispatchableInterface::class),
-                $this->contains(InjectApplicationEventInterface::class)
+                $this->containsIdentical(EventManagerAwareInterface::class),
+                $this->containsIdentical(DispatchableInterface::class),
+                $this->containsIdentical(InjectApplicationEventInterface::class)
             ));
 
         $this->controller->setEventManager($eventManager);
@@ -112,17 +116,17 @@ class AbstractControllerTest extends TestCase
 
     public function testSetEventManagerWithDefaultIdentifiersIncludesExtendingClassNameAndNamespace()
     {
-        /* @var $eventManager EventManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $eventManager EventManagerInterface&MockObject */
         $eventManager = $this->createMock(EventManagerInterface::class);
 
         $eventManager
             ->expects($this->once())
             ->method('setIdentifiers')
             ->with($this->logicalAnd(
-                $this->contains(AbstractController::class),
-                $this->contains(AbstractControllerStub::class),
-                $this->contains('LaminasTest'),
-                $this->contains('LaminasTest\\Mvc\\Controller\\TestAsset')
+                $this->containsIdentical(AbstractController::class),
+                $this->containsIdentical(AbstractControllerStub::class),
+                $this->containsIdentical('LaminasTest'),
+                $this->containsIdentical('LaminasTest\\Mvc\\Controller\\TestAsset')
             ));
 
         $this->controller->setEventManager($eventManager);

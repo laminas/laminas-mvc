@@ -22,7 +22,7 @@ use PHPUnit\Framework\TestCase;
 
 class RedirectTest extends TestCase
 {
-    public function setUp()
+    protected function setUp() : void
     {
         $this->response = new Response();
 

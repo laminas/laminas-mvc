@@ -20,7 +20,7 @@ class CreateViewModelListenerTest extends TestCase
 {
     use EventListenerIntrospectionTrait;
 
-    public function setUp()
+    protected function setUp() : void
     {
         $this->listener   = new CreateViewModelListener();
         $this->event      = new MvcEvent();

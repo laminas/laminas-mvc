@@ -27,7 +27,7 @@ class RouteNotFoundStrategyTest extends TestCase
      */
     private $strategy;
 
-    public function setUp()
+    protected function setUp() : void
     {
         $this->strategy = new RouteNotFoundStrategy();
     }

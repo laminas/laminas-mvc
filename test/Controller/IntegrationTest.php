@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 
 class IntegrationTest extends TestCase
 {
-    public function setUp()
+    protected function setUp() : void
     {
         $this->sharedEvents = new SharedEventManager();
 

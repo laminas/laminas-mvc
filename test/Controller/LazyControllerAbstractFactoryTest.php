@@ -13,10 +13,13 @@ use Laminas\Mvc\Controller\LazyControllerAbstractFactory;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Laminas\Validator\ValidatorPluginManager;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class LazyControllerAbstractFactoryTest extends TestCase
 {
-    public function setUp()
+    use ProphecyTrait;
+
+    protected function setUp() : void
     {
         $this->container = $this->prophesize(ContainerInterface::class);
     }
