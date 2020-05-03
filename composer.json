@@ -25,8 +25,7 @@
         }
     },
     "require": {
-        "php": "^5.6 || ^7.0",
-        "container-interop/container-interop": "^1.2",
+        "php": "^7.3",
         "laminas/laminas-eventmanager": "^3.2",
         "laminas/laminas-http": "^2.7",
         "laminas/laminas-modulemanager": "^2.8",
@@ -34,7 +33,7 @@
         "laminas/laminas-servicemanager": "^3.3",
         "laminas/laminas-stdlib": "^3.2.1",
         "laminas/laminas-view": "^2.9",
-        "laminas/laminas-zendframework-bridge": "^1.0"
+        "psr/container": "^1.0"
     },
     "require-dev": {
         "http-interop/http-middleware": "^0.4.1",
