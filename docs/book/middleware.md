@@ -18,6 +18,17 @@ is callable. When those conditions are met, it uses the [PSR-7 bridge](https://g
 to convert the laminas-http request and response objects into PSR-7 instances, and
 then invokes the middleware.
 
+## Deprecation
+
+Starting with version 3.2.0 `Laminas\Mvc\MiddlewareListener` is deprecated.
+Middleware support is now available via
+[laminas-mvc-middleware](https://github.com/laminas/laminas-mvc-middleware)
+package, which acts as a drop-in replacement at `^1.0` or provides a PSR-15
+Middleware compatibility starting with `^2.0`.
+
+`laminas-mvc-middleware` is an MVC module that needs to be registered with
+laminas-mvc application to function.
+
 ## Mapping routes to middleware
 
 The first step is to map a route to PSR-7 middleware. This looks like any other
