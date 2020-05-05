@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Laminas\Mvc\Command;
 
+use Laminas\Cli\Input\InputParam;
+use Laminas\Cli\Input\InputParamTrait;
 use Laminas\ComponentInstaller\Collection;
 use Laminas\ComponentInstaller\ConfigDiscovery;
 use Laminas\ComponentInstaller\ConfigOption;
@@ -18,11 +20,12 @@ use Laminas\ComponentInstaller\Injector\DevelopmentWorkConfigInjector;
 use Laminas\ComponentInstaller\Injector\InjectorInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 final class RegisterModuleCommand extends Command
 {
+    use InputParamTrait;
+
     /** @var string */
     protected static $defaultName = 'mvc:module:register';
 
@@ -30,31 +33,48 @@ final class RegisterModuleCommand extends Command
     {
         $this->setName(self::$defaultName);
         $this->setDescription('Register given module within the application');
-        $this->addOption(
+
+        $this->addParam(
             'module',
+            'Module name to enable',
+            InputParam::TYPE_STRING,
+            true,
             null,
-            InputOption::VALUE_OPTIONAL,
-            'Module name to register'
+            [
+                'pattern' => '/^[A-Z][a-zA-Z0-9]*$/',
+            ]
         );
-        $this->addOption(
+        $this->addParam(
             'dir',
-            null,
-            InputOption::VALUE_OPTIONAL,
-            'Directory with modules'
+            'Directory with modules',
+            InputParam::TYPE_PATH,
+            true,
+            'module',
+            [
+                'type' => 'dir',
+                'existing' => true,
+            ]
         );
-        $this->addOption(
+        $this->addParam(
             'mode',
+            'Where the module will be used',
+            InputParam::TYPE_CHOICE,
+            true,
             null,
-            InputOption::VALUE_OPTIONAL,
-            'Production or development mode'
+            [
+                'haystack' => [
+                    'Production',
+                    'Development',
+                ],
+            ]
         );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $module = $input->getOption('module');
-        $dir = $input->getOption('dir');
-        $mode = $input->getOption('mode');
+        $module = $this->getParam('module');
+        $dir = $this->getParam('dir');
+        $mode = $this->getParam('mode');
 
         $configDiscovery = new ConfigDiscovery();
         $configOptions = $configDiscovery->getAvailableConfigOptions(new Collection([InjectorInterface::TYPE_MODULE]));
