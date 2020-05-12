@@ -61,4 +61,4 @@ factory, as reflection can introduce performance overhead.
 
 ## References
 
-This feature was inspired by [a blog post by Alexandre Lemaire](http://circlical.com/blog/2016/3/9/preparing-for-laminas-f).
+This feature was inspired by [a blog post by Alexandre Lemaire](http://circlical.com/blog/2016/3/9/preparing-for-zend-f).
