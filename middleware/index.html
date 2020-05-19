@@ -500,7 +500,7 @@ class IndexMiddleware implements MiddlewareInterface
 
 <p>Alternately, you may still write <code>callable</code> middleware using the following
 signature:</p>
-<pre class="highlight"><code class="language-php">function (ServerREquestInterface $request, ResponseInterface $response, callable $next)
+<pre class="highlight"><code class="language-php">function (ServerRequestInterface $request, ResponseInterface $response, callable $next)
 {
     // do some work
 }</code></pre>
