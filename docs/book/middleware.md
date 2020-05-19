@@ -124,7 +124,7 @@ Alternately, you may still write `callable` middleware using the following
 signature:
 
 ```php
-function (ServerREquestInterface $request, ResponseInterface $response, callable $next)
+function (ServerRequestInterface $request, ResponseInterface $response, callable $next)
 {
     // do some work
 }
