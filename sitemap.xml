@@ -1,67 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url>
      <loc>https://docs.laminas.dev/laminas-mvc/</loc>
-     <lastmod>2020-05-19</lastmod>
+     <lastmod>2020-05-27</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://docs.laminas.dev/laminas-mvc/intro/</loc>
-     <lastmod>2020-05-19</lastmod>
+     <lastmod>2020-05-27</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://docs.laminas.dev/laminas-mvc/quick-start/</loc>
-     <lastmod>2020-05-19</lastmod>
+     <lastmod>2020-05-27</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://docs.laminas.dev/laminas-mvc/services/</loc>
-     <lastmod>2020-05-19</lastmod>
+     <lastmod>2020-05-27</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://docs.laminas.dev/laminas-mvc/routing/</loc>
-     <lastmod>2020-05-19</lastmod>
+     <lastmod>2020-05-27</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://docs.laminas.dev/laminas-mvc/mvc-event/</loc>
-     <lastmod>2020-05-19</lastmod>
+     <lastmod>2020-05-27</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://docs.laminas.dev/laminas-mvc/send-response-event/</loc>
-     <lastmod>2020-05-19</lastmod>
+     <lastmod>2020-05-27</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://docs.laminas.dev/laminas-mvc/controllers/</loc>
-     <lastmod>2020-05-19</lastmod>
+     <lastmod>2020-05-27</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://docs.laminas.dev/laminas-mvc/plugins/</loc>
-     <lastmod>2020-05-19</lastmod>
+     <lastmod>2020-05-27</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://docs.laminas.dev/laminas-mvc/examples/</loc>
-     <lastmod>2020-05-19</lastmod>
+     <lastmod>2020-05-27</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://docs.laminas.dev/laminas-mvc/middleware/</loc>
-     <lastmod>2020-05-19</lastmod>
+     <lastmod>2020-05-27</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://docs.laminas.dev/laminas-mvc/migration/</loc>
-     <lastmod>2020-05-19</lastmod>
+     <lastmod>2020-05-27</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://docs.laminas.dev/laminas-mvc/migration/to-v2-7/</loc>
-     <lastmod>2020-05-19</lastmod>
+     <lastmod>2020-05-27</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://docs.laminas.dev/laminas-mvc/migration/to-v3-0/</loc>
-     <lastmod>2020-05-19</lastmod>
+     <lastmod>2020-05-27</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://docs.laminas.dev/laminas-mvc/cookbook/automating-controller-factories/</loc>
-     <lastmod>2020-05-19</lastmod>
+     <lastmod>2020-05-27</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://docs.laminas.dev/laminas-mvc/cookbook/middleware-in-listeners/</loc>
-     <lastmod>2020-05-19</lastmod>
+     <lastmod>2020-05-27</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>
