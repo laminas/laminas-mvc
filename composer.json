@@ -41,7 +41,7 @@
     },
     "require-dev": {
         "http-interop/http-middleware": "^0.4.1",
-        "laminas/laminas-cli": "dev-feature/command-params",
+        "laminas/laminas-cli": "^0.1.0",
         "laminas/laminas-coding-standard": "~1.0.0",
         "laminas/laminas-component-installer": "^2.1",
         "laminas/laminas-json": "^2.6.1 || ^3.0",

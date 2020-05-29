@@ -43,7 +43,7 @@ class Module
                 'factories' => [
                     Command\RegisterModuleCommand::class            => InvokableFactory::class,
                     Command\EnableComposerAutoloadingCommand::class => InvokableFactory::class,
-                    Command\CreateModuleCommand::class              => Command\CreateModuleCommand::class,
+                    Command\CreateModuleCommand::class              => InvokableFactory::class,
                 ],
             ],
         ];

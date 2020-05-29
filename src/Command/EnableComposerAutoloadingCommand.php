@@ -10,9 +10,8 @@ declare(strict_types=1);
 
 namespace Laminas\Mvc\Command;
 
-use Laminas\Cli\Input\InputParam;
-use Laminas\Cli\Input\InputParamTrait;
-use Symfony\Component\Console\Command\Command;
+use Laminas\Cli\Command\AbstractParamAwareCommand;
+use Laminas\Cli\Input;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -25,10 +24,8 @@ use const JSON_PRETTY_PRINT;
 use const JSON_UNESCAPED_SLASHES;
 use const JSON_UNESCAPED_UNICODE;
 
-final class EnableComposerAutoloadingCommand extends Command
+final class EnableComposerAutoloadingCommand extends AbstractParamAwareCommand
 {
-    use InputParamTrait;
-
     /** @var string */
     protected static $defaultName = 'mvc:module:enable-autoloading';
 
@@ -38,49 +35,39 @@ final class EnableComposerAutoloadingCommand extends Command
         $this->setDescription('Enables PSR-4 autoloading for module');
 
         $this->addParam(
-            'module',
-            'Module name to enable',
-            InputParam::TYPE_STRING,
-            true,
-            null,
-            [
-                'pattern' => '/^[A-Z][a-zA-Z0-9]*$/',
-            ]
+            (new Input\StringParam('module'))
+                ->setPattern('/^[A-Z][a-zA-Z0-9]*$/')
+                ->setDescription('Module name to enable')
+                ->setRequiredFlag(true)
         );
         $this->addParam(
-            'dir',
-            'Directory with modules',
-            InputParam::TYPE_PATH,
-            true,
-            'module',
-            [
-                'type' => 'dir',
-                'existing' => true,
-            ]
+            (new Input\PathParam('dir', Input\PathParam::TYPE_DIR))
+                ->setPathMustExist(true)
+                ->setDescription('Directory with modules')
+                ->setRequiredFlag(true)
+                ->setDescription('module')
         );
         $this->addParam(
-            'mode',
-            'Where the module will be used',
-            InputParam::TYPE_CHOICE,
-            true,
-            null,
-            [
-                'haystack' => [
-                    'Production',
-                    'Development',
-                ],
-            ]
+            (new Input\ChoiceParam('mode', [
+                'Production',
+                'Development',
+            ]))
+                ->setDescription('Where the module will be used')
+                ->setRequiredFlag(true)
         );
     }
 
+    /**
+     * @param Input\ParamAwareInputInterface $input
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $module = $this->getParam('module');
-        $dir = $this->getParam('dir');
-        $mode = $this->getParam('mode');
+        $module = $input->getParam('module');
+        $dir    = $input->getParam('dir');
+        $mode   = $input->getParam('mode');
 
         $composerFile = getcwd() . '/composer.json';
-        $composer = json_decode(file_get_contents($composerFile), true);
+        $composer     = json_decode(file_get_contents($composerFile), true);
 
         $autoloadSection = $mode === 'Development'
             ? 'autoload-dev'
