@@ -28,26 +28,15 @@ class ServiceManagerConfig extends Config
     protected $config = [
         'abstract_factories' => [],
         'aliases'            => [
-            'EventManagerInterface'            => EventManager::class,
-            EventManagerInterface::class       => 'EventManager',
-            ModuleManager::class               => 'ModuleManager',
-            ServiceListener::class             => 'ServiceListener',
-            SharedEventManager::class          => 'SharedEventManager',
-            'SharedEventManagerInterface'      => 'SharedEventManager',
-            SharedEventManagerInterface::class => 'SharedEventManager',
         ],
         'delegators' => [],
         'factories'  => [
-            'EventManager'            => EventManagerFactory::class,
-            'ModuleManager'           => ModuleManagerFactory::class,
-            'ServiceListener'         => ServiceListenerFactory::class,
         ],
         'lazy_services' => [],
         'initializers'  => [],
         'invokables'    => [],
         'services'      => [],
         'shared'        => [
-            'EventManager' => false,
         ],
     ];
 
@@ -66,10 +55,6 @@ class ServiceManagerConfig extends Config
     {
         $this->config['factories']['ServiceManager'] = function ($container) {
             return $container;
-        };
-
-        $this->config['factories']['SharedEventManager'] = function () {
-            return new SharedEventManager();
         };
 
         $this->config['initializers'] = ArrayUtils::merge($this->config['initializers'], [
