@@ -77,7 +77,6 @@ services configured out of the box.
 ### Invokable services
 
 - `DispatchListener`, mapping to `Laminas\Mvc\DispatchListener`.
-- `Laminas\Mvc\MiddlewareListener`.
 - `RouteListener`, mapping to `Laminas\Mvc\RouteListener`.
 - `SendResponseListener`, mapping to `Laminas\Mvc\SendResponseListener`.
 - `SharedEventManager`, mapping to `Laminas\EventManager\SharedEventManager`.
@@ -315,7 +314,6 @@ services configured out of the box.
 - `Configuration`, mapping to the `Config` service.
 - `Console`, mapping to the `ConsoleAdapter` service.
 - `Di`, mapping to the `DependencyInjector` service.
-- `MiddlewareListener`, mapping to the `Laminas\Mvc\MiddlewareListener` service.
 - `Laminas\Di\LocatorInterface`, mapping to the `DependencyInjector` service.
 - `Laminas\EventManager\EventManagerInterface`, mapping to the `EventManager`
   service. This is mainly to ensure that when falling through to DI, classes
