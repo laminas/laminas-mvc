@@ -36,11 +36,8 @@
         "psr/container": "^1.1 || ^2.0"
     },
     "require-dev": {
-        "http-interop/http-middleware": "^0.4.1",
         "laminas/laminas-coding-standard": "^1.0.0",
         "laminas/laminas-json": "^3.3",
-        "laminas/laminas-psr7bridge": "^1.0",
-        "laminas/laminas-stratigility": ">=2.0.1 <2.2",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^9.5.5"
     },
