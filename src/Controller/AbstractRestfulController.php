@@ -361,25 +361,29 @@ abstract class AbstractRestfulController extends AbstractController
 
                 if ($id !== false) {
                     $action = 'delete';
-                    $return = $this->delete($id);
+                    $this->delete($id);
+                    $return = $e->getResponse();
                     break;
                 }
 
                 $data = $this->processBodyContent($request);
 
                 $action = 'deleteList';
-                $return = $this->deleteList($data);
+                $this->deleteList($data);
+                $return = $e->getResponse();
                 break;
             // GET
             case 'get':
                 $id = $this->getIdentifier($routeMatch, $request);
                 if ($id !== false) {
                     $action = 'get';
-                    $return = $this->get($id);
+                    $this->get($id);
+                    $return = $e->getResponse();
                     break;
                 }
                 $action = 'getList';
-                $return = $this->getList();
+                $this->getList();
+                $return = $e->getResponse();
                 break;
             // HEAD
             case 'head':
@@ -406,7 +410,8 @@ abstract class AbstractRestfulController extends AbstractController
 
                 if ($id !== false) {
                     $action = 'patch';
-                    $return = $this->patch($id, $data);
+                    $this->patch($id, $data);
+                    $return = $e->getResponse();
                     break;
                 }
 
@@ -415,7 +420,8 @@ abstract class AbstractRestfulController extends AbstractController
                 // instead of going to patchList
                 try {
                     $action = 'patchList';
-                    $return = $this->patchList($data);
+                    $this->patchList($data);
+                    $return = $e->getResponse();
                 } catch (Exception\RuntimeException $ex) {
                     $response = $e->getResponse();
                     $response->setStatusCode(405);
@@ -425,7 +431,8 @@ abstract class AbstractRestfulController extends AbstractController
             // POST
             case 'post':
                 $action = 'create';
-                $return = $this->processPostData($request);
+                $this->processPostData($request);
+                $return = $e->getResponse();
                 break;
             // PUT
             case 'put':
@@ -434,12 +441,14 @@ abstract class AbstractRestfulController extends AbstractController
 
                 if ($id !== false) {
                     $action = 'update';
-                    $return = $this->update($id, $data);
+                    $this->update($id, $data);
+                    $return = $e->getResponse();
                     break;
                 }
 
                 $action = 'replaceList';
-                $return = $this->replaceList($data);
+                $this->replaceList($data);
+                $return = $e->getResponse();
                 break;
             // All others...
             default:
