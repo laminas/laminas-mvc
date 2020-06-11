@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Laminas\Mvc;
 
+use Psr\Container\ContainerInterface;
 use Laminas\EventManager\EventManager;
+use Laminas\EventManager\EventManagerAwareInterface;
 use Laminas\EventManager\EventManagerInterface;
 use Laminas\EventManager\SharedEventManager;
 use Laminas\EventManager\SharedEventManagerInterface;
@@ -99,6 +101,32 @@ class ConfigProvider
             ],
             'shared' => [
                 'EventManager' => false,
+            ],
+            'initializers' => [
+                'EventManagerAwareInitializer' => static function ($first, $second) {
+                    if ($first instanceof ContainerInterface) {
+                        $container = $first;
+                        $instance = $second;
+                    } else {
+                        $container = $second;
+                        $instance = $first;
+                    }
+
+                    if (! $instance instanceof EventManagerAwareInterface) {
+                        return;
+                    }
+
+                    $eventManager = $instance->getEventManager();
+
+                    // If the instance has an EM WITH an SEM composed, do nothing.
+                    if ($eventManager instanceof EventManagerInterface
+                        && $eventManager->getSharedManager() instanceof SharedEventManagerInterface
+                    ) {
+                        return;
+                    }
+
+                    $instance->setEventManager($container->get('EventManager'));
+                },
             ],
         ];
     }
