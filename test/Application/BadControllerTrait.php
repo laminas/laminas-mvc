@@ -11,7 +11,6 @@ use Laminas\ServiceManager\ServiceManager;
 use Laminas\Stdlib\ArrayUtils;
 use LaminasTest\Mvc\Controller\TestAsset\BadController;
 use LaminasTest\Mvc\TestAsset;
-use ReflectionProperty;
 
 trait BadControllerTrait
 {

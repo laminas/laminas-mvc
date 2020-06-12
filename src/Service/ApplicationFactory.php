@@ -5,7 +5,6 @@ namespace Laminas\Mvc\Service;
 use Interop\Container\ContainerInterface;
 use Laminas\Mvc\Application;
 use Laminas\ServiceManager\Factory\FactoryInterface;
-use function is_string;
 
 class ApplicationFactory implements FactoryInterface
 {
