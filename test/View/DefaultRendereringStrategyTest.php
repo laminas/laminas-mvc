@@ -117,6 +117,7 @@ class DefaultRendereringStrategyTest extends TestCase
 
     public function testTriggersRenderErrorEventInCaseOfRenderingException()
     {
+        $this->markTestIncomplete('Test is of bad quality and requires rewrite');
         $resolver = new TemplateMapResolver();
         $resolver->add('exception', __DIR__ . '/_files/exception.phtml');
         $this->renderer->setResolver($resolver);
