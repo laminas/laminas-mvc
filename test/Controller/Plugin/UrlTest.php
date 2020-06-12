@@ -25,7 +25,7 @@ use PHPUnit\Framework\TestCase;
 
 class UrlTest extends TestCase
 {
-    public function setUp()
+    protected function setUp() : void
     {
         $router = new SimpleRouteStack;
         $router->addRoute('home', LiteralRoute::factory([

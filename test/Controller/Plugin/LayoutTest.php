@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 class LayoutTest extends TestCase
 {
-    public function setUp()
+    protected function setUp() : void
     {
         $this->event      = $event = new MvcEvent();
         $this->controller = new SampleController();

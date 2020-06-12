@@ -9,12 +9,13 @@
 namespace LaminasTest\Mvc\Service;
 
 use Laminas\Mvc\Service\ServiceListenerFactory;
+use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\ServiceManager;
 use PHPUnit\Framework\TestCase;
 
 class ServiceListenerFactoryTest extends TestCase
 {
-    public function setUp()
+    protected function setUp() : void
     {
         $sm = $this->sm = $this->getMockBuilder(ServiceManager::class)
                                ->setMethods(['get'])
@@ -23,23 +24,17 @@ class ServiceListenerFactoryTest extends TestCase
         $this->factory  = new ServiceListenerFactory();
     }
 
-    /**
-     * @expectedException        Laminas\ServiceManager\Exception\ServiceNotCreatedException
-     * @expectedExceptionMessage The value of service_listener_options must be an array, string given.
-     */
     public function testInvalidOptionType()
     {
         $this->sm->expects($this->once())
                  ->method('get')
                  ->will($this->returnValue(['service_listener_options' => 'string']));
 
+        $this->expectException(ServiceNotCreatedException::class);
+        $this->expectExceptionMessage('The value of service_listener_options must be an array, string given.');
         $this->factory->__invoke($this->sm, 'ServiceListener');
     }
 
-    /**
-     * @expectedException        Laminas\ServiceManager\Exception\ServiceNotCreatedException
-     * @expectedExceptionMessage Invalid service listener options detected, 0 array must contain service_manager key.
-     */
     public function testMissingServiceManager()
     {
         $config['service_listener_options'][0]['service_manager'] = null;
@@ -51,14 +46,13 @@ class ServiceListenerFactoryTest extends TestCase
                  ->method('get')
                  ->will($this->returnValue($config));
 
+        $this->expectException(ServiceNotCreatedException::class);
+        $this->expectExceptionMessage(
+            'Invalid service listener options detected, 0 array must contain service_manager key.'
+        );
         $this->factory->__invoke($this->sm, 'ServiceListener');
     }
 
-    /**
-     * @expectedException        Laminas\ServiceManager\Exception\ServiceNotCreatedException
-     * @expectedExceptionMessage Invalid service listener options detected, service_manager must be a string,
-     *                           integer given.
-     */
     public function testInvalidTypeServiceManager()
     {
         $config['service_listener_options'][0]['service_manager'] = 1;
@@ -70,13 +64,15 @@ class ServiceListenerFactoryTest extends TestCase
                  ->method('get')
                  ->will($this->returnValue($config));
 
+        $this->expectException(
+            ServiceNotCreatedException::class
+        );
+        $this->expectExceptionMessage(
+            'Invalid service listener options detected, service_manager must be a string, integer given.'
+        );
         $this->factory->__invoke($this->sm, 'ServiceListener');
     }
 
-    /**
-     * @expectedException        Laminas\ServiceManager\Exception\ServiceNotCreatedException
-     * @expectedExceptionMessage Invalid service listener options detected, 0 array must contain config_key key.
-     */
     public function testMissingConfigKey()
     {
         $config['service_listener_options'][0]['service_manager'] = 'test';
@@ -88,13 +84,13 @@ class ServiceListenerFactoryTest extends TestCase
                  ->method('get')
                  ->will($this->returnValue($config));
 
+        $this->expectException(ServiceNotCreatedException::class);
+        $this->expectExceptionMessage(
+            'Invalid service listener options detected, 0 array must contain config_key key.'
+        );
         $this->factory->__invoke($this->sm, 'ServiceListener');
     }
 
-    /**
-     * @expectedException        Laminas\ServiceManager\Exception\ServiceNotCreatedException
-     * @expectedExceptionMessage Invalid service listener options detected, config_key must be a string, integer given.
-     */
     public function testInvalidTypeConfigKey()
     {
         $config['service_listener_options'][0]['service_manager'] = 'test';
@@ -106,13 +102,13 @@ class ServiceListenerFactoryTest extends TestCase
                  ->method('get')
                  ->will($this->returnValue($config));
 
+        $this->expectException(ServiceNotCreatedException::class);
+        $this->expectExceptionMessage(
+            'Invalid service listener options detected, config_key must be a string, integer given.'
+        );
         $this->factory->__invoke($this->sm, 'ServiceListener');
     }
 
-    /**
-     * @expectedException        Laminas\ServiceManager\Exception\ServiceNotCreatedException
-     * @expectedExceptionMessage Invalid service listener options detected, 0 array must contain interface key.
-     */
     public function testMissingInterface()
     {
         $config['service_listener_options'][0]['service_manager'] = 'test';
@@ -124,13 +120,11 @@ class ServiceListenerFactoryTest extends TestCase
                  ->method('get')
                  ->will($this->returnValue($config));
 
+        $this->expectException(ServiceNotCreatedException::class);
+        $this->expectExceptionMessage('Invalid service listener options detected, 0 array must contain interface key.');
         $this->factory->__invoke($this->sm, 'ServiceListener');
     }
 
-    /**
-     * @expectedException        Laminas\ServiceManager\Exception\ServiceNotCreatedException
-     * @expectedExceptionMessage Invalid service listener options detected, interface must be a string, integer given.
-     */
     public function testInvalidTypeInterface()
     {
         $config['service_listener_options'][0]['service_manager'] = 'test';
@@ -142,13 +136,13 @@ class ServiceListenerFactoryTest extends TestCase
                  ->method('get')
                  ->will($this->returnValue($config));
 
+        $this->expectException(ServiceNotCreatedException::class);
+        $this->expectExceptionMessage(
+            'Invalid service listener options detected, interface must be a string, integer given.'
+        );
         $this->factory->__invoke($this->sm, 'ServiceListener');
     }
 
-    /**
-     * @expectedException        Laminas\ServiceManager\Exception\ServiceNotCreatedException
-     * @expectedExceptionMessage Invalid service listener options detected, 0 array must contain method key.
-     */
     public function testMissingMethod()
     {
         $config['service_listener_options'][0]['service_manager'] = 'test';
@@ -160,13 +154,11 @@ class ServiceListenerFactoryTest extends TestCase
                  ->method('get')
                  ->will($this->returnValue($config));
 
+        $this->expectException(ServiceNotCreatedException::class);
+        $this->expectExceptionMessage('Invalid service listener options detected, 0 array must contain method key.');
         $this->factory->__invoke($this->sm, 'ServiceListener');
     }
 
-    /**
-     * @expectedException        Laminas\ServiceManager\Exception\ServiceNotCreatedException
-     * @expectedExceptionMessage Invalid service listener options detected, method must be a string, integer given.
-     */
     public function testInvalidTypeMethod()
     {
         $config['service_listener_options'][0]['service_manager'] = 'test';
@@ -178,6 +170,10 @@ class ServiceListenerFactoryTest extends TestCase
                  ->method('get')
                  ->will($this->returnValue($config));
 
+        $this->expectException(ServiceNotCreatedException::class);
+        $this->expectExceptionMessage(
+            'Invalid service listener options detected, method must be a string, integer given.'
+        );
         $this->factory->__invoke($this->sm, 'ServiceListener');
     }
 }

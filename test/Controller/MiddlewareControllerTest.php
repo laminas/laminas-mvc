@@ -55,7 +55,7 @@ class MiddlewareControllerTest extends TestCase
     /**
      * {@inheritDoc}
      */
-    protected function setUp()
+    protected function setUp() : void
     {
         $this->pipe              = $this->createMock(MiddlewarePipe::class);
         $this->responsePrototype = $this->createMock(ResponseInterface::class);

@@ -12,9 +12,12 @@ use Interop\Container\ContainerInterface;
 use Laminas\Mvc\Service\ViewManagerFactory;
 use Laminas\Mvc\View\Http\ViewManager as HttpViewManager;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class ViewManagerFactoryTest extends TestCase
 {
+    use ProphecyTrait;
+
     private function createContainer()
     {
         $http      = $this->prophesize(HttpViewManager::class);

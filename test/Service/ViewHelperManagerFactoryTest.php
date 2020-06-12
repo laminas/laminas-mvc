@@ -21,7 +21,7 @@ use PHPUnit\Framework\TestCase;
 
 class ViewHelperManagerFactoryTest extends TestCase
 {
-    public function setUp()
+    protected function setUp() : void
     {
         $this->services = new ServiceManager();
         $this->factory  = new ViewHelperManagerFactory();

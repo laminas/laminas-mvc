@@ -32,6 +32,6 @@ class ExceptionsRaisedInDispatchableShouldRaiseDispatchErrorEventTest extends Te
         });
 
         $application->run();
-        $this->assertContains('Raised an exception', $response->getContent());
+        $this->assertStringContainsString('Raised an exception', $response->getContent());
     }
 }

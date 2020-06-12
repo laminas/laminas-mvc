@@ -18,7 +18,7 @@ use Laminas\Stdlib\Response;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers Laminas\Mvc\HttpMethodListener
+ * @covers \Laminas\Mvc\HttpMethodListener
  */
 class HttpMethodListenerTest extends TestCase
 {
@@ -27,7 +27,7 @@ class HttpMethodListenerTest extends TestCase
      */
     protected $listener;
 
-    public function setUp()
+    protected function setUp() : void
     {
         $this->listener = new HttpMethodListener();
     }

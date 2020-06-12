@@ -19,7 +19,7 @@ use PHPUnit\Framework\TestCase;
 
 class ModuleRouteListenerTest extends TestCase
 {
-    public function setUp()
+    protected function setUp() : void
     {
         $this->request             = new Request();
         $this->events              = new EventManager();

@@ -22,7 +22,7 @@ use PHPUnit\Framework\TestCase;
 
 class ControllerManagerTest extends TestCase
 {
-    public function setUp()
+    protected function setUp() : void
     {
         $this->sharedEvents   = new SharedEventManager;
         $this->events         = $this->createEventManager($this->sharedEvents);
@@ -88,8 +88,8 @@ class ControllerManagerTest extends TestCase
     }
 
     /**
-     * @covers Laminas\ServiceManager\ServiceManager::has
-     * @covers Laminas\ServiceManager\AbstractPluginManager::get
+     * @covers \Laminas\ServiceManager\ServiceManager::has
+     * @covers \Laminas\ServiceManager\AbstractPluginManager::get
      */
     public function testDoNotUsePeeringServiceManagers()
     {

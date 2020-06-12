@@ -13,9 +13,12 @@ use Laminas\Mvc\Service\ViewPrefixPathStackResolverFactory;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\View\Resolver\PrefixPathStackResolver;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class ViewPrefixPathStackResolverFactoryTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testCreateService()
     {
         $serviceLocator = $this->prophesize(ServiceLocatorInterface::class);
