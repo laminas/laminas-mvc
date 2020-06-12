@@ -4,8 +4,7 @@ namespace LaminasTest\Mvc\Application;
 
 use Laminas\Http\PhpEnvironment\Request;
 use Laminas\Http\PhpEnvironment\Response;
-use Laminas\Mvc\Service\ServiceListenerFactory;
-use Laminas\Mvc\Service\ServiceManagerConfig;
+use Laminas\Mvc\ConfigProvider;
 use Laminas\Router;
 use Laminas\ServiceManager\ServiceManager;
 use Laminas\Stdlib\ArrayUtils;
@@ -33,13 +32,8 @@ trait MissingControllerTrait
             ],
         ];
 
-        $serviceListener = new ServiceListenerFactory();
-        $r = new ReflectionProperty($serviceListener, 'defaultServiceConfig');
-        $r->setAccessible(true);
-        $serviceConfig = $r->getValue($serviceListener);
-
         $serviceConfig = ArrayUtils::merge(
-            $serviceConfig,
+            (new ConfigProvider())->getDependencies(),
             (new Router\ConfigProvider())->getDependencyConfig()
         );
 
@@ -60,19 +54,10 @@ trait MissingControllerTrait
                 ],
                 'services' => [
                     'config' => $config,
-                    'ApplicationConfig' => [
-                        'modules'                 => [],
-                        'module_listener_options' => [
-                            'config_cache_enabled' => false,
-                            'cache_dir'            => 'data/cache',
-                            'module_paths'         => [],
-                        ],
-                    ],
                 ],
             ]
         );
-        $services = new ServiceManager();
-        (new ServiceManagerConfig($serviceConfig))->configureServiceManager($services);
+        $services = new ServiceManager($serviceConfig);
         $application = $services->get('Application');
 
         $request = $services->get('Request');
