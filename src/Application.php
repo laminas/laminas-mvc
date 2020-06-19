@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Laminas\Mvc;
 
-use Laminas\EventManager\EventManagerAwareInterface;
 use Laminas\EventManager\EventManagerInterface;
+use Laminas\EventManager\EventsCapableInterface;
 use Laminas\ServiceManager\ServiceManager;
 use Laminas\Stdlib\RequestInterface;
 use Laminas\Stdlib\ResponseInterface;
@@ -39,8 +39,7 @@ use Laminas\Stdlib\ResponseInterface;
  * if you wish to setup your own listeners and/or workflow; alternately, you
  * can simply extend the class to override such behavior.
  */
-class Application implements
-    EventManagerAwareInterface
+class Application implements EventsCapableInterface
 {
     public const ERROR_CONTROLLER_CANNOT_DISPATCH = 'error-controller-cannot-dispatch';
     public const ERROR_CONTROLLER_NOT_FOUND       = 'error-controller-not-found';
@@ -68,8 +67,7 @@ class Application implements
      */
     protected $event;
 
-    /** @var EventManagerInterface */
-    protected $events;
+    protected EventManagerInterface $events;
 
     /** @var RequestInterface */
     protected $request;
@@ -79,11 +77,11 @@ class Application implements
 
     public function __construct(
         protected ServiceManager $serviceManager,
-        ?EventManagerInterface $events = null,
+        EventManagerInterface $events,
         ?RequestInterface $request = null,
         ?ResponseInterface $response = null
     ) {
-        $this->setEventManager($events ?: $serviceManager->get('EventManager'));
+        $this->setEventManager($events);
         $this->request  = $request ?: $serviceManager->get('Request');
         $this->response = $response ?: $serviceManager->get('Response');
 
@@ -173,27 +171,17 @@ class Application implements
 
     /**
      * Set the event manager instance
-     *
-     * @return Application
      */
-    public function setEventManager(EventManagerInterface $eventManager)
+    protected function setEventManager(EventManagerInterface $eventManager): void
     {
         $eventManager->setIdentifiers([
             self::class,
             static::class,
         ]);
         $this->events = $eventManager;
-        return $this;
     }
 
-    /**
-     * Retrieve the event manager
-     *
-     * Lazy-loads an EventManager instance if none registered.
-     *
-     * @return EventManagerInterface
-     */
-    public function getEventManager()
+    public function getEventManager(): EventManagerInterface
     {
         return $this->events;
     }
