@@ -179,7 +179,7 @@ you will need to do the following steps:
   the assembled URL.
 - Set the status code of the `Response` object to one of the 3xx HTTP statuses.
 
-The `Redirect` plugin does this work for you. It offers three methods:
+The `Redirect` plugin does this work for you. It offers four methods:
 
 - `toRoute(string $route = null, array $params = [], array $options = [], bool $reuseMatchedParams = false) : Laminas\Http\Response`:
   Redirects to a named route, using the provided `$params` and `$options` to
@@ -188,6 +188,8 @@ The `Redirect` plugin does this work for you. It offers three methods:
 - `toUrl(string $url) : Laminas\Http\Response`: Simply redirects to the given URL.
 
 - `refresh() : Laminas\Http\Response`: Refresh to current route.
+
+- `setStatusCode() : Redirect`: Sets the status code that will be used when redirecting, should be called prior if required.
 
 In each case, the `Response` object is returned. If you return this immediately,
 you can effectively short-circuit execution of the request.
@@ -202,6 +204,12 @@ As an example:
 
 ```php
 return $this->redirect()->toRoute('login-success');
+```
+
+The status code is default to `302`, for sets custom status code, you can do:
+
+```php
+return $this->redirect()->setStatusCode(301)->toRoute('login-success');
 ```
 
 ## Url Plugin
