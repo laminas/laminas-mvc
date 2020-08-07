@@ -17,7 +17,7 @@ class Redirect extends AbstractPlugin
 {
     protected $event;
     protected $response;
-    private   $statusCode = 302;
+    private $statusCode = 302;
 
     /**
      * Generate redirect response based on given route
