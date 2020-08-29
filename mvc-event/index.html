@@ -1,419 +1,196 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Laminas' event-driven MVC layer, including MVC Applications, Controllers, and Plugins.">  
-    <link rel="canonical" href="https://docs.laminas.dev/laminas-mvc/mvc-event/">
-    <link rel="shortcut icon" href="https://docs.laminas.dev/img/trademark-laminas-foundation-rgb.svg">
-
-    <title>The MVC Event - laminas-mvc - Laminas Docs</title>
-
-    <link rel="stylesheet" href="https://docs.laminas.dev/css/styles.css">
-    
-</head>
-<body id="page-top" class="mvc" data-spy="scroll" data-target=".toc" data-offset="20">
-
-    
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
-        <a class="logo-link navbar-brand" href="https://getlaminas.org/" data-tooltip data-placement="bottom" title="Go to the Laminas homepage">
-            <img src="https://docs.laminas.dev/img/laminas-foundation-white.svg" height="28" alt="Laminas">
-        </a>
-        <a class="navbar-title" href="https://docs.laminas.dev/" data-tooltip data-placement="bottom" title="Go to the Laminas Documentation">
-            Documentation
-        </a>
-
         
-        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>The MVC Event - laminas-mvc</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
 
-            
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <div class="dropdown sub-project-selector">
-                        <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
-                            All Docs
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a href="https://docs.mezzio.dev/" class="dropdown-item">
-                                <div class="row align-items-center">
-                                    <div class="col-md-4 col-sm-12">
-                                        <img src="https://docs.laminas.dev/img/laminas-mezzio-rgb.svg">
-                                    </div>
-                                    <div class="col-md-8 col-sm-12">
-                                        <strong>Mezzio</strong><br>
-                                        PSR-15 Middleware in Minutes
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="https://docs.laminas.dev/components/" class="dropdown-item">
-                                <div class="row align-items-center">
-                                    <div class="col-md-4 col-sm-12">
-                                        <img src="https://docs.laminas.dev/img/laminas-components-rgb.svg">
-                                    </div>
-                                    <div class="col-md-8 col-sm-12">
-                                        <strong>Components</strong><br>
-                                        Components for Enterprise Applications
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="https://docs.laminas.dev/mvc" class="dropdown-item">
-                                <div class="row align-items-center">
-                                    <div class="col-md-4 col-sm-12">
-                                        <img src="https://docs.laminas.dev/img/laminas-mvc-rgb.svg">
-                                    </div>
-                                    <div class="col-md-8 col-sm-12">
-                                        <strong>MVC</strong><br>
-                                        MVC for Enterprise Applications
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="https://api-tools.getlaminas.org/documentation" class="dropdown-item">
-                                <div class="row align-items-center">
-                                    <div class="col-md-4 col-sm-12">
-                                        <img src="https://docs.laminas.dev/img/laminas-api-tools-rgb.svg">
-                                    </div>
-                                    <div class="col-md-8 col-sm-12">
-                                        <strong>API Tools</strong><br>
-                                        Build RESTful APIs in Minutes
-                                    </div>
-                                </div>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item dropdown-item--secondardy" href="https://docs.laminas.dev/migration/">
-                                <div class="row align-items-center">
-                                    <div class="col-md-8 offset-md-4 col-sm-12">
-                                        Migration to Laminas
-                                    </div>
-                                </div>
-                            </a>
-                            <a class="dropdown-item dropdown-item--secondardy" href="https://docs.laminas.dev/tutorials/">
-                                <div class="row align-items-center">
-                                    <div class="col-md-8 offset-md-4 col-sm-12">
-                                        Tutorials
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a href="https://getlaminas.org/participate" class="nav-link">Community</a>
-                </li>
-            </ul>
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">laminas-mvc</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-            
-            
-                <div class="d-block d-sm-none">
-                    
-    <div class="subnavigation hidden-print">
-        <h4 class="subnavigation__title">
-            <a href="..">laminas-mvc</a>
-        </h4>
-
-        <h5 class="subnavigation__subtitle">Table of Contents</h5>
-
-        <ul class="subnavigation__list">
-            
-
-                
-                
-
-                    
-                    
-                        
-                            <li class="subnavigation__list-item ">
-                                <a href="../intro/" class="subnavigation__link">Introduction</a>
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
                             </li>
-                        
-                    
-                
-            
-
-                
-                
-
-                    
-                    
-                        
-                            <li class="subnavigation__list-item ">
-                                <a href="../quick-start/" class="subnavigation__link">Quick Start</a>
+                            <li class="navitem">
+                                <a href="../intro/" class="nav-link">Introduction</a>
                             </li>
-                        
-                    
-                
+                            <li class="navitem">
+                                <a href="../quick-start/" class="nav-link">Quick Start</a>
+                            </li>
+                            <li class="dropdown active">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../services/" class="dropdown-item">Default Services</a>
+</li>
+                                    
+<li>
+    <a href="../routing/" class="dropdown-item">Routing</a>
+</li>
+                                    
+<li>
+    <a href="./" class="dropdown-item active">The MVC Event</a>
+</li>
+                                    
+<li>
+    <a href="../send-response-event/" class="dropdown-item">The SendResponse Event</a>
+</li>
+                                    
+<li>
+    <a href="../controllers/" class="dropdown-item">Available Controllers</a>
+</li>
+                                    
+<li>
+    <a href="../plugins/" class="dropdown-item">Controller Plugins</a>
+</li>
+                                    
+<li>
+    <a href="../examples/" class="dropdown-item">Examples</a>
+</li>
+                                    
+<li>
+    <a href="../middleware/" class="dropdown-item">Dispatching PSR-7 Middleware</a>
+</li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Migration</a>
+    <ul class="dropdown-menu">
             
-
-                
-                
-
-                    
-                    
-                        
-                            <li class="subnavigation__list-item">
-                                <span class="subnavigation__headline">Reference</span>
-                                <ul class="subnavigation__list">
-                                    
-                                        
-    <li class="subnavigation__list-item ">
-        <a href="../services/" class="subnavigation__link">Default Services</a>
-    </li>
-
-                                    
-                                        
-    <li class="subnavigation__list-item ">
-        <a href="../routing/" class="subnavigation__link">Routing</a>
-    </li>
-
-                                    
-                                        
-    <li class="subnavigation__list-item subnavigation__list-item--active">
-        <a href="./" class="subnavigation__link">The MVC Event</a>
-    </li>
-
-                                    
-                                        
-    <li class="subnavigation__list-item ">
-        <a href="../send-response-event/" class="subnavigation__link">The SendResponse Event</a>
-    </li>
-
-                                    
-                                        
-    <li class="subnavigation__list-item ">
-        <a href="../controllers/" class="subnavigation__link">Available Controllers</a>
-    </li>
-
-                                    
-                                        
-    <li class="subnavigation__list-item ">
-        <a href="../plugins/" class="subnavigation__link">Controller Plugins</a>
-    </li>
-
-                                    
-                                        
-    <li class="subnavigation__list-item ">
-        <a href="../examples/" class="subnavigation__link">Examples</a>
-    </li>
-
-                                    
-                                        
-    <li class="subnavigation__list-item ">
-        <a href="../middleware/" class="subnavigation__link">Dispatching PSR-7 Middleware</a>
-    </li>
-
-                                    
-                                        
-    <li class="subnavigation__list-item">
-        <span class="subnavigation__headline">Migration</span>
-        <ul class="subnavigation__list">
+<li>
+    <a href="../migration/" class="dropdown-item">Migration Overview</a>
+</li>
             
-                
-    <li class="subnavigation__list-item ">
-        <a href="../migration/" class="subnavigation__link">Migration Overview</a>
-    </li>
-
+<li>
+    <a href="../migration/to-v2-7/" class="dropdown-item">v2.X to v2.7</a>
+</li>
             
-                
-    <li class="subnavigation__list-item ">
-        <a href="../migration/to-v2-7/" class="subnavigation__link">v2.X to v2.7</a>
-    </li>
-
-            
-                
-    <li class="subnavigation__list-item ">
-        <a href="../migration/to-v3-0/" class="subnavigation__link">v2.X to v3.0</a>
-    </li>
-
-            
-        </ul>
-    </li>
-
-                                    
+<li>
+    <a href="../migration/to-v3-0/" class="dropdown-item">v2.X to v3.0</a>
+</li>
+    </ul>
+  </li>
                                 </ul>
                             </li>
-                        
-                    
-                
-            
-
-                
-                
-
-                    
-                    
-                        
-                            <li class="subnavigation__list-item">
-                                <span class="subnavigation__headline">Cookbook</span>
-                                <ul class="subnavigation__list">
+                            <li class="dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Cookbook <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
                                     
-                                        
-    <li class="subnavigation__list-item ">
-        <a href="../cookbook/automating-controller-factories/" class="subnavigation__link">Automating controller factories</a>
-    </li>
-
+<li>
+    <a href="../cookbook/automating-controller-factories/" class="dropdown-item">Automating controller factories</a>
+</li>
                                     
-                                        
-    <li class="subnavigation__list-item ">
-        <a href="../cookbook/middleware-in-listeners/" class="subnavigation__link">Using middleware within event listeners</a>
-    </li>
-
-                                    
+<li>
+    <a href="../cookbook/middleware-in-listeners/" class="dropdown-item">Using middleware within event listeners</a>
+</li>
                                 </ul>
                             </li>
-                        
-                    
-                
-            
-        </ul>
-    </div>
+                        </ul>
 
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../routing/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../send-response-event/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="https://github.com/laminas/laminas-mvc/edit/master/docs/mvc-event.md" class="nav-link"><i class="fa fa-github"></i> Edit on GitHub</a>
+                            </li>
+                    </ul>
                 </div>
-            
-
-            
-            <div class="d-block d-sm-none">
-                <div class="component-selector">
-    
-    <h5 class="component-selector__subtitle">Find documentation…</h5>
-    <select class="form-control component-selector__control">
-        <option value="/">Overview</option>
-        <optgroup label="Components"></optgroup>
-    </select>
-</div>
             </div>
         </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
     </div>
-</nav>
 
     
-    <header class="header">
-    <div class="container">
-        <div class="row">
-
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
             
-            <div class="col-8">
-                <h1 class="header__title">
-                    MVC
-
-                    
-                        <small class="header__subtitle">laminas-mvc</small>
-                    
-                </h1>
-            </div>
-
-            
-            <div class="col-4 text-sm-right">
-                
-                    
-
-                    <a href="#" class="header__link header__link--search" data-toggle="modal" data-target="#mkdocs_search_modal" title="Open search">
-                        <i class="fa fa-search"></i> Search
-                    </a>
-                    <a href="https://github.com/laminas/laminas-mvc/" class="header__link header__link--github" title="Go to repository of laminas-mvc">
-                        <i class="fa fa-github"></i> GitHub
-                    </a>
-                
-            </div>
-        </div>
+            <li class="nav-item" data-level="1"><a href="#the-mvcevent" class="nav-link">The MvcEvent</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#order-of-events" class="nav-link">Order of events</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#mvceventevent_bootstrap-bootstrap" class="nav-link">MvcEvent::EVENT_BOOTSTRAP ("bootstrap")</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#mvceventevent_route-route" class="nav-link">MvcEvent::EVENT_ROUTE ("route")</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#mvceventevent_dispatch-dispatch" class="nav-link">MvcEvent::EVENT_DISPATCH ("dispatch")</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#mvceventevent_dispatch_error-dispatcherror" class="nav-link">MvcEvent::EVENT_DISPATCH_ERROR ("dispatch.error")</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#mvceventevent_render-render" class="nav-link">MvcEvent::EVENT_RENDER ("render")</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#mvceventevent_render_error-rendererror" class="nav-link">MvcEvent::EVENT_RENDER_ERROR ("render.error")</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#mvceventevent_finish-finish" class="nav-link">MvcEvent::EVENT_FINISH ("finish")</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
     </div>
-</header>
+</div></div>
+                    <div class="col-md-9" role="main">
 
-    
-    <div class="container">
-        <div class="row">
-            <div class="col-md-9 col-sm-12 content" role="main">
-                
-                
-                    
-    
-
-    
-    
-        <div class="toc">
-            <h6 class="toc__headline">On this page</h6>
-            <ul class="toc__list">
-                
-                    <li class="toc__entry">
-                        <a href="#order-of-events" class="toc__link nav-link">Order of events</a>
-                    </li>
-                
-                    <li class="toc__entry">
-                        <a href="#mvceventevent_bootstrap-bootstrap" class="toc__link nav-link">MvcEvent::EVENT_BOOTSTRAP ("bootstrap")</a>
-                    </li>
-                
-                    <li class="toc__entry">
-                        <a href="#mvceventevent_route-route" class="toc__link nav-link">MvcEvent::EVENT_ROUTE ("route")</a>
-                    </li>
-                
-                    <li class="toc__entry">
-                        <a href="#mvceventevent_dispatch-dispatch" class="toc__link nav-link">MvcEvent::EVENT_DISPATCH ("dispatch")</a>
-                    </li>
-                
-                    <li class="toc__entry">
-                        <a href="#mvceventevent_dispatch_error-dispatcherror" class="toc__link nav-link">MvcEvent::EVENT_DISPATCH_ERROR ("dispatch.error")</a>
-                    </li>
-                
-                    <li class="toc__entry">
-                        <a href="#mvceventevent_render-render" class="toc__link nav-link">MvcEvent::EVENT_RENDER ("render")</a>
-                    </li>
-                
-                    <li class="toc__entry">
-                        <a href="#mvceventevent_render_error-rendererror" class="toc__link nav-link">MvcEvent::EVENT_RENDER_ERROR ("render.error")</a>
-                    </li>
-                
-                    <li class="toc__entry">
-                        <a href="#mvceventevent_finish-finish" class="toc__link nav-link">MvcEvent::EVENT_FINISH ("finish")</a>
-                    </li>
-                
-            </ul>
-        </div>
-    
-
-                
-
-                
-                    <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        
-            <li class="breadcrumb-item"><a href="https://docs.laminas.dev/">Overview</a></li>
-            <li class="breadcrumb-item"><a href="https://docs.laminas.dev/mvc/">MVC</a></li>
-
-            
-                <li class="breadcrumb-item"><a href="..">laminas-mvc</a></li>
-
-                
-                    
-                        
-                        
-                            <li class="breadcrumb-item">Reference</li>
-                        
-                    
-                
-
-                <li class="breadcrumb-item active" aria-current="page">The MVC Event</li>
-            
-        
-    </ol>
-</nav>
-
-
-
-
-
-
-    
-    
-        <h2 class="chapter__headline">Reference</h2>
-    
-
-    <h1 id="the-mvcevent">The MvcEvent</h1>
+<h1 id="the-mvcevent">The MvcEvent</h1>
 <p>laminas-mvc defines and utilizes a custom <code>Laminas\EventManager\Event</code> implementation,
 <code>Laminas\Mvc\MvcEvent</code>. This event is created during <code>Laminas\Mvc\Application::bootstrap()</code>
 and is passed when triggering all application events.  Additionally, if your
@@ -511,7 +288,7 @@ execution. As an example, the results could be passed into a view renderer.</p>
 </table></div>
 <p>The following sections provide more detail on each event.</p>
 <h2 id="mvceventevent_bootstrap-bootstrap"><code>MvcEvent::EVENT_BOOTSTRAP</code> ("bootstrap")</h2>
-<h3>Listeners</h3>
+<h3 id="listeners">Listeners</h3>
 <p>The following classes listen to this event (sorted from higher priority to lower
 priority):</p>
 <div class="table-responsive"><table>
@@ -534,7 +311,7 @@ priority):</p>
 </tr>
 </tbody>
 </table></div>
-<h3>Triggered By</h3>
+<h3 id="triggered-by">Triggered By</h3>
 <p>This event is triggered by the following classes:</p>
 <div class="table-responsive"><table>
 <thead>
@@ -551,7 +328,7 @@ priority):</p>
 </tbody>
 </table></div>
 <h2 id="mvceventevent_route-route"><code>MvcEvent::EVENT_ROUTE</code> ("route")</h2>
-<h3>Listeners</h3>
+<h3 id="listeners_1">Listeners</h3>
 <p>The following classes listen to this event (sorted from higher priority to lower
 priority):</p>
 <div class="table-responsive"><table>
@@ -581,7 +358,7 @@ priority):</p>
 </tr>
 </tbody>
 </table></div>
-<h3>Triggered By</h3>
+<h3 id="triggered-by_1">Triggered By</h3>
 <p>This event is triggered by the following classes:</p>
 <div class="table-responsive"><table>
 <thead>
@@ -600,10 +377,10 @@ priority):</p>
 </tbody>
 </table></div>
 <h2 id="mvceventevent_dispatch-dispatch"><code>MvcEvent::EVENT_DISPATCH</code> ("dispatch")</h2>
-<h3>Listeners</h3>
+<h3 id="listeners_2">Listeners</h3>
 <p>The following classes listen to this event (sorted from higher priority to lower
 priority):</p>
-<h4>Console context only</h4>
+<h4 id="console-context-only">Console context only</h4>
 <p>The following listeners are only attached in a console context:</p>
 <div class="table-responsive"><table>
 <thead>
@@ -647,7 +424,7 @@ priority):</p>
 </tr>
 </tbody>
 </table></div>
-<h4>HTTP context only</h4>
+<h4 id="http-context-only">HTTP context only</h4>
 <p>The following listeners are only attached in an HTTP context:</p>
 <div class="table-responsive"><table>
 <thead>
@@ -691,7 +468,7 @@ priority):</p>
 </tr>
 </tbody>
 </table></div>
-<h4>All contexts</h4>
+<h4 id="all-contexts">All contexts</h4>
 <p>The following listeners are attached for all contexts (sorted from higher
 priority to lower priority):</p>
 <div class="table-responsive"><table>
@@ -728,7 +505,7 @@ priority to lower priority):</p>
 </tr>
 </tbody>
 </table></div>
-<h3>Triggered By</h3>
+<h3 id="triggered-by_2">Triggered By</h3>
 <p>This event is triggered by the following classes:</p>
 <div class="table-responsive"><table>
 <thead>
@@ -752,10 +529,10 @@ priority to lower priority):</p>
 </tbody>
 </table></div>
 <h2 id="mvceventevent_dispatch_error-dispatcherror"><code>MvcEvent::EVENT_DISPATCH_ERROR</code> ("dispatch.error")</h2>
-<h3>Listeners</h3>
+<h3 id="listeners_3">Listeners</h3>
 <p>The following classes listen to this event (sorted from higher priority to lower
 priority):</p>
-<h4>Console context only</h4>
+<h4 id="console-context-only_1">Console context only</h4>
 <p>The following listeners are only attached in a console context:</p>
 <div class="table-responsive"><table>
 <thead>
@@ -787,7 +564,7 @@ priority):</p>
 </tr>
 </tbody>
 </table></div>
-<h4>HTTP context only</h4>
+<h4 id="http-context-only_1">HTTP context only</h4>
 <p>The following listeners are only attached in an HTTP context:</p>
 <div class="table-responsive"><table>
 <thead>
@@ -825,7 +602,7 @@ priority):</p>
 </tr>
 </tbody>
 </table></div>
-<h4>All contexts</h4>
+<h4 id="all-contexts_1">All contexts</h4>
 <p>The following listeners are attached for all contexts:</p>
 <div class="table-responsive"><table>
 <thead>
@@ -845,7 +622,7 @@ priority):</p>
 </tr>
 </tbody>
 </table></div>
-<h3>Triggered By</h3>
+<h3 id="triggered-by_3">Triggered By</h3>
 <div class="table-responsive"><table>
 <thead>
 <tr>
@@ -873,10 +650,10 @@ priority):</p>
 </tbody>
 </table></div>
 <h2 id="mvceventevent_render-render"><code>MvcEvent::EVENT_RENDER</code> ("render")</h2>
-<h3>Listeners</h3>
+<h3 id="listeners_4">Listeners</h3>
 <p>The following classes listen to this event (sorted from higher priority to lower
 priority):</p>
-<h4>Console context only</h4>
+<h4 id="console-context-only_2">Console context only</h4>
 <p>The following listeners are only attached in a console context:</p>
 <div class="table-responsive"><table>
 <thead>
@@ -896,7 +673,7 @@ priority):</p>
 </tr>
 </tbody>
 </table></div>
-<h4>HTTP context only</h4>
+<h4 id="http-context-only_2">HTTP context only</h4>
 <p>The following listeners are only attached in an HTTP context:</p>
 <div class="table-responsive"><table>
 <thead>
@@ -916,7 +693,7 @@ priority):</p>
 </tr>
 </tbody>
 </table></div>
-<h3>Triggered By</h3>
+<h3 id="triggered-by_4">Triggered By</h3>
 <p>This event is triggered by the following classes:</p>
 <div class="table-responsive"><table>
 <thead>
@@ -935,10 +712,10 @@ priority):</p>
 </tbody>
 </table></div>
 <h2 id="mvceventevent_render_error-rendererror"><code>MvcEvent::EVENT_RENDER_ERROR</code> ("render.error")</h2>
-<h3>Listeners</h3>
+<h3 id="listeners_5">Listeners</h3>
 <p>The following classes listen to this event (sorted from higher priority to lower
 priority):</p>
-<h4>Console context only</h4>
+<h4 id="console-context-only_3">Console context only</h4>
 <p>The following listeners are only attached in a console context:</p>
 <div class="table-responsive"><table>
 <thead>
@@ -964,7 +741,7 @@ priority):</p>
 </tr>
 </tbody>
 </table></div>
-<h4>HTTP context only</h4>
+<h4 id="http-context-only_3">HTTP context only</h4>
 <p>The following listeners are only attached in an HTTP context:</p>
 <div class="table-responsive"><table>
 <thead>
@@ -996,7 +773,7 @@ priority):</p>
 </tr>
 </tbody>
 </table></div>
-<h3>Triggered By</h3>
+<h3 id="triggered-by_5">Triggered By</h3>
 <p>This event is triggered by the following classes:</p>
 <div class="table-responsive"><table>
 <thead>
@@ -1015,7 +792,7 @@ priority):</p>
 </tbody>
 </table></div>
 <h2 id="mvceventevent_finish-finish"><code>MvcEvent::EVENT_FINISH</code> ("finish")</h2>
-<h3>Listeners</h3>
+<h3 id="listeners_6">Listeners</h3>
 <p>The following classes listen to this event (sorted from higher priority to lower
 priority):</p>
 <div class="table-responsive"><table>
@@ -1036,7 +813,7 @@ priority):</p>
 </tr>
 </tbody>
 </table></div>
-<h3>Triggered By</h3>
+<h3 id="triggered-by_6">Triggered By</h3>
 <p>This event is triggered by the following classes:</p>
 <div class="table-responsive"><table>
 <thead>
@@ -1063,342 +840,84 @@ priority):</p>
 <td>This event is triggered after <code>MvcEvent::RENDER</code> (at this point, the view is already rendered).</td>
 </tr>
 </tbody>
-</table></div>
-
-
-
-
-    <nav>
-    <ul class="page-nav hidden-print">
-
-        
-        <li class="page-nav__item">
-            
-                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../routing/">
-                    <i class="fa fa-chevron-left"></i> Previous
-                </a>
-            
-        </li>
-
-        
-        <li class="page-nav__item">
-            
-                <a rel="next" class="page-nav__link page-nav__link--next" href="../send-response-event/">
-                    Next <i class="fa fa-chevron-right"></i>
-                </a>
-            
-        </li>
-    </ul>
-</nav>
-
-
-
-
-    <div class="help-wanted">
-        <p>
-            Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/laminas/laminas-mvc/edit/master/docs/book/mvc-event.md" target="_blank" class="help-wanted__link">
-                Edit this page on GitHub!
-            </a>
-        </p>
-    </div>
-
-                
-            </div>
-            <div class="col-md-3 col-sm-12 sidebar">
-                <div class="donation-banner">
-    <a href="https://getlaminas.org/support/">
-        <h2>Donate</h2>
-        <p>Support Laminas Developers Directly</p>
-        <img src="https://funding.communitybridge.org/assets/cb-f-horizontal-white.svg">
-    </a>
-</div>
-
-                
-                    <div class="component-selector">
-    
-    <h5 class="component-selector__subtitle">Find documentation…</h5>
-    <select class="form-control component-selector__control">
-        <option value="/">Overview</option>
-        <optgroup label="Components"></optgroup>
-    </select>
-</div>
-                    
-    <div class="subnavigation hidden-print">
-        <h4 class="subnavigation__title">
-            <a href="..">laminas-mvc</a>
-        </h4>
-
-        <h5 class="subnavigation__subtitle">Table of Contents</h5>
-
-        <ul class="subnavigation__list">
-            
-
-                
-                
-
-                    
-                    
-                        
-                            <li class="subnavigation__list-item ">
-                                <a href="../intro/" class="subnavigation__link">Introduction</a>
-                            </li>
-                        
-                    
-                
-            
-
-                
-                
-
-                    
-                    
-                        
-                            <li class="subnavigation__list-item ">
-                                <a href="../quick-start/" class="subnavigation__link">Quick Start</a>
-                            </li>
-                        
-                    
-                
-            
-
-                
-                
-
-                    
-                    
-                        
-                            <li class="subnavigation__list-item">
-                                <span class="subnavigation__headline">Reference</span>
-                                <ul class="subnavigation__list">
-                                    
-                                        
-    <li class="subnavigation__list-item ">
-        <a href="../services/" class="subnavigation__link">Default Services</a>
-    </li>
-
-                                    
-                                        
-    <li class="subnavigation__list-item ">
-        <a href="../routing/" class="subnavigation__link">Routing</a>
-    </li>
-
-                                    
-                                        
-    <li class="subnavigation__list-item subnavigation__list-item--active">
-        <a href="./" class="subnavigation__link">The MVC Event</a>
-    </li>
-
-                                    
-                                        
-    <li class="subnavigation__list-item ">
-        <a href="../send-response-event/" class="subnavigation__link">The SendResponse Event</a>
-    </li>
-
-                                    
-                                        
-    <li class="subnavigation__list-item ">
-        <a href="../controllers/" class="subnavigation__link">Available Controllers</a>
-    </li>
-
-                                    
-                                        
-    <li class="subnavigation__list-item ">
-        <a href="../plugins/" class="subnavigation__link">Controller Plugins</a>
-    </li>
-
-                                    
-                                        
-    <li class="subnavigation__list-item ">
-        <a href="../examples/" class="subnavigation__link">Examples</a>
-    </li>
-
-                                    
-                                        
-    <li class="subnavigation__list-item ">
-        <a href="../middleware/" class="subnavigation__link">Dispatching PSR-7 Middleware</a>
-    </li>
-
-                                    
-                                        
-    <li class="subnavigation__list-item">
-        <span class="subnavigation__headline">Migration</span>
-        <ul class="subnavigation__list">
-            
-                
-    <li class="subnavigation__list-item ">
-        <a href="../migration/" class="subnavigation__link">Migration Overview</a>
-    </li>
-
-            
-                
-    <li class="subnavigation__list-item ">
-        <a href="../migration/to-v2-7/" class="subnavigation__link">v2.X to v2.7</a>
-    </li>
-
-            
-                
-    <li class="subnavigation__list-item ">
-        <a href="../migration/to-v3-0/" class="subnavigation__link">v2.X to v3.0</a>
-    </li>
-
-            
-        </ul>
-    </li>
-
-                                    
-                                </ul>
-                            </li>
-                        
-                    
-                
-            
-
-                
-                
-
-                    
-                    
-                        
-                            <li class="subnavigation__list-item">
-                                <span class="subnavigation__headline">Cookbook</span>
-                                <ul class="subnavigation__list">
-                                    
-                                        
-    <li class="subnavigation__list-item ">
-        <a href="../cookbook/automating-controller-factories/" class="subnavigation__link">Automating controller factories</a>
-    </li>
-
-                                    
-                                        
-    <li class="subnavigation__list-item ">
-        <a href="../cookbook/middleware-in-listeners/" class="subnavigation__link">Using middleware within event listeners</a>
-    </li>
-
-                                    
-                                </ul>
-                            </li>
-                        
-                    
-                
-            
-        </ul>
-    </div>
-
-                
-            </div>
-        </div>
-    </div>
-
-    
-    <footer class="footer">
-    <div class="container">
-
-        
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <a class="footer__button" href="#page-top"><i class="fa fa-chevron-up" aria-hidden="true"></i></a>
+</table></div></div>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-12">
-                <h5>Laminas</h5>
-                <ul>
-                    <li>Laminas Project <a href="https://getlaminas.org/">The new foundation for the community-supported, open source continuation of Zend Framework</a></li>
-                    <li>Laminas Components and MVC <a href="https://docs.laminas.dev/">Components and MVC for enterprise applications</a></li>
-                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 middleware in minutes</a></li>
-                    <li>Laminas API Tools <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
-                </ul>
-            </div>
-        </div>
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
 
-        <div class="row">
-            <div class="col-md-12">
-                <div class="row">
-
-                    
-                    <div class="col-md-4">
-                        <h4 class="footer__headline">Support</h4>
-                        <ul class="support__list">
-                            <li class="support__list-item">
-                                <a href="https://discourse.laminas.dev" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
-                            </li>
-                            <li class="support__list-item">
-                                <a href="https://laminas.dev/chat" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
-                            </li>
-                            <li class="support__list-item">
-                                <a href="https://github.com/laminas" class="support__link" title="Github"><i class="fa fa-github"></i></a>
-                            </li>
-                            <li class="support__list-item">
-                                <a href="https://twitter.com/getlaminas" class="support__link" title="Twitter"><i class="fa fa-twitter"></i></a>
-                            </li>
-                            <li class="support__list-item">
-                                <a href="https://getlaminas.org/blog/rss.xml" class="support__link" title="Blog feed"><i class="fa fa-rss"></i></a>
-                            </li>
-                            <li class="support__list-item">
-                                <a href="https://getlaminas.org/security/feed" class="support__link" title="Security feed"><i class="fa fa-rss-square"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    
-                    <div class="col-md-4">
-                        <h4 class="footer__headline">License</h4>
-                        <p>
-                            Code licensed under <a
-                                href="https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md">BSD 3-Clause</a>.
-                        </p>
-                    </div>
-
-                    
-                    <div class="col-md-4">
-                        <h4 class="footer__headline">Copyright</h4>
-                        <p>
-                            <!--Built with love by the Laminas team with the help of our
-                            <a href="https://github.com/laminas/laminas-mvc/graphs/contributors">contributors</a>.<br>-->
-                            &copy; 2020 <a href="https://getlaminas.org/">Laminas Project</a> a Series of LF Projects, LLC.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
-
-    <script>
-        let base_url = '..',
-            project  = "mvc",
-            siteName = 'laminas-mvc';
-    </script>
-    <script src="https://docs.laminas.dev/js/scripts.js"></script>
-    
-        <script src="../search/main.js"></script>
-    
-
-    
-    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Search</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    <span class="sr-only">Close</span>
-                </button>
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
             </div>
             <div class="modal-body">
-                <form role="form">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search in laminas-mvc" id="mkdocs-search-query">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
                     </div>
                 </form>
                 <div id="mkdocs-search-results"></div>
             </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <div class="table-responsive"><table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table></div>
+            </div>
+            <div class="modal-footer">
+            </div>
         </div>
     </div>
 </div>
-</body>
 
-
+    </body>
 </html>

@@ -7,15 +7,15 @@
         
         
         
-        <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>Using middleware within event listeners - laminas-mvc</title>
-        <link href="../../css/bootstrap.min.css" rel="stylesheet">
-        <link href="../../css/font-awesome.min.css" rel="stylesheet">
-        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="shortcut icon" href="/img/favicon.ico">
+        <title>laminas-mvc</title>
+        <link href="/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/css/font-awesome.min.css" rel="stylesheet">
+        <link href="/css/base.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
 
-        <script src="../../js/jquery-1.10.2.min.js" defer></script>
-        <script src="../../js/bootstrap.min.js" defer></script>
+        <script src="/js/jquery-1.10.2.min.js" defer></script>
+        <script src="/js/bootstrap.min.js" defer></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script> 
     </head>
@@ -23,7 +23,7 @@
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">laminas-mvc</a>
+                <a class="navbar-brand" href="/.">laminas-mvc</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -34,48 +34,48 @@
                         <!-- Main navigation -->
                         <ul class="nav navbar-nav">
                             <li class="navitem">
-                                <a href="../.." class="nav-link">Home</a>
+                                <a href="/." class="nav-link">Home</a>
                             </li>
                             <li class="navitem">
-                                <a href="../../intro/" class="nav-link">Introduction</a>
+                                <a href="/intro/" class="nav-link">Introduction</a>
                             </li>
                             <li class="navitem">
-                                <a href="../../quick-start/" class="nav-link">Quick Start</a>
+                                <a href="/quick-start/" class="nav-link">Quick Start</a>
                             </li>
                             <li class="dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     
 <li>
-    <a href="../../services/" class="dropdown-item">Default Services</a>
+    <a href="/services/" class="dropdown-item">Default Services</a>
 </li>
                                     
 <li>
-    <a href="../../routing/" class="dropdown-item">Routing</a>
+    <a href="/routing/" class="dropdown-item">Routing</a>
 </li>
                                     
 <li>
-    <a href="../../mvc-event/" class="dropdown-item">The MVC Event</a>
+    <a href="/mvc-event/" class="dropdown-item">The MVC Event</a>
 </li>
                                     
 <li>
-    <a href="../../send-response-event/" class="dropdown-item">The SendResponse Event</a>
+    <a href="/send-response-event/" class="dropdown-item">The SendResponse Event</a>
 </li>
                                     
 <li>
-    <a href="../../controllers/" class="dropdown-item">Available Controllers</a>
+    <a href="/controllers/" class="dropdown-item">Available Controllers</a>
 </li>
                                     
 <li>
-    <a href="../../plugins/" class="dropdown-item">Controller Plugins</a>
+    <a href="/plugins/" class="dropdown-item">Controller Plugins</a>
 </li>
                                     
 <li>
-    <a href="../../examples/" class="dropdown-item">Examples</a>
+    <a href="/examples/" class="dropdown-item">Examples</a>
 </li>
                                     
 <li>
-    <a href="../../middleware/" class="dropdown-item">Dispatching PSR-7 Middleware</a>
+    <a href="/middleware/" class="dropdown-item">Dispatching PSR-7 Middleware</a>
 </li>
                                     
   <li class="dropdown-submenu">
@@ -83,30 +83,30 @@
     <ul class="dropdown-menu">
             
 <li>
-    <a href="../../migration/" class="dropdown-item">Migration Overview</a>
+    <a href="/migration/" class="dropdown-item">Migration Overview</a>
 </li>
             
 <li>
-    <a href="../../migration/to-v2-7/" class="dropdown-item">v2.X to v2.7</a>
+    <a href="/migration/to-v2-7/" class="dropdown-item">v2.X to v2.7</a>
 </li>
             
 <li>
-    <a href="../../migration/to-v3-0/" class="dropdown-item">v2.X to v3.0</a>
+    <a href="/migration/to-v3-0/" class="dropdown-item">v2.X to v3.0</a>
 </li>
     </ul>
   </li>
                                 </ul>
                             </li>
-                            <li class="dropdown active">
+                            <li class="dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Cookbook <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     
 <li>
-    <a href="../automating-controller-factories/" class="dropdown-item">Automating controller factories</a>
+    <a href="/cookbook/automating-controller-factories/" class="dropdown-item">Automating controller factories</a>
 </li>
                                     
 <li>
-    <a href="./" class="dropdown-item active">Using middleware within event listeners</a>
+    <a href="/cookbook/middleware-in-listeners/" class="dropdown-item">Using middleware within event listeners</a>
 </li>
                                 </ul>
                             </li>
@@ -119,17 +119,7 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a rel="prev" href="../automating-controller-factories/" class="nav-link">
-                                    <i class="fa fa-arrow-left"></i> Previous
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a rel="next" class="nav-link disabled">
-                                    Next <i class="fa fa-arrow-right"></i>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="https://github.com/laminas/laminas-mvc/edit/master/docs/cookbook/middleware-in-listeners.md" class="nav-link"><i class="fa fa-github"></i> Edit on GitHub</a>
+                                <a href="https://github.com/laminas/laminas-mvc/" class="nav-link"><i class="fa fa-github"></i> GitHub</a>
                             </li>
                     </ul>
                 </div>
@@ -138,82 +128,15 @@
 
         <div class="container">
             <div class="row">
-                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
-    <div class="navbar-header">
-        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
-            <span class="fa fa-angle-down"></span>
-        </button>
+
+    <div class="row-fluid">
+      <div id="main-content" class="span12">
+        <h1 id="404-page-not-found" style="text-align: center">404</h1>
+        <p style="text-align: center"><strong>Page not found</strong></p>
+      </div>
     </div>
 
-    
-    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
-        <ul class="nav flex-column">
-            
-            <li class="nav-item" data-level="1"><a href="#using-middleware-within-event-listeners" class="nav-link">Using middleware within event listeners</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-        </ul>
-    </div>
-</div></div>
-                    <div class="col-md-9" role="main">
 
-<h1 id="using-middleware-within-event-listeners">Using middleware within event listeners</h1>
-<p>Within the MVC workflow, you can use middleware within event listeners by
-converting the request and response objects composed in the event to PSR-7
-equivalents using <a href="https://github.com/laminas/laminas-psr7bridge">laminas-psr7bridge</a>.</p>
-<p>As an example, consider the following <code>AuthorizationMiddleware</code>:</p>
-<pre><code class="php">namespace Application\Middleware;
-
-use Psr\Http\Message\ServerRequestInterface as RequestInterface;
-use Psr\Http\Message\ResponseInterface;
-
-class AuthorizationMiddleware
-{
-    public function __invoke(RequestInterface $request, ResponseInterface $response, callable $next = null)
-    {
-        // handle authorization here...
-    }
-}
-</code></pre>
-
-<p>Since the request and response composed in <code>MvcEvent</code> instances are specifically
-from laminas-http, we will use laminas-psr7bridge to convert them to PSR-7
-equivalents. As an example, consider the following module declaration, which
-registers a <code>dispatch</code> listener to invoke the above middleware:</p>
-<pre><code class="php">namespace Application;
-
-use Psr\Http\Message\ResponseInterface;
-use Laminas\Psr7Bridge\Psr7ServerRequest;
-use Laminas\Psr7Bridge\Psr7Response;
-
-class Module
-{
-    public function onBootstrap($e)
-    {
-        $app          = $e-&gt;getApplication();
-        $eventManager = $app-&gt;getEventManager();
-        $services     = $app-&gt;getServiceManager();
-
-        $eventManager-&gt;attach($e::EVENT_DISPATCH, function ($e) use ($services) {
-            $request  = Psr7ServerRequest::fromLaminas($e-&gt;getRequest());
-            $response = Psr7Response::fromLaminas($e-&gt;getResponse());
-            $done     = function ($request, $response) {
-            };
-
-            $result   = ($services-&gt;get(Middleware\AuthorizationMiddleware::class))(
-                $request,
-                $response,
-                $done
-            );
-
-            if ($result) {
-                return Psr7Response::toLaminas($result);
-            }
-        }, 2);
-    }
-}
-</code></pre></div>
             </div>
         </div>
 
@@ -222,11 +145,11 @@ class Module
             <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
         <script>
-            var base_url = "../..",
+            var base_url = "/",
                 shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
         </script>
-        <script src="../../js/base.js" defer></script>
-        <script src="../../search/main.js" defer></script>
+        <script src="/js/base.js" defer></script>
+        <script src="/search/main.js" defer></script>
 
         <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
