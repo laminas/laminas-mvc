@@ -1,244 +1,474 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
-        
-        
-        <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>v2.X to v3.0 - laminas-mvc</title>
-        <link href="../../css/bootstrap.min.css" rel="stylesheet">
-        <link href="../../css/font-awesome.min.css" rel="stylesheet">
-        <link href="../../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
 
-        <script src="../../js/jquery-1.10.2.min.js" defer></script>
-        <script src="../../js/bootstrap.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-        <script>hljs.initHighlightingOnLoad();</script> 
-    </head>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Laminas' event-driven MVC layer, including MVC Applications, Controllers, and Plugins.">  
+    <link rel="canonical" href="https://docs.laminas.dev/laminas-mvc/migration/to-v3-0/">
+    <link rel="shortcut icon" href="https://docs.laminas.dev/img/trademark-laminas-foundation-rgb.svg">
 
-    <body>
-        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
-            <div class="container">
-                <a class="navbar-brand" href="../..">laminas-mvc</a>
-                <!-- Expander button -->
-                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+    <title>v2.X to v3.0 - laminas-mvc - Laminas Docs</title>
 
-                <!-- Expanded navigation -->
-                <div id="navbar-collapse" class="navbar-collapse collapse">
-                        <!-- Main navigation -->
-                        <ul class="nav navbar-nav">
-                            <li class="navitem">
-                                <a href="../.." class="nav-link">Home</a>
-                            </li>
-                            <li class="navitem">
-                                <a href="../../intro/" class="nav-link">Introduction</a>
-                            </li>
-                            <li class="navitem">
-                                <a href="../../quick-start/" class="nav-link">Quick Start</a>
-                            </li>
-                            <li class="dropdown active">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    
-<li>
-    <a href="../../services/" class="dropdown-item">Default Services</a>
-</li>
-                                    
-<li>
-    <a href="../../routing/" class="dropdown-item">Routing</a>
-</li>
-                                    
-<li>
-    <a href="../../mvc-event/" class="dropdown-item">The MVC Event</a>
-</li>
-                                    
-<li>
-    <a href="../../send-response-event/" class="dropdown-item">The SendResponse Event</a>
-</li>
-                                    
-<li>
-    <a href="../../controllers/" class="dropdown-item">Available Controllers</a>
-</li>
-                                    
-<li>
-    <a href="../../plugins/" class="dropdown-item">Controller Plugins</a>
-</li>
-                                    
-<li>
-    <a href="../../examples/" class="dropdown-item">Examples</a>
-</li>
-                                    
-<li>
-    <a href="../../middleware/" class="dropdown-item">Dispatching PSR-7 Middleware</a>
-</li>
-                                    
-  <li class="dropdown-submenu">
-    <a href="#" class="dropdown-item">Migration</a>
-    <ul class="dropdown-menu">
-            
-<li>
-    <a href="../" class="dropdown-item">Migration Overview</a>
-</li>
-            
-<li>
-    <a href="../to-v2-7/" class="dropdown-item">v2.X to v2.7</a>
-</li>
-            
-<li>
-    <a href="./" class="dropdown-item active">v2.X to v3.0</a>
-</li>
-    </ul>
-  </li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Cookbook <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    
-<li>
-    <a href="../../cookbook/automating-controller-factories/" class="dropdown-item">Automating controller factories</a>
-</li>
-                                    
-<li>
-    <a href="../../cookbook/middleware-in-listeners/" class="dropdown-item">Using middleware within event listeners</a>
-</li>
-                                </ul>
-                            </li>
-                        </ul>
-
-                    <ul class="nav navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
-                                <i class="fa fa-search"></i> Search
-                            </a>
-                        </li>
-                            <li class="nav-item">
-                                <a rel="prev" href="../to-v2-7/" class="nav-link">
-                                    <i class="fa fa-arrow-left"></i> Previous
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a rel="next" href="../../cookbook/automating-controller-factories/" class="nav-link">
-                                    Next <i class="fa fa-arrow-right"></i>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="https://github.com/laminas/laminas-mvc/edit/master/docs/migration/to-v3-0.md" class="nav-link"><i class="fa fa-github"></i> Edit on GitHub</a>
-                            </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="container">
-            <div class="row">
-                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
-    <div class="navbar-header">
-        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
-            <span class="fa fa-angle-down"></span>
-        </button>
-    </div>
+    <link rel="stylesheet" href="https://docs.laminas.dev/css/styles.css">
+    
+</head>
+<body id="page-top" class="mvc" data-spy="scroll" data-target=".toc" data-offset="20">
 
     
-    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
-        <ul class="nav flex-column">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        
+        <a class="logo-link navbar-brand" href="https://getlaminas.org/" data-tooltip data-placement="bottom" title="Go to the Laminas homepage">
+            <img src="https://docs.laminas.dev/img/laminas-foundation-white.svg" height="28" alt="Laminas">
+        </a>
+        <a class="navbar-title" href="https://docs.laminas.dev/" data-tooltip data-placement="bottom" title="Go to the Laminas Documentation">
+            Documentation
+        </a>
+
+        
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
             
-            <li class="nav-item" data-level="1"><a href="#upgrading-to-30" class="nav-link">Upgrading to 3.0</a>
-              <ul class="nav flex-column">
-            <li class="nav-item" data-level="2"><a href="#dependency-reduction" class="nav-link">Dependency reduction</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#updated-dependencies" class="nav-link">Updated dependencies</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#application-class" class="nav-link">Application class</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#controllerloader" class="nav-link">ControllerLoader</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#di-servicemanager-integration" class="nav-link">DI-ServiceManager integration</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#dispatchlistener" class="nav-link">DispatchListener</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#routing" class="nav-link">Routing</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#console-tooling" class="nav-link">Console tooling</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#filter-integration" class="nav-link">Filter integration</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#form-integration" class="nav-link">Form integration</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#hydrator-integration" class="nav-link">Hydrator integration</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#inputfilter-integration" class="nav-link">InputFilter integration</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#i18n-integration" class="nav-link">i18n integration</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#log-integration" class="nav-link">Log integration</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#plugins" class="nav-link">Plugins</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#serializer-integration" class="nav-link">Serializer integration</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#servicelocatoraware-initializers" class="nav-link">ServiceLocatorAware initializers</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#validator-integration" class="nav-link">Validator integration</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#laminasmvcviewinjecttemplatelistener" class="nav-link">Laminas\Mvc\View\InjectTemplateListener</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#laminasmvcviewsendresponselistener" class="nav-link">Laminas\Mvc\View\SendResponseListener</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-              </ul>
-            </li>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <div class="dropdown sub-project-selector">
+                        <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
+                            All Docs
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a href="https://docs.mezzio.dev/" class="dropdown-item">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4 col-sm-12">
+                                        <img src="https://docs.laminas.dev/img/laminas-mezzio-rgb.svg">
+                                    </div>
+                                    <div class="col-md-8 col-sm-12">
+                                        <strong>Mezzio</strong><br>
+                                        PSR-15 Middleware in Minutes
+                                    </div>
+                                </div>
+                            </a>
+                            <a href="https://docs.laminas.dev/components/" class="dropdown-item">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4 col-sm-12">
+                                        <img src="https://docs.laminas.dev/img/laminas-components-rgb.svg">
+                                    </div>
+                                    <div class="col-md-8 col-sm-12">
+                                        <strong>Components</strong><br>
+                                        Components for Enterprise Applications
+                                    </div>
+                                </div>
+                            </a>
+                            <a href="https://docs.laminas.dev/mvc" class="dropdown-item">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4 col-sm-12">
+                                        <img src="https://docs.laminas.dev/img/laminas-mvc-rgb.svg">
+                                    </div>
+                                    <div class="col-md-8 col-sm-12">
+                                        <strong>MVC</strong><br>
+                                        MVC for Enterprise Applications
+                                    </div>
+                                </div>
+                            </a>
+                            <a href="https://api-tools.getlaminas.org/documentation" class="dropdown-item">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4 col-sm-12">
+                                        <img src="https://docs.laminas.dev/img/laminas-api-tools-rgb.svg">
+                                    </div>
+                                    <div class="col-md-8 col-sm-12">
+                                        <strong>API Tools</strong><br>
+                                        Build RESTful APIs in Minutes
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item dropdown-item--secondardy" href="https://docs.laminas.dev/migration/">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8 offset-md-4 col-sm-12">
+                                        Migration to Laminas
+                                    </div>
+                                </div>
+                            </a>
+                            <a class="dropdown-item dropdown-item--secondardy" href="https://docs.laminas.dev/tutorials/">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8 offset-md-4 col-sm-12">
+                                        Tutorials
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="https://getlaminas.org/participate" class="nav-link">Community</a>
+                </li>
+            </ul>
+
+            
+            
+                <div class="d-block d-sm-none">
+                    
+    <div class="subnavigation hidden-print">
+        <h4 class="subnavigation__title">
+            <a href="../..">laminas-mvc</a>
+        </h4>
+
+        <h5 class="subnavigation__subtitle">Table of Contents</h5>
+
+        <ul class="subnavigation__list">
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item ">
+                                <a href="../../intro/" class="subnavigation__link">Introduction</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item ">
+                                <a href="../../quick-start/" class="subnavigation__link">Quick Start</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item">
+                                <span class="subnavigation__headline">Reference</span>
+                                <ul class="subnavigation__list">
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../../services/" class="subnavigation__link">Default Services</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../../routing/" class="subnavigation__link">Routing</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../../mvc-event/" class="subnavigation__link">The MVC Event</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../../send-response-event/" class="subnavigation__link">The SendResponse Event</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../../controllers/" class="subnavigation__link">Available Controllers</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../../plugins/" class="subnavigation__link">Controller Plugins</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../../examples/" class="subnavigation__link">Examples</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../../middleware/" class="subnavigation__link">Dispatching PSR-7 Middleware</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item">
+        <span class="subnavigation__headline">Migration</span>
+        <ul class="subnavigation__list">
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../" class="subnavigation__link">Migration Overview</a>
+    </li>
+
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../to-v2-7/" class="subnavigation__link">v2.X to v2.7</a>
+    </li>
+
+            
+                
+    <li class="subnavigation__list-item subnavigation__list-item--active">
+        <a href="./" class="subnavigation__link">v2.X to v3.0</a>
+    </li>
+
+            
+        </ul>
+    </li>
+
+                                    
+                                </ul>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item">
+                                <span class="subnavigation__headline">Cookbook</span>
+                                <ul class="subnavigation__list">
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../../cookbook/automating-controller-factories/" class="subnavigation__link">Automating controller factories</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../../cookbook/middleware-in-listeners/" class="subnavigation__link">Using middleware within event listeners</a>
+    </li>
+
+                                    
+                                </ul>
+                            </li>
+                        
+                    
+                
+            
         </ul>
     </div>
-</div></div>
-                    <div class="col-md-9" role="main">
 
-<h1 id="upgrading-to-30">Upgrading to 3.0</h1>
+                </div>
+            
+
+            
+            <div class="d-block d-sm-none">
+                <div class="component-selector">
+    
+    <h5 class="component-selector__subtitle">Find documentation…</h5>
+    <select class="form-control component-selector__control">
+        <option value="/">Overview</option>
+        <optgroup label="Components"></optgroup>
+    </select>
+</div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    
+    <header class="header">
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="col-8">
+                <h1 class="header__title">
+                    MVC
+
+                    
+                        <small class="header__subtitle">laminas-mvc</small>
+                    
+                </h1>
+            </div>
+
+            
+            <div class="col-4 text-sm-right">
+                
+                    
+
+                    <a href="#" class="header__link header__link--search" data-toggle="modal" data-target="#mkdocs_search_modal" title="Open search">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                    <a href="https://github.com/laminas/laminas-mvc/" class="header__link header__link--github" title="Go to repository of laminas-mvc">
+                        <i class="fa fa-github"></i> GitHub
+                    </a>
+                
+            </div>
+        </div>
+    </div>
+</header>
+
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 col-sm-12 content" role="main">
+                
+                
+                    
+    
+
+    
+    
+        <div class="toc">
+            <h6 class="toc__headline">On this page</h6>
+            <ul class="toc__list">
+                
+                    <li class="toc__entry">
+                        <a href="#dependency-reduction" class="toc__link nav-link">Dependency reduction</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#updated-dependencies" class="toc__link nav-link">Updated dependencies</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#application-class" class="toc__link nav-link">Application class</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#controllerloader" class="toc__link nav-link">ControllerLoader</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#di-servicemanager-integration" class="toc__link nav-link">DI-ServiceManager integration</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#dispatchlistener" class="toc__link nav-link">DispatchListener</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#routing" class="toc__link nav-link">Routing</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#console-tooling" class="toc__link nav-link">Console tooling</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#filter-integration" class="toc__link nav-link">Filter integration</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#form-integration" class="toc__link nav-link">Form integration</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#hydrator-integration" class="toc__link nav-link">Hydrator integration</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#inputfilter-integration" class="toc__link nav-link">InputFilter integration</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#i18n-integration" class="toc__link nav-link">i18n integration</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#log-integration" class="toc__link nav-link">Log integration</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#plugins" class="toc__link nav-link">Plugins</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#serializer-integration" class="toc__link nav-link">Serializer integration</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#servicelocatoraware-initializers" class="toc__link nav-link">ServiceLocatorAware initializers</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#validator-integration" class="toc__link nav-link">Validator integration</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#laminasmvcviewinjecttemplatelistener" class="toc__link nav-link">Laminas\Mvc\View\InjectTemplateListener</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#laminasmvcviewsendresponselistener" class="toc__link nav-link">Laminas\Mvc\View\SendResponseListener</a>
+                    </li>
+                
+            </ul>
+        </div>
+    
+
+                
+
+                
+                    <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        
+            <li class="breadcrumb-item"><a href="https://docs.laminas.dev/">Overview</a></li>
+            <li class="breadcrumb-item"><a href="https://docs.laminas.dev/mvc/">MVC</a></li>
+
+            
+                <li class="breadcrumb-item"><a href="../..">laminas-mvc</a></li>
+
+                
+                    
+                        
+                        
+                            <li class="breadcrumb-item">Reference</li>
+                        
+                    
+                
+                    
+                        
+                        
+                            <li class="breadcrumb-item">Migration</li>
+                        
+                    
+                
+
+                <li class="breadcrumb-item active" aria-current="page">v2.X to v3.0</li>
+            
+        
+    </ol>
+</nav>
+
+
+
+
+
+
+    
+    
+        <h2 class="chapter__headline">Migration</h2>
+    
+
+    <h1 id="upgrading-to-30">Upgrading to 3.0</h1>
 <p>With the release of Laminas, all components current at that time,
 regardless of history, were tagged as v2 releases; in reality, it was the first
 version of a new framework, as it was a completely new architecture from Laminas
@@ -257,8 +487,7 @@ in your application.</p>
 <p>To solve this new problem, we created a new component,
 <a href="http://docs.laminas.dev/laminas-component-installer/">laminas-component-installer</a>.
 Install this in your application now:</p>
-<pre><code class="bash">$ composer require --dev laminas/laminas-component-installer
-</code></pre>
+<pre class="highlight"><code class="language-bash">$ composer require --dev laminas/laminas-component-installer</code></pre>
 
 <p>Once installed, the component acts as a Composer plugin, and will intercept
 packages marked as components or Laminas modules, and register them with
@@ -293,7 +522,7 @@ not be installed in your production distributions.</p>
 will not notice a change. Those who are directly instantiating the <code>Application</code>
 instance (in production or test code) or who have created their own factory for
 the class will need to update their code.</p>
-<h3 id="send-method">send method</h3>
+<h3>send method</h3>
 <p>The <code>send()</code> method has been deprecated since the 2.2 release, and a no-op since
 then as well. It is removed starting with the v3 release.</p>
 <h2 id="controllerloader">ControllerLoader</h2>
@@ -307,11 +536,10 @@ service alias.</p>
 <a href="https://github.com/laminas/laminas-di">laminas-di</a> has been moved to a new
 standalone component, <a href="https://docs.laminas.dev/laminas-servicemanager-di/">laminas-servicemanager-di</a>.
 In most cases, installing the component will restore the original behavior:</p>
-<pre><code class="bash">$ composer require laminas/laminas-servicemanager-di
-</code></pre>
+<pre class="highlight"><code class="language-bash">$ composer require laminas/laminas-servicemanager-di</code></pre>
 
 <blockquote>
-<h3 id="manual-installation">Manual installation</h3>
+<h3>Manual installation</h3>
 <p>The above assumes you're using the new component installer detailed in the
 <a href="#dependency-reduction">dependency reduction</a> section, above. If you are not,
 you will need to inject the laminas-servicemanager-di module into your
@@ -342,8 +570,7 @@ your code.</p>
 <p>Console tooling, including console routes, were split off to a new component,
 <a href="https://docs.laminas.dev/laminas-mvc-console/">laminas-mvc-console</a>. If you
 were using the console tooling, install laminas-mvc-console:</p>
-<pre><code class="bash">$ composer require laminas/laminas-mvc-console
-</code></pre>
+<pre class="highlight"><code class="language-bash">$ composer require laminas/laminas-mvc-console</code></pre>
 
 <p>(Make sure you've already installed laminas-component-installer before you do, to
 ensure the component is registered with your application!)</p>
@@ -353,7 +580,7 @@ of laminas-mvc, but most components are in different namespaces. Please read the
 for full details of what changes you may need to make to your application to
 ensure console tooling continues to work.</p>
 <blockquote>
-<h3 id="migrate-your-console-tooling">Migrate your console tooling</h3>
+<h3>Migrate your console tooling</h3>
 <p>Due to the amount of integration required to support console tooling via the
 MVC, we do not plan on supporting laminas-mvc-console long-term. As such, we
 recommend migrating your code to use standalone tools such as
@@ -367,8 +594,7 @@ to allow modules to provide filter configuration.</p>
 <p>This functionality is now removed from laminas-mvc. It is now exposed directly by
 the <a href="https://docs.laminas.dev/laminas-filter/">laminas-filter</a> component
 itself. To add it, install laminas-filter:</p>
-<pre><code class="bash">$ composer require laminas/laminas-filter
-</code></pre>
+<pre class="highlight"><code class="language-bash">$ composer require laminas/laminas-filter</code></pre>
 
 <p>Note: the above assumes you have already installed laminas-component-installer, per
 the section above on <a href="#dependency-reduction">dependency reduction</a>.</p>
@@ -388,8 +614,7 @@ the section above on <a href="#dependency-reduction">dependency reduction</a>.</
 <p>The above functionality is now removed from laminas-mvc, and exposed directly by
 the <a href="https://github.com/laminas/laminas-form">laminas-form</a> component. To
 add/enable it, install laminas-form:</p>
-<pre><code class="bash">$ composer require laminas/laminas-form
-</code></pre>
+<pre class="highlight"><code class="language-bash">$ composer require laminas/laminas-form</code></pre>
 
 <p>Note: the above assumes you have already installed laminas-component-installer, per
 the section above on <a href="#dependency-reduction">dependency reduction</a>.</p>
@@ -400,8 +625,7 @@ to allow modules to provide hydrator configuration.</p>
 <p>This functionality is now removed from laminas-mvc. It is now exposed directly by
 the <a href="https://docs.laminas.dev/laminas-hydrator/">laminas-hydrator</a> component
 itself. To add it, install laminas-hydrator:</p>
-<pre><code class="bash">$ composer require laminas/laminas-hydrator
-</code></pre>
+<pre class="highlight"><code class="language-bash">$ composer require laminas/laminas-hydrator</code></pre>
 
 <p>Note: the above assumes you have already installed laminas-component-installer, per
 the section above on <a href="#dependency-reduction">dependency reduction</a>.</p>
@@ -412,8 +636,7 @@ to allow modules to provide validator configuration.</p>
 <p>This functionality is now removed from laminas-mvc. It is now exposed directly by
 the <a href="https://docs.laminas.dev/laminas-inputfilter/">laminas-inputfilter</a> component
 itself. To add it, install laminas-inputfilter:</p>
-<pre><code class="bash">$ composer require laminas/laminas-inputfilter
-</code></pre>
+<pre class="highlight"><code class="language-bash">$ composer require laminas/laminas-inputfilter</code></pre>
 
 <p>Note: the above assumes you have already installed laminas-component-installer, per
 the section above on <a href="#dependency-reduction">dependency reduction</a>.</p>
@@ -431,8 +654,7 @@ abstract factory by default.</p>
 and <a href="https://docs.laminas.dev/laminas-mvc-i18n/">laminas-mvc-i18n</a> packages.
 In most cases, you can install <code>laminas/laminas-mvc-i18n</code> to restore i18n
 functionality to your application:</p>
-<pre><code class="bash">$ composer require laminas/laminas-mvc-i18n
-</code></pre>
+<pre class="highlight"><code class="language-bash">$ composer require laminas/laminas-mvc-i18n</code></pre>
 
 <p>There are two categories of changes that could affect you on upgrading.</p>
 <p>First, if you were using the <code>TranslatorAwareTreeRouteStack</code>, the class name has
@@ -456,8 +678,7 @@ services by default, and provided specifications to laminas-modulemanager's
 <p>This functionality is now removed from laminas-mvc. It is now exposed directly by
 the <a href="https://docs.laminas.dev/laminas-log/">laminas-log</a> component
 itself. To add it, install laminas-log:</p>
-<pre><code class="bash">$ composer require laminas/laminas-log
-</code></pre>
+<pre class="highlight"><code class="language-bash">$ composer require laminas/laminas-log</code></pre>
 
 <p>Note: the above assumes you have already installed laminas-component-installer, per
 the section above on <a href="#dependency-reduction">dependency reduction</a>.</p>
@@ -495,44 +716,40 @@ into their own standalone repositories. In all cases, please be sure to install
 the <a href="#dependency-reduction">component installer as detailed above</a> before
 installing the plugins, to automate injection into your application
 configuration.</p>
-<h3 id="fileprg">fileprg()</h3>
+<h3>fileprg()</h3>
 <p>The <code>fileprg()</code> plugin is now provided via the
 <a href="https://github.com/laminas/laminas-mvc-plugin-fileprg">laminas-mvc-plugin-fileprg</a>
 component.</p>
-<pre><code class="bash">$ composer require laminas/laminas-mvc-plugin-fileprg
-</code></pre>
+<pre class="highlight"><code class="language-bash">$ composer require laminas/laminas-mvc-plugin-fileprg</code></pre>
 
 <p><code>Laminas\Mvc\Controller\Plugin\FilePostRedirectGet</code> becomes
 <code>Laminas\Mvc\Plugin\FilePrg\FilePostRedirectGet</code>. However, it is still mapped as
 <code>fileprg()</code>.</p>
-<h3 id="flashmessenger">flashMessenger()</h3>
+<h3>flashMessenger()</h3>
 <p>The <code>flashMessenger()</code> plugin is now provided via the
 <a href="https://github.com/laminas/laminas-mvc-plugin-flashmessenger">laminas-mvc-plugin-flashmessenger</a>
 component.</p>
-<pre><code class="bash">$ composer require laminas/laminas-mvc-plugin-flashmessenger
-</code></pre>
+<pre class="highlight"><code class="language-bash">$ composer require laminas/laminas-mvc-plugin-flashmessenger</code></pre>
 
 <p><code>Laminas\Mvc\Controller\Plugin\FlashMessenger</code> becomes
 <code>Laminas\Mvc\Plugin\FlashMessenger\FlashMessenger</code>. However, it is still mapped as
 <code>flashMessenger()</code> and <code>flashmessenger()</code>.</p>
-<h3 id="identity">identity()</h3>
+<h3>identity()</h3>
 <p>The <code>identity()</code> plugin is now provided via the
 <a href="https://github.com/laminas/laminas-mvc-plugin-identity">laminas-mvc-plugin-identity</a>
 component.</p>
-<pre><code class="bash">$ composer require laminas/laminas-mvc-plugin-identity
-</code></pre>
+<pre class="highlight"><code class="language-bash">$ composer require laminas/laminas-mvc-plugin-identity</code></pre>
 
 <p><code>Laminas\Mvc\Controller\Plugin\Identity</code> becomes
 <code>Laminas\Mvc\Plugin\Identity\Identity</code>. However, it is still mapped as
 <code>identity()</code>.</p>
 <p>Additionally, <code>Laminas\Mvc\Controller\Plugin\Service\IdentityFactory</code> now becomes
 <code>Laminas\Mvc\Plugin\Identity\IdentityFactory</code>.</p>
-<h3 id="prg">prg()</h3>
+<h3>prg()</h3>
 <p>The <code>prg()</code> plugin is now provided via the
 <a href="https://github.com/laminas/laminas-mvc-plugin-prg">laminas-mvc-plugin-prg</a>
 component.</p>
-<pre><code class="bash">$ composer require laminas/laminas-mvc-plugin-prg
-</code></pre>
+<pre class="highlight"><code class="language-bash">$ composer require laminas/laminas-mvc-plugin-prg</code></pre>
 
 <p><code>Laminas\Mvc\Controller\Plugin\PostRedirectGet</code> becomes
 <code>Laminas\Mvc\Plugin\Prg\PostRedirectGet</code>. However, it is still mapped as <code>prg()</code>.</p>
@@ -543,8 +760,7 @@ to allow modules to provide serializer configuration.</p>
 <p>This functionality is now removed from laminas-mvc. It is now exposed directly by
 the <a href="https://github.com/laminas/laminas-serializer">laminas-serializer</a> component
 itself. To add it, install laminas-serializer</p>
-<pre><code class="bash">$ composer require laminas/laminas-serializer
-</code></pre>
+<pre class="highlight"><code class="language-bash">$ composer require laminas/laminas-serializer</code></pre>
 
 <p>Note: the above assumes you have already installed laminas-component-installer, per
 the section above on <a href="#dependency-reduction">dependency reduction</a>.</p>
@@ -567,8 +783,7 @@ to allow modules to provide validator configuration.</p>
 <p>This functionality is now removed from laminas-mvc. It is now exposed directly by
 the <a href="https://docs.laminas.dev/laminas-validator/">laminas-validator</a> component
 itself. To add it, install laminas-validator:</p>
-<pre><code class="bash">$ composer require laminas/laminas-validator
-</code></pre>
+<pre class="highlight"><code class="language-bash">$ composer require laminas/laminas-validator</code></pre>
 
 <p>Note: the above assumes you have already installed laminas-component-installer, per
 the section above on <a href="#dependency-reduction">dependency reduction</a>.</p>
@@ -601,84 +816,342 @@ whitelisting in the controller &lt;=&gt; template map.</p>
 <h2 id="laminasmvcviewsendresponselistener">Laminas\Mvc\View\SendResponseListener</h2>
 <p><code>Laminas\Mvc\View\SendResponseListener</code> was deprecated with the 2.2 release, and
 has been an extension of <code>Laminas\Mvc\SendResponseListener</code> ever since. It is
-removed with the v3 release.</p></div>
+removed with the v3 release.</p>
+
+
+
+
+    <nav>
+    <ul class="page-nav hidden-print">
+
+        
+        <li class="page-nav__item">
+            
+                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../to-v2-7/">
+                    <i class="fa fa-chevron-left"></i> Previous
+                </a>
+            
+        </li>
+
+        
+        <li class="page-nav__item">
+            
+                <a rel="next" class="page-nav__link page-nav__link--next" href="../../cookbook/automating-controller-factories/">
+                    Next <i class="fa fa-chevron-right"></i>
+                </a>
+            
+        </li>
+    </ul>
+</nav>
+
+
+
+
+    <div class="help-wanted">
+        <p>
+            Found a mistake or want to contribute to the documentation?
+            <a href="https://github.com/laminas/laminas-mvc/edit/master/docs/book/migration/to-v3-0.md" target="_blank" class="help-wanted__link">
+                Edit this page on GitHub!
+            </a>
+        </p>
+    </div>
+
+                
+            </div>
+            <div class="col-md-3 col-sm-12 sidebar">
+                <div class="donation-banner">
+    <a href="https://getlaminas.org/support/">
+        <h2>Donate</h2>
+        <p>Support Laminas Developers Directly</p>
+        <img src="https://funding.communitybridge.org/assets/cb-f-horizontal-white.svg">
+    </a>
+</div>
+
+                
+                    <div class="component-selector">
+    
+    <h5 class="component-selector__subtitle">Find documentation…</h5>
+    <select class="form-control component-selector__control">
+        <option value="/">Overview</option>
+        <optgroup label="Components"></optgroup>
+    </select>
+</div>
+                    
+    <div class="subnavigation hidden-print">
+        <h4 class="subnavigation__title">
+            <a href="../..">laminas-mvc</a>
+        </h4>
+
+        <h5 class="subnavigation__subtitle">Table of Contents</h5>
+
+        <ul class="subnavigation__list">
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item ">
+                                <a href="../../intro/" class="subnavigation__link">Introduction</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item ">
+                                <a href="../../quick-start/" class="subnavigation__link">Quick Start</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item">
+                                <span class="subnavigation__headline">Reference</span>
+                                <ul class="subnavigation__list">
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../../services/" class="subnavigation__link">Default Services</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../../routing/" class="subnavigation__link">Routing</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../../mvc-event/" class="subnavigation__link">The MVC Event</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../../send-response-event/" class="subnavigation__link">The SendResponse Event</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../../controllers/" class="subnavigation__link">Available Controllers</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../../plugins/" class="subnavigation__link">Controller Plugins</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../../examples/" class="subnavigation__link">Examples</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../../middleware/" class="subnavigation__link">Dispatching PSR-7 Middleware</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item">
+        <span class="subnavigation__headline">Migration</span>
+        <ul class="subnavigation__list">
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../" class="subnavigation__link">Migration Overview</a>
+    </li>
+
+            
+                
+    <li class="subnavigation__list-item ">
+        <a href="../to-v2-7/" class="subnavigation__link">v2.X to v2.7</a>
+    </li>
+
+            
+                
+    <li class="subnavigation__list-item subnavigation__list-item--active">
+        <a href="./" class="subnavigation__link">v2.X to v3.0</a>
+    </li>
+
+            
+        </ul>
+    </li>
+
+                                    
+                                </ul>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item">
+                                <span class="subnavigation__headline">Cookbook</span>
+                                <ul class="subnavigation__list">
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../../cookbook/automating-controller-factories/" class="subnavigation__link">Automating controller factories</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../../cookbook/middleware-in-listeners/" class="subnavigation__link">Using middleware within event listeners</a>
+    </li>
+
+                                    
+                                </ul>
+                            </li>
+                        
+                    
+                
+            
+        </ul>
+    </div>
+
+                
+            </div>
+        </div>
+    </div>
+
+    
+    <footer class="footer">
+    <div class="container">
+
+        
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <a class="footer__button" href="#page-top"><i class="fa fa-chevron-up" aria-hidden="true"></i></a>
             </div>
         </div>
 
-        <footer class="col-md-12">
-            <hr>
-            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
-        </footer>
-        <script>
-            var base_url = "../..",
-                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
-        </script>
-        <script src="../../js/base.js" defer></script>
-        <script src="../../search/main.js" defer></script>
+        <div class="row">
+            <div class="col-md-12">
+                <h5>Laminas</h5>
+                <ul>
+                    <li>Laminas Project <a href="https://getlaminas.org/">The new foundation for the community-supported, open source continuation of Zend Framework</a></li>
+                    <li>Laminas Components and MVC <a href="https://docs.laminas.dev/">Components and MVC for enterprise applications</a></li>
+                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 middleware in minutes</a></li>
+                    <li>Laminas API Tools <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
+                </ul>
+            </div>
+        </div>
 
-        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+
+                    
+                    <div class="col-md-4">
+                        <h4 class="footer__headline">Support</h4>
+                        <ul class="support__list">
+                            <li class="support__list-item">
+                                <a href="https://discourse.laminas.dev" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
+                            </li>
+                            <li class="support__list-item">
+                                <a href="https://laminas.dev/chat" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
+                            </li>
+                            <li class="support__list-item">
+                                <a href="https://github.com/laminas" class="support__link" title="Github"><i class="fa fa-github"></i></a>
+                            </li>
+                            <li class="support__list-item">
+                                <a href="https://twitter.com/getlaminas" class="support__link" title="Twitter"><i class="fa fa-twitter"></i></a>
+                            </li>
+                            <li class="support__list-item">
+                                <a href="https://getlaminas.org/blog/rss.xml" class="support__link" title="Blog feed"><i class="fa fa-rss"></i></a>
+                            </li>
+                            <li class="support__list-item">
+                                <a href="https://getlaminas.org/security/feed" class="support__link" title="Security feed"><i class="fa fa-rss-square"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    
+                    <div class="col-md-4">
+                        <h4 class="footer__headline">License</h4>
+                        <p>
+                            Code licensed under <a
+                                href="https://github.com/laminas/laminas-mvc/blob/master/LICENSE.md">BSD 3-Clause</a>.
+                        </p>
+                    </div>
+
+                    
+                    <div class="col-md-4">
+                        <h4 class="footer__headline">Copyright</h4>
+                        <p>
+                            <!--Built with love by the Laminas team with the help of our
+                            <a href="https://github.com/laminas/laminas-mvc/graphs/contributors">contributors</a>.<br>-->
+                            &copy; 2020 <a href="https://getlaminas.org/">Laminas Project</a> a Series of LF Projects, LLC.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script>
+        let base_url = '../..',
+            project  = "mvc",
+            siteName = 'laminas-mvc';
+    </script>
+    <script src="https://docs.laminas.dev/js/scripts.js"></script>
+    
+        <script src="../../search/main.js"></script>
+    
+
+    
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="searchModalLabel">Search</h4>
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h5 class="modal-title">Search</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
             </div>
             <div class="modal-body">
-                <p>
-                    From here you can search these documents. Enter
-                    your search terms below.
-                </p>
-                <form>
+                <form role="form">
                     <div class="form-group">
-                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                        <input type="text" class="form-control" placeholder="Search in laminas-mvc" id="mkdocs-search-query">
                     </div>
                 </form>
                 <div id="mkdocs-search-results"></div>
             </div>
-            <div class="modal-footer">
-            </div>
-        </div>
-    </div>
-</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-            </div>
-            <div class="modal-body">
-              <div class="table-responsive"><table class="table">
-                <thead>
-                  <tr>
-                    <th style="width: 20%;">Keys</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="help shortcut"><kbd>?</kbd></td>
-                    <td>Open this help</td>
-                  </tr>
-                  <tr>
-                    <td class="next shortcut"><kbd>n</kbd></td>
-                    <td>Next page</td>
-                  </tr>
-                  <tr>
-                    <td class="prev shortcut"><kbd>p</kbd></td>
-                    <td>Previous page</td>
-                  </tr>
-                  <tr>
-                    <td class="search shortcut"><kbd>s</kbd></td>
-                    <td>Search</td>
-                  </tr>
-                </tbody>
-              </table></div>
-            </div>
-            <div class="modal-footer">
-            </div>
         </div>
     </div>
 </div>
+</body>
 
-    </body>
+
 </html>
