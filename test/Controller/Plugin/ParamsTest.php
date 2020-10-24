@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 
 class ParamsTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->request = new Request;
         $event         = new MvcEvent;

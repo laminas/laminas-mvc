@@ -33,7 +33,7 @@ class ControllerManagerFactoryTest extends TestCase
      */
     protected $loader;
 
-    public function setUp()
+    public function setUp(): void
     {
         $loaderFactory  = new ControllerManagerFactory();
         $this->defaultServiceConfig = [

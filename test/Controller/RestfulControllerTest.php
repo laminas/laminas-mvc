@@ -35,7 +35,7 @@ class RestfulControllerTest extends TestCase
     public $routeMatch;
     public $event;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->controller      = new RestfulTestController();
         $this->emptyController = new RestfulMethodNotAllowedTestController();

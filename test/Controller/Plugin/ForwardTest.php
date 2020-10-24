@@ -54,7 +54,7 @@ class ForwardTest extends TestCase
      */
     private $plugin;
 
-    public function setUp()
+    public function setUp(): void
     {
         $eventManager = $this->createEventManager(new SharedEventManager());
         $mockApplication = $this->createMock(ApplicationInterface::class);

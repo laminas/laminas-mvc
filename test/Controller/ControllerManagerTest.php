@@ -22,7 +22,7 @@ use PHPUnit\Framework\TestCase;
 
 class ControllerManagerTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->sharedEvents   = new SharedEventManager;
         $this->events         = $this->createEventManager($this->sharedEvents);

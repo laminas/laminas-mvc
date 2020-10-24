@@ -44,7 +44,7 @@ class ApplicationTest extends TestCase
      */
     protected $application;
 
-    public function setUp()
+    public function setUp(): void
     {
         $serviceListener = new ServiceListenerFactory();
         $r = new ReflectionProperty($serviceListener, 'defaultServiceConfig');

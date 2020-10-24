@@ -36,7 +36,7 @@ class DefaultRendereringStrategyTest extends TestCase
     protected $renderer;
     protected $strategy;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->view     = new View();
         $this->request  = new Request();

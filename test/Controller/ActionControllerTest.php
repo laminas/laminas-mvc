@@ -33,7 +33,7 @@ class ActionControllerTest extends TestCase
     public $request;
     public $response;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->controller = new SampleController();
         $this->request    = new Request();
