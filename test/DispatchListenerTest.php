@@ -20,9 +20,12 @@ use Laminas\ServiceManager\ServiceManager;
 use Laminas\Stdlib\ResponseInterface;
 use Laminas\View\Model\ModelInterface;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class DispatchListenerTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function createMvcEvent($controllerMatched)
     {
         $response   = new Response();

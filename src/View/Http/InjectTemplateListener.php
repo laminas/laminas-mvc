@@ -13,9 +13,12 @@ use Laminas\EventManager\EventManagerInterface as Events;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Stdlib\StringUtils;
 use Laminas\View\Model\ModelInterface as ViewModel;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class InjectTemplateListener extends AbstractListenerAggregate
 {
+    use ProphecyTrait;
+
     /**
      * Array of controller namespace -> template mappings
      *

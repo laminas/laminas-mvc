@@ -88,7 +88,7 @@ class ExceptionStrategyTest extends TestCase
 
         $variables = $model->getVariables();
         $this->assertArrayHasKey('message', $variables);
-        $this->assertContains('error occurred', $variables['message']);
+        $this->assertStringContainsString('error occurred', $variables['message']);
         $this->assertArrayHasKey('exception', $variables);
         $this->assertSame($exception, $variables['exception']);
         $this->assertArrayHasKey('display_exceptions', $variables);

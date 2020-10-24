@@ -19,9 +19,12 @@ use Laminas\Mvc\SendResponseListener;
 use Laminas\Mvc\Service\SendResponseListenerFactory;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class SendResponseListenerFactoryTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testFactoryReturnsListenerWithEventManagerFromContainer()
     {
         $sharedEvents = $this->prophesize(SharedEventManagerInterface::class);

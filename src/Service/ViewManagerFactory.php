@@ -11,9 +11,12 @@ namespace Laminas\Mvc\Service;
 use Interop\Container\ContainerInterface;
 use Laminas\Mvc\View\Http\ViewManager as HttpViewManager;
 use Laminas\ServiceManager\Factory\FactoryInterface;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class ViewManagerFactory implements FactoryInterface
 {
+    use ProphecyTrait;
+
     /**
      * Create and return a view manager.
      *

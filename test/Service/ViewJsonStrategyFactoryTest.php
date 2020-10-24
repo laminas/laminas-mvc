@@ -13,9 +13,12 @@ use Laminas\Mvc\Service\ViewJsonStrategyFactory;
 use Laminas\View\Renderer\JsonRenderer;
 use Laminas\View\Strategy\JsonStrategy;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class ViewJsonStrategyFactoryTest extends TestCase
 {
+    use ProphecyTrait;
+
     private function createContainer()
     {
         $renderer  = $this->prophesize(JsonRenderer::class);
