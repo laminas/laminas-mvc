@@ -24,7 +24,7 @@ class HttpMethodListenerFactoryTest extends TestCase
      */
     protected $serviceLocator;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->serviceLocator = $this->prophesize(ServiceLocatorInterface::class);
         $this->serviceLocator->willImplement(ContainerInterface::class);

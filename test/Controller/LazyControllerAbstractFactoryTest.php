@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 
 class LazyControllerAbstractFactoryTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->container = $this->prophesize(ContainerInterface::class);
     }

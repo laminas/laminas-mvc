@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 class ServiceListenerFactoryTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $sm = $this->sm = $this->getMockBuilder(ServiceManager::class)
                                ->setMethods(['get'])
