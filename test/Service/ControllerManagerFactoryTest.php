@@ -61,12 +61,14 @@ class ControllerManagerFactoryTest extends TestCase
         // Ensure the class exists and can be autoloaded
         $this->assertTrue(class_exists(InvalidDispatchableClass::class));
 
+        $loader->setFactory(InvalidDispatchableClass::class, InvokableFactory::class);
+
         try {
             $loader->get(InvalidDispatchableClass::class);
             $this->fail('Retrieving the invalid dispatchable should fail');
         } catch (\Exception $e) {
             do {
-                $this->assertNotContains('Should not instantiate this', $e->getMessage());
+                $this->assertStringContainsString('Should not instantiate this', $e->getMessage());
             } while ($e = $e->getPrevious());
         }
     }

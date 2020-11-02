@@ -53,7 +53,7 @@ class ServiceManagerConfigTest extends TestCase
     }
 
     /**
-     * @group 3786
+     * @group #3786
      */
     public function testEventManagerAwareInterfaceIsNotInjectedIfPresentButSharedManagerIs()
     {
@@ -70,7 +70,7 @@ class ServiceManagerConfigTest extends TestCase
     }
 
     /**
-     * @group 6266
+     * @group #6266
      */
     public function testCanMergeCustomConfigWithDefaultConfig()
     {
@@ -94,7 +94,7 @@ class ServiceManagerConfigTest extends TestCase
     }
 
     /**
-     * @group 6266
+     * @group #6266
      */
     public function testCanOverrideDefaultConfigWithCustomConfig()
     {
@@ -119,7 +119,7 @@ class ServiceManagerConfigTest extends TestCase
     }
 
     /**
-     * @group 6266
+     * @group #6266
      */
     public function testCanAddDelegators()
     {
@@ -153,7 +153,7 @@ class ServiceManagerConfigTest extends TestCase
     }
 
     /**
-     * @group 6266
+     * @group #6266
      */
     public function testEventManagerInitializerCanBeReplaced()
     {
@@ -183,7 +183,7 @@ class ServiceManagerConfigTest extends TestCase
     }
 
     /**
-     * @group 101
+     * @group #101
      */
     public function testCreatesAFactoryForTheServiceManagerThatReturnsIt()
     {

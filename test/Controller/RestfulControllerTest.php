@@ -290,7 +290,7 @@ class RestfulControllerTest extends TestCase
         $this->request->setMethod('DESCRIBE');
         $result = $this->controller->dispatch($this->request, $this->response);
         $this->assertArrayHasKey('description', $result);
-        $this->assertContains('::describe', $result['description']);
+        $this->assertStringContainsString('::describe', $result['description']);
     }
 
     public function testDispatchCallsActionMethodBasedOnNormalizingAction()
@@ -298,7 +298,7 @@ class RestfulControllerTest extends TestCase
         $this->routeMatch->setParam('action', 'test.some-strangely_separated.words');
         $result = $this->controller->dispatch($this->request, $this->response);
         $this->assertArrayHasKey('content', $result);
-        $this->assertContains('Test Some Strangely Separated Words', $result['content']);
+        $this->assertStringContainsString('Test Some Strangely Separated Words', $result['content']);
     }
 
     public function testDispatchCallsNotFoundActionWhenActionPassedThatCannotBeMatched()
@@ -308,7 +308,7 @@ class RestfulControllerTest extends TestCase
         $response = $this->controller->getResponse();
         $this->assertEquals(404, $response->getStatusCode());
         $this->assertArrayHasKey('content', $result);
-        $this->assertContains('Page not found', $result['content']);
+        $this->assertStringContainsString('Page not found', $result['content']);
     }
 
     public function testShortCircuitsBeforeActionIfPreDispatchReturnsAResponse()
@@ -419,7 +419,7 @@ class RestfulControllerTest extends TestCase
         $this->request->setContent('{"foo":"bar"}');
 
         $result = $this->controller->dispatch($this->request, $this->response);
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
         $this->assertEquals(['entity' => ['foo' => 'bar']], $result);
     }
 

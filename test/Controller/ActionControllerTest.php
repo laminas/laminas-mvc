@@ -66,7 +66,7 @@ class ActionControllerTest extends TestCase
         $this->assertEquals('content', $result->captureTo());
         $vars = $result->getVariables();
         $this->assertArrayHasKey('content', $vars, var_export($vars, 1));
-        $this->assertContains('Page not found', $vars['content']);
+        $this->assertStringContainsString('Page not found', $vars['content']);
     }
 
     public function testDispatchInvokesNotFoundActionWhenInvalidActionPresentInRouteMatch()
@@ -79,7 +79,7 @@ class ActionControllerTest extends TestCase
         $this->assertEquals('content', $result->captureTo());
         $vars = $result->getVariables();
         $this->assertArrayHasKey('content', $vars, var_export($vars, 1));
-        $this->assertContains('Page not found', $vars['content']);
+        $this->assertStringContainsString('Page not found', $vars['content']);
     }
 
     public function testDispatchInvokesProvidedActionWhenMethodExists()
@@ -87,7 +87,7 @@ class ActionControllerTest extends TestCase
         $this->routeMatch->setParam('action', 'test');
         $result = $this->controller->dispatch($this->request, $this->response);
         $this->assertTrue(isset($result['content']));
-        $this->assertContains('test', $result['content']);
+        $this->assertStringContainsString('test', $result['content']);
     }
 
     public function testDispatchCallsActionMethodBasedOnNormalizingAction()
@@ -95,7 +95,7 @@ class ActionControllerTest extends TestCase
         $this->routeMatch->setParam('action', 'test.some-strangely_separated.words');
         $result = $this->controller->dispatch($this->request, $this->response);
         $this->assertTrue(isset($result['content']));
-        $this->assertContains('Test Some Strangely Separated Words', $result['content']);
+        $this->assertStringContainsString('Test Some Strangely Separated Words', $result['content']);
     }
 
     public function testShortCircuitsBeforeActionIfPreDispatchReturnsAResponse()
