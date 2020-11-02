@@ -154,8 +154,7 @@ class LazyControllerAbstractFactory implements AbstractFactoryInterface
          */
         return function (ReflectionParameter $parameter) use ($container, $requestedName) {
             if ($parameter->getType()
-                && $parameter->getType()->getName() === 'array')
-            {
+                && $parameter->getType()->getName() === 'array') {
                 if ($parameter->getName() === 'config'
                     && $container->has('config')
                 ) {
