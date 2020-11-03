@@ -506,9 +506,6 @@ class ApplicationTest extends TestCase
         $this->assertInstanceOf(ViewModel::class, $event->getResult());
     }
 
-    /**
-     * @group #2981
-     */
     public function testReturnsResponseFromListenerWhenRouteEventShortCircuits()
     {
         $this->application->bootstrap();
@@ -531,9 +528,6 @@ class ApplicationTest extends TestCase
         $this->assertTrue($triggered);
     }
 
-    /**
-     * @group #2981
-     */
     public function testReturnsResponseFromListenerWhenDispatchEventShortCircuits()
     {
         $this->application->bootstrap();

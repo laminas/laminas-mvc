@@ -52,9 +52,6 @@ class ServiceManagerConfigTest extends TestCase
         return new EventManager($sharedManager ?: $this->services->get('SharedEventManager'));
     }
 
-    /**
-     * @group #3786
-     */
     public function testEventManagerAwareInterfaceIsNotInjectedIfPresentButSharedManagerIs()
     {
         $events = $this->createEventManager();
@@ -69,9 +66,6 @@ class ServiceManagerConfigTest extends TestCase
         $this->assertSame($this->services->get('SharedEventManager'), $events->getSharedManager());
     }
 
-    /**
-     * @group #6266
-     */
     public function testCanMergeCustomConfigWithDefaultConfig()
     {
         $custom = [
@@ -93,9 +87,6 @@ class ServiceManagerConfigTest extends TestCase
         $this->assertTrue($sm->has('ModuleManager'));
     }
 
-    /**
-     * @group #6266
-     */
     public function testCanOverrideDefaultConfigWithCustomConfig()
     {
         $custom = [
@@ -118,9 +109,6 @@ class ServiceManagerConfigTest extends TestCase
         $this->assertInstanceOf(stdClass::class, $sm->get('ModuleManager'));
     }
 
-    /**
-     * @group #6266
-     */
     public function testCanAddDelegators()
     {
         /*
@@ -152,9 +140,6 @@ class ServiceManagerConfigTest extends TestCase
         $this->assertEquals('baz', $std->bar);
     }
 
-    /**
-     * @group #6266
-     */
     public function testEventManagerInitializerCanBeReplaced()
     {
         $instance       = $this->createMock(EventManagerAwareInterface::class);
@@ -182,9 +167,6 @@ class ServiceManagerConfigTest extends TestCase
         $serviceManager->get('EventManagerAware');
     }
 
-    /**
-     * @group #101
-     */
     public function testCreatesAFactoryForTheServiceManagerThatReturnsIt()
     {
         $serviceManager = new ServiceManager();
