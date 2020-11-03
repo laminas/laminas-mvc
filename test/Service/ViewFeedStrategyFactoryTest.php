@@ -13,9 +13,12 @@ use Laminas\Mvc\Service\ViewFeedStrategyFactory;
 use Laminas\View\Renderer\FeedRenderer;
 use Laminas\View\Strategy\FeedStrategy;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class ViewFeedStrategyFactoryTest extends TestCase
 {
+    use ProphecyTrait;
+
     private function createContainer()
     {
         $renderer  = $this->prophesize(FeedRenderer::class);

@@ -38,6 +38,7 @@
         "laminas/laminas-json": "^2.6.1 || ^3.0",
         "laminas/laminas-psr7bridge": "^1.0",
         "laminas/laminas-stratigility": ">=2.0.1 <2.2",
+        "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^9.4.2"
     },
     "suggest": {

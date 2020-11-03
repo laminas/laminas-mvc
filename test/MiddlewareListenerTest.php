@@ -26,11 +26,14 @@ use Laminas\ServiceManager\ServiceManager;
 use Laminas\Stdlib\DispatchableInterface;
 use Laminas\View\Model\ModelInterface;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 class MiddlewareListenerTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var \Prophecy\Prophecy\ObjectProphecy
      */
