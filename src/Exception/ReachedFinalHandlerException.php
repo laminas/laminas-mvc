@@ -8,6 +8,9 @@
 
 namespace Laminas\Mvc\Exception;
 
+/**
+ * @deprecated Since 3.2.0
+ */
 class ReachedFinalHandlerException extends RuntimeException
 {
     /**
