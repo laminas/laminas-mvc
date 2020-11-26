@@ -24,6 +24,9 @@ use Psr\Http\Message\ResponseInterface;
 
 /**
  * @covers \Laminas\Mvc\Controller\MiddlewareController
+ *
+ * Stratigility v2 does not support PHP 8
+ * @requires PHP <8
  */
 class MiddlewareControllerTest extends TestCase
 {
