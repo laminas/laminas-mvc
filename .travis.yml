@@ -26,11 +26,11 @@ matrix:
         - DEPS=latest
         - CS_CHECK=true
         - TEST_COVERAGE=true
-    - php: nightly
+    - php: 8.0
       env:
         - DEPS=lowest
         - COMPOSER_ARGS="--no-interaction --ignore-platform-reqs"
-    - php: nightly
+    - php: 8.0
       env:
         - DEPS=latest
         - COMPOSER_ARGS="--no-interaction --ignore-platform-reqs"
