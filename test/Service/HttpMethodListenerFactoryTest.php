@@ -13,18 +13,21 @@ use Laminas\Mvc\Service\HttpMethodListenerFactory;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * @covers Laminas\Mvc\Service\HttpMethodListenerFactory
  */
 class HttpMethodListenerFactoryTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var ServiceLocatorInterface|MockObject
      */
     protected $serviceLocator;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->serviceLocator = $this->prophesize(ServiceLocatorInterface::class);
         $this->serviceLocator->willImplement(ContainerInterface::class);

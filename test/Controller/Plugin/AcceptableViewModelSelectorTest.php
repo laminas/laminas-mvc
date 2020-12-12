@@ -19,7 +19,7 @@ use PHPUnit\Framework\TestCase;
 
 class AcceptableViewModelSelectorTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->request = new Request();
 

@@ -22,7 +22,7 @@ class InjectTemplateListenerTest extends TestCase
 {
     use EventListenerIntrospectionTrait;
 
-    public function setUp()
+    public function setUp(): void
     {
         $controllerMap = [
             'MappedNs' => true,

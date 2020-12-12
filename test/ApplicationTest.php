@@ -44,7 +44,7 @@ class ApplicationTest extends TestCase
      */
     protected $application;
 
-    public function setUp()
+    public function setUp(): void
     {
         $serviceListener = new ServiceListenerFactory();
         $r = new ReflectionProperty($serviceListener, 'defaultServiceConfig');
@@ -159,7 +159,14 @@ class ApplicationTest extends TestCase
 
         $sharedEvents = $events->getSharedManager();
         $this->assertInstanceOf(SharedEventManager::class, $sharedEvents);
-        $this->assertAttributeEquals([], 'identifiers', $sharedEvents);
+        $this->assertSame([], $this->getIdentifiersFromSharedEventManager($sharedEvents));
+    }
+
+    private function getIdentifiersFromSharedEventManager(SharedEventManager $events): array
+    {
+        $r = new ReflectionProperty($events, 'identifiers');
+        $r->setAccessible(true);
+        return $r->getValue($events);
     }
 
     /**
@@ -176,7 +183,6 @@ class ApplicationTest extends TestCase
         $this->application->bootstrap($isCustom ? (array) $listenerServiceName : []);
         $events = $this->application->getEventManager();
 
-        $foundListener = false;
         $listeners = $this->getArrayOfListenersForEvent($event, $events);
         $this->assertContains([$listenerService, $method], $listeners);
     }
@@ -337,7 +343,7 @@ class ApplicationTest extends TestCase
             return $e->getResponse()->setContent($e->getResponse()->getBody() . 'foobar');
         });
         $application->run();
-        $this->assertContains(
+        $this->assertStringContainsString(
             'foobar',
             $this->application->getResponse()->getBody(),
             'The "finish" event was not triggered ("foobar" not in response)'
@@ -364,7 +370,7 @@ class ApplicationTest extends TestCase
 
         $application->run();
         $this->assertTrue($event->isError());
-        $this->assertContains(Application::ERROR_ROUTER_NO_MATCH, $response->getContent());
+        $this->assertStringContainsString(Application::ERROR_ROUTER_NO_MATCH, $response->getContent());
     }
 
     /**
@@ -400,7 +406,7 @@ class ApplicationTest extends TestCase
         });
 
         $this->application->run();
-        $this->assertContains('Raised an error', $response->getContent());
+        $this->assertStringContainsString('Raised an error', $response->getContent());
     }
 
     /**
@@ -483,7 +489,7 @@ class ApplicationTest extends TestCase
         });
 
         $application->run();
-        $this->assertContains(Application::class, $response->getContent());
+        $this->assertStringContainsString(Application::class, $response->getContent());
     }
 
     public function testOnDispatchErrorEventPassedToTriggersShouldBeTheOriginalOne()
@@ -500,9 +506,6 @@ class ApplicationTest extends TestCase
         $this->assertInstanceOf(ViewModel::class, $event->getResult());
     }
 
-    /**
-     * @group 2981
-     */
     public function testReturnsResponseFromListenerWhenRouteEventShortCircuits()
     {
         $this->application->bootstrap();
@@ -525,9 +528,6 @@ class ApplicationTest extends TestCase
         $this->assertTrue($triggered);
     }
 
-    /**
-     * @group 2981
-     */
     public function testReturnsResponseFromListenerWhenDispatchEventShortCircuits()
     {
         $this->application->bootstrap();

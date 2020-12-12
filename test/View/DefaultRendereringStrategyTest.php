@@ -36,7 +36,7 @@ class DefaultRendereringStrategyTest extends TestCase
     protected $renderer;
     protected $strategy;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->view     = new View();
         $this->request  = new Request();
@@ -170,6 +170,6 @@ class DefaultRendereringStrategyTest extends TestCase
         $this->assertTrue($test->flag);
         $this->assertEquals(Application::ERROR_EXCEPTION, $test->error);
         $this->assertInstanceOf('Exception', $test->exception);
-        $this->assertContains('script', $test->exception->getMessage());
+        $this->assertStringContainsString('script', $test->exception->getMessage());
     }
 }

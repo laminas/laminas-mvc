@@ -30,14 +30,11 @@ class AbstractControllerTest extends TestCase
     /**
      * {@inheritDoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->controller = new AbstractControllerStub();
     }
 
-    /**
-     * @group 6553
-     */
     public function testSetEventManagerWithDefaultIdentifiers()
     {
         /* @var $eventManager EventManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
@@ -46,20 +43,18 @@ class AbstractControllerTest extends TestCase
         $eventManager
             ->expects($this->once())
             ->method('setIdentifiers')
-            ->with($this->logicalNot($this->contains('customEventIdentifier')));
+            ->with($this->logicalNot($this->containsEqual('customEventIdentifier')));
 
         $this->controller->setEventManager($eventManager);
     }
 
-    /**
-     * @group 6553
-     */
     public function testSetEventManagerWithCustomStringIdentifier()
     {
         /* @var $eventManager EventManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
         $eventManager = $this->createMock(EventManagerInterface::class);
 
-        $eventManager->expects($this->once())->method('setIdentifiers')->with($this->contains('customEventIdentifier'));
+        $eventManager->expects($this->once())->method('setIdentifiers')
+            ->with($this->containsEqual('customEventIdentifier'));
 
         $reflection = new ReflectionProperty($this->controller, 'eventIdentifier');
 
@@ -69,17 +64,14 @@ class AbstractControllerTest extends TestCase
         $this->controller->setEventManager($eventManager);
     }
 
-    /**
-     * @group 6553
-     */
     public function testSetEventManagerWithMultipleCustomStringIdentifier()
     {
         /* @var $eventManager EventManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
         $eventManager = $this->createMock(EventManagerInterface::class);
 
         $eventManager->expects($this->once())->method('setIdentifiers')->with($this->logicalAnd(
-            $this->contains('customEventIdentifier1'),
-            $this->contains('customEventIdentifier2')
+            $this->containsEqual('customEventIdentifier1'),
+            $this->containsEqual('customEventIdentifier2')
         ));
 
         $reflection = new ReflectionProperty($this->controller, 'eventIdentifier');
@@ -90,9 +82,6 @@ class AbstractControllerTest extends TestCase
         $this->controller->setEventManager($eventManager);
     }
 
-    /**
-     * @group 6615
-     */
     public function testSetEventManagerWithDefaultIdentifiersIncludesImplementedInterfaces()
     {
         /* @var $eventManager EventManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
@@ -102,9 +91,9 @@ class AbstractControllerTest extends TestCase
             ->expects($this->once())
             ->method('setIdentifiers')
             ->with($this->logicalAnd(
-                $this->contains(EventManagerAwareInterface::class),
-                $this->contains(DispatchableInterface::class),
-                $this->contains(InjectApplicationEventInterface::class)
+                $this->containsEqual(EventManagerAwareInterface::class),
+                $this->containsEqual(DispatchableInterface::class),
+                $this->containsEqual(InjectApplicationEventInterface::class)
             ));
 
         $this->controller->setEventManager($eventManager);
@@ -119,10 +108,10 @@ class AbstractControllerTest extends TestCase
             ->expects($this->once())
             ->method('setIdentifiers')
             ->with($this->logicalAnd(
-                $this->contains(AbstractController::class),
-                $this->contains(AbstractControllerStub::class),
-                $this->contains('LaminasTest'),
-                $this->contains('LaminasTest\\Mvc\\Controller\\TestAsset')
+                $this->containsEqual(AbstractController::class),
+                $this->containsEqual(AbstractControllerStub::class),
+                $this->containsEqual('LaminasTest'),
+                $this->containsEqual('LaminasTest\\Mvc\\Controller\\TestAsset')
             ));
 
         $this->controller->setEventManager($eventManager);

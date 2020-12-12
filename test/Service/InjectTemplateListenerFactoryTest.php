@@ -14,6 +14,7 @@ use Laminas\Mvc\Service\InjectTemplateListenerFactory;
 use Laminas\Mvc\View\Http\InjectTemplateListener;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Tests for {@see \Laminas\Mvc\Service\InjectTemplateListenerFactory}
@@ -22,6 +23,8 @@ use PHPUnit\Framework\TestCase;
  */
 class InjectTemplateListenerFactoryTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testFactoryCanCreateInjectTemplateListener()
     {
         $this->buildInjectTemplateListenerWithConfig([]);
