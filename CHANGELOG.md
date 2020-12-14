@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 3.2.0 - TBD
+## 3.2.0 - 2020-12-14
 
 ### Added
 
@@ -19,9 +19,24 @@ All notable changes to this project will be documented in this file, in reverse 
 
 - [#69](https://github.com/laminas/laminas-mvc/pull/69) Removes PHP support prior 7.3.0
 
-### Fixed
 
-- Nothing.
+-----
+
+### Release Notes for [3.2.0](https://github.com/laminas/laminas-mvc/milestone/1)
+
+
+
+### 3.2.0
+
+- Total issues resolved: **0**
+- Total pull requests resolved: **2**
+- Total contributors: **2**
+
+#### Enhancement
+
+ - [69: PHP 8.0 support](https://github.com/laminas/laminas-mvc/pull/69) thanks to @snapshotpl
+
+ - [51: Deprecate middleware listener](https://github.com/laminas/laminas-mvc/pull/51) thanks to @Xerkus
 
 ## 3.1.1 - 2017-11-24
 
