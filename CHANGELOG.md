@@ -6,18 +6,18 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- [zendframework/zend-mvc#297](https://github.com/zendframework/zend-mvc/pull/297) adds support for PHP 7.3.
+- [#69](https://github.com/laminas/laminas-mvc/pull/69) Adds PHP 8.0 support
 - [zendframework/zend-mvc#282](https://github.com/zendframework/zend-mvc/pull/282) Adds a full
   controller namespace as additional event manager identifier for
   implementations of AbstractController
 
 ### Deprecated
 
-- Nothing.
+- [#51](https://github.com/laminas/laminas-mvc/pull/51) Deprecates MiddlewareListener. Optional support for dispatching middleware, middleware pipes and handlers is moved to laminas/laminas-mvc-middleware package
 
 ### Removed
 
-- Nothing.
+- [#69](https://github.com/laminas/laminas-mvc/pull/69) Removes PHP support prior 7.3.0
 
 ### Fixed
 
