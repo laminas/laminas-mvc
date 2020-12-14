@@ -30,6 +30,12 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
+use function error_reporting;
+use function sprintf;
+use function var_export;
+
+use const E_USER_DEPRECATED;
+
 class MiddlewareListenerTest extends TestCase
 {
     use ProphecyTrait;
@@ -38,6 +44,21 @@ class MiddlewareListenerTest extends TestCase
      * @var \Prophecy\Prophecy\ObjectProphecy
      */
     private $routeMatch;
+    /**
+     * @var int
+     */
+    private $errorReporting;
+
+    protected function setUp(): void
+    {
+        $this->errorReporting = error_reporting();
+        error_reporting($this->errorReporting & ~E_USER_DEPRECATED);
+    }
+
+    protected function tearDown(): void
+    {
+        error_reporting($this->errorReporting);
+    }
 
     /**
      * Create an MvcEvent, populated with everything it needs.
@@ -104,6 +125,36 @@ class MiddlewareListenerTest extends TestCase
         $this->assertInstanceOf(Response::class, $return);
         $this->assertSame(200, $return->getStatusCode());
         $this->assertEquals('Test!', $return->getBody());
+    }
+
+    /**
+     * Stratigility v2 does not support PHP 8
+     * @requires PHP <8
+     */
+    public function testDispatchingMiddlewareTriggersDeprecation(): void
+    {
+        error_reporting($this->errorReporting & E_USER_DEPRECATED);
+        $this->expectDeprecation();
+        $this->expectDeprecationMessage('use the laminas/laminas-mvc-middleware package');
+
+        $this->testSuccessfullyDispatchesMiddleware();
+    }
+
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testDeprecationIsNotTriggeredWhenMiddlewareListenerShortCircuits(): void
+    {
+        error_reporting($this->errorReporting & E_USER_DEPRECATED);
+
+        $this->routeMatch = $this->prophesize(RouteMatch::class);
+        $routeMatch = new RouteMatch(['middleware' => false]);
+
+        $event = new MvcEvent();
+        $event->setRouteMatch($routeMatch);
+
+        $listener = new MiddlewareListener();
+        $listener->onDispatch($event);
     }
 
     /**
