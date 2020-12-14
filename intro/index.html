@@ -309,7 +309,7 @@
             </div>
 
             
-            <div class="col-4 text-sm-right">
+            <div class="col-4 text-right">
                 
                     
 
@@ -447,7 +447,6 @@ response.</p>
         .htaccess
         index.php
     init_autoloader.php</code></pre>
-
 <p>The <code>public/index.php</code> script marshals all user requests to your website,
 retrieving an array of configuration from <code>config/application.config.php</code>. On
 return, it <code>run()</code>s the <code>Application</code>, processing the request and returning a
@@ -495,7 +494,6 @@ number of tasks.</p>
         &lt;dir-named-after-module-namespace&gt;/
             &lt;dir-named-after-a-controller&gt;/
                 &lt;.phtml files&gt;</code></pre>
-
 <p>Since a module acts as a namespace, the module root directory should be that
 namespace. This namespace could also include a vendor prefix of sorts. As an
 example a module centered around "User" functionality delivered by Laminas might be
@@ -514,7 +512,6 @@ module namespace shown below.</p>
 class Module
 {
 }</code></pre>
-
 <blockquote>
 <h3>Module class location</h3>
 <p>If you have an autoloader defined, such as detailed later around the various
@@ -613,7 +610,6 @@ $serviceManager-&gt;setFactory('EventManager', function ($serviceManager) {
 $serviceManager-&gt;setShared('EventManager', false);
 
 $application = new Application($config, $serviceManager);</code></pre>
-
 <p>Once you've done this, there are two additional actions you can take. The first is to "bootstrap"
 the application. In the default implementation, this does the following:</p>
 <ul>
@@ -663,7 +659,6 @@ $serviceManager-&gt;get('ModuleManager')-&gt;loadModules();
 $application = $serviceManager-&gt;get('Application');
 $application-&gt;bootstrap();
 $application-&gt;run();</code></pre>
-
 <p>You can make this even simpler by using the <code>init()</code> method of the
 <code>Application</code>. This is a static method for quick and easy initialization of the
 <code>Application</code> instance.</p>
@@ -680,7 +675,6 @@ $configuration = include 'config/application.config.php';
 
 // The init() method does something very similar with the previous example.
 Application::init($configuration)-&gt;run();</code></pre>
-
 <p>The <code>init()</code> does the following:</p>
 <ul>
 <li>Grabs the application configuration and pulls from the <code>service_manager</code> key,
@@ -739,7 +733,6 @@ return [
         ],
     ],
 ];</code></pre>
-
 <p>As we add modules to the system, we'll add items to the <code>modules</code> array.</p>
 <p>Each <code>Module</code> class that has configuration it wants the <code>Application</code> to know
 about should define a <code>getConfig()</code> method. That method should return an array
@@ -753,7 +746,6 @@ class Module
         return include __DIR__ . '/config/module.config.php'
     }
 }</code></pre>
-
 <p>There are a number of other methods you can define for tasks ranging from
 providing autoloader configuration, to providing services to the
 <code>ServiceManager</code>, to listening to the bootstrap event.  The

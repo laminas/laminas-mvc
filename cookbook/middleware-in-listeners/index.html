@@ -309,7 +309,7 @@
             </div>
 
             
-            <div class="col-4 text-sm-right">
+            <div class="col-4 text-right">
                 
                     
 
@@ -391,7 +391,6 @@ class AuthorizationMiddleware
         // handle authorization here...
     }
 }</code></pre>
-
 <p>Since the request and response composed in <code>MvcEvent</code> instances are specifically
 from laminas-http, we will use laminas-psr7bridge to convert them to PSR-7
 equivalents. As an example, consider the following module declaration, which

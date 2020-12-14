@@ -309,7 +309,7 @@
             </div>
 
             
-            <div class="col-4 text-sm-right">
+            <div class="col-4 text-right">
                 
                     
 
@@ -341,19 +341,7 @@
             <ul class="toc__list">
                 
                     <li class="toc__entry">
-                        <a href="#mapping-routes-to-middleware" class="toc__link nav-link">Mapping routes to middleware</a>
-                    </li>
-                
-                    <li class="toc__entry">
-                        <a href="#middleware-services" class="toc__link nav-link">Middleware services</a>
-                    </li>
-                
-                    <li class="toc__entry">
-                        <a href="#writing-middleware" class="toc__link nav-link">Writing middleware</a>
-                    </li>
-                
-                    <li class="toc__entry">
-                        <a href="#middleware-return-values" class="toc__link nav-link">Middleware return values</a>
+                        <a href="#built-in-optional-support-deprecation" class="toc__link nav-link">Built-in Optional Support Deprecation</a>
                     </li>
                 
             </ul>
@@ -402,128 +390,27 @@
 and is now being adopted by many frameworks; Laminas itself offers a
 parallel microframework targeting PSR-7 with <a href="https://docs.mezzio.dev/mezzio">Mezzio</a>.
 What if you want to dispatch PSR-7 middleware from laminas-mvc?</p>
-<p>laminas-mvc currently uses <a href="https://github.com/laminas/laminas-http">laminas-http</a>
+<p>laminas-mvc currently uses <a href="https://docs.laminas.dev/laminas-http/">laminas-http</a>
 for its HTTP transport layer, and the objects it defines are not compatible with
 PSR-7, meaning the basic MVC layer does not and cannot make use of PSR-7
 currently.</p>
-<p>However, starting with version 2.7.0, laminas-mvc offers
-<code>Laminas\Mvc\MiddlewareListener</code>. This <a href="../mvc-event/#mvceventevent_dispatch-dispatch">dispatch</a>
-listener listens prior to the default <code>DispatchListener</code>, and executes if the
-route matches contain a "middleware" parameter, and the service that resolves to
-is callable. When those conditions are met, it uses the <a href="https://github.com/laminas/laminas-psr7bridge">PSR-7 bridge</a>
-to convert the laminas-http request and response objects into PSR-7 instances, and
-then invokes the middleware.</p>
-<h2 id="mapping-routes-to-middleware">Mapping routes to middleware</h2>
-<p>The first step is to map a route to PSR-7 middleware. This looks like any other
-<a href="../routing/">routing</a> configuration, with one small change: instead of providing
-a "controller" in the routing defaults, you provide "middleware":</p>
-<pre class="highlight"><code class="language-php">// Via configuration:
-return [
-    'router' =&gt;
-        'routes' =&gt; [
-            'home' =&gt; [
-                'type' =&gt; 'literal',
-                'options' =&gt; [
-                    'route' =&gt; '/',
-                    'defaults' =&gt; [
-                        'middleware' =&gt; 'Application\Middleware\IndexMiddleware',
-                    ],
-                ],
-            ],
-        ],
-    ],
-];
-
-// Manually:
-$route = Literal::factory([
-    'route' =&gt; '/',
-    'defaults' =&gt; [
-        'middleware' =&gt; 'Application\Middleware\IndexMiddleware',
-    ],
-]);</code></pre>
-
-<p>Middleware may be provided as PHP callables, or as service names.</p>
-<p><strong>As of 3.1.0</strong> you may also specify an <code>array</code> of middleware, and middleware
-may be <a href="https://github.com/http-interop/http-middleware">http-interop/http-middleware</a>
-compatible. Each item in the array must be a PHP callable, service name, or
-http-middleware instance. These will then be piped into a
-<code>Laminas\Stratigility\MiddlewarePipe</code> instance in the order in which they are
-present in the array.</p>
-<blockquote>
-<h3>No action required</h3>
-<p>Unlike action controllers, middleware typically is single purpose, and, as
-such, does not require a default <code>action</code> parameter.</p>
-</blockquote>
-<h2 id="middleware-services">Middleware services</h2>
-<p>In a normal laminas-mvc dispatch cycle, controllers are pulled from a dedicated
-<code>ControllerManager</code>. Middleware, however, are pulled from the application
-service manager.</p>
-<p>Middleware retrieved <em>must</em> be PHP callables. The <code>MiddlewareListener</code> will
-create an error response if non-callable middleware is indicated.</p>
-<h2 id="writing-middleware">Writing middleware</h2>
-<p>Prior to 3.1.0, when dispatching middleware, the <code>MiddlewareListener</code> calls it
-with two arguments, the PSR-7 request and response, respectively. As such, your
-middleware signature should look like the following:</p>
-<pre class="highlight"><code class="language-php">namespace Application\Middleware;
-
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-
-class IndexMiddleware
-{
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response)
-    {
-        // do some work
-    }
-}</code></pre>
-
-<p>Starting in 3.1.0, the <code>MiddlewareListener</code> always adds middleware to a
-<code>Laminas\Stratigility\MiddlewarePipe</code> instance, and invokes it as
-<a href="https://github.com/http-interop/http-middleware">http-interop/http-middleware</a>,
-passing it a PSR-7 <code>ServerRequestInterface</code> and an http-interop
-<code>DelegateInterface</code>.</p>
-<p>As such, ideally your middleware should implement the <code>MiddlewareInterface</code> from
-<a href="https://github.com/http-interop/http-middleware">http-interop/http-middleware</a>:</p>
-<pre class="highlight"><code class="language-php">namespace Application\Middleware;
-
-use Interop\Http\ServerMiddleware\DelegateInterface;
-use Interop\Http\ServerMiddleware\MiddlewareInterface;
-use Psr\Http\Message\ServerRequestInterface;
-
-class IndexMiddleware implements MiddlewareInterface
-{
-    public function process(ServerRequestInterface $request, DelegateInterface $delegate)
-    {
-        // do some work
-    }
-}</code></pre>
-
-<p>Alternately, you may still write <code>callable</code> middleware using the following
-signature:</p>
-<pre class="highlight"><code class="language-php">function (ServerRequestInterface $request, ResponseInterface $response, callable $next)
-{
-    // do some work
-}</code></pre>
-
-<p>In the above case, the <code>DelegateInterface</code> is decorated as a callable.</p>
-<p>In all versions, within your middleware, you can pull information from the
-composed request, and return a response.</p>
-<blockquote>
-<h3>Routing parameters</h3>
-<p>At the time of the 2.7.0 release, route match parameters were not yet injected
-into the PSR-7 <code>ServerRequest</code> instance, and thus not available as request
-attributes.</p>
-<p>With the 3.0 release, they are pushed into the PSR-7 <code>ServerRequest</code> as
-attributes, and may thus be fetched using
-<code>$request-&gt;getAttribute($attributeName)</code>.</p>
-</blockquote>
-<h2 id="middleware-return-values">Middleware return values</h2>
-<p>Ideally, your middleware should return a PSR-7 response. When it does, it is
-converted back to a laminas-http response and returned by the <code>MiddlewareListener</code>,
-causing the application to short-circuit and return the response immediately.</p>
-<p>You can, however, return arbitrary values. If you do, the result is pushed into
-the <code>MvcEvent</code> as the event result, allowing later dispatch listeners to
-manipulate the results.</p>
+<p>The package <a href="https://docs.laminas.dev/laminas-mvc-middleware/">laminas-mvc-middleware</a> is a laminas-mvc
+application module that enables dispatching of middleware, middleware pipes, and
+request handlers for route matches that contain a <code>middleware</code> parameter.</p>
+<h2 id="built-in-optional-support-deprecation">Built-in Optional Support Deprecation</h2>
+<p>With version 2.7.0, laminas-mvc began offering the now deprecated
+<code>Laminas\Mvc\MiddlewareListener</code>. The <code>MiddlewareListener</code> is always enabled, but
+requires optional dependencies installed to be used.<br />
+A new laminas-mvc module, <a href="https://docs.laminas.dev/laminas-mvc-middleware/">laminas-mvc-middleware</a>, transparently replaces
+it with <code>Laminas\Mvc\Middleware\MiddlewareListener</code> when registered with a
+laminas-mvc application.</p>
+<p>Starting with version 3.2.0, the built-in <code>Laminas\Mvc\MiddlewareListener</code> will
+trigger deprecation level errors on any attempt to handle a route match containing
+a <code>middleware</code> parameter.</p>
+<p>If your application currently depends on the built-in optional middleware
+support, <code>laminas/laminas-mvc-middleware:~1.0.0</code> provides a drop-in replacement.
+If you use this new module, please note that the module <code>Laminas\Mvc\Middleware</code>
+must be enabled in your laminas-mvc application.</p>
 
 
 

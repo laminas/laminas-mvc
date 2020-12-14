@@ -309,7 +309,7 @@
             </div>
 
             
-            <div class="col-4 text-sm-right">
+            <div class="col-4 text-right">
                 
                     
 
@@ -423,12 +423,10 @@ your own custom plugins with the manager.</p>
 <code>plugin()</code> methods, you can access these using their shortname via the <code>plugin()</code>
 method:</p>
 <pre class="highlight"><code class="language-php">$plugin = $this-&gt;plugin('url');</code></pre>
-
 <p>For an extra layer of convenience, this shipped abstract controller
 implementations have <code>__call()</code> methods defined that allow you to retrieve
 plugins via method calls:</p>
 <pre class="highlight"><code class="language-php">$plugin = $this-&gt;url();</code></pre>
-
 <h2 id="acceptableviewmodelselector-plugin">AcceptableViewModelSelector Plugin</h2>
 <p>The <code>AcceptableViewModelSelector</code> is a helper that can be used to select an
 appropriate view model based on user defined criteria will be tested against the
@@ -463,7 +461,6 @@ class SomeController extends AbstractActionController
         }
     }
 }</code></pre>
-
 <p>The above would return a standard <code>Laminas\View\Model\ViewModel</code> instance if no
 criterias are met, and the specified view model types if a specific criteria
 is met. Rules are matched in order, with the first match "winning".
@@ -500,18 +497,15 @@ return [
     'somekey' =&gt; $somevalue,
     'foo'     =&gt; $foo,
 ];</code></pre>
-
 <h2 id="layout-plugin">Layout Plugin</h2>
 <p>The <code>Layout</code> plugin allows changing layout templates from within controller actions.</p>
 <p>It exposes a single method, <code>setTemplate()</code>, which takes one argument,
 <code>$template</code>, the name of the template to set.</p>
 <p>As an example:</p>
 <pre class="highlight"><code class="language-php">$this-&gt;layout()-&gt;setTemplate('layout/newlayout');</code></pre>
-
 <p>It also implements the <code>__invoke</code> magic method, which allows calling the plugin
 as a method call:</p>
 <pre class="highlight"><code class="language-php">$this-&gt;layout('layout/newlayout');</code></pre>
-
 <h2 id="params-plugin">Params Plugin</h2>
 <p>The <code>Params</code> plugin allows accessing parameters in actions from different sources.</p>
 <p>It exposes several methods, one for each parameter source:</p>
@@ -547,7 +541,6 @@ for invoking the <code>fromRoute</code> method:</p>
 <pre class="highlight"><code class="language-php">$this-&gt;params()-&gt;fromRoute('param', $default);
 // or
 $this-&gt;params('param', $default);</code></pre>
-
 <h2 id="redirect-plugin">Redirect Plugin</h2>
 <p>Redirections are quite common operations within applications. If done manually,
 you will need to do the following steps:</p>
@@ -581,17 +574,14 @@ retrieves the router from the event object.</p>
 </blockquote>
 <p>As an example:</p>
 <pre class="highlight"><code class="language-php">return $this-&gt;redirect()-&gt;toRoute('login-success');</code></pre>
-
 <h2 id="url-plugin">Url Plugin</h2>
 <p>You may need to generate URLs from route definitions within your controllers;
 for example, to seed the view, generate headers, etc. While the <code>MvcEvent</code>
 object composes the router, doing so manually would require this workflow:</p>
 <pre class="highlight"><code class="language-php">$router = $this-&gt;getEvent()-&gt;getRouter();
 $url    = $router-&gt;assemble($params, ['name' =&gt; 'route-name']);</code></pre>
-
 <p>The <code>Url</code> helper makes this slightly more convenient:</p>
 <pre class="highlight"><code class="language-php">$url = $this-&gt;url()-&gt;fromRoute('route-name', $params);</code></pre>
-
 <p>The <code>fromRoute()</code> method is the only public method defined, and is used to
 generate a URL string from the provided parameters. It has the following
 signature:</p>

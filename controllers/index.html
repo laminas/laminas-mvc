@@ -309,7 +309,7 @@
             </div>
 
             
-            <div class="col-4 text-sm-right">
+            <div class="col-4 text-right">
                 
                     
 
@@ -411,7 +411,6 @@ class Foo implements DispatchableInterface
         // ... do something, and preferably return a Response ...
     }
 }</code></pre>
-
 <p>While the pattern is straight-forward, chances are you don't want to implement
 custom dispatch logic for every controller, particularly as it's not unusual or
 uncommon for a single controller to handle several related types of requests.</p>
@@ -435,11 +434,9 @@ if (! $id) {
     $this-&gt;getEvent()-&gt;setResult('Invalid identifier; cannot complete request');
     return;
 }</code></pre>
-
 <p>The <code>InjectApplicationEventInterface</code> defines two methods:</p>
 <pre class="highlight"><code class="language-php">public function setEvent(Laminas\EventManager\EventInterface $event);
 public function getEvent();</code></pre>
-
 <h3>ServiceLocatorAware</h3>
 <p>In most cases, you should define your controllers such that dependencies are
 injected by the application's <code>ServiceManager</code>, via either constructor arguments
@@ -455,7 +452,6 @@ use Laminas\ServiceManager\ServiceLocatorAwareInterface;
 
 public function setServiceLocator(ServiceLocatorInterface $serviceLocator);
 public function getServiceLocator();</code></pre>
-
 <blockquote>
 <h4>ServiceLocatorInterface is deprecated</h4>
 <p><code>ServiceLocatorAwareInterface</code> <a href="http://docs.laminas.dev/laminas-servicemanager/migration/#miscellaneous-interfaces-traits-and-classes">was removed from laminas-servicemanager v3.0</a>,
@@ -484,7 +480,6 @@ use Laminas\EventManager\EventManagerInterface;
 
 public function setEventManager(EventManagerInterface $events);
 public function getEventManager();</code></pre>
-
 <h3>Controller Plugins</h3>
 <p>Code re-use is a common goal for developers. Another common goal is convenience.
 However, this is often difficult to achieve cleanly in abstract, general
@@ -526,7 +521,6 @@ public function plugin($name, array $options = null)
 {
     return $this-&gt;getPluginManager()-&gt;get($name, $options);
 }</code></pre>
-
 <h2 id="abstractactioncontroller">AbstractActionController</h2>
 <p>Implementing each of the above interfaces is a lesson in redundancy; you won't
 often want to do it.  As such, we've developed abstract, base controllers you
@@ -565,7 +559,6 @@ class BarController extends AbstractActionController
         return ['title' =&gt; __METHOD__];
     }
 }</code></pre>
-
 <h3>Interfaces and Collaborators</h3>
 <p><code>AbstractActionController</code> implements each of the following interfaces:</p>
 <ul>
@@ -636,7 +629,6 @@ extending class.</p>
 <a href="https://docs.laminas.dev/laminas-mvc-console/">laminas-mvc-console</a> must be
 installed. It can be done via Composer:</p>
 <pre class="highlight"><code class="language-bash">composer require laminas/laminas-mvc-console</code></pre>
-
 <p>If you are not using the component installer, you will need to
 <a href="https://docs.laminas.dev/laminas-mvc-console/#installation">add this component as a module</a>.</p>
 </blockquote>

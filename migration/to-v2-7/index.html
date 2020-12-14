@@ -309,7 +309,7 @@
             </div>
 
             
-            <div class="col-4 text-sm-right">
+            <div class="col-4 text-right">
                 
                     
 
@@ -414,7 +414,6 @@ a priority higher than <code>Laminas\Mvc\DispatchListener</code>, allowing dispa
 <p>The constructor signature of <code>Laminas\Mvc\Application</code> has changed. Previously, it
 was:</p>
 <pre class="highlight"><code class="language-php">__construct($configuration, ServiceManager $serviceManager)</code></pre>
-
 <p>and internally, it pulled the services <code>EventManager</code>, <code>Request</code>, and <code>Response</code>
 from the provided <code>$serviceManager</code> during initialization.</p>
 <p>The new constructor signature provides optional arguments for injecting the
@@ -426,7 +425,6 @@ event manager, request, and response:</p>
     RequestInterface $request = null,
     ResponseInterface $response = null
 )</code></pre>
-
 <p>This change makes all dependencies explicit. Starting in v3.0, the new arguments
 will be <em>required</em>.</p>
 <p>The factory <code>Laminas\Mvc\Service\ApplicationFactory</code> was updated to follow the new
@@ -446,7 +444,6 @@ returned an event manager instance, and, if so, inject the shared event manager:
 if ($events instanceof EventManagerInterface) {
     $events-&gt;setSharedManager($container-&gt;get('SharedEventManager'));
 }</code></pre>
-
 <p>In laminas-eventmanager v3, event managers are now injected with the shared
 manager at instantiation, and no setter exists for providing the shared manager.
 As such, the above logic changed to:</p>
@@ -454,7 +451,6 @@ As such, the above logic changed to:</p>
 if (! $events || ! $events-&gt;getSharedManager()) {
     $instance-&gt;setEventManager($container-&gt;get('EventManager'));
 }</code></pre>
-
 <p>In other words, it re-injects with a new event manager instance if the instance
 pulled does not have a shared manager composed.</p>
 <p>This likely will not cause regressions in existing code, but may be something to
@@ -492,7 +488,6 @@ release.</p>
 </ul>
 <p>As an example, consider the following code from a controller:</p>
 <pre class="highlight"><code class="language-php">$db = $this-&gt;getServiceLcoator()-&gt;get('Db\ApplicationAdapter');</code></pre>
-
 <p>To update your controller, you will:</p>
 <ul>
 <li>Add a <code>$db</code> property to your class.</li>
@@ -521,7 +516,6 @@ class YourController extends AbstractActionController
         /* ... */
     }
 }</code></pre>
-
 <p>A factory would look like the following:</p>
 <pre class="highlight"><code class="language-php">use Interop\Container\ContainerInterface;
 
@@ -532,7 +526,6 @@ class YourControllerFactory
         return new YourController($container-&gt;get('Db\ApplicationAdapter'));
     }
 }</code></pre>
-
 <p>You then also need to ensure the controller manager knows about the factory. It
 likely already does, as an invokable; you will redefine it as a factory in
 your <code>module.config.php</code>:</p>
@@ -546,7 +539,6 @@ your <code>module.config.php</code>:</p>
     ],
     /* ... */
 ];</code></pre>
-
 <p>While this may seem like more steps, doing so ensures your code has no hidden
 dependencies, improves the testability of your code, and allows you to substitute
 alternatives for either the dependencies or the controller itself.</p>
