@@ -61,7 +61,7 @@ class MiddlewareListener extends AbstractListenerAggregate
 
         trigger_error(sprintf(
             'Dispatching middleware with %s is deprecated since 3.2.0;'
-            . ' please use laminas/laminas-mvc-middleware package instead',
+            . ' please use the laminas/laminas-mvc-middleware package instead',
             self::class
         ), E_USER_DEPRECATED);
 

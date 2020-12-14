@@ -135,7 +135,7 @@ class MiddlewareListenerTest extends TestCase
     {
         error_reporting($this->errorReporting & E_USER_DEPRECATED);
         $this->expectDeprecation();
-        $this->expectDeprecationMessage('use laminas/laminas-mvc-middleware');
+        $this->expectDeprecationMessage('use the laminas/laminas-mvc-middleware package');
 
         $this->testSuccessfullyDispatchesMiddleware();
     }
