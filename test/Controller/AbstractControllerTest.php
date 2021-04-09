@@ -31,14 +31,11 @@ class AbstractControllerTest extends TestCase
     /**
      * {@inheritDoc}
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->controller = new AbstractControllerStub();
     }
 
-    /**
-     * @group 6553
-     */
     public function testSetEventManagerWithDefaultIdentifiers()
     {
         /* @var $eventManager EventManagerInterface&MockObject */
@@ -52,9 +49,6 @@ class AbstractControllerTest extends TestCase
         $this->controller->setEventManager($eventManager);
     }
 
-    /**
-     * @group 6553
-     */
     public function testSetEventManagerWithCustomStringIdentifier()
     {
         /* @var $eventManager EventManagerInterface&MockObject */
@@ -73,9 +67,6 @@ class AbstractControllerTest extends TestCase
         $this->controller->setEventManager($eventManager);
     }
 
-    /**
-     * @group 6553
-     */
     public function testSetEventManagerWithMultipleCustomStringIdentifier()
     {
         /* @var $eventManager EventManagerInterface&MockObject */
@@ -94,9 +85,6 @@ class AbstractControllerTest extends TestCase
         $this->controller->setEventManager($eventManager);
     }
 
-    /**
-     * @group 6615
-     */
     public function testSetEventManagerWithDefaultIdentifiersIncludesImplementedInterfaces()
     {
         /* @var $eventManager EventManagerInterface&MockObject */

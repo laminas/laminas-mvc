@@ -19,7 +19,12 @@ class LazyControllerAbstractFactoryTest extends TestCase
 {
     use ProphecyTrait;
 
-    protected function setUp() : void
+    /**
+     * @var ContainerInterface|\Prophecy\Prophecy\ObjectProphecy
+     */
+    private $container;
+
+    protected function setUp(): void
     {
         $this->container = $this->prophesize(ContainerInterface::class);
     }

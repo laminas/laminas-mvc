@@ -214,9 +214,6 @@ class ForwardTest extends TestCase
         );
     }
 
-    /**
-     * @group 5432
-     */
     public function testNonArrayListenerDoesNotRaiseErrorWhenPluginDispatchsRequestedController()
     {
         $services = $this->services;

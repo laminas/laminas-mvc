@@ -19,21 +19,25 @@ use Laminas\Mvc\MvcEvent;
 use Laminas\Stdlib\DispatchableInterface;
 use Laminas\Stdlib\RequestInterface;
 use Laminas\Stratigility\MiddlewarePipe;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 
 /**
  * @covers \Laminas\Mvc\Controller\MiddlewareController
+ *
+ * Stratigility v2 does not support PHP 8
+ * @requires PHP <8
  */
 class MiddlewareControllerTest extends TestCase
 {
     /**
-     * @var MiddlewarePipe|\PHPUnit_Framework_MockObject_MockObject
+     * @var MiddlewarePipe&MockObject
      */
     private $pipe;
 
     /**
-     * @var ResponseInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ResponseInterface&MockObject
      */
     private $responsePrototype;
 
@@ -43,7 +47,7 @@ class MiddlewareControllerTest extends TestCase
     private $eventManager;
 
     /**
-     * @var AbstractController|\PHPUnit_Framework_MockObject_MockObject
+     * @var AbstractController&MockObject
      */
     private $controller;
 
@@ -85,7 +89,7 @@ class MiddlewareControllerTest extends TestCase
         $request          = new Request();
         $response         = new Response();
         $result           = $this->createMock(ResponseInterface::class);
-        /* @var $dispatchListener callable|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $dispatchListener callable&MockObject */
         $dispatchListener = $this->getMockBuilder(\stdClass::class)->setMethods(['__invoke'])->getMock();
 
         $this->eventManager->attach(MvcEvent::EVENT_DISPATCH, $dispatchListener, 100);
@@ -119,7 +123,7 @@ class MiddlewareControllerTest extends TestCase
         /* @var $request RequestInterface */
         $request          = $this->createMock(RequestInterface::class);
         $response         = new Response();
-        /* @var $dispatchListener callable|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $dispatchListener callable&MockObject */
         $dispatchListener = $this->getMockBuilder(\stdClass::class)->setMethods(['__invoke'])->getMock();
 
         $this->eventManager->attach(MvcEvent::EVENT_DISPATCH, $dispatchListener, 100);

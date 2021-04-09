@@ -27,6 +27,8 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use ReflectionObject;
 use stdClass;
 
+use function json_encode;
+
 class RestfulControllerTest extends TestCase
 {
     use ProphecyTrait;

@@ -153,14 +153,20 @@ class ApplicationTest extends TestCase
 
     public function testEventsAreEmptyAtFirst()
     {
-        self::markTestIncomplete('Requires a rewrite as test depends on a private state');
         $events = $this->application->getEventManager();
         $registeredEvents = $this->getEventsFromEventManager($events);
         $this->assertEquals([], $registeredEvents);
 
         $sharedEvents = $events->getSharedManager();
         $this->assertInstanceOf(SharedEventManager::class, $sharedEvents);
-        $this->assertAttributeEquals([], 'identifiers', $sharedEvents);
+        $this->assertSame([], $this->getIdentifiersFromSharedEventManager($sharedEvents));
+    }
+
+    private function getIdentifiersFromSharedEventManager(SharedEventManager $events): array
+    {
+        $r = new ReflectionProperty($events, 'identifiers');
+        $r->setAccessible(true);
+        return $r->getValue($events);
     }
 
     /**
@@ -177,7 +183,6 @@ class ApplicationTest extends TestCase
         $this->application->bootstrap($isCustom ? (array) $listenerServiceName : []);
         $events = $this->application->getEventManager();
 
-        $foundListener = false;
         $listeners = $this->getArrayOfListenersForEvent($event, $events);
         $this->assertContains([$listenerService, $method], $listeners);
     }
@@ -501,9 +506,6 @@ class ApplicationTest extends TestCase
         $this->assertInstanceOf(ViewModel::class, $event->getResult());
     }
 
-    /**
-     * @group 2981
-     */
     public function testReturnsResponseFromListenerWhenRouteEventShortCircuits()
     {
         $this->application->bootstrap();
@@ -526,9 +528,6 @@ class ApplicationTest extends TestCase
         $this->assertTrue($triggered);
     }
 
-    /**
-     * @group 2981
-     */
     public function testReturnsResponseFromListenerWhenDispatchEventShortCircuits()
     {
         $this->application->bootstrap();

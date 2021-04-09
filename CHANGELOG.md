@@ -24,26 +24,41 @@ All notable changes to this project will be documented in this file, in reverse 
 
 - Nothing.
 
-## 3.2.0 - TBD
+## 3.2.0 - 2020-12-14
 
 ### Added
 
-- [zendframework/zend-mvc#297](https://github.com/zendframework/zend-mvc/pull/297) adds support for PHP 7.3.
+- [#69](https://github.com/laminas/laminas-mvc/pull/69) Adds PHP 8.0 support
 - [zendframework/zend-mvc#282](https://github.com/zendframework/zend-mvc/pull/282) Adds a full
   controller namespace as additional event manager identifier for
   implementations of AbstractController
 
 ### Deprecated
 
-- Nothing.
+- [#51](https://github.com/laminas/laminas-mvc/pull/51) Deprecates MiddlewareListener. Optional support for dispatching middleware, middleware pipes and handlers is moved to laminas/laminas-mvc-middleware package
 
 ### Removed
 
-- Nothing.
+- [#69](https://github.com/laminas/laminas-mvc/pull/69) Removes PHP support prior 7.3.0
 
-### Fixed
 
-- Nothing.
+-----
+
+### Release Notes for [3.2.0](https://github.com/laminas/laminas-mvc/milestone/1)
+
+
+
+### 3.2.0
+
+- Total issues resolved: **0**
+- Total pull requests resolved: **2**
+- Total contributors: **2**
+
+#### Enhancement
+
+ - [69: PHP 8.0 support](https://github.com/laminas/laminas-mvc/pull/69) thanks to @snapshotpl
+
+ - [51: Deprecate middleware listener](https://github.com/laminas/laminas-mvc/pull/51) thanks to @Xerkus
 
 ## 3.1.1 - 2017-11-24
 
@@ -121,7 +136,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- [zendframework/zend-mvc#210](https://github.com/zendframework/zend-mvc/pull/210) copies the 
+- [zendframework/zend-mvc#210](https://github.com/zendframework/zend-mvc/pull/210) copies the
   `RouteMatch` and its parameters to the PSR-7 `ServerRequest` object so that
   they are available to middleware.
 
@@ -575,7 +590,7 @@ for full details on how to migrate your v2 application.
   emitted by `ServiceLocatorAware` initializers; in particular, all
   `AbstractController` implementations were raising a deprecation wen first
   pulled from the `ControllerManager`.
-  
+
   At this time, notices are now only raised in the following conditions:
 
   - When a non-controller, non-plugin manager, `ServiceLocatorAware` instance
@@ -742,7 +757,7 @@ for full details on how to migrate your v2 application.
   `HydratorPluginManager` will be pulled from laminas-hydrator, by updating your
   typehints to use the laminas-hydrator classes instead of those from laminas-stdlib;
   the instances returned from the laminas-stdlib `HydratorPluginManager`, because
-  they extend those from laminas-hydrator, remain compatible. 
+  they extend those from laminas-hydrator, remain compatible.
 
 ## 2.6.0 - 2015-09-22
 

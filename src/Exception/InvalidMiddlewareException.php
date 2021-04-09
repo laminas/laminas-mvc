@@ -8,7 +8,10 @@
 
 namespace Laminas\Mvc\Exception;
 
-final class InvalidMiddlewareException extends RuntimeException
+/**
+ * @deprecated Since 3.2.0
+ */
+class InvalidMiddlewareException extends RuntimeException
 {
     /**
      * @var string

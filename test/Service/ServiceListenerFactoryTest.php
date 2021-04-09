@@ -17,7 +17,7 @@ class ServiceListenerFactoryTest extends TestCase
 {
     protected function setUp() : void
     {
-        $sm = $this->sm = $this->getMockBuilder(ServiceManager::class)
+        $this->sm = $this->getMockBuilder(ServiceManager::class)
                                ->setMethods(['get'])
                                ->getMock();
 

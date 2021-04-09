@@ -30,6 +30,12 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
+use function error_reporting;
+use function sprintf;
+use function var_export;
+
+use const E_USER_DEPRECATED;
+
 class MiddlewareListenerTest extends TestCase
 {
     use ProphecyTrait;
@@ -38,6 +44,21 @@ class MiddlewareListenerTest extends TestCase
      * @var \Prophecy\Prophecy\ObjectProphecy
      */
     private $routeMatch;
+    /**
+     * @var int
+     */
+    private $errorReporting;
+
+    protected function setUp(): void
+    {
+        $this->errorReporting = error_reporting();
+        error_reporting($this->errorReporting & ~E_USER_DEPRECATED);
+    }
+
+    protected function tearDown(): void
+    {
+        error_reporting($this->errorReporting);
+    }
 
     /**
      * Create an MvcEvent, populated with everything it needs.
@@ -79,6 +100,10 @@ class MiddlewareListenerTest extends TestCase
         return $event;
     }
 
+    /**
+     * Stratigility v2 does not support PHP 8
+     * @requires PHP <8
+     */
     public function testSuccessfullyDispatchesMiddleware()
     {
         $event = $this->createMvcEvent('path', function ($request, $response) {
@@ -102,6 +127,40 @@ class MiddlewareListenerTest extends TestCase
         $this->assertEquals('Test!', $return->getBody());
     }
 
+    /**
+     * Stratigility v2 does not support PHP 8
+     * @requires PHP <8
+     */
+    public function testDispatchingMiddlewareTriggersDeprecation(): void
+    {
+        error_reporting($this->errorReporting & E_USER_DEPRECATED);
+        $this->expectDeprecation();
+        $this->expectDeprecationMessage('use the laminas/laminas-mvc-middleware package');
+
+        $this->testSuccessfullyDispatchesMiddleware();
+    }
+
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testDeprecationIsNotTriggeredWhenMiddlewareListenerShortCircuits(): void
+    {
+        error_reporting($this->errorReporting & E_USER_DEPRECATED);
+
+        $this->routeMatch = $this->prophesize(RouteMatch::class);
+        $routeMatch = new RouteMatch(['middleware' => false]);
+
+        $event = new MvcEvent();
+        $event->setRouteMatch($routeMatch);
+
+        $listener = new MiddlewareListener();
+        $listener->onDispatch($event);
+    }
+
+    /**
+     * Stratigility v2 does not support PHP 8
+     * @requires PHP <8
+     */
     public function testSuccessfullyDispatchesHttpInteropMiddleware()
     {
         $expectedOutput = uniqid('expectedOutput', true);
@@ -125,6 +184,10 @@ class MiddlewareListenerTest extends TestCase
         $this->assertEquals($expectedOutput, $return->getBody());
     }
 
+    /**
+     * Stratigility v2 does not support PHP 8
+     * @requires PHP <8
+     */
     public function testMatchedRouteParamsAreInjectedToRequestAsAttributes()
     {
         $matchedRouteParam = uniqid('matched param', true);
@@ -150,6 +213,10 @@ class MiddlewareListenerTest extends TestCase
         $this->assertSame($this->routeMatch->reveal(), $routeAttribute);
     }
 
+    /**
+     * Stratigility v2 does not support PHP 8
+     * @requires PHP <8
+     */
     public function testSuccessfullyDispatchesPipeOfCallableAndHttpInteropStyleMiddlewares()
     {
         $response   = new Response();
@@ -208,6 +275,10 @@ class MiddlewareListenerTest extends TestCase
         $this->assertEquals('firstMiddlewareValue', $return->getBody());
     }
 
+    /**
+     * Stratigility v2 does not support PHP 8
+     * @requires PHP <8
+     */
     public function testTriggersErrorForUncallableMiddleware()
     {
         $event       = $this->createMvcEvent('path');
@@ -224,6 +295,10 @@ class MiddlewareListenerTest extends TestCase
         $this->assertEquals('FAILED', $return);
     }
 
+    /**
+     * Stratigility v2 does not support PHP 8
+     * @requires PHP <8
+     */
     public function testTriggersErrorForExceptionRaisedInMiddleware()
     {
         $exception   = new \Exception();
@@ -245,6 +320,9 @@ class MiddlewareListenerTest extends TestCase
 
     /**
      * Ensure that the listener tests for services in abstract factories.
+     *
+     * Stratigility v2 does not support PHP 8
+     * @requires PHP <8
      */
     public function testCanLoadFromAbstractFactory()
     {
@@ -287,6 +365,10 @@ class MiddlewareListenerTest extends TestCase
         $this->assertEquals(TestAsset\Middleware::class, $return->getBody());
     }
 
+    /**
+     * Stratigility v2 does not support PHP 8
+     * @requires PHP <8
+     */
     public function testMiddlewareWithNothingPipedReachesFinalHandlerException()
     {
         $response   = new Response();
@@ -323,6 +405,10 @@ class MiddlewareListenerTest extends TestCase
         $this->assertEquals('FAILED', $return);
     }
 
+    /**
+     * Stratigility v2 does not support PHP 8
+     * @requires PHP <8
+     */
     public function testNullMiddlewareThrowsInvalidMiddlewareException()
     {
         $response   = new Response();
@@ -358,6 +444,10 @@ class MiddlewareListenerTest extends TestCase
         $this->assertEquals('FAILED', $return);
     }
 
+    /**
+     * Stratigility v2 does not support PHP 8
+     * @requires PHP <8
+     */
     public function testValidMiddlewareDispatchCancelsPreviousDispatchFailures()
     {
         $middlewareName = uniqid('middleware', true);
@@ -399,6 +489,10 @@ class MiddlewareListenerTest extends TestCase
         self::assertEmpty($event->getError(), 'Previously set MVC errors are canceled by a successful dispatch');
     }
 
+    /**
+     * Stratigility v2 does not support PHP 8
+     * @requires PHP <8
+     */
     public function testValidMiddlewareFiresDispatchableInterfaceEventListeners()
     {
         $middlewareName = uniqid('middleware', true);
