@@ -58,7 +58,6 @@ application_root/
     public/
         .htaccess
         index.php
-    init_autoloader.php
 ```
 
 The `public/index.php` script marshals all user requests to your website,
