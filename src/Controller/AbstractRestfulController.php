@@ -425,7 +425,8 @@ abstract class AbstractRestfulController extends AbstractController
             // POST
             case 'post':
                 $action = 'create';
-                $return = $this->processPostData($request);
+                $data = $this->processPostData($request);
+                $return = $this->create($data);
                 break;
             // PUT
             case 'put':
@@ -454,7 +455,7 @@ abstract class AbstractRestfulController extends AbstractController
     }
 
     /**
-     * Process post data and call create
+     * Process post data
      *
      * @param Request $request
      * @return mixed
@@ -464,10 +465,10 @@ abstract class AbstractRestfulController extends AbstractController
     public function processPostData(Request $request)
     {
         if ($this->requestHasContentType($request, self::CONTENT_TYPE_JSON)) {
-            return $this->create($this->jsonDecode($request->getContent()));
+            return $this->jsonDecode($request->getContent());
         }
 
-        return $this->create($request->getPost()->toArray());
+        return $request->getPost()->toArray();
     }
 
     /**
