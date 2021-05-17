@@ -1,25 +1,12 @@
 {
     "name": "laminas/laminas-mvc",
     "description": "Laminas's event-driven MVC layer, including MVC Applications, Controllers, and Plugins",
-    "license": "BSD-3-Clause",
     "keywords": [
         "laminas",
         "mvc"
     ],
     "homepage": "https://laminas.dev",
-    "support": {
-        "docs": "https://docs.laminas.dev/laminas-mvc/",
-        "issues": "https://github.com/laminas/laminas-mvc/issues",
-        "source": "https://github.com/laminas/laminas-mvc",
-        "rss": "https://github.com/laminas/laminas-mvc/releases.atom",
-        "chat": "https://laminas.dev/chat",
-        "forum": "https://discourse.laminas.dev"
-    },
-    "config": {
-        "sort-packages": true
-    },
-    "extra": {
-    },
+    "license": "BSD-3-Clause",
     "require": {
         "php": "^7.3 || ~8.0.0",
         "container-interop/container-interop": "^1.2",
@@ -31,6 +18,9 @@
         "laminas/laminas-stdlib": "^3.2.1",
         "laminas/laminas-view": "^2.11.3",
         "laminas/laminas-zendframework-bridge": "^1.0"
+    },
+    "replace": {
+        "zendframework/zend-mvc": "^3.1.1"
     },
     "require-dev": {
         "http-interop/http-middleware": "^0.4.1",
@@ -54,6 +44,10 @@
         "laminas/laminas-paginator": "^2.7 To provide pagination functionality via PaginatorPluginManager",
         "laminas/laminas-servicemanager-di": "laminas-servicemanager-di provides utilities for integrating laminas-di and laminas-servicemanager in your laminas-mvc application"
     },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {},
     "autoload": {
         "psr-4": {
             "Laminas\\Mvc\\": "src/"
@@ -77,7 +71,12 @@
         "test": "phpunit --colors=always",
         "test-coverage": "phpunit --colors=always --coverage-clover clover.xml"
     },
-    "replace": {
-        "zendframework/zend-mvc": "^3.1.1"
+    "support": {
+        "issues": "https://github.com/laminas/laminas-mvc/issues",
+        "forum": "https://discourse.laminas.dev",
+        "chat": "https://laminas.dev/chat",
+        "source": "https://github.com/laminas/laminas-mvc",
+        "docs": "https://docs.laminas.dev/laminas-mvc/",
+        "rss": "https://github.com/laminas/laminas-mvc/releases.atom"
     }
 }
