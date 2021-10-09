@@ -42,16 +42,16 @@ The factory operates with the following constraints/features:
   entries based on their class name (for historical reasons); the
   factory contains a map of these class/interface names to the
   corresponding service name to allow them to resolve. These include:
-    - `Laminas\Console\Adapter\AdapterInterface` maps to `ConsoleAdapter`,
-    - `Laminas\Filter\FilterPluginManager` maps to `FilterManager`,
-    - `Laminas\Hydrator\HydratorPluginManager` maps to `HydratorManager`,
-    - `Laminas\InputFilter\InputFilterPluginManager` maps to `InputFilterManager`,
-    - `Laminas\Log\FilterPluginManager` maps to `LogFilterManager`,
-    - `Laminas\Log\FormatterPluginManager` maps to `LogFormatterManager`,
-    - `Laminas\Log\ProcessorPluginManager` maps to `LogProcessorManager`,
-    - `Laminas\Log\WriterPluginManager` maps to `LogWriterManager`,
-    - `Laminas\Serializer\AdapterPluginManager` maps to `SerializerAdapterManager`,
-    - `Laminas\Validator\ValidatorPluginManager` maps to `ValidatorManager`,
+  - `Laminas\Console\Adapter\AdapterInterface` maps to `ConsoleAdapter`,
+  - `Laminas\Filter\FilterPluginManager` maps to `FilterManager`,
+  - `Laminas\Hydrator\HydratorPluginManager` maps to `HydratorManager`,
+  - `Laminas\InputFilter\InputFilterPluginManager` maps to `InputFilterManager`,
+  - `Laminas\Log\FilterPluginManager` maps to `LogFilterManager`,
+  - `Laminas\Log\FormatterPluginManager` maps to `LogFormatterManager`,
+  - `Laminas\Log\ProcessorPluginManager` maps to `LogProcessorManager`,
+  - `Laminas\Log\WriterPluginManager` maps to `LogWriterManager`,
+  - `Laminas\Serializer\AdapterPluginManager` maps to `SerializerAdapterManager`,
+  - `Laminas\Validator\ValidatorPluginManager` maps to `ValidatorManager`,
 
 `$options` passed to the factory are ignored in all cases, as we cannot
 make assumptions about which argument(s) they might replace.

@@ -184,7 +184,7 @@ While this may seem like more steps, doing so ensures your code has no hidden
 dependencies, improves the testability of your code, and allows you to substitute
 alternatives for either the dependencies or the controller itself.
 
-#### Optional dependencies
+### Optional dependencies
 
 In some cases, you may have dependencies that are only required for some
 execution paths, such as forms, database adapters, etc. In these cases, you have
