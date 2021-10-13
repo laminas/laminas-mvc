@@ -349,7 +349,7 @@
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#abstract-factories" class="toc__link nav-link">Abstract Factories</a>
+                        <a href="#abstract-factories_1" class="toc__link nav-link">Abstract Factories</a>
                     </li>
                 
                     <li class="toc__entry">
@@ -476,7 +476,7 @@ the modules, overriding any default configuration in these MVC services.</p>
 </ul>
 <p>The application service manager is referenced directly during bootstrapping, and has the following
 services configured out of the box.</p>
-<h3>Invokable services</h3>
+<h3 id="invokable-services">Invokable services</h3>
 <ul>
 <li><code>DispatchListener</code>, mapping to <code>Laminas\Mvc\DispatchListener</code>.</li>
 <li><code>Laminas\Mvc\MiddlewareListener</code>.</li>
@@ -484,7 +484,7 @@ services configured out of the box.</p>
 <li><code>SendResponseListener</code>, mapping to <code>Laminas\Mvc\SendResponseListener</code>.</li>
 <li><code>SharedEventManager</code>, mapping to <code>Laminas\EventManager\SharedEventManager</code>.</li>
 </ul>
-<h3>Factories</h3>
+<h3 id="factories">Factories</h3>
 <ul>
 <li>
 <p><code>Application</code>, mapping to <code>Laminas\Mvc\Service\ApplicationFactory</code>.</p>
@@ -751,7 +751,7 @@ services configured out of the box.</p>
   which creates, configures and returns the <code>Laminas\View\Resolver\TemplatePathStack</code>.</p>
 </li>
 </ul>
-<h3>Abstract factories</h3>
+<h3 id="abstract-factories">Abstract factories</h3>
 <ul>
 <li><code>Laminas\Cache\Service\StorageCacheAbstractServiceFactory</code> (opt-in; registered
   by default in the skeleton application).</li>
@@ -759,7 +759,7 @@ services configured out of the box.</p>
 <li><code>Laminas\Form\FormAbstractServiceFactory</code> is registered by default.</li>
 <li><code>Laminas\Log\LoggerAbstractServiceFactory</code> (opt-in; registered by default in the skeleton application).</li>
 </ul>
-<h3>Aliases</h3>
+<h3 id="aliases">Aliases</h3>
 <ul>
 <li><code>Configuration</code>, mapping to the <code>Config</code> service.</li>
 <li><code>Console</code>, mapping to the <code>ConsoleAdapter</code> service.</li>
@@ -779,7 +779,7 @@ services configured out of the box.</p>
 <li><code>Laminas\View\Resolver\AggregateResolver</code>, mapping to the <code>ViewResolver</code> service.</li>
 <li><code>Laminas\View\Resolver\ResolverInterface</code>, mapping to the <code>ViewResolver</code> service.</li>
 </ul>
-<h3>Initializers</h3>
+<h3 id="initializers">Initializers</h3>
 <ul>
 <li>
 <p>For objects that implement <code>Laminas\EventManager\EventManagerAwareInterface</code>,
@@ -798,14 +798,14 @@ services configured out of the box.</p>
   and <code>Laminas\ServiceManager\ServiceManager</code>.</p>
 </li>
 </ul>
-<h2 id="abstract-factories">Abstract Factories</h2>
+<h2 id="abstract-factories_1">Abstract Factories</h2>
 <p>As noted in the previous section, Laminas provides a number of abstract
 service factories by default. Each is noted below, along with sample
 configuration.</p>
 <p>In each instance, the abstract factory looks for a top-level configuration key,
 consisting of key/value pairs where the key is the service name, and the value
 is the configuration to use to create the given service.</p>
-<h3>Laminas\Cache\Service\StorageCacheAbstractServiceFactory</h3>
+<h3 id="laminascacheservicestoragecacheabstractservicefactory">Laminas\Cache\Service\StorageCacheAbstractServiceFactory</h3>
 <p>This abstract factory is opt-in, but registered by default in the skeleton application. It uses the
 top-level configuration key "caches".</p>
 <pre class="highlight"><code class="language-php">return [
@@ -827,7 +827,7 @@ top-level configuration key "caches".</p>
 ];</code></pre>
 <p>See the <a href="https://docs.laminas.dev/laminas-cache/storage/adapter/">cache documentation</a>
 for more configuration options.</p>
-<h3>Laminas\Db\Adapter\AdapterAbstractServiceFactory</h3>
+<h3 id="laminasdbadapteradapterabstractservicefactory">Laminas\Db\Adapter\AdapterAbstractServiceFactory</h3>
 <p>This abstract factory is opt-in. It uses the top-level configuration key "db",
 with a subkey "adapters".</p>
 <pre class="highlight"><code class="language-php">return [
@@ -846,7 +846,7 @@ with a subkey "adapters".</p>
 ];</code></pre>
 <p>See the <a href="https://docs.laminas.dev/laminas-db/adapter/">DB adapter documentation</a>
 for more configuration options.</p>
-<h3>Laminas\Form\FormAbstractServiceFactory</h3>
+<h3 id="laminasformformabstractservicefactory">Laminas\Form\FormAbstractServiceFactory</h3>
 <p>This abstract factory is registered by default. It uses the top-level
 configuration key "forms". It makes use of the <code>FilterManager</code>,
 <code>FormElementManager</code>, <code>HydratorManager</code>, <code>InputFilterManager</code>, and
@@ -877,7 +877,7 @@ injected for you, allowing you the possibility of custom objects or
 substitutions.</p>
 <p>See the <a href="https://docs.laminas.dev/laminas-form/quick-start/">form factory documentation</a>
 for more configuration options.</p>
-<h3>Laminas\Log\LoggerAbstractServiceFactory</h3>
+<h3 id="laminaslogloggerabstractservicefactory">Laminas\Log\LoggerAbstractServiceFactory</h3>
 <p>This abstract factory is opt-in, but registered by default in the skeleton
 application. It uses the top-level configuration key "log".</p>
 <pre class="highlight"><code class="language-php">return [
@@ -1115,7 +1115,7 @@ with your application configuration. If you have both a <code>config/autoload/my
 and <code>config/autoload/my.local.config.php</code>, the local configuration file
 overrides the global configuration.</p>
 <blockquote>
-<h3>Do not commit local configuration</h3>
+<h3 id="do-not-commit-local-configuration">Do not commit local configuration</h3>
 <p>Local configuration files are intended to keep sensitive information, such as
 database credentials, and as such, it is highly recommended to keep these
 local configuration files out of your VCS. The <code>laminas-mvc-skeleton</code>'s
@@ -1238,16 +1238,6 @@ in the laminas-mvc-skeleton.</p>
 </nav>
 
 
-
-
-    <div class="help-wanted">
-        <p>
-            Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/laminas/laminas-mvc/edit/master/docs/book/services.md" target="_blank" class="help-wanted__link">
-                Edit this page on GitHub!
-            </a>
-        </p>
-    </div>
 
                 
             </div>
@@ -1431,6 +1421,7 @@ in the laminas-mvc-skeleton.</p>
         </ul>
     </div>
 
+                    
                 
             </div>
         </div>
@@ -1503,7 +1494,7 @@ in the laminas-mvc-skeleton.</p>
                         <p>
                             <!--Built with love by the Laminas team with the help of our
                             <a href="https://github.com/laminas/laminas-mvc/graphs/contributors">contributors</a>.<br>-->
-                            &copy; 2020 <a href="https://getlaminas.org/">Laminas Project</a> a Series of LF Projects, LLC.
+                            &copy; 2021 <a href="https://getlaminas.org/">Laminas Project</a> a Series of LF Projects, LLC.
                         </p>
                     </div>
                 </div>

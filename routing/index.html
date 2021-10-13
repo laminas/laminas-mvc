@@ -485,7 +485,7 @@ $router-&gt;addRoutes([
 works with the above interface, but utilize slightly different options and
 execution paths. By default, the laminas-mvc uses the <code>TreeRouteStack</code> as the
 router.</p>
-<h3>SimpleRouteStack</h3>
+<h3 id="simpleroutestack">SimpleRouteStack</h3>
 <p>This router takes individual routes that provide their full matching logic in
 one go, and loops through them in LIFO order until a match is found. As such,
 routes that will match most often should be registered last, and least common
@@ -495,7 +495,7 @@ register later). Alternatively, you can set priorities by giving the priority as
 third parameter to the <code>addRoute()</code> method, specifying the priority in the route
 specifications or setting the priority property within a route instance before
 adding it to the route stack.</p>
-<h3>TreeRouteStack</h3>
+<h3 id="treeroutestack">TreeRouteStack</h3>
 <p><code>Laminas\Router\Http\TreeRouteStack</code> provides the ability to register trees of
 routes, and uses a B-tree algorithm to match routes. As such, you register a
 single route with many children.</p>
@@ -518,7 +518,7 @@ particular path segments of the application.</p>
 route.</p>
 <h2 id="http-route-types">HTTP Route Types</h2>
 <p>laminas-mvc ships with the following HTTP route types.</p>
-<h3>Laminas\Router\Http\Hostname</h3>
+<h3 id="laminasrouterhttphostname">Laminas\Router\Http\Hostname</h3>
 <p>The <code>Hostname</code> route attempts to match the hostname registered in the request
 against specific criteria. Typically, this will be in one of the following
 forms:</p>
@@ -552,7 +552,7 @@ defaults.</p>
 ]);</code></pre>
 <p>When matched, the above will return two keys in the <code>RouteMatch</code>, "subdomain"
 and "type".</p>
-<h3>Laminas\Router\Http\Literal</h3>
+<h3 id="laminasrouterhttpliteral">Laminas\Router\Http\Literal</h3>
 <p>The <code>Literal</code> route is for doing exact matching of the URI path. Configuration
 therefore is solely the path you want to match, and the "defaults", or
 parameters you want returned on a match.</p>
@@ -565,7 +565,7 @@ parameters you want returned on a match.</p>
 ]);</code></pre>
 <p>The above route would match a path "/foo", and return the key "action" in the
 <code>RouteMatch</code>, with the value "foo".</p>
-<h3>Laminas\Router\Http\Method</h3>
+<h3 id="laminasrouterhttpmethod">Laminas\Router\Http\Method</h3>
 <p>The <code>Method</code> route is used to match the HTTP method or 'verb' specified in the
 request (See RFC 2616 Sec. 5.1.1). It can optionally be configured to match
 against multiple methods by providing a comma-separated list of method tokens.</p>
@@ -578,7 +578,7 @@ against multiple methods by providing a comma-separated list of method tokens.</
 ]);</code></pre>
 <p>The above route would match an http "POST" or "PUT" request and return a
 <code>RouteMatch</code> object containing a key "action" with a value of "form-submit".</p>
-<h3>Laminas\Router\Http\Part</h3>
+<h3 id="laminasrouterhttppart">Laminas\Router\Http\Part</h3>
 <p>A <code>Part</code> route allows crafting a tree of possible routes based on segments of
 the URI path. It actually extends the <code>TreeRouteStack</code>.</p>
 <p><code>Part</code> routes are difficult to describe, so we'll simply provide a sample one
@@ -653,13 +653,13 @@ here.</p>
 </ul>
 <p>You may use any route type as a child route of a <code>Part</code> route.</p>
 <blockquote>
-<h3>Part routes are an implementation detail</h3>
+<h3 id="part-routes-are-an-implementation-detail">Part routes are an implementation detail</h3>
 <p><code>Part</code> routes are not meant to be used directly. When you add definitions for
 <code>child_routes</code> to any route type, that route will become a <code>Part</code> route. As
 already said, describing <code>Part</code> routes with words is difficult, so hopefully
 the additional <a href="#http-routing-examples">examples at the end</a> will provide
 further insight.</p>
-<h3>Route plugins</h3>
+<h3 id="route-plugins">Route plugins</h3>
 <p>In the above example, the <code>$routePlugins</code> is an instance of
 <code>Laminas\Router\RoutePluginManager</code>, containing essentially the following
 configuration:</p>
@@ -682,7 +682,7 @@ foreach ($plugins as $name =&gt; $class) {
 set up by default, and the developer does not need to worry about autoloading
 of standard HTTP routes.</p>
 </blockquote>
-<h3>Laminas\Router\Http\Regex</h3>
+<h3 id="laminasrouterhttpregex">Laminas\Router\Http\Regex</h3>
 <p>A <code>Regex</code> route utilizes a regular expression to match against the URI path. Any
 valid regular expression is allowed; our recommendation is to use named captures
 for any values you want to return in the <code>RouteMatch</code>.</p>
@@ -706,7 +706,7 @@ include in the <code>RouteMatch</code> when successfully matched.</p>
 items in the <code>RouteMatch</code>, an "id", the "controller", the "action", and the
 "format". When assembling a URL from this route, the "id" and "format" values
 would be used to fill the specification.</p>
-<h3>Laminas\Router\Http\Scheme</h3>
+<h3 id="laminasrouterhttpscheme">Laminas\Router\Http\Scheme</h3>
 <p>The <code>Scheme</code> route matches the URI scheme only, and must be an exact match. As
 such, this route, like the <code>Literal</code> route, simply takes what you want to match
 and the "defaults", parameters to return on a match.</p>
@@ -718,7 +718,7 @@ and the "defaults", parameters to return on a match.</p>
 ]);</code></pre>
 <p>The above route would match the "https" scheme, and return the key "https" in
 the <code>RouteMatch</code> with a boolean <code>true</code> value.</p>
-<h3>Laminas\Router\Http\Segment</h3>
+<h3 id="laminasrouterhttpsegment">Laminas\Router\Http\Segment</h3>
 <p>A <code>Segment</code> route allows matching any segment of a URI path. Segments are
 denoted using a colon, followed by alphanumeric characters; if a segment is
 optional, it should be surrounded by brackets.  As an example, <code>/:foo[/:bar]</code>
@@ -746,11 +746,11 @@ particularly useful when using optional segments.</p>
         'action'     =&gt; 'index',
     ],
 ]);</code></pre>
-<h3>Laminas\Router\Http\Query (Deprecated)</h3>
+<h3 id="laminasrouterhttpquery-deprecated">Laminas\Router\Http\Query (Deprecated)</h3>
 <blockquote>
-<h4>Potential security issue</h4>
+<h4 id="potential-security-issue">Potential security issue</h4>
 <p>Misuse of this route can lead to potential security issues.</p>
-<h4>Deprecated</h4>
+<h4 id="deprecated">Deprecated</h4>
 <p>This route part is deprecated since you can now add query parameters without a
 query route. It was removed in version 3 of the router.</p>
 </blockquote>
@@ -797,18 +797,18 @@ not specify <code>/query</code> in the route name, then no query string will be 
 will then be appended as a query string.</p>
 <p>The output from our example should then be
 <code>/page/my-test-page?format=rss&amp;limit=10</code></p>
-<h3>Laminas\Router\Http\Wildcard (Deprecated)</h3>
+<h3 id="laminasrouterhttpwildcard-deprecated">Laminas\Router\Http\Wildcard (Deprecated)</h3>
 <blockquote>
-<h4>Potential security issue</h4>
+<h4 id="potential-security-issue_1">Potential security issue</h4>
 <p>Misuse of this route type can lead to potential security issues.</p>
-<h4>Deprecated</h4>
+<h4 id="deprecated_1">Deprecated</h4>
 <p>This route type is deprecated. Use the <code>Segment</code> route type.</p>
 </blockquote>
 <p>The <code>Wildcard</code> route type matches all remaining segments of a URI path.</p>
 <h2 id="http-routing-examples">HTTP Routing Examples</h2>
 <p>Most of the routing definitions will be done in module configuration files, so
 the following examples will show how to set up routes in config files.</p>
-<h3>Simple example with two literal routes</h3>
+<h3 id="simple-example-with-two-literal-routes">Simple example with two literal routes</h3>
 <pre class="highlight"><code class="language-php">return [
     'router' =&gt; [
         'routes' =&gt; [
@@ -837,7 +837,7 @@ the following examples will show how to set up routes in config files.</p>
         ],
     ],
 ];</code></pre>
-<h3>A complex example with child routes</h3>
+<h3 id="a-complex-example-with-child-routes">A complex example with child routes</h3>
 <pre class="highlight"><code class="language-php">return [
     'router' =&gt; [
         'routes' =&gt; [
@@ -897,7 +897,7 @@ pattern, so to use the child routes from the above example:</p>
 <pre class="highlight"><code class="language-php">echo $this-&gt;url('blog'); // gives "/blog"
 echo $this-&gt;url('blog/post', ['slug' =&gt; 'my-post']); // gives "/blog/my-post"
 echo $this-&gt;url('blog/rss'); // gives "/blog/rss"</code></pre>
-<h3>An example with multiple Hostnames and subdomains within a single application</h3>
+<h3 id="an-example-with-multiple-hostnames-and-subdomains-within-a-single-application">An example with multiple Hostnames and subdomains within a single application</h3>
 <pre class="highlight"><code class="language-php">return [
     'router' =&gt; [
         'routes' =&gt; [
@@ -977,7 +977,7 @@ following the above example:</p>
 echo $this-&gt;url('modules.laminas.dev/index', [], [], true);
 echo $this-&gt;url('packages.laminas.dev/index', [], [], true);</code></pre>
 <blockquote>
-<h3>may_terminate and child_routes placement</h3>
+<h3 id="may_terminate-and-child_routes-placement">may_terminate and child_routes placement</h3>
 <p>When defining child routes pay attention that the <code>may_terminate</code> and
 <code>child_routes</code> definitions are in same level as the <code>options</code> and <code>type</code>
 definitions. A common pitfall is to have those two definitions nested in
@@ -1014,16 +1014,6 @@ explained in the <a href="http://docs.laminas.dev/laminas-console/routes/">lamin
 </nav>
 
 
-
-
-    <div class="help-wanted">
-        <p>
-            Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/laminas/laminas-mvc/edit/master/docs/book/routing.md" target="_blank" class="help-wanted__link">
-                Edit this page on GitHub!
-            </a>
-        </p>
-    </div>
 
                 
             </div>
@@ -1207,6 +1197,7 @@ explained in the <a href="http://docs.laminas.dev/laminas-console/routes/">lamin
         </ul>
     </div>
 
+                    
                 
             </div>
         </div>
@@ -1279,7 +1270,7 @@ explained in the <a href="http://docs.laminas.dev/laminas-console/routes/">lamin
                         <p>
                             <!--Built with love by the Laminas team with the help of our
                             <a href="https://github.com/laminas/laminas-mvc/graphs/contributors">contributors</a>.<br>-->
-                            &copy; 2020 <a href="https://getlaminas.org/">Laminas Project</a> a Series of LF Projects, LLC.
+                            &copy; 2021 <a href="https://getlaminas.org/">Laminas Project</a> a Series of LF Projects, LLC.
                         </p>
                     </div>
                 </div>

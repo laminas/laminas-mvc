@@ -490,7 +490,7 @@ classes for you to start with:</p>
   fails in non-console environments.</li>
 </ul>
 <blockquote>
-<h3>Installation Requirements</h3>
+<h3 id="installation-requirements">Installation Requirements</h3>
 <p>For version 3, the integration component
 <a href="https://docs.laminas.dev/laminas-mvc-console/">laminas-mvc-console</a> must be
 installed. It can be done via Composer:</p>
@@ -539,7 +539,7 @@ file named <code>world.phtml</code>. Inside that, paste in the following:</p>
 &lt;p&gt;You said "&lt;?php echo $this-&gt;escapeHtml($message) ?&gt;".&lt;/p&gt;</code></pre>
 <p>That's it. Save the file.</p>
 <blockquote>
-<h3>Escaping output</h3>
+<h3 id="escaping-output">Escaping output</h3>
 <p>What is the method <code>escapeHtml()</code>? It's actually a <a href="https://docs.laminas.dev/laminas-view/helpers/intro/">view helper</a>,
 and it's designed to help mitigate XSS attacks. Never trust user input; if you
 are at all uncertain about the source of a given variable in your view script,
@@ -565,7 +565,7 @@ for more details.)</p>
 <h2 id="create-a-route">Create a Route</h2>
 <p>Now that we have a controller and a view script, we need to create a route to it.</p>
 <blockquote>
-<h3>Default routing</h3>
+<h3 id="default-routing">Default routing</h3>
 <p><code>LaminasSkeletonModule</code> ships with a "default route" that will likely get
 you to this action. That route is defined roughly as
 <code>/{module}/{controller}/{action}</code>, which means that the path
@@ -594,7 +594,7 @@ return [
    // ... other configuration ...
 ];</code></pre>
 <blockquote>
-<h3>Controller services</h3>
+<h3 id="controller-services">Controller services</h3>
 <p>We inform the application about controllers we expect to have in the
 application. This is to prevent somebody requesting any service the
 <code>ServiceManager</code> knows about in an attempt to break the application. The
@@ -683,16 +683,6 @@ now get the following content:</p>
 </nav>
 
 
-
-
-    <div class="help-wanted">
-        <p>
-            Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/laminas/laminas-mvc/edit/master/docs/book/quick-start.md" target="_blank" class="help-wanted__link">
-                Edit this page on GitHub!
-            </a>
-        </p>
-    </div>
 
                 
             </div>
@@ -876,6 +866,7 @@ now get the following content:</p>
         </ul>
     </div>
 
+                    
                 
             </div>
         </div>
@@ -948,7 +939,7 @@ now get the following content:</p>
                         <p>
                             <!--Built with love by the Laminas team with the help of our
                             <a href="https://github.com/laminas/laminas-mvc/graphs/contributors">contributors</a>.<br>-->
-                            &copy; 2020 <a href="https://getlaminas.org/">Laminas Project</a> a Series of LF Projects, LLC.
+                            &copy; 2021 <a href="https://getlaminas.org/">Laminas Project</a> a Series of LF Projects, LLC.
                         </p>
                     </div>
                 </div>
