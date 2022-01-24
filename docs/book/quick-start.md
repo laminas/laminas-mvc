@@ -99,9 +99,6 @@ We've created several base controller classes for you to start with:
     post body.
   - `DELETE` expects an "id" parameter to be matched during routing, and will call the
     `delete()` method.
-- `Laminas\Mvc\Console\Controller\AbstractConsoleController` extends from
-  `AbstractActionController`, but throws an exception for non-console environments. It also provides access to the
-  `Laminas\Console\Adapter\AdapterInterface` instance for interacting with the console, such as writing lines and setting  colors.
   
 You can also create custom controllers by implementing `Laminas\Stdlib\DispatchableInterface`, requiring a `dispatch()` method that takes minimally a
 `Request` object as an argument. Learn more about controllers [here](https://docs.laminas.dev/laminas-mvc/controllers).
