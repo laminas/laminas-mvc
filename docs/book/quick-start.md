@@ -87,32 +87,24 @@ controller!
 
 ## Create a Controller
 
-Controllers are objects that implement `Laminas\Stdlib\DispatchableInterface`. This
-means they need to implement a `dispatch()` method that takes minimally a
-`Request` object as an argument.
+We've created several base controller classes for you to start with:
 
-In practice, though, this would mean writing logic to branch based on matched
-routing within every controller. As such, we've created several base controller
-classes for you to start with:
-
-- `Laminas\Mvc\Controller\AbstractActionController` allows routes to match an
-  "action". When matched, a method named after the action will be called by the
-  controller. As an example, if you had a route that returned "foo" for the
-  "action" key, the "fooAction" method would be invoked.
-- `Laminas\Mvc\Controller\AbstractRestfulController` introspects the `Request` to
-  determine what HTTP method was used, and calls a method according to that.
-  - `GET` will call either the `getList()` method, or, if an "id" was matched
+- `Laminas\Mvc\Controller\AbstractActionController` matches routes to methods within this class. For example, if you had a route with the "foo" action, the "fooAction" method will be invoked.
+- `Laminas\Mvc\Controller\AbstractRestfulController` determines the HTTP method from the request, and calls a method according to that.
+  - `GET` will call either the `getList()` method, or, if an "id" parameter was matched
     during routing, the `get()` method (with that identifier value).
   - `POST` will call the `create()` method, passing in the `$_POST` values.
-  - `PUT` expects an "id" to be matched during routing, and will call the
+  - `PUT` expects an "id" parameter to be matched during routing, and will call the
     `update()` method, passing in the identifier, and any data found in the raw
     post body.
-  - `DELETE` expects an "id" to be matched during routing, and will call the
+  - `DELETE` expects an "id" parameter to be matched during routing, and will call the
     `delete()` method.
 - `Laminas\Mvc\Console\Controller\AbstractConsoleController` extends from
-  `AbstractActionController`, but provides methods for retrieving the
-  `Laminas\Console\Adapter\AdapterInterface` instance, and ensuring that execution
-  fails in non-console environments.
+  `AbstractActionController`, but throws an exception for non-console environments. It also provides access to the
+  `Laminas\Console\Adapter\AdapterInterface` instance for interacting with the console, such as writing lines and setting  colors.
+  
+You can also create custom controllers by implementing `Laminas\Stdlib\DispatchableInterface`, requiring a `dispatch()` method that takes minimally a
+`Request` object as an argument. Learn more about controllers [here](https://docs.laminas.dev/laminas-mvc/controllers).
 
 > ### Installation Requirements
 >
