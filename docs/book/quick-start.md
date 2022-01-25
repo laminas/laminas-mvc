@@ -89,16 +89,8 @@ controller!
 
 We've created several base controller classes for you to start with:
 
-- `Laminas\Mvc\Controller\AbstractActionController` matches routes to methods within this class. For example, if you had a route with the "foo" action, the "fooAction" method will be invoked.
-- `Laminas\Mvc\Controller\AbstractRestfulController` determines the HTTP method from the request, and calls a method according to that.
-  - `GET` will call either the `getList()` method, or, if an "id" parameter was matched
-    during routing, the `get()` method (with that identifier value).
-  - `POST` will call the `create()` method, passing in the `$_POST` values.
-  - `PUT` expects an "id" parameter to be matched during routing, and will call the
-    `update()` method, passing in the identifier, and any data found in the raw
-    post body.
-  - `DELETE` expects an "id" parameter to be matched during routing, and will call the
-    `delete()` method.
+- `AbstractActionController` matches routes to methods within this class. For example, if you had a route with the "list" action, the "listAction" method will be called.
+- `AbstractRestfulController` determines the HTTP method from the request, and calls a method according to that. For example, a `POST` HTTP method will call the `update()` method in the class.
   
 You can also create custom controllers by implementing `Laminas\Stdlib\DispatchableInterface`, requiring a `dispatch()` method that takes minimally a
 `Request` object as an argument. Learn more about controllers [here](https://docs.laminas.dev/laminas-mvc/controllers).
