@@ -223,7 +223,7 @@ return [
         'routes' => [
             // route name: used to generate links, among other things
             'hello-world' => [
-                'type' => 'Literal', // exact match of URI path
+                'type' => Laminas\Router\Http\Literal::class, // exact match of URI path
                 'options' => [
                     'route' => '/hello/world', // URI path
                     'defaults' => [
@@ -236,8 +236,8 @@ return [
     ],
     'controllers' => [
         // tell the application how to instantiate our controller class
-        'invokables' => [
-            'hello-controller' => '<module-name>\Controller\HelloController',
+        'factories' => [
+            Application\Controller\HelloController::class => Laminas\ServiceManager\Factory\InvokableFactory::class,
         ],
     ],
 ];
