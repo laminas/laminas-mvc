@@ -8,7 +8,7 @@ use Laminas\Stdlib\DispatchableInterface;
 use Laminas\Stdlib\RequestInterface as Request;
 use Laminas\Stdlib\ResponseInterface as Response;
 
-class Foo implements DispatchableInterface
+class EditProductController implements DispatchableInterface
 {
     public function dispatch(Request $request, Response $response = null)
     {
@@ -17,9 +17,12 @@ class Foo implements DispatchableInterface
 }
 ```
 
-While the pattern is straight-forward, chances are you don't want to implement
-custom dispatch logic for every controller, particularly as it's not unusual or
-uncommon for a single controller to handle several related types of requests.
+This approach allows you to handle only one type of request per class. This can help keep classes small.
+
+If you wish to handle multiple types of requests per class, there are several abstract controllers that you can extend:
+
+- [AbstractActionController](#abstractactioncontroller)
+- [AbstractRestfulController](#abstractrestfulcontroller)
 
 To provide convenience, laminas-mvc also defines several interfaces that, when
 implemented, can provide controllers with additional capabilities.
@@ -277,35 +280,6 @@ The composed `EventManager` will be configured to listen on the following contex
 Additionally, if you extend the class, it will listen on the name of the
 extending class.
 
-## AbstractConsoleController
-
-> ### Installation Requirements
->
-> For version 3, the integration component
-> [laminas-mvc-console](https://docs.laminas.dev/laminas-mvc-console/) must be
-> installed. It can be done via Composer:
->
-> ```bash
-> composer require laminas/laminas-mvc-console
-> ```
-> 
-> If you are not using the component installer, you will need to
-> [add this component as a module](https://docs.laminas.dev/laminas-mvc-console/#installation).
-
-`Laminas\Mvc\Console\Controller\AbstractConsoleController` extends from [AbstractActionController](#abstractactioncontroller)
-and provides the following functionality:
-
-- The method `setConsole(Laminas\Console\Adapter\AdapterInterface $console)` allows
-  injecting a console adapter representing the current console environment. By
-  default, the `ControllerManager` will inject this for you as part of
-  controller instantiation.
-- The method `getConsole()` allows you to retrieve the current console adapter
-  instance, allowing you to retrieve console capabilities and generate console
-  output.
-- The `dispatch()` method will throw an exception if invoked in a non-console
-  environment, ensuring that you do not need to do any checks within your action
-  methods for the environment.
-
 ### Interfaces and Collaborators
 
 `AbstractRestfulController` implements each of the following interfaces:
@@ -319,7 +293,6 @@ and provides the following functionality:
 The composed `EventManager` will be configured to listen on the following contexts:
 
 - `Laminas\Stdlib\DispatchableInterface`
-- `Laminas\Mvc\Console\Controller\AbstractConsoleController`
 - `Laminas\Mvc\Controller\AbstractActionController`
 - `Laminas\Mvc\Controller\AbstractController`
 
