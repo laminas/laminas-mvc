@@ -212,64 +212,22 @@ for more details.)
 
 ## Create a Route
 
-Now that we have a controller and a view script, we need to create a route to it.
+Routes determine which controller to call based on the URI and other information from the request.
 
-> ### Default routing
->
-> `LaminasSkeletonModule` ships with a "default route" that will likely get
-> you to this action. That route is defined roughly as
-> `/{module}/{controller}/{action}`, which means that the path
-> `/laminas-user/hello/world` will map to `LaminasUser\Controller\HelloController::worldAction()`
-> (assuming the module name were `LaminasUser`).
->
-> We're going to create an explicit route in this example, as
-> creating explicit routes is a recommended practice. The application will look for a
-> `Laminas\Router\RouteStackInterface` instance to setup routing. The default generated router is a
-> `Laminas\Router\Http\TreeRouteStack`.
->
-> To use the "default route" functionality, you will need to edit the shipped
-> routing definition in the module's `config/module.config.php`, and replace:
->
-> - `/module-specific-root` with a module-specific root path.
-> - `LaminasSkeletonModule\Controller` with `<YourModuleName>\Controller`.
-
-Additionally, we need to tell the application we have a controller:
+Configure a route and a controller:
 
 ```php
-// module.config.php
-return [
-    'controllers' => [
-        'invokables' => [
-            '<module-namespace>\Controller\Index' => '<module-namespace>\Controller\IndexController',
-            // Do similar for each other controller in your module
-        ],
-    ],
-   // ... other configuration ...
-];
-```
-
-> ### Controller services
->
-> We inform the application about controllers we expect to have in the
-> application. This is to prevent somebody requesting any service the
-> `ServiceManager` knows about in an attempt to break the application. The
-> dispatcher uses a special, scoped container that will only pull controllers
-> that are specifically registered with it, either as invokable classes or via
-> factories.
-
-Open your `config/module.config.php` file, and modify it to add to the "routes"
-and "controller" parameters so it reads as follows:
-
-```php
+// config/module.config.php
 return [
     'router' => [
         'routes' => [
-            '<module name>-hello-world' => [
-                'type' => 'Literal',
-                    'options' => [
-                    'route' => '/hello/world',
+            // route name: used to generate links, among other things
+            'hello-world' => [
+                'type' => 'Literal', // exact match of URI path
+                'options' => [
+                    'route' => '/hello/world', // URI path
                     'defaults' => [
-                        'controller' => '<module name>\Controller\Hello',
+                        'controller' => 'hello-controller', // unique name
                         'action'     => 'world',
                     ],
                 ],
@@ -277,13 +235,17 @@ return [
         ],
     ],
     'controllers' => [
+        // tell the application how to instantiate our controller class
         'invokables' => [
-            '<module-namespace>\Controller\Hello' => '<module-namespace>\Controller\HelloController',
+            'hello-controller' => '<module-name>\Controller\HelloController',
         ],
     ],
-    // ... other configuration ...
 ];
 ```
+
+When the URI path of the request matches `/hello/world`, the specified controller and action will be used. The controller name must be present in the `controllers` list. The associated class will then be instantiated and invoked.
+
+Learn more about routing [here](https://docs.laminas.dev/laminas-router/routing).
 
 ## Tell the Application About our Module
 
