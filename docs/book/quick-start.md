@@ -227,7 +227,7 @@ return [
                 'options' => [
                     'route' => '/hello/world', // URI path
                     'defaults' => [
-                        'controller' => 'hello-controller', // unique name
+                        'controller' => Application\Controller\HelloController::class, // unique name
                         'action'     => 'world',
                     ],
                 ],
