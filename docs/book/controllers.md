@@ -20,6 +20,7 @@ class EditProductController implements DispatchableInterface
 This approach allows you to handle only one type of request per class. This can help keep classes small.
 
 If you wish to handle multiple types of requests per class, there are several abstract controllers that you can extend:
+
 - [AbstractActionController](#abstractactioncontroller)
 - [AbstractRestfulController](#abstractrestfulcontroller)
 
