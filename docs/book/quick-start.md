@@ -89,11 +89,14 @@ controller!
 
 We've created several base controller classes for you to start with:
 
-- `AbstractActionController` matches routes to methods within this class. For example, if you had a route with the "list" action, the "listAction" method will be called.
-- `AbstractRestfulController` determines the HTTP method from the request, and calls a method according to that. For example, a `POST` HTTP method will call the `update()` method in the class.
-  
-You can also create custom controllers by implementing `Laminas\Stdlib\DispatchableInterface`, requiring a `dispatch()` method that takes minimally a
-`Request` object as an argument. Learn more about controllers [here](https://docs.laminas.dev/laminas-mvc/controllers).
+- `AbstractActionController` matches routes to methods within this class.
+  For example, if you had a route with the "list" action, the "listAction" method will be called.
+
+- `AbstractRestfulController` determines the HTTP method from the request, and calls a method according to that.
+  For example, a `POST` HTTP method will call the `update()` method in the class.
+
+You can also create custom controllers by implementing `Laminas\Stdlib\DispatchableInterface`, requiring a `dispatch()` method that takes minimally a `Request` object as an argument.
+Learn more about controllers [here](https://docs.laminas.dev/laminas-mvc/controllers/).
 
 > ### Installation Requirements
 >
@@ -104,7 +107,7 @@ You can also create custom controllers by implementing `Laminas\Stdlib\Dispatcha
 > ```bash
 > composer require laminas/laminas-mvc-console
 > ```
-> 
+>
 > If you are not using the component installer, you will need to
 > [add this component as a module](https://docs.laminas.dev/laminas-mvc-console/#installation).
 
