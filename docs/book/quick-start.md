@@ -30,7 +30,7 @@ Laminas MVC has several base controller classes for you to start with:
 
 - You can also create custom controllers by implementing `Laminas\Stdlib\DispatchableInterface`.
 
-Learn more about controllers [here](https://docs.laminas.dev/laminas-mvc/controllers/).
+Learn more about controllers [in the chapter on controllers](controllers.md).
 
 We will use the `AbstractActionController` base controller.
 Create the file `src/Application/Controller/HelloController.php`.
