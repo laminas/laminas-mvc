@@ -111,7 +111,7 @@ return [
 ```
 
 When the URI path of the request matches `/hello/world`, the specified controller and action will be used.
-The controller name must be present in the `controllers` list.
+The controller name must be present under the `controllers` key in the configuration.
 The associated class will then be instantiated and invoked.
 
 Learn more about routing [in the laminas-router documentation](https://docs.laminas.dev/laminas-router/routing).
