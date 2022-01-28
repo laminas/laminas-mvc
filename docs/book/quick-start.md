@@ -146,6 +146,6 @@ You've created your first Laminas MVC controller!
 ## Learn More
 
 - [Creating custom modules](https://docs.laminas.dev/tutorials/getting-started/modules/)
-- [Controllers](https://docs.laminas.dev/laminas-mvc/controllers)
+- [Controllers](controllers.md)
 - [Views](https://docs.laminas.dev/laminas-view/quick-start)
 - [Routing](https://docs.laminas.dev/laminas-router/routing)
