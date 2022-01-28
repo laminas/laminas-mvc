@@ -122,7 +122,7 @@ Learn more about routing [in the laminas-router documentation](https://docs.lami
 Create a new vhost pointing its document root to the `public` directory of your application, and fire it up in a browser.
 You should see the default homepage template of [laminas-mvc-skeleton](https://github.com/laminas/laminas-mvc-skeleton).
 
-Append the path "/hello/world" to your URL and load the page.
+Append the path `/hello/world` to your URL and load the page.
 You should now get the following content:
 
 ```html
