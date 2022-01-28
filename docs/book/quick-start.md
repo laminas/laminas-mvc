@@ -7,6 +7,8 @@ This requires several steps:
 - Create a view to display a page containing the message
 - Create a route to match the URL to the controller
 
+Throughout this example, we will work in the `Application` module of the skeleton. The relevant files are located under `module/Application`.
+
 ## Install the Laminas MVC Skeleton Application
 
 To get started, install the skeleton application via Composer.
