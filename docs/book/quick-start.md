@@ -131,7 +131,7 @@ You should now get the following content:
 <p>You said "hello".</p>
 ```
 
-Append "?message=welcome" to your URL.
+Append `?message=welcome` to your URL.
 You should now get:
 
 ```html
