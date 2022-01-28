@@ -61,7 +61,7 @@ class HelloController extends AbstractActionController
 
 By default, this controller will render the view script located in `view/application/hello/world.phtml`.
 You can customize this behavior.
-Learn more about views [here](https://docs.laminas.dev/laminas-view/quick-start/).
+Learn more about views [in the laminas-view documentation](https://docs.laminas.dev/laminas-view/quick-start/).
 
 ## Create a View Script
 
