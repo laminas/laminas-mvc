@@ -73,11 +73,10 @@ Create the file `view/application/hello/world.phtml` and add the following code:
 <p>You said "<?php echo $this->escapeHtml($message) ?>".</p>
 ```
 
-> ### Escaping output
->
-> The method `escapeHtml()` is a [view helper](https://docs.laminas.dev/laminas-view/helpers/intro/), and it's designed to help mitigate XSS attacks.
-> Never trust user input.
-> If you are at all uncertain about the source of a variable in your view, escape it using one of the view helpers, depending on the type of data.
+INFO: **Escaping output**
+The method `escapeHtml()` is a [view helper](https://docs.laminas.dev/laminas-view/helpers/intro/), and it's designed to help mitigate XSS attacks.
+Never trust user input.
+If you are at all uncertain about the source of a variable in your view, escape it using one of the view helpers, depending on the type of data.
 
 ## Create a Route
 
