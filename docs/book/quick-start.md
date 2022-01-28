@@ -83,7 +83,7 @@ Create the file `view/application/hello/world.phtml` and add the following code:
 
 Routes determine which controller to call based on the URI and other information from the request.
 
-Configure a route and a controller in `config/module.config.php`:
+Configure a route and a controller in `module/Application/config/module.config.php`:
 
 ```php
 return [
