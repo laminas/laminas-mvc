@@ -9,7 +9,7 @@ This requires several steps:
 
 ## Install the Laminas MVC Skeleton Application
 
-An easy way to get started is to install the skeleton application via Composer.
+The recommended way to get started is to install the skeleton application via Composer.
 
 If you have not yet done so, [install Composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx).
 Once you have, use the `create-project` command to create a new application:
