@@ -345,14 +345,6 @@
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#create-a-new-module" class="toc__link nav-link">Create a New Module</a>
-                    </li>
-                
-                    <li class="toc__entry">
-                        <a href="#update-the-module-class" class="toc__link nav-link">Update the Module Class</a>
-                    </li>
-                
-                    <li class="toc__entry">
                         <a href="#create-a-controller" class="toc__link nav-link">Create a Controller</a>
                     </li>
                 
@@ -361,19 +353,15 @@
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#view-scripts-for-module-names-with-subnamespaces" class="toc__link nav-link">View scripts for module names with subnamespaces</a>
-                    </li>
-                
-                    <li class="toc__entry">
                         <a href="#create-a-route" class="toc__link nav-link">Create a Route</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#tell-the-application-about-our-module" class="toc__link nav-link">Tell the Application About our Module</a>
+                        <a href="#test-it-out" class="toc__link nav-link">Test it Out!</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#test-it-out" class="toc__link nav-link">Test it Out!</a>
+                        <a href="#learn-more" class="toc__link nav-link">Learn More</a>
                     </li>
                 
             </ul>
@@ -409,210 +397,86 @@
     
 
     <h1 id="quick-start">Quick Start</h1>
-<p>Now that you have basic knowledge of applications, modules, and how they are
-each structured, we'll show you the easy way to get started.</p>
+<p>In this example, <code>/hello/world?message=welcome</code> will display a page containing the message provided through the URL.
+This requires several steps:</p>
+<ul>
+<li>Create a controller to obtain the message from the URL, and pass it as a variable to the view</li>
+<li>Create a view to display a page containing the message</li>
+<li>Create a route to match the URL to the controller</li>
+</ul>
+<p>Throughout this example, we will work in the <code>Application</code> module of the skeleton. The relevant files are located under <code>module/Application</code>.</p>
 <h2 id="install-the-laminas-mvc-skeleton-application">Install the Laminas MVC Skeleton Application</h2>
-<p>The easiest way to get started is to install the skeleton application via
-Composer.</p>
-<p>If you have not yet done so, <a href="https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx">install Composer</a>.</p>
-<p>Once you have, use the <code>create-project</code> command to create a new application:</p>
+<p>To get started, install the skeleton application via Composer.</p>
+<p>If you have not yet done so, <a href="https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx">install Composer</a>.
+Once you have, use the <code>create-project</code> command to create a new application:</p>
 <pre class="highlight"><code class="language-bash">$ composer create-project -sdev laminas/laminas-mvc-skeleton my-application</code></pre>
-<h2 id="create-a-new-module">Create a New Module</h2>
-<p>By default, one module is provided with the <a href="https://github.com/laminas/laminas-mvc-skeleton">laminas-mvc-skeleton</a>,
-named "Application". It provides a controller to handle the "home" page
-of the application, the layout template, and templates for 404 and error pages.</p>
-<p>Typically, you will not need to touch this other than to provide an alternate
-entry page for your site and/or alternate error page.</p>
-<p>Additional functionality will be provided by creating new modules.</p>
-<p>To get you started with modules, we recommend using the <code>LaminasSkeletonModule</code> as
-a base. Download it from here:</p>
-<ul>
-<li><a href="https://github.com/laminas/LaminasSkeletonModule/zipball/master">LaminasSkeletonModule zip package</a></li>
-<li><a href="https://github.com/laminas/LaminasSkeletonModule/tarball/master">LaminasSkeletonModule tarball</a></li>
-</ul>
-<p>Deflate the package, and rename the directory "LaminasSkeletonModule" to reflect
-the name of the new module you want to create; when done, move the module into
-your new project's <code>module/</code> directory.</p>
-<p>At this point, it's time to create some functionality.</p>
-<h2 id="update-the-module-class">Update the Module Class</h2>
-<p>Let's update the <code>Module</code> class. We'll want to make sure the namespace is correct,
-configuration is enabled and returned, and that we setup autoloading on
-initialization. Since we're actively working on this module, the class list will
-be in flux; we probably want to be pretty lenient in our autoloading approach,
-so let's keep it flexible by using the <code>StandardAutoloader</code>. Let's begin.</p>
-<p>First, let's have <code>autoload_classmap.php</code> return an empty array:</p>
-<pre class="highlight"><code class="language-php">&lt;?php
-// autoload_classmap.php
-return [];</code></pre>
-<p>We'll also edit our <code>config/module.config.php</code> file to read as follows:</p>
-<pre class="highlight"><code class="language-php">return [
-    'view_manager' =&gt; [
-        'template_path_stack' =&gt; [
-            '&lt;module-name&gt;' =&gt; __DIR__ . '/../view',
-        ],
-    ],
-];</code></pre>
-<p>Fill in <code>module-name</code> with a lowercased, dash-separated version of your module
-name; e.g., "LaminasUser" would become "laminas-user".</p>
-<p>Next, edit the namespace declaration of the <code>Module.php</code> file. Replace the
-following line:</p>
-<pre class="highlight"><code class="language-php">namespace LaminasSkeletonModule;</code></pre>
-<p>with the namespace you want to use for your application.</p>
-<p>Next, rename the directory <code>src/LaminasSkeletonModule</code> to <code>src/&lt;YourModuleName&gt;</code>,
-and the directory <code>view/laminas-skeleton-module</code> to <code>src/&lt;your-module-name&gt;</code>.</p>
-<p>At this point, you now have your module configured properly. Let's create a
-controller!</p>
 <h2 id="create-a-controller">Create a Controller</h2>
-<p>Controllers are objects that implement <code>Laminas\Stdlib\DispatchableInterface</code>. This
-means they need to implement a <code>dispatch()</code> method that takes minimally a
-<code>Request</code> object as an argument.</p>
-<p>In practice, though, this would mean writing logic to branch based on matched
-routing within every controller. As such, we've created several base controller
-classes for you to start with:</p>
+<p>Laminas MVC has several base controller classes for you to start with:</p>
 <ul>
-<li><code>Laminas\Mvc\Controller\AbstractActionController</code> allows routes to match an
-  "action". When matched, a method named after the action will be called by the
-  controller. As an example, if you had a route that returned "foo" for the
-  "action" key, the "fooAction" method would be invoked.</li>
-<li><code>Laminas\Mvc\Controller\AbstractRestfulController</code> introspects the <code>Request</code> to
-  determine what HTTP method was used, and calls a method according to that.</li>
-<li><code>GET</code> will call either the <code>getList()</code> method, or, if an "id" was matched
-    during routing, the <code>get()</code> method (with that identifier value).</li>
-<li><code>POST</code> will call the <code>create()</code> method, passing in the <code>$_POST</code> values.</li>
-<li><code>PUT</code> expects an "id" to be matched during routing, and will call the
-    <code>update()</code> method, passing in the identifier, and any data found in the raw
-    post body.</li>
-<li><code>DELETE</code> expects an "id" to be matched during routing, and will call the
-    <code>delete()</code> method.</li>
-<li><code>Laminas\Mvc\Console\Controller\AbstractConsoleController</code> extends from
-  <code>AbstractActionController</code>, but provides methods for retrieving the
-  <code>Laminas\Console\Adapter\AdapterInterface</code> instance, and ensuring that execution
-  fails in non-console environments.</li>
+<li>
+<p><code>AbstractActionController</code> matches routes to methods within this class.
+  For example, if you had a route with the "list" action, the "listAction" method will be called.</p>
+</li>
+<li>
+<p><code>AbstractRestfulController</code> determines the HTTP method from the request, and calls a method according to that.
+  For example, a <code>POST</code> HTTP method will call the <code>update()</code> method in the class.</p>
+</li>
+<li>
+<p>You can also create custom controllers by implementing <code>Laminas\Stdlib\DispatchableInterface</code>.</p>
+</li>
 </ul>
-<blockquote>
-<h3 id="installation-requirements">Installation Requirements</h3>
-<p>For version 3, the integration component
-<a href="https://docs.laminas.dev/laminas-mvc-console/">laminas-mvc-console</a> must be
-installed. It can be done via Composer:</p>
-<pre class="highlight"><code class="language-bash">composer require laminas/laminas-mvc-console</code></pre>
-<p>If you are not using the component installer, you will need to
-<a href="https://docs.laminas.dev/laminas-mvc-console/#installation">add this component as a module</a>.</p>
-</blockquote>
-<p>To get started, we'll create a "hello world"-style controller, with a single
-action. First, create the file <code>HelloController.php</code> in the directory
-<code>src/&lt;module name&gt;/Controller</code>. Edit it in your favorite text editor or IDE,
-and insert the following contents:</p>
+<p>Learn more about controllers <a href="../controllers/">in the chapter on controllers</a>.</p>
+<p>We will use the <code>AbstractActionController</code> base controller.
+Create the file <code>src/Application/Controller/HelloController.php</code>.
+Add the following code:</p>
 <pre class="highlight"><code class="language-php">&lt;?php
-namespace &lt;module name&gt;\Controller;
+namespace Application\Controller;
 
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 
+// Create an action controller.
 class HelloController extends AbstractActionController
 {
+    // Define an action "world".
     public function worldAction()
     {
-        $message = $this-&gt;params()-&gt;fromQuery('message', 'foo');
+        // Get "message" from the query parameters.
+        // In production code, it's a good idea to sanitize user input.
+        $message = $this-&gt;params()-&gt;fromQuery('message', 'hello');
+
+        // Pass variables to the view.
         return new ViewModel(['message' =&gt; $message]);
     }
 }</code></pre>
-<p>So, what are we doing here?</p>
-<ul>
-<li>We're creating an action controller.</li>
-<li>We're defining an action, "world".</li>
-<li>We're pulling a message from the query parameters (yes, this is a superbly bad
-  idea in production!  Always sanitize your inputs!).</li>
-<li>We're returning a <code>ViewModel</code> with an array of values to be processed later.</li>
-</ul>
-<p>We return a <code>ViewModel</code>. The view layer will use this when rendering the view,
-pulling variables and the template name from it. By default, you can omit the
-template name, and it will resolve to "lowercase-module-name/lowercase-controller-name/lowercase-action-name".
-However, you can override this to specify something different by calling
-<code>setTemplate()</code> on the <code>ViewModel</code> instance. Typically, templates will resolve
-to files with a ".phtml" suffix in your module's <code>view</code> directory.</p>
-<p>So, with that in mind, let's create a view script.</p>
+<p>By default, this controller will render the view script located in <code>view/application/hello/world.phtml</code>.
+You can customize this behavior.
+Learn more about views <a href="https://docs.laminas.dev/laminas-view/quick-start/">in the laminas-view documentation</a>.</p>
 <h2 id="create-a-view-script">Create a View Script</h2>
-<p>Create the directory <code>view/&lt;module-name&gt;/hello</code>. Inside that directory, create a
-file named <code>world.phtml</code>. Inside that, paste in the following:</p>
+<p>Create the file <code>view/application/hello/world.phtml</code> and add the following code:</p>
 <pre class="highlight"><code class="language-php">&lt;h1&gt;Greetings!&lt;/h1&gt;
 
 &lt;p&gt;You said "&lt;?php echo $this-&gt;escapeHtml($message) ?&gt;".&lt;/p&gt;</code></pre>
-<p>That's it. Save the file.</p>
-<blockquote>
-<h3 id="escaping-output">Escaping output</h3>
-<p>What is the method <code>escapeHtml()</code>? It's actually a <a href="https://docs.laminas.dev/laminas-view/helpers/intro/">view helper</a>,
-and it's designed to help mitigate XSS attacks. Never trust user input; if you
-are at all uncertain about the source of a given variable in your view script,
-escape it using one of the provided escape view helpers depending on the type
-of data you have.</p>
-</blockquote>
-<h2 id="view-scripts-for-module-names-with-subnamespaces">View scripts for module names with subnamespaces</h2>
-<p>As per PSR-0, modules should be named following the rule: <code>&lt;Vendor Name&gt;\&lt;Namespace&gt;\*</code>.</p>
-<p>Since version 3.0, the default template name resolver uses fully qualified
-controller class names, stripping only the <code>\Controller\\</code> subnamespace, if
-present.  For example, <code>AwesomeMe\MyModule\Controller\HelloWorldController</code>
-resolves to the template name <code>awesome-me/my-module/hello-world</code> via the
-following configuration:</p>
-<pre class="highlight"><code class="language-php">'view_manager' =&gt; [
-    'controller_map' =&gt; [
-        'AwesomeMe\MyModule' =&gt; true,
-    ],
-],</code></pre>
-<p>(In v2 releases, the default was to strip subnamespaces, but optional mapping rules
-allowed whitelisting namespaces in module configuration to enable current
-resolver behavior. See the <a href="../migration/to-v3-0/#laminasmvcviewinjecttemplatelistener">migration guide</a>
-for more details.)</p>
+<div class="admonition info">
+<p class="admonition-title">Escaping output</p>
+<p>
+The method <code>escapeHtml()</code> is a <a href="https://docs.laminas.dev/laminas-view/helpers/intro/">view helper</a>, and it's designed to help mitigate XSS attacks.
+Never trust user input.
+If you are at all uncertain about the source of a variable in your view, escape it using one of the view helpers, depending on the type of data.</p>
+</div>
 <h2 id="create-a-route">Create a Route</h2>
-<p>Now that we have a controller and a view script, we need to create a route to it.</p>
-<blockquote>
-<h3 id="default-routing">Default routing</h3>
-<p><code>LaminasSkeletonModule</code> ships with a "default route" that will likely get
-you to this action. That route is defined roughly as
-<code>/{module}/{controller}/{action}</code>, which means that the path
-<code>/laminas-user/hello/world</code> will map to <code>LaminasUser\Controller\HelloController::worldAction()</code>
-(assuming the module name were <code>LaminasUser</code>).</p>
-<p>We're going to create an explicit route in this example, as
-creating explicit routes is a recommended practice. The application will look for a
-<code>Laminas\Router\RouteStackInterface</code> instance to setup routing. The default generated router is a
-<code>Laminas\Router\Http\TreeRouteStack</code>.</p>
-<p>To use the "default route" functionality, you will need to edit the shipped
-routing definition in the module's <code>config/module.config.php</code>, and replace:</p>
-<ul>
-<li><code>/module-specific-root</code> with a module-specific root path.</li>
-<li><code>LaminasSkeletonModule\Controller</code> with <code>&lt;YourModuleName&gt;\Controller</code>.</li>
-</ul>
-</blockquote>
-<p>Additionally, we need to tell the application we have a controller:</p>
-<pre class="highlight"><code class="language-php">// module.config.php
-return [
-    'controllers' =&gt; [
-        'invokables' =&gt; [
-            '&lt;module-namespace&gt;\Controller\Index' =&gt; '&lt;module-namespace&gt;\Controller\IndexController',
-            // Do similar for each other controller in your module
-        ],
-    ],
-   // ... other configuration ...
-];</code></pre>
-<blockquote>
-<h3 id="controller-services">Controller services</h3>
-<p>We inform the application about controllers we expect to have in the
-application. This is to prevent somebody requesting any service the
-<code>ServiceManager</code> knows about in an attempt to break the application. The
-dispatcher uses a special, scoped container that will only pull controllers
-that are specifically registered with it, either as invokable classes or via
-factories.</p>
-</blockquote>
-<p>Open your <code>config/module.config.php</code> file, and modify it to add to the "routes"
-and "controller" parameters so it reads as follows:</p>
+<p>Routes determine which controller to call based on the URI and other information from the request.</p>
+<p>Configure a route and a controller in <code>module/Application/config/module.config.php</code>:</p>
 <pre class="highlight"><code class="language-php">return [
     'router' =&gt; [
         'routes' =&gt; [
-            '&lt;module name&gt;-hello-world' =&gt; [
-                'type' =&gt; 'Literal',
-                    'options' =&gt; [
-                    'route' =&gt; '/hello/world',
+            // Route name: used to generate links, among other things.
+            'hello-world' =&gt; [
+                'type' =&gt; Laminas\Router\Http\Literal::class, // exact match of URI path
+                'options' =&gt; [
+                    'route' =&gt; '/hello/world', // URI path
                     'defaults' =&gt; [
-                        'controller' =&gt; '&lt;module name&gt;\Controller\Hello',
+                        'controller' =&gt; Application\Controller\HelloController::class, // unique name
                         'action'     =&gt; 'world',
                     ],
                 ],
@@ -620,41 +484,38 @@ and "controller" parameters so it reads as follows:</p>
         ],
     ],
     'controllers' =&gt; [
-        'invokables' =&gt; [
-            '&lt;module-namespace&gt;\Controller\Hello' =&gt; '&lt;module-namespace&gt;\Controller\HelloController',
+        // Tell the application how to instantiate our controller class
+        'factories' =&gt; [
+            Application\Controller\HelloController::class =&gt; Laminas\ServiceManager\Factory\InvokableFactory::class,
         ],
     ],
-    // ... other configuration ...
 ];</code></pre>
-<h2 id="tell-the-application-about-our-module">Tell the Application About our Module</h2>
-<p>One problem: we haven't told our application about our new module!</p>
-<p>By default, modules are not utilized unless we tell the module manager about them.
-As such, we need to notify the application about them.</p>
-<p>Remember the <code>config/application.config.php</code> file? Let's modify it to add our
-new module. Once done, it should read as follows:</p>
-<pre class="highlight"><code class="language-php">&lt;?php
-return [
-    'modules' =&gt; [
-        'Application',
-        '&lt;module-namespace&gt;',
-    ],
-    // ... other configuration ...
-];</code></pre>
-<p>Replace <code>&lt;module-namespace&gt;</code> with the namespace of your module.</p>
+<p>When the URI path of the request matches <code>/hello/world</code>, the specified controller and action will be used.
+The controller name must be present under the <code>controllers</code> key in the configuration.
+The associated class will then be instantiated and invoked.</p>
+<p>Learn more about routing <a href="https://docs.laminas.dev/laminas-router/routing">in the laminas-router documentation</a>.</p>
 <h2 id="test-it-out">Test it Out!</h2>
-<p>Now we can test things out! Create a new vhost pointing its document root to the <code>public</code> directory
-of your application, and fire it up in a browser. You should see the default homepage template of
-<a href="https://github.com/laminas/laminas-mvc-skeleton">laminas-mvc-skeleton</a>.</p>
-<p>Now alter the location in your URL to append the path "/hello/world", and load the page. You should
-now get the following content:</p>
+<p>Create a new vhost pointing its document root to the <code>public</code> directory of your application, and fire it up in a browser.
+You should see the default homepage template of <a href="https://github.com/laminas/laminas-mvc-skeleton">laminas-mvc-skeleton</a>.</p>
+<p>Append the path <code>/hello/world</code> to your URL and load the page.
+You should now get the following content:</p>
 <pre class="highlight"><code class="language-html">&lt;h1&gt;Greetings!&lt;/h1&gt;
 
-&lt;p&gt;You said "foo".&lt;/p&gt;</code></pre>
-<p>Now alter the location to append "?message=bar" and load the page. You should now get:</p>
+&lt;p&gt;You said "hello".&lt;/p&gt;</code></pre>
+<p>Append <code>?message=welcome</code> to your URL.
+You should now get:</p>
 <pre class="highlight"><code class="language-html">&lt;h1&gt;Greetings!&lt;/h1&gt;
 
-&lt;p&gt;You said "bar".&lt;/p&gt;</code></pre>
-<p>Congratulations! You've created your first Laminas MVC module!</p>
+&lt;p&gt;You said "welcome".&lt;/p&gt;</code></pre>
+<p>Congratulations!
+You've created your first Laminas MVC controller!</p>
+<h2 id="learn-more">Learn More</h2>
+<ul>
+<li><a href="https://docs.laminas.dev/tutorials/getting-started/modules/">Creating custom modules</a></li>
+<li><a href="../controllers/">Controllers</a></li>
+<li><a href="https://docs.laminas.dev/laminas-view/quick-start">Views</a></li>
+<li><a href="https://docs.laminas.dev/laminas-router/routing">Routing</a></li>
+</ul>
 
 
 
@@ -939,7 +800,7 @@ now get the following content:</p>
                         <p>
                             <!--Built with love by the Laminas team with the help of our
                             <a href="https://github.com/laminas/laminas-mvc/graphs/contributors">contributors</a>.<br>-->
-                            &copy; 2021 <a href="https://getlaminas.org/">Laminas Project</a> a Series of LF Projects, LLC.
+                            &copy; 2022 <a href="https://getlaminas.org/">Laminas Project</a> a Series of LF Projects, LLC.
                         </p>
                     </div>
                 </div>

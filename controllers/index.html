@@ -352,10 +352,6 @@
                         <a href="#abstractrestfulcontroller" class="toc__link nav-link">AbstractRestfulController</a>
                     </li>
                 
-                    <li class="toc__entry">
-                        <a href="#abstractconsolecontroller" class="toc__link nav-link">AbstractConsoleController</a>
-                    </li>
-                
             </ul>
         </div>
     
@@ -404,16 +400,19 @@ That interface describes a single method:</p>
 use Laminas\Stdlib\RequestInterface as Request;
 use Laminas\Stdlib\ResponseInterface as Response;
 
-class Foo implements DispatchableInterface
+class EditProductController implements DispatchableInterface
 {
     public function dispatch(Request $request, Response $response = null)
     {
         // ... do something, and preferably return a Response ...
     }
 }</code></pre>
-<p>While the pattern is straight-forward, chances are you don't want to implement
-custom dispatch logic for every controller, particularly as it's not unusual or
-uncommon for a single controller to handle several related types of requests.</p>
+<p>This approach allows you to handle only one type of request per class. This can help keep classes small.</p>
+<p>If you wish to handle multiple types of requests per class, there are several abstract controllers that you can extend:</p>
+<ul>
+<li><a href="#abstractactioncontroller">AbstractActionController</a></li>
+<li><a href="#abstractrestfulcontroller">AbstractRestfulController</a></li>
+</ul>
 <p>To provide convenience, laminas-mvc also defines several interfaces that, when
 implemented, can provide controllers with additional capabilities.</p>
 <h2 id="common-interfaces-used-with-controllers">Common Interfaces Used With Controllers</h2>
@@ -622,30 +621,6 @@ to the various RESTful methods, or to add RPC methods to your RESTful API.</p>
 </ul>
 <p>Additionally, if you extend the class, it will listen on the name of the
 extending class.</p>
-<h2 id="abstractconsolecontroller">AbstractConsoleController</h2>
-<blockquote>
-<h3 id="installation-requirements">Installation Requirements</h3>
-<p>For version 3, the integration component
-<a href="https://docs.laminas.dev/laminas-mvc-console/">laminas-mvc-console</a> must be
-installed. It can be done via Composer:</p>
-<pre class="highlight"><code class="language-bash">composer require laminas/laminas-mvc-console</code></pre>
-<p>If you are not using the component installer, you will need to
-<a href="https://docs.laminas.dev/laminas-mvc-console/#installation">add this component as a module</a>.</p>
-</blockquote>
-<p><code>Laminas\Mvc\Console\Controller\AbstractConsoleController</code> extends from <a href="#abstractactioncontroller">AbstractActionController</a>
-and provides the following functionality:</p>
-<ul>
-<li>The method <code>setConsole(Laminas\Console\Adapter\AdapterInterface $console)</code> allows
-  injecting a console adapter representing the current console environment. By
-  default, the <code>ControllerManager</code> will inject this for you as part of
-  controller instantiation.</li>
-<li>The method <code>getConsole()</code> allows you to retrieve the current console adapter
-  instance, allowing you to retrieve console capabilities and generate console
-  output.</li>
-<li>The <code>dispatch()</code> method will throw an exception if invoked in a non-console
-  environment, ensuring that you do not need to do any checks within your action
-  methods for the environment.</li>
-</ul>
 <h3 id="interfaces-and-collaborators_2">Interfaces and Collaborators</h3>
 <p><code>AbstractRestfulController</code> implements each of the following interfaces:</p>
 <ul>
@@ -658,7 +633,6 @@ and provides the following functionality:</p>
 <p>The composed <code>EventManager</code> will be configured to listen on the following contexts:</p>
 <ul>
 <li><code>Laminas\Stdlib\DispatchableInterface</code></li>
-<li><code>Laminas\Mvc\Console\Controller\AbstractConsoleController</code></li>
 <li><code>Laminas\Mvc\Controller\AbstractActionController</code></li>
 <li><code>Laminas\Mvc\Controller\AbstractController</code></li>
 </ul>
@@ -948,7 +922,7 @@ extending class.</p>
                         <p>
                             <!--Built with love by the Laminas team with the help of our
                             <a href="https://github.com/laminas/laminas-mvc/graphs/contributors">contributors</a>.<br>-->
-                            &copy; 2021 <a href="https://getlaminas.org/">Laminas Project</a> a Series of LF Projects, LLC.
+                            &copy; 2022 <a href="https://getlaminas.org/">Laminas Project</a> a Series of LF Projects, LLC.
                         </p>
                     </div>
                 </div>
