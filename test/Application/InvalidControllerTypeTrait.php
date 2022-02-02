@@ -49,10 +49,10 @@ trait InvalidControllerTypeTrait
             $serviceConfig,
             [
                 'aliases' => [
-                    'ControllerLoader'  => 'ControllerManager',
+                    'ControllerLoader' => ControllerManager::class,
                 ],
                 'factories' => [
-                    'ControllerManager' => function ($services) {
+                    ControllerManager::class => function ($services) {
                         return new ControllerManager($services, ['factories' => [
                             'bad' => function () {
                                 return new stdClass();
