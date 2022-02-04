@@ -21,6 +21,30 @@ matches are returned, one of which should be the controller name to execute:
 
 Routing can utilize other portions of the request URI or environment as well, such as the host or scheme, query parameters, headers, or request method.
 
+## Configuration File
+
+Routing is configured at the module level. For a module `Application`, the configuration will be located at `module/Application/config/module.config.php`:
+
+```php
+return [
+    'router' => [
+        'routes' => [
+            'home' => [
+                'type' => Laminas\Router\Http\Literal::class,
+                'options' => [
+                    'route' => '/home',
+                    'defaults' => [
+                        'controller' => Application\Controller\IndexController::class,
+                        'action' => 'index',
+                    ],
+                ],
+            ],
+            // additional routes
+        ],
+    ],
+];
+```
+
 The base unit of routing is a `Route`:
 
 ```php
