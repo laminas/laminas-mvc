@@ -1,13 +1,25 @@
 # Routing
 
-Routing is the act of matching a request to a given controller.
+Routing is the act of matching an HTTP request to a given controller.
 
 Typically, routing will examine the request URI, and attempt to match the URI
 path segment against provided constraints. If the constraints match, a set of
-"matches" are returned, one of which should be the controller name to execute.
-Routing can utilize other portions of the request URI or environment as well.
-For example, the host or scheme, query parameters, headers, request method, and
-more.
+matches are returned, one of which should be the controller name to execute:
+
+```php
+'home' => [
+    'type' => Laminas\Router\Http\Literal::class,
+    'options' => [
+        'route' => '/home',
+        'defaults' => [
+            'controller' => Application\Controller\IndexController::class,
+            'action' => 'index',
+        ],
+    ],
+],
+```
+
+Routing can utilize other portions of the request URI or environment as well, such as the host or scheme, query parameters, headers, or request method.
 
 The base unit of routing is a `Route`:
 
