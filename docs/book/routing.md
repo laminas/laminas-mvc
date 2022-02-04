@@ -718,8 +718,3 @@ echo $this->url('packages.laminas.dev/index', [], [], true);
 > `child_routes` definitions are in same level as the `options` and `type`
 > definitions. A common pitfall is to have those two definitions nested in
 > `options`, which will not result in the desired routes.
-
-## Console Route Types
-
-laminas-mvc also allows routing Console based applications; console routes are
-explained in the [laminas-console routing documentation](http://docs.laminas.dev/laminas-console/routes/).
