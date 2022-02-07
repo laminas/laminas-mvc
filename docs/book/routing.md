@@ -51,15 +51,26 @@ Note that when adding multiple routes, the last route in the list will be checke
 
 Laminas MVC ships with the following HTTP route types:
 
-- [Hostname](https://docs.laminas.dev/laminas-router/routing/#laminasrouterhttphostname) matches domains and subdomains. Example: `docs.laminas.dev`.
-- [Literal](https://docs.laminas.dev/laminas-router/routing/#laminasrouterhttpliteral) matches an exact URI path. Example: `/contact-us`
-- [Method](https://docs.laminas.dev/laminas-router/routing/#laminasrouterhttpmethod) matches HTTP verbs. Example: `post,put` for a route that submits a form.
-- [Part](https://docs.laminas.dev/laminas-router/routing/#laminasrouterhttppart) allows crafting a tree of possible routes based on segments of
-  the URI path. Example: `/blog` can have child routes with `/rss` and `/subscribe`, which would match `/blog/rss` and `/blog/subscribe` respectively.
-- [Regex](https://docs.laminas.dev/laminas-router/routing/#laminasrouterhttpplaceholder), available since version 3.2.0 of the router, matches a URI path using a regular expression. Example: `/product/(?<id>[0-9]+)` would match `/product/001`, with the `id` parameter containing `001`.
-- [Scheme](https://docs.laminas.dev/laminas-router/routing/#laminasrouterhttpscheme) matches the URI scheme. Example: `https`.
-- [Segment](https://docs.laminas.dev/laminas-router/routing/#laminasrouterhttpsegment) matching one or more segments of a URI path. Example: `/:blog/:article` would match `/blog/why-use-mvc`, with the `article` parameter containing `why-use-mvc`.
-- `Query` is deprecated since version 2.3.0 of the router and removed in version 3.0.0. You can now add query parameters without a query route.
-- `Wildcard` is deprecated since version 2.3.0 of the router and removed in version 3.0.0. Use the `Segment` route type instead.
+[Hostname](https://docs.laminas.dev/laminas-router/routing/#laminasrouterhttphostname)
+:   matches domains and subdomains.  
+    Example: `docs.laminas.dev`.
+[Literal](https://docs.laminas.dev/laminas-router/routing/#laminasrouterhttpliteral)
+:   matches an exact URI path.  
+    Example: `/contact-us`
+[Method](https://docs.laminas.dev/laminas-router/routing/#laminasrouterhttpmethod)
+:   matches HTTP verbs.  
+    Example: `post,put` for a route that submits a form.
+[Part](https://docs.laminas.dev/laminas-router/routing/#laminasrouterhttppart)
+:   allows crafting a tree of possible routes based on segments of the URI path.  
+    Example: `/blog` can have child routes with `/rss` and `/subscribe`, which would match `/blog/rss` and `/blog/subscribe` respectively.
+[Regex](https://docs.laminas.dev/laminas-router/routing/#laminasrouterhttpplaceholder)
+:   matches a URI path using a regular expression.
+    Example: `/product/(?<id>[0-9]+)` would match `/product/001`, with the `id` parameter containing `001`.
+[Scheme](https://docs.laminas.dev/laminas-router/routing/#laminasrouterhttpscheme)
+:   matches the URI scheme.  
+    Example: `https`.
+[Segment](https://docs.laminas.dev/laminas-router/routing/#laminasrouterhttpsegment)
+:   matching one or more segments of a URI path.  
+    Example: `/:blog/:article` would match `/blog/why-use-mvc`, with the `article` parameter containing `why-use-mvc`.
 
 Learn more about routing in the [laminas-router documentation](https://docs.laminas.dev/laminas-router/routing).
