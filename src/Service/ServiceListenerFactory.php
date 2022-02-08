@@ -5,6 +5,7 @@ namespace Laminas\Mvc\Service;
 use Interop\Container\ContainerInterface;
 use Laminas\ModuleManager\Listener\ServiceListener;
 use Laminas\ModuleManager\Listener\ServiceListenerInterface;
+use Laminas\Mvc\Controller\ControllerManager;
 use Laminas\Mvc\View;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Factory\FactoryInterface;
@@ -52,6 +53,7 @@ class ServiceListenerFactory implements FactoryInterface
             'Laminas\View\Resolver\TemplatePathStack'      => 'ViewTemplatePathStack',
             'Laminas\View\Resolver\AggregateResolver'      => 'ViewResolver',
             'Laminas\View\Resolver\ResolverInterface'      => 'ViewResolver',
+            ControllerManager::class                       => 'ControllerManager',
         ],
         'invokables' => [],
         'factories'  => [
