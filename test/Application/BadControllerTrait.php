@@ -50,10 +50,9 @@ trait BadControllerTrait
             [
                 'aliases' => [
                     'ControllerLoader'  => ControllerManager::class,
-                    'ControllerManager' => ControllerManager::class,
                 ],
                 'factories' => [
-                    ControllerManager::class => function ($services) {
+                    'ControllerManager' => function ($services) {
                         return new ControllerManager($services, ['factories' => [
                             'bad' => function () {
                                 return new BadController();
