@@ -2,7 +2,7 @@
 
 A module is a PHP namespace. It can contain controllers, classes, view scripts, configuration, tests, as well as public assets such as images, CSS, and JavaScript. For example, if you have an e-commerce application, you could have a module for presenting and selling products, and another for administrators to create products and manage orders.
 
-## Structure
+## File and Directory Structure
 
 Given a module named `Application`, here is the recommended structure:
 
