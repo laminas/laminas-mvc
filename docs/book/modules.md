@@ -44,7 +44,7 @@ All module classes can be [autoloaded by Composer](https://getcomposer.org/doc/0
 
 This means that whenever you refer to a class in the `Application` namespace, PHP will look for it in the `module/Application/src/` folder. A class named `Application\Controller\ProductController` would be found in the file `module/Application/src/Controller/ProductController.php`.
 
-In addition to autoloading, the application needs to be aware that the `Application` namespace represents a module. This is accomplished by adding it to `config/modules.config.php`:
+In addition to autoloading, the application needs to be aware that the `Application` namespace represents a module. This is accomplished by adding it to the module configuration of the application in `config/modules.config.php`:
 
 ```php
 return [
