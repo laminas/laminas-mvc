@@ -59,9 +59,9 @@ return [
 
 ## Listeners
 
-Each module has a `Module` class, which can contain a variety of methods called listeners. These listeners are called by Laminas MVC to configure the module.
+Each module has a `Module` class, which can contain a variety of methods called listeners. These listeners are called by the [Laminas Module Manager](https://docs.laminas.dev/laminas-modulemanager/) to configure the module.
 
-For the namespace `Application`, Laminas MVC will look for `Application\Module`. Here is a simple example that loads a module-specific configuration file:
+For the namespace `Application`, the module manager will look for `Application\Module`. Here is a simple example that loads a module-specific configuration file:
 
 ```php
 namespace Application;
