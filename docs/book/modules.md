@@ -32,7 +32,7 @@ Application/
 
 ## Loading
 
-All module classes can be autoloaded by adding them as a namespace in composer.json:
+All module classes can be [autoloaded by Composer](https://getcomposer.org/doc/01-basic-usage.md#autoloading) by adding them as a namespace in `composer.json`:
 
 ```json
 "autoload": {
