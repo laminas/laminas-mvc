@@ -5,7 +5,14 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Laminas' event-driven MVC layer, including MVC Applications, Controllers, and Plugins.">  
+    <meta name="description" content="Laminas' event-driven MVC layer, including MVC Applications, Controllers, and Plugins."> 
+
+    
+    
+    <meta name="docsearch:version" content="latest">
+    <meta name="docsearch:language" content="en">
+    <meta name="docsearch:component" content="laminas-mvc">
+
     <link rel="canonical" href="https://docs.laminas.dev/laminas-mvc/routing/">
     <link rel="shortcut icon" href="https://docs.laminas.dev/img/trademark-laminas-foundation-rgb.svg">
 
@@ -427,27 +434,29 @@ matches are returned, one of which should be the controller name to execute:</p>
 <p>Note that when adding multiple routes, the last route in the list will be checked first.</p>
 <h2 id="http-route-types">HTTP Route Types</h2>
 <p>Laminas MVC ships with the following HTTP route types:</p>
-<p><a href="https://docs.laminas.dev/laminas-router/routing/#laminasrouterhttphostname">Hostname</a>
-:   matches domains and subdomains.<br />
-    Example: <code>docs.laminas.dev</code>.
-<a href="https://docs.laminas.dev/laminas-router/routing/#laminasrouterhttpliteral">Literal</a>
-:   matches an exact URI path.<br />
-    Example: <code>/contact-us</code>
-<a href="https://docs.laminas.dev/laminas-router/routing/#laminasrouterhttpmethod">Method</a>
-:   matches HTTP verbs.<br />
-    Example: <code>post,put</code> for a route that submits a form.
-<a href="https://docs.laminas.dev/laminas-router/routing/#laminasrouterhttppart">Part</a>
-:   allows crafting a tree of possible routes based on segments of the URI path.<br />
-    Example: <code>/blog</code> can have child routes with <code>/rss</code> and <code>/subscribe</code>, which would match <code>/blog/rss</code> and <code>/blog/subscribe</code> respectively.
-<a href="https://docs.laminas.dev/laminas-router/routing/#laminasrouterhttpplaceholder">Regex</a>
-:   matches a URI path using a regular expression.
-    Example: <code>/product/(?&lt;id&gt;[0-9]+)</code> would match <code>/product/001</code>, with the <code>id</code> parameter containing <code>001</code>.
-<a href="https://docs.laminas.dev/laminas-router/routing/#laminasrouterhttpscheme">Scheme</a>
-:   matches the URI scheme.<br />
-    Example: <code>https</code>.
-<a href="https://docs.laminas.dev/laminas-router/routing/#laminasrouterhttpsegment">Segment</a>
-:   matching one or more segments of a URI path.<br />
-    Example: <code>/:blog/:article</code> would match <code>/blog/why-use-mvc</code>, with the <code>article</code> parameter containing <code>why-use-mvc</code>.</p>
+<dl>
+<dt><a href="https://docs.laminas.dev/laminas-router/routing/#laminasrouterhttphostname">Hostname</a></dt>
+<dd>matches domains and subdomains.<br />
+Example: <code>docs.laminas.dev</code>.</dd>
+<dt><a href="https://docs.laminas.dev/laminas-router/routing/#laminasrouterhttpliteral">Literal</a></dt>
+<dd>matches an exact URI path.<br />
+Example: <code>/contact-us</code></dd>
+<dt><a href="https://docs.laminas.dev/laminas-router/routing/#laminasrouterhttpmethod">Method</a></dt>
+<dd>matches HTTP verbs.<br />
+Example: <code>post,put</code> for a route that submits a form.</dd>
+<dt><a href="https://docs.laminas.dev/laminas-router/routing/#laminasrouterhttppart">Part</a></dt>
+<dd>allows crafting a tree of possible routes based on segments of the URI path.<br />
+Example: <code>/blog</code> can have child routes with <code>/rss</code> and <code>/subscribe</code>, which would match <code>/blog/rss</code> and <code>/blog/subscribe</code> respectively.</dd>
+<dt><a href="https://docs.laminas.dev/laminas-router/routing/#laminasrouterhttpplaceholder">Regex</a></dt>
+<dd>matches a URI path using a regular expression.
+Example: <code>/product/(?&lt;id&gt;[0-9]+)</code> would match <code>/product/001</code>, with the <code>id</code> parameter containing <code>001</code>.</dd>
+<dt><a href="https://docs.laminas.dev/laminas-router/routing/#laminasrouterhttpscheme">Scheme</a></dt>
+<dd>matches the URI scheme.<br />
+Example: <code>https</code>.</dd>
+<dt><a href="https://docs.laminas.dev/laminas-router/routing/#laminasrouterhttpsegment">Segment</a></dt>
+<dd>matching one or more segments of a URI path.<br />
+Example: <code>/:blog/:article</code> would match <code>/blog/why-use-mvc</code>, with the <code>article</code> parameter containing <code>why-use-mvc</code>.</dd>
+</dl>
 <p>Learn more about routing in the <a href="https://docs.laminas.dev/laminas-router/routing">laminas-router documentation</a>.</p>
 
 
@@ -460,7 +469,9 @@ matches are returned, one of which should be the controller name to execute:</p>
         <li class="page-nav__item">
             
                 <a rel="prev" class="page-nav__link page-nav__link--prev" href="../services/">
-                    <i class="fa fa-chevron-left"></i> Previous
+                    <small class="page-nav__label">Previous</small>
+                    <i class="fa fa-chevron-left"></i>
+                    Default Services
                 </a>
             
         </li>
@@ -469,7 +480,9 @@ matches are returned, one of which should be the controller name to execute:</p>
         <li class="page-nav__item">
             
                 <a rel="next" class="page-nav__link page-nav__link--next" href="../mvc-event/">
-                    Next <i class="fa fa-chevron-right"></i>
+                    <small class="page-nav__label">Next</small>
+                    The MVC Event
+                    <i class="fa fa-chevron-right"></i>
                 </a>
             
         </li>

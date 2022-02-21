@@ -5,7 +5,14 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Laminas' event-driven MVC layer, including MVC Applications, Controllers, and Plugins.">  
+    <meta name="description" content="Laminas' event-driven MVC layer, including MVC Applications, Controllers, and Plugins."> 
+
+    
+    
+    <meta name="docsearch:version" content="latest">
+    <meta name="docsearch:language" content="en">
+    <meta name="docsearch:component" content="laminas-mvc">
+
     <link rel="canonical" href="https://docs.laminas.dev/laminas-mvc/quick-start/">
     <link rel="shortcut icon" href="https://docs.laminas.dev/img/trademark-laminas-foundation-rgb.svg">
 
@@ -409,7 +416,7 @@ This requires several steps:</p>
 <p>To get started, install the skeleton application via Composer.</p>
 <p>If you have not yet done so, <a href="https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx">install Composer</a>.
 Once you have, use the <code>create-project</code> command to create a new application:</p>
-<pre class="highlight"><code class="language-bash">$ composer create-project -sdev laminas/laminas-mvc-skeleton my-application</code></pre>
+<pre class="highlight"><code class="language-bash">$ composer create-project -s dev laminas/laminas-mvc-skeleton my-application</code></pre>
 <h2 id="create-a-controller">Create a Controller</h2>
 <p>Laminas MVC has several base controller classes for you to start with:</p>
 <ul>
@@ -527,7 +534,9 @@ You've created your first Laminas MVC controller!</p>
         <li class="page-nav__item">
             
                 <a rel="prev" class="page-nav__link page-nav__link--prev" href="../intro/">
-                    <i class="fa fa-chevron-left"></i> Previous
+                    <small class="page-nav__label">Previous</small>
+                    <i class="fa fa-chevron-left"></i>
+                    Introduction
                 </a>
             
         </li>
@@ -536,7 +545,9 @@ You've created your first Laminas MVC controller!</p>
         <li class="page-nav__item">
             
                 <a rel="next" class="page-nav__link page-nav__link--next" href="../services/">
-                    Next <i class="fa fa-chevron-right"></i>
+                    <small class="page-nav__label">Next</small>
+                    Default Services
+                    <i class="fa fa-chevron-right"></i>
                 </a>
             
         </li>
