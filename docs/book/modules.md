@@ -53,10 +53,6 @@ return [
 ];
 ```
 
-## Configuration
-
-// ...
-
 ## Listeners
 
 Each module has a `Module` class, which can contain a variety of methods called listeners. These listeners are called by [laminas-modulemanager](https://docs.laminas.dev/laminas-modulemanager/) to configure the module.
@@ -102,4 +98,4 @@ class Module implements DependencyIndicatorInterface
 
 // Add other methods following the same structure as `getModuleDependencies()`
 
-## Best Practices
+Be sure to read about [Best Practices when Creating Modules](https://docs.laminas.dev/laminas-modulemanager/best-practices/).
