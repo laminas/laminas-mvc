@@ -17,7 +17,7 @@ If you have not yet done so, [install Composer](https://getcomposer.org/doc/00-i
 Once you have, use the `create-project` command to create a new application:
 
 ```bash
-$ composer create-project -sdev laminas/laminas-mvc-skeleton my-application
+$ composer create-project -s dev laminas/laminas-mvc-skeleton my-application
 ```
 
 ## Create a Controller
