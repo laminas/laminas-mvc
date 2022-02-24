@@ -40,6 +40,50 @@ class SimpleStreamResponseSenderTest extends TestCase
         $this->assertEquals('', $body);
     }
 
+    public function testSendResponseContentLengthTruncate()
+    {
+        $file    = fopen(__DIR__ . '/TestAsset/sample-stream-file.txt', 'rb');
+        $content = file_get_contents(__DIR__ . '/TestAsset/sample-stream-file.txt');
+        $length  = strlen($content) - 1;
+
+        $mockResponse = $this->createMock(Response\Stream::class);
+        $mockResponse->expects($this->once())->method('getStream')->will($this->returnValue($file));
+        $mockResponse->expects($this->once())->method('getContentLength')->will($this->returnValue($length));
+        $mockSendResponseEvent = $this->getSendResponseEventMock($mockResponse);
+        $responseSender = new SimpleStreamResponseSender();
+        ob_start();
+        $responseSender($mockSendResponseEvent);
+        $body = ob_get_clean();
+        $this->assertEquals(substr($content, 0, $length), $body);
+
+        ob_start();
+        $responseSender($mockSendResponseEvent);
+        $body = ob_get_clean();
+        $this->assertEquals('', $body);
+    }
+
+    public function testSendResponseContentLengthOverflow()
+    {
+        $file    = fopen(__DIR__ . '/TestAsset/sample-stream-file.txt', 'rb');
+        $content = file_get_contents(__DIR__ . '/TestAsset/sample-stream-file.txt');
+        $length  = strlen($content) + 10;
+
+        $mockResponse = $this->createMock(Response\Stream::class);
+        $mockResponse->expects($this->once())->method('getStream')->will($this->returnValue($file));
+        $mockResponse->expects($this->once())->method('getContentLength')->will($this->returnValue($length));
+        $mockSendResponseEvent = $this->getSendResponseEventMock($mockResponse);
+        $responseSender = new SimpleStreamResponseSender();
+        ob_start();
+        $responseSender($mockSendResponseEvent);
+        $body = ob_get_clean();
+        $this->assertEquals($content, $body);
+
+        ob_start();
+        $responseSender($mockSendResponseEvent);
+        $body = ob_get_clean();
+        $this->assertEquals('', $body);
+    }
+
     protected function getSendResponseEventMock($response)
     {
         $mockSendResponseEvent = $this->getMockBuilder(ResponseSender\SendResponseEvent::class)
