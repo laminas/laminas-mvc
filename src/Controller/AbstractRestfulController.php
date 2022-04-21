@@ -208,7 +208,7 @@ abstract class AbstractRestfulController extends AbstractController
      *
      * @param  $id
      * @param  $data
-     * @return array
+     * @return mixed
      */
     public function patch($id, $data)
     {
