@@ -32,7 +32,8 @@
         "laminas/laminas-router": "^3.5",
         "laminas/laminas-servicemanager": "^3.7",
         "laminas/laminas-stdlib": "^3.6",
-        "laminas/laminas-view": "^2.14"
+        "laminas/laminas-view": "^2.14",
+        "psr/http-server-handler": "^1.0"
     },
     "require-dev": {
         "http-interop/http-middleware": "^0.4.1",
