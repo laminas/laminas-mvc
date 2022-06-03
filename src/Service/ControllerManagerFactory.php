@@ -28,6 +28,10 @@ class ControllerManagerFactory implements FactoryInterface
         if ($options) {
             return new ControllerManager($container, $options);
         }
-        return new ControllerManager($container);
+        $managerConfig = [];
+        if ($container->has('config')) {
+            $managerConfig = $container->get('config')['controllers'] ?? [];
+        }
+        return new ControllerManager($container, $managerConfig);
     }
 }

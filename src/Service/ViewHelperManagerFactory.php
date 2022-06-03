@@ -5,13 +5,12 @@ namespace Laminas\Mvc\Service;
 use Interop\Container\ContainerInterface;
 use Laminas\Router\RouteMatch;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\View\Helper as ViewHelper;
 use Laminas\View\HelperPluginManager;
 
-class ViewHelperManagerFactory extends AbstractPluginManagerFactory
+class ViewHelperManagerFactory implements FactoryInterface
 {
-    const PLUGIN_MANAGER_CLASS = HelperPluginManager::class;
-
     /**
      * An array of helper configuration classes to ensure are on the helper_map stack.
      *
@@ -35,39 +34,41 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
     {
         $options = $options ?: [];
         $options['factories'] = isset($options['factories']) ? $options['factories'] : [];
-        $plugins = parent::__invoke($container, $requestedName, $options);
+
+        $managerConfig = [];
+        if ($options) {
+            $managerConfig = $options;
+        } elseif ($container->has('config')) {
+            $managerConfig = $container->get('config')['view_helpers'] ?? [];
+        }
 
         // Override plugin factories
-        $plugins = $this->injectOverrideFactories($plugins, $container);
+        $managerConfig = $this->injectOverrideFactories($managerConfig, $container);
 
-        return $plugins;
+        return new HelperPluginManager($container, $managerConfig);
     }
 
     /**
-     * Inject override factories into the plugin manager.
-     *
-     * @param HelperPluginManager $plugins
-     * @param ContainerInterface $services
-     * @return HelperPluginManager
+     * Inject override factories into the plugin manager config.
      */
-    private function injectOverrideFactories(HelperPluginManager $plugins, ContainerInterface $services)
+    private function injectOverrideFactories(array $managerConfig, ContainerInterface $services) : array
     {
         // Configure URL view helper
         $urlFactory = $this->createUrlHelperFactory($services);
-        $plugins->setFactory(ViewHelper\Url::class, $urlFactory);
-        $plugins->setFactory('laminasviewhelperurl', $urlFactory);
+        $managerConfig['aliases']['laminasviewhelperurl'] = ViewHelper\Url::class;
+        $managerConfig['factories'][ViewHelper\Url::class] = $urlFactory;
 
         // Configure base path helper
         $basePathFactory = $this->createBasePathHelperFactory($services);
-        $plugins->setFactory(ViewHelper\BasePath::class, $basePathFactory);
-        $plugins->setFactory('laminasviewhelperbasepath', $basePathFactory);
+        $managerConfig['aliases']['laminasviewhelperbasepath'] = ViewHelper\BasePath::class;
+        $managerConfig['factories'][ViewHelper\BasePath::class] = $basePathFactory;
 
         // Configure doctype view helper
         $doctypeFactory = $this->createDoctypeHelperFactory($services);
-        $plugins->setFactory(ViewHelper\Doctype::class, $doctypeFactory);
-        $plugins->setFactory('laminasviewhelperdoctype', $doctypeFactory);
+        $managerConfig['aliases']['laminasviewhelperdoctype'] = ViewHelper\Doctype::class;
+        $managerConfig['factories'][ViewHelper\Doctype::class] = $doctypeFactory;
 
-        return $plugins;
+        return $managerConfig;
     }
 
     /**

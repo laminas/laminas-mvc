@@ -28,7 +28,6 @@
         "container-interop/container-interop": "^1.2",
         "laminas/laminas-eventmanager": "^3.4",
         "laminas/laminas-http": "^2.15",
-        "laminas/laminas-modulemanager": "^2.8",
         "laminas/laminas-router": "^3.5",
         "laminas/laminas-servicemanager": "^3.7",
         "laminas/laminas-stdlib": "^3.6",

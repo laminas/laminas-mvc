@@ -104,6 +104,10 @@ class Application implements
         $this->setEventManager($events ?: $serviceManager->get('EventManager'));
         $this->request        = $request ?: $serviceManager->get('Request');
         $this->response       = $response ?: $serviceManager->get('Response');
+
+        foreach ($this->defaultListeners as $listener) {
+            $serviceManager->get($listener)->attach($this->events);
+        }
     }
 
     /**
@@ -123,20 +127,12 @@ class Application implements
      * router. Attaches the ViewManager as a listener. Triggers the bootstrap
      * event.
      *
-     * @param array $listeners List of listeners to attach.
      * @return Application
      */
-    public function bootstrap(array $listeners = [])
+    public function bootstrap()
     {
         $serviceManager = $this->serviceManager;
         $events         = $this->events;
-
-        // Setup default listeners
-        $listeners = array_unique(array_merge($this->defaultListeners, $listeners));
-
-        foreach ($listeners as $listener) {
-            $serviceManager->get($listener)->attach($events);
-        }
 
         // Setup MVC Event
         $this->event = $event  = new MvcEvent();
@@ -219,48 +215,6 @@ class Application implements
     public function getEventManager()
     {
         return $this->events;
-    }
-
-    /**
-     * Static method for quick and easy initialization of the Application.
-     *
-     * If you use this init() method, you cannot specify a service with the
-     * name of 'ApplicationConfig' in your service manager config. This name is
-     * reserved to hold the array from application.config.php.
-     *
-     * The following services can only be overridden from application.config.php:
-     *
-     * - ModuleManager
-     * - SharedEventManager
-     * - EventManager & Laminas\EventManager\EventManagerInterface
-     *
-     * All other services are configured after module loading, thus can be
-     * overridden by modules.
-     *
-     * @param array $configuration
-     * @return Application
-     */
-    public static function init($configuration = [])
-    {
-        // Prepare the service manager
-        $smConfig = isset($configuration['service_manager']) ? $configuration['service_manager'] : [];
-        $smConfig = new Service\ServiceManagerConfig($smConfig);
-
-        $serviceManager = new ServiceManager();
-        $smConfig->configureServiceManager($serviceManager);
-        $serviceManager->setService('ApplicationConfig', $configuration);
-
-        // Load modules
-        $serviceManager->get('ModuleManager')->loadModules();
-
-        // Prepare list of listeners to bootstrap
-        $listenersFromAppConfig     = isset($configuration['listeners']) ? $configuration['listeners'] : [];
-        $config                     = $serviceManager->get('config');
-        $listenersFromConfigService = isset($config['listeners']) ? $config['listeners'] : [];
-
-        $listeners = array_unique(array_merge($listenersFromConfigService, $listenersFromAppConfig));
-
-        return $serviceManager->get('Application')->bootstrap($listeners);
     }
 
     /**

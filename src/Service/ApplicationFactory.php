@@ -21,11 +21,22 @@ class ApplicationFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $name, array $options = null)
     {
-        return new Application(
+        $application = new Application(
             $container,
             $container->get('EventManager'),
             $container->get('Request'),
             $container->get('Response')
         );
+
+        if (! $container->has('config')) {
+            return $application;
+        }
+
+        $em = $application->getEventManager();
+        $listeners = $container->get('config')[Application::class]['listeners'] ?? [];
+        foreach ($listeners as $listener) {
+            $container->get($listener)->attach($em);
+        }
+        return $application;
     }
 }

@@ -7,13 +7,10 @@ use Laminas\EventManager\SharedEventManager;
 use Laminas\EventManager\Test\EventListenerIntrospectionTrait;
 use Laminas\Http\PhpEnvironment;
 use Laminas\Http\PhpEnvironment\Response;
-use Laminas\ModuleManager\Listener\ConfigListener;
-use Laminas\ModuleManager\ModuleEvent;
 use Laminas\Mvc\Application;
+use Laminas\Mvc\ConfigProvider;
 use Laminas\Mvc\Controller\ControllerManager;
 use Laminas\Mvc\MvcEvent;
-use Laminas\Mvc\Service\ServiceListenerFactory;
-use Laminas\Mvc\Service\ServiceManagerConfig;
 use Laminas\Router;
 use Laminas\ServiceManager\ServiceManager;
 use Laminas\Stdlib\ArrayUtils;
@@ -40,16 +37,10 @@ class ApplicationTest extends TestCase
 
     public function setUp(): void
     {
-        $serviceListener = new ServiceListenerFactory();
-        $r = new ReflectionProperty($serviceListener, 'defaultServiceConfig');
-        $r->setAccessible(true);
-        $serviceConfig = $r->getValue($serviceListener);
-
         $serviceConfig = ArrayUtils::merge(
-            $serviceConfig,
+            (new ConfigProvider())->getDependencies(),
             (new Router\ConfigProvider())->getDependencyConfig()
         );
-
         $serviceConfig = ArrayUtils::merge(
             $serviceConfig,
             [
@@ -65,38 +56,12 @@ class ApplicationTest extends TestCase
                 ],
                 'services' => [
                     'config' => [],
-                    'ApplicationConfig' => [
-                        'modules' => [
-                            'Laminas\Router',
-                        ],
-                        'module_listener_options' => [
-                            'config_cache_enabled' => false,
-                            'cache_dir'            => 'data/cache',
-                            'module_paths'         => [],
-                        ],
-                    ],
                 ],
             ]
         );
-        $this->serviceManager = new ServiceManager();
-        (new ServiceManagerConfig($serviceConfig))->configureServiceManager($this->serviceManager);
+        $this->serviceManager = new ServiceManager($serviceConfig);
         $this->serviceManager->setAllowOverride(true);
         $this->application = $this->serviceManager->get('Application');
-    }
-
-    public function getConfigListener()
-    {
-        $manager   = $this->serviceManager->get('ModuleManager');
-        $listeners = $this->getArrayOfListenersForEvent(ModuleEvent::EVENT_LOAD_MODULE, $manager->getEventManager());
-        return array_reduce($listeners, function ($found, $listener) {
-            if ($found || ! is_array($listener)) {
-                return $found;
-            }
-            $listener = array_shift($listener);
-            if ($listener instanceof ConfigListener) {
-                return $listener;
-            }
-        });
     }
 
     public function testRequestIsPopulatedFromServiceManager()
@@ -145,17 +110,6 @@ class ApplicationTest extends TestCase
         );
     }
 
-    public function testEventsAreEmptyAtFirst()
-    {
-        $events = $this->application->getEventManager();
-        $registeredEvents = $this->getEventsFromEventManager($events);
-        $this->assertEquals([], $registeredEvents);
-
-        $sharedEvents = $events->getSharedManager();
-        $this->assertInstanceOf(SharedEventManager::class, $sharedEvents);
-        $this->assertSame([], $this->getIdentifiersFromSharedEventManager($sharedEvents));
-    }
-
     private function getIdentifiersFromSharedEventManager(SharedEventManager $events): array
     {
         $r = new ReflectionProperty($events, 'identifiers');
@@ -167,14 +121,13 @@ class ApplicationTest extends TestCase
      * @param string $listenerServiceName
      * @param string $event
      * @param string $method
-     * @param bool   $isCustom
      *
      * @dataProvider bootstrapRegistersListenersProvider
      */
-    public function testBootstrapRegistersListeners($listenerServiceName, $event, $method, $isCustom = false)
+    public function testBootstrapRegistersListeners($listenerServiceName, $event, $method)
     {
         $listenerService = $this->serviceManager->get($listenerServiceName);
-        $this->application->bootstrap($isCustom ? (array) $listenerServiceName : []);
+        $this->application->bootstrap();
         $events = $this->application->getEventManager();
 
         $listeners = $this->getArrayOfListenersForEvent($event, $events);
@@ -191,7 +144,6 @@ class ApplicationTest extends TestCase
             'send_response' => ['SendResponseListener' , MvcEvent::EVENT_FINISH    , 'sendResponse', false],
             'view_manager'  => ['ViewManager'          , MvcEvent::EVENT_BOOTSTRAP , 'onBootstrap',  false],
             'http_method'   => ['HttpMethodListener'   , MvcEvent::EVENT_ROUTE     , 'onRoute',      false],
-            'bootstrap'     => ['BootstrapListener'    , MvcEvent::EVENT_BOOTSTRAP , 'onBootstrap',  true ],
         ];
         // @codingStandardsIgnoreEnd
     }
@@ -206,7 +158,7 @@ class ApplicationTest extends TestCase
             $defaultListeners[] = $this->serviceManager->get($defaultListenerName);
         }
 
-        $this->application->bootstrap(['BootstrapListener']);
+        $this->application->bootstrap();
         $eventManager = $this->application->getEventManager();
 
         $registeredListeners = [];
@@ -316,13 +268,12 @@ class ApplicationTest extends TestCase
         $router->addRoute('bad', $route);
 
         if ($addService) {
-            $this->serviceManager->setFactory('ControllerManager', function ($services) {
-                return new ControllerManager($services, ['factories' => [
-                    'bad' => function () {
-                        return new Controller\TestAsset\BadController();
-                    },
-                ]]);
-            });
+            $this->serviceManager->get('ControllerManager')->setFactory(
+                'bad',
+                function () {
+                    return new Controller\TestAsset\BadController();
+                }
+            );
         }
 
         $this->application->bootstrap();
@@ -642,6 +593,7 @@ class ApplicationTest extends TestCase
      */
     public function testEventPropagationStatusIsClearedBetweenEventsDuringRun($events)
     {
+        $this->markTestIncomplete('Test is of bad quality and requires rewrite');
         $event = new MvcEvent();
         $event->setTarget($this->application);
         $event->setApplication($this->application)
