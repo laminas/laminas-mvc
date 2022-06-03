@@ -6,7 +6,7 @@ use Laminas\Mvc\Application;
 use Laminas\Mvc\MvcEvent;
 use PHPUnit\Framework\TestCase;
 
-class InvalidControllerTypeShouldTrigerDispatchErrorTest extends TestCase
+class InvalidControllerTypeShouldTriggerDispatchErrorTest extends TestCase
 {
     use InvalidControllerTypeTrait;
 
