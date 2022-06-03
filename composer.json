@@ -64,10 +64,7 @@
     "autoload-dev": {
         "psr-4": {
             "LaminasTest\\Mvc\\": "test/"
-        },
-        "files": [
-            "test/_autoload.php"
-        ]
+        }
     },
     "scripts": {
         "check": [
