@@ -19,7 +19,6 @@ nav:
           - 'v2.X to v3.0': migration/to-v3-0.md
     - Cookbook:
       - 'Automating controller factories': cookbook/automating-controller-factories.md
-      - 'Using middleware within event listeners': cookbook/middleware-in-listeners.md
 site_name: laminas-mvc
 site_description: "Laminas' event-driven MVC layer, including MVC Applications, Controllers, and Plugins."
 repo_url: 'https://github.com/laminas/laminas-mvc'
