@@ -8,7 +8,6 @@ use ArrayIterator;
 use Laminas\Mvc\Controller\Plugin\Url as UrlPlugin;
 use Laminas\Mvc\Exception\DomainException;
 use Laminas\Mvc\Exception\RuntimeException;
-use Laminas\Mvc\ModuleRouteListener;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Router\Http\Literal as LiteralRoute;
 use Laminas\Router\Http\Segment;
@@ -147,49 +146,5 @@ class UrlTest extends TestCase
         $this->controller->getEvent()->setRouteMatch($routeMatch);
         $url = $this->plugin->fromRoute('replace', ['action' => 'bar'], true);
         $this->assertEquals('/foo/bar', $url);
-    }
-
-    public function testRemovesModuleRouteListenerParamsWhenReusingMatchedParameters(): void
-    {
-        $router = new TreeRouteStack();
-        $router->addRoute('default', [
-            'type'         => Segment::class,
-            'options'      => [
-                'route'    => '/:controller/:action',
-                'defaults' => [
-                    ModuleRouteListener::MODULE_NAMESPACE => 'LaminasTest\Mvc\Controller\TestAsset',
-                    'controller'                          => 'SampleController',
-                    'action'                              => 'Dash',
-                ],
-            ],
-            'child_routes' => [
-                'wildcard' => [
-                    'type'    => Wildcard::class,
-                    'options' => [
-                        'param_delimiter'     => '=',
-                        'key_value_delimiter' => '%',
-                    ],
-                ],
-            ],
-        ]);
-
-        $routeMatch = new RouteMatch([
-            ModuleRouteListener::MODULE_NAMESPACE => 'LaminasTest\Mvc\Controller\TestAsset',
-            'controller'                          => 'Rainbow',
-        ]);
-        $routeMatch->setMatchedRouteName('default/wildcard');
-
-        $event = new MvcEvent();
-        $event->setRouter($router)
-              ->setRouteMatch($routeMatch);
-
-        $moduleRouteListener = new ModuleRouteListener();
-        $moduleRouteListener->onRoute($event);
-
-        $controller = new SampleController();
-        $controller->setEvent($event);
-        $url = $controller->plugin('url')->fromRoute('default/wildcard', ['Twenty' => 'Cooler'], true);
-
-        $this->assertEquals('/Rainbow/Dash=Twenty%Cooler', $url);
     }
 }
