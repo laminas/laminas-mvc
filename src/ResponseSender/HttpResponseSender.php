@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laminas\Mvc\ResponseSender;
 
 use Laminas\Http\Response;
@@ -9,7 +11,6 @@ class HttpResponseSender extends AbstractResponseSender
     /**
      * Send content
      *
-     * @param  SendResponseEvent $event
      * @return HttpResponseSender
      */
     public function sendContent(SendResponseEvent $event)
@@ -26,7 +27,6 @@ class HttpResponseSender extends AbstractResponseSender
     /**
      * Send HTTP response
      *
-     * @param  SendResponseEvent $event
      * @return HttpResponseSender
      */
     public function __invoke(SendResponseEvent $event)

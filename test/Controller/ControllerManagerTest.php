@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Controller;
 
 use Laminas\EventManager\EventManager;
@@ -18,8 +20,8 @@ class ControllerManagerTest extends TestCase
 {
     public function setUp(): void
     {
-        $this->sharedEvents   = new SharedEventManager;
-        $this->events         = $this->createEventManager($this->sharedEvents);
+        $this->sharedEvents = new SharedEventManager();
+        $this->events       = $this->createEventManager($this->sharedEvents);
 
         $this->services = new ServiceManager();
         (new Config([
@@ -28,7 +30,7 @@ class ControllerManagerTest extends TestCase
                     return new ControllerPluginManager($services);
                 },
             ],
-            'services' => [
+            'services'  => [
                 'EventManager'       => $this->events,
                 'SharedEventManager' => $this->sharedEvents,
             ],

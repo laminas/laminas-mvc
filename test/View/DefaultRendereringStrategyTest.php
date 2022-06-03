@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\View;
 
 use Laminas\EventManager\EventManager;
@@ -18,6 +20,9 @@ use Laminas\View\Resolver\TemplateMapResolver;
 use Laminas\View\Strategy\PhpRendererStrategy;
 use Laminas\View\View;
 use PHPUnit\Framework\TestCase;
+
+use function json_encode;
+use function sprintf;
 
 class DefaultRendereringStrategyTest extends TestCase
 {
@@ -134,18 +139,17 @@ class DefaultRendereringStrategyTest extends TestCase
             'invokables' => [
                 'SharedEventManager' => SharedEventManager::class,
             ],
-            'factories' => [
+            'factories'  => [
                 'EventManager' => function ($services) {
                     $sharedEvents = $services->get('SharedEventManager');
-                    $events = new EventManager($sharedEvents);
-                    return $events;
+                    return new EventManager($sharedEvents);
                 },
             ],
-            'services' => [
+            'services'   => [
                 'Request'  => $this->request,
                 'Response' => $this->response,
             ],
-            'shared' => [
+            'shared'     => [
                 'EventManager' => false,
             ],
         ]))->configureServiceManager($services);

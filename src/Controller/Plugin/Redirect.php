@@ -1,11 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laminas\Mvc\Controller\Plugin;
 
 use Laminas\Http\Response;
 use Laminas\Mvc\Exception;
 use Laminas\Mvc\InjectApplicationEventInterface;
 use Laminas\Mvc\MvcEvent;
+
+use function is_scalar;
+use function method_exists;
 
 /**
  * @todo       allow specifying status code as a default, or as an option to methods

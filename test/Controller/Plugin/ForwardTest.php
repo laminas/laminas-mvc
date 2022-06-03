@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Controller\Plugin;
 
 use Laminas\EventManager\EventManager;
@@ -19,6 +21,7 @@ use Laminas\ServiceManager\Config;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\ServiceManager;
+use Laminas\Stdlib\DispatchableInterface;
 use LaminasTest\Mvc\Controller\Plugin\TestAsset\ListenerStub;
 use LaminasTest\Mvc\Controller\TestAsset\ForwardController;
 use LaminasTest\Mvc\Controller\TestAsset\SampleController;
@@ -28,33 +31,25 @@ use stdClass;
 
 class ForwardTest extends TestCase
 {
-    /**
-     * @var PluginManager
-     */
+    /** @var PluginManager */
     private $plugins;
 
-    /**
-     * @var ControllerManager
-     */
+    /** @var ControllerManager */
     private $controllers;
 
-    /**
-     * @var SampleController
-     */
+    /** @var SampleController */
     private $controller;
 
-    /**
-     * @var Forward
-     */
+    /** @var Forward */
     private $plugin;
 
     public function setUp(): void
     {
-        $eventManager = $this->createEventManager(new SharedEventManager());
+        $eventManager    = $this->createEventManager(new SharedEventManager());
         $mockApplication = $this->createMock(ApplicationInterface::class);
         $mockApplication->expects($this->any())->method('getEventManager')->will($this->returnValue($eventManager));
 
-        $event   = new MvcEvent();
+        $event = new MvcEvent();
         $event->setApplication($mockApplication);
         $event->setRequest(new Request());
         $event->setResponse(new Response());
@@ -63,33 +58,35 @@ class ForwardTest extends TestCase
         $routeMatch->setMatchedRouteName('some-route');
         $event->setRouteMatch($routeMatch);
 
-        $config = new Config([
-            'aliases' => [
+        $config         = new Config([
+            'aliases'   => [
                 'ControllerLoader' => 'ControllerManager',
             ],
             'factories' => [
-                'ControllerManager' => function ($services, $name) {
+                'ControllerManager'       => function ($services, $name) {
                     $plugins = $services->get('ControllerPluginManager');
 
-                    return new ControllerManager($services, ['factories' => [
-                        'forward' => function ($services) use ($plugins) {
-                            $controller = new ForwardController();
-                            $controller->setPluginManager($plugins);
-                            return $controller;
-                        },
-                    ]]);
+                    return new ControllerManager($services, [
+                        'factories' => [
+                            'forward' => function ($services) use ($plugins) {
+                                $controller = new ForwardController();
+                                $controller->setPluginManager($plugins);
+                                return $controller;
+                            },
+                        ],
+                    ]);
                 },
                 'ControllerPluginManager' => function ($services, $name) {
                     return new PluginManager($services);
                 },
-                'EventManager' => function ($services, $name) {
+                'EventManager'            => function ($services, $name) {
                     return $this->createEventManager($services->get('SharedEventManager'));
                 },
-                'SharedEventManager' => function ($services, $name) {
+                'SharedEventManager'      => function ($services, $name) {
                     return new SharedEventManager();
                 },
             ],
-            'shared' => [
+            'shared'    => [
                 'EventManager' => false,
             ],
         ]);
@@ -98,7 +95,7 @@ class ForwardTest extends TestCase
 
         $this->controllers = $services->get('ControllerManager');
 
-        $plugins = $services->get('ControllerPluginManager');
+        $plugins          = $services->get('ControllerPluginManager');
         $this->controller = new SampleController();
         $this->controller->setEvent($event);
         $this->controller->setPluginManager($plugins);
@@ -129,13 +126,13 @@ class ForwardTest extends TestCase
     {
         $controller = new SampleController();
         $this->expectException(ServiceNotCreatedException::class);
-        $plugin     = $controller->plugin('forward');
+        $plugin = $controller->plugin('forward');
     }
 
     public function testDispatchRaisesDomainExceptionIfDiscoveredControllerIsNotDispatchable()
     {
         $this->controllers->setFactory('bogus', function () {
-            return new stdClass;
+            return new stdClass();
         });
         $plugin = new ForwardPlugin($this->controllers);
         $plugin->setController($this->controller);
@@ -149,39 +146,41 @@ class ForwardTest extends TestCase
     {
         $event = $this->controller->getEvent();
 
-        $config = new Config([
-            'aliases' => [
+        $config   = new Config([
+            'aliases'   => [
                 'ControllerLoader' => 'ControllerManager',
             ],
             'factories' => [
-                'ControllerManager' => function ($services) use ($event) {
+                'ControllerManager'       => function ($services) use ($event) {
                     $plugins = $services->get('ControllerPluginManager');
 
-                    return new ControllerManager($services, ['factories' => [
-                        'forward' => function ($services) use ($plugins) {
-                            $controller = new ForwardController();
-                            $controller->setPluginManager($plugins);
-                            return $controller;
-                        },
-                        'sample' => function ($services) use ($event, $plugins) {
-                            $controller = new SampleController();
-                            $controller->setEvent($event);
-                            $controller->setPluginManager($plugins);
-                            return $controller;
-                        },
-                    ]]);
+                    return new ControllerManager($services, [
+                        'factories' => [
+                            'forward' => function ($services) use ($plugins) {
+                                $controller = new ForwardController();
+                                $controller->setPluginManager($plugins);
+                                return $controller;
+                            },
+                            'sample'  => function ($services) use ($event, $plugins) {
+                                $controller = new SampleController();
+                                $controller->setEvent($event);
+                                $controller->setPluginManager($plugins);
+                                return $controller;
+                            },
+                        ],
+                    ]);
                 },
                 'ControllerPluginManager' => function ($services) {
                     return new PluginManager($services);
                 },
-                'EventManager' => function ($services, $name) {
+                'EventManager'            => function ($services, $name) {
                     return $this->createEventManager($services->get('SharedEventManager'));
                 },
-                'SharedEventManager' => function ($services, $name) {
+                'SharedEventManager'      => function ($services, $name) {
                     return new SharedEventManager();
                 },
             ],
-            'shared' => [
+            'shared'    => [
                 'EventManager' => false,
             ],
         ]);
@@ -210,15 +209,15 @@ class ForwardTest extends TestCase
 
     public function testNonArrayListenerDoesNotRaiseErrorWhenPluginDispatchsRequestedController()
     {
-        $services = $this->services;
-        $events   = $services->get('EventManager');
+        $services     = $this->services;
+        $events       = $services->get('EventManager');
         $sharedEvents = $this->createMock(SharedEventManagerInterface::class);
         // @codingStandardsIgnoreStart
         $sharedEvents->expects($this->any())->method('getListeners')->will($this->returnValue([
             function ($e) {}
         ]));
         // @codingStandardsIgnoreEnd
-        $events = $this->createEventManager($sharedEvents);
+        $events      = $this->createEventManager($sharedEvents);
         $application = $this->createMock(ApplicationInterface::class);
         $application->expects($this->any())->method('getEventManager')->will($this->returnValue($events));
         $event = $this->controller->getEvent();
@@ -237,15 +236,15 @@ class ForwardTest extends TestCase
         $services = $this->services;
         $events   = $services->get('EventManager');
 
-        $myCallback = [new ListenerStub(),'myCallback'];
+        $myCallback   = [new ListenerStub(), 'myCallback'];
         $sharedEvents = $this->createMock(SharedEventManagerInterface::class);
         $sharedEvents->expects($this->once())
             ->method('detach')
-            ->with($myCallback, 'Laminas\Stdlib\DispatchableInterface');
+            ->with($myCallback, DispatchableInterface::class);
         $sharedEvents
             ->expects($this->once())
             ->method('attach')
-            ->with('Laminas\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, $myCallback, -50);
+            ->with(DispatchableInterface::class, MvcEvent::EVENT_DISPATCH, $myCallback, -50);
         $sharedEvents->expects($this->any())
             ->method('getListeners')
             ->will($this->returnValue([-50 => [$myCallback]]));
@@ -256,11 +255,13 @@ class ForwardTest extends TestCase
         $event = $this->controller->getEvent();
         $event->setApplication($application);
 
-        $this->plugin->setListenersToDetach([[
-            'id'    => 'Laminas\Stdlib\DispatchableInterface',
-            'event' => MvcEvent::EVENT_DISPATCH,
-            'class' => 'LaminasTest\Mvc\Controller\Plugin\TestAsset\ListenerStub',
-        ]]);
+        $this->plugin->setListenersToDetach([
+            [
+                'id'    => DispatchableInterface::class,
+                'event' => MvcEvent::EVENT_DISPATCH,
+                'class' => ListenerStub::class,
+            ],
+        ]);
 
         $result = $this->plugin->dispatch('forward');
     }
@@ -270,15 +271,15 @@ class ForwardTest extends TestCase
         $services = $this->services;
         $events   = $services->get('EventManager');
 
-        $myCallback = new ListenerStub();
+        $myCallback   = new ListenerStub();
         $sharedEvents = $this->createMock(SharedEventManagerInterface::class);
         $sharedEvents->expects($this->once())
             ->method('detach')
-            ->with($myCallback, 'Laminas\Stdlib\DispatchableInterface');
+            ->with($myCallback, DispatchableInterface::class);
         $sharedEvents
             ->expects($this->once())
             ->method('attach')
-            ->with('Laminas\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, $myCallback, -50);
+            ->with(DispatchableInterface::class, MvcEvent::EVENT_DISPATCH, $myCallback, -50);
         $sharedEvents->expects($this->any())
             ->method('getListeners')
             ->will($this->returnValue([-50 => [$myCallback]]));
@@ -289,11 +290,13 @@ class ForwardTest extends TestCase
         $event = $this->controller->getEvent();
         $event->setApplication($application);
 
-        $this->plugin->setListenersToDetach([[
-            'id'    => 'Laminas\Stdlib\DispatchableInterface',
-            'event' => MvcEvent::EVENT_DISPATCH,
-            'class' => 'LaminasTest\Mvc\Controller\Plugin\TestAsset\ListenerStub',
-        ]]);
+        $this->plugin->setListenersToDetach([
+            [
+                'id'    => DispatchableInterface::class,
+                'event' => MvcEvent::EVENT_DISPATCH,
+                'class' => ListenerStub::class,
+            ],
+        ]);
 
         $result = $this->plugin->dispatch('forward');
     }
@@ -316,13 +319,13 @@ class ForwardTest extends TestCase
         $routeMatch            = $this->controller->getEvent()->getRouteMatch();
         $matchParams           = $routeMatch->getParams();
         $matchMatchedRouteName = $routeMatch->getMatchedRouteName();
-        $result = $this->plugin->dispatch('forward', [
+        $result                = $this->plugin->dispatch('forward', [
             'action' => 'test-matches',
             'param1' => 'foobar',
         ]);
-        $testMatch            = $this->controller->getEvent()->getRouteMatch();
-        $testParams           = $testMatch->getParams();
-        $testMatchedRouteName = $testMatch->getMatchedRouteName();
+        $testMatch             = $this->controller->getEvent()->getRouteMatch();
+        $testParams            = $testMatch->getParams();
+        $testMatchedRouteName  = $testMatch->getMatchedRouteName();
 
         $this->assertSame($routeMatch, $testMatch);
         $this->assertEquals($matchParams, $testParams);

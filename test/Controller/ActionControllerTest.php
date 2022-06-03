@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Controller;
 
 use Laminas\EventManager\EventManager;
@@ -19,6 +21,10 @@ use Laminas\View\Model\ModelInterface;
 use LaminasTest\Mvc\Controller\TestAsset\SampleController;
 use LaminasTest\Mvc\Controller\TestAsset\SampleInterface;
 use PHPUnit\Framework\TestCase;
+
+use function get_class;
+use function method_exists;
+use function var_export;
 
 class ActionControllerTest extends TestCase
 {
@@ -43,7 +49,6 @@ class ActionControllerTest extends TestCase
     }
 
     /**
-     * @param  SharedEventManagerInterface $sharedManager
      * @return EventManager
      */
     protected function createEventManager(SharedEventManagerInterface $sharedManager)
@@ -53,26 +58,26 @@ class ActionControllerTest extends TestCase
 
     public function testDispatchInvokesNotFoundActionWhenNoActionPresentInRouteMatch()
     {
-        $result = $this->controller->dispatch($this->request, $this->response);
+        $result   = $this->controller->dispatch($this->request, $this->response);
         $response = $this->controller->getResponse();
         $this->assertEquals(404, $response->getStatusCode());
         $this->assertInstanceOf(ModelInterface::class, $result);
         $this->assertEquals('content', $result->captureTo());
         $vars = $result->getVariables();
-        $this->assertArrayHasKey('content', $vars, var_export($vars, 1));
+        $this->assertArrayHasKey('content', $vars, var_export($vars, true));
         $this->assertStringContainsString('Page not found', $vars['content']);
     }
 
     public function testDispatchInvokesNotFoundActionWhenInvalidActionPresentInRouteMatch()
     {
         $this->routeMatch->setParam('action', 'totally-made-up-action');
-        $result = $this->controller->dispatch($this->request, $this->response);
+        $result   = $this->controller->dispatch($this->request, $this->response);
         $response = $this->controller->getResponse();
         $this->assertEquals(404, $response->getStatusCode());
         $this->assertInstanceOf(ModelInterface::class, $result);
         $this->assertEquals('content', $result->captureTo());
         $vars = $result->getVariables();
-        $this->assertArrayHasKey('content', $vars, var_export($vars, 1));
+        $this->assertArrayHasKey('content', $vars, var_export($vars, true));
         $this->assertStringContainsString('Page not found', $vars['content']);
     }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\TestAsset;
 
 use Laminas\EventManager\EventManagerInterface;

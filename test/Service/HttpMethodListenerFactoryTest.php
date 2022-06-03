@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
 use Laminas\Mvc\Service\HttpMethodListenerFactory;
 use Laminas\ServiceManager\ServiceLocatorInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
@@ -16,9 +18,7 @@ class HttpMethodListenerFactoryTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @var ServiceLocatorInterface|MockObject
-     */
+    /** @var ServiceLocatorInterface|MockObject */
     protected $serviceLocator;
 
     public function setUp(): void
@@ -29,7 +29,7 @@ class HttpMethodListenerFactoryTest extends TestCase
 
     public function testCreateWithDefaults()
     {
-        $factory = new HttpMethodListenerFactory();
+        $factory  = new HttpMethodListenerFactory();
         $listener = $factory($this->serviceLocator->reveal(), 'HttpMethodListener');
         $this->assertTrue($listener->isEnabled());
         $this->assertNotEmpty($listener->getAllowedMethods());
@@ -38,13 +38,13 @@ class HttpMethodListenerFactoryTest extends TestCase
     public function testCreateWithConfig()
     {
         $config['http_methods_listener'] = [
-            'enabled' => false,
-            'allowed_methods' => ['FOO', 'BAR']
+            'enabled'         => false,
+            'allowed_methods' => ['FOO', 'BAR'],
         ];
 
         $this->serviceLocator->get('config')->willReturn($config);
 
-        $factory = new HttpMethodListenerFactory();
+        $factory  = new HttpMethodListenerFactory();
         $listener = $factory($this->serviceLocator->reveal(), 'HttpMethodListener');
 
         $listenerConfig = $config['http_methods_listener'];

@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Service;
 
 use Laminas\EventManager\SharedEventManager;
+use Laminas\Mvc\Controller\ControllerManager;
 use Laminas\Mvc\Service\ControllerManagerFactory;
 use Laminas\Mvc\Service\ControllerPluginManagerFactory;
 use Laminas\Mvc\Service\EventManagerFactory;
@@ -15,23 +18,22 @@ use LaminasTest\Mvc\Controller\TestAsset\SampleController;
 use LaminasTest\Mvc\Service\TestAsset\InvalidDispatchableClass;
 use PHPUnit\Framework\TestCase;
 
+use function array_merge_recursive;
+use function class_exists;
+
 class ControllerManagerFactoryTest extends TestCase
 {
-    /**
-     * @var ServiceManager
-     */
+    /** @var ServiceManager */
     protected $services;
 
-    /**
-     * @var \Laminas\Mvc\Controller\ControllerManager
-     */
+    /** @var ControllerManager */
     protected $loader;
 
     public function setUp(): void
     {
-        $loaderFactory  = new ControllerManagerFactory();
+        $loaderFactory              = new ControllerManagerFactory();
         $this->defaultServiceConfig = [
-            'aliases' => [
+            'aliases'   => [
                 'SharedEventManager' => SharedEventManager::class,
             ],
             'factories' => [
@@ -40,11 +42,11 @@ class ControllerManagerFactoryTest extends TestCase
                 'EventManager'            => EventManagerFactory::class,
                 SharedEventManager::class => InvokableFactory::class,
             ],
-            'services' => [
+            'services'  => [
                 'config' => [],
             ],
         ];
-        $this->services = new ServiceManager();
+        $this->services             = new ServiceManager();
         (new Config($this->defaultServiceConfig))->configureServiceManager($this->services);
     }
 
@@ -70,9 +72,11 @@ class ControllerManagerFactoryTest extends TestCase
     public function testCannotLoadControllerFromPeer()
     {
         $services = new ServiceManager();
-        (new Config(array_merge_recursive($this->defaultServiceConfig, ['services' => [
-            'foo' => $this,
-        ]])))->configureServiceManager($services);
+        (new Config(array_merge_recursive($this->defaultServiceConfig, [
+            'services' => [
+                'foo' => $this,
+            ],
+        ])))->configureServiceManager($services);
         $loader = $services->get('ControllerManager');
 
         $this->expectException(Exception\ExceptionInterface::class);
@@ -97,7 +101,7 @@ class ControllerManagerFactoryTest extends TestCase
         $controllerPluginManager->setAlias('samplePlugin', SamplePlugin::class);
         $controllerPluginManager->setFactory(SamplePlugin::class, InvokableFactory::class);
 
-        $controller = new SampleController;
+        $controller = new SampleController();
         $controllerPluginManager->setController($controller);
 
         $plugin = $controllerPluginManager->get('samplePlugin');

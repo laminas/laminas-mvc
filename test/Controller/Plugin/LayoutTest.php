@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Controller\Plugin;
 
 use Laminas\Mvc\Controller\Plugin\Layout as LayoutPlugin;

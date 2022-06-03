@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Service\TestAsset;
 
 use Laminas\EventManager\EventManagerAwareInterface;
@@ -11,9 +13,6 @@ class EventManagerAwareObject implements EventManagerAwareInterface
 
     protected $events;
 
-    /**
-     * @param EventManagerInterface $events
-     */
     public function setEventManager(EventManagerInterface $events)
     {
         $this->events = $events;
@@ -24,7 +23,8 @@ class EventManagerAwareObject implements EventManagerAwareInterface
      */
     public function getEventManager()
     {
-        if (! $this->events instanceof EventManagerInterface
+        if (
+            ! $this->events instanceof EventManagerInterface
             && static::$defaultEvents instanceof EventManagerInterface
         ) {
             $this->setEventManager(static::$defaultEvents);

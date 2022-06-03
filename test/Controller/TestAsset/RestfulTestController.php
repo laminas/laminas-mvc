@@ -1,17 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Controller\TestAsset;
 
+use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractRestfulController;
+use Laminas\Stdlib\ResponseInterface;
+use Traversable;
+
+use function array_merge;
+use function is_array;
 
 class RestfulTestController extends AbstractRestfulController
 {
     public $entities = [];
     public $entity   = [];
 
-    /**
-     * @var \Laminas\Stdlib\ResponseInterface|null
-     */
+    /** @var ResponseInterface|null */
     public $headResponse;
 
     /**
@@ -40,7 +46,7 @@ class RestfulTestController extends AbstractRestfulController
     /**
      * Delete the collection
      *
-     * @return \Laminas\Http\Response
+     * @return Response
      */
     public function deleteList($data)
     {
@@ -102,7 +108,7 @@ class RestfulTestController extends AbstractRestfulController
     /**
      * Return list of allowed HTTP methods
      *
-     * @return \Laminas\Http\Response
+     * @return Response
      */
     public function options()
     {
@@ -130,8 +136,8 @@ class RestfulTestController extends AbstractRestfulController
     /**
      * Replace the entire resource collection
      *
-     * @param  array|\Traversable $items
-     * @return array|\Traversable
+     * @param array|Traversable $items
+     * @return array|Traversable
      */
     public function replaceList($items)
     {
@@ -141,13 +147,14 @@ class RestfulTestController extends AbstractRestfulController
     /**
      * Modify an entire resource collection
      *
-     * @param  array|\Traversable $items
-     * @return array|\Traversable
+     * @param array|Traversable $items
+     * @return array|Traversable
      */
     public function patchList($items)
     {
         //This isn't great code to have in a test class, but I seems the simplest without BC breaks.
-        if (isset($items['name'])
+        if (
+            isset($items['name'])
             && $items['name'] == 'testDispatchViaPatchWithoutIdentifierReturns405ResponseIfPatchListThrowsException'
         ) {
             parent::patchList($items);

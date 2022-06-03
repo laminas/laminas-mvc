@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Application;
 
 use Laminas\Http\PhpEnvironment\Request;
@@ -18,9 +20,9 @@ trait MissingControllerTrait
             'router' => [
                 'routes' => [
                     'path' => [
-                        'type' => Router\Http\Literal::class,
+                        'type'    => Router\Http\Literal::class,
                         'options' => [
-                            'route' => '/bad',
+                            'route'    => '/bad',
                             'defaults' => [
                                 'controller' => 'bad',
                                 'action'     => 'test',
@@ -39,7 +41,7 @@ trait MissingControllerTrait
         $serviceConfig = ArrayUtils::merge(
             $serviceConfig,
             [
-                'factories' => [
+                'factories'  => [
                     'Router' => function ($services) {
                         return $services->get('HttpRouter');
                     },
@@ -51,13 +53,13 @@ trait MissingControllerTrait
                     'SendResponseListener' => TestAsset\MockSendResponseListener::class,
                     'BootstrapListener'    => TestAsset\StubBootstrapListener::class,
                 ],
-                'services' => [
+                'services'   => [
                     'config' => $config,
                 ],
             ]
         );
-        $services = new ServiceManager($serviceConfig);
-        $application = $services->get('Application');
+        $services      = new ServiceManager($serviceConfig);
+        $application   = $services->get('Application');
 
         $request = $services->get('Request');
         $request->setUri('http://example.local/bad');

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laminas\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
@@ -8,7 +10,6 @@ use Laminas\Mvc\SendResponseListener;
 class SendResponseListenerFactory
 {
     /**
-     * @param ContainerInterface $container
      * @return SendResponseListener
      */
     public function __invoke(ContainerInterface $container)

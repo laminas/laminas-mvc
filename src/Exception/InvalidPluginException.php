@@ -1,7 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laminas\Mvc\Exception;
 
-class InvalidPluginException extends \Exception implements ExceptionInterface
+use Exception;
+
+class InvalidPluginException extends Exception implements ExceptionInterface
 {
 }

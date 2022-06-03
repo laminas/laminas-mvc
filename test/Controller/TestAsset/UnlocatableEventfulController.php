@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Controller\TestAsset;
 
 use Laminas\EventManager\EventInterface as Event;
@@ -22,7 +24,7 @@ class UnlocatableEventfulController implements DispatchableInterface, InjectAppl
         return $this->event;
     }
 
-    public function dispatch(Request $request, Response $response = null)
+    public function dispatch(Request $request, ?Response $response = null)
     {
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Service;
 
 use ArrayObject;
@@ -7,6 +9,7 @@ use Interop\Container\ContainerInterface;
 use Laminas\Mvc\Service\InjectTemplateListenerFactory;
 use Laminas\Mvc\View\Http\InjectTemplateListener;
 use Laminas\ServiceManager\ServiceLocatorInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
@@ -45,7 +48,7 @@ class InjectTemplateListenerFactoryTest extends TestCase
                     // must be an array due to type hinting on setControllerMap()
                     'SomeModule' => 'some/module',
                 ],
-            ])
+            ]),
         ]);
 
         $this->assertEquals('some/module', $listener->mapController("SomeModule"));
@@ -53,8 +56,7 @@ class InjectTemplateListenerFactoryTest extends TestCase
 
     /**
      * @param mixed $config
-     *
-     * @return \PHPUnit_Framework_MockObject_MockObject|\Laminas\Mvc\View\Http\InjectTemplateListener
+     * @return MockObject|InjectTemplateListener
      */
     private function buildInjectTemplateListenerWithConfig($config)
     {

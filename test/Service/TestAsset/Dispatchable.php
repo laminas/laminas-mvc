@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Service\TestAsset;
 
 use Laminas\Mvc\Controller\AbstractActionController;

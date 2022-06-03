@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Controller\Plugin;
 
+use ArrayIterator;
 use Laminas\Mvc\Controller\Plugin\Url as UrlPlugin;
 use Laminas\Mvc\Exception\DomainException;
 use Laminas\Mvc\Exception\RuntimeException;
@@ -21,7 +24,7 @@ class UrlTest extends TestCase
 {
     public function setUp(): void
     {
-        $router = new SimpleRouteStack;
+        $router = new SimpleRouteStack();
         $router->addRoute('home', LiteralRoute::factory([
             'route'    => '/',
             'defaults' => [
@@ -29,10 +32,10 @@ class UrlTest extends TestCase
             ],
         ]));
         $router->addRoute('default', [
-            'type' => Segment::class,
+            'type'    => Segment::class,
             'options' => [
                 'route' => '/:controller[/:action]',
-            ]
+            ],
         ]);
         $this->router = $router;
 
@@ -53,7 +56,7 @@ class UrlTest extends TestCase
 
     public function testModel()
     {
-        $it = new \ArrayIterator(['controller' => 'ctrl', 'action' => 'act']);
+        $it = new ArrayIterator(['controller' => 'ctrl', 'action' => 'act']);
 
         $url = $this->plugin->fromRoute('default', $it);
         $this->assertEquals('/ctrl/act', $url);
@@ -146,36 +149,33 @@ class UrlTest extends TestCase
         $this->assertEquals('/foo/bar', $url);
     }
 
-    /**
-     *
-     */
     public function testRemovesModuleRouteListenerParamsWhenReusingMatchedParameters()
     {
-        $router = new TreeRouteStack;
+        $router = new TreeRouteStack();
         $router->addRoute('default', [
-            'type' => Segment::class,
-            'options' => [
+            'type'         => Segment::class,
+            'options'      => [
                 'route'    => '/:controller/:action',
                 'defaults' => [
                     ModuleRouteListener::MODULE_NAMESPACE => 'LaminasTest\Mvc\Controller\TestAsset',
-                    'controller' => 'SampleController',
-                    'action'     => 'Dash'
-                ]
+                    'controller'                          => 'SampleController',
+                    'action'                              => 'Dash',
+                ],
             ],
             'child_routes' => [
                 'wildcard' => [
                     'type'    => Wildcard::class,
                     'options' => [
                         'param_delimiter'     => '=',
-                        'key_value_delimiter' => '%'
-                    ]
-                ]
-            ]
+                        'key_value_delimiter' => '%',
+                    ],
+                ],
+            ],
         ]);
 
         $routeMatch = new RouteMatch([
             ModuleRouteListener::MODULE_NAMESPACE => 'LaminasTest\Mvc\Controller\TestAsset',
-            'controller' => 'Rainbow'
+            'controller'                          => 'Rainbow',
         ]);
         $routeMatch->setMatchedRouteName('default/wildcard');
 

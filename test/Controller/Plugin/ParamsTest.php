@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Controller\Plugin;
 
 use Laminas\Http\Header\GenericHeader;
@@ -10,12 +12,16 @@ use Laminas\Router\RouteMatch;
 use LaminasTest\Mvc\Controller\TestAsset\SampleController;
 use PHPUnit\Framework\TestCase;
 
+use function uniqid;
+
+use const UPLOAD_ERR_OK;
+
 class ParamsTest extends TestCase
 {
     public function setUp(): void
     {
-        $this->request = new Request;
-        $event         = new MvcEvent;
+        $this->request = new Request();
+        $event         = new MvcEvent();
 
         $event->setRequest($this->request);
         $event->setResponse(new Response());
@@ -177,7 +183,7 @@ class ParamsTest extends TestCase
 
     public function testFromHeaderReturnsAllIfEmpty()
     {
-        $header = new GenericHeader('X-TEST', 'test');
+        $header  = new GenericHeader('X-TEST', 'test');
         $header2 = new GenericHeader('OTHER-TEST', 'value:12345');
 
         $this->request->getHeaders()->addHeader($header);

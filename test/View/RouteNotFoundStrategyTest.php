@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\View;
 
+use Exception;
 use Laminas\EventManager\EventManager;
 use Laminas\EventManager\Test\EventListenerIntrospectionTrait;
 use Laminas\Http\Response;
@@ -16,9 +19,7 @@ class RouteNotFoundStrategyTest extends TestCase
 {
     use EventListenerIntrospectionTrait;
 
-    /**
-     * @var RouteNotFoundStrategy
-     */
+    /** @var RouteNotFoundStrategy */
     private $strategy;
 
     public function setUp(): void
@@ -210,7 +211,7 @@ class RouteNotFoundStrategyTest extends TestCase
     {
         $response  = new Response();
         $event     = new MvcEvent();
-        $exception = new \Exception();
+        $exception = new Exception();
         $event->setParam('exception', $exception);
 
         foreach ([true, false] as $allow) {
@@ -266,8 +267,8 @@ class RouteNotFoundStrategyTest extends TestCase
 
     public function testInjectsHttpResponseIntoEventIfNoneAlreadyPresent()
     {
-        $event    = new MvcEvent();
-        $errors   = [
+        $event  = new MvcEvent();
+        $errors = [
             'not-found' => Application::ERROR_CONTROLLER_NOT_FOUND,
             'invalid'   => Application::ERROR_CONTROLLER_INVALID,
         ];
@@ -297,8 +298,8 @@ class RouteNotFoundStrategyTest extends TestCase
         $this->strategy->attach($events);
 
         $evs = [
-            MvcEvent::EVENT_DISPATCH => -90,
-            MvcEvent::EVENT_DISPATCH_ERROR => 1
+            MvcEvent::EVENT_DISPATCH       => -90,
+            MvcEvent::EVENT_DISPATCH_ERROR => 1,
         ];
         foreach ($evs as $event => $expectedPriority) {
             $this->assertListenerAtPriority(

@@ -1,10 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laminas\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\View\Resolver as ViewResolver;
+
+use function is_array;
 
 class ViewTemplatePathStackFactory implements FactoryInterface
 {
@@ -15,12 +19,11 @@ class ViewTemplatePathStackFactory implements FactoryInterface
      * ['view_manager']['template_path_stack'] and sets the default suffix with the
      * ['view_manager']['default_template_suffix']
      *
-     * @param  ContainerInterface $container
      * @param  string $name
      * @param  null|array $options
      * @return ViewResolver\TemplatePathStack
      */
-    public function __invoke(ContainerInterface $container, $name, array $options = null)
+    public function __invoke(ContainerInterface $container, $name, ?array $options = null)
     {
         $config = $container->get('config');
 

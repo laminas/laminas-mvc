@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc;
 
 use Laminas\EventManager\EventManager;
@@ -28,12 +30,12 @@ class ModuleRouteListenerTest extends TestCase
     public function testRouteReturningModuleNamespaceInRouteMatchTriggersControllerRename()
     {
         $this->router->addRoute('foo', [
-            'type' => 'Literal',
+            'type'    => 'Literal',
             'options' => [
                 'route'    => '/foo',
                 'defaults' => [
                     ModuleRouteListener::MODULE_NAMESPACE => 'Foo',
-                    'controller' => 'Index',
+                    'controller'                          => 'Index',
                 ],
             ],
         ]);
@@ -53,7 +55,7 @@ class ModuleRouteListenerTest extends TestCase
     public function testRouteNotReturningModuleNamespaceInRouteMatchLeavesControllerUntouched()
     {
         $this->router->addRoute('foo', [
-            'type' => 'Literal',
+            'type'    => 'Literal',
             'options' => [
                 'route'    => '/foo',
                 'defaults' => [
@@ -79,12 +81,12 @@ class ModuleRouteListenerTest extends TestCase
         $moduleListener->attach($this->events);
 
         $this->router->addRoute('foo', [
-            'type' => 'Literal',
+            'type'    => 'Literal',
             'options' => [
                 'route'    => '/foo',
                 'defaults' => [
                     ModuleRouteListener::MODULE_NAMESPACE => 'Foo',
-                    'controller' => 'Index',
+                    'controller'                          => 'Index',
                 ],
             ],
         ]);
@@ -107,12 +109,12 @@ class ModuleRouteListenerTest extends TestCase
         $moduleListener->attach($this->events);
 
         $this->router->addRoute('foo', [
-            'type' => 'Literal',
+            'type'    => 'Literal',
             'options' => [
                 'route'    => '/foo',
                 'defaults' => [
                     ModuleRouteListener::MODULE_NAMESPACE => 'Foo',
-                    'controller' => 'some-index',
+                    'controller'                          => 'some-index',
                 ],
             ],
         ]);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laminas\Mvc\ResponseSender;
 
 interface ResponseSenderInterface
@@ -7,7 +9,6 @@ interface ResponseSenderInterface
     /**
      * Send the response
      *
-     * @param SendResponseEvent $event
      * @return void
      */
     public function __invoke(SendResponseEvent $event);
