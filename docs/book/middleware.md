@@ -14,22 +14,4 @@ The package [laminas-mvc-middleware][laminas-mvc-middleware] is a laminas-mvc
 application module that enables dispatching of middleware, middleware pipes, and
 request handlers for route matches that contain a `middleware` parameter.
 
-## Built-in Optional Support Deprecation
-
-With version 2.7.0, laminas-mvc began offering the now deprecated
-`Laminas\Mvc\MiddlewareListener`. The `MiddlewareListener` is always enabled, but
-requires optional dependencies installed to be used.  
-A new laminas-mvc module, [laminas-mvc-middleware][laminas-mvc-middleware], transparently replaces
-it with `Laminas\Mvc\Middleware\MiddlewareListener` when registered with a
-laminas-mvc application.
-
-Starting with version 3.2.0, the built-in `Laminas\Mvc\MiddlewareListener` will
-trigger deprecation level errors on any attempt to handle a route match containing
-a `middleware` parameter.
-
-If your application currently depends on the built-in optional middleware
-support, `laminas/laminas-mvc-middleware:~1.0.0` provides a drop-in replacement.
-If you use this new module, please note that the module `Laminas\Mvc\Middleware`
-must be enabled in your laminas-mvc application.
-
 [laminas-mvc-middleware]: https://docs.laminas.dev/laminas-mvc-middleware/

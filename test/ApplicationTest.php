@@ -188,7 +188,6 @@ class ApplicationTest extends TestCase
         return [
             'route'         => ['RouteListener'        , MvcEvent::EVENT_ROUTE     , 'onRoute',      false],
             'dispatch'      => ['DispatchListener'     , MvcEvent::EVENT_DISPATCH  , 'onDispatch',   false],
-            'middleware'    => ['MiddlewareListener'   , MvcEvent::EVENT_DISPATCH  , 'onDispatch',   false],
             'send_response' => ['SendResponseListener' , MvcEvent::EVENT_FINISH    , 'sendResponse', false],
             'view_manager'  => ['ViewManager'          , MvcEvent::EVENT_BOOTSTRAP , 'onBootstrap',  false],
             'http_method'   => ['HttpMethodListener'   , MvcEvent::EVENT_ROUTE     , 'onRoute',      false],
