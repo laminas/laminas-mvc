@@ -110,17 +110,6 @@ class ApplicationTest extends TestCase
         );
     }
 
-    public function testEventsAreEmptyAtFirst()
-    {
-        $events = $this->application->getEventManager();
-        $registeredEvents = $this->getEventsFromEventManager($events);
-        $this->assertEquals([], $registeredEvents);
-
-        $sharedEvents = $events->getSharedManager();
-        $this->assertInstanceOf(SharedEventManager::class, $sharedEvents);
-        $this->assertSame([], $this->getIdentifiersFromSharedEventManager($sharedEvents));
-    }
-
     private function getIdentifiersFromSharedEventManager(SharedEventManager $events): array
     {
         $r = new ReflectionProperty($events, 'identifiers');
