@@ -19,6 +19,9 @@
         "sort-packages": true,
         "platform": {
             "php": "7.4.99"
+        },
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
         }
     },
     "extra": {
@@ -35,7 +38,7 @@
         "psr/container": "^1.1 || ^2.0"
     },
     "require-dev": {
-        "laminas/laminas-coding-standard": "^1.0.0",
+        "laminas/laminas-coding-standard": "2.3.0",
         "laminas/laminas-json": "^3.3",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^9.5.5"
