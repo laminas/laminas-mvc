@@ -43,7 +43,7 @@ use function is_string;
  */
 class ViewManager extends AbstractListenerAggregate
 {
-    /** @var object application configuration service */
+    /** @var array application configuration service */
     protected $config;
 
     /** @var MvcEvent */
@@ -52,18 +52,9 @@ class ViewManager extends AbstractListenerAggregate
     /** @var ServiceManager */
     protected $services;
 
-    /**@+
-     * Various properties representing strategies and objects instantiated and
-     * configured by the view manager
-     */
-    protected $helperManager;
-    protected $mvcRenderingStrategy;
-    protected $renderer;
-    protected $rendererStrategy;
-    protected $resolver;
-    protected $view;
-    protected $viewModel;
-    /**@-*/
+    protected ?View $view = null;
+
+    protected ?ModelInterface $viewModel = null;
 
     /**
      * {@inheritDoc}
@@ -75,11 +66,8 @@ class ViewManager extends AbstractListenerAggregate
 
     /**
      * Prepares the view layer
-     *
-     * @param  $event
-     * @return void
      */
-    public function onBootstrap($event)
+    public function onBootstrap(MvcEvent $event): void
     {
         $application  = $event->getApplication();
         $services     = $application->getServiceManager();

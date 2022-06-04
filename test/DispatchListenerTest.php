@@ -25,11 +25,11 @@ class DispatchListenerTest extends TestCase
 {
     use ProphecyTrait;
 
-    public function createMvcEvent($controllerMatched)
+    public function createMvcEvent(string $controllerMatched): MvcEvent
     {
         $response   = new Response();
         $routeMatch = $this->prophesize(RouteMatch::class);
-        $routeMatch->getParam('controller', 'not-found')->willReturn('path');
+        $routeMatch->getParam('controller', 'not-found')->willReturn($controllerMatched);
 
         $eventManager = new EventManager();
 
@@ -46,7 +46,7 @@ class DispatchListenerTest extends TestCase
         return $event;
     }
 
-    public function testControllerManagerUsingAbstractFactory()
+    public function testControllerManagerUsingAbstractFactory(): void
     {
         $controllerManager = new ControllerManager(new ServiceManager(), [
             'abstract_factories' => [
@@ -69,7 +69,7 @@ class DispatchListenerTest extends TestCase
         $this->assertSame(200, $return->getStatusCode());
     }
 
-    public function testUnlocatableControllerViaAbstractFactory()
+    public function testUnlocatableControllerViaAbstractFactory(): void
     {
         $controllerManager = new ControllerManager(new ServiceManager(), [
             'abstract_factories' => [
@@ -95,7 +95,7 @@ class DispatchListenerTest extends TestCase
      * @dataProvider alreadySetMvcEventResultProvider
      * @param mixed $alreadySetResult
      */
-    public function testWillNotDispatchWhenAnMvcEventResultIsAlreadySet($alreadySetResult)
+    public function testWillNotDispatchWhenAnMvcEventResultIsAlreadySet($alreadySetResult): void
     {
         $event = $this->createMvcEvent('path');
 
@@ -119,7 +119,7 @@ class DispatchListenerTest extends TestCase
     /**
      * @return mixed[][]
      */
-    public function alreadySetMvcEventResultProvider()
+    public function alreadySetMvcEventResultProvider(): array
     {
         return [
             [123],

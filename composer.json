@@ -28,6 +28,7 @@
     },
     "require": {
         "php": "^7.4 || ~8.0.0 || ~8.1.0",
+        "ext-json": "*",
         "container-interop/container-interop": "^1.2",
         "laminas/laminas-eventmanager": "^3.4",
         "laminas/laminas-http": "^2.15",

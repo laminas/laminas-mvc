@@ -15,7 +15,7 @@ class InabilityToRetrieveControllerShouldTriggerExceptionTest extends TestCase
     /**
      * @group error-handling
      */
-    public function testInabilityToRetrieveControllerShouldTriggerExceptionError()
+    public function testInabilityToRetrieveControllerShouldTriggerExceptionError(): void
     {
         $application = $this->prepareApplication();
 

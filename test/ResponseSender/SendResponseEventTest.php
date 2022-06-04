@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class SendResponseEventTest extends TestCase
 {
-    public function testContentSentAndHeadersSent()
+    public function testContentSentAndHeadersSent(): void
     {
         $mockResponse  = $this->getMockForAbstractClass(ResponseInterface::class);
         $mockResponse2 = $this->getMockForAbstractClass(ResponseInterface::class);

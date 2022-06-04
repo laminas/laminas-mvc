@@ -30,7 +30,7 @@ class ViewHelperManagerFactoryTest extends TestCase
     /**
      * @return array
      */
-    public function emptyConfiguration()
+    public function emptyConfiguration(): array
     {
         return [
             'no-config'                => [[]],
@@ -41,10 +41,8 @@ class ViewHelperManagerFactoryTest extends TestCase
 
     /**
      * @dataProvider emptyConfiguration
-     * @param  array $config
-     * @return void
      */
-    public function testDoctypeFactoryDoesNotRaiseErrorOnMissingConfiguration($config)
+    public function testDoctypeFactoryDoesNotRaiseErrorOnMissingConfiguration(array $config): void
     {
         $this->services->setService('config', $config);
         $manager = $this->factory->__invoke($this->services, 'doctype');
@@ -53,7 +51,7 @@ class ViewHelperManagerFactoryTest extends TestCase
         $this->assertInstanceof(Helper\Doctype::class, $doctype);
     }
 
-    public function urlHelperNames()
+    public function urlHelperNames(): array
     {
         return [
             ['url'],
@@ -64,10 +62,9 @@ class ViewHelperManagerFactoryTest extends TestCase
     }
 
     /**
-     * @group 71
      * @dataProvider urlHelperNames
      */
-    public function testUrlHelperFactoryCanBeInvokedViaShortNameOrFullClassName($name)
+    public function testUrlHelperFactoryCanBeInvokedViaShortNameOrFullClassName(string $name): void
     {
         $this->markTestSkipped(sprintf(
             '%s::%s skipped until laminas-view and the url() view helper are updated to use laminas-router',
@@ -96,7 +93,7 @@ class ViewHelperManagerFactoryTest extends TestCase
         $this->assertAttributeSame($router, 'router', $helper, 'Router was not injected');
     }
 
-    public function basePathConfiguration()
+    public function basePathConfiguration(): iterable
     {
         $names = ['basepath', 'basePath', 'BasePath', Helper\BasePath::class, 'laminasviewhelperbasepath'];
 
@@ -134,11 +131,13 @@ class ViewHelperManagerFactoryTest extends TestCase
     }
 
     /**
-     * @group 71
      * @dataProvider basePathConfiguration
      */
-    public function testBasePathHelperFactoryCanBeInvokedViaShortNameOrFullClassName($name, array $services, $expected)
-    {
+    public function testBasePathHelperFactoryCanBeInvokedViaShortNameOrFullClassName(
+        string $name,
+        array $services,
+        ?string $expected
+    ): void {
         foreach ($services as $key => $value) {
             if (is_callable($value)) {
                 $this->services->setFactory($key, $value);
@@ -154,7 +153,7 @@ class ViewHelperManagerFactoryTest extends TestCase
         $this->assertEquals($expected, $helper());
     }
 
-    public function doctypeHelperNames()
+    public function doctypeHelperNames(): array
     {
         return [
             ['doctype'],
@@ -168,7 +167,7 @@ class ViewHelperManagerFactoryTest extends TestCase
      * @group 71
      * @dataProvider doctypeHelperNames
      */
-    public function testDoctypeHelperFactoryCanBeInvokedViaShortNameOrFullClassName($name)
+    public function testDoctypeHelperFactoryCanBeInvokedViaShortNameOrFullClassName(string $name): void
     {
         $this->services->setService('config', [
             'view_manager' => [

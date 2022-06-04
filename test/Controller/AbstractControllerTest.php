@@ -30,7 +30,7 @@ class AbstractControllerTest extends TestCase
         $this->controller = new AbstractControllerStub();
     }
 
-    public function testSetEventManagerWithDefaultIdentifiers()
+    public function testSetEventManagerWithDefaultIdentifiers(): void
     {
         /** @var EventManagerInterface|MockObject $eventManager */
         $eventManager = $this->createMock(EventManagerInterface::class);
@@ -43,7 +43,7 @@ class AbstractControllerTest extends TestCase
         $this->controller->setEventManager($eventManager);
     }
 
-    public function testSetEventManagerWithCustomStringIdentifier()
+    public function testSetEventManagerWithCustomStringIdentifier(): void
     {
         /** @var EventManagerInterface|MockObject $eventManager */
         $eventManager = $this->createMock(EventManagerInterface::class);
@@ -59,7 +59,7 @@ class AbstractControllerTest extends TestCase
         $this->controller->setEventManager($eventManager);
     }
 
-    public function testSetEventManagerWithMultipleCustomStringIdentifier()
+    public function testSetEventManagerWithMultipleCustomStringIdentifier(): void
     {
         /** @var EventManagerInterface|MockObject $eventManager */
         $eventManager = $this->createMock(EventManagerInterface::class);
@@ -77,7 +77,7 @@ class AbstractControllerTest extends TestCase
         $this->controller->setEventManager($eventManager);
     }
 
-    public function testSetEventManagerWithDefaultIdentifiersIncludesImplementedInterfaces()
+    public function testSetEventManagerWithDefaultIdentifiersIncludesImplementedInterfaces(): void
     {
         /** @var EventManagerInterface|MockObject $eventManager */
         $eventManager = $this->createMock(EventManagerInterface::class);
@@ -94,7 +94,7 @@ class AbstractControllerTest extends TestCase
         $this->controller->setEventManager($eventManager);
     }
 
-    public function testSetEventManagerWithDefaultIdentifiersIncludesExtendingClassNameAndNamespace()
+    public function testSetEventManagerWithDefaultIdentifiersIncludesExtendingClassNameAndNamespace(): void
     {
         /** @var EventManagerInterface|MockObject $eventManager */
         $eventManager = $this->createMock(EventManagerInterface::class);

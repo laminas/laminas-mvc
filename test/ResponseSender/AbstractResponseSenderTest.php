@@ -13,21 +13,27 @@ use PHPUnit\Framework\TestCase;
 use function array_diff;
 use function array_shift;
 use function count;
-use function function_exists;
+use function in_array;
 use function phpversion;
 use function version_compare;
 use function xdebug_get_headers;
+use function xdebug_info;
 
 class AbstractResponseSenderTest extends TestCase
 {
     /**
      * @runInSeparateProcess
+     * @requires extension xdebug
      */
-    public function testSendHeadersTwoTimesSendsOnlyOnce()
+    public function testSendHeadersTwoTimesSendsOnlyOnce(): void
     {
-        if (! function_exists('xdebug_get_headers')) {
-            $this->markTestSkipped('Xdebug extension needed, skipped test');
+        if (
+            version_compare(phpversion('xdebug'), '3.1.0', '>=')
+            && ! in_array('develop', xdebug_info('mode'), true)
+        ) {
+            $this->markTestSkipped('Xdebug develop mode needed, skipped test');
         }
+
         $headers  = [
             'Content-Length: 2000',
             'Transfer-Encoding: chunked',
@@ -36,14 +42,11 @@ class AbstractResponseSenderTest extends TestCase
         $response->getHeaders()->addHeaders($headers);
 
         $mockSendResponseEvent = $this->getMockBuilder(SendResponseEvent::class)
-            ->setMethods(['getResponse'])
+            ->onlyMethods(['getResponse'])
             ->getMock();
 
-        $mockSendResponseEvent->expects(
-            $this->any()
-        )
-                ->method('getResponse')
-                ->will($this->returnValue($response));
+        $mockSendResponseEvent->method('getResponse')
+            ->willReturn($response);
 
         $responseSender = $this->getMockForAbstractClass(AbstractResponseSender::class);
         $responseSender->sendHeaders($mockSendResponseEvent);
@@ -54,7 +57,7 @@ class AbstractResponseSenderTest extends TestCase
         if (count($diff)) {
             $header = array_shift($diff);
             $this->assertContains('XDEBUG_SESSION', $header);
-            $this->assertEquals(0, count($diff));
+            $this->assertCount(0, $diff);
         }
 
         $expected = [];
@@ -68,11 +71,15 @@ class AbstractResponseSenderTest extends TestCase
 
     /**
      * @runInSeparateProcess
+     * @requires extension xdebug
      */
     public function testSendHeadersSendsStatusLast()
     {
-        if (! function_exists('xdebug_get_headers')) {
-            $this->markTestSkipped('Xdebug extension needed, skipped test');
+        if (
+            version_compare(phpversion('xdebug'), '3.1.0', '>=')
+            && ! in_array('develop', xdebug_info('mode'), true)
+        ) {
+            $this->markTestSkipped('Xdebug develop mode needed, skipped test');
         }
 
         $mockResponse = $this->createMock(Response::class);

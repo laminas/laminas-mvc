@@ -15,7 +15,7 @@ class ViewFeedStrategyFactoryTest extends TestCase
 {
     use ProphecyTrait;
 
-    private function createContainer()
+    private function createContainer(): ContainerInterface
     {
         $renderer  = $this->prophesize(FeedRenderer::class);
         $container = $this->prophesize(ContainerInterface::class);
@@ -25,7 +25,7 @@ class ViewFeedStrategyFactoryTest extends TestCase
         return $container->reveal();
     }
 
-    public function testReturnsFeedStrategy()
+    public function testReturnsFeedStrategy(): void
     {
         $factory = new ViewFeedStrategyFactory();
         $result  = $factory($this->createContainer(), 'ViewFeedStrategy');

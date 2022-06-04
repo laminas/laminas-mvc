@@ -121,7 +121,7 @@ class InjectTemplateListener extends AbstractListenerAggregate
             if (
                 // Allow disabling rule by setting value to false since config
                 // merging have no feature to remove entries
-                false == $replacement
+                false === $replacement
                 // Match full class or full namespace
                 || ! ($controller === $namespace || strpos($controller, $namespace . '\\') === 0)
             ) {
@@ -188,7 +188,7 @@ class InjectTemplateListener extends AbstractListenerAggregate
 
         if (
             (10 < strlen($controller))
-            && ('Controller' == substr($controller, -10))
+            && ('Controller' === substr($controller, -10))
         ) {
             $controller = substr($controller, 0, -10);
         }

@@ -6,6 +6,7 @@ namespace LaminasTest\Mvc\Application;
 
 use Laminas\Http\PhpEnvironment\Request;
 use Laminas\Http\PhpEnvironment\Response;
+use Laminas\Mvc\Application;
 use Laminas\Mvc\ConfigProvider;
 use Laminas\Mvc\Controller\ControllerManager;
 use Laminas\Router;
@@ -15,7 +16,7 @@ use LaminasTest\Mvc\TestAsset;
 
 trait PathControllerTrait
 {
-    public function prepareApplication()
+    public function prepareApplication(): Application
     {
         $config = [
             'router' => [

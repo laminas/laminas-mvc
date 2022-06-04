@@ -167,7 +167,7 @@ class RouteNotFoundStrategy extends AbstractListenerAggregate
         }
 
         $response = $e->getResponse();
-        if ($response->getStatusCode() != 404) {
+        if ($response->getStatusCode() !== 404) {
             // Only handle 404 responses
             return;
         }

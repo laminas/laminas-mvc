@@ -43,11 +43,11 @@ class Application implements
     ApplicationInterface,
     EventManagerAwareInterface
 {
-    const ERROR_CONTROLLER_CANNOT_DISPATCH = 'error-controller-cannot-dispatch';
-    const ERROR_CONTROLLER_NOT_FOUND       = 'error-controller-not-found';
-    const ERROR_CONTROLLER_INVALID         = 'error-controller-invalid';
-    const ERROR_EXCEPTION                  = 'error-exception';
-    const ERROR_ROUTER_NO_MATCH            = 'error-router-no-match';
+    public const ERROR_CONTROLLER_CANNOT_DISPATCH = 'error-controller-cannot-dispatch';
+    public const ERROR_CONTROLLER_NOT_FOUND       = 'error-controller-not-found';
+    public const ERROR_CONTROLLER_INVALID         = 'error-controller-invalid';
+    public const ERROR_EXCEPTION                  = 'error-exception';
+    public const ERROR_ROUTER_NO_MATCH            = 'error-router-no-match';
 
     /**
      * Default application event listeners

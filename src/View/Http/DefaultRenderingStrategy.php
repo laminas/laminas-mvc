@@ -26,11 +26,6 @@ class DefaultRenderingStrategy extends AbstractListenerAggregate
     /** @var View */
     protected $view;
 
-    /**
-     * Set view
-     *
-     * @return DefaultRenderingStrategy
-     */
     public function __construct(View $view)
     {
         $this->view = $view;

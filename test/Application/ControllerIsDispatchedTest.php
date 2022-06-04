@@ -11,7 +11,7 @@ class ControllerIsDispatchedTest extends TestCase
 {
     use PathControllerTrait;
 
-    public function testControllerIsDispatchedDuringRun()
+    public function testControllerIsDispatchedDuringRun(): void
     {
         $application = $this->prepareApplication();
 

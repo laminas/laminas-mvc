@@ -14,7 +14,7 @@ class ExceptionsRaisedInDispatchableShouldRaiseDispatchErrorEventTest extends Te
     /**
      * @group error-handling
      */
-    public function testExceptionsRaisedInDispatchableShouldRaiseDispatchErrorEvent()
+    public function testExceptionsRaisedInDispatchableShouldRaiseDispatchErrorEvent(): void
     {
         $application = $this->prepareApplication();
 

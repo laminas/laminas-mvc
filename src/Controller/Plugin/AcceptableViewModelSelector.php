@@ -28,7 +28,7 @@ class AcceptableViewModelSelector extends AbstractPlugin
     /**
      * @var string the Key to inject the name of a viewmodel with in an Accept Header
      */
-    const INJECT_VIEWMODEL_NAME = '_internalViewModel';
+    public const INJECT_VIEWMODEL_NAME = '_internalViewModel';
 
     /** @var MvcEvent */
     protected $event;
@@ -52,7 +52,7 @@ class AcceptableViewModelSelector extends AbstractPlugin
      * @param array $matchAgainst (optional) The Array to match against
      * @param bool $returnDefault (optional) If no match is available. Return default instead
      * @param AbstractFieldValuePart|null $resultReference (optional) The object that was matched
-     * @throws InvalidArgumentException If the supplied and matched View Model could not be found
+     * @throws InvalidArgumentException If the supplied and matched View Model could not be found.
      * @return ModelInterface|null
      */
     public function __invoke(
@@ -69,7 +69,7 @@ class AcceptableViewModelSelector extends AbstractPlugin
      * @param array $matchAgainst (optional) The Array to match against
      * @param bool $returnDefault (optional) If no match is available. Return default instead
      * @param AbstractFieldValuePart|null $resultReference (optional) The object that was matched
-     * @throws InvalidArgumentException If the supplied and matched View Model could not be found
+     * @throws InvalidArgumentException If the supplied and matched View Model could not be found.
      * @return ModelInterface|null
      */
     public function getViewModel(
@@ -224,7 +224,7 @@ class AcceptableViewModelSelector extends AbstractPlugin
      * Get the request
      *
      * @return Request
-     * @throws DomainException if unable to find request
+     * @throws DomainException If unable to find request.
      */
     protected function getRequest()
     {
@@ -248,7 +248,7 @@ class AcceptableViewModelSelector extends AbstractPlugin
      * Get the event
      *
      * @return MvcEvent
-     * @throws DomainException if unable to find event
+     * @throws DomainException If unable to find event.
      */
     protected function getEvent()
     {

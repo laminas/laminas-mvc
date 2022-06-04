@@ -46,7 +46,7 @@ class RedirectTest extends TestCase
         $this->plugin = $this->controller->plugin('redirect');
     }
 
-    public function testPluginCanRedirectToRouteWhenProperlyConfigured()
+    public function testPluginCanRedirectToRouteWhenProperlyConfigured(): void
     {
         $response = $this->plugin->toRoute('home');
         $this->assertTrue($response->isRedirect());
@@ -55,7 +55,7 @@ class RedirectTest extends TestCase
         $this->assertEquals('/', $location->getFieldValue());
     }
 
-    public function testPluginCanRedirectToUrlWhenProperlyConfigured()
+    public function testPluginCanRedirectToUrlWhenProperlyConfigured(): void
     {
         $response = $this->plugin->toUrl('/foo');
         $this->assertTrue($response->isRedirect());
@@ -64,7 +64,7 @@ class RedirectTest extends TestCase
         $this->assertEquals('/foo', $location->getFieldValue());
     }
 
-    public function testPluginWithoutControllerRaisesDomainException()
+    public function testPluginWithoutControllerRaisesDomainException(): void
     {
         $plugin = new RedirectPlugin();
         $this->expectException(DomainException::class);
@@ -72,7 +72,7 @@ class RedirectTest extends TestCase
         $plugin->toRoute('home');
     }
 
-    public function testPluginWithoutControllerEventRaisesDomainException()
+    public function testPluginWithoutControllerEventRaisesDomainException(): void
     {
         $controller = new SampleController();
         $plugin     = $controller->plugin('redirect');
@@ -81,7 +81,7 @@ class RedirectTest extends TestCase
         $plugin->toRoute('home');
     }
 
-    public function testPluginWithoutResponseInEventRaisesDomainException()
+    public function testPluginWithoutResponseInEventRaisesDomainException(): void
     {
         $controller = new SampleController();
         $event      = new MvcEvent();
@@ -92,7 +92,7 @@ class RedirectTest extends TestCase
         $plugin->toRoute('home');
     }
 
-    public function testRedirectToRouteWithoutRouterInEventRaisesDomainException()
+    public function testRedirectToRouteWithoutRouterInEventRaisesDomainException(): void
     {
         $controller = new SampleController();
         $event      = new MvcEvent();
@@ -104,14 +104,14 @@ class RedirectTest extends TestCase
         $plugin->toRoute('home');
     }
 
-    public function testPluginWithoutRouteMatchesInEventRaisesExceptionWhenNoRouteProvided()
+    public function testPluginWithoutRouteMatchesInEventRaisesExceptionWhenNoRouteProvided(): void
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('RouteMatch');
         $url = $this->plugin->toRoute();
     }
 
-    public function testPassingNoArgumentsWithValidRouteMatchGeneratesUrl()
+    public function testPassingNoArgumentsWithValidRouteMatchGeneratesUrl(): void
     {
         $routeMatch = new RouteMatch([]);
         $routeMatch->setMatchedRouteName('home');
@@ -122,7 +122,7 @@ class RedirectTest extends TestCase
         $this->assertEquals('/', $location->getFieldValue());
     }
 
-    public function testCanReuseMatchedParameters()
+    public function testCanReuseMatchedParameters(): void
     {
         $this->router->addRoute('replace', SegmentRoute::factory([
             'route'    => '/:controller/:action',
@@ -141,7 +141,7 @@ class RedirectTest extends TestCase
         $this->assertEquals('/foo/bar', $location->getFieldValue());
     }
 
-    public function testCanPassBooleanValueForThirdArgumentToAllowReusingRouteMatches()
+    public function testCanPassBooleanValueForThirdArgumentToAllowReusingRouteMatches(): void
     {
         $this->router->addRoute('replace', SegmentRoute::factory([
             'route'    => '/:controller/:action',
@@ -160,7 +160,7 @@ class RedirectTest extends TestCase
         $this->assertEquals('/foo/bar', $location->getFieldValue());
     }
 
-    public function testPluginCanRefreshToRouteWhenProperlyConfigured()
+    public function testPluginCanRefreshToRouteWhenProperlyConfigured(): void
     {
         $this->event->setRouteMatch($this->routeMatch);
         $response = $this->plugin->refresh();
@@ -170,7 +170,7 @@ class RedirectTest extends TestCase
         $this->assertEquals('/', $location->getFieldValue());
     }
 
-    public function testPluginCanRedirectToRouteWithNullWhenProperlyConfigured()
+    public function testPluginCanRedirectToRouteWithNullWhenProperlyConfigured(): void
     {
         $this->event->setRouteMatch($this->routeMatch);
         $response = $this->plugin->toRoute();

@@ -27,7 +27,7 @@ class HttpMethodListenerFactoryTest extends TestCase
         $this->serviceLocator->willImplement(ContainerInterface::class);
     }
 
-    public function testCreateWithDefaults()
+    public function testCreateWithDefaults(): void
     {
         $factory  = new HttpMethodListenerFactory();
         $listener = $factory($this->serviceLocator->reveal(), 'HttpMethodListener');
@@ -35,7 +35,7 @@ class HttpMethodListenerFactoryTest extends TestCase
         $this->assertNotEmpty($listener->getAllowedMethods());
     }
 
-    public function testCreateWithConfig()
+    public function testCreateWithConfig(): void
     {
         $config['http_methods_listener'] = [
             'enabled'         => false,

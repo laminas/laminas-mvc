@@ -10,34 +10,30 @@ use Laminas\Mvc\MvcEvent;
 
 class StubBootstrapListener implements ListenerAggregateInterface
 {
-    protected $listeners = [];
+    protected array $listeners = [];
 
     /**
-     * @see \Laminas\EventManager\ListenerAggregateInterface::attach()
+     * @param int $priority
      */
-    public function attach(EventManagerInterface $events, $priority = 1)
+    public function attach(EventManagerInterface $events, $priority = 1): void
     {
         $this->listeners[] = $events->attach(MvcEvent::EVENT_BOOTSTRAP, [$this, 'onBootstrap']);
     }
 
-    /**
-     * @see \Laminas\EventManager\ListenerAggregateInterface::detach()
-     */
-    public function detach(EventManagerInterface $events)
+    public function detach(EventManagerInterface $events): void
     {
         foreach ($this->listeners as $index => $listener) {
-            if ($events->detach($listener)) {
-                unset($this->listeners[$index]);
-            }
+            $events->detach($listener);
+            unset($this->listeners[$index]);
         }
     }
 
-    public function getListeners()
+    public function getListeners(): array
     {
         return $this->listeners;
     }
 
-    public function onBootstrap($e)
+    public function onBootstrap(): void
     {
     }
 }

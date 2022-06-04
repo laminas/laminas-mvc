@@ -12,11 +12,14 @@ use function class_exists;
 
 class ControllerLoaderAbstractFactory implements AbstractFactoryInterface
 {
-    protected $classmap = [
+    protected array $classmap = [
         'path' => PathController::class,
     ];
 
-    public function canCreate(ContainerInterface $container, $name)
+    /**
+     * @param string $name
+     */
+    public function canCreate(ContainerInterface $container, $name): bool
     {
         if (! isset($this->classmap[$name])) {
             return false;
@@ -26,7 +29,10 @@ class ControllerLoaderAbstractFactory implements AbstractFactoryInterface
         return class_exists($classname);
     }
 
-    public function __invoke(ContainerInterface $container, $name, ?array $options = null)
+    /**
+     * @param string $name
+     */
+    public function __invoke(ContainerInterface $container, $name, ?array $options = null): object
     {
         $classname = $this->classmap[$name];
         return new $classname();

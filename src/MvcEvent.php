@@ -14,18 +14,18 @@ use Laminas\View\Model\ViewModel;
 
 class MvcEvent extends Event
 {
-    /**#@+
+    /**
      * Mvc events triggered by eventmanager
      */
-    const EVENT_BOOTSTRAP      = 'bootstrap';
-    const EVENT_DISPATCH       = 'dispatch';
-    const EVENT_DISPATCH_ERROR = 'dispatch.error';
-    const EVENT_FINISH         = 'finish';
-    const EVENT_RENDER         = 'render';
-    const EVENT_RENDER_ERROR   = 'render.error';
-    const EVENT_ROUTE          = 'route';
-    /**#@-*/
+    public const EVENT_BOOTSTRAP      = 'bootstrap';
+    public const EVENT_DISPATCH       = 'dispatch';
+    public const EVENT_DISPATCH_ERROR = 'dispatch.error';
+    public const EVENT_FINISH         = 'finish';
+    public const EVENT_RENDER         = 'render';
+    public const EVENT_RENDER_ERROR   = 'render.error';
+    public const EVENT_ROUTE          = 'route';
 
+    /** @var ApplicationInterface */
     protected $application;
 
     /** @var Request */

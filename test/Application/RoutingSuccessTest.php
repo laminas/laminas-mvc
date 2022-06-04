@@ -12,7 +12,7 @@ class RoutingSuccessTest extends TestCase
 {
     use PathControllerTrait;
 
-    public function testRoutingIsExcecutedDuringRun()
+    public function testRoutingIsExcecutedDuringRun(): void
     {
         $application = $this->prepareApplication();
 

@@ -9,12 +9,20 @@ use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 
 class UnlocatableControllerLoaderAbstractFactory implements AbstractFactoryInterface
 {
-    public function canCreate(ContainerInterface $container, $name)
+    /**
+     * @param string $name
+     */
+    public function canCreate(ContainerInterface $container, $name): bool
     {
         return false;
     }
 
+    /**
+     * @param string $name
+     * @return mixed
+     */
     public function __invoke(ContainerInterface $container, $name, ?array $options = null)
     {
+        return null;
     }
 }

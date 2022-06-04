@@ -10,6 +10,8 @@ class Dispatchable extends AbstractActionController
 {
     /**
      * Override, so we can test injection
+     *
+     * @return mixed
      */
     public function getEventManager()
     {

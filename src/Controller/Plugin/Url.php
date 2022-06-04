@@ -70,7 +70,7 @@ class Url extends AbstractPlugin
             );
         }
 
-        if (3 == func_num_args() && is_bool($options)) {
+        if (3 === func_num_args() && is_bool($options)) {
             $reuseMatchedParams = $options;
             $options            = [];
         }

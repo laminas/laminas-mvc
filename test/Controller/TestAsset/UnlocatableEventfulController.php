@@ -12,14 +12,14 @@ use Laminas\Stdlib\ResponseInterface as Response;
 
 class UnlocatableEventfulController implements DispatchableInterface, InjectApplicationEventInterface
 {
-    protected $event;
+    protected ?Event $event = null;
 
     public function setEvent(Event $event)
     {
         $this->event = $event;
     }
 
-    public function getEvent()
+    public function getEvent(): ?Event
     {
         return $this->event;
     }

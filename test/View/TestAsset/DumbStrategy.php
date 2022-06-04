@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace LaminasTest\Mvc\View\TestAsset;
 
+use ArrayAccess;
 use ArrayObject;
+use Laminas\View\Model\ModelInterface;
 use Laminas\View\Model\ModelInterface as Model;
 use Laminas\View\Renderer\RendererInterface as Renderer;
 use Laminas\View\Resolver\ResolverInterface as Resolver;
@@ -14,23 +16,25 @@ use function array_merge;
 use function json_encode;
 use function sprintf;
 
-/**
- * Mock renderer
- */
 class DumbStrategy implements Renderer
 {
-    protected $resolver;
+    protected ?Resolver $resolver = null;
 
-    public function getEngine()
+    public function getEngine(): self
     {
         return $this;
     }
 
-    public function setResolver(Resolver $resolver)
+    public function setResolver(Resolver $resolver): void
     {
         $this->resolver = $resolver;
     }
 
+    /**
+     * @param  string|ModelInterface $nameOrModel
+     * @param  null|array|ArrayAccess $values
+     * @return string
+     */
     public function render($nameOrModel, $values = null)
     {
         $options = [];

@@ -21,7 +21,7 @@ class SendResponseListenerFactoryTest extends TestCase
 {
     use ProphecyTrait;
 
-    public function testFactoryReturnsListenerWithEventManagerFromContainer()
+    public function testFactoryReturnsListenerWithEventManagerFromContainer(): void
     {
         $sharedEvents = $this->prophesize(SharedEventManagerInterface::class);
         $events       = $this->prophesize(EventManagerInterface::class);

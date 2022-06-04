@@ -14,7 +14,7 @@ use function array_values;
 
 class SendResponseListenerTest extends TestCase
 {
-    public function testEventManagerIdentifiers()
+    public function testEventManagerIdentifiers(): void
     {
         $listener    = new SendResponseListener();
         $identifiers = $listener->getEventManager()->getIdentifiers();
@@ -22,7 +22,7 @@ class SendResponseListenerTest extends TestCase
         $this->assertEquals($expected, array_values($identifiers));
     }
 
-    public function testSendResponseTriggersSendResponseEvent()
+    public function testSendResponseTriggersSendResponseEvent(): void
     {
         $listener = new SendResponseListener();
         $result   = [];
@@ -32,9 +32,9 @@ class SendResponseListenerTest extends TestCase
         }, 10000);
         $mockResponse = $this->getMockForAbstractClass(ResponseInterface::class);
         $mockMvcEvent = $this->getMockBuilder(MvcEvent::class)
-            ->setMethods(['getResponse'])
+            ->onlyMethods(['getResponse'])
             ->getMock();
-        $mockMvcEvent->expects($this->any())->method('getResponse')->will($this->returnValue($mockResponse));
+        $mockMvcEvent->expects($this->any())->method('getResponse')->willReturn($mockResponse);
         $listener->sendResponse($mockMvcEvent);
         $expected = [
             'target'   => $listener,

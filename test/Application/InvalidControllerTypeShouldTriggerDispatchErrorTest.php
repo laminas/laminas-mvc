@@ -15,7 +15,7 @@ class InvalidControllerTypeShouldTriggerDispatchErrorTest extends TestCase
     /**
      * @group error-handling
      */
-    public function testInvalidControllerTypeShouldTriggerDispatchError()
+    public function testInvalidControllerTypeShouldTriggerDispatchError(): void
     {
         $application = $this->prepareApplication();
 

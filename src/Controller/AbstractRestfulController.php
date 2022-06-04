@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Laminas\Mvc\Controller;
 
+use JsonException;
 use Laminas\Http\Header\ContentType;
 use Laminas\Http\Request as HttpRequest;
-use Laminas\Json\Json;
 use Laminas\Mvc\Exception;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Router\RouteMatch;
@@ -15,11 +15,8 @@ use Laminas\Stdlib\ResponseInterface as Response;
 
 use function array_key_exists;
 use function array_shift;
-use function call_user_func;
-use function class_exists;
 use function count;
 use function explode;
-use function function_exists;
 use function get_class;
 use function gettype;
 use function is_array;
@@ -35,20 +32,21 @@ use function strpos;
 use function strtolower;
 use function trim;
 
+use const JSON_THROW_ON_ERROR;
+
 /**
  * Abstract RESTful controller
  */
 abstract class AbstractRestfulController extends AbstractController
 {
-    const CONTENT_TYPE_JSON = 'json';
+    public const CONTENT_TYPE_JSON = 'json';
 
     /**
      * {@inheritDoc}
      */
     protected $eventIdentifier = self::class;
 
-    /** @var array */
-    protected $contentTypes = [
+    protected array $contentTypes = [
         self::CONTENT_TYPE_JSON => [
             'application/hal+json',
             'application/json',
@@ -143,9 +141,7 @@ abstract class AbstractRestfulController extends AbstractController
     /**
      * Delete the entire resource collection
      *
-     * Not marked as abstract, as that would introduce a BC break
-     * (introduced in 2.1.0); instead, raises an exception if not implemented.
-     *
+     * @param mixed $data
      * @return mixed
      */
     public function deleteList($data)
@@ -230,9 +226,9 @@ abstract class AbstractRestfulController extends AbstractController
      * Not marked as abstract, as that would introduce a BC break
      * (introduced in 2.1.0); instead, raises an exception if not implemented.
      *
-     * @param  $id
-     * @param  $data
-     * @return array
+     * @param mixed $id
+     * @param mixed $data
+     * @return mixed
      */
     public function patch($id, $data)
     {
@@ -334,7 +330,7 @@ abstract class AbstractRestfulController extends AbstractController
      *
      * @todo   try-catch in "patch" for patchList should be removed in the future
      * @return mixed
-     * @throws Exception\DomainException if no route matches in event or invalid HTTP method
+     * @throws Exception\DomainException If no route matches in event or invalid HTTP method.
      */
     public function onDispatch(MvcEvent $e)
     {
@@ -369,7 +365,7 @@ abstract class AbstractRestfulController extends AbstractController
             case isset($this->customHttpMethodsMap[$method]):
                 $callable = $this->customHttpMethodsMap[$method];
                 $action   = $method;
-                $return   = call_user_func($callable, $e);
+                $return   = $callable($e);
                 break;
             // DELETE
             case 'delete':
@@ -609,7 +605,7 @@ abstract class AbstractRestfulController extends AbstractController
         // If parse_str fails to decode, or we have a single element with empty value
         if (
             ! is_array($parsedParams) || empty($parsedParams)
-            || (1 == count($parsedParams) && '' === reset($parsedParams))
+            || (1 === count($parsedParams) && '' === reset($parsedParams))
         ) {
             return $content;
         }
@@ -627,24 +623,12 @@ abstract class AbstractRestfulController extends AbstractController
      *
      * Marked protected to allow usage from extending classes.
      *
-     * @param string
      * @return mixed
-     * @throws Exception\DomainException if no JSON decoding functionality is
-     *     available.
+     * @throws JsonException
      */
-    protected function jsonDecode($string)
+    protected function jsonDecode(string $string)
     {
-        if (function_exists('json_decode')) {
-            return json_decode($string, (bool) $this->jsonDecodeType);
-        }
-
-        if (class_exists(Json::class)) {
-            return Json::decode($string, (int) $this->jsonDecodeType);
-        }
-
-        throw new Exception\DomainException(sprintf(
-            'Unable to parse JSON request, due to missing ext/json and/or %s',
-            Json::class
-        ));
+        // @TODO Drop as ext-json is included by default in 7.4 and can't be disabled in 8.0
+        return json_decode($string, $this->jsonDecodeType, 512, JSON_THROW_ON_ERROR);
     }
 }

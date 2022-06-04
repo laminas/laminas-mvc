@@ -10,12 +10,15 @@ use Laminas\Mvc\MvcEvent;
 
 class MockViewManager extends AbstractListenerAggregate
 {
-    public function attach(EventManagerInterface $events, $priority = 1)
+    /**
+     * @param int $priority
+     */
+    public function attach(EventManagerInterface $events, $priority = 1): void
     {
         $this->listeners[] = $events->attach(MvcEvent::EVENT_BOOTSTRAP, [$this, 'onBootstrap'], 10000);
     }
 
-    public function onBootstrap($e)
+    public function onBootstrap(): void
     {
     }
 }

@@ -12,7 +12,7 @@ class AllowsReturningEarlyFromRoutingTest extends TestCase
 {
     use PathControllerTrait;
 
-    public function testAllowsReturningEarlyFromRouting()
+    public function testAllowsReturningEarlyFromRouting(): void
     {
         $application = $this->prepareApplication();
 

@@ -24,15 +24,21 @@ use PHPUnit\Framework\TestCase;
 use function json_encode;
 use function sprintf;
 
-class DefaultRendereringStrategyTest extends TestCase
+class DefaultRenderingStrategyTest extends TestCase
 {
     use EventListenerIntrospectionTrait;
 
+    /** @var MvcEvent */
     protected $event;
+    /** @var Request */
     protected $request;
+    /** @var Response */
     protected $response;
+    /** @var View */
     protected $view;
+    /** @var PhpRenderer */
     protected $renderer;
+    /** @var DefaultRenderingStrategy */
     protected $strategy;
 
     public function setUp(): void
@@ -49,7 +55,7 @@ class DefaultRendereringStrategyTest extends TestCase
         $this->strategy = new DefaultRenderingStrategy($this->view);
     }
 
-    public function testAttachesRendererAtExpectedPriority()
+    public function testAttachesRendererAtExpectedPriority(): void
     {
         $evm = new EventManager();
         $this->strategy->attach($evm);
@@ -66,7 +72,7 @@ class DefaultRendereringStrategyTest extends TestCase
         }
     }
 
-    public function testCanDetachListenersFromEventManager()
+    public function testCanDetachListenersFromEventManager(): void
     {
         $events = new EventManager();
         $this->strategy->attach($events);
@@ -78,7 +84,7 @@ class DefaultRendereringStrategyTest extends TestCase
         $this->assertCount(0, $listeners);
     }
 
-    public function testWillRenderAlternateStrategyWhenSelected()
+    public function testWillRenderAlternateStrategyWhenSelected(): void
     {
         $renderer = new TestAsset\DumbStrategy();
         $this->view->addRenderingStrategy(function ($e) use ($renderer) {
@@ -94,18 +100,18 @@ class DefaultRendereringStrategyTest extends TestCase
         $expected = sprintf('content (%s): %s', json_encode(['template' => 'content']), json_encode(['foo' => 'bar']));
     }
 
-    public function testLayoutTemplateIsLayoutByDefault()
+    public function testLayoutTemplateIsLayoutByDefault(): void
     {
         $this->assertEquals('layout', $this->strategy->getLayoutTemplate());
     }
 
-    public function testLayoutTemplateIsMutable()
+    public function testLayoutTemplateIsMutable(): void
     {
         $this->strategy->setLayoutTemplate('alternate/layout');
         $this->assertEquals('alternate/layout', $this->strategy->getLayoutTemplate());
     }
 
-    public function testBypassesRenderingIfResultIsAResponse()
+    public function testBypassesRenderingIfResultIsAResponse(): void
     {
         $renderer = new TestAsset\DumbStrategy();
         $this->view->addRenderingStrategy(function ($e) use ($renderer) {
@@ -120,7 +126,7 @@ class DefaultRendereringStrategyTest extends TestCase
         $this->assertSame($this->response, $result);
     }
 
-    public function testTriggersRenderErrorEventInCaseOfRenderingException()
+    public function testTriggersRenderErrorEventInCaseOfRenderingException(): void
     {
         $this->markTestIncomplete('Test is of bad quality and requires rewrite');
         $resolver = new TemplateMapResolver();

@@ -9,7 +9,7 @@ use Laminas\Validator\ValidatorPluginManager;
 
 class ControllerAcceptingWellKnownServicesAsConstructorParameters extends AbstractActionController
 {
-    public $validators;
+    public ValidatorPluginManager $validators;
 
     public function __construct(ValidatorPluginManager $validators)
     {

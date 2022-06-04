@@ -8,7 +8,7 @@ use Laminas\Mvc\Controller\AbstractActionController;
 
 class ControllerWithTypeHintedConstructorParameter extends AbstractActionController
 {
-    public $sample;
+    public SampleInterface $sample;
 
     public function __construct(SampleInterface $sample)
     {

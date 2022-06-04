@@ -29,7 +29,7 @@ class AcceptableViewModelSelectorTest extends TestCase
         $this->plugin = $this->controller->plugin('acceptableViewModelSelector');
     }
 
-    public function testHonorsAcceptPrecedenceAndPriorityWhenInvoked()
+    public function testHonorsAcceptPrecedenceAndPriorityWhenInvoked(): void
     {
         $arr = [
             Model\JsonModel::class => [
@@ -56,7 +56,7 @@ class AcceptableViewModelSelectorTest extends TestCase
         $this->assertNotInstanceOf(Model\JsonModel::class, $result);
     }
 
-    public function testDefaultViewModelName()
+    public function testDefaultViewModelName(): void
     {
         $arr = [
             Model\JsonModel::class => [
@@ -81,7 +81,7 @@ class AcceptableViewModelSelectorTest extends TestCase
         $this->assertInstanceOf(Model\FeedModel::class, $plugin($arr));
     }
 
-    public function testSelectsViewModelBasedOnAcceptHeaderWhenInvokedAsFunctor()
+    public function testSelectsViewModelBasedOnAcceptHeaderWhenInvokedAsFunctor(): void
     {
         $arr = [
             Model\JsonModel::class => [
@@ -103,7 +103,7 @@ class AcceptableViewModelSelectorTest extends TestCase
         $this->assertInstanceOf(Model\FeedModel::class, $result);
     }
 
-    public function testInvokeWithoutDefaultsReturnsNullWhenNoMatchesOccur()
+    public function testInvokeWithoutDefaultsReturnsNullWhenNoMatchesOccur(): void
     {
         $arr = [
             Model\JsonModel::class => [
@@ -124,7 +124,7 @@ class AcceptableViewModelSelectorTest extends TestCase
         $this->assertNull($result);
     }
 
-    public function testInvokeReturnsFieldValuePartOnMatchWhenReferenceProvided()
+    public function testInvokeReturnsFieldValuePartOnMatchWhenReferenceProvided(): void
     {
         $plugin = $this->plugin;
         $header = Accept::fromString('Accept: text/html; version=0.2');
@@ -138,7 +138,7 @@ class AcceptableViewModelSelectorTest extends TestCase
         $this->assertInstanceOf(AcceptFieldValuePart::class, $ref);
     }
 
-    public function testGetViewModelNameWithoutDefaults()
+    public function testGetViewModelNameWithoutDefaults(): void
     {
         $arr = [
             Model\JsonModel::class => [
@@ -164,7 +164,7 @@ class AcceptableViewModelSelectorTest extends TestCase
         $this->assertInstanceOf(AcceptFieldValuePart::class, $ref);
     }
 
-    public function testMatch()
+    public function testMatch(): void
     {
         $plugin = $this->plugin;
         $header = Accept::fromString('Accept: text/html; version=0.2');
@@ -178,7 +178,7 @@ class AcceptableViewModelSelectorTest extends TestCase
         $this->assertEquals($plugin->getDefaultMatchAgainst(), $arr);
     }
 
-    public function testInvalidModel()
+    public function testInvalidModel(): void
     {
         $arr    = ['DoesNotExist' => 'text/xml'];
         $header = Accept::fromString('Accept: */*');

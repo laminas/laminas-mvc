@@ -27,7 +27,7 @@ class LazyControllerAbstractFactoryTest extends TestCase
         $this->container = $this->prophesize(ContainerInterface::class);
     }
 
-    public function nonClassRequestedNames()
+    public function nonClassRequestedNames(): array
     {
         return [
             'non-class-string' => ['non-class-string'],
@@ -37,33 +37,33 @@ class LazyControllerAbstractFactoryTest extends TestCase
     /**
      * @dataProvider nonClassRequestedNames
      */
-    public function testCanCreateReturnsFalseForNonClassRequestedNames($requestedName)
+    public function testCanCreateReturnsFalseForNonClassRequestedNames(string $requestedName): void
     {
         $factory = new LazyControllerAbstractFactory();
         $this->assertFalse($factory->canCreate($this->container->reveal(), $requestedName));
     }
 
-    public function testCanCreateReturnsFalseForClassesThatDoNotImplementDispatchableInterface()
+    public function testCanCreateReturnsFalseForClassesThatDoNotImplementDispatchableInterface(): void
     {
         $factory = new LazyControllerAbstractFactory();
         $this->assertFalse($factory->canCreate($this->container->reveal(), self::class));
     }
 
-    public function testFactoryInstantiatesClassDirectlyIfItHasNoConstructor()
+    public function testFactoryInstantiatesClassDirectlyIfItHasNoConstructor(): void
     {
         $factory    = new LazyControllerAbstractFactory();
         $controller = $factory($this->container->reveal(), TestAsset\SampleController::class);
         $this->assertInstanceOf(TestAsset\SampleController::class, $controller);
     }
 
-    public function testFactoryInstantiatesClassDirectlyIfConstructorHasNoArguments()
+    public function testFactoryInstantiatesClassDirectlyIfConstructorHasNoArguments(): void
     {
         $factory    = new LazyControllerAbstractFactory();
         $controller = $factory($this->container->reveal(), TestAsset\ControllerWithEmptyConstructor::class);
         $this->assertInstanceOf(TestAsset\ControllerWithEmptyConstructor::class, $controller);
     }
 
-    public function testFactoryRaisesExceptionWhenUnableToResolveATypeHintedService()
+    public function testFactoryRaisesExceptionWhenUnableToResolveATypeHintedService(): void
     {
         $this->container->has(TestAsset\SampleInterface::class)->willReturn(false);
         $this->container->has(SampleInterface::class)->willReturn(false);
@@ -79,7 +79,7 @@ class LazyControllerAbstractFactoryTest extends TestCase
         $factory($this->container->reveal(), TestAsset\ControllerWithTypeHintedConstructorParameter::class);
     }
 
-    public function testFactoryPassesNullForScalarParameters()
+    public function testFactoryPassesNullForScalarParameters(): void
     {
         $factory    = new LazyControllerAbstractFactory();
         $controller = $factory($this->container->reveal(), TestAsset\ControllerWithScalarParameters::class);
@@ -88,7 +88,7 @@ class LazyControllerAbstractFactoryTest extends TestCase
         $this->assertNull($controller->bar);
     }
 
-    public function testFactoryInjectsConfigServiceForConfigArgumentsTypeHintedAsArray()
+    public function testFactoryInjectsConfigServiceForConfigArgumentsTypeHintedAsArray(): void
     {
         $config = ['foo' => 'bar'];
         $this->container->has('config')->willReturn(true);
@@ -100,7 +100,7 @@ class LazyControllerAbstractFactoryTest extends TestCase
         $this->assertEquals($config, $controller->config);
     }
 
-    public function testFactoryCanInjectKnownTypeHintedServices()
+    public function testFactoryCanInjectKnownTypeHintedServices(): void
     {
         $sample = $this->prophesize(TestAsset\SampleInterface::class)->reveal();
         $this->container->has(TestAsset\SampleInterface::class)->willReturn(true);
@@ -115,7 +115,7 @@ class LazyControllerAbstractFactoryTest extends TestCase
         $this->assertSame($sample, $controller->sample);
     }
 
-    public function testFactoryResolvesTypeHintsForServicesToWellKnownServiceNames()
+    public function testFactoryResolvesTypeHintsForServicesToWellKnownServiceNames(): void
     {
         $validators = $this->prophesize(ValidatorPluginManager::class)->reveal();
         $this->container->has('ValidatorManager')->willReturn(true);
@@ -133,7 +133,7 @@ class LazyControllerAbstractFactoryTest extends TestCase
         $this->assertSame($validators, $controller->validators);
     }
 
-    public function testFactoryCanSupplyAMixOfParameterTypes()
+    public function testFactoryCanSupplyAMixOfParameterTypes(): void
     {
         $validators = $this->prophesize(ValidatorPluginManager::class)->reveal();
         $this->container->has('ValidatorManager')->willReturn(true);

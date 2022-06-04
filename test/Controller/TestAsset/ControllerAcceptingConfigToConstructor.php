@@ -8,7 +8,7 @@ use Laminas\Mvc\Controller\AbstractActionController;
 
 class ControllerAcceptingConfigToConstructor extends AbstractActionController
 {
-    public $config;
+    public array $config;
 
     public function __construct(array $config)
     {

@@ -105,8 +105,8 @@ class Forward extends AbstractPlugin
      * @param  string $name Controller name; either a class name or an alias used in the controller manager
      * @param  null|array $params Parameters with which to seed a custom RouteMatch object for the new controller
      * @return mixed
-     * @throws Exception\DomainException if composed controller does not define InjectApplicationEventInterface
-     *         or Locator aware; or if the discovered controller is not dispatchable
+     * @throws Exception\DomainException If composed controller does not define InjectApplicationEventInterface
+     *         or Locator aware; or if the discovered controller is not dispatchable.
      */
     public function dispatch($name, ?array $params = null)
     {
@@ -226,7 +226,7 @@ class Forward extends AbstractPlugin
      * Get the event
      *
      * @return MvcEvent
-     * @throws Exception\DomainException if unable to find event
+     * @throws Exception\DomainException If unable to find event.
      */
     protected function getEvent()
     {

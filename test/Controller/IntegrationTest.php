@@ -37,7 +37,7 @@ class IntegrationTest extends TestCase
         ]))->configureServiceManager($this->services);
     }
 
-    public function testPluginReceivesCurrentController()
+    public function testPluginReceivesCurrentController(): void
     {
         $controllers = new ControllerManager($this->services, [
             'factories' => [

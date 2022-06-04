@@ -48,7 +48,7 @@ class Layout extends AbstractPlugin
      * Get the event
      *
      * @return MvcEvent
-     * @throws Exception\DomainException if unable to find event
+     * @throws Exception\DomainException If unable to find event.
      */
     protected function getEvent()
     {

@@ -14,7 +14,7 @@ class RequestFactoryTest extends TestCase
 {
     use ProphecyTrait;
 
-    public function testFactoryCreatesHttpRequest()
+    public function testFactoryCreatesHttpRequest(): void
     {
         $factory = new RequestFactory();
         $request = $factory($this->prophesize(ContainerInterface::class)->reveal(), 'Request');

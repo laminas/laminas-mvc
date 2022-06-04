@@ -14,8 +14,8 @@ use function ucwords;
 
 class ModuleRouteListener extends AbstractListenerAggregate
 {
-    const MODULE_NAMESPACE    = '__NAMESPACE__';
-    const ORIGINAL_CONTROLLER = '__CONTROLLER__';
+    public const MODULE_NAMESPACE    = '__NAMESPACE__';
+    public const ORIGINAL_CONTROLLER = '__CONTROLLER__';
 
     /**
      * Attach to an event manager

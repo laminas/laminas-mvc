@@ -15,7 +15,7 @@ class InabilityToRetrieveControllerShouldTriggerDispatchErrorTest extends TestCa
     /**
      * @group error-handling
      */
-    public function testInabilityToRetrieveControllerShouldTriggerDispatchError()
+    public function testInabilityToRetrieveControllerShouldTriggerDispatchError(): void
     {
         $application = $this->prepareApplication();
 

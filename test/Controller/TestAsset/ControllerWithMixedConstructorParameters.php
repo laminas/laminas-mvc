@@ -9,12 +9,16 @@ use Laminas\Validator\ValidatorPluginManager;
 
 class ControllerWithMixedConstructorParameters extends AbstractActionController
 {
-    public $config;
+    public array $config;
+    /** @var mixed */
     public $foo = 'foo';
-    public $options;
-    public $sample;
-    public $validators;
+    public ?array $options;
+    public SampleInterface $sample;
+    public ValidatorPluginManager $validators;
 
+    /**
+     * @param mixed $foo
+     */
     public function __construct(
         SampleInterface $sample,
         ValidatorPluginManager $validators,

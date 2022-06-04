@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
  */
 class CreateHttpNotFoundModelTest extends TestCase
 {
-    public function testBuildsModelWithErrorMessageAndSetsResponseStatusCode()
+    public function testBuildsModelWithErrorMessageAndSetsResponseStatusCode(): void
     {
         $response = new Response();
         $plugin   = new CreateHttpNotFoundModel();

@@ -11,11 +11,10 @@ use function spl_object_hash;
 
 class SendResponseEvent extends Event
 {
-    /**#@+
+    /**
      * Send response events triggered by eventmanager
      */
-    const EVENT_SEND_RESPONSE = 'sendResponse';
-    /**#@-*/
+    public const EVENT_SEND_RESPONSE = 'sendResponse';
 
     /** @var string Event name */
     protected $name = 'sendResponse';

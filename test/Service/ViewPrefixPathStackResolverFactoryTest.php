@@ -15,7 +15,7 @@ class ViewPrefixPathStackResolverFactoryTest extends TestCase
 {
     use ProphecyTrait;
 
-    public function testCreateService()
+    public function testCreateService(): void
     {
         $serviceLocator = $this->prophesize(ServiceLocatorInterface::class);
         $serviceLocator->willImplement(ContainerInterface::class);
