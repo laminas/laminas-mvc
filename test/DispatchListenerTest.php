@@ -58,9 +58,12 @@ class DispatchListenerTest extends TestCase
         $event = $this->createMvcEvent('path');
 
         $log = [];
-        $event->getApplication()->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) use (&$log) {
-            $log['error'] = $e->getError();
-        });
+        $event->getApplication()->getEventManager()->attach(
+            MvcEvent::EVENT_DISPATCH_ERROR,
+            static function ($e) use (&$log): void {
+                $log['error'] = $e->getError();
+            }
+        );
 
         $return = $listener->onDispatch($event);
 
@@ -81,9 +84,12 @@ class DispatchListenerTest extends TestCase
         $event = $this->createMvcEvent('path');
 
         $log = [];
-        $event->getApplication()->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) use (&$log) {
-            $log['error'] = $e->getError();
-        });
+        $event->getApplication()->getEventManager()->attach(
+            MvcEvent::EVENT_DISPATCH_ERROR,
+            static function ($e) use (&$log): void {
+                $log['error'] = $e->getError();
+            }
+        );
 
         $return = $listener->onDispatch($event);
 
@@ -107,7 +113,7 @@ class DispatchListenerTest extends TestCase
             ],
         ]));
 
-        $event->getApplication()->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, function () {
+        $event->getApplication()->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, static function (): void {
             self::fail('No dispatch failures should be raised - dispatch should be skipped');
         });
 

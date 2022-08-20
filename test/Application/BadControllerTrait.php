@@ -48,18 +48,12 @@ trait BadControllerTrait
                     'ControllerLoader' => ControllerManager::class,
                 ],
                 'factories'  => [
-                    'ControllerManager' => function ($services) {
-                        return new ControllerManager($services, [
-                            'factories' => [
-                                'bad' => function () {
-                                    return new BadController();
-                                },
-                            ],
-                        ]);
-                    },
-                    'Router'            => function ($services) {
-                        return $services->get('HttpRouter');
-                    },
+                    'ControllerManager' => static fn($services) => new ControllerManager($services, [
+                        'factories' => [
+                            'bad' => static fn() => new BadController(),
+                        ],
+                    ]),
+                    'Router'            => static fn($services) => $services->get('HttpRouter'),
                 ],
                 'invokables' => [
                     'Request'              => Request::class,

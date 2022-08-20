@@ -98,9 +98,7 @@ class ConfigProvider
             ],
             'factories'    => [
                 'EventManager'                  => EventManagerFactory::class,
-                'SharedEventManager'            => static function () {
-                    return new SharedEventManager();
-                },
+                'SharedEventManager'            => static fn() => new SharedEventManager(),
                 'Application'                   => ApplicationFactory::class,
                 'ControllerManager'             => ControllerManagerFactory::class,
                 'ControllerPluginManager'       => ControllerPluginManagerFactory::class,
@@ -134,7 +132,7 @@ class ConfigProvider
                 'EventManager' => false,
             ],
             'initializers' => [
-                'EventManagerAwareInitializer' => static function ($first, $second) {
+                'EventManagerAwareInitializer' => static function ($first, $second): void {
                     if ($first instanceof ContainerInterface) {
                         $container = $first;
                         $instance  = $second;

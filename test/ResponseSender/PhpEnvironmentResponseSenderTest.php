@@ -58,7 +58,7 @@ class PhpEnvironmentResponseSenderTest extends TestCase
             ->getMock();
 
         $mockSendResponseEvent->method('contentSent')
-            ->willReturnCallback(function () use (&$returnValue) {
+            ->willReturnCallback(static function () use (&$returnValue): bool {
                 if (false === $returnValue) {
                     $returnValue = true;
                     return false;

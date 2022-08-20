@@ -9,6 +9,9 @@ use Laminas\Router\RouteMatch;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\View\Helper as ViewHelper;
+use Laminas\View\Helper\BasePath;
+use Laminas\View\Helper\Doctype;
+use Laminas\View\Helper\Url;
 use Laminas\View\HelperPluginManager;
 
 use function is_callable;
@@ -35,8 +38,8 @@ class ViewHelperManagerFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null)
     {
-        $options              = $options ?: [];
-        $options['factories'] = $options['factories'] ?? [];
+        $options                = $options ?: [];
+        $options['factories'] ??= [];
 
         $managerConfig = [];
         if ($options) {
@@ -85,18 +88,15 @@ class ViewHelperManagerFactory implements FactoryInterface
      */
     private function createUrlHelperFactory(ContainerInterface $services)
     {
-        return function () use ($services) {
+        return static function () use ($services): Url {
             $helper = new ViewHelper\Url();
             $helper->setRouter($services->get('HttpRouter'));
-
             $match = $services->get('Application')
                 ->getMvcEvent()
                 ->getRouteMatch();
-
             if ($match instanceof RouteMatch) {
                 $helper->setRouteMatch($match);
             }
-
             return $helper;
         };
     }
@@ -110,21 +110,17 @@ class ViewHelperManagerFactory implements FactoryInterface
      */
     private function createBasePathHelperFactory(ContainerInterface $services)
     {
-        return function () use ($services) {
+        return static function () use ($services): BasePath {
             $config = $services->has('config') ? $services->get('config') : [];
             $helper = new ViewHelper\BasePath();
-
             if (isset($config['view_manager']) && isset($config['view_manager']['base_path'])) {
                 $helper->setBasePath($config['view_manager']['base_path']);
                 return $helper;
             }
-
             $request = $services->get('Request');
-
             if (is_callable([$request, 'getBasePath'])) {
                 $helper->setBasePath($request->getBasePath());
             }
-
             return $helper;
         };
     }
@@ -139,7 +135,7 @@ class ViewHelperManagerFactory implements FactoryInterface
      */
     private function createDoctypeHelperFactory(ContainerInterface $services)
     {
-        return function () use ($services) {
+        return static function () use ($services): Doctype {
             $config = $services->has('config') ? $services->get('config') : [];
             $config = $config['view_manager'] ?? [];
             $helper = new ViewHelper\Doctype();

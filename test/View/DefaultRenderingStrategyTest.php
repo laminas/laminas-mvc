@@ -87,9 +87,7 @@ class DefaultRenderingStrategyTest extends TestCase
     public function testWillRenderAlternateStrategyWhenSelected(): void
     {
         $renderer = new TestAsset\DumbStrategy();
-        $this->view->addRenderingStrategy(function ($e) use ($renderer) {
-            return $renderer;
-        }, 100);
+        $this->view->addRenderingStrategy(static fn($e) => $renderer, 100);
         $model = new ViewModel(['foo' => 'bar']);
         $model->setOption('template', 'content');
         $this->event->setResult($model);
@@ -114,9 +112,7 @@ class DefaultRenderingStrategyTest extends TestCase
     public function testBypassesRenderingIfResultIsAResponse(): void
     {
         $renderer = new TestAsset\DumbStrategy();
-        $this->view->addRenderingStrategy(function ($e) use ($renderer) {
-            return $renderer;
-        }, 100);
+        $this->view->addRenderingStrategy(static fn($e) => $renderer, 100);
         $model = new ViewModel(['foo' => 'bar']);
         $model->setOption('template', 'content');
         $this->event->setViewModel($model);
@@ -146,7 +142,7 @@ class DefaultRenderingStrategyTest extends TestCase
                 'SharedEventManager' => SharedEventManager::class,
             ],
             'factories'  => [
-                'EventManager' => function ($services) {
+                'EventManager' => static function ($services): EventManager {
                     $sharedEvents = $services->get('SharedEventManager');
                     return new EventManager($sharedEvents);
                 },
@@ -164,7 +160,7 @@ class DefaultRenderingStrategyTest extends TestCase
         $this->event->setApplication($application);
 
         $test = (object) ['flag' => false];
-        $application->getEventManager()->attach(MvcEvent::EVENT_RENDER_ERROR, function ($e) use ($test) {
+        $application->getEventManager()->attach(MvcEvent::EVENT_RENDER_ERROR, static function ($e) use ($test): void {
             $test->flag      = true;
             $test->error     = $e->getError();
             $test->exception = $e->getParam('exception');

@@ -103,9 +103,7 @@ class ActionControllerTest extends TestCase
     {
         $response = new Response();
         $response->setContent('short circuited!');
-        $this->controller->getEventManager()->attach(MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
-            return $response;
-        }, 100);
+        $this->controller->getEventManager()->attach(MvcEvent::EVENT_DISPATCH, static fn($e) => $response, 100);
         $result = $this->controller->dispatch($this->request, $this->response);
         $this->assertSame($response, $result);
     }
@@ -114,9 +112,7 @@ class ActionControllerTest extends TestCase
     {
         $response = new Response();
         $response->setContent('short circuited!');
-        $this->controller->getEventManager()->attach(MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
-            return $response;
-        }, -10);
+        $this->controller->getEventManager()->attach(MvcEvent::EVENT_DISPATCH, static fn($e) => $response, -10);
         $result = $this->controller->dispatch($this->request, $this->response);
         $this->assertSame($response, $result);
     }
@@ -126,9 +122,7 @@ class ActionControllerTest extends TestCase
         $response = new Response();
         $response->setContent('short circuited!');
         $sharedEvents = $this->controller->getEventManager()->getSharedManager();
-        $sharedEvents->attach(DispatchableInterface::class, MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
-            return $response;
-        }, 10);
+        $sharedEvents->attach(DispatchableInterface::class, MvcEvent::EVENT_DISPATCH, static fn($e) => $response, 10);
         $result = $this->controller->dispatch($this->request, $this->response);
         $this->assertSame($response, $result);
     }
@@ -138,9 +132,12 @@ class ActionControllerTest extends TestCase
         $response = new Response();
         $response->setContent('short circuited!');
         $sharedEvents = $this->controller->getEventManager()->getSharedManager();
-        $sharedEvents->attach(AbstractActionController::class, MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
-            return $response;
-        }, 10);
+        $sharedEvents->attach(
+            AbstractActionController::class,
+            MvcEvent::EVENT_DISPATCH,
+            static fn($e) => $response,
+            10
+        );
         $result = $this->controller->dispatch($this->request, $this->response);
         $this->assertSame($response, $result);
     }
@@ -150,9 +147,7 @@ class ActionControllerTest extends TestCase
         $response = new Response();
         $response->setContent('short circuited!');
         $sharedEvents = $this->controller->getEventManager()->getSharedManager();
-        $sharedEvents->attach(get_class($this->controller), MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
-            return $response;
-        }, 10);
+        $sharedEvents->attach(get_class($this->controller), MvcEvent::EVENT_DISPATCH, static fn($e) => $response, 10);
         $result = $this->controller->dispatch($this->request, $this->response);
         $this->assertSame($response, $result);
     }
@@ -162,9 +157,7 @@ class ActionControllerTest extends TestCase
         $response = new Response();
         $response->setContent('short circuited!');
         $sharedEvents = $this->controller->getEventManager()->getSharedManager();
-        $sharedEvents->attach(SampleInterface::class, MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
-            return $response;
-        }, 10);
+        $sharedEvents->attach(SampleInterface::class, MvcEvent::EVENT_DISPATCH, static fn($e) => $response, 10);
         $result = $this->controller->dispatch($this->request, $this->response);
         $this->assertSame($response, $result);
     }
