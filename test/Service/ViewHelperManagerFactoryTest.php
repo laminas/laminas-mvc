@@ -111,7 +111,7 @@ class ViewHelperManagerFactoryTest extends TestCase
             'request-base' => [
                 [
                     'config'  => [], // fails creating plugin manager without this
-                    'Request' => function () {
+                    'Request' => function (): object {
                         $request = $this->prophesize(Request::class);
                         $request->getBasePath()->willReturn('/foo/bat');
                         return $request->reveal();

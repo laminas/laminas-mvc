@@ -19,9 +19,7 @@ class ViewFeedStrategyFactoryTest extends TestCase
     {
         $renderer  = $this->prophesize(FeedRenderer::class);
         $container = $this->prophesize(ContainerInterface::class);
-        $container->get('ViewFeedRenderer')->will(function () use ($renderer) {
-            return $renderer->reveal();
-        });
+        $container->get('ViewFeedRenderer')->will(fn() => $renderer->reveal());
         return $container->reveal();
     }
 

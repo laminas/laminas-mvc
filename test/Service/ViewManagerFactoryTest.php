@@ -18,9 +18,7 @@ class ViewManagerFactoryTest extends TestCase
     {
         $http      = $this->prophesize(HttpViewManager::class);
         $container = $this->prophesize(ContainerInterface::class);
-        $container->get('HttpViewManager')->will(function () use ($http) {
-            return $http->reveal();
-        });
+        $container->get('HttpViewManager')->will(fn() => $http->reveal());
         return $container->reveal();
     }
 

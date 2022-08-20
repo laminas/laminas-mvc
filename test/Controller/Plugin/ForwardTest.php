@@ -31,14 +31,12 @@ use stdClass;
 
 class ForwardTest extends TestCase
 {
-    /** @var PluginManager */
-    private $plugins;
+    private PluginManager $plugins;
 
     /** @var ControllerManager */
     private $controllers;
 
-    /** @var SampleController */
-    private $controller;
+    private SampleController $controller;
 
     /** @var Forward */
     private $plugin;
@@ -63,12 +61,11 @@ class ForwardTest extends TestCase
                 'ControllerLoader' => 'ControllerManager',
             ],
             'factories' => [
-                'ControllerManager'       => function ($services, $name) {
+                'ControllerManager'       => static function ($services, $name): ControllerManager {
                     $plugins = $services->get('ControllerPluginManager');
-
                     return new ControllerManager($services, [
                         'factories' => [
-                            'forward' => function ($services) use ($plugins) {
+                            'forward' => static function ($services) use ($plugins): ForwardController {
                                 $controller = new ForwardController();
                                 $controller->setPluginManager($plugins);
                                 return $controller;
@@ -76,15 +73,10 @@ class ForwardTest extends TestCase
                         ],
                     ]);
                 },
-                'ControllerPluginManager' => function ($services, $name) {
-                    return new PluginManager($services);
-                },
-                'EventManager'            => function ($services, $name) {
-                    return $this->createEventManager($services->get('SharedEventManager'));
-                },
-                'SharedEventManager'      => function ($services, $name) {
-                    return new SharedEventManager();
-                },
+                'ControllerPluginManager' => static fn($services, $name) => new PluginManager($services),
+                'EventManager'            => fn($services, $name)
+                    => $this->createEventManager($services->get('SharedEventManager')),
+                'SharedEventManager'      => static fn($services, $name) => new SharedEventManager(),
             ],
             'shared'    => [
                 'EventManager' => false,
@@ -127,9 +119,7 @@ class ForwardTest extends TestCase
 
     public function testDispatchRaisesDomainExceptionIfDiscoveredControllerIsNotDispatchable(): void
     {
-        $this->controllers->setFactory('bogus', function () {
-            return new stdClass();
-        });
+        $this->controllers->setFactory('bogus', static fn() => new stdClass());
         $plugin = new ForwardPlugin($this->controllers);
         $plugin->setController($this->controller);
 
@@ -147,17 +137,16 @@ class ForwardTest extends TestCase
                 'ControllerLoader' => 'ControllerManager',
             ],
             'factories' => [
-                'ControllerManager'       => function ($services) use ($event) {
+                'ControllerManager'       => static function ($services) use ($event): ControllerManager {
                     $plugins = $services->get('ControllerPluginManager');
-
                     return new ControllerManager($services, [
                         'factories' => [
-                            'forward' => function ($services) use ($plugins) {
+                            'forward' => static function ($services) use ($plugins): ForwardController {
                                 $controller = new ForwardController();
                                 $controller->setPluginManager($plugins);
                                 return $controller;
                             },
-                            'sample'  => function ($services) use ($event, $plugins) {
+                            'sample'  => static function ($services) use ($event, $plugins): SampleController {
                                 $controller = new SampleController();
                                 $controller->setEvent($event);
                                 $controller->setPluginManager($plugins);
@@ -166,15 +155,10 @@ class ForwardTest extends TestCase
                         ],
                     ]);
                 },
-                'ControllerPluginManager' => function ($services) {
-                    return new PluginManager($services);
-                },
-                'EventManager'            => function ($services, $name) {
-                    return $this->createEventManager($services->get('SharedEventManager'));
-                },
-                'SharedEventManager'      => function ($services, $name) {
-                    return new SharedEventManager();
-                },
+                'ControllerPluginManager' => static fn($services) => new PluginManager($services),
+                'EventManager'            => fn($services, $name)
+                    => $this->createEventManager($services->get('SharedEventManager')),
+                'SharedEventManager'      => static fn($services, $name) => new SharedEventManager(),
             ],
             'shared'    => [
                 'EventManager' => false,
@@ -210,7 +194,7 @@ class ForwardTest extends TestCase
         $sharedEvents = $this->createMock(SharedEventManagerInterface::class);
         // @codingStandardsIgnoreStart
         $sharedEvents->method('getListeners')->willReturn([
-            static function ($e) {
+            static function ($e): void {
             }
         ]);
         // @codingStandardsIgnoreEnd

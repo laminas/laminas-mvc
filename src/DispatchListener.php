@@ -8,6 +8,7 @@ use ArrayObject;
 use Exception;
 use Laminas\EventManager\AbstractListenerAggregate;
 use Laminas\EventManager\EventManagerInterface;
+use Laminas\Mvc\Controller\ControllerManager;
 use Laminas\Mvc\Exception\InvalidControllerException;
 use Laminas\Router\RouteMatch;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
@@ -42,10 +43,9 @@ use function is_object;
  */
 class DispatchListener extends AbstractListenerAggregate
 {
-    /** @var Controller\ControllerManager */
-    private $controllerManager;
+    private ControllerManager $controllerManager;
 
-    public function __construct(Controller\ControllerManager $controllerManager)
+    public function __construct(ControllerManager $controllerManager)
     {
         $this->controllerManager = $controllerManager;
     }

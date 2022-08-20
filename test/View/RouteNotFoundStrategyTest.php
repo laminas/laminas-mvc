@@ -19,8 +19,7 @@ class RouteNotFoundStrategyTest extends TestCase
 {
     use EventListenerIntrospectionTrait;
 
-    /** @var RouteNotFoundStrategy */
-    private $strategy;
+    private RouteNotFoundStrategy $strategy;
 
     public function setUp(): void
     {

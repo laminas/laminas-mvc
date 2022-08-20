@@ -48,18 +48,12 @@ trait InvalidControllerTypeTrait
                     'ControllerLoader' => 'ControllerManager',
                 ],
                 'factories'  => [
-                    'ControllerManager' => function ($services) {
-                        return new ControllerManager($services, [
-                            'factories' => [
-                                'bad' => function () {
-                                    return new stdClass();
-                                },
-                            ],
-                        ]);
-                    },
-                    'Router'            => function ($services) {
-                        return $services->get('HttpRouter');
-                    },
+                    'ControllerManager' => static fn($services) => new ControllerManager($services, [
+                        'factories' => [
+                            'bad' => static fn() => new stdClass(),
+                        ],
+                    ]),
+                    'Router'            => static fn($services) => $services->get('HttpRouter'),
                 ],
                 'invokables' => [
                     'Request'              => Request::class,

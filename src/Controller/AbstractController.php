@@ -99,9 +99,7 @@ abstract class AbstractController implements
         $e->setResponse($response);
         $e->setTarget($this);
 
-        $result = $this->getEventManager()->triggerEventUntil(function ($test) {
-            return $test instanceof Response;
-        }, $e);
+        $result = $this->getEventManager()->triggerEventUntil(static fn($test) => $test instanceof Response, $e);
 
         if ($result->stopped()) {
             return $result->last();

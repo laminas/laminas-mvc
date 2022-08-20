@@ -24,12 +24,8 @@ class IntegrationTest extends TestCase
                 'SharedEventManager' => $this->sharedEvents,
             ],
             'factories' => [
-                'ControllerPluginManager' => function ($services) {
-                    return new PluginManager($services);
-                },
-                'EventManager'            => function () {
-                    return new EventManager($this->sharedEvents);
-                },
+                'ControllerPluginManager' => static fn($services) => new PluginManager($services),
+                'EventManager'            => fn() => new EventManager($this->sharedEvents),
             ],
             'shared'    => [
                 'EventManager' => false,
@@ -41,12 +37,8 @@ class IntegrationTest extends TestCase
     {
         $controllers = new ControllerManager($this->services, [
             'factories' => [
-                'first'  => function ($services) {
-                    return new TestAsset\SampleController();
-                },
-                'second' => function ($services) {
-                    return new TestAsset\SampleController();
-                },
+                'first'  => static fn($services) => new TestAsset\SampleController(),
+                'second' => static fn($services) => new TestAsset\SampleController(),
             ],
         ]);
 

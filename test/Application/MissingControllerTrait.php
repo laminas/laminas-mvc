@@ -43,9 +43,7 @@ trait MissingControllerTrait
             $serviceConfig,
             [
                 'factories'  => [
-                    'Router' => function ($services) {
-                        return $services->get('HttpRouter');
-                    },
+                    'Router' => static fn($services) => $services->get('HttpRouter'),
                 ],
                 'invokables' => [
                     'Request'              => Request::class,

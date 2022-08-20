@@ -627,8 +627,8 @@
       <code>$services</code>
       <code>$services</code>
     </MissingClosureParamType>
-    <MissingClosureReturnType occurrences="1">
-      <code>function ($services) {</code>
+    <MissingClosureReturnType occurrences="2">
+      <code>static fn($services)</code>
     </MissingClosureReturnType>
   </file>
   <file src="test/Application/ControllerIsDispatchedTest.php">
@@ -664,16 +664,16 @@
       <code>$services</code>
       <code>$services</code>
     </MissingClosureParamType>
-    <MissingClosureReturnType occurrences="1">
-      <code>function ($services) {</code>
+    <MissingClosureReturnType occurrences="2">
+      <code>static fn($services)</code>
     </MissingClosureReturnType>
   </file>
   <file src="test/Application/MissingControllerTrait.php">
     <MissingClosureParamType occurrences="1">
       <code>$services</code>
     </MissingClosureParamType>
-    <MissingClosureReturnType occurrences="1">
-      <code>function ($services) {</code>
+    <MissingClosureReturnType occurrences="2">
+      <code>static fn($services)</code>
     </MissingClosureReturnType>
   </file>
   <file src="test/Application/PathControllerTrait.php">
@@ -681,8 +681,8 @@
       <code>$services</code>
       <code>$services</code>
     </MissingClosureParamType>
-    <MissingClosureReturnType occurrences="1">
-      <code>function ($services) {</code>
+    <MissingClosureReturnType occurrences="2">
+      <code>static fn($services)</code>
     </MissingClosureReturnType>
   </file>
   <file src="test/Application/RoutingSuccessTest.php">
@@ -731,9 +731,9 @@
       <code>$e</code>
       <code>$services</code>
     </MissingClosureParamType>
-    <MissingClosureReturnType occurrences="2">
-      <code>function ($e) {</code>
-      <code>function (MvcEvent $event) {</code>
+    <MissingClosureReturnType occurrences="4">
+      <code>static fn($e)</code>
+      <code>static fn(MvcEvent $event)</code>
     </MissingClosureReturnType>
     <UndefinedInterfaceMethod occurrences="1">
       <code>getBody</code>

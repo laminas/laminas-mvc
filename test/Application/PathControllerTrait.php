@@ -46,18 +46,12 @@ trait PathControllerTrait
                     'ControllerLoader' => ControllerManager::class,
                 ],
                 'factories'  => [
-                    'ControllerManager' => function ($services) {
-                        return new ControllerManager($services, [
-                            'factories' => [
-                                'path' => function () {
-                                    return new TestAsset\PathController();
-                                },
-                            ],
-                        ]);
-                    },
-                    'Router'            => function ($services) {
-                        return $services->get('HttpRouter');
-                    },
+                    'ControllerManager' => static fn($services) => new ControllerManager($services, [
+                        'factories' => [
+                            'path' => static fn() => new TestAsset\PathController(),
+                        ],
+                    ]),
+                    'Router'            => static fn($services) => $services->get('HttpRouter'),
                 ],
                 'invokables' => [
                     'Request'              => Request::class,
