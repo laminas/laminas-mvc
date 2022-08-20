@@ -88,7 +88,7 @@ class Url extends AbstractPlugin
 
         if ($reuseMatchedParams && $matches) {
             $routeMatchParams = $matches->getParams();
-            $params = array_merge($routeMatchParams, $params);
+            $params           = array_merge($routeMatchParams, $params);
         }
 
         $options['name'] = $route;

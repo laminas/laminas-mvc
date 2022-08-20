@@ -12,8 +12,6 @@ use Laminas\Mvc\MvcEvent;
 use Laminas\Router\Http\Literal as LiteralRoute;
 use Laminas\Router\Http\Segment;
 use Laminas\Router\Http\Segment as SegmentRoute;
-use Laminas\Router\Http\TreeRouteStack;
-use Laminas\Router\Http\Wildcard;
 use Laminas\Router\RouteMatch;
 use Laminas\Router\SimpleRouteStack;
 use LaminasTest\Mvc\Controller\TestAsset\SampleController;
