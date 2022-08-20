@@ -6,7 +6,6 @@ namespace LaminasTest\Mvc\View;
 
 use Laminas\EventManager\EventManager;
 use Laminas\EventManager\Test\EventListenerIntrospectionTrait;
-use Laminas\Mvc\ModuleRouteListener;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Mvc\View\Http\InjectTemplateListener;
 use Laminas\Router\RouteMatch;
@@ -113,82 +112,6 @@ class InjectTemplateListenerTest extends TestCase
         $this->assertEquals('laminas-test/mvc/test-asset/sample', $myViewModel->getTemplate());
     }
 
-    public function testMapsSubNamespaceToSubDirectoryWithControllerFromRouteMatch(): void
-    {
-        $this->routeMatch->setParam(ModuleRouteListener::MODULE_NAMESPACE, 'Aj\Controller\SweetAppleAcres\Reports');
-        $this->routeMatch->setParam('controller', 'CiderSales');
-        $this->routeMatch->setParam('action', 'PinkiePieRevenue');
-
-        $moduleRouteListener = new ModuleRouteListener();
-        $moduleRouteListener->onRoute($this->event);
-
-        $model = new ViewModel();
-        $this->event->setResult($model);
-        $this->listener->injectTemplate($this->event);
-
-        $this->assertEquals('aj/sweet-apple-acres/reports/cider-sales/pinkie-pie-revenue', $model->getTemplate());
-    }
-
-    public function testMapsSubNamespaceToSubDirectoryWithControllerFromRouteMatchHavingSubNamespace(): void
-    {
-        $this->routeMatch->setParam(ModuleRouteListener::MODULE_NAMESPACE, 'Aj\Controller\SweetAppleAcres\Reports');
-        $this->routeMatch->setParam('controller', 'Sub\CiderSales');
-        $this->routeMatch->setParam('action', 'PinkiePieRevenue');
-
-        $moduleRouteListener = new ModuleRouteListener();
-        $moduleRouteListener->onRoute($this->event);
-
-        $model = new ViewModel();
-        $this->event->setResult($model);
-        $this->listener->injectTemplate($this->event);
-
-        $this->assertEquals('aj/sweet-apple-acres/reports/sub/cider-sales/pinkie-pie-revenue', $model->getTemplate());
-    }
-
-    public function testMapsSubNamespaceToSubDirectoryWithControllerFromEventTarget(): void
-    {
-        $this->routeMatch->setParam(ModuleRouteListener::MODULE_NAMESPACE, 'LaminasTest\Mvc\Controller\TestAsset');
-        $this->routeMatch->setParam('action', 'test');
-
-        $moduleRouteListener = new ModuleRouteListener();
-        $moduleRouteListener->onRoute($this->event);
-
-        $myViewModel  = new ViewModel();
-        $myController = new SampleController();
-
-        $this->event->setTarget($myController);
-        $this->event->setResult($myViewModel);
-        $this->listener->injectTemplate($this->event);
-
-        $this->assertEquals('laminas-test/mvc/test-asset/sample/test', $myViewModel->getTemplate());
-    }
-
-    // @codingStandardsIgnoreLine
-    public function testMapsSubNamespaceToSubDirectoryWithControllerFromEventTargetShouldMatchControllerFromRouteParam(): void
-    {
-        $this->routeMatch->setParam(ModuleRouteListener::MODULE_NAMESPACE, 'LaminasTest\Mvc\Controller');
-        $this->routeMatch->setParam('controller', 'TestAsset\SampleController');
-        $this->routeMatch->setParam('action', 'test');
-
-        $moduleRouteListener = new ModuleRouteListener();
-        $moduleRouteListener->onRoute($this->event);
-
-        $myViewModel = new ViewModel();
-        $this->event->setResult($myViewModel);
-        $this->listener->injectTemplate($this->event);
-
-        $template1 = $myViewModel->getTemplate();
-
-        $myViewModel  = new ViewModel();
-        $myController = new SampleController();
-
-        $this->event->setTarget($myController);
-        $this->event->setResult($myViewModel);
-        $this->listener->injectTemplate($this->event);
-
-        $this->assertEquals($template1, $myViewModel->getTemplate());
-    }
-
     public function testControllerMatchedByMapIsInflected(): void
     {
         $this->routeMatch->setParam('controller', 'MappedNs\SubNs\Controller\Sample');
@@ -236,30 +159,6 @@ class InjectTemplateListenerTest extends TestCase
         ]);
         $template = $this->listener->mapController('Foo\Bar\Controller\IndexController');
         $this->assertEquals('string-value/index', $template);
-    }
-
-    public function testUsingNamespaceRouteParameterGivesSameResultAsFullControllerParameter(): void
-    {
-        $this->routeMatch->setParam('controller', 'MappedNs\Foo\Controller\Bar\Baz\Sample');
-        $myViewModel = new ViewModel();
-
-        $this->event->setResult($myViewModel);
-        $this->listener->injectTemplate($this->event);
-
-        $template1 = $myViewModel->getTemplate();
-
-        $this->routeMatch->setParam(ModuleRouteListener::MODULE_NAMESPACE, 'MappedNs\Foo\Controller\Bar');
-        $this->routeMatch->setParam('controller', 'Baz\Sample');
-
-        $moduleRouteListener = new ModuleRouteListener();
-        $moduleRouteListener->onRoute($this->event);
-
-        $myViewModel = new ViewModel();
-
-        $this->event->setResult($myViewModel);
-        $this->listener->injectTemplate($this->event);
-
-        $this->assertEquals($template1, $myViewModel->getTemplate());
     }
 
     public function testControllerMapOnlyFullNamespaceMatches(): void

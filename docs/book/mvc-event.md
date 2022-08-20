@@ -94,7 +94,6 @@ priority):
 
 Class                          | Priority | Method Called | Triggers | Description
 -------------------------------|---------:|---------------|----------|------------
-`Laminas\Mvc\ModuleRouteListener` | 1        | `onRoute`     | none     | Determines if the module namespace should be prepended to the controller name. This is the case if the route match contains a parameter key matching the `MODULE_NAMESPACE` constant.
 `Laminas\Mvc\RouteListener`       | 1        | `onRoute`     | `MvcEvent::EVENT_DISPATCH_ERROR` (if no route is matched) | Tries to match the request to the router and return a `RouteMatch` object.
 
 ### Triggered By

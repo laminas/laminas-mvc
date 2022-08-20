@@ -10,7 +10,6 @@ use Laminas\Mvc\Exception\DomainException;
 use Laminas\Mvc\Exception\InvalidArgumentException;
 use Laminas\Mvc\Exception\RuntimeException;
 use Laminas\Mvc\InjectApplicationEventInterface;
-use Laminas\Mvc\ModuleRouteListener;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Router\RouteStackInterface;
 use Traversable;
@@ -89,17 +88,7 @@ class Url extends AbstractPlugin
 
         if ($reuseMatchedParams && $matches) {
             $routeMatchParams = $matches->getParams();
-
-            if (isset($routeMatchParams[ModuleRouteListener::ORIGINAL_CONTROLLER])) {
-                $routeMatchParams['controller'] = $routeMatchParams[ModuleRouteListener::ORIGINAL_CONTROLLER];
-                unset($routeMatchParams[ModuleRouteListener::ORIGINAL_CONTROLLER]);
-            }
-
-            if (isset($routeMatchParams[ModuleRouteListener::MODULE_NAMESPACE])) {
-                unset($routeMatchParams[ModuleRouteListener::MODULE_NAMESPACE]);
-            }
-
-            $params = array_merge($routeMatchParams, $params);
+            $params           = array_merge($routeMatchParams, $params);
         }
 
         $options['name'] = $route;
