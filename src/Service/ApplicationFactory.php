@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laminas\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
@@ -14,12 +16,11 @@ class ApplicationFactory implements FactoryInterface
      * Creates a Laminas\Mvc\Application service, passing it the configuration
      * service and the service manager instance.
      *
-     * @param  ContainerInterface $container
      * @param  string $name
      * @param  null|array $options
      * @return Application
      */
-    public function __invoke(ContainerInterface $container, $name, array $options = null)
+    public function __invoke(ContainerInterface $container, $name, ?array $options = null)
     {
         $application = new Application(
             $container,
@@ -32,7 +33,7 @@ class ApplicationFactory implements FactoryInterface
             return $application;
         }
 
-        $em = $application->getEventManager();
+        $em        = $application->getEventManager();
         $listeners = $container->get('config')[Application::class]['listeners'] ?? [];
         foreach ($listeners as $listener) {
             $container->get($listener)->attach($em);

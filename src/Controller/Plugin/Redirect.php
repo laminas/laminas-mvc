@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laminas\Mvc\Controller\Plugin;
 
 use Laminas\Http\Response;
@@ -7,12 +9,17 @@ use Laminas\Mvc\Exception;
 use Laminas\Mvc\InjectApplicationEventInterface;
 use Laminas\Mvc\MvcEvent;
 
+use function is_scalar;
+use function method_exists;
+
 /**
  * @todo       allow specifying status code as a default, or as an option to methods
  */
 class Redirect extends AbstractPlugin
 {
+    /** @var MvcEvent */
     protected $event;
+    /** @var Response */
     protected $response;
 
     /**
@@ -23,8 +30,8 @@ class Redirect extends AbstractPlugin
      * @param  array $options RouteInterface-specific options to use in url generation, if any
      * @param  bool $reuseMatchedParams Whether to reuse matched parameters
      * @return Response
-     * @throws Exception\DomainException if composed controller does not implement InjectApplicationEventInterface, or
-     *         router cannot be found in controller event
+     * @throws Exception\DomainException If composed controller does not implement InjectApplicationEventInterface, or
+     *         router cannot be found in controller event.
      */
     public function toRoute($route = null, $params = [], $options = [], $reuseMatchedParams = false)
     {
@@ -74,7 +81,7 @@ class Redirect extends AbstractPlugin
      * Get the response
      *
      * @return Response
-     * @throws Exception\DomainException if unable to find response
+     * @throws Exception\DomainException If unable to find response.
      */
     protected function getResponse()
     {
@@ -95,7 +102,7 @@ class Redirect extends AbstractPlugin
      * Get the event
      *
      * @return MvcEvent
-     * @throws Exception\DomainException if unable to find event
+     * @throws Exception\DomainException If unable to find event.
      */
     protected function getEvent()
     {

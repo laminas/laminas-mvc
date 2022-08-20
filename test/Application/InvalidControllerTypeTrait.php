@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Application;
 
 use Laminas\Http\PhpEnvironment\Request;
 use Laminas\Http\PhpEnvironment\Response;
+use Laminas\Mvc\Application;
 use Laminas\Mvc\ConfigProvider;
 use Laminas\Mvc\Controller\ControllerManager;
 use Laminas\Router;
@@ -14,15 +17,15 @@ use stdClass;
 
 trait InvalidControllerTypeTrait
 {
-    public function prepareApplication()
+    public function prepareApplication(): Application
     {
         $config = [
             'router' => [
                 'routes' => [
                     'path' => [
-                        'type' => Router\Http\Literal::class,
+                        'type'    => Router\Http\Literal::class,
                         'options' => [
-                            'route' => '/bad',
+                            'route'    => '/bad',
                             'defaults' => [
                                 'controller' => 'bad',
                                 'action'     => 'test',
@@ -41,18 +44,20 @@ trait InvalidControllerTypeTrait
         $serviceConfig = ArrayUtils::merge(
             $serviceConfig,
             [
-                'aliases' => [
+                'aliases'    => [
                     'ControllerLoader' => 'ControllerManager',
                 ],
-                'factories' => [
+                'factories'  => [
                     'ControllerManager' => function ($services) {
-                        return new ControllerManager($services, ['factories' => [
-                            'bad' => function () {
-                                return new stdClass();
-                            },
-                        ]]);
+                        return new ControllerManager($services, [
+                            'factories' => [
+                                'bad' => function () {
+                                    return new stdClass();
+                                },
+                            ],
+                        ]);
                     },
-                    'Router' => function ($services) {
+                    'Router'            => function ($services) {
                         return $services->get('HttpRouter');
                     },
                 ],
@@ -63,13 +68,13 @@ trait InvalidControllerTypeTrait
                     'SendResponseListener' => TestAsset\MockSendResponseListener::class,
                     'BootstrapListener'    => TestAsset\StubBootstrapListener::class,
                 ],
-                'services' => [
+                'services'   => [
                     'config' => $config,
                 ],
             ]
         );
-        $services = new ServiceManager($serviceConfig);
-        $application = $services->get('Application');
+        $services      = new ServiceManager($serviceConfig);
+        $application   = $services->get('Application');
 
         $request = $services->get('Request');
         $request->setUri('http://example.local/bad');

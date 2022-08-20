@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Application;
 
 use Laminas\Mvc\Application;
@@ -13,7 +15,7 @@ class InvalidControllerTypeShouldTriggerDispatchErrorTest extends TestCase
     /**
      * @group error-handling
      */
-    public function testInvalidControllerTypeShouldTriggerDispatchError()
+    public function testInvalidControllerTypeShouldTriggerDispatchError(): void
     {
         $application = $this->prepareApplication();
 

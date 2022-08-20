@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laminas\Mvc\Controller\Plugin;
 
 use Laminas\Stdlib\DispatchableInterface as Dispatchable;
@@ -9,7 +11,6 @@ interface PluginInterface
     /**
      * Set the current controller instance
      *
-     * @param  Dispatchable $controller
      * @return void
      */
     public function setController(Dispatchable $controller);

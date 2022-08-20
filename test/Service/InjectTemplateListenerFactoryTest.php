@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Service;
 
 use ArrayObject;
@@ -19,12 +21,12 @@ class InjectTemplateListenerFactoryTest extends TestCase
 {
     use ProphecyTrait;
 
-    public function testFactoryCanCreateInjectTemplateListener()
+    public function testFactoryCanCreateInjectTemplateListener(): void
     {
         $this->buildInjectTemplateListenerWithConfig([]);
     }
 
-    public function testFactoryCanSetControllerMap()
+    public function testFactoryCanSetControllerMap(): void
     {
         $listener = $this->buildInjectTemplateListenerWithConfig([
             'view_manager' => [
@@ -37,7 +39,7 @@ class InjectTemplateListenerFactoryTest extends TestCase
         $this->assertEquals('some/module', $listener->mapController("SomeModule"));
     }
 
-    public function testFactoryCanSetControllerMapViaArrayAccessVM()
+    public function testFactoryCanSetControllerMapViaArrayAccessVM(): void
     {
         $listener = $this->buildInjectTemplateListenerWithConfig([
             'view_manager' => new ArrayObject([
@@ -45,18 +47,13 @@ class InjectTemplateListenerFactoryTest extends TestCase
                     // must be an array due to type hinting on setControllerMap()
                     'SomeModule' => 'some/module',
                 ],
-            ])
+            ]),
         ]);
 
         $this->assertEquals('some/module', $listener->mapController("SomeModule"));
     }
 
-    /**
-     * @param mixed $config
-     *
-     * @return \PHPUnit_Framework_MockObject_MockObject|\Laminas\Mvc\View\Http\InjectTemplateListener
-     */
-    private function buildInjectTemplateListenerWithConfig($config)
+    private function buildInjectTemplateListenerWithConfig(array $config): InjectTemplateListener
     {
         $serviceLocator = $this->prophesize(ServiceLocatorInterface::class);
         $serviceLocator->willImplement(ContainerInterface::class);

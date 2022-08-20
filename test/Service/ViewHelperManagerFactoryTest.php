@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Service;
 
 use Laminas\Http\PhpEnvironment\Request;
@@ -13,6 +15,10 @@ use Laminas\View\Helper;
 use Laminas\View\HelperPluginManager;
 use PHPUnit\Framework\TestCase;
 
+use function array_unshift;
+use function is_callable;
+use function sprintf;
+
 class ViewHelperManagerFactoryTest extends TestCase
 {
     public function setUp(): void
@@ -24,7 +30,7 @@ class ViewHelperManagerFactoryTest extends TestCase
     /**
      * @return array
      */
-    public function emptyConfiguration()
+    public function emptyConfiguration(): array
     {
         return [
             'no-config'                => [[]],
@@ -35,10 +41,8 @@ class ViewHelperManagerFactoryTest extends TestCase
 
     /**
      * @dataProvider emptyConfiguration
-     * @param  array $config
-     * @return void
      */
-    public function testDoctypeFactoryDoesNotRaiseErrorOnMissingConfiguration($config)
+    public function testDoctypeFactoryDoesNotRaiseErrorOnMissingConfiguration(array $config): void
     {
         $this->services->setService('config', $config);
         $manager = $this->factory->__invoke($this->services, 'doctype');
@@ -47,7 +51,7 @@ class ViewHelperManagerFactoryTest extends TestCase
         $this->assertInstanceof(Helper\Doctype::class, $doctype);
     }
 
-    public function urlHelperNames()
+    public function urlHelperNames(): array
     {
         return [
             ['url'],
@@ -58,19 +62,18 @@ class ViewHelperManagerFactoryTest extends TestCase
     }
 
     /**
-     * @group 71
      * @dataProvider urlHelperNames
      */
-    public function testUrlHelperFactoryCanBeInvokedViaShortNameOrFullClassName($name)
+    public function testUrlHelperFactoryCanBeInvokedViaShortNameOrFullClassName(string $name): void
     {
         $this->markTestSkipped(sprintf(
             '%s::%s skipped until laminas-view and the url() view helper are updated to use laminas-router',
-            get_class($this),
+            static::class,
             __FUNCTION__
         ));
 
         $routeMatch = $this->prophesize(RouteMatch::class)->reveal();
-        $mvcEvent = $this->prophesize(MvcEvent::class);
+        $mvcEvent   = $this->prophesize(MvcEvent::class);
         $mvcEvent->getRouteMatch()->willReturn($routeMatch);
 
         $application = $this->prophesize(Application::class);
@@ -84,33 +87,38 @@ class ViewHelperManagerFactoryTest extends TestCase
         $this->services->setService('config', []);
 
         $manager = $this->factory->__invoke($this->services, HelperPluginManager::class);
-        $helper = $manager->get($name);
+        $helper  = $manager->get($name);
 
         $this->assertAttributeSame($routeMatch, 'routeMatch', $helper, 'Route match was not injected');
         $this->assertAttributeSame($router, 'router', $helper, 'Router was not injected');
     }
 
-    public function basePathConfiguration()
+    public function basePathConfiguration(): iterable
     {
         $names = ['basepath', 'basePath', 'BasePath', Helper\BasePath::class, 'laminasviewhelperbasepath'];
 
         $configurations = [
-            'hard-coded' => [[
-                'config' => [
-                    'view_manager' => [
-                        'base_path' => '/foo/baz',
+            'hard-coded'   => [
+                [
+                    'config' => [
+                        'view_manager' => [
+                            'base_path' => '/foo/baz',
+                        ],
                     ],
                 ],
-            ], '/foo/baz'],
-
-            'request-base' => [[
-                'config' => [], // fails creating plugin manager without this
-                'Request' => function () {
-                    $request = $this->prophesize(Request::class);
-                    $request->getBasePath()->willReturn('/foo/bat');
-                    return $request->reveal();
-                },
-            ], '/foo/bat'],
+                '/foo/baz',
+            ],
+            'request-base' => [
+                [
+                    'config'  => [], // fails creating plugin manager without this
+                    'Request' => function () {
+                        $request = $this->prophesize(Request::class);
+                        $request->getBasePath()->willReturn('/foo/bat');
+                        return $request->reveal();
+                    },
+                ],
+                '/foo/bat',
+            ],
         ];
 
         foreach ($names as $name) {
@@ -123,11 +131,13 @@ class ViewHelperManagerFactoryTest extends TestCase
     }
 
     /**
-     * @group 71
      * @dataProvider basePathConfiguration
      */
-    public function testBasePathHelperFactoryCanBeInvokedViaShortNameOrFullClassName($name, array $services, $expected)
-    {
+    public function testBasePathHelperFactoryCanBeInvokedViaShortNameOrFullClassName(
+        string $name,
+        array $services,
+        ?string $expected
+    ): void {
         foreach ($services as $key => $value) {
             if (is_callable($value)) {
                 $this->services->setFactory($key, $value);
@@ -138,12 +148,12 @@ class ViewHelperManagerFactoryTest extends TestCase
         }
 
         $plugins = $this->factory->__invoke($this->services, HelperPluginManager::class);
-        $helper = $plugins->get($name);
+        $helper  = $plugins->get($name);
         $this->assertInstanceof(Helper\BasePath::class, $helper);
         $this->assertEquals($expected, $helper());
     }
 
-    public function doctypeHelperNames()
+    public function doctypeHelperNames(): array
     {
         return [
             ['doctype'],
@@ -157,7 +167,7 @@ class ViewHelperManagerFactoryTest extends TestCase
      * @group 71
      * @dataProvider doctypeHelperNames
      */
-    public function testDoctypeHelperFactoryCanBeInvokedViaShortNameOrFullClassName($name)
+    public function testDoctypeHelperFactoryCanBeInvokedViaShortNameOrFullClassName(string $name): void
     {
         $this->services->setService('config', [
             'view_manager' => [
@@ -166,7 +176,7 @@ class ViewHelperManagerFactoryTest extends TestCase
         ]);
 
         $plugins = $this->factory->__invoke($this->services, HelperPluginManager::class);
-        $helper = $plugins->get($name);
+        $helper  = $plugins->get($name);
         $this->assertInstanceof(Helper\Doctype::class, $helper);
         $this->assertEquals('<!DOCTYPE html>', (string) $helper);
     }

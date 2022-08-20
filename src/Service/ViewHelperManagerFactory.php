@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laminas\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
@@ -8,6 +10,8 @@ use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\View\Helper as ViewHelper;
 use Laminas\View\HelperPluginManager;
+
+use function is_callable;
 
 class ViewHelperManagerFactory implements FactoryInterface
 {
@@ -24,16 +28,15 @@ class ViewHelperManagerFactory implements FactoryInterface
     /**
      * Create and return the view helper manager
      *
-     * @param  ContainerInterface $container
      * @param  string             $requestedName
      * @param  null|array         $options
      * @return HelperPluginManager
      * @throws ServiceNotCreatedException
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null)
     {
-        $options = $options ?: [];
-        $options['factories'] = isset($options['factories']) ? $options['factories'] : [];
+        $options              = $options ?: [];
+        $options['factories'] = $options['factories'] ?? [];
 
         $managerConfig = [];
         if ($options) {
@@ -51,21 +54,21 @@ class ViewHelperManagerFactory implements FactoryInterface
     /**
      * Inject override factories into the plugin manager config.
      */
-    private function injectOverrideFactories(array $managerConfig, ContainerInterface $services) : array
+    private function injectOverrideFactories(array $managerConfig, ContainerInterface $services): array
     {
         // Configure URL view helper
-        $urlFactory = $this->createUrlHelperFactory($services);
-        $managerConfig['aliases']['laminasviewhelperurl'] = ViewHelper\Url::class;
+        $urlFactory                                        = $this->createUrlHelperFactory($services);
+        $managerConfig['aliases']['laminasviewhelperurl']  = ViewHelper\Url::class;
         $managerConfig['factories'][ViewHelper\Url::class] = $urlFactory;
 
         // Configure base path helper
-        $basePathFactory = $this->createBasePathHelperFactory($services);
-        $managerConfig['aliases']['laminasviewhelperbasepath'] = ViewHelper\BasePath::class;
+        $basePathFactory                                        = $this->createBasePathHelperFactory($services);
+        $managerConfig['aliases']['laminasviewhelperbasepath']  = ViewHelper\BasePath::class;
         $managerConfig['factories'][ViewHelper\BasePath::class] = $basePathFactory;
 
         // Configure doctype view helper
-        $doctypeFactory = $this->createDoctypeHelperFactory($services);
-        $managerConfig['aliases']['laminasviewhelperdoctype'] = ViewHelper\Doctype::class;
+        $doctypeFactory                                        = $this->createDoctypeHelperFactory($services);
+        $managerConfig['aliases']['laminasviewhelperdoctype']  = ViewHelper\Doctype::class;
         $managerConfig['factories'][ViewHelper\Doctype::class] = $doctypeFactory;
 
         return $managerConfig;
@@ -78,19 +81,17 @@ class ViewHelperManagerFactory implements FactoryInterface
      * and the route match from the MvcEvent composed by the application,
      * using them to configure the helper.
      *
-     * @param ContainerInterface $services
      * @return callable
      */
     private function createUrlHelperFactory(ContainerInterface $services)
     {
         return function () use ($services) {
-            $helper = new ViewHelper\Url;
+            $helper = new ViewHelper\Url();
             $helper->setRouter($services->get('HttpRouter'));
 
             $match = $services->get('Application')
                 ->getMvcEvent()
-                ->getRouteMatch()
-            ;
+                ->getRouteMatch();
 
             if ($match instanceof RouteMatch) {
                 $helper->setRouteMatch($match);
@@ -105,14 +106,13 @@ class ViewHelperManagerFactory implements FactoryInterface
      *
      * Uses configuration and request services to configure the helper.
      *
-     * @param ContainerInterface $services
      * @return callable
      */
     private function createBasePathHelperFactory(ContainerInterface $services)
     {
         return function () use ($services) {
             $config = $services->has('config') ? $services->get('config') : [];
-            $helper = new ViewHelper\BasePath;
+            $helper = new ViewHelper\BasePath();
 
             if (isset($config['view_manager']) && isset($config['view_manager']['base_path'])) {
                 $helper->setBasePath($config['view_manager']['base_path']);
@@ -135,15 +135,14 @@ class ViewHelperManagerFactory implements FactoryInterface
      * Other view helpers depend on this to decide which spec to generate their tags
      * based on. This is why it must be set early instead of later in the layout phtml.
      *
-     * @param ContainerInterface $services
      * @return callable
      */
     private function createDoctypeHelperFactory(ContainerInterface $services)
     {
         return function () use ($services) {
             $config = $services->has('config') ? $services->get('config') : [];
-            $config = isset($config['view_manager']) ? $config['view_manager'] : [];
-            $helper = new ViewHelper\Doctype;
+            $config = $config['view_manager'] ?? [];
+            $helper = new ViewHelper\Doctype();
             if (isset($config['doctype']) && $config['doctype']) {
                 $helper->setDoctype($config['doctype']);
             }

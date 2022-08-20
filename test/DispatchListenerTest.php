@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc;
 
 use Laminas\EventManager\EventManager;
@@ -15,16 +17,19 @@ use Laminas\Stdlib\ResponseInterface;
 use Laminas\View\Model\ModelInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
+use stdClass;
+
+use function var_export;
 
 class DispatchListenerTest extends TestCase
 {
     use ProphecyTrait;
 
-    public function createMvcEvent($controllerMatched)
+    public function createMvcEvent(string $controllerMatched): MvcEvent
     {
         $response   = new Response();
         $routeMatch = $this->prophesize(RouteMatch::class);
-        $routeMatch->getParam('controller', 'not-found')->willReturn('path');
+        $routeMatch->getParam('controller', 'not-found')->willReturn($controllerMatched);
 
         $eventManager = new EventManager();
 
@@ -41,12 +46,14 @@ class DispatchListenerTest extends TestCase
         return $event;
     }
 
-    public function testControllerManagerUsingAbstractFactory()
+    public function testControllerManagerUsingAbstractFactory(): void
     {
-        $controllerManager = new ControllerManager(new ServiceManager(), ['abstract_factories' => [
-            Controller\TestAsset\ControllerLoaderAbstractFactory::class,
-        ]]);
-        $listener = new DispatchListener($controllerManager);
+        $controllerManager = new ControllerManager(new ServiceManager(), [
+            'abstract_factories' => [
+                Controller\TestAsset\ControllerLoaderAbstractFactory::class,
+            ],
+        ]);
+        $listener          = new DispatchListener($controllerManager);
 
         $event = $this->createMvcEvent('path');
 
@@ -57,17 +64,19 @@ class DispatchListenerTest extends TestCase
 
         $return = $listener->onDispatch($event);
 
-        $this->assertEmpty($log, var_export($log, 1));
+        $this->assertEmpty($log, var_export($log, true));
         $this->assertSame($event->getResponse(), $return);
         $this->assertSame(200, $return->getStatusCode());
     }
 
-    public function testUnlocatableControllerViaAbstractFactory()
+    public function testUnlocatableControllerViaAbstractFactory(): void
     {
-        $controllerManager = new ControllerManager(new ServiceManager(), ['abstract_factories' => [
-            Controller\TestAsset\UnlocatableControllerLoaderAbstractFactory::class,
-        ]]);
-        $listener = new DispatchListener($controllerManager);
+        $controllerManager = new ControllerManager(new ServiceManager(), [
+            'abstract_factories' => [
+                Controller\TestAsset\UnlocatableControllerLoaderAbstractFactory::class,
+            ],
+        ]);
+        $listener          = new DispatchListener($controllerManager);
 
         $event = $this->createMvcEvent('path');
 
@@ -84,18 +93,19 @@ class DispatchListenerTest extends TestCase
 
     /**
      * @dataProvider alreadySetMvcEventResultProvider
-     *
      * @param mixed $alreadySetResult
      */
-    public function testWillNotDispatchWhenAnMvcEventResultIsAlreadySet($alreadySetResult)
+    public function testWillNotDispatchWhenAnMvcEventResultIsAlreadySet($alreadySetResult): void
     {
         $event = $this->createMvcEvent('path');
 
         $event->setResult($alreadySetResult);
 
-        $listener = new DispatchListener(new ControllerManager(new ServiceManager(), ['abstract_factories' => [
-            Controller\TestAsset\UnlocatableControllerLoaderAbstractFactory::class,
-        ]]));
+        $listener = new DispatchListener(new ControllerManager(new ServiceManager(), [
+            'abstract_factories' => [
+                Controller\TestAsset\UnlocatableControllerLoaderAbstractFactory::class,
+            ],
+        ]));
 
         $event->getApplication()->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, function () {
             self::fail('No dispatch failures should be raised - dispatch should be skipped');
@@ -109,20 +119,20 @@ class DispatchListenerTest extends TestCase
     /**
      * @return mixed[][]
      */
-    public function alreadySetMvcEventResultProvider()
+    public function alreadySetMvcEventResultProvider(): array
     {
         return [
             [123],
             [true],
             [false],
             [[]],
-            [new \stdClass()],
+            [new stdClass()],
             [$this],
             [$this->createMock(ModelInterface::class)],
             [$this->createMock(ResponseInterface::class)],
             [$this->createMock(Response::class)],
             [['view model data' => 'as an array']],
-            [['foo' => new \stdClass()]],
+            [['foo' => new stdClass()]],
             ['a response string'],
         ];
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laminas\Mvc\Controller;
 
 use Interop\Container\ContainerInterface;
@@ -18,6 +20,12 @@ use Laminas\Stdlib\DispatchableInterface;
 use Laminas\Validator\ValidatorPluginManager;
 use ReflectionClass;
 use ReflectionParameter;
+
+use function array_map;
+use function class_exists;
+use function class_implements;
+use function in_array;
+use function sprintf;
 
 /**
  * Reflection-based factory for controllers.
@@ -95,7 +103,7 @@ class LazyControllerAbstractFactory implements AbstractFactoryInterface
      *
      * @return DispatchableInterface
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null)
     {
         $reflectionClass = new ReflectionClass($requestedName);
 
@@ -134,7 +142,6 @@ class LazyControllerAbstractFactory implements AbstractFactoryInterface
      *
      * Returns a callback for resolving a parameter to a value.
      *
-     * @param ContainerInterface $container
      * @param string $requestedName
      * @return callable
      */
@@ -147,9 +154,12 @@ class LazyControllerAbstractFactory implements AbstractFactoryInterface
          *   resolved to a service in the container.
          */
         return function (ReflectionParameter $parameter) use ($container, $requestedName) {
-            if ($parameter->getType()
-                && $parameter->getType()->getName() === 'array') {
-                if ($parameter->getName() === 'config'
+            if (
+                $parameter->getType()
+                && $parameter->getType()->getName() === 'array'
+            ) {
+                if (
+                    $parameter->getName() === 'config'
                     && $container->has('config')
                 ) {
                     return $container->get('config');
@@ -162,7 +172,7 @@ class LazyControllerAbstractFactory implements AbstractFactoryInterface
             }
 
             $type = $parameter->getType()->getName();
-            $type = isset($this->aliases[$type]) ? $this->aliases[$type] : $type;
+            $type = $this->aliases[$type] ?? $type;
 
             if (! $container->has($type)) {
                 throw new ServiceNotFoundException(sprintf(

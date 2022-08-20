@@ -1,0 +1,1545 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="4.23.0@f1fe6ff483bf325c803df9f510d09a03fd796f88">
+  <file src="src/Application.php">
+    <ImplementedReturnTypeMismatch occurrences="1">
+      <code>Application</code>
+    </ImplementedReturnTypeMismatch>
+    <MissingClosureParamType occurrences="1">
+      <code>$r</code>
+    </MissingClosureParamType>
+    <MissingClosureReturnType occurrences="1">
+      <code>function ($r) use ($event) {</code>
+    </MissingClosureReturnType>
+    <PropertyNotSetInConstructor occurrences="1">
+      <code>$event</code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="src/ConfigProvider.php">
+    <MissingClosureParamType occurrences="2">
+      <code>$first</code>
+      <code>$second</code>
+    </MissingClosureParamType>
+  </file>
+  <file src="src/Controller/AbstractActionController.php">
+    <PossiblyNullReference occurrences="1">
+      <code>setParam</code>
+    </PossiblyNullReference>
+  </file>
+  <file src="src/Controller/AbstractController.php">
+    <DocblockTypeContradiction occurrences="10">
+      <code>! $this-&gt;event</code>
+      <code>! $this-&gt;events</code>
+      <code>! $this-&gt;plugins</code>
+      <code>! $this-&gt;request</code>
+      <code>! $this-&gt;response</code>
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;events</code>
+      <code>$this-&gt;plugins</code>
+      <code>$this-&gt;request</code>
+      <code>$this-&gt;response</code>
+    </DocblockTypeContradiction>
+    <ImplementedReturnTypeMismatch occurrences="1">
+      <code>AbstractController</code>
+    </ImplementedReturnTypeMismatch>
+    <LessSpecificReturnStatement occurrences="1">
+      <code>$this-&gt;event</code>
+    </LessSpecificReturnStatement>
+    <MissingClosureParamType occurrences="1">
+      <code>$test</code>
+    </MissingClosureParamType>
+    <MissingConstructor occurrences="40">
+      <code>$event</code>
+      <code>$event</code>
+      <code>$event</code>
+      <code>$event</code>
+      <code>$event</code>
+      <code>$event</code>
+      <code>$event</code>
+      <code>$event</code>
+      <code>$events</code>
+      <code>$events</code>
+      <code>$events</code>
+      <code>$events</code>
+      <code>$events</code>
+      <code>$events</code>
+      <code>$events</code>
+      <code>$events</code>
+      <code>$plugins</code>
+      <code>$plugins</code>
+      <code>$plugins</code>
+      <code>$plugins</code>
+      <code>$plugins</code>
+      <code>$plugins</code>
+      <code>$plugins</code>
+      <code>$plugins</code>
+      <code>$request</code>
+      <code>$request</code>
+      <code>$request</code>
+      <code>$request</code>
+      <code>$request</code>
+      <code>$request</code>
+      <code>$request</code>
+      <code>$request</code>
+      <code>$response</code>
+      <code>$response</code>
+      <code>$response</code>
+      <code>$response</code>
+      <code>$response</code>
+      <code>$response</code>
+      <code>$response</code>
+      <code>$response</code>
+    </MissingConstructor>
+    <MoreSpecificReturnType occurrences="1">
+      <code>MvcEvent</code>
+    </MoreSpecificReturnType>
+    <ParamNameMismatch occurrences="2">
+      <code>$e</code>
+      <code>$events</code>
+    </ParamNameMismatch>
+  </file>
+  <file src="src/Controller/AbstractRestfulController.php">
+    <DocblockTypeContradiction occurrences="3">
+      <code>! $headerContentType</code>
+      <code>$headerContentType</code>
+      <code>is_object($handler)</code>
+    </DocblockTypeContradiction>
+    <PossiblyInvalidArgument occurrences="1">
+      <code>$this-&gt;jsonDecodeType</code>
+    </PossiblyInvalidArgument>
+    <PossiblyNullArgument occurrences="1">
+      <code>$contentType</code>
+    </PossiblyNullArgument>
+    <RedundantCastGivenDocblockType occurrences="1">
+      <code>(string) $name</code>
+    </RedundantCastGivenDocblockType>
+    <RedundantConditionGivenDocblockType occurrences="1">
+      <code>gettype($handler)</code>
+    </RedundantConditionGivenDocblockType>
+    <TypeDoesNotContainType occurrences="1">
+      <code>! is_array($parsedParams)</code>
+    </TypeDoesNotContainType>
+    <UndefinedInterfaceMethod occurrences="18">
+      <code>getHeaders</code>
+      <code>getMethod</code>
+      <code>getPost</code>
+      <code>getQuery</code>
+      <code>setStatusCode</code>
+      <code>setStatusCode</code>
+      <code>setStatusCode</code>
+      <code>setStatusCode</code>
+      <code>setStatusCode</code>
+      <code>setStatusCode</code>
+      <code>setStatusCode</code>
+      <code>setStatusCode</code>
+      <code>setStatusCode</code>
+      <code>setStatusCode</code>
+      <code>setStatusCode</code>
+      <code>setStatusCode</code>
+      <code>setStatusCode</code>
+      <code>setStatusCode</code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/Controller/ControllerManager.php">
+    <DocblockTypeContradiction occurrences="2">
+      <code>! $events</code>
+      <code>! $events</code>
+    </DocblockTypeContradiction>
+    <MissingReturnType occurrences="2">
+      <code>injectEventManager</code>
+      <code>injectPluginManager</code>
+    </MissingReturnType>
+    <NonInvariantDocblockPropertyType occurrences="1">
+      <code>$instanceOf</code>
+    </NonInvariantDocblockPropertyType>
+    <ParamNameMismatch occurrences="1">
+      <code>$plugin</code>
+    </ParamNameMismatch>
+  </file>
+  <file src="src/Controller/LazyControllerAbstractFactory.php">
+    <LessSpecificReturnStatement occurrences="3">
+      <code>new $requestedName()</code>
+      <code>new $requestedName()</code>
+      <code>new $requestedName(...$parameters)</code>
+    </LessSpecificReturnStatement>
+    <MissingParamType occurrences="1">
+      <code>$requestedName</code>
+    </MissingParamType>
+    <MoreSpecificReturnType occurrences="1">
+      <code>DispatchableInterface</code>
+    </MoreSpecificReturnType>
+    <UndefinedClass occurrences="9">
+      <code>ConsoleAdapterInterface</code>
+      <code>FilterPluginManager</code>
+      <code>HydratorPluginManager</code>
+      <code>InputFilterPluginManager</code>
+      <code>LogFilterManager</code>
+      <code>LogFormatterManager</code>
+      <code>LogProcessorManager</code>
+      <code>LogWriterManager</code>
+      <code>SerializerAdapterManager</code>
+    </UndefinedClass>
+    <UndefinedMethod occurrences="2">
+      <code>getName</code>
+      <code>getName</code>
+    </UndefinedMethod>
+  </file>
+  <file src="src/Controller/Plugin/AcceptableViewModelSelector.php">
+    <DocblockTypeContradiction occurrences="1">
+      <code>is_array($modelAcceptString)</code>
+    </DocblockTypeContradiction>
+    <InvalidArgument occurrences="1">
+      <code>$name</code>
+    </InvalidArgument>
+    <InvalidReturnStatement occurrences="3">
+      <code>$res</code>
+      <code>$this-&gt;defaultViewModelName</code>
+      <code>$this-&gt;extractViewModelName($res)</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="2">
+      <code>AbstractFieldValuePart|null</code>
+      <code>ModelInterface|null</code>
+    </InvalidReturnType>
+    <LessSpecificReturnStatement occurrences="1">
+      <code>new $name()</code>
+    </LessSpecificReturnStatement>
+    <MissingConstructor occurrences="3">
+      <code>$defaultMatchAgainst</code>
+      <code>$event</code>
+      <code>$request</code>
+    </MissingConstructor>
+    <MoreSpecificReturnType occurrences="1">
+      <code>ModelInterface|null</code>
+    </MoreSpecificReturnType>
+    <PossiblyInvalidMethodCall occurrences="2">
+      <code>get</code>
+      <code>has</code>
+    </PossiblyInvalidMethodCall>
+    <PossiblyNullArgument occurrences="1">
+      <code>$modelName</code>
+    </PossiblyNullArgument>
+    <PossiblyNullArrayAccess occurrences="1">
+      <code>$res-&gt;getMatchedAgainst()-&gt;params[self::INJECT_VIEWMODEL_NAME]</code>
+    </PossiblyNullArrayAccess>
+    <PossiblyNullPropertyAssignmentValue occurrences="1">
+      <code>$matchAgainst</code>
+    </PossiblyNullPropertyAssignmentValue>
+    <PossiblyNullPropertyFetch occurrences="1">
+      <code>$res-&gt;getMatchedAgainst()-&gt;params</code>
+    </PossiblyNullPropertyFetch>
+    <PossiblyUndefinedMethod occurrences="2">
+      <code>get</code>
+      <code>has</code>
+    </PossiblyUndefinedMethod>
+    <RedundantCastGivenDocblockType occurrences="1">
+      <code>(string) $defaultViewModelName</code>
+    </RedundantCastGivenDocblockType>
+    <RedundantConditionGivenDocblockType occurrences="5">
+      <code>$modelAcceptString</code>
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;request</code>
+      <code>$this-&gt;request</code>
+    </RedundantConditionGivenDocblockType>
+  </file>
+  <file src="src/Controller/Plugin/Forward.php">
+    <InvalidArgument occurrences="1">
+      <code>1</code>
+    </InvalidArgument>
+    <PossiblyNullArgument occurrences="2">
+      <code>$sharedEvents</code>
+      <code>is_object($controller) ? get_class($controller) : var_export($controller, 1)</code>
+    </PossiblyNullArgument>
+    <PossiblyNullReference occurrences="1">
+      <code>getMatchedRouteName</code>
+    </PossiblyNullReference>
+    <PropertyNotSetInConstructor occurrences="1">
+      <code>$event</code>
+    </PropertyNotSetInConstructor>
+    <RedundantCastGivenDocblockType occurrences="1">
+      <code>(int) $maxNestedForwards</code>
+    </RedundantCastGivenDocblockType>
+    <RedundantConditionGivenDocblockType occurrences="4">
+      <code>$event</code>
+      <code>$event</code>
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;event</code>
+    </RedundantConditionGivenDocblockType>
+    <UndefinedDocblockClass occurrences="1">
+      <code>callable|CallbackHandler</code>
+    </UndefinedDocblockClass>
+  </file>
+  <file src="src/Controller/Plugin/Layout.php">
+    <MissingConstructor occurrences="1">
+      <code>$event</code>
+    </MissingConstructor>
+    <RedundantCastGivenDocblockType occurrences="1">
+      <code>(string) $template</code>
+    </RedundantCastGivenDocblockType>
+    <RedundantConditionGivenDocblockType occurrences="2">
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;event</code>
+    </RedundantConditionGivenDocblockType>
+  </file>
+  <file src="src/Controller/Plugin/Params.php">
+    <PossiblyNullReference occurrences="8">
+      <code>getRequest</code>
+      <code>getRequest</code>
+      <code>getRequest</code>
+      <code>getRequest</code>
+      <code>getRequest</code>
+      <code>getRequest</code>
+      <code>getRequest</code>
+      <code>getRequest</code>
+    </PossiblyNullReference>
+    <UndefinedInterfaceMethod occurrences="10">
+      <code>getRequest</code>
+      <code>getRequest</code>
+      <code>getRequest</code>
+      <code>getRequest</code>
+      <code>getRequest</code>
+      <code>getRequest</code>
+      <code>getRequest</code>
+      <code>getRequest</code>
+      <code>getRouteMatch</code>
+      <code>getRouteMatch</code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/Controller/Plugin/Redirect.php">
+    <DocblockTypeContradiction occurrences="1">
+      <code>is_scalar($options)</code>
+    </DocblockTypeContradiction>
+    <MissingConstructor occurrences="2">
+      <code>$event</code>
+      <code>$response</code>
+    </MissingConstructor>
+    <RedundantConditionGivenDocblockType occurrences="4">
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;response</code>
+      <code>$this-&gt;response</code>
+    </RedundantConditionGivenDocblockType>
+  </file>
+  <file src="src/Controller/Plugin/Service/ForwardFactory.php">
+    <MissingParamType occurrences="1">
+      <code>$name</code>
+    </MissingParamType>
+  </file>
+  <file src="src/Controller/Plugin/Url.php">
+    <PossiblyInvalidArgument occurrences="1">
+      <code>$options</code>
+    </PossiblyInvalidArgument>
+    <PossiblyInvalidArrayAssignment occurrences="1">
+      <code>$options['name']</code>
+    </PossiblyInvalidArrayAssignment>
+  </file>
+  <file src="src/Controller/PluginManager.php">
+    <DocblockTypeContradiction occurrences="1">
+      <code>is_object($plugin)</code>
+    </DocblockTypeContradiction>
+    <NonInvariantDocblockPropertyType occurrences="2">
+      <code>$factories</code>
+      <code>$instanceOf</code>
+    </NonInvariantDocblockPropertyType>
+    <ParamNameMismatch occurrences="2">
+      <code>$name</code>
+      <code>$plugin</code>
+    </ParamNameMismatch>
+    <PropertyNotSetInConstructor occurrences="1">
+      <code>$controller</code>
+    </PropertyNotSetInConstructor>
+    <UndefinedClass occurrences="7">
+      <code>AcceptableViewModelSelector</code>
+      <code>CreateHttpNotFoundModel</code>
+      <code>Forward</code>
+      <code>Layout</code>
+      <code>Params</code>
+      <code>Redirect</code>
+      <code>Url</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/DispatchListener.php">
+    <ArgumentTypeCoercion occurrences="3">
+      <code>$application</code>
+      <code>$application</code>
+      <code>$application</code>
+    </ArgumentTypeCoercion>
+    <MissingReturnType occurrences="1">
+      <code>reportMonitorEvent</code>
+    </MissingReturnType>
+    <UndefinedConstant occurrences="3">
+      <code>$application::ERROR_CONTROLLER_INVALID</code>
+      <code>$application::ERROR_CONTROLLER_NOT_FOUND</code>
+      <code>$application::ERROR_EXCEPTION</code>
+    </UndefinedConstant>
+    <UndefinedFunction occurrences="1"/>
+  </file>
+  <file src="src/HttpMethodListener.php">
+    <MissingReturnType occurrences="2">
+      <code>setAllowedMethods</code>
+      <code>setEnabled</code>
+    </MissingReturnType>
+    <RedundantCastGivenDocblockType occurrences="1">
+      <code>(bool) $enabled</code>
+    </RedundantCastGivenDocblockType>
+  </file>
+  <file src="src/ModuleRouteListener.php">
+    <InvalidReturnType occurrences="1">
+      <code>null</code>
+    </InvalidReturnType>
+  </file>
+  <file src="src/MvcEvent.php">
+    <DocblockTypeContradiction occurrences="1">
+      <code>null === $this-&gt;viewModel</code>
+    </DocblockTypeContradiction>
+    <PropertyNotSetInConstructor occurrences="7">
+      <code>$application</code>
+      <code>$request</code>
+      <code>$response</code>
+      <code>$router</code>
+      <code>$viewModel</code>
+      <code>MvcEvent</code>
+      <code>MvcEvent</code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="src/ResponseSender/AbstractResponseSender.php">
+    <UndefinedInterfaceMethod occurrences="2">
+      <code>getHeaders</code>
+      <code>renderStatusLine</code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/ResponseSender/HttpResponseSender.php">
+    <ImplementedReturnTypeMismatch occurrences="1">
+      <code>HttpResponseSender</code>
+    </ImplementedReturnTypeMismatch>
+    <UndefinedMethod occurrences="1">
+      <code>sendContent</code>
+    </UndefinedMethod>
+  </file>
+  <file src="src/ResponseSender/PhpEnvironmentResponseSender.php">
+    <ImplementedReturnTypeMismatch occurrences="1">
+      <code>PhpEnvironmentResponseSender</code>
+    </ImplementedReturnTypeMismatch>
+    <UndefinedMethod occurrences="1">
+      <code>sendContent</code>
+    </UndefinedMethod>
+  </file>
+  <file src="src/ResponseSender/SendResponseEvent.php">
+    <PropertyNotSetInConstructor occurrences="2">
+      <code>$response</code>
+      <code>SendResponseEvent</code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="src/ResponseSender/SimpleStreamResponseSender.php">
+    <ImplementedReturnTypeMismatch occurrences="1">
+      <code>SimpleStreamResponseSender</code>
+    </ImplementedReturnTypeMismatch>
+    <InvalidNullableReturnType occurrences="1">
+      <code>SimpleStreamResponseSender</code>
+    </InvalidNullableReturnType>
+    <UndefinedInterfaceMethod occurrences="1">
+      <code>getStream</code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/RouteListener.php">
+    <InvalidReturnStatement occurrences="1">
+      <code>$event-&gt;getParams()</code>
+    </InvalidReturnStatement>
+    <PossiblyInvalidMethodCall occurrences="1">
+      <code>getEventManager</code>
+    </PossiblyInvalidMethodCall>
+  </file>
+  <file src="src/SendResponseListener.php">
+    <ImplementedReturnTypeMismatch occurrences="1">
+      <code>SendResponseListener</code>
+    </ImplementedReturnTypeMismatch>
+    <InvalidReturnStatement occurrences="1">
+      <code>$this</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="1">
+      <code>SendResponseEvent</code>
+    </InvalidReturnType>
+    <MissingConstructor occurrences="2">
+      <code>$event</code>
+      <code>$eventManager</code>
+    </MissingConstructor>
+  </file>
+  <file src="src/Service/AbstractPluginManagerFactory.php">
+    <LessSpecificReturnStatement occurrences="1">
+      <code>new $pluginManagerClass($container, $options)</code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType occurrences="1">
+      <code>AbstractPluginManager</code>
+    </MoreSpecificReturnType>
+  </file>
+  <file src="src/Service/ApplicationFactory.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$container</code>
+    </ArgumentTypeCoercion>
+  </file>
+  <file src="src/Service/HttpDefaultRenderingStrategyFactory.php">
+    <MissingReturnType occurrences="1">
+      <code>injectLayoutTemplate</code>
+    </MissingReturnType>
+  </file>
+  <file src="src/Service/HttpExceptionStrategyFactory.php">
+    <MissingReturnType occurrences="2">
+      <code>injectDisplayExceptions</code>
+      <code>injectExceptionTemplate</code>
+    </MissingReturnType>
+  </file>
+  <file src="src/Service/HttpMethodListenerFactory.php">
+    <MissingParamType occurrences="1">
+      <code>$name</code>
+    </MissingParamType>
+    <PossiblyNullArgument occurrences="1">
+      <code>$allowedMethods</code>
+    </PossiblyNullArgument>
+  </file>
+  <file src="src/Service/HttpRouteNotFoundStrategyFactory.php">
+    <MissingReturnType occurrences="3">
+      <code>injectDisplayExceptions</code>
+      <code>injectDisplayNotFoundReason</code>
+      <code>injectNotFoundTemplate</code>
+    </MissingReturnType>
+  </file>
+  <file src="src/Service/HttpViewManagerConfigTrait.php">
+    <InvalidReturnType occurrences="1">
+      <code>array</code>
+    </InvalidReturnType>
+  </file>
+  <file src="src/Service/InjectTemplateListenerFactory.php">
+    <MissingParamType occurrences="1">
+      <code>$name</code>
+    </MissingParamType>
+  </file>
+  <file src="src/Service/PaginatorPluginManagerFactory.php">
+    <UndefinedClass occurrences="1">
+      <code>PaginatorPluginManager</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Service/ViewHelperManagerFactory.php">
+    <RedundantCondition occurrences="2">
+      <code>$options</code>
+      <code>$options</code>
+    </RedundantCondition>
+  </file>
+  <file src="src/Service/ViewResolverFactory.php">
+    <InvalidArgument occurrences="6">
+      <code>$mapResolver</code>
+      <code>$mapResolver</code>
+      <code>$pathResolver</code>
+      <code>$pathResolver</code>
+      <code>$prefixPathStackResolver</code>
+      <code>$prefixPathStackResolver</code>
+    </InvalidArgument>
+    <UndefinedDocblockClass occurrences="3">
+      <code>$mapResolver</code>
+      <code>$pathResolver</code>
+      <code>$prefixPathStackResolver</code>
+    </UndefinedDocblockClass>
+  </file>
+  <file src="src/View/Http/DefaultRenderingStrategy.php">
+    <RedundantCastGivenDocblockType occurrences="1">
+      <code>(string) $layoutTemplate</code>
+    </RedundantCastGivenDocblockType>
+  </file>
+  <file src="src/View/Http/ExceptionStrategy.php">
+    <DocblockTypeContradiction occurrences="2">
+      <code>! $response</code>
+      <code>$response</code>
+    </DocblockTypeContradiction>
+    <RedundantCastGivenDocblockType occurrences="2">
+      <code>(bool) $displayExceptions</code>
+      <code>(string) $exceptionTemplate</code>
+    </RedundantCastGivenDocblockType>
+    <UndefinedInterfaceMethod occurrences="2">
+      <code>getStatusCode</code>
+      <code>setStatusCode</code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/View/Http/InjectRoutematchParamsListener.php">
+    <MissingReturnType occurrences="1">
+      <code>setOverwrite</code>
+    </MissingReturnType>
+    <PossiblyNullReference occurrences="1">
+      <code>getParams</code>
+    </PossiblyNullReference>
+    <UndefinedMethod occurrences="1">
+      <code>get</code>
+    </UndefinedMethod>
+  </file>
+  <file src="src/View/Http/InjectTemplateListener.php">
+    <MissingReturnType occurrences="1">
+      <code>setPreferRouteMatchController</code>
+    </MissingReturnType>
+    <PossiblyFalseArgument occurrences="1">
+      <code>$template</code>
+    </PossiblyFalseArgument>
+    <PossiblyFalseOperand occurrences="2">
+      <code>$template</code>
+      <code>strrpos($controller, '\\')</code>
+    </PossiblyFalseOperand>
+    <PossiblyNullReference occurrences="1">
+      <code>getParam</code>
+    </PossiblyNullReference>
+    <RedundantCastGivenDocblockType occurrences="1">
+      <code>(bool) $preferRouteMatchController</code>
+    </RedundantCastGivenDocblockType>
+  </file>
+  <file src="src/View/Http/RouteNotFoundStrategy.php">
+    <DocblockTypeContradiction occurrences="2">
+      <code>! $response</code>
+      <code>$response</code>
+    </DocblockTypeContradiction>
+    <RedundantCastGivenDocblockType occurrences="3">
+      <code>(bool) $displayExceptions</code>
+      <code>(bool) $displayNotFoundReason</code>
+      <code>(string) $notFoundTemplate</code>
+    </RedundantCastGivenDocblockType>
+    <UndefinedInterfaceMethod occurrences="2">
+      <code>getStatusCode</code>
+      <code>setStatusCode</code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/View/Http/ViewManager.php">
+    <MissingConstructor occurrences="3">
+      <code>$config</code>
+      <code>$event</code>
+      <code>$services</code>
+    </MissingConstructor>
+    <MissingReturnType occurrences="1">
+      <code>injectViewModelIntoPlugin</code>
+    </MissingReturnType>
+    <PossiblyNullReference occurrences="1">
+      <code>attach</code>
+    </PossiblyNullReference>
+    <PropertyTypeCoercion occurrences="1">
+      <code>$services</code>
+    </PropertyTypeCoercion>
+  </file>
+  <file src="test/Application/AllowsReturningEarlyFromRoutingTest.php">
+    <MissingClosureParamType occurrences="1">
+      <code>$e</code>
+    </MissingClosureParamType>
+  </file>
+  <file src="test/Application/BadControllerTrait.php">
+    <MissingClosureParamType occurrences="2">
+      <code>$services</code>
+      <code>$services</code>
+    </MissingClosureParamType>
+    <MissingClosureReturnType occurrences="1">
+      <code>function ($services) {</code>
+    </MissingClosureReturnType>
+  </file>
+  <file src="test/Application/ControllerIsDispatchedTest.php">
+    <UndefinedInterfaceMethod occurrences="1">
+      <code>toString</code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="test/Application/ExceptionsRaisedInDispatchableShouldRaiseDispatchErrorEventTest.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>'Exception'</code>
+    </ArgumentTypeCoercion>
+    <MissingClosureParamType occurrences="1">
+      <code>$e</code>
+    </MissingClosureParamType>
+  </file>
+  <file src="test/Application/InabilityToRetrieveControllerShouldTriggerDispatchErrorTest.php">
+    <MissingClosureParamType occurrences="1">
+      <code>$e</code>
+    </MissingClosureParamType>
+  </file>
+  <file src="test/Application/InabilityToRetrieveControllerShouldTriggerExceptionTest.php">
+    <MissingClosureParamType occurrences="1">
+      <code>$e</code>
+    </MissingClosureParamType>
+  </file>
+  <file src="test/Application/InvalidControllerTypeShouldTriggerDispatchErrorTest.php">
+    <MissingClosureParamType occurrences="1">
+      <code>$e</code>
+    </MissingClosureParamType>
+  </file>
+  <file src="test/Application/InvalidControllerTypeTrait.php">
+    <MissingClosureParamType occurrences="2">
+      <code>$services</code>
+      <code>$services</code>
+    </MissingClosureParamType>
+    <MissingClosureReturnType occurrences="1">
+      <code>function ($services) {</code>
+    </MissingClosureReturnType>
+  </file>
+  <file src="test/Application/MissingControllerTrait.php">
+    <MissingClosureParamType occurrences="1">
+      <code>$services</code>
+    </MissingClosureParamType>
+    <MissingClosureReturnType occurrences="1">
+      <code>function ($services) {</code>
+    </MissingClosureReturnType>
+  </file>
+  <file src="test/Application/PathControllerTrait.php">
+    <MissingClosureParamType occurrences="2">
+      <code>$services</code>
+      <code>$services</code>
+    </MissingClosureParamType>
+    <MissingClosureReturnType occurrences="1">
+      <code>function ($services) {</code>
+    </MissingClosureReturnType>
+  </file>
+  <file src="test/Application/RoutingSuccessTest.php">
+    <MissingClosureParamType occurrences="1">
+      <code>$e</code>
+    </MissingClosureParamType>
+  </file>
+  <file src="test/ApplicationTest.php">
+    <ArgumentTypeCoercion occurrences="3">
+      <code>$eventManager</code>
+      <code>$eventManager</code>
+      <code>$events</code>
+    </ArgumentTypeCoercion>
+    <DeprecatedMethod occurrences="7">
+      <code>setMethods</code>
+      <code>setMethods</code>
+      <code>setMethods</code>
+      <code>setMethods</code>
+      <code>setMethods</code>
+      <code>setMethods</code>
+      <code>setMethods</code>
+    </DeprecatedMethod>
+    <InvalidArgument occurrences="7">
+      <code>$dispatchMock</code>
+      <code>$dispatchMock</code>
+      <code>$errorMock</code>
+      <code>$finishMock</code>
+      <code>$finishMock</code>
+      <code>$routeMock</code>
+      <code>$routeMock</code>
+    </InvalidArgument>
+    <MissingClosureParamType occurrences="15">
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$services</code>
+    </MissingClosureParamType>
+    <MissingClosureReturnType occurrences="2">
+      <code>function ($e) {</code>
+      <code>function (MvcEvent $event) {</code>
+    </MissingClosureReturnType>
+    <UndefinedInterfaceMethod occurrences="1">
+      <code>getBody</code>
+    </UndefinedInterfaceMethod>
+    <UndefinedThisPropertyFetch occurrences="1">
+      <code>$this-&gt;services</code>
+    </UndefinedThisPropertyFetch>
+  </file>
+  <file src="test/Controller/AbstractControllerTest.php">
+    <PossiblyInvalidArgument occurrences="5">
+      <code>$eventManager</code>
+      <code>$eventManager</code>
+      <code>$eventManager</code>
+      <code>$eventManager</code>
+      <code>$eventManager</code>
+    </PossiblyInvalidArgument>
+    <PossiblyUndefinedMethod occurrences="10">
+      <code>expects</code>
+      <code>expects</code>
+      <code>expects</code>
+      <code>expects</code>
+      <code>expects</code>
+      <code>setEventManager</code>
+      <code>setEventManager</code>
+      <code>setEventManager</code>
+      <code>setEventManager</code>
+      <code>setEventManager</code>
+    </PossiblyUndefinedMethod>
+  </file>
+  <file src="test/Controller/ActionControllerTest.php">
+    <MissingClosureParamType occurrences="6">
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+    </MissingClosureParamType>
+    <PossiblyNullReference occurrences="4">
+      <code>attach</code>
+      <code>attach</code>
+      <code>attach</code>
+      <code>attach</code>
+    </PossiblyNullReference>
+    <PossiblyUndefinedMethod occurrences="2">
+      <code>$result</code>
+      <code>$result</code>
+    </PossiblyUndefinedMethod>
+    <RedundantConditionGivenDocblockType occurrences="2">
+      <code>assertNotNull</code>
+      <code>assertTrue</code>
+    </RedundantConditionGivenDocblockType>
+    <UndefinedInterfaceMethod occurrences="2">
+      <code>getStatusCode</code>
+      <code>getStatusCode</code>
+    </UndefinedInterfaceMethod>
+    <UndefinedThisPropertyAssignment occurrences="3">
+      <code>$this-&gt;events</code>
+      <code>$this-&gt;routeMatch</code>
+      <code>$this-&gt;sharedEvents</code>
+    </UndefinedThisPropertyAssignment>
+    <UndefinedThisPropertyFetch occurrences="3">
+      <code>$this-&gt;routeMatch</code>
+      <code>$this-&gt;routeMatch</code>
+      <code>$this-&gt;routeMatch</code>
+    </UndefinedThisPropertyFetch>
+  </file>
+  <file src="test/Controller/ControllerManagerTest.php">
+    <MissingClosureParamType occurrences="1">
+      <code>$services</code>
+    </MissingClosureParamType>
+    <UndefinedThisPropertyAssignment occurrences="4">
+      <code>$this-&gt;controllers</code>
+      <code>$this-&gt;events</code>
+      <code>$this-&gt;services</code>
+      <code>$this-&gt;sharedEvents</code>
+    </UndefinedThisPropertyAssignment>
+    <UndefinedThisPropertyFetch occurrences="9">
+      <code>$this-&gt;controllers</code>
+      <code>$this-&gt;controllers</code>
+      <code>$this-&gt;controllers</code>
+      <code>$this-&gt;controllers</code>
+      <code>$this-&gt;services</code>
+      <code>$this-&gt;services</code>
+      <code>$this-&gt;services</code>
+      <code>$this-&gt;sharedEvents</code>
+      <code>$this-&gt;sharedEvents</code>
+    </UndefinedThisPropertyFetch>
+  </file>
+  <file src="test/Controller/IntegrationTest.php">
+    <MissingClosureParamType occurrences="3">
+      <code>$services</code>
+      <code>$services</code>
+      <code>$services</code>
+    </MissingClosureParamType>
+    <UndefinedThisPropertyAssignment occurrences="2">
+      <code>$this-&gt;services</code>
+      <code>$this-&gt;sharedEvents</code>
+    </UndefinedThisPropertyAssignment>
+    <UndefinedThisPropertyFetch occurrences="1">
+      <code>$this-&gt;services</code>
+    </UndefinedThisPropertyFetch>
+  </file>
+  <file src="test/Controller/LazyControllerAbstractFactoryTest.php">
+    <PossiblyInvalidMethodCall occurrences="8">
+      <code>willReturn</code>
+      <code>willReturn</code>
+      <code>willReturn</code>
+      <code>willReturn</code>
+      <code>willReturn</code>
+      <code>willReturn</code>
+      <code>willReturn</code>
+      <code>willReturn</code>
+    </PossiblyInvalidMethodCall>
+    <PossiblyUndefinedMethod occurrences="10">
+      <code>reveal</code>
+      <code>reveal</code>
+      <code>reveal</code>
+      <code>reveal</code>
+      <code>reveal</code>
+      <code>reveal</code>
+      <code>reveal</code>
+      <code>reveal</code>
+      <code>reveal</code>
+      <code>reveal</code>
+    </PossiblyUndefinedMethod>
+    <UndefinedClass occurrences="1">
+      <code>SampleInterface</code>
+    </UndefinedClass>
+  </file>
+  <file src="test/Controller/Plugin/AcceptableViewModelSelectorTest.php">
+    <UndefinedThisPropertyAssignment occurrences="4">
+      <code>$this-&gt;controller</code>
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;request</code>
+    </UndefinedThisPropertyAssignment>
+    <UndefinedThisPropertyFetch occurrences="16">
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;request</code>
+      <code>$this-&gt;request</code>
+      <code>$this-&gt;request</code>
+      <code>$this-&gt;request</code>
+      <code>$this-&gt;request</code>
+      <code>$this-&gt;request</code>
+      <code>$this-&gt;request</code>
+      <code>$this-&gt;request</code>
+    </UndefinedThisPropertyFetch>
+  </file>
+  <file src="test/Controller/Plugin/ForwardTest.php">
+    <InvalidPropertyAssignmentValue occurrences="1">
+      <code>$plugins-&gt;get('forward')</code>
+    </InvalidPropertyAssignmentValue>
+    <MissingClosureParamType occurrences="18">
+      <code>$e</code>
+      <code>$name</code>
+      <code>$name</code>
+      <code>$name</code>
+      <code>$name</code>
+      <code>$name</code>
+      <code>$name</code>
+      <code>$services</code>
+      <code>$services</code>
+      <code>$services</code>
+      <code>$services</code>
+      <code>$services</code>
+      <code>$services</code>
+      <code>$services</code>
+      <code>$services</code>
+      <code>$services</code>
+      <code>$services</code>
+      <code>$services</code>
+    </MissingClosureParamType>
+    <MissingReturnType occurrences="1">
+      <code>testProblemListenersAreDetachedAndReattachedWhenPluginDispatchesRequestedController</code>
+    </MissingReturnType>
+    <PossiblyNullReference occurrences="2">
+      <code>getParams</code>
+      <code>getParams</code>
+    </PossiblyNullReference>
+    <UndefinedThisPropertyAssignment occurrences="1">
+      <code>$this-&gt;services</code>
+    </UndefinedThisPropertyAssignment>
+    <UndefinedThisPropertyFetch occurrences="3">
+      <code>$this-&gt;services</code>
+      <code>$this-&gt;services</code>
+      <code>$this-&gt;services</code>
+    </UndefinedThisPropertyFetch>
+  </file>
+  <file src="test/Controller/Plugin/LayoutTest.php">
+    <UndefinedThisPropertyAssignment occurrences="3">
+      <code>$this-&gt;controller</code>
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;plugin</code>
+    </UndefinedThisPropertyAssignment>
+    <UndefinedThisPropertyFetch occurrences="6">
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+    </UndefinedThisPropertyFetch>
+  </file>
+  <file src="test/Controller/Plugin/ParamsTest.php">
+    <UndefinedThisPropertyAssignment occurrences="3">
+      <code>$this-&gt;controller</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;request</code>
+    </UndefinedThisPropertyAssignment>
+    <UndefinedThisPropertyFetch occurrences="30">
+      <code>$this-&gt;controller</code>
+      <code>$this-&gt;controller</code>
+      <code>$this-&gt;controller</code>
+      <code>$this-&gt;controller</code>
+      <code>$this-&gt;controller</code>
+      <code>$this-&gt;controller</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;request</code>
+      <code>$this-&gt;request</code>
+      <code>$this-&gt;request</code>
+      <code>$this-&gt;request</code>
+      <code>$this-&gt;request</code>
+      <code>$this-&gt;request</code>
+    </UndefinedThisPropertyFetch>
+  </file>
+  <file src="test/Controller/Plugin/RedirectTest.php">
+    <UndefinedThisPropertyAssignment occurrences="6">
+      <code>$this-&gt;controller</code>
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;response</code>
+      <code>$this-&gt;routeMatch</code>
+      <code>$this-&gt;router</code>
+    </UndefinedThisPropertyAssignment>
+    <UndefinedThisPropertyFetch occurrences="18">
+      <code>$this-&gt;controller</code>
+      <code>$this-&gt;controller</code>
+      <code>$this-&gt;controller</code>
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;response</code>
+      <code>$this-&gt;routeMatch</code>
+      <code>$this-&gt;routeMatch</code>
+      <code>$this-&gt;router</code>
+      <code>$this-&gt;router</code>
+    </UndefinedThisPropertyFetch>
+  </file>
+  <file src="test/Controller/Plugin/TestAsset/ListenerStub.php">
+    <MissingReturnType occurrences="1">
+      <code>myCallback</code>
+    </MissingReturnType>
+  </file>
+  <file src="test/Controller/Plugin/UrlTest.php">
+    <DeprecatedClass occurrences="1">
+      <code>Wildcard::class</code>
+    </DeprecatedClass>
+    <UndefinedThisPropertyAssignment occurrences="3">
+      <code>$this-&gt;controller</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;router</code>
+    </UndefinedThisPropertyAssignment>
+    <UndefinedThisPropertyFetch occurrences="13">
+      <code>$this-&gt;controller</code>
+      <code>$this-&gt;controller</code>
+      <code>$this-&gt;controller</code>
+      <code>$this-&gt;controller</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;plugin</code>
+      <code>$this-&gt;router</code>
+      <code>$this-&gt;router</code>
+    </UndefinedThisPropertyFetch>
+  </file>
+  <file src="test/Controller/PluginManagerTest.php">
+    <UndefinedInterfaceMethod occurrences="4">
+      <code>getBar</code>
+      <code>getBar</code>
+      <code>getController</code>
+      <code>getController</code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="test/Controller/RestfulControllerTest.php">
+    <MissingClosureParamType occurrences="5">
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+    </MissingClosureParamType>
+    <PossiblyInvalidMethodCall occurrences="4">
+      <code>addHeaderLine</code>
+      <code>addHeaderLine</code>
+      <code>addHeaderLine</code>
+      <code>getFieldValue</code>
+    </PossiblyInvalidMethodCall>
+    <PossiblyUndefinedMethod occurrences="19">
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>addHeaderLine</code>
+      <code>addHeaderLine</code>
+      <code>addHeaderLine</code>
+      <code>getFieldValue</code>
+      <code>getHeaders</code>
+      <code>getHeaders</code>
+      <code>getStatusCode</code>
+      <code>getStatusCode</code>
+    </PossiblyUndefinedMethod>
+    <RedundantConditionGivenDocblockType occurrences="2">
+      <code>assertNotNull</code>
+      <code>assertTrue</code>
+    </RedundantConditionGivenDocblockType>
+    <TypeDoesNotContainType occurrences="1">
+      <code>assertEmpty</code>
+    </TypeDoesNotContainType>
+    <UndefinedInterfaceMethod occurrences="3">
+      <code>getHeaders</code>
+      <code>getStatusCode</code>
+      <code>getStatusCode</code>
+    </UndefinedInterfaceMethod>
+    <UndefinedThisPropertyAssignment occurrences="2">
+      <code>$this-&gt;events</code>
+      <code>$this-&gt;sharedEvents</code>
+    </UndefinedThisPropertyAssignment>
+    <UndefinedThisPropertyFetch occurrences="3">
+      <code>$this-&gt;sharedEvents</code>
+      <code>$this-&gt;sharedEvents</code>
+      <code>$this-&gt;sharedEvents</code>
+    </UndefinedThisPropertyFetch>
+  </file>
+  <file src="test/Controller/TestAsset/AbstractControllerStub.php">
+    <InvalidReturnType occurrences="1">
+      <code>onDispatch</code>
+    </InvalidReturnType>
+  </file>
+  <file src="test/Controller/TestAsset/BadController.php">
+    <MissingReturnType occurrences="2">
+      <code>testAction</code>
+      <code>testPhp7ErrorAction</code>
+    </MissingReturnType>
+  </file>
+  <file src="test/Controller/TestAsset/ControllerAcceptingConfigToConstructor.php">
+    <PropertyNotSetInConstructor occurrences="5">
+      <code>ControllerAcceptingConfigToConstructor</code>
+      <code>ControllerAcceptingConfigToConstructor</code>
+      <code>ControllerAcceptingConfigToConstructor</code>
+      <code>ControllerAcceptingConfigToConstructor</code>
+      <code>ControllerAcceptingConfigToConstructor</code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="test/Controller/TestAsset/ControllerAcceptingWellKnownServicesAsConstructorParameters.php">
+    <PropertyNotSetInConstructor occurrences="5">
+      <code>ControllerAcceptingWellKnownServicesAsConstructorParameters</code>
+      <code>ControllerAcceptingWellKnownServicesAsConstructorParameters</code>
+      <code>ControllerAcceptingWellKnownServicesAsConstructorParameters</code>
+      <code>ControllerAcceptingWellKnownServicesAsConstructorParameters</code>
+      <code>ControllerAcceptingWellKnownServicesAsConstructorParameters</code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="test/Controller/TestAsset/ControllerLoaderAbstractFactory.php">
+    <ParamNameMismatch occurrences="1">
+      <code>$name</code>
+    </ParamNameMismatch>
+  </file>
+  <file src="test/Controller/TestAsset/ControllerWithEmptyConstructor.php">
+    <PropertyNotSetInConstructor occurrences="5">
+      <code>ControllerWithEmptyConstructor</code>
+      <code>ControllerWithEmptyConstructor</code>
+      <code>ControllerWithEmptyConstructor</code>
+      <code>ControllerWithEmptyConstructor</code>
+      <code>ControllerWithEmptyConstructor</code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="test/Controller/TestAsset/ControllerWithMixedConstructorParameters.php">
+    <PropertyNotSetInConstructor occurrences="5">
+      <code>ControllerWithMixedConstructorParameters</code>
+      <code>ControllerWithMixedConstructorParameters</code>
+      <code>ControllerWithMixedConstructorParameters</code>
+      <code>ControllerWithMixedConstructorParameters</code>
+      <code>ControllerWithMixedConstructorParameters</code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="test/Controller/TestAsset/ControllerWithScalarParameters.php">
+    <PropertyNotSetInConstructor occurrences="5">
+      <code>ControllerWithScalarParameters</code>
+      <code>ControllerWithScalarParameters</code>
+      <code>ControllerWithScalarParameters</code>
+      <code>ControllerWithScalarParameters</code>
+      <code>ControllerWithScalarParameters</code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="test/Controller/TestAsset/ControllerWithTypeHintedConstructorParameter.php">
+    <PropertyNotSetInConstructor occurrences="5">
+      <code>ControllerWithTypeHintedConstructorParameter</code>
+      <code>ControllerWithTypeHintedConstructorParameter</code>
+      <code>ControllerWithTypeHintedConstructorParameter</code>
+      <code>ControllerWithTypeHintedConstructorParameter</code>
+      <code>ControllerWithTypeHintedConstructorParameter</code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="test/Controller/TestAsset/ForwardController.php">
+    <LessSpecificImplementedReturnType occurrences="1">
+      <code>mixed</code>
+    </LessSpecificImplementedReturnType>
+    <PossiblyNullReference occurrences="1">
+      <code>getParams</code>
+    </PossiblyNullReference>
+  </file>
+  <file src="test/Controller/TestAsset/Request.php">
+    <LessSpecificImplementedReturnType occurrences="1">
+      <code>Request</code>
+    </LessSpecificImplementedReturnType>
+  </file>
+  <file src="test/Controller/TestAsset/RestfulTestController.php">
+    <InvalidReturnStatement occurrences="1">
+      <code>$items</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="1">
+      <code>array|Traversable</code>
+    </InvalidReturnType>
+    <LessSpecificReturnStatement occurrences="2">
+      <code>$response</code>
+      <code>$response</code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificImplementedParamType occurrences="5">
+      <code>$data</code>
+      <code>$data</code>
+      <code>$id</code>
+      <code>$items</code>
+      <code>$items</code>
+    </MoreSpecificImplementedParamType>
+    <MoreSpecificReturnType occurrences="2">
+      <code>Response</code>
+      <code>Response</code>
+    </MoreSpecificReturnType>
+    <ParamNameMismatch occurrences="2">
+      <code>$items</code>
+      <code>$items</code>
+    </ParamNameMismatch>
+    <UndefinedInterfaceMethod occurrences="5">
+      <code>$items</code>
+      <code>getHeaders</code>
+      <code>getHeaders</code>
+      <code>getHeaders</code>
+      <code>setStatusCode</code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="test/Controller/TestAsset/UneventfulController.php">
+    <InvalidReturnType occurrences="1">
+      <code>dispatch</code>
+    </InvalidReturnType>
+  </file>
+  <file src="test/Controller/TestAsset/UnlocatableControllerLoaderAbstractFactory.php">
+    <LessSpecificImplementedReturnType occurrences="1">
+      <code>mixed</code>
+    </LessSpecificImplementedReturnType>
+    <ParamNameMismatch occurrences="1">
+      <code>$name</code>
+    </ParamNameMismatch>
+  </file>
+  <file src="test/Controller/TestAsset/UnlocatableEventfulController.php">
+    <InvalidNullableReturnType occurrences="1">
+      <code>?Event</code>
+    </InvalidNullableReturnType>
+    <InvalidReturnType occurrences="1">
+      <code>dispatch</code>
+    </InvalidReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;event</code>
+    </NullableReturnStatement>
+  </file>
+  <file src="test/DispatchListenerTest.php">
+    <MissingClosureParamType occurrences="2">
+      <code>$e</code>
+      <code>$e</code>
+    </MissingClosureParamType>
+    <UndefinedInterfaceMethod occurrences="1">
+      <code>getStatusCode</code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="test/ModuleRouteListenerTest.php">
+    <UndefinedThisPropertyAssignment occurrences="5">
+      <code>$this-&gt;events</code>
+      <code>$this-&gt;moduleRouteListener</code>
+      <code>$this-&gt;request</code>
+      <code>$this-&gt;routeListener</code>
+      <code>$this-&gt;router</code>
+    </UndefinedThisPropertyAssignment>
+    <UndefinedThisPropertyFetch occurrences="12">
+      <code>$this-&gt;events</code>
+      <code>$this-&gt;events</code>
+      <code>$this-&gt;events</code>
+      <code>$this-&gt;events</code>
+      <code>$this-&gt;request</code>
+      <code>$this-&gt;request</code>
+      <code>$this-&gt;request</code>
+      <code>$this-&gt;request</code>
+      <code>$this-&gt;router</code>
+      <code>$this-&gt;router</code>
+      <code>$this-&gt;router</code>
+      <code>$this-&gt;router</code>
+    </UndefinedThisPropertyFetch>
+  </file>
+  <file src="test/ResponseSender/AbstractResponseSenderTest.php">
+    <DeprecatedMethod occurrences="1">
+      <code>setMethods</code>
+    </DeprecatedMethod>
+    <MissingReturnType occurrences="1">
+      <code>testSendHeadersSendsStatusLast</code>
+    </MissingReturnType>
+    <UndefinedFunction occurrences="2">
+      <code>xdebug_info('mode')</code>
+      <code>xdebug_info('mode')</code>
+    </UndefinedFunction>
+  </file>
+  <file src="test/SendResponseListenerTest.php">
+    <MissingClosureParamType occurrences="1">
+      <code>$e</code>
+    </MissingClosureParamType>
+  </file>
+  <file src="test/Service/ControllerManagerFactoryTest.php">
+    <UndefinedThisPropertyAssignment occurrences="1">
+      <code>$this-&gt;defaultServiceConfig</code>
+    </UndefinedThisPropertyAssignment>
+    <UndefinedThisPropertyFetch occurrences="1">
+      <code>$this-&gt;defaultServiceConfig</code>
+    </UndefinedThisPropertyFetch>
+  </file>
+  <file src="test/Service/HttpMethodListenerFactoryTest.php">
+    <InvalidPropertyAssignmentValue occurrences="1">
+      <code>$this-&gt;prophesize(ServiceLocatorInterface::class)</code>
+    </InvalidPropertyAssignmentValue>
+    <PossiblyUndefinedMethod occurrences="1">
+      <code>get</code>
+    </PossiblyUndefinedMethod>
+    <PossiblyUndefinedVariable occurrences="1">
+      <code>$config</code>
+    </PossiblyUndefinedVariable>
+    <UndefinedInterfaceMethod occurrences="2">
+      <code>reveal</code>
+      <code>reveal</code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="test/Service/TestAsset/ControllerWithDependencies.php">
+    <InvalidReturnType occurrences="1">
+      <code>dispatch</code>
+    </InvalidReturnType>
+    <MissingConstructor occurrences="1">
+      <code>$injectedValue</code>
+    </MissingConstructor>
+    <MissingReturnType occurrences="1">
+      <code>setInjectedValue</code>
+    </MissingReturnType>
+  </file>
+  <file src="test/Service/TestAsset/Dispatchable.php">
+    <LessSpecificImplementedReturnType occurrences="1">
+      <code>mixed</code>
+    </LessSpecificImplementedReturnType>
+  </file>
+  <file src="test/Service/TestAsset/EventManagerAwareObject.php">
+    <MissingConstructor occurrences="1">
+      <code>$events</code>
+    </MissingConstructor>
+    <ParamNameMismatch occurrences="1">
+      <code>$events</code>
+    </ParamNameMismatch>
+  </file>
+  <file src="test/Service/ViewHelperManagerFactoryTest.php">
+    <MissingClosureReturnType occurrences="1">
+      <code>function () {</code>
+    </MissingClosureReturnType>
+    <UndefinedThisPropertyAssignment occurrences="2">
+      <code>$this-&gt;factory</code>
+      <code>$this-&gt;services</code>
+    </UndefinedThisPropertyAssignment>
+    <UndefinedThisPropertyFetch occurrences="8">
+      <code>$this-&gt;factory</code>
+      <code>$this-&gt;factory</code>
+      <code>$this-&gt;factory</code>
+      <code>$this-&gt;services</code>
+      <code>$this-&gt;services</code>
+      <code>$this-&gt;services</code>
+      <code>$this-&gt;services</code>
+      <code>$this-&gt;services</code>
+    </UndefinedThisPropertyFetch>
+  </file>
+  <file src="test/TestAsset/Locator.php">
+    <ParamNameMismatch occurrences="2">
+      <code>$name</code>
+      <code>$name</code>
+    </ParamNameMismatch>
+  </file>
+  <file src="test/View/CreateViewModelListenerTest.php">
+    <UndefinedThisPropertyAssignment occurrences="2">
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;listener</code>
+    </UndefinedThisPropertyAssignment>
+    <UndefinedThisPropertyFetch occurrences="10">
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;listener</code>
+    </UndefinedThisPropertyFetch>
+  </file>
+  <file src="test/View/DefaultRenderingStrategyTest.php">
+    <MissingClosureParamType occurrences="2">
+      <code>$e</code>
+      <code>$e</code>
+    </MissingClosureParamType>
+  </file>
+  <file src="test/View/ExceptionStrategyTest.php">
+    <InternalMethod occurrences="2">
+      <code>addToAssertionCount</code>
+      <code>addToAssertionCount</code>
+    </InternalMethod>
+    <PossiblyInvalidArgument occurrences="3">
+      <code>$variables</code>
+      <code>$variables</code>
+      <code>$variables</code>
+    </PossiblyInvalidArgument>
+    <PossiblyUndefinedMethod occurrences="3">
+      <code>$variables</code>
+      <code>$variables</code>
+      <code>$variables</code>
+    </PossiblyUndefinedMethod>
+    <RedundantConditionGivenDocblockType occurrences="3">
+      <code>null !== $response</code>
+      <code>null !== $response</code>
+      <code>null !== $response</code>
+    </RedundantConditionGivenDocblockType>
+    <UndefinedInterfaceMethod occurrences="5">
+      <code>getStatusCode</code>
+      <code>getStatusCode</code>
+      <code>getStatusCode</code>
+      <code>isServerError</code>
+      <code>isServerError</code>
+    </UndefinedInterfaceMethod>
+    <UndefinedThisPropertyAssignment occurrences="1">
+      <code>$this-&gt;strategy</code>
+    </UndefinedThisPropertyAssignment>
+    <UndefinedThisPropertyFetch occurrences="12">
+      <code>$this-&gt;strategy</code>
+      <code>$this-&gt;strategy</code>
+      <code>$this-&gt;strategy</code>
+      <code>$this-&gt;strategy</code>
+      <code>$this-&gt;strategy</code>
+      <code>$this-&gt;strategy</code>
+      <code>$this-&gt;strategy</code>
+      <code>$this-&gt;strategy</code>
+      <code>$this-&gt;strategy</code>
+      <code>$this-&gt;strategy</code>
+      <code>$this-&gt;strategy</code>
+      <code>$this-&gt;strategy</code>
+    </UndefinedThisPropertyFetch>
+  </file>
+  <file src="test/View/InjectTemplateListenerTest.php">
+    <UndefinedThisPropertyAssignment occurrences="3">
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;routeMatch</code>
+    </UndefinedThisPropertyAssignment>
+    <UndefinedThisPropertyFetch occurrences="51">
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;routeMatch</code>
+      <code>$this-&gt;routeMatch</code>
+      <code>$this-&gt;routeMatch</code>
+      <code>$this-&gt;routeMatch</code>
+      <code>$this-&gt;routeMatch</code>
+      <code>$this-&gt;routeMatch</code>
+      <code>$this-&gt;routeMatch</code>
+      <code>$this-&gt;routeMatch</code>
+      <code>$this-&gt;routeMatch</code>
+      <code>$this-&gt;routeMatch</code>
+      <code>$this-&gt;routeMatch</code>
+      <code>$this-&gt;routeMatch</code>
+      <code>$this-&gt;routeMatch</code>
+    </UndefinedThisPropertyFetch>
+  </file>
+  <file src="test/View/InjectViewModelListenerTest.php">
+    <MissingReturnType occurrences="1">
+      <code>testDetachesListeners</code>
+    </MissingReturnType>
+    <UndefinedThisPropertyAssignment occurrences="3">
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;routeMatch</code>
+    </UndefinedThisPropertyAssignment>
+    <UndefinedThisPropertyFetch occurrences="8">
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;event</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;listener</code>
+      <code>$this-&gt;listener</code>
+    </UndefinedThisPropertyFetch>
+  </file>
+  <file src="test/View/RouteNotFoundStrategyTest.php">
+    <InternalMethod occurrences="2">
+      <code>addToAssertionCount</code>
+      <code>addToAssertionCount</code>
+    </InternalMethod>
+    <PossiblyInvalidArgument occurrences="2">
+      <code>$variables</code>
+      <code>$variables</code>
+    </PossiblyInvalidArgument>
+    <PossiblyNullArgument occurrences="1">
+      <code>$error</code>
+    </PossiblyNullArgument>
+  </file>
+  <file src="test/View/TestAsset/DumbStrategy.php">
+    <PossiblyInvalidArgument occurrences="2">
+      <code>$options</code>
+      <code>$variables</code>
+    </PossiblyInvalidArgument>
+    <UndefinedInterfaceMethod occurrences="1">
+      <code>$options</code>
+    </UndefinedInterfaceMethod>
+  </file>
+</files>

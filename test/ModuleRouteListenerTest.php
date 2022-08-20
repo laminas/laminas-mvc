@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc;
 
 use Laminas\EventManager\EventManager;
@@ -25,15 +27,15 @@ class ModuleRouteListenerTest extends TestCase
         $this->moduleRouteListener->attach($this->events, -1);
     }
 
-    public function testRouteReturningModuleNamespaceInRouteMatchTriggersControllerRename()
+    public function testRouteReturningModuleNamespaceInRouteMatchTriggersControllerRename(): void
     {
         $this->router->addRoute('foo', [
-            'type' => 'Literal',
+            'type'    => 'Literal',
             'options' => [
                 'route'    => '/foo',
                 'defaults' => [
                     ModuleRouteListener::MODULE_NAMESPACE => 'Foo',
-                    'controller' => 'Index',
+                    'controller'                          => 'Index',
                 ],
             ],
         ]);
@@ -50,10 +52,10 @@ class ModuleRouteListenerTest extends TestCase
         $this->assertEquals('Index', $matches->getParam(ModuleRouteListener::ORIGINAL_CONTROLLER));
     }
 
-    public function testRouteNotReturningModuleNamespaceInRouteMatchLeavesControllerUntouched()
+    public function testRouteNotReturningModuleNamespaceInRouteMatchLeavesControllerUntouched(): void
     {
         $this->router->addRoute('foo', [
-            'type' => 'Literal',
+            'type'    => 'Literal',
             'options' => [
                 'route'    => '/foo',
                 'defaults' => [
@@ -73,18 +75,18 @@ class ModuleRouteListenerTest extends TestCase
         $this->assertEquals('Index', $matches->getParam('controller'));
     }
 
-    public function testMultipleRegistrationShouldNotResultInMultiplePrefixingOfControllerName()
+    public function testMultipleRegistrationShouldNotResultInMultiplePrefixingOfControllerName(): void
     {
         $moduleListener = new ModuleRouteListener();
         $moduleListener->attach($this->events);
 
         $this->router->addRoute('foo', [
-            'type' => 'Literal',
+            'type'    => 'Literal',
             'options' => [
                 'route'    => '/foo',
                 'defaults' => [
                     ModuleRouteListener::MODULE_NAMESPACE => 'Foo',
-                    'controller' => 'Index',
+                    'controller'                          => 'Index',
                 ],
             ],
         ]);
@@ -101,18 +103,18 @@ class ModuleRouteListenerTest extends TestCase
         $this->assertEquals('Index', $matches->getParam(ModuleRouteListener::ORIGINAL_CONTROLLER));
     }
 
-    public function testRouteMatchIsTransformedToProperControllerClassName()
+    public function testRouteMatchIsTransformedToProperControllerClassName(): void
     {
         $moduleListener = new ModuleRouteListener();
         $moduleListener->attach($this->events);
 
         $this->router->addRoute('foo', [
-            'type' => 'Literal',
+            'type'    => 'Literal',
             'options' => [
                 'route'    => '/foo',
                 'defaults' => [
                     ModuleRouteListener::MODULE_NAMESPACE => 'Foo',
-                    'controller' => 'some-index',
+                    'controller'                          => 'some-index',
                 ],
             ],
         ]);

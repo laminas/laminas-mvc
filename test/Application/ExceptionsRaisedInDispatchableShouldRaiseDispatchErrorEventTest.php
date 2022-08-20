@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Application;
 
 use Laminas\Mvc\MvcEvent;
@@ -12,7 +14,7 @@ class ExceptionsRaisedInDispatchableShouldRaiseDispatchErrorEventTest extends Te
     /**
      * @group error-handling
      */
-    public function testExceptionsRaisedInDispatchableShouldRaiseDispatchErrorEvent()
+    public function testExceptionsRaisedInDispatchableShouldRaiseDispatchErrorEvent(): void
     {
         $application = $this->prepareApplication();
 

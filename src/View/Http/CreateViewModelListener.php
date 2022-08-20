@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laminas\Mvc\View\Http;
 
 use Laminas\EventManager\AbstractListenerAggregate;
@@ -22,7 +24,6 @@ class CreateViewModelListener extends AbstractListenerAggregate
     /**
      * Inspect the result, and cast it to a ViewModel if an assoc array is detected
      *
-     * @param  MvcEvent $e
      * @return void
      */
     public function createViewModelFromArray(MvcEvent $e)
@@ -39,9 +40,8 @@ class CreateViewModelListener extends AbstractListenerAggregate
     /**
      * Inspect the result, and cast it to a ViewModel if null is detected
      *
-     * @param MvcEvent $e
      * @return void
-    */
+     */
     public function createViewModelFromNull(MvcEvent $e)
     {
         $result = $e->getResult();
@@ -49,7 +49,7 @@ class CreateViewModelListener extends AbstractListenerAggregate
             return;
         }
 
-        $model = new ViewModel;
+        $model = new ViewModel();
         $e->setResult($model);
     }
 }

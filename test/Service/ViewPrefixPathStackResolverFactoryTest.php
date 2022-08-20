@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
@@ -13,7 +15,7 @@ class ViewPrefixPathStackResolverFactoryTest extends TestCase
 {
     use ProphecyTrait;
 
-    public function testCreateService()
+    public function testCreateService(): void
     {
         $serviceLocator = $this->prophesize(ServiceLocatorInterface::class);
         $serviceLocator->willImplement(ContainerInterface::class);

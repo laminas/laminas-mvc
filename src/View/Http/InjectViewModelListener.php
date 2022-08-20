@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laminas\Mvc\View\Http;
 
 use Laminas\EventManager\AbstractListenerAggregate;
@@ -27,7 +29,6 @@ class InjectViewModelListener extends AbstractListenerAggregate
      * it as a child to the default, composed view model, or (b) replaces it
      * if the result is marked as terminable.
      *
-     * @param  MvcEvent $e
      * @return void
      */
     public function injectViewModel(MvcEvent $e)

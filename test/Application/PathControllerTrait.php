@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Application;
 
 use Laminas\Http\PhpEnvironment\Request;
 use Laminas\Http\PhpEnvironment\Response;
+use Laminas\Mvc\Application;
 use Laminas\Mvc\ConfigProvider;
 use Laminas\Mvc\Controller\ControllerManager;
 use Laminas\Router;
@@ -13,15 +16,15 @@ use LaminasTest\Mvc\TestAsset;
 
 trait PathControllerTrait
 {
-    public function prepareApplication()
+    public function prepareApplication(): Application
     {
         $config = [
             'router' => [
                 'routes' => [
                     'path' => [
-                        'type' => Router\Http\Literal::class,
+                        'type'    => Router\Http\Literal::class,
                         'options' => [
-                            'route' => '/path',
+                            'route'    => '/path',
                             'defaults' => [
                                 'controller' => 'path',
                             ],
@@ -39,18 +42,20 @@ trait PathControllerTrait
         $serviceConfig = ArrayUtils::merge(
             $serviceConfig,
             [
-                'aliases' => [
-                    'ControllerLoader'  => ControllerManager::class,
+                'aliases'    => [
+                    'ControllerLoader' => ControllerManager::class,
                 ],
-                'factories' => [
+                'factories'  => [
                     'ControllerManager' => function ($services) {
-                        return new ControllerManager($services, ['factories' => [
-                            'path' => function () {
-                                return new TestAsset\PathController();
-                            },
-                        ]]);
+                        return new ControllerManager($services, [
+                            'factories' => [
+                                'path' => function () {
+                                    return new TestAsset\PathController();
+                                },
+                            ],
+                        ]);
                     },
-                    'Router' => function ($services) {
+                    'Router'            => function ($services) {
                         return $services->get('HttpRouter');
                     },
                 ],
@@ -61,13 +66,13 @@ trait PathControllerTrait
                     'SendResponseListener' => TestAsset\MockSendResponseListener::class,
                     'BootstrapListener'    => TestAsset\StubBootstrapListener::class,
                 ],
-                'services' => [
+                'services'   => [
                     'config' => $config,
                 ],
             ]
         );
-        $services = new ServiceManager($serviceConfig);
-        $application = $services->get('Application');
+        $services      = new ServiceManager($serviceConfig);
+        $application   = $services->get('Application');
 
         $request = $services->get('Request');
         $request->setUri('http://example.local/path');

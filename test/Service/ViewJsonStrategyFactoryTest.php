@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
@@ -13,7 +15,7 @@ class ViewJsonStrategyFactoryTest extends TestCase
 {
     use ProphecyTrait;
 
-    private function createContainer()
+    private function createContainer(): ContainerInterface
     {
         $renderer  = $this->prophesize(JsonRenderer::class);
         $container = $this->prophesize(ContainerInterface::class);
@@ -23,7 +25,7 @@ class ViewJsonStrategyFactoryTest extends TestCase
         return $container->reveal();
     }
 
-    public function testReturnsJsonStrategy()
+    public function testReturnsJsonStrategy(): void
     {
         $factory = new ViewJsonStrategyFactory();
         $result  = $factory($this->createContainer(), 'ViewJsonStrategy');

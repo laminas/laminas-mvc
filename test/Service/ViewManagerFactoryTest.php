@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
@@ -12,7 +14,7 @@ class ViewManagerFactoryTest extends TestCase
 {
     use ProphecyTrait;
 
-    private function createContainer()
+    private function createContainer(): ContainerInterface
     {
         $http      = $this->prophesize(HttpViewManager::class);
         $container = $this->prophesize(ContainerInterface::class);
@@ -22,7 +24,7 @@ class ViewManagerFactoryTest extends TestCase
         return $container->reveal();
     }
 
-    public function testReturnsHttpViewManager()
+    public function testReturnsHttpViewManager(): void
     {
         $factory = new ViewManagerFactory();
         $result  = $factory($this->createContainer(), 'ViewManager');

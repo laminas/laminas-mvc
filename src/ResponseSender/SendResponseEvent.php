@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laminas\Mvc\ResponseSender;
 
 use Laminas\EventManager\Event;
@@ -9,34 +11,24 @@ use function spl_object_hash;
 
 class SendResponseEvent extends Event
 {
-    /**#@+
+    /**
      * Send response events triggered by eventmanager
      */
-    const EVENT_SEND_RESPONSE = 'sendResponse';
-    /**#@-*/
+    public const EVENT_SEND_RESPONSE = 'sendResponse';
 
-    /**
-     * @var string Event name
-     */
+    /** @var string Event name */
     protected $name = 'sendResponse';
 
-    /**
-     * @var ResponseInterface
-     */
+    /** @var ResponseInterface */
     protected $response;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $headersSent = [];
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $contentSent = [];
 
     /**
-     * @param ResponseInterface $response
      * @return SendResponseEvent
      */
     public function setResponse(ResponseInterface $response)
@@ -47,7 +39,7 @@ class SendResponseEvent extends Event
     }
 
     /**
-     * @return \Laminas\Stdlib\ResponseInterface
+     * @return ResponseInterface
      */
     public function getResponse()
     {
@@ -61,9 +53,9 @@ class SendResponseEvent extends Event
      */
     public function setContentSent()
     {
-        $response = $this->getResponse();
-        $contentSent = $this->getParam('contentSent', []);
-        $responseObjectHash = spl_object_hash($response);
+        $response                         = $this->getResponse();
+        $contentSent                      = $this->getParam('contentSent', []);
+        $responseObjectHash               = spl_object_hash($response);
         $contentSent[$responseObjectHash] = true;
         $this->setParam('contentSent', $contentSent);
         $this->contentSent[$responseObjectHash] = true;
@@ -89,9 +81,9 @@ class SendResponseEvent extends Event
      */
     public function setHeadersSent()
     {
-        $response = $this->getResponse();
-        $headersSent = $this->getParam('headersSent', []);
-        $responseObjectHash = spl_object_hash($response);
+        $response                         = $this->getResponse();
+        $headersSent                      = $this->getParam('headersSent', []);
+        $responseObjectHash               = spl_object_hash($response);
         $headersSent[$responseObjectHash] = true;
         $this->setParam('headersSent', $headersSent);
         $this->headersSent[$responseObjectHash] = true;

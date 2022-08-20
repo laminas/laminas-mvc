@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Controller;
 
 use Laminas\EventManager\EventManager;
@@ -18,33 +20,35 @@ class IntegrationTest extends TestCase
 
         $this->services = new ServiceManager();
         (new Config([
-            'services' => [
+            'services'  => [
                 'SharedEventManager' => $this->sharedEvents,
             ],
             'factories' => [
                 'ControllerPluginManager' => function ($services) {
                     return new PluginManager($services);
                 },
-                'EventManager' => function () {
+                'EventManager'            => function () {
                     return new EventManager($this->sharedEvents);
                 },
             ],
-            'shared' => [
+            'shared'    => [
                 'EventManager' => false,
             ],
         ]))->configureServiceManager($this->services);
     }
 
-    public function testPluginReceivesCurrentController()
+    public function testPluginReceivesCurrentController(): void
     {
-        $controllers = new ControllerManager($this->services, ['factories' => [
-            'first'  => function ($services) {
-                return new TestAsset\SampleController();
-            },
-            'second' => function ($services) {
-                return new TestAsset\SampleController();
-            },
-        ]]);
+        $controllers = new ControllerManager($this->services, [
+            'factories' => [
+                'first'  => function ($services) {
+                    return new TestAsset\SampleController();
+                },
+                'second' => function ($services) {
+                    return new TestAsset\SampleController();
+                },
+            ],
+        ]);
 
         $first  = $controllers->get('first');
         $second = $controllers->get('second');

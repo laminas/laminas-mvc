@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laminas\Mvc;
 
 use Laminas\EventManager\EventManagerAwareInterface;
@@ -41,11 +43,11 @@ class Application implements
     ApplicationInterface,
     EventManagerAwareInterface
 {
-    const ERROR_CONTROLLER_CANNOT_DISPATCH = 'error-controller-cannot-dispatch';
-    const ERROR_CONTROLLER_NOT_FOUND       = 'error-controller-not-found';
-    const ERROR_CONTROLLER_INVALID         = 'error-controller-invalid';
-    const ERROR_EXCEPTION                  = 'error-exception';
-    const ERROR_ROUTER_NO_MATCH            = 'error-router-no-match';
+    public const ERROR_CONTROLLER_CANNOT_DISPATCH = 'error-controller-cannot-dispatch';
+    public const ERROR_CONTROLLER_NOT_FOUND       = 'error-controller-not-found';
+    public const ERROR_CONTROLLER_INVALID         = 'error-controller-invalid';
+    public const ERROR_EXCEPTION                  = 'error-exception';
+    public const ERROR_ROUTER_NO_MATCH            = 'error-router-no-match';
 
     /**
      * Default application event listeners
@@ -62,48 +64,36 @@ class Application implements
 
     /**
      * MVC event token
+     *
      * @var MvcEvent
      */
     protected $event;
 
-    /**
-     * @var EventManagerInterface
-     */
+    /** @var EventManagerInterface */
     protected $events;
 
-    /**
-     * @var \Laminas\Stdlib\RequestInterface
-     */
+    /** @var RequestInterface */
     protected $request;
 
-    /**
-     * @var ResponseInterface
-     */
+    /** @var ResponseInterface */
     protected $response;
 
-    /**
-     * @var ServiceManager
-     */
+    /** @var ServiceManager */
     protected $serviceManager;
 
     /**
      * Constructor
-     *
-     * @param ServiceManager $serviceManager
-     * @param null|EventManagerInterface $events
-     * @param null|RequestInterface $request
-     * @param null|ResponseInterface $response
      */
     public function __construct(
         ServiceManager $serviceManager,
-        EventManagerInterface $events = null,
-        RequestInterface $request = null,
-        ResponseInterface $response = null
+        ?EventManagerInterface $events = null,
+        ?RequestInterface $request = null,
+        ?ResponseInterface $response = null
     ) {
         $this->serviceManager = $serviceManager;
         $this->setEventManager($events ?: $serviceManager->get('EventManager'));
-        $this->request        = $request ?: $serviceManager->get('Request');
-        $this->response       = $response ?: $serviceManager->get('Response');
+        $this->request  = $request ?: $serviceManager->get('Request');
+        $this->response = $response ?: $serviceManager->get('Response');
 
         foreach ($this->defaultListeners as $listener) {
             $serviceManager->get($listener)->attach($this->events);
@@ -162,7 +152,7 @@ class Application implements
     /**
      * Get the request object
      *
-     * @return \Laminas\Stdlib\RequestInterface
+     * @return RequestInterface
      */
     public function getRequest()
     {
@@ -192,14 +182,13 @@ class Application implements
     /**
      * Set the event manager instance
      *
-     * @param  EventManagerInterface $eventManager
      * @return Application
      */
     public function setEventManager(EventManagerInterface $eventManager)
     {
         $eventManager->setIdentifiers([
-            __CLASS__,
-            get_class($this),
+            self::class,
+            static::class,
         ]);
         $this->events = $eventManager;
         return $this;
@@ -298,7 +287,6 @@ class Application implements
      * Triggers "render" and "finish" events, and returns response from
      * event object.
      *
-     * @param  MvcEvent $event
      * @return Application
      */
     protected function completeRequest(MvcEvent $event)
