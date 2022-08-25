@@ -39,7 +39,7 @@
         "psr/container": "^1.1 || ^2.0"
     },
     "require-dev": {
-        "laminas/laminas-coding-standard": "2.3.0",
+        "laminas/laminas-coding-standard": "2.4.0",
         "laminas/laminas-json": "^3.3",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^9.5.5",
