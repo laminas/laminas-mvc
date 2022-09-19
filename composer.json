@@ -29,11 +29,10 @@
     "require": {
         "php": "^7.4 || ~8.0.0 || ~8.1.0",
         "ext-json": "*",
-        "container-interop/container-interop": "^1.2",
         "laminas/laminas-eventmanager": "^3.4",
         "laminas/laminas-http": "^2.15",
         "laminas/laminas-router": "^3.5",
-        "laminas/laminas-servicemanager": "^3.7",
+        "laminas/laminas-servicemanager": "^3.16.0",
         "laminas/laminas-stdlib": "^3.6",
         "laminas/laminas-view": "^2.14",
         "psr/container": "^1.1 || ^2.0"

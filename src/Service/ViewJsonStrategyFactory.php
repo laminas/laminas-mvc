@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Laminas\Mvc\Service;
 
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\View\Strategy\JsonStrategy;
+use Psr\Container\ContainerInterface;
 
 class ViewJsonStrategyFactory implements FactoryInterface
 {

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Laminas\Mvc\Service;
 
-use Interop\Container\ContainerInterface;
 use Laminas\Router\RouteMatch;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Factory\FactoryInterface;
@@ -13,6 +12,7 @@ use Laminas\View\Helper\BasePath;
 use Laminas\View\Helper\Doctype;
 use Laminas\View\Helper\Url;
 use Laminas\View\HelperPluginManager;
+use Psr\Container\ContainerInterface;
 
 use function is_callable;
 

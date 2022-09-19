@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Laminas\Mvc\Controller;
 
-use Interop\Container\ContainerInterface;
 use Laminas\EventManager\EventManagerAwareInterface;
 use Laminas\EventManager\SharedEventManagerInterface;
 use Laminas\ServiceManager\AbstractPluginManager;
 use Laminas\ServiceManager\ConfigInterface;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
 use Laminas\Stdlib\DispatchableInterface;
+use Psr\Container\ContainerInterface;
 
 use function get_class;
 use function gettype;

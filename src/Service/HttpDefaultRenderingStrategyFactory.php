@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Laminas\Mvc\Service;
 
-use Interop\Container\ContainerInterface;
 use Laminas\Mvc\View\Http\DefaultRenderingStrategy;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\View\View;
+use Psr\Container\ContainerInterface;
 
 class HttpDefaultRenderingStrategyFactory implements FactoryInterface
 {

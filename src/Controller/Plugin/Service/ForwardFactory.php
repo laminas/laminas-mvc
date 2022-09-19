@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Laminas\Mvc\Controller\Plugin\Service;
 
-use Interop\Container\ContainerInterface;
 use Laminas\Mvc\Controller\Plugin\Forward;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Factory\FactoryInterface;
+use Psr\Container\ContainerInterface;
 
 use function sprintf;
 

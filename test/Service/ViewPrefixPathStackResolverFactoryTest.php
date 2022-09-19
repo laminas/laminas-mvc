@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace LaminasTest\Mvc\Service;
 
-use Interop\Container\ContainerInterface;
 use Laminas\Mvc\Service\ViewPrefixPathStackResolverFactory;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\View\Resolver\PrefixPathStackResolver;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\Container\ContainerInterface;
 
 class ViewPrefixPathStackResolverFactoryTest extends TestCase
 {

@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace LaminasTest\Mvc\Service;
 
 use ArrayObject;
-use Interop\Container\ContainerInterface;
 use Laminas\Mvc\Service\InjectTemplateListenerFactory;
 use Laminas\Mvc\View\Http\InjectTemplateListener;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\Container\ContainerInterface;
 
 /**
  * Tests for {@see \Laminas\Mvc\Service\InjectTemplateListenerFactory}

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace LaminasTest\Mvc\Service;
 
-use Interop\Container\ContainerInterface;
 use Laminas\Mvc\Service\ViewManagerFactory;
 use Laminas\Mvc\View\Http\ViewManager as HttpViewManager;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\Container\ContainerInterface;
 
 class ViewManagerFactoryTest extends TestCase
 {

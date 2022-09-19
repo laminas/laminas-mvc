@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Laminas\Mvc\Service;
 
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\View\Strategy\FeedStrategy;
+use Psr\Container\ContainerInterface;
 
 class ViewFeedStrategyFactory implements FactoryInterface
 {

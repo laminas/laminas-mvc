@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Laminas\Mvc\Service;
 
 use ArrayAccess;
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 use function is_array;
 
