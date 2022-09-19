@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.23.0@f1fe6ff483bf325c803df9f510d09a03fd796f88">
+<files psalm-version="4.27.0@faf106e717c37b8c81721845dba9de3d8deed8ff">
   <file src="src/Application.php">
     <ImplementedReturnTypeMismatch occurrences="1">
       <code>Application</code>
@@ -7,9 +7,6 @@
     <MissingClosureParamType occurrences="1">
       <code>$r</code>
     </MissingClosureParamType>
-    <MissingClosureReturnType occurrences="1">
-      <code>function ($r) use ($event) {</code>
-    </MissingClosureReturnType>
     <PropertyNotSetInConstructor occurrences="1">
       <code>$event</code>
     </PropertyNotSetInConstructor>
@@ -151,9 +148,6 @@
     <NonInvariantDocblockPropertyType occurrences="1">
       <code>$instanceOf</code>
     </NonInvariantDocblockPropertyType>
-    <ParamNameMismatch occurrences="1">
-      <code>$plugin</code>
-    </ParamNameMismatch>
   </file>
   <file src="src/Controller/LazyControllerAbstractFactory.php">
     <LessSpecificReturnStatement occurrences="3">
@@ -340,13 +334,9 @@
       <code>$factories</code>
       <code>$instanceOf</code>
     </NonInvariantDocblockPropertyType>
-    <ParamNameMismatch occurrences="2">
+    <ParamNameMismatch occurrences="1">
       <code>$name</code>
-      <code>$plugin</code>
     </ParamNameMismatch>
-    <PropertyNotSetInConstructor occurrences="1">
-      <code>$controller</code>
-    </PropertyNotSetInConstructor>
     <UndefinedClass occurrences="7">
       <code>AcceptableViewModelSelector</code>
       <code>CreateHttpNotFoundModel</code>
@@ -381,11 +371,6 @@
     <RedundantCastGivenDocblockType occurrences="1">
       <code>(bool) $enabled</code>
     </RedundantCastGivenDocblockType>
-  </file>
-  <file src="src/ModuleRouteListener.php">
-    <InvalidReturnType occurrences="1">
-      <code>null</code>
-    </InvalidReturnType>
   </file>
   <file src="src/MvcEvent.php">
     <DocblockTypeContradiction occurrences="1">
@@ -627,9 +612,7 @@
       <code>$services</code>
       <code>$services</code>
     </MissingClosureParamType>
-    <MissingClosureReturnType occurrences="2">
-      <code>static fn($services)</code>
-    </MissingClosureReturnType>
+    <MissingClosureReturnType occurrences="1"/>
   </file>
   <file src="test/Application/ControllerIsDispatchedTest.php">
     <UndefinedInterfaceMethod occurrences="1">
@@ -664,26 +647,20 @@
       <code>$services</code>
       <code>$services</code>
     </MissingClosureParamType>
-    <MissingClosureReturnType occurrences="2">
-      <code>static fn($services)</code>
-    </MissingClosureReturnType>
+    <MissingClosureReturnType occurrences="1"/>
   </file>
   <file src="test/Application/MissingControllerTrait.php">
     <MissingClosureParamType occurrences="1">
       <code>$services</code>
     </MissingClosureParamType>
-    <MissingClosureReturnType occurrences="2">
-      <code>static fn($services)</code>
-    </MissingClosureReturnType>
+    <MissingClosureReturnType occurrences="1"/>
   </file>
   <file src="test/Application/PathControllerTrait.php">
     <MissingClosureParamType occurrences="2">
       <code>$services</code>
       <code>$services</code>
     </MissingClosureParamType>
-    <MissingClosureReturnType occurrences="2">
-      <code>static fn($services)</code>
-    </MissingClosureReturnType>
+    <MissingClosureReturnType occurrences="1"/>
   </file>
   <file src="test/Application/RoutingSuccessTest.php">
     <MissingClosureParamType occurrences="1">
@@ -714,7 +691,7 @@
       <code>$routeMock</code>
       <code>$routeMock</code>
     </InvalidArgument>
-    <MissingClosureParamType occurrences="15">
+    <MissingClosureParamType occurrences="14">
       <code>$e</code>
       <code>$e</code>
       <code>$e</code>
@@ -729,12 +706,8 @@
       <code>$e</code>
       <code>$e</code>
       <code>$e</code>
-      <code>$services</code>
     </MissingClosureParamType>
-    <MissingClosureReturnType occurrences="4">
-      <code>static fn($e)</code>
-      <code>static fn(MvcEvent $event)</code>
-    </MissingClosureReturnType>
+    <MissingClosureReturnType occurrences="2"/>
     <UndefinedInterfaceMethod occurrences="1">
       <code>getBody</code>
     </UndefinedInterfaceMethod>
@@ -891,9 +864,6 @@
     </UndefinedThisPropertyFetch>
   </file>
   <file src="test/Controller/Plugin/ForwardTest.php">
-    <InvalidPropertyAssignmentValue occurrences="1">
-      <code>$plugins-&gt;get('forward')</code>
-    </InvalidPropertyAssignmentValue>
     <MissingClosureParamType occurrences="18">
       <code>$e</code>
       <code>$name</code>
@@ -1020,9 +990,6 @@
     </MissingReturnType>
   </file>
   <file src="test/Controller/Plugin/UrlTest.php">
-    <DeprecatedClass occurrences="1">
-      <code>Wildcard::class</code>
-    </DeprecatedClass>
     <UndefinedThisPropertyAssignment occurrences="3">
       <code>$this-&gt;controller</code>
       <code>$this-&gt;plugin</code>
@@ -1044,16 +1011,8 @@
       <code>$this-&gt;router</code>
     </UndefinedThisPropertyFetch>
   </file>
-  <file src="test/Controller/PluginManagerTest.php">
-    <UndefinedInterfaceMethod occurrences="4">
-      <code>getBar</code>
-      <code>getBar</code>
-      <code>getController</code>
-      <code>getController</code>
-    </UndefinedInterfaceMethod>
-  </file>
   <file src="test/Controller/RestfulControllerTest.php">
-    <MissingClosureParamType occurrences="5">
+    <MissingClosureParamType occurrences="2">
       <code>$e</code>
       <code>$e</code>
       <code>$e</code>
@@ -1259,29 +1218,6 @@
       <code>getStatusCode</code>
     </UndefinedInterfaceMethod>
   </file>
-  <file src="test/ModuleRouteListenerTest.php">
-    <UndefinedThisPropertyAssignment occurrences="5">
-      <code>$this-&gt;events</code>
-      <code>$this-&gt;moduleRouteListener</code>
-      <code>$this-&gt;request</code>
-      <code>$this-&gt;routeListener</code>
-      <code>$this-&gt;router</code>
-    </UndefinedThisPropertyAssignment>
-    <UndefinedThisPropertyFetch occurrences="12">
-      <code>$this-&gt;events</code>
-      <code>$this-&gt;events</code>
-      <code>$this-&gt;events</code>
-      <code>$this-&gt;events</code>
-      <code>$this-&gt;request</code>
-      <code>$this-&gt;request</code>
-      <code>$this-&gt;request</code>
-      <code>$this-&gt;request</code>
-      <code>$this-&gt;router</code>
-      <code>$this-&gt;router</code>
-      <code>$this-&gt;router</code>
-      <code>$this-&gt;router</code>
-    </UndefinedThisPropertyFetch>
-  </file>
   <file src="test/ResponseSender/AbstractResponseSenderTest.php">
     <DeprecatedMethod occurrences="1">
       <code>setMethods</code>
@@ -1347,9 +1283,6 @@
     </ParamNameMismatch>
   </file>
   <file src="test/Service/ViewHelperManagerFactoryTest.php">
-    <MissingClosureReturnType occurrences="1">
-      <code>function () {</code>
-    </MissingClosureReturnType>
     <UndefinedThisPropertyAssignment occurrences="2">
       <code>$this-&gt;factory</code>
       <code>$this-&gt;services</code>
@@ -1446,7 +1379,7 @@
       <code>$this-&gt;listener</code>
       <code>$this-&gt;routeMatch</code>
     </UndefinedThisPropertyAssignment>
-    <UndefinedThisPropertyFetch occurrences="51">
+    <UndefinedThisPropertyFetch occurrences="36">
       <code>$this-&gt;event</code>
       <code>$this-&gt;event</code>
       <code>$this-&gt;event</code>

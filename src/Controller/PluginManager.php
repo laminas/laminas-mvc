@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Laminas\Mvc\Controller;
 
+use Laminas\Mvc\Controller\Plugin\PluginInterface;
 use Laminas\ServiceManager\AbstractPluginManager;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
 use Laminas\ServiceManager\Factory\InvokableFactory;
@@ -27,15 +28,17 @@ use function sprintf;
  *
  * Registers a number of default plugins, and contains an initializer for
  * injecting plugins with the current controller.
+ *
+ * @extends AbstractPluginManager<PluginInterface>
  */
 class PluginManager extends AbstractPluginManager
 {
     /**
      * Plugins must be of this type.
      *
-     * @var string
+     * @var class-string
      */
-    protected $instanceOf = Plugin\PluginInterface::class;
+    protected $instanceOf = PluginInterface::class;
 
     /** @var string[] Default aliases */
     protected $aliases = [
@@ -95,8 +98,7 @@ class PluginManager extends AbstractPluginManager
         'laminasmvccontrollerplugincreatehttpnotfoundmodel'     => InvokableFactory::class,
     ];
 
-    /** @var DispatchableInterface */
-    protected $controller;
+    protected ?DispatchableInterface $controller = null;
 
     /**
      * Retrieve a registered instance
@@ -108,9 +110,7 @@ class PluginManager extends AbstractPluginManager
      * as the first controller, the reference to the controller inside the
      * plugin is lost.
      *
-     * @param  string     $name
-     * @param  null|array $options Options to use when creating the instance.
-     * @return DispatchableInterface
+     * @inheritDoc
      */
     public function get($name, ?array $options = null)
     {
@@ -170,12 +170,12 @@ class PluginManager extends AbstractPluginManager
      *
      * {@inheritDoc}
      */
-    public function validate($plugin)
+    public function validate($instance): void
     {
-        if (! $plugin instanceof $this->instanceOf) {
+        if (! $instance instanceof $this->instanceOf) {
             throw new InvalidServiceException(sprintf(
                 'Plugin of type "%s" is invalid; must implement %s',
-                is_object($plugin) ? get_class($plugin) : gettype($plugin),
+                is_object($instance) ? get_class($instance) : gettype($instance),
                 $this->instanceOf
             ));
         }
