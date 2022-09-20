@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace LaminasTest\Mvc\Service;
 
-use Interop\Container\ContainerInterface;
 use Laminas\Mvc\Service\HttpMethodListenerFactory;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\Container\ContainerInterface;
 
 /**
  * @covers Laminas\Mvc\Service\HttpMethodListenerFactory

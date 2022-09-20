@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Laminas\Mvc\Controller;
 
-use Interop\Container\ContainerInterface;
 use Laminas\Console\Adapter\AdapterInterface as ConsoleAdapterInterface;
 use Laminas\Filter\FilterPluginManager;
 use Laminas\Hydrator\HydratorPluginManager;
@@ -18,6 +17,7 @@ use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 use Laminas\Stdlib\DispatchableInterface;
 use Laminas\Validator\ValidatorPluginManager;
+use Psr\Container\ContainerInterface;
 use ReflectionClass;
 use ReflectionParameter;
 

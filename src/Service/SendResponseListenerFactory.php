@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Laminas\Mvc\Service;
 
-use Interop\Container\ContainerInterface;
 use Laminas\Mvc\SendResponseListener;
+use Psr\Container\ContainerInterface;
 
 class SendResponseListenerFactory
 {

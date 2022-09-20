@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Laminas\Mvc\Service;
 
-use Interop\Container\ContainerInterface;
 use Laminas\Mvc\Controller\PluginManager as ControllerPluginManager;
 use Laminas\ServiceManager\Factory\FactoryInterface;
+use Psr\Container\ContainerInterface;
 
 class ControllerPluginManagerFactory implements FactoryInterface
 {

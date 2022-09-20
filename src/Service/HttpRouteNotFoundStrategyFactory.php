@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Laminas\Mvc\Service;
 
-use Interop\Container\ContainerInterface;
 use Laminas\Mvc\View\Http\RouteNotFoundStrategy;
 use Laminas\ServiceManager\Factory\FactoryInterface;
+use Psr\Container\ContainerInterface;
 
 class HttpRouteNotFoundStrategyFactory implements FactoryInterface
 {

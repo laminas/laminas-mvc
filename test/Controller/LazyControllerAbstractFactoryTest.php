@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace LaminasTest\Mvc\Controller;
 
-use Interop\Container\ContainerInterface;
 use Laminas\Mvc\Controller\LazyControllerAbstractFactory;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Laminas\Validator\ValidatorPluginManager;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
+use Psr\Container\ContainerInterface;
 use ZendTest\Mvc\Controller\TestAsset\SampleInterface;
 
 use function sprintf;

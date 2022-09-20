@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace LaminasTest\Mvc\Service;
 
-use Interop\Container\ContainerInterface;
 use Laminas\EventManager\EventManagerInterface;
 use Laminas\EventManager\SharedEventManagerInterface;
 use Laminas\Mvc\ResponseSender\HttpResponseSender;
@@ -16,6 +15,7 @@ use Laminas\Mvc\Service\SendResponseListenerFactory;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\Container\ContainerInterface;
 
 class SendResponseListenerFactoryTest extends TestCase
 {
