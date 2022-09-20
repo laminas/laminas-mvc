@@ -9,7 +9,6 @@ use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Laminas\Validator\ValidatorPluginManager;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
-use TypeError;
 
 class LazyControllerAbstractFactoryTest extends TestCase
 {
