@@ -4,6 +4,7 @@ namespace LaminasTest\Mvc\Controller;
 
 use Interop\Container\ContainerInterface;
 use Laminas\Mvc\Controller\LazyControllerAbstractFactory;
+use Laminas\Mvc\Exception\DomainException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Laminas\Validator\ValidatorPluginManager;
 use PHPUnit\Framework\TestCase;
@@ -73,6 +74,23 @@ class LazyControllerAbstractFactoryTest extends TestCase
             )
         );
         $factory($this->container->reveal(), TestAsset\ControllerWithTypeHintedConstructorParameter::class);
+    }
+
+    /**
+     * @requires PHP >= 8.0
+     */
+    public function testFactoryRaisesExceptionWhenResolvingUnionTypeHintedService(): void
+    {
+        $this->container->has(TestAsset\SampleInterface::class)->willReturn(false);
+        $factory = new LazyControllerAbstractFactory();
+        $this->expectException(DomainException::class);
+        $this->expectExceptionMessage(
+            sprintf(
+                'Unable to create controller "%s"; unable to resolve parameter "sample" with union type hint',
+                TestAsset\ControllerWithUnionTypeHintedConstructorParameter::class
+            )
+        );
+        $factory($this->container->reveal(), TestAsset\ControllerWithUnionTypeHintedConstructorParameter::class);
     }
 
     public function testFactoryPassesNullForScalarParameters()
