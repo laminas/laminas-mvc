@@ -12,7 +12,6 @@ use Laminas\ServiceManager\Exception\InvalidServiceException;
 use Laminas\Stdlib\DispatchableInterface;
 use Psr\Container\ContainerInterface;
 
-use function get_class;
 use function gettype;
 use function is_object;
 use function method_exists;
@@ -67,7 +66,7 @@ class ControllerManager extends AbstractPluginManager
         if (! $instance instanceof $this->instanceOf) {
             throw new InvalidServiceException(sprintf(
                 'Plugin of type "%s" is invalid; must implement %s',
-                is_object($instance) ? get_class($instance) : gettype($instance),
+                is_object($instance) ? $instance::class : gettype($instance),
                 $this->instanceOf
             ));
         }

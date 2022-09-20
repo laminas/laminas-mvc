@@ -321,8 +321,8 @@ class ApplicationTest extends TestCase
         $application->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, static fn($e) => $response);
 
         $result = $application->run();
-        $this->assertSame($application, $result, get_class($result));
-        $this->assertSame($response, $result->getResponse(), get_class($result));
+        $this->assertSame($application, $result, $result::class);
+        $this->assertSame($response, $result->getResponse(), $result::class);
     }
 
     public function testFailureForRouteToReturnRouteMatchShouldPopulateEventError(): void

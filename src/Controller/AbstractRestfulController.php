@@ -17,7 +17,6 @@ use function array_key_exists;
 use function array_shift;
 use function count;
 use function explode;
-use function get_class;
 use function gettype;
 use function is_array;
 use function is_callable;
@@ -537,7 +536,7 @@ abstract class AbstractRestfulController extends AbstractController
         if (! is_callable($handler)) {
             throw new Exception\InvalidArgumentException(sprintf(
                 'Invalid HTTP method handler: must be a callable; received "%s"',
-                is_object($handler) ? get_class($handler) : gettype($handler)
+                is_object($handler) ? $handler::class : gettype($handler)
             ));
         }
         $method                              = strtolower($method);

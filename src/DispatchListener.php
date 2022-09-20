@@ -16,7 +16,6 @@ use Laminas\Stdlib\ArrayUtils;
 use Throwable;
 
 use function function_exists;
-use function get_class;
 use function is_object;
 
 /**
@@ -122,7 +121,7 @@ class DispatchListener extends AbstractListenerAggregate
             $e->setName(MvcEvent::EVENT_DISPATCH_ERROR);
             $e->setError($application::ERROR_EXCEPTION);
             $e->setController($controllerName);
-            $e->setControllerClass(get_class($controller));
+            $e->setControllerClass($controller::class);
             $e->setParam('exception', $ex);
 
             $return = $application->getEventManager()->triggerEvent($e)->last();

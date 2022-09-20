@@ -229,12 +229,8 @@
     </RedundantConditionGivenDocblockType>
   </file>
   <file src="src/Controller/Plugin/Forward.php">
-    <InvalidArgument occurrences="1">
-      <code>1</code>
-    </InvalidArgument>
-    <PossiblyNullArgument occurrences="2">
+    <PossiblyNullArgument occurrences="1">
       <code>$sharedEvents</code>
-      <code>is_object($controller) ? get_class($controller) : var_export($controller, 1)</code>
     </PossiblyNullArgument>
     <PossiblyNullReference occurrences="1">
       <code>getMatchedRouteName</code>
