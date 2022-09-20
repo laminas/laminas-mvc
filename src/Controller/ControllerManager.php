@@ -22,6 +22,8 @@ use function sprintf;
  * Manager for loading controllers
  *
  * Does not define any controllers by default, but does add a validator.
+ *
+ * @extends AbstractPluginManager<DispatchableInterface>
  */
 class ControllerManager extends AbstractPluginManager
 {
@@ -35,7 +37,7 @@ class ControllerManager extends AbstractPluginManager
     /**
      * Controllers must be of this type.
      *
-     * @var string
+     * @var class-string
      */
     protected $instanceOf = DispatchableInterface::class;
 
@@ -60,12 +62,12 @@ class ControllerManager extends AbstractPluginManager
      *
      * {@inheritDoc}
      */
-    public function validate($plugin)
+    public function validate($instance): void
     {
-        if (! $plugin instanceof $this->instanceOf) {
+        if (! $instance instanceof $this->instanceOf) {
             throw new InvalidServiceException(sprintf(
                 'Plugin of type "%s" is invalid; must implement %s',
-                is_object($plugin) ? get_class($plugin) : gettype($plugin),
+                is_object($instance) ? get_class($instance) : gettype($instance),
                 $this->instanceOf
             ));
         }
