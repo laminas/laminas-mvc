@@ -11,12 +11,14 @@ use Laminas\Log\FilterPluginManager as LogFilterManager;
 use Laminas\Log\FormatterPluginManager as LogFormatterManager;
 use Laminas\Log\ProcessorPluginManager as LogProcessorManager;
 use Laminas\Log\WriterPluginManager as LogWriterManager;
+use Laminas\Mvc\Exception\DomainException;
 use Laminas\Serializer\AdapterPluginManager as SerializerAdapterManager;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 use Laminas\Stdlib\DispatchableInterface;
 use Laminas\Validator\ValidatorPluginManager;
 use ReflectionClass;
+use ReflectionNamedType;
 use ReflectionParameter;
 
 /**
@@ -147,8 +149,20 @@ class LazyControllerAbstractFactory implements AbstractFactoryInterface
          *   resolved to a service in the container.
          */
         return function (ReflectionParameter $parameter) use ($container, $requestedName) {
-            if ($parameter->getType()
-                && $parameter->getType()->getName() === 'array') {
+
+            $parameterType = $parameter->getType();
+            if ($parameterType === null) {
+                return null;
+            }
+            if (! $parameterType instanceof ReflectionNamedType) {
+                throw new DomainException(sprintf(
+                    'Unable to create controller "%s"; unable to resolve parameter "%s" with union type hint',
+                    $requestedName,
+                    $parameter->getName()
+                ));
+            }
+
+            if ($parameterType->getName() === 'array') {
                 if ($parameter->getName() === 'config'
                     && $container->has('config')
                 ) {
@@ -157,11 +171,11 @@ class LazyControllerAbstractFactory implements AbstractFactoryInterface
                 return [];
             }
 
-            if (! $parameter->getType() || $parameter->getType()->isBuiltin()) {
-                return;
+            if ($parameterType->isBuiltin()) {
+                return null;
             }
 
-            $type = $parameter->getType()->getName();
+            $type = $parameterType->getName();
             $type = isset($this->aliases[$type]) ? $this->aliases[$type] : $type;
 
             if (! $container->has($type)) {
