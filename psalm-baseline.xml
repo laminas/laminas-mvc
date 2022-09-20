@@ -100,9 +100,6 @@
       <code>$headerContentType</code>
       <code>is_object($handler)</code>
     </DocblockTypeContradiction>
-    <PossiblyInvalidArgument occurrences="1">
-      <code>$this-&gt;jsonDecodeType</code>
-    </PossiblyInvalidArgument>
     <PossiblyNullArgument occurrences="1">
       <code>$contentType</code>
     </PossiblyNullArgument>
@@ -172,10 +169,6 @@
       <code>LogWriterManager</code>
       <code>SerializerAdapterManager</code>
     </UndefinedClass>
-    <UndefinedMethod occurrences="2">
-      <code>getName</code>
-      <code>getName</code>
-    </UndefinedMethod>
   </file>
   <file src="src/Controller/Plugin/AcceptableViewModelSelector.php">
     <DocblockTypeContradiction occurrences="1">
@@ -612,7 +605,9 @@
       <code>$services</code>
       <code>$services</code>
     </MissingClosureParamType>
-    <MissingClosureReturnType occurrences="1"/>
+    <MissingClosureReturnType occurrences="1">
+      <code>static fn($services) =&gt; $services-&gt;get('HttpRouter')</code>
+    </MissingClosureReturnType>
   </file>
   <file src="test/Application/ControllerIsDispatchedTest.php">
     <UndefinedInterfaceMethod occurrences="1">
@@ -647,20 +642,26 @@
       <code>$services</code>
       <code>$services</code>
     </MissingClosureParamType>
-    <MissingClosureReturnType occurrences="1"/>
+    <MissingClosureReturnType occurrences="1">
+      <code>static fn($services) =&gt; $services-&gt;get('HttpRouter')</code>
+    </MissingClosureReturnType>
   </file>
   <file src="test/Application/MissingControllerTrait.php">
     <MissingClosureParamType occurrences="1">
       <code>$services</code>
     </MissingClosureParamType>
-    <MissingClosureReturnType occurrences="1"/>
+    <MissingClosureReturnType occurrences="1">
+      <code>static fn($services) =&gt; $services-&gt;get('HttpRouter')</code>
+    </MissingClosureReturnType>
   </file>
   <file src="test/Application/PathControllerTrait.php">
     <MissingClosureParamType occurrences="2">
       <code>$services</code>
       <code>$services</code>
     </MissingClosureParamType>
-    <MissingClosureReturnType occurrences="1"/>
+    <MissingClosureReturnType occurrences="1">
+      <code>static fn($services) =&gt; $services-&gt;get('HttpRouter')</code>
+    </MissingClosureReturnType>
   </file>
   <file src="test/Application/RoutingSuccessTest.php">
     <MissingClosureParamType occurrences="1">
@@ -707,7 +708,10 @@
       <code>$e</code>
       <code>$e</code>
     </MissingClosureParamType>
-    <MissingClosureReturnType occurrences="2"/>
+    <MissingClosureReturnType occurrences="2">
+      <code>static fn($e) =&gt; $e-&gt;getResponse()-&gt;setContent($e-&gt;getResponse()-&gt;getBody() . 'foobar')</code>
+      <code>static function (MvcEvent $event) {</code>
+    </MissingClosureReturnType>
     <UndefinedInterfaceMethod occurrences="1">
       <code>getBody</code>
     </UndefinedInterfaceMethod>
@@ -811,7 +815,8 @@
     </UndefinedThisPropertyFetch>
   </file>
   <file src="test/Controller/LazyControllerAbstractFactoryTest.php">
-    <PossiblyInvalidMethodCall occurrences="8">
+    <PossiblyInvalidMethodCall occurrences="9">
+      <code>willReturn</code>
       <code>willReturn</code>
       <code>willReturn</code>
       <code>willReturn</code>
@@ -821,7 +826,8 @@
       <code>willReturn</code>
       <code>willReturn</code>
     </PossiblyInvalidMethodCall>
-    <PossiblyUndefinedMethod occurrences="10">
+    <PossiblyUndefinedMethod occurrences="11">
+      <code>reveal</code>
       <code>reveal</code>
       <code>reveal</code>
       <code>reveal</code>
@@ -1015,9 +1021,6 @@
     <MissingClosureParamType occurrences="2">
       <code>$e</code>
       <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
     </MissingClosureParamType>
     <PossiblyInvalidMethodCall occurrences="4">
       <code>addHeaderLine</code>
@@ -1137,6 +1140,20 @@
       <code>ControllerWithTypeHintedConstructorParameter</code>
       <code>ControllerWithTypeHintedConstructorParameter</code>
     </PropertyNotSetInConstructor>
+  </file>
+  <file src="test/Controller/TestAsset/ControllerWithUnionTypeHintedConstructorParameter.php">
+    <PropertyNotSetInConstructor occurrences="6">
+      <code>$sample</code>
+      <code>ControllerWithUnionTypeHintedConstructorParameter</code>
+      <code>ControllerWithUnionTypeHintedConstructorParameter</code>
+      <code>ControllerWithUnionTypeHintedConstructorParameter</code>
+      <code>ControllerWithUnionTypeHintedConstructorParameter</code>
+      <code>ControllerWithUnionTypeHintedConstructorParameter</code>
+    </PropertyNotSetInConstructor>
+    <UndefinedClass occurrences="2">
+      <code>SampleInterface|AnotherSampleInterface</code>
+      <code>SampleInterface|AnotherSampleInterface $sample</code>
+    </UndefinedClass>
   </file>
   <file src="test/Controller/TestAsset/ForwardController.php">
     <LessSpecificImplementedReturnType occurrences="1">
@@ -1390,11 +1407,6 @@
       <code>$this-&gt;event</code>
       <code>$this-&gt;event</code>
       <code>$this-&gt;event</code>
-      <code>$this-&gt;event</code>
-      <code>$this-&gt;event</code>
-      <code>$this-&gt;event</code>
-      <code>$this-&gt;event</code>
-      <code>$this-&gt;event</code>
       <code>$this-&gt;listener</code>
       <code>$this-&gt;listener</code>
       <code>$this-&gt;listener</code>
@@ -1413,16 +1425,6 @@
       <code>$this-&gt;listener</code>
       <code>$this-&gt;listener</code>
       <code>$this-&gt;listener</code>
-      <code>$this-&gt;listener</code>
-      <code>$this-&gt;listener</code>
-      <code>$this-&gt;listener</code>
-      <code>$this-&gt;listener</code>
-      <code>$this-&gt;listener</code>
-      <code>$this-&gt;routeMatch</code>
-      <code>$this-&gt;routeMatch</code>
-      <code>$this-&gt;routeMatch</code>
-      <code>$this-&gt;routeMatch</code>
-      <code>$this-&gt;routeMatch</code>
       <code>$this-&gt;routeMatch</code>
       <code>$this-&gt;routeMatch</code>
       <code>$this-&gt;routeMatch</code>
