@@ -16,7 +16,6 @@ use Laminas\Stdlib\DispatchableInterface;
 use Traversable;
 
 use function array_shift;
-use function get_class;
 use function is_array;
 use function is_object;
 use function sprintf;
@@ -238,7 +237,7 @@ class Forward extends AbstractPlugin
         if (! $controller instanceof InjectApplicationEventInterface) {
             throw new Exception\DomainException(sprintf(
                 'Forward plugin requires a controller that implements InjectApplicationEventInterface; received %s',
-                is_object($controller) ? get_class($controller) : var_export($controller, 1)
+                is_object($controller) ? $controller::class : var_export($controller, true)
             ));
         }
 

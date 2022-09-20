@@ -13,7 +13,6 @@ use Laminas\View\Model\ModelInterface as ViewModel;
 use function array_diff;
 use function array_pop;
 use function explode;
-use function get_class;
 use function implode;
 use function is_object;
 use function is_string;
@@ -78,7 +77,7 @@ class InjectTemplateListener extends AbstractListenerAggregate
 
         $controller = $e->getTarget();
         if (is_object($controller)) {
-            $controller = get_class($controller);
+            $controller = $controller::class;
         }
 
         $routeMatchController = $routeMatch->getParam('controller', '');
