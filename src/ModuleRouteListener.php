@@ -6,15 +6,18 @@ use Laminas\EventManager\AbstractListenerAggregate;
 use Laminas\EventManager\EventManagerInterface;
 use Laminas\Router\RouteMatch;
 
+use function str_replace;
+use function strpos;
+use function ucwords;
+
 class ModuleRouteListener extends AbstractListenerAggregate
 {
-    const MODULE_NAMESPACE    = '__NAMESPACE__';
-    const ORIGINAL_CONTROLLER = '__CONTROLLER__';
+    public const MODULE_NAMESPACE    = '__NAMESPACE__';
+    public const ORIGINAL_CONTROLLER = '__CONTROLLER__';
 
     /**
      * Attach to an event manager
      *
-     * @param  EventManagerInterface $events
      * @param  int $priority
      */
     public function attach(EventManagerInterface $events, $priority = 1)
@@ -30,7 +33,6 @@ class ModuleRouteListener extends AbstractListenerAggregate
      * constant, that value will be prepended, with a namespace separator, to
      * the matched controller parameter.
      *
-     * @param  MvcEvent $e
      * @return null
      */
     public function onRoute(MvcEvent $e)

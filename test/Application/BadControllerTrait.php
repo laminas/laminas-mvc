@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Application;
 
 use Laminas\Http\PhpEnvironment\Request;
@@ -22,9 +24,9 @@ trait BadControllerTrait
             'router' => [
                 'routes' => [
                     'path' => [
-                        'type' => Router\Http\Literal::class,
+                        'type'    => Router\Http\Literal::class,
                         'options' => [
-                            'route' => '/bad',
+                            'route'    => '/bad',
                             'defaults' => [
                                 'controller' => 'bad',
                                 'action'     => 'test',
@@ -36,7 +38,7 @@ trait BadControllerTrait
         ];
 
         $serviceListener = new ServiceListenerFactory();
-        $r = new ReflectionProperty($serviceListener, 'defaultServiceConfig');
+        $r               = new ReflectionProperty($serviceListener, 'defaultServiceConfig');
         $r->setAccessible(true);
         $serviceConfig = $r->getValue($serviceListener);
 
@@ -48,18 +50,20 @@ trait BadControllerTrait
         $serviceConfig = ArrayUtils::merge(
             $serviceConfig,
             [
-                'aliases' => [
-                    'ControllerLoader'  => ControllerManager::class,
+                'aliases'    => [
+                    'ControllerLoader' => ControllerManager::class,
                 ],
-                'factories' => [
+                'factories'  => [
                     'ControllerManager' => function ($services) {
-                        return new ControllerManager($services, ['factories' => [
-                            'bad' => function () {
-                                return new BadController();
-                            },
-                        ]]);
+                        return new ControllerManager($services, [
+                            'factories' => [
+                                'bad' => function () {
+                                    return new BadController();
+                                },
+                            ],
+                        ]);
                     },
-                    'Router' => function ($services) {
+                    'Router'            => function ($services) {
                         return $services->get('HttpRouter');
                     },
                 ],
@@ -70,8 +74,8 @@ trait BadControllerTrait
                     'SendResponseListener' => TestAsset\MockSendResponseListener::class,
                     'BootstrapListener'    => TestAsset\StubBootstrapListener::class,
                 ],
-                'services' => [
-                    'config' => $config,
+                'services'   => [
+                    'config'            => $config,
                     'ApplicationConfig' => [
                         'modules'                 => [],
                         'module_listener_options' => [
@@ -83,7 +87,7 @@ trait BadControllerTrait
                 ],
             ]
         );
-        $services = new ServiceManager();
+        $services      = new ServiceManager();
         (new ServiceManagerConfig($serviceConfig))->configureServiceManager($services);
         $application = $services->get('Application');
 

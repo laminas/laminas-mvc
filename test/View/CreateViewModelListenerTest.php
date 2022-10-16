@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\View;
 
 use Laminas\EventManager\EventManager;
@@ -10,14 +12,17 @@ use Laminas\View\Model\ViewModel;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
+use function count;
+use function gettype;
+
 class CreateViewModelListenerTest extends TestCase
 {
     use EventListenerIntrospectionTrait;
 
     public function setUp(): void
     {
-        $this->listener   = new CreateViewModelListener();
-        $this->event      = new MvcEvent();
+        $this->listener = new CreateViewModelListener();
+        $this->event    = new MvcEvent();
     }
 
     public function testReCastsAssocArrayEventResultAsViewModel()
@@ -45,7 +50,7 @@ class CreateViewModelListenerTest extends TestCase
             [1.00],
             ['string'],
             [['foo', 'bar']],
-            [new stdClass],
+            [new stdClass()],
         ];
     }
 

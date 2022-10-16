@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Controller;
 
 use Laminas\EventManager\EventManager;
@@ -14,7 +16,9 @@ use Laminas\Stdlib\DispatchableInterface;
 use Laminas\Stdlib\RequestInterface;
 use Laminas\Stratigility\MiddlewarePipe;
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 use Psr\Http\Message\ResponseInterface;
+use stdClass;
 
 /**
  * @covers \Laminas\Mvc\Controller\MiddlewareController
@@ -24,29 +28,19 @@ use Psr\Http\Message\ResponseInterface;
  */
 class MiddlewareControllerTest extends TestCase
 {
-    /**
-     * @var MiddlewarePipe|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var MiddlewarePipe|PHPUnit_Framework_MockObject_MockObject */
     private $pipe;
 
-    /**
-     * @var ResponseInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var ResponseInterface|PHPUnit_Framework_MockObject_MockObject */
     private $responsePrototype;
 
-    /**
-     * @var EventManagerInterface
-     */
+    /** @var EventManagerInterface */
     private $eventManager;
 
-    /**
-     * @var AbstractController|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var AbstractController|PHPUnit_Framework_MockObject_MockObject */
     private $controller;
 
-    /**
-     * @var MvcEvent
-     */
+    /** @var MvcEvent */
     private $event;
 
     /**
@@ -79,11 +73,11 @@ class MiddlewareControllerTest extends TestCase
 
     public function testWillDispatchARequestAndResponseWithAGivenPipe()
     {
-        $request          = new Request();
-        $response         = new Response();
-        $result           = $this->createMock(ResponseInterface::class);
-        /* @var $dispatchListener callable|\PHPUnit_Framework_MockObject_MockObject */
-        $dispatchListener = $this->getMockBuilder(\stdClass::class)->setMethods(['__invoke'])->getMock();
+        $request  = new Request();
+        $response = new Response();
+        $result   = $this->createMock(ResponseInterface::class);
+        /** @var callable|PHPUnit_Framework_MockObject_MockObject $dispatchListener */
+        $dispatchListener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
 
         $this->eventManager->attach(MvcEvent::EVENT_DISPATCH, $dispatchListener, 100);
         $this->eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, function () {
@@ -113,11 +107,11 @@ class MiddlewareControllerTest extends TestCase
 
     public function testWillRefuseDispatchingInvalidRequestTypes()
     {
-        /* @var $request RequestInterface */
-        $request          = $this->createMock(RequestInterface::class);
-        $response         = new Response();
-        /* @var $dispatchListener callable|\PHPUnit_Framework_MockObject_MockObject */
-        $dispatchListener = $this->getMockBuilder(\stdClass::class)->setMethods(['__invoke'])->getMock();
+        /** @var RequestInterface $request */
+        $request  = $this->createMock(RequestInterface::class);
+        $response = new Response();
+        /** @var callable|PHPUnit_Framework_MockObject_MockObject $dispatchListener */
+        $dispatchListener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
 
         $this->eventManager->attach(MvcEvent::EVENT_DISPATCH, $dispatchListener, 100);
 

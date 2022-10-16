@@ -9,7 +9,7 @@ use Laminas\Stdlib\ResponseInterface as Response;
 
 class PathController implements DispatchableInterface
 {
-    public function dispatch(Request $request, Response $response = null)
+    public function dispatch(Request $request, ?Response $response = null)
     {
         if (! $response) {
             $response = new HttpResponse();

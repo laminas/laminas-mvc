@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
@@ -22,7 +24,7 @@ class SendResponseListenerFactoryTest extends TestCase
     public function testFactoryReturnsListenerWithEventManagerFromContainer()
     {
         $sharedEvents = $this->prophesize(SharedEventManagerInterface::class);
-        $events = $this->prophesize(EventManagerInterface::class);
+        $events       = $this->prophesize(EventManagerInterface::class);
         $events->getSharedManager()->will([$sharedEvents, 'reveal']);
 
         $events->setIdentifiers([SendResponseListener::class, SendResponseListener::class])->shouldBeCalled();
@@ -45,7 +47,7 @@ class SendResponseListenerFactoryTest extends TestCase
         $container = $this->prophesize(ContainerInterface::class);
         $container->get('EventManager')->will([$events, 'reveal']);
 
-        $factory = new SendResponseListenerFactory();
+        $factory  = new SendResponseListenerFactory();
         $listener = $factory($container->reveal());
         $this->assertInstanceOf(SendResponseListener::class, $listener);
         $this->assertSame($events->reveal(), $listener->getEventManager());

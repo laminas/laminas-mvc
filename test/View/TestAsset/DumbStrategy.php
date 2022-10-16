@@ -1,11 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\View\TestAsset;
 
 use ArrayObject;
 use Laminas\View\Model\ModelInterface as Model;
 use Laminas\View\Renderer\RendererInterface as Renderer;
 use Laminas\View\Resolver\ResolverInterface as Resolver;
+
+use function array_key_exists;
+use function array_merge;
+use function json_encode;
+use function sprintf;
 
 /**
  * Mock renderer

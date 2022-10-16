@@ -16,7 +16,6 @@ use Laminas\Stdlib\ArrayUtils;
 
 class ServiceManagerConfig extends Config
 {
-
     /**
      * Default service configuration.
      *
@@ -36,17 +35,17 @@ class ServiceManagerConfig extends Config
             'SharedEventManagerInterface'      => 'SharedEventManager',
             SharedEventManagerInterface::class => 'SharedEventManager',
         ],
-        'delegators' => [],
-        'factories'  => [
-            'EventManager'            => EventManagerFactory::class,
-            'ModuleManager'           => ModuleManagerFactory::class,
-            'ServiceListener'         => ServiceListenerFactory::class,
+        'delegators'         => [],
+        'factories'          => [
+            'EventManager'    => EventManagerFactory::class,
+            'ModuleManager'   => ModuleManagerFactory::class,
+            'ServiceListener' => ServiceListenerFactory::class,
         ],
-        'lazy_services' => [],
-        'initializers'  => [],
-        'invokables'    => [],
-        'services'      => [],
-        'shared'        => [
+        'lazy_services'      => [],
+        'initializers'       => [],
+        'invokables'         => [],
+        'services'           => [],
+        'shared'             => [
             'EventManager' => false,
         ],
     ];
@@ -76,10 +75,10 @@ class ServiceManagerConfig extends Config
             'EventManagerAwareInitializer' => function ($first, $second) {
                 if ($first instanceof ContainerInterface) {
                     $container = $first;
-                    $instance = $second;
+                    $instance  = $second;
                 } else {
                     $container = $second;
-                    $instance = $first;
+                    $instance  = $first;
                 }
 
                 if (! $instance instanceof EventManagerAwareInterface) {
@@ -89,7 +88,8 @@ class ServiceManagerConfig extends Config
                 $eventManager = $instance->getEventManager();
 
                 // If the instance has an EM WITH an SEM composed, do nothing.
-                if ($eventManager instanceof EventManagerInterface
+                if (
+                    $eventManager instanceof EventManagerInterface
                     && $eventManager->getSharedManager() instanceof SharedEventManagerInterface
                 ) {
                     return;
@@ -111,7 +111,6 @@ class ServiceManagerConfig extends Config
      * Before doing so, it adds a "service" entry for the ServiceManager class,
      * pointing to the provided service container.
      *
-     * @param ServiceManager $services
      * @return ServiceManager
      */
     public function configureServiceManager(ServiceManager $services)

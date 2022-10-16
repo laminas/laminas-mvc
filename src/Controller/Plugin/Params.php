@@ -2,6 +2,8 @@
 
 namespace Laminas\Mvc\Controller\Plugin;
 
+use ArrayAccess;
+use Laminas\Http\Header\HeaderInterface;
 use Laminas\Mvc\Exception\RuntimeException;
 use Laminas\Mvc\InjectApplicationEventInterface;
 
@@ -27,7 +29,7 @@ class Params extends AbstractPlugin
      *
      * @param  string $name File name to retrieve, or null to get all.
      * @param  mixed $default Default value to use when the file is missing.
-     * @return array|\ArrayAccess|null
+     * @return array|ArrayAccess|null
      */
     public function fromFiles($name = null, $default = null)
     {
@@ -43,7 +45,7 @@ class Params extends AbstractPlugin
      *
      * @param  string $header Header name to retrieve, or null to get all.
      * @param  mixed $default Default value to use when the requested header is missing.
-     * @return null|\Laminas\Http\Header\HeaderInterface
+     * @return null|HeaderInterface
      */
     public function fromHeader($header = null, $default = null)
     {

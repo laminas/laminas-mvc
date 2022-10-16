@@ -6,6 +6,8 @@ use Laminas\Mvc\Exception;
 use Laminas\Mvc\MvcEvent;
 use Laminas\View\Model\ViewModel;
 
+use function method_exists;
+
 /**
  * Basic action controller
  */
@@ -14,7 +16,7 @@ abstract class AbstractActionController extends AbstractController
     /**
      * {@inheritDoc}
      */
-    protected $eventIdentifier = __CLASS__;
+    protected $eventIdentifier = self::class;
 
     /**
      * Default action if none provided
@@ -24,7 +26,7 @@ abstract class AbstractActionController extends AbstractController
     public function indexAction()
     {
         return new ViewModel([
-            'content' => 'Placeholder page'
+            'content' => 'Placeholder page',
         ]);
     }
 
@@ -46,7 +48,6 @@ abstract class AbstractActionController extends AbstractController
     /**
      * Execute the request
      *
-     * @param  MvcEvent $e
      * @return mixed
      * @throws Exception\DomainException
      */

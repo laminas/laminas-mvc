@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc;
 
 use Laminas\EventManager\EventManagerInterface;
@@ -16,9 +18,7 @@ use PHPUnit\Framework\TestCase;
  */
 class HttpMethodListenerTest extends TestCase
 {
-    /**
-     * @var HttpMethodListener
-     */
+    /** @var HttpMethodListener */
     protected $listener;
 
     public function setUp(): void
@@ -28,7 +28,7 @@ class HttpMethodListenerTest extends TestCase
 
     public function testConstructor()
     {
-        $methods = ['foo', 'bar'];
+        $methods  = ['foo', 'bar'];
         $listener = new HttpMethodListener(false, $methods);
 
         $this->assertFalse($listener->isEnabled());
@@ -74,7 +74,7 @@ class HttpMethodListenerTest extends TestCase
 
     public function testOnRouteDoesNothingIfIfMethodIsAllowed()
     {
-        $event = new MvcEvent();
+        $event   = new MvcEvent();
         $request = new HttpRequest();
         $request->setMethod('foo');
         $event->setRequest($request);
@@ -87,7 +87,7 @@ class HttpMethodListenerTest extends TestCase
 
     public function testOnRouteReturns405ResponseIfMethodNotAllowed()
     {
-        $event = new MvcEvent();
+        $event   = new MvcEvent();
         $request = new HttpRequest();
         $request->setMethod('foo');
         $event->setRequest($request);

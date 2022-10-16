@@ -5,7 +5,6 @@ namespace Laminas\Mvc\Service;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\View\Resolver as ViewResolver;
-use Laminas\View\Resolver\ResolverInterface;
 
 class ViewResolverFactory implements FactoryInterface
 {
@@ -15,20 +14,19 @@ class ViewResolverFactory implements FactoryInterface
      * Creates a Laminas\View\Resolver\AggregateResolver and attaches the template
      * map resolver and path stack resolver
      *
-     * @param  ContainerInterface $container
      * @param  string $name
      * @param  null|array $options
      * @return ViewResolver\AggregateResolver
      */
-    public function __invoke(ContainerInterface $container, $name, array $options = null)
+    public function __invoke(ContainerInterface $container, $name, ?array $options = null)
     {
         $resolver = new ViewResolver\AggregateResolver();
 
-        /* @var $mapResolver ResolverInterface */
-        $mapResolver             = $container->get('ViewTemplateMapResolver');
-        /* @var $pathResolver ResolverInterface */
-        $pathResolver            = $container->get('ViewTemplatePathStack');
-        /* @var $prefixPathStackResolver ResolverInterface */
+        /** @var ResolverInterface $mapResolver */
+        $mapResolver = $container->get('ViewTemplateMapResolver');
+        /** @var ResolverInterface $pathResolver */
+        $pathResolver = $container->get('ViewTemplatePathStack');
+        /** @var ResolverInterface $prefixPathStackResolver */
         $prefixPathStackResolver = $container->get('ViewPrefixPathStackResolver');
 
         $resolver

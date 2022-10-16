@@ -6,6 +6,8 @@ use Interop\Container\ContainerInterface;
 use Laminas\Mvc\View\Http\InjectTemplateListener;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
+use function is_array;
+
 class InjectTemplateListenerFactory implements FactoryInterface
 {
     /**
@@ -15,12 +17,13 @@ class InjectTemplateListenerFactory implements FactoryInterface
      *
      * @return InjectTemplateListener
      */
-    public function __invoke(ContainerInterface $container, $name, array $options = null)
+    public function __invoke(ContainerInterface $container, $name, ?array $options = null)
     {
         $listener = new InjectTemplateListener();
         $config   = $container->get('config');
 
-        if (isset($config['view_manager']['controller_map'])
+        if (
+            isset($config['view_manager']['controller_map'])
             && (is_array($config['view_manager']['controller_map']))
         ) {
             $listener->setControllerMap($config['view_manager']['controller_map']);

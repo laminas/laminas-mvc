@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Application;
 
 use Laminas\Http\PhpEnvironment\Request;
@@ -21,9 +23,9 @@ trait PathControllerTrait
             'router' => [
                 'routes' => [
                     'path' => [
-                        'type' => Router\Http\Literal::class,
+                        'type'    => Router\Http\Literal::class,
                         'options' => [
-                            'route' => '/path',
+                            'route'    => '/path',
                             'defaults' => [
                                 'controller' => 'path',
                             ],
@@ -34,7 +36,7 @@ trait PathControllerTrait
         ];
 
         $serviceListener = new ServiceListenerFactory();
-        $r = new ReflectionProperty($serviceListener, 'defaultServiceConfig');
+        $r               = new ReflectionProperty($serviceListener, 'defaultServiceConfig');
         $r->setAccessible(true);
         $serviceConfig = $r->getValue($serviceListener);
 
@@ -46,18 +48,20 @@ trait PathControllerTrait
         $serviceConfig = ArrayUtils::merge(
             $serviceConfig,
             [
-                'aliases' => [
-                    'ControllerLoader'  => ControllerManager::class,
+                'aliases'    => [
+                    'ControllerLoader' => ControllerManager::class,
                 ],
-                'factories' => [
+                'factories'  => [
                     'ControllerManager' => function ($services) {
-                        return new ControllerManager($services, ['factories' => [
-                            'path' => function () {
-                                return new TestAsset\PathController();
-                            },
-                        ]]);
+                        return new ControllerManager($services, [
+                            'factories' => [
+                                'path' => function () {
+                                    return new TestAsset\PathController();
+                                },
+                            ],
+                        ]);
                     },
-                    'Router' => function ($services) {
+                    'Router'            => function ($services) {
                         return $services->get('HttpRouter');
                     },
                 ],
@@ -68,8 +72,8 @@ trait PathControllerTrait
                     'SendResponseListener' => TestAsset\MockSendResponseListener::class,
                     'BootstrapListener'    => TestAsset\StubBootstrapListener::class,
                 ],
-                'services' => [
-                    'config' => $config,
+                'services'   => [
+                    'config'            => $config,
                     'ApplicationConfig' => [
                         'modules'                 => [
                             'Laminas\Router',
@@ -83,7 +87,7 @@ trait PathControllerTrait
                 ],
             ]
         );
-        $services = new ServiceManager();
+        $services      = new ServiceManager();
         (new ServiceManagerConfig($serviceConfig))->configureServiceManager($services);
         $application = $services->get('Application');
 

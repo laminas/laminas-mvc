@@ -14,12 +14,14 @@ class ExceptionStrategy extends AbstractListenerAggregate
 {
     /**
      * Display exceptions?
+     *
      * @var bool
      */
     protected $displayExceptions = false;
 
     /**
      * Name of exception template
+     *
      * @var string
      */
     protected $exceptionTemplate = 'error';
@@ -85,7 +87,6 @@ class ExceptionStrategy extends AbstractListenerAggregate
      *         priority dispatch.error event (or goto a render event) to ensure
      *         rendering occurs, and that munging of view models occurs when
      *         expected.
-     * @param  MvcEvent $e
      * @return void
      */
     public function prepareExceptionViewModel(MvcEvent $e)

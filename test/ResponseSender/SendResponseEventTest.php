@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\ResponseSender;
 
 use Laminas\Mvc\ResponseSender\SendResponseEvent;
@@ -10,9 +12,9 @@ class SendResponseEventTest extends TestCase
 {
     public function testContentSentAndHeadersSent()
     {
-        $mockResponse = $this->getMockForAbstractClass(ResponseInterface::class);
+        $mockResponse  = $this->getMockForAbstractClass(ResponseInterface::class);
         $mockResponse2 = $this->getMockForAbstractClass(ResponseInterface::class);
-        $event = new SendResponseEvent();
+        $event         = new SendResponseEvent();
         $event->setResponse($mockResponse);
         $this->assertFalse($event->headersSent());
         $this->assertFalse($event->contentSent());

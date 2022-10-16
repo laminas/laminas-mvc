@@ -2,6 +2,7 @@
 
 namespace Laminas\Mvc\Controller;
 
+use Laminas\Diactoros\ServerRequest;
 use Laminas\EventManager\EventManagerInterface;
 use Laminas\Http\Request;
 use Laminas\Mvc\Exception\ReachedFinalHandlerException;
@@ -14,28 +15,27 @@ use Laminas\Stratigility\MiddlewarePipe;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
+use function sprintf;
+
 /**
  * @internal don't use this in your codebase, or else @ocramius will hunt you
  *     down. This is just an internal hack to make middleware trigger
  *     'dispatch' events attached to the DispatchableInterface identifier.
  *
  *     Specifically, it will receive a @see MiddlewarePipe and a
- *     @see ResponseInterface prototype, and then dispatch the pipe whilst still
+ *
+ * @see ResponseInterface prototype, and then dispatch the pipe whilst still
  *     behaving like a normal controller. That is needed for any events
  *     attached to the @see \Laminas\Stdlib\DispatchableInterface identifier to
  *     reach their listeners on any attached
- *     @see \Laminas\EventManager\SharedEventManagerInterface
+ * @see \Laminas\EventManager\SharedEventManagerInterface
  */
 final class MiddlewareController extends AbstractController
 {
-    /**
-     * @var MiddlewarePipe
-     */
+    /** @var MiddlewarePipe */
     private $pipe;
 
-    /**
-     * @var ResponseInterface
-     */
+    /** @var ResponseInterface */
     private $responsePrototype;
 
     public function __construct(
@@ -44,7 +44,7 @@ final class MiddlewareController extends AbstractController
         EventManagerInterface $eventManager,
         MvcEvent $event
     ) {
-        $this->eventIdentifier   = __CLASS__;
+        $this->eventIdentifier   = self::class;
         $this->pipe              = $pipe;
         $this->responsePrototype = $responsePrototype;
 
@@ -78,8 +78,7 @@ final class MiddlewareController extends AbstractController
     }
 
     /**
-     * @return \Laminas\Diactoros\ServerRequest
-     *
+     * @return ServerRequest
      * @throws RuntimeException
      */
     private function loadRequest()
@@ -90,7 +89,7 @@ final class MiddlewareController extends AbstractController
             throw new RuntimeException(sprintf(
                 'Expected request to be a %s, %s given',
                 Request::class,
-                get_class($request)
+                $request::class
             ));
         }
 
@@ -98,12 +97,9 @@ final class MiddlewareController extends AbstractController
     }
 
     /**
-     * @param ServerRequestInterface $request
-     * @param RouteMatch|null $routeMatch
-     *
      * @return ServerRequestInterface
      */
-    private function populateRequestParametersFromRoute(ServerRequestInterface $request, RouteMatch $routeMatch = null)
+    private function populateRequestParametersFromRoute(ServerRequestInterface $request, ?RouteMatch $routeMatch = null)
     {
         if (! $routeMatch) {
             return $request;

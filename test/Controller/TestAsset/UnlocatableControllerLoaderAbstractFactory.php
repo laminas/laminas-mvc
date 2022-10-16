@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Controller\TestAsset;
 
 use Interop\Container\ContainerInterface;
@@ -12,7 +14,7 @@ class UnlocatableControllerLoaderAbstractFactory implements AbstractFactoryInter
         return false;
     }
 
-    public function __invoke(ContainerInterface $container, $name, array $options = null)
+    public function __invoke(ContainerInterface $container, $name, ?array $options = null)
     {
     }
 }

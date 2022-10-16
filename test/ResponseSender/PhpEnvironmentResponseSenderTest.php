@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\ResponseSender;
 
 use Laminas\Http\PhpEnvironment\Response;
@@ -8,11 +10,14 @@ use Laminas\Mvc\ResponseSender\SendResponseEvent;
 use Laminas\Stdlib\ResponseInterface;
 use PHPUnit\Framework\TestCase;
 
+use function ob_get_clean;
+use function ob_start;
+
 class PhpEnvironmentResponseSenderTest extends TestCase
 {
     public function testSendResponseIgnoresInvalidResponseTypes()
     {
-        $mockResponse = $this->getMockForAbstractClass(ResponseInterface::class);
+        $mockResponse          = $this->getMockForAbstractClass(ResponseInterface::class);
         $mockSendResponseEvent = $this->getSendResponseEventMock();
         $mockSendResponseEvent->expects($this->any())->method('getResponse')->will($this->returnValue($mockResponse));
         $responseSender = new PhpEnvironmentResponseSender();
@@ -43,7 +48,7 @@ class PhpEnvironmentResponseSenderTest extends TestCase
 
     protected function getSendResponseEventMock()
     {
-        $returnValue = false;
+        $returnValue           = false;
         $mockSendResponseEvent = $this->getMockBuilder(SendResponseEvent::class)
             ->setMethods(['getResponse', 'contentSent', 'setContentSent'])
             ->getMock();

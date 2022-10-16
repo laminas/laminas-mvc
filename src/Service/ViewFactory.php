@@ -10,12 +10,11 @@ use Laminas\View\View;
 class ViewFactory implements FactoryInterface
 {
     /**
-     * @param  ContainerInterface $container
      * @param  string $name
      * @param  null|array $options
      * @return View
      */
-    public function __invoke(ContainerInterface $container, $name, array $options = null)
+    public function __invoke(ContainerInterface $container, $name, ?array $options = null)
     {
         $view   = new View();
         $events = $container->get('EventManager');

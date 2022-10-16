@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Controller;
 
 use Laminas\EventManager\EventManagerAwareInterface;
@@ -9,6 +11,7 @@ use Laminas\Mvc\InjectApplicationEventInterface;
 use Laminas\Stdlib\DispatchableInterface;
 use LaminasTest\Mvc\Controller\TestAsset\AbstractControllerStub;
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 use ReflectionProperty;
 
 /**
@@ -16,9 +19,7 @@ use ReflectionProperty;
  */
 class AbstractControllerTest extends TestCase
 {
-    /**
-     * @var AbstractController|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var AbstractController|PHPUnit_Framework_MockObject_MockObject */
     private $controller;
 
     /**
@@ -31,7 +32,7 @@ class AbstractControllerTest extends TestCase
 
     public function testSetEventManagerWithDefaultIdentifiers()
     {
-        /* @var $eventManager EventManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var EventManagerInterface|PHPUnit_Framework_MockObject_MockObject $eventManager */
         $eventManager = $this->createMock(EventManagerInterface::class);
 
         $eventManager
@@ -44,7 +45,7 @@ class AbstractControllerTest extends TestCase
 
     public function testSetEventManagerWithCustomStringIdentifier()
     {
-        /* @var $eventManager EventManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var EventManagerInterface|PHPUnit_Framework_MockObject_MockObject $eventManager */
         $eventManager = $this->createMock(EventManagerInterface::class);
 
         $eventManager->expects($this->once())->method('setIdentifiers')
@@ -60,7 +61,7 @@ class AbstractControllerTest extends TestCase
 
     public function testSetEventManagerWithMultipleCustomStringIdentifier()
     {
-        /* @var $eventManager EventManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var EventManagerInterface|PHPUnit_Framework_MockObject_MockObject $eventManager */
         $eventManager = $this->createMock(EventManagerInterface::class);
 
         $eventManager->expects($this->once())->method('setIdentifiers')->with($this->logicalAnd(
@@ -78,7 +79,7 @@ class AbstractControllerTest extends TestCase
 
     public function testSetEventManagerWithDefaultIdentifiersIncludesImplementedInterfaces()
     {
-        /* @var $eventManager EventManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var EventManagerInterface|PHPUnit_Framework_MockObject_MockObject $eventManager */
         $eventManager = $this->createMock(EventManagerInterface::class);
 
         $eventManager
@@ -95,7 +96,7 @@ class AbstractControllerTest extends TestCase
 
     public function testSetEventManagerWithDefaultIdentifiersIncludesExtendingClassNameAndNamespace()
     {
-        /* @var $eventManager EventManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var EventManagerInterface|PHPUnit_Framework_MockObject_MockObject $eventManager */
         $eventManager = $this->createMock(EventManagerInterface::class);
 
         $eventManager

@@ -8,12 +8,30 @@ use Laminas\EventManager\EventManagerAwareInterface;
 use Laminas\EventManager\EventManagerInterface;
 use Laminas\Http\PhpEnvironment\Response as HttpResponse;
 use Laminas\Http\Request as HttpRequest;
+use Laminas\Mvc\Controller\Plugin\Forward;
+use Laminas\Mvc\Controller\Plugin\Params;
+use Laminas\Mvc\Controller\Plugin\Redirect;
+use Laminas\Mvc\Controller\Plugin\Url;
 use Laminas\Mvc\InjectApplicationEventInterface;
 use Laminas\Mvc\MvcEvent;
 use Laminas\ServiceManager\ServiceManager;
 use Laminas\Stdlib\DispatchableInterface as Dispatchable;
 use Laminas\Stdlib\RequestInterface as Request;
 use Laminas\Stdlib\ResponseInterface as Response;
+use Laminas\View\Model\ModelInterface;
+use Laminas\View\Model\ViewModel;
+
+use function array_merge;
+use function array_values;
+use function call_user_func_array;
+use function class_implements;
+use function is_callable;
+use function lcfirst;
+use function str_replace;
+use function strrpos;
+use function strstr;
+use function substr;
+use function ucwords;
 
 /**
  * Abstract controller
@@ -22,52 +40,39 @@ use Laminas\Stdlib\ResponseInterface as Response;
  * @codingStandardsIgnoreStart
  * @method \Laminas\View\Model\ModelInterface acceptableViewModelSelector(array $matchAgainst = null, bool $returnDefault = true, \Laminas\Http\Header\Accept\FieldValuePart\AbstractFieldValuePart $resultReference = null)
  * @codingStandardsIgnoreEnd
- * @method \Laminas\Mvc\Controller\Plugin\Forward forward()
- * @method \Laminas\Mvc\Controller\Plugin\Layout|\Laminas\View\Model\ModelInterface layout(string $template = null)
- * @method \Laminas\Mvc\Controller\Plugin\Params|mixed params(string $param = null, mixed $default = null)
- * @method \Laminas\Mvc\Controller\Plugin\Redirect redirect()
- * @method \Laminas\Mvc\Controller\Plugin\Url url()
- * @method \Laminas\View\Model\ViewModel createHttpNotFoundModel(Response $response)
+ * @method Forward forward()
+ * @method Layout|ModelInterface layout(string $template = null)
+ * @method Params|mixed params(string $param = null, mixed $default = null)
+ * @method Redirect redirect()
+ * @method Url url()
+ * @method ViewModel createHttpNotFoundModel(Response $response)
  */
 abstract class AbstractController implements
     Dispatchable,
     EventManagerAwareInterface,
     InjectApplicationEventInterface
 {
-    /**
-     * @var PluginManager
-     */
+    /** @var PluginManager */
     protected $plugins;
 
-    /**
-     * @var Request
-     */
+    /** @var Request */
     protected $request;
 
-    /**
-     * @var Response
-     */
+    /** @var Response */
     protected $response;
 
-    /**
-     * @var Event
-     */
+    /** @var Event */
     protected $event;
 
-    /**
-     * @var EventManagerInterface
-     */
+    /** @var EventManagerInterface */
     protected $events;
 
-    /**
-     * @var null|string|string[]
-     */
+    /** @var null|string|string[] */
     protected $eventIdentifier;
 
     /**
      * Execute the request
      *
-     * @param  MvcEvent $e
      * @return mixed
      */
     abstract public function onDispatch(MvcEvent $e);
@@ -76,11 +81,9 @@ abstract class AbstractController implements
      * Dispatch a request
      *
      * @events dispatch.pre, dispatch.post
-     * @param  Request $request
-     * @param  null|Response $response
      * @return Response|mixed
      */
-    public function dispatch(Request $request, Response $response = null)
+    public function dispatch(Request $request, ?Response $response = null)
     {
         $this->request = $request;
         if (! $response) {
@@ -95,7 +98,7 @@ abstract class AbstractController implements
         $e->setTarget($this);
 
         $result = $this->getEventManager()->triggerEventUntil(function ($test) {
-            return ($test instanceof Response);
+            return $test instanceof Response;
         }, $e);
 
         if ($result->stopped()) {
@@ -136,15 +139,14 @@ abstract class AbstractController implements
     /**
      * Set the event manager instance used by this context
      *
-     * @param  EventManagerInterface $events
      * @return AbstractController
      */
     public function setEventManager(EventManagerInterface $events)
     {
-        $className = get_class($this);
+        $className = static::class;
 
         $identifiers = [
-            __CLASS__,
+            self::class,
             $className,
         ];
 
@@ -187,14 +189,13 @@ abstract class AbstractController implements
      *
      * By default, will re-cast to MvcEvent if another event type is provided.
      *
-     * @param  Event $e
      * @return void
      */
     public function setEvent(Event $e)
     {
         if (! $e instanceof MvcEvent) {
             $eventParams = $e->getParams();
-            $e = new MvcEvent();
+            $e           = new MvcEvent();
             $e->setParams($eventParams);
             unset($eventParams);
         }
@@ -235,7 +236,6 @@ abstract class AbstractController implements
     /**
      * Set plugin manager
      *
-     * @param  PluginManager $plugins
      * @return AbstractController
      */
     public function setPluginManager(PluginManager $plugins)
@@ -253,7 +253,7 @@ abstract class AbstractController implements
      * @param  null|array $options Options to pass to plugin constructor (if not already instantiated)
      * @return mixed
      */
-    public function plugin($name, array $options = null)
+    public function plugin($name, ?array $options = null)
     {
         return $this->getPluginManager()->get($name, $options);
     }
@@ -297,12 +297,10 @@ abstract class AbstractController implements
      */
     public static function getMethodFromAction($action)
     {
-        $method  = str_replace(['.', '-', '_'], ' ', $action);
-        $method  = ucwords($method);
-        $method  = str_replace(' ', '', $method);
-        $method  = lcfirst($method);
-        $method .= 'Action';
-
-        return $method;
+        $method = str_replace(['.', '-', '_'], ' ', $action);
+        $method = ucwords($method);
+        $method = str_replace(' ', '', $method);
+        $method = lcfirst($method);
+        return $method . 'Action';
     }
 }

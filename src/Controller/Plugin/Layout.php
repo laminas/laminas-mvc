@@ -9,9 +9,7 @@ use Laminas\View\Model\ModelInterface as Model;
 
 class Layout extends AbstractPlugin
 {
-    /**
-     * @var MvcEvent
-     */
+    /** @var MvcEvent */
     protected $event;
 
     /**

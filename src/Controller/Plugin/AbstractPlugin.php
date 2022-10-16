@@ -6,15 +6,12 @@ use Laminas\Stdlib\DispatchableInterface as Dispatchable;
 
 abstract class AbstractPlugin implements PluginInterface
 {
-    /**
-     * @var null|Dispatchable
-     */
+    /** @var null|Dispatchable */
     protected $controller;
 
     /**
      * Set the current controller instance
      *
-     * @param  Dispatchable $controller
      * @return void
      */
     public function setController(Dispatchable $controller)

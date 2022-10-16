@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Application;
 
 use Laminas\Http\PhpEnvironment\Request;
@@ -20,9 +22,9 @@ trait MissingControllerTrait
             'router' => [
                 'routes' => [
                     'path' => [
-                        'type' => Router\Http\Literal::class,
+                        'type'    => Router\Http\Literal::class,
                         'options' => [
-                            'route' => '/bad',
+                            'route'    => '/bad',
                             'defaults' => [
                                 'controller' => 'bad',
                                 'action'     => 'test',
@@ -34,7 +36,7 @@ trait MissingControllerTrait
         ];
 
         $serviceListener = new ServiceListenerFactory();
-        $r = new ReflectionProperty($serviceListener, 'defaultServiceConfig');
+        $r               = new ReflectionProperty($serviceListener, 'defaultServiceConfig');
         $r->setAccessible(true);
         $serviceConfig = $r->getValue($serviceListener);
 
@@ -46,7 +48,7 @@ trait MissingControllerTrait
         $serviceConfig = ArrayUtils::merge(
             $serviceConfig,
             [
-                'factories' => [
+                'factories'  => [
                     'Router' => function ($services) {
                         return $services->get('HttpRouter');
                     },
@@ -58,8 +60,8 @@ trait MissingControllerTrait
                     'SendResponseListener' => TestAsset\MockSendResponseListener::class,
                     'BootstrapListener'    => TestAsset\StubBootstrapListener::class,
                 ],
-                'services' => [
-                    'config' => $config,
+                'services'   => [
+                    'config'            => $config,
                     'ApplicationConfig' => [
                         'modules'                 => [],
                         'module_listener_options' => [
@@ -71,7 +73,7 @@ trait MissingControllerTrait
                 ],
             ]
         );
-        $services = new ServiceManager();
+        $services      = new ServiceManager();
         (new ServiceManagerConfig($serviceConfig))->configureServiceManager($services);
         $application = $services->get('Application');
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\View;
 
 use Laminas\EventManager\EventManager;
@@ -9,6 +11,8 @@ use Laminas\Mvc\View\Http\InjectViewModelListener;
 use Laminas\Router\RouteMatch;
 use Laminas\View\Model\ViewModel;
 use PHPUnit\Framework\TestCase;
+
+use function count;
 
 class InjectViewModelListenerTest extends TestCase
 {
@@ -24,7 +28,7 @@ class InjectViewModelListenerTest extends TestCase
 
     public function testReplacesEventModelWithChildModelIfChildIsMarkedTerminal()
     {
-        $childModel  = new ViewModel();
+        $childModel = new ViewModel();
         $childModel->setTerminal(true);
         $this->event->setResult($childModel);
 
@@ -34,7 +38,7 @@ class InjectViewModelListenerTest extends TestCase
 
     public function testAddsViewModelAsChildOfEventViewModelWhenChildIsNotTerminal()
     {
-        $childModel  = new ViewModel();
+        $childModel = new ViewModel();
         $this->event->setResult($childModel);
 
         $this->listener->injectViewModel($this->event);

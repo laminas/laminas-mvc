@@ -10,6 +10,11 @@ use Laminas\ServiceManager\ConfigInterface;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
 use Laminas\Stdlib\DispatchableInterface;
 
+use function gettype;
+use function is_object;
+use function method_exists;
+use function sprintf;
+
 /**
  * Manager for loading controllers
  *
@@ -57,7 +62,7 @@ class ControllerManager extends AbstractPluginManager
         if (! $plugin instanceof $this->instanceOf) {
             throw new InvalidServiceException(sprintf(
                 'Plugin of type "%s" is invalid; must implement %s',
-                (is_object($plugin) ? get_class($plugin) : gettype($plugin)),
+                is_object($plugin) ? $plugin::class : gettype($plugin),
                 $this->instanceOf
             ));
         }
@@ -73,7 +78,6 @@ class ControllerManager extends AbstractPluginManager
      * the shared EM injection needs to happen; the conditional will always
      * pass.
      *
-     * @param ContainerInterface $container
      * @param DispatchableInterface $controller
      */
     public function injectEventManager(ContainerInterface $container, $controller)
@@ -91,7 +95,6 @@ class ControllerManager extends AbstractPluginManager
     /**
      * Initializer: inject plugin manager
      *
-     * @param ContainerInterface $container
      * @param DispatchableInterface $controller
      */
     public function injectPluginManager(ContainerInterface $container, $controller)

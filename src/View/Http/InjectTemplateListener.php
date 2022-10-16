@@ -8,6 +8,22 @@ use Laminas\Mvc\MvcEvent;
 use Laminas\Stdlib\StringUtils;
 use Laminas\View\Model\ModelInterface as ViewModel;
 
+use function array_diff;
+use function array_pop;
+use function explode;
+use function implode;
+use function is_object;
+use function is_string;
+use function krsort;
+use function preg_replace;
+use function rtrim;
+use function strlen;
+use function strpos;
+use function strrpos;
+use function strtolower;
+use function substr;
+use function trim;
+
 class InjectTemplateListener extends AbstractListenerAggregate
 {
     /**
@@ -38,7 +54,6 @@ class InjectTemplateListener extends AbstractListenerAggregate
      * Template is derived from the controller found in the route match, and,
      * optionally, the action, if present.
      *
-     * @param  MvcEvent $e
      * @return void
      */
     public function injectTemplate(MvcEvent $e)
@@ -60,7 +75,7 @@ class InjectTemplateListener extends AbstractListenerAggregate
 
         $controller = $e->getTarget();
         if (is_object($controller)) {
-            $controller = get_class($controller);
+            $controller = $controller::class;
         }
 
         $routeMatchController = $routeMatch->getParam('controller', '');
@@ -70,7 +85,7 @@ class InjectTemplateListener extends AbstractListenerAggregate
 
         $template = $this->mapController($controller);
 
-        $action     = $routeMatch->getParam('action');
+        $action = $routeMatch->getParam('action');
         if (null !== $action) {
             $template .= '/' . $this->inflectName($action);
         }
@@ -100,7 +115,8 @@ class InjectTemplateListener extends AbstractListenerAggregate
     {
         $mapped = '';
         foreach ($this->controllerMap as $namespace => $replacement) {
-            if (// Allow disabling rule by setting value to false since config
+            if (
+                // Allow disabling rule by setting value to false since config
                 // merging have no feature to remove entries
                 false == $replacement
                 // Match full class or full namespace
@@ -111,7 +127,7 @@ class InjectTemplateListener extends AbstractListenerAggregate
 
             // Map namespace to $replacement if its value is string
             if (is_string($replacement)) {
-                $mapped = rtrim($replacement, '/') . '/';
+                $mapped     = rtrim($replacement, '/') . '/';
                 $controller = substr($controller, strlen($namespace) + 1) ?: '';
                 break;
             }
@@ -122,7 +138,7 @@ class InjectTemplateListener extends AbstractListenerAggregate
         array_pop($parts);
         $parts = array_diff($parts, ['Controller']);
         //strip trailing Controller in class name
-        $parts[] = $this->deriveControllerClass($controller);
+        $parts[]    = $this->deriveControllerClass($controller);
         $controller = implode('/', $parts);
 
         $template = trim($mapped . $controller, '/');
@@ -167,7 +183,8 @@ class InjectTemplateListener extends AbstractListenerAggregate
             $controller = substr($controller, strrpos($controller, '\\') + 1);
         }
 
-        if ((10 < strlen($controller))
+        if (
+            (10 < strlen($controller))
             && ('Controller' == substr($controller, -10))
         ) {
             $controller = substr($controller, 0, -10);

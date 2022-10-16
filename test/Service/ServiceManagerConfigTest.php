@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Service;
 
 use Laminas\EventManager\EventManager;
@@ -17,14 +19,10 @@ use stdClass;
  */
 class ServiceManagerConfigTest extends TestCase
 {
-    /**
-     * @var ServiceManagerConfig
-     */
+    /** @var ServiceManagerConfig */
     private $config;
 
-    /**
-     * @var ServiceManager
-     */
+    /** @var ServiceManager */
     private $services;
 
     /**
@@ -41,14 +39,14 @@ class ServiceManagerConfigTest extends TestCase
      * @param null|SharedEventManagerInterface
      * @return EventManager
      */
-    protected function createEventManager(SharedEventManagerInterface $sharedManager = null)
+    protected function createEventManager(?SharedEventManagerInterface $sharedManager = null)
     {
         return new EventManager($sharedManager ?: $this->services->get('SharedEventManager'));
     }
 
     public function testEventManagerAwareInterfaceIsNotInjectedIfPresentButSharedManagerIs()
     {
-        $events = $this->createEventManager();
+        $events                                 = $this->createEventManager();
         EventManagerAwareObject::$defaultEvents = $events;
 
         $this->services->setAlias('EventManagerAwareObject', EventManagerAwareObject::class);
@@ -66,7 +64,7 @@ class ServiceManagerConfigTest extends TestCase
             'invokables' => [
                 'foo' => stdClass::class,
             ],
-            'factories' => [
+            'factories'  => [
                 'bar' => function () {
                     return new stdClass();
                 },
@@ -87,7 +85,7 @@ class ServiceManagerConfigTest extends TestCase
             'invokables' => [
                 'foo' => stdClass::class,
             ],
-            'factories' => [
+            'factories'  => [
                 'ModuleManager' => function () {
                     return new stdClass();
                 },
@@ -108,21 +106,21 @@ class ServiceManagerConfigTest extends TestCase
         /*
          * Create delegator closure
          */
-        $delegator = function ($container, $name, $callback, array $options = null) {
-            $service = $callback();
+        $delegator = function ($container, $name, $callback, ?array $options = null) {
+            $service      = $callback();
             $service->bar = 'baz';
             return $service;
         };
 
         $config = [
-            'aliases' => [
+            'aliases'    => [
                 'foo' => stdClass::class,
             ],
-            'factories' => [
+            'factories'  => [
                 stdClass::class => InvokableFactory::class,
             ],
             'delegators' => [
-                stdClass::class => [ $delegator ],
+                stdClass::class => [$delegator],
             ],
         ];
 
@@ -144,7 +142,7 @@ class ServiceManagerConfigTest extends TestCase
             'initializers' => [
                 'EventManagerAwareInitializer' => $initializer,
             ],
-            'factories' => [
+            'factories'    => [
                 'EventManagerAware' => function () use ($instance) {
                     return $instance;
                 },

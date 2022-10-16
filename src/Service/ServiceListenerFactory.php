@@ -6,22 +6,60 @@ use Interop\Container\ContainerInterface;
 use Laminas\ModuleManager\Listener\ServiceListener;
 use Laminas\ModuleManager\Listener\ServiceListenerInterface;
 use Laminas\Mvc\Controller\ControllerManager;
+use Laminas\Mvc\Controller\PluginManager;
+use Laminas\Mvc\MiddlewareListener;
+use Laminas\Mvc\RouteListener;
+use Laminas\Mvc\SendResponseListener;
+use Laminas\Mvc\Service\ConfigFactory;
+use Laminas\Mvc\Service\ControllerManagerFactory;
+use Laminas\Mvc\Service\ControllerPluginManagerFactory;
+use Laminas\Mvc\Service\DispatchListenerFactory;
+use Laminas\Mvc\Service\HttpMethodListenerFactory;
+use Laminas\Mvc\Service\HttpViewManagerFactory;
+use Laminas\Mvc\Service\InjectTemplateListenerFactory;
+use Laminas\Mvc\Service\PaginatorPluginManagerFactory;
+use Laminas\Mvc\Service\RequestFactory;
+use Laminas\Mvc\Service\ResponseFactory;
+use Laminas\Mvc\Service\ViewFeedStrategyFactory;
+use Laminas\Mvc\Service\ViewHelperManagerFactory;
+use Laminas\Mvc\Service\ViewJsonStrategyFactory;
+use Laminas\Mvc\Service\ViewManagerFactory;
+use Laminas\Mvc\Service\ViewPrefixPathStackResolverFactory;
+use Laminas\Mvc\Service\ViewResolverFactory;
+use Laminas\Mvc\Service\ViewTemplateMapResolverFactory;
+use Laminas\Mvc\Service\ViewTemplatePathStackFactory;
 use Laminas\Mvc\View;
+use Laminas\Mvc\View\Http\InjectTemplateListener;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\ServiceManager\Factory\InvokableFactory;
+use Laminas\View\Renderer\FeedRenderer;
+use Laminas\View\Renderer\JsonRenderer;
+use Laminas\View\Renderer\PhpRenderer;
+use Laminas\View\Renderer\RendererInterface;
+use Laminas\View\Resolver\AggregateResolver;
+use Laminas\View\Resolver\ResolverInterface;
+use Laminas\View\Resolver\TemplateMapResolver;
+use Laminas\View\Resolver\TemplatePathStack;
+use Laminas\View\Strategy\PhpRendererStrategy;
+
+use function gettype;
+use function is_array;
+use function is_object;
+use function is_string;
+use function sprintf;
 
 class ServiceListenerFactory implements FactoryInterface
 {
     /**
      * @var string
      */
-    const MISSING_KEY_ERROR = 'Invalid service listener options detected, %s array must contain %s key.';
+    public const MISSING_KEY_ERROR = 'Invalid service listener options detected, %s array must contain %s key.';
 
     /**
      * @var string
      */
-    const VALUE_TYPE_ERROR = 'Invalid service listener options detected, %s must be a string, %s given.';
+    public const VALUE_TYPE_ERROR = 'Invalid service listener options detected, %s must be a string, %s given.';
 
     /**
      * Default mvc-related service configuration -- can be overridden by modules.
@@ -29,64 +67,64 @@ class ServiceListenerFactory implements FactoryInterface
      * @var array
      */
     protected $defaultServiceConfig = [
-        'aliases' => [
-            'application'                                  => 'Application',
-            'Config'                                       => 'config',
-            'configuration'                                => 'config',
-            'Configuration'                                => 'config',
-            'HttpDefaultRenderingStrategy'                 => View\Http\DefaultRenderingStrategy::class,
-            'MiddlewareListener'                           => 'Laminas\Mvc\MiddlewareListener',
-            'request'                                      => 'Request',
-            'response'                                     => 'Response',
-            'RouteListener'                                => 'Laminas\Mvc\RouteListener',
-            'SendResponseListener'                         => 'Laminas\Mvc\SendResponseListener',
-            'View'                                         => 'Laminas\View\View',
-            'ViewFeedRenderer'                             => 'Laminas\View\Renderer\FeedRenderer',
-            'ViewJsonRenderer'                             => 'Laminas\View\Renderer\JsonRenderer',
-            'ViewPhpRendererStrategy'                      => 'Laminas\View\Strategy\PhpRendererStrategy',
-            'ViewPhpRenderer'                              => 'Laminas\View\Renderer\PhpRenderer',
-            'ViewRenderer'                                 => 'Laminas\View\Renderer\PhpRenderer',
-            'Laminas\Mvc\Controller\PluginManager'         => 'ControllerPluginManager',
-            'Laminas\Mvc\View\Http\InjectTemplateListener' => 'InjectTemplateListener',
-            'Laminas\View\Renderer\RendererInterface'      => 'Laminas\View\Renderer\PhpRenderer',
-            'Laminas\View\Resolver\TemplateMapResolver'    => 'ViewTemplateMapResolver',
-            'Laminas\View\Resolver\TemplatePathStack'      => 'ViewTemplatePathStack',
-            'Laminas\View\Resolver\AggregateResolver'      => 'ViewResolver',
-            'Laminas\View\Resolver\ResolverInterface'      => 'ViewResolver',
-            ControllerManager::class                       => 'ControllerManager',
+        'aliases'    => [
+            'application'                  => 'Application',
+            'Config'                       => 'config',
+            'configuration'                => 'config',
+            'Configuration'                => 'config',
+            'HttpDefaultRenderingStrategy' => View\Http\DefaultRenderingStrategy::class,
+            'MiddlewareListener'           => MiddlewareListener::class,
+            'request'                      => 'Request',
+            'response'                     => 'Response',
+            'RouteListener'                => RouteListener::class,
+            'SendResponseListener'         => SendResponseListener::class,
+            'View'                         => \Laminas\View\View::class,
+            'ViewFeedRenderer'             => FeedRenderer::class,
+            'ViewJsonRenderer'             => JsonRenderer::class,
+            'ViewPhpRendererStrategy'      => PhpRendererStrategy::class,
+            'ViewPhpRenderer'              => PhpRenderer::class,
+            'ViewRenderer'                 => PhpRenderer::class,
+            PluginManager::class           => 'ControllerPluginManager',
+            InjectTemplateListener::class  => 'InjectTemplateListener',
+            RendererInterface::class       => PhpRenderer::class,
+            TemplateMapResolver::class     => 'ViewTemplateMapResolver',
+            TemplatePathStack::class       => 'ViewTemplatePathStack',
+            AggregateResolver::class       => 'ViewResolver',
+            ResolverInterface::class       => 'ViewResolver',
+            ControllerManager::class       => 'ControllerManager',
         ],
         'invokables' => [],
         'factories'  => [
-            'Application'                               => ApplicationFactory::class,
-            'config'                                    => 'Laminas\Mvc\Service\ConfigFactory',
-            'ControllerManager'                         => 'Laminas\Mvc\Service\ControllerManagerFactory',
-            'ControllerPluginManager'                   => 'Laminas\Mvc\Service\ControllerPluginManagerFactory',
-            'DispatchListener'                          => 'Laminas\Mvc\Service\DispatchListenerFactory',
-            'HttpExceptionStrategy'                     => HttpExceptionStrategyFactory::class,
-            'HttpMethodListener'                        => 'Laminas\Mvc\Service\HttpMethodListenerFactory',
-            'HttpRouteNotFoundStrategy'                 => HttpRouteNotFoundStrategyFactory::class,
-            'HttpViewManager'                           => 'Laminas\Mvc\Service\HttpViewManagerFactory',
-            'InjectTemplateListener'                    => 'Laminas\Mvc\Service\InjectTemplateListenerFactory',
-            'PaginatorPluginManager'                    => 'Laminas\Mvc\Service\PaginatorPluginManagerFactory',
-            'Request'                                   => 'Laminas\Mvc\Service\RequestFactory',
-            'Response'                                  => 'Laminas\Mvc\Service\ResponseFactory',
-            'ViewHelperManager'                         => 'Laminas\Mvc\Service\ViewHelperManagerFactory',
-            View\Http\DefaultRenderingStrategy::class   => HttpDefaultRenderingStrategyFactory::class,
-            'ViewFeedStrategy'                          => 'Laminas\Mvc\Service\ViewFeedStrategyFactory',
-            'ViewJsonStrategy'                          => 'Laminas\Mvc\Service\ViewJsonStrategyFactory',
-            'ViewManager'                               => 'Laminas\Mvc\Service\ViewManagerFactory',
-            'ViewResolver'                              => 'Laminas\Mvc\Service\ViewResolverFactory',
-            'ViewTemplateMapResolver'                   => 'Laminas\Mvc\Service\ViewTemplateMapResolverFactory',
-            'ViewTemplatePathStack'                     => 'Laminas\Mvc\Service\ViewTemplatePathStackFactory',
-            'ViewPrefixPathStackResolver'               => 'Laminas\Mvc\Service\ViewPrefixPathStackResolverFactory',
-            'Laminas\Mvc\MiddlewareListener'            => InvokableFactory::class,
-            'Laminas\Mvc\RouteListener'                 => InvokableFactory::class,
-            'Laminas\Mvc\SendResponseListener'          => SendResponseListenerFactory::class,
-            'Laminas\View\Renderer\FeedRenderer'        => InvokableFactory::class,
-            'Laminas\View\Renderer\JsonRenderer'        => InvokableFactory::class,
-            'Laminas\View\Renderer\PhpRenderer'         => ViewPhpRendererFactory::class,
-            'Laminas\View\Strategy\PhpRendererStrategy' => ViewPhpRendererStrategyFactory::class,
-            'Laminas\View\View'                         => ViewFactory::class,
+            'Application'                             => ApplicationFactory::class,
+            'config'                                  => ConfigFactory::class,
+            'ControllerManager'                       => ControllerManagerFactory::class,
+            'ControllerPluginManager'                 => ControllerPluginManagerFactory::class,
+            'DispatchListener'                        => DispatchListenerFactory::class,
+            'HttpExceptionStrategy'                   => HttpExceptionStrategyFactory::class,
+            'HttpMethodListener'                      => HttpMethodListenerFactory::class,
+            'HttpRouteNotFoundStrategy'               => HttpRouteNotFoundStrategyFactory::class,
+            'HttpViewManager'                         => HttpViewManagerFactory::class,
+            'InjectTemplateListener'                  => InjectTemplateListenerFactory::class,
+            'PaginatorPluginManager'                  => PaginatorPluginManagerFactory::class,
+            'Request'                                 => RequestFactory::class,
+            'Response'                                => ResponseFactory::class,
+            'ViewHelperManager'                       => ViewHelperManagerFactory::class,
+            View\Http\DefaultRenderingStrategy::class => HttpDefaultRenderingStrategyFactory::class,
+            'ViewFeedStrategy'                        => ViewFeedStrategyFactory::class,
+            'ViewJsonStrategy'                        => ViewJsonStrategyFactory::class,
+            'ViewManager'                             => ViewManagerFactory::class,
+            'ViewResolver'                            => ViewResolverFactory::class,
+            'ViewTemplateMapResolver'                 => ViewTemplateMapResolverFactory::class,
+            'ViewTemplatePathStack'                   => ViewTemplatePathStackFactory::class,
+            'ViewPrefixPathStackResolver'             => ViewPrefixPathStackResolverFactory::class,
+            MiddlewareListener::class                 => InvokableFactory::class,
+            RouteListener::class                      => InvokableFactory::class,
+            SendResponseListener::class               => SendResponseListenerFactory::class,
+            FeedRenderer::class                       => InvokableFactory::class,
+            JsonRenderer::class                       => InvokableFactory::class,
+            PhpRenderer::class                        => ViewPhpRendererFactory::class,
+            PhpRendererStrategy::class                => ViewPhpRendererStrategyFactory::class,
+            \Laminas\View\View::class                 => ViewFactory::class,
         ],
     ];
 
@@ -108,16 +146,15 @@ class ServiceListenerFactory implements FactoryInterface
      * - interface: the name of the interface that modules can implement as string
      * - method: the name of the method that modules have to implement as string
      *
-     * @param  ContainerInterface  $container
      * @param  string              $requestedName
      * @param  null|array          $options
      * @return ServiceListenerInterface
      * @throws ServiceNotCreatedException for invalid ServiceListener service
      * @throws ServiceNotCreatedException For invalid configurations.
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null)
     {
-        $configuration   = $container->get('ApplicationConfig');
+        $configuration = $container->get('ApplicationConfig');
 
         $serviceListener = $container->has('ServiceListenerInterface')
             ? $container->get('ServiceListenerInterface')
@@ -126,7 +163,7 @@ class ServiceListenerFactory implements FactoryInterface
         if (! $serviceListener instanceof ServiceListenerInterface) {
             throw new ServiceNotCreatedException(
                 'The service named ServiceListenerInterface must implement '
-                .  ServiceListenerInterface::class
+                . ServiceListenerInterface::class
             );
         }
 
@@ -143,7 +180,6 @@ class ServiceListenerFactory implements FactoryInterface
      * Validate and inject plugin manager options into the service listener.
      *
      * @param array $options
-     * @param ServiceListenerInterface $serviceListener
      * @throws ServiceListenerInterface for invalid $options types
      */
     private function injectServiceListenerOptions($options, ServiceListenerInterface $serviceListener)
@@ -151,7 +187,7 @@ class ServiceListenerFactory implements FactoryInterface
         if (! is_array($options)) {
             throw new ServiceNotCreatedException(sprintf(
                 'The value of service_listener_options must be an array, %s given.',
-                (is_object($options) ? get_class($options) : gettype($options))
+                is_object($options) ? $options::class : gettype($options)
             ));
         }
 
@@ -183,7 +219,7 @@ class ServiceListenerFactory implements FactoryInterface
             throw new ServiceNotCreatedException(sprintf(
                 'Plugin manager configuration for "%s" is invalid; must be an array, received "%s"',
                 $name,
-                (is_object($options) ? get_class($options) : gettype($options))
+                is_object($options) ? $options::class : gettype($options)
             ));
         }
 

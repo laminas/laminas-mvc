@@ -4,12 +4,14 @@ namespace Laminas\Mvc\ResponseSender;
 
 use Laminas\Http\Header\MultipleHeaderInterface;
 
+use function header;
+use function headers_sent;
+
 abstract class AbstractResponseSender implements ResponseSenderInterface
 {
     /**
      * Send HTTP headers
      *
-     * @param  SendResponseEvent $event
      * @return self
      */
     public function sendHeaders(SendResponseEvent $event)

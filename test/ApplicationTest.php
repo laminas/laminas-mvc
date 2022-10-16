@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc;
 
 use Laminas\EventManager\EventManager;
@@ -24,24 +26,28 @@ use ReflectionMethod;
 use ReflectionProperty;
 use stdClass;
 
+use function array_reduce;
+use function array_shift;
+use function array_values;
+use function get_class;
+use function is_array;
+use function sprintf;
+use function var_export;
+
 class ApplicationTest extends TestCase
 {
     use EventListenerIntrospectionTrait;
 
-    /**
-     * @var ServiceManager
-     */
+    /** @var ServiceManager */
     protected $serviceManager;
 
-    /**
-     * @var Application
-     */
+    /** @var Application */
     protected $application;
 
     public function setUp(): void
     {
         $serviceListener = new ServiceListenerFactory();
-        $r = new ReflectionProperty($serviceListener, 'defaultServiceConfig');
+        $r               = new ReflectionProperty($serviceListener, 'defaultServiceConfig');
         $r->setAccessible(true);
         $serviceConfig = $r->getValue($serviceListener);
 
@@ -50,7 +56,7 @@ class ApplicationTest extends TestCase
             (new Router\ConfigProvider())->getDependencyConfig()
         );
 
-        $serviceConfig = ArrayUtils::merge(
+        $serviceConfig        = ArrayUtils::merge(
             $serviceConfig,
             [
                 'invokables' => [
@@ -60,13 +66,13 @@ class ApplicationTest extends TestCase
                     'SendResponseListener' => TestAsset\MockSendResponseListener::class,
                     'BootstrapListener'    => TestAsset\StubBootstrapListener::class,
                 ],
-                'factories' => [
+                'factories'  => [
                     'Router' => Router\RouterFactory::class,
                 ],
-                'services' => [
-                    'config' => [],
+                'services'   => [
+                    'config'            => [],
                     'ApplicationConfig' => [
-                        'modules' => [
+                        'modules'                 => [
                             'Laminas\Router',
                         ],
                         'module_listener_options' => [
@@ -141,13 +147,13 @@ class ApplicationTest extends TestCase
         $this->assertEquals(
             $smConfig,
             $appConfig,
-            sprintf('SM config: %s; App config: %s', var_export($smConfig, 1), var_export($appConfig, 1))
+            sprintf('SM config: %s; App config: %s', var_export($smConfig, true), var_export($appConfig, true))
         );
     }
 
     public function testEventsAreEmptyAtFirst()
     {
-        $events = $this->application->getEventManager();
+        $events           = $this->application->getEventManager();
         $registeredEvents = $this->getEventsFromEventManager($events);
         $this->assertEquals([], $registeredEvents);
 
@@ -168,7 +174,6 @@ class ApplicationTest extends TestCase
      * @param string $event
      * @param string $method
      * @param bool   $isCustom
-     *
      * @dataProvider bootstrapRegistersListenersProvider
      */
     public function testBootstrapRegistersListeners($listenerServiceName, $event, $method, $isCustom = false)
@@ -202,7 +207,7 @@ class ApplicationTest extends TestCase
         $r = new ReflectionProperty($this->application, 'defaultListeners');
         $r->setAccessible(true);
         $defaultListenersNames = $r->getValue($this->application);
-        $defaultListeners = [];
+        $defaultListeners      = [];
         foreach ($defaultListenersNames as $defaultListenerName) {
             $defaultListeners[] = $this->serviceManager->get($defaultListenerName);
         }
@@ -262,11 +267,13 @@ class ApplicationTest extends TestCase
 
         if ($addService) {
             $this->services->addFactory('ControllerManager', function ($services) {
-                return new ControllerManager($services, ['factories' => [
-                    'path' => function () {
-                        return new TestAsset\PathController;
-                    },
-                ]]);
+                return new ControllerManager($services, [
+                    'factories' => [
+                        'path' => function () {
+                            return new TestAsset\PathController();
+                        },
+                    ],
+                ]);
             });
         }
 
@@ -290,11 +297,13 @@ class ApplicationTest extends TestCase
         $router->addRoute('sample', $route);
 
         $this->serviceManager->setFactory('ControllerManager', function ($services) {
-            return new ControllerManager($services, ['factories' => [
-                'sample' => function () {
-                    return new Controller\TestAsset\SampleController();
-                },
-            ]]);
+            return new ControllerManager($services, [
+                'factories' => [
+                    'sample' => function () {
+                        return new Controller\TestAsset\SampleController();
+                    },
+                ],
+            ]);
         });
 
         $this->application->bootstrap();
@@ -318,11 +327,13 @@ class ApplicationTest extends TestCase
 
         if ($addService) {
             $this->serviceManager->setFactory('ControllerManager', function ($services) {
-                return new ControllerManager($services, ['factories' => [
-                    'bad' => function () {
-                        return new Controller\TestAsset\BadController();
-                    },
-                ]]);
+                return new ControllerManager($services, [
+                    'factories' => [
+                        'bad' => function () {
+                            return new Controller\TestAsset\BadController();
+                        },
+                    ],
+                ]);
             });
         }
 
@@ -357,7 +368,7 @@ class ApplicationTest extends TestCase
         $response = $application->getResponse();
         $events   = $application->getEventManager();
         $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) use ($response) {
-            $error      = $e->getError();
+            $error = $e->getError();
             $response->setContent("Code: " . $error);
             return $response;
         });
@@ -372,16 +383,16 @@ class ApplicationTest extends TestCase
      */
     public function testLocatorExceptionShouldTriggerDispatchError()
     {
-        $application = $this->setupPathController(false);
+        $application      = $this->setupPathController(false);
         $controllerLoader = $application->getServiceManager()->get('ControllerManager');
-        $response = new Response();
+        $response         = new Response();
         $application->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) use ($response) {
             return $response;
         });
 
         $result = $application->run();
-        $this->assertSame($application, $result, get_class($result));
-        $this->assertSame($response, $result->getResponse(), get_class($result));
+        $this->assertSame($application, $result, $result::class);
+        $this->assertSame($response, $result->getResponse(), $result::class);
     }
 
     /**
@@ -416,7 +427,7 @@ class ApplicationTest extends TestCase
         $response = $application->getResponse();
         $events   = $application->getEventManager();
         $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) use ($response) {
-            $error      = $e->getError();
+            $error = $e->getError();
             $response->setContent("Code: " . $error);
             return $response;
         });
@@ -438,7 +449,7 @@ class ApplicationTest extends TestCase
             return $response;
         }, 100);
 
-        $token = new stdClass;
+        $token = new stdClass();
         $events->attach(MvcEvent::EVENT_FINISH, function ($e) use ($token) {
             $token->foo = 'bar';
         });
@@ -461,7 +472,7 @@ class ApplicationTest extends TestCase
             return $response;
         }, 100);
 
-        $token = new stdClass;
+        $token = new stdClass();
         $events->attach(MvcEvent::EVENT_FINISH, function ($e) use ($token) {
             $token->foo = 'bar';
         });
@@ -488,9 +499,9 @@ class ApplicationTest extends TestCase
 
     public function testOnDispatchErrorEventPassedToTriggersShouldBeTheOriginalOne()
     {
-        $application = $this->setupPathController(false);
+        $application       = $this->setupPathController(false);
         $controllerManager = $application->getServiceManager()->get('ControllerManager');
-        $model = $this->createMock(ViewModel::class);
+        $model             = $this->createMock(ViewModel::class);
         $application->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) use ($model) {
             $e->setResult($model);
         });
@@ -504,8 +515,8 @@ class ApplicationTest extends TestCase
     {
         $this->application->bootstrap();
         $testResponse = new Response();
-        $response = $this->application->getResponse();
-        $events   = $this->application->getEventManager();
+        $response     = $this->application->getResponse();
+        $events       = $this->application->getEventManager();
         $events->clearListeners(MvcEvent::EVENT_DISPATCH);
         $events->attach(MvcEvent::EVENT_ROUTE, function ($e) use ($testResponse) {
             $testResponse->setContent('triggered');
@@ -526,8 +537,8 @@ class ApplicationTest extends TestCase
     {
         $this->application->bootstrap();
         $testResponse = new Response();
-        $response = $this->application->getResponse();
-        $events   = $this->application->getEventManager();
+        $response     = $this->application->getResponse();
+        $events       = $this->application->getEventManager();
         $events->clearListeners(MvcEvent::EVENT_ROUTE);
         $events->attach(MvcEvent::EVENT_DISPATCH, function ($e) use ($testResponse) {
             $testResponse->setContent('triggered');
@@ -661,7 +672,7 @@ class ApplicationTest extends TestCase
         foreach ($events as $event) {
             $marker[$event] = true;
         }
-        $marker = (object) $marker;
+        $marker   = (object) $marker;
         $listener = function ($e) use ($marker) {
             $marker->{$e->getName()} = $e->propagationIsStopped();
             $e->stopPropagation(true);

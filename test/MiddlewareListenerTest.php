@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc;
 
+use Exception;
 use Interop\Container\ContainerInterface;
 use Interop\Http\ServerMiddleware\MiddlewareInterface;
 use Laminas\Diactoros\Response as DiactorosResponse;
@@ -20,12 +23,17 @@ use Laminas\ServiceManager\ServiceManager;
 use Laminas\Stdlib\DispatchableInterface;
 use Laminas\View\Model\ModelInterface;
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use stdClass;
 
 use function error_reporting;
+use function is_callable;
 use function sprintf;
+use function uniqid;
 use function var_export;
 
 use const E_USER_DEPRECATED;
@@ -34,13 +42,9 @@ class MiddlewareListenerTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @var \Prophecy\Prophecy\ObjectProphecy
-     */
+    /** @var ObjectProphecy */
     private $routeMatch;
-    /**
-     * @var int
-     */
+    /** @var int */
     private $errorReporting;
 
     protected function setUp(): void
@@ -63,7 +67,7 @@ class MiddlewareListenerTest extends TestCase
      */
     public function createMvcEvent($middlewareMatched, $middleware = null)
     {
-        $response   = new Response();
+        $response         = new Response();
         $this->routeMatch = $this->prophesize(RouteMatch::class);
         $this->routeMatch->getParam('middleware', false)->willReturn($middlewareMatched);
         $this->routeMatch->getParams()->willReturn([]);
@@ -75,7 +79,7 @@ class MiddlewareListenerTest extends TestCase
                     return new EventManager();
                 },
             ],
-            'services' => [
+            'services'  => [
                 $middlewareMatched => $middleware,
             ],
         ]);
@@ -96,11 +100,12 @@ class MiddlewareListenerTest extends TestCase
 
     /**
      * Stratigility v2 does not support PHP 8
+     *
      * @requires PHP <8
      */
     public function testSuccessfullyDispatchesMiddleware()
     {
-        $event = $this->createMvcEvent('path', function ($request, $response) {
+        $event       = $this->createMvcEvent('path', function ($request, $response) {
             $this->assertInstanceOf(ServerRequestInterface::class, $request);
             $this->assertInstanceOf(ResponseInterface::class, $response);
             $response->getBody()->write('Test!');
@@ -109,7 +114,7 @@ class MiddlewareListenerTest extends TestCase
         $application = $event->getApplication();
 
         $application->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) {
-            $this->fail(sprintf('dispatch.error triggered when it should not be: %s', var_export($e->getError(), 1)));
+            $this->fail(sprintf('dispatch.error triggered when it should not be: %s', var_export($e->getError(), true)));
         });
 
         $listener = new MiddlewareListener();
@@ -123,6 +128,7 @@ class MiddlewareListenerTest extends TestCase
 
     /**
      * Stratigility v2 does not support PHP 8
+     *
      * @requires PHP <8
      */
     public function testDispatchingMiddlewareTriggersDeprecation(): void
@@ -142,7 +148,7 @@ class MiddlewareListenerTest extends TestCase
         error_reporting($this->errorReporting & E_USER_DEPRECATED);
 
         $this->routeMatch = $this->prophesize(RouteMatch::class);
-        $routeMatch = new RouteMatch(['middleware' => false]);
+        $routeMatch       = new RouteMatch(['middleware' => false]);
 
         $event = new MvcEvent();
         $event->setRouteMatch($routeMatch);
@@ -153,6 +159,7 @@ class MiddlewareListenerTest extends TestCase
 
     /**
      * Stratigility v2 does not support PHP 8
+     *
      * @requires PHP <8
      */
     public function testSuccessfullyDispatchesHttpInteropMiddleware()
@@ -162,11 +169,11 @@ class MiddlewareListenerTest extends TestCase
         $middleware = $this->createMock(MiddlewareInterface::class);
         $middleware->expects($this->once())->method('process')->willReturn(new HtmlResponse($expectedOutput));
 
-        $event = $this->createMvcEvent('path', $middleware);
+        $event       = $this->createMvcEvent('path', $middleware);
         $application = $event->getApplication();
 
         $application->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) {
-            $this->fail(sprintf('dispatch.error triggered when it should not be: %s', var_export($e->getError(), 1)));
+            $this->fail(sprintf('dispatch.error triggered when it should not be: %s', var_export($e->getError(), true)));
         });
 
         $listener = new MiddlewareListener();
@@ -180,12 +187,13 @@ class MiddlewareListenerTest extends TestCase
 
     /**
      * Stratigility v2 does not support PHP 8
+     *
      * @requires PHP <8
      */
     public function testMatchedRouteParamsAreInjectedToRequestAsAttributes()
     {
         $matchedRouteParam = uniqid('matched param', true);
-        $routeAttribute = null;
+        $routeAttribute    = null;
 
         $event = $this->createMvcEvent(
             'foo',
@@ -209,6 +217,7 @@ class MiddlewareListenerTest extends TestCase
 
     /**
      * Stratigility v2 does not support PHP 8
+     *
      * @requires PHP <8
      */
     public function testSuccessfullyDispatchesPipeOfCallableAndHttpInteropStyleMiddlewares()
@@ -257,20 +266,21 @@ class MiddlewareListenerTest extends TestCase
         $event->setRouteMatch($routeMatch->reveal());
 
         $event->getApplication()->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) {
-            $this->fail(sprintf('dispatch.error triggered when it should not be: %s', var_export($e->getError(), 1)));
+            $this->fail(sprintf('dispatch.error triggered when it should not be: %s', var_export($e->getError(), true)));
         });
 
         $listener = new MiddlewareListener();
         $return   = $listener->onDispatch($event);
         $this->assertInstanceOf(Response::class, $return);
 
-        $this->assertInstanceOf('Laminas\Http\Response', $return);
+        $this->assertInstanceOf(Response::class, $return);
         $this->assertSame(200, $return->getStatusCode());
         $this->assertEquals('firstMiddlewareValue', $return->getBody());
     }
 
     /**
      * Stratigility v2 does not support PHP 8
+     *
      * @requires PHP <8
      */
     public function testTriggersErrorForUncallableMiddleware()
@@ -291,12 +301,13 @@ class MiddlewareListenerTest extends TestCase
 
     /**
      * Stratigility v2 does not support PHP 8
+     *
      * @requires PHP <8
      */
     public function testTriggersErrorForExceptionRaisedInMiddleware()
     {
-        $exception   = new \Exception();
-        $event       = $this->createMvcEvent('path', function ($request, $response) use ($exception) {
+        $exception = new Exception();
+        $event     = $this->createMvcEvent('path', function ($request, $response) use ($exception) {
             throw $exception;
         });
 
@@ -316,6 +327,7 @@ class MiddlewareListenerTest extends TestCase
      * Ensure that the listener tests for services in abstract factories.
      *
      * Stratigility v2 does not support PHP 8
+     *
      * @requires PHP <8
      */
     public function testCanLoadFromAbstractFactory()
@@ -348,7 +360,7 @@ class MiddlewareListenerTest extends TestCase
         $event->setRouteMatch($routeMatch->reveal());
 
         $eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) {
-            $this->fail(sprintf('dispatch.error triggered when it should not be: %s', var_export($e->getError(), 1)));
+            $this->fail(sprintf('dispatch.error triggered when it should not be: %s', var_export($e->getError(), true)));
         });
 
         $listener = new MiddlewareListener();
@@ -361,6 +373,7 @@ class MiddlewareListenerTest extends TestCase
 
     /**
      * Stratigility v2 does not support PHP 8
+     *
      * @requires PHP <8
      */
     public function testMiddlewareWithNothingPipedReachesFinalHandlerException()
@@ -373,7 +386,7 @@ class MiddlewareListenerTest extends TestCase
         $eventManager = new EventManager();
 
         $serviceManager = $this->prophesize(ContainerInterface::class);
-        $application = $this->prophesize(Application::class);
+        $application    = $this->prophesize(Application::class);
         $application->getEventManager()->willReturn($eventManager);
         $application->getServiceManager()->will(function () use ($serviceManager) {
             return $serviceManager->reveal();
@@ -401,6 +414,7 @@ class MiddlewareListenerTest extends TestCase
 
     /**
      * Stratigility v2 does not support PHP 8
+     *
      * @requires PHP <8
      */
     public function testNullMiddlewareThrowsInvalidMiddlewareException()
@@ -413,7 +427,7 @@ class MiddlewareListenerTest extends TestCase
         $eventManager = new EventManager();
 
         $serviceManager = $this->prophesize(ContainerInterface::class);
-        $application = $this->prophesize(Application::class);
+        $application    = $this->prophesize(Application::class);
         $application->getEventManager()->willReturn($eventManager);
         $application->getServiceManager()->will(function () use ($serviceManager) {
             return $serviceManager->reveal();
@@ -440,6 +454,7 @@ class MiddlewareListenerTest extends TestCase
 
     /**
      * Stratigility v2 does not support PHP 8
+     *
      * @requires PHP <8
      */
     public function testValidMiddlewareDispatchCancelsPreviousDispatchFailures()
@@ -447,17 +462,17 @@ class MiddlewareListenerTest extends TestCase
         $middlewareName = uniqid('middleware', true);
         $routeMatch     = new RouteMatch(['middleware' => $middlewareName]);
         $response       = new DiactorosResponse();
-        /* @var $application Application|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var Application|PHPUnit_Framework_MockObject_MockObject $application */
         $application    = $this->createMock(Application::class);
         $eventManager   = new EventManager();
-        $middleware     = $this->getMockBuilder(\stdClass::class)->setMethods(['__invoke'])->getMock();
+        $middleware     = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
         $serviceManager = new ServiceManager([
             'factories' => [
                 'EventManager' => function () {
                     return new EventManager();
                 },
             ],
-            'services' => [
+            'services'  => [
                 $middlewareName => $middleware,
             ],
         ]);
@@ -485,6 +500,7 @@ class MiddlewareListenerTest extends TestCase
 
     /**
      * Stratigility v2 does not support PHP 8
+     *
      * @requires PHP <8
      */
     public function testValidMiddlewareFiresDispatchableInterfaceEventListeners()
@@ -492,20 +508,20 @@ class MiddlewareListenerTest extends TestCase
         $middlewareName = uniqid('middleware', true);
         $routeMatch     = new RouteMatch(['middleware' => $middlewareName]);
         $response       = new DiactorosResponse();
-        /* @var $application Application|\PHPUnit_Framework_MockObject_MockObject */
-        $application    = $this->createMock(Application::class);
-        $sharedManager  = new SharedEventManager();
-        /* @var $sharedListener callable|\PHPUnit_Framework_MockObject_MockObject */
-        $sharedListener = $this->getMockBuilder(\stdClass::class)->setMethods(['__invoke'])->getMock();
+        /** @var Application|PHPUnit_Framework_MockObject_MockObject $application */
+        $application   = $this->createMock(Application::class);
+        $sharedManager = new SharedEventManager();
+        /** @var callable|PHPUnit_Framework_MockObject_MockObject $sharedListener */
+        $sharedListener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
         $eventManager   = new EventManager();
-        $middleware     = $this->getMockBuilder(\stdClass::class)->setMethods(['__invoke'])->getMock();
+        $middleware     = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
         $serviceManager = new ServiceManager([
             'factories' => [
                 'EventManager' => function () use ($sharedManager) {
                     return new EventManager($sharedManager);
                 },
             ],
-            'services' => [
+            'services'  => [
                 $middlewareName => $middleware,
             ],
         ]);
@@ -533,24 +549,23 @@ class MiddlewareListenerTest extends TestCase
 
     /**
      * @dataProvider alreadySetMvcEventResultProvider
-     *
      * @param mixed $alreadySetResult
      */
     public function testWillNotDispatchWhenAnMvcEventResultIsAlreadySet($alreadySetResult)
     {
         $middlewareName = uniqid('middleware', true);
         $routeMatch     = new RouteMatch(['middleware' => $middlewareName]);
-        /* @var $application Application|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var Application|PHPUnit_Framework_MockObject_MockObject $application */
         $application    = $this->createMock(Application::class);
         $eventManager   = new EventManager();
-        $middleware     = $this->getMockBuilder(\stdClass::class)->setMethods(['__invoke'])->getMock();
+        $middleware     = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
         $serviceManager = new ServiceManager([
             'factories' => [
                 'EventManager' => function () {
                     return new EventManager();
                 },
             ],
-            'services' => [
+            'services'  => [
                 $middlewareName => $middleware,
             ],
         ]);
@@ -590,12 +605,12 @@ class MiddlewareListenerTest extends TestCase
             [true],
             [false],
             [[]],
-            [new \stdClass()],
+            [new stdClass()],
             [$this],
             [$this->createMock(ModelInterface::class)],
             [$this->createMock(Response::class)],
             [['view model data' => 'as an array']],
-            [['foo' => new \stdClass()]],
+            [['foo' => new stdClass()]],
             ['a response string'],
         ];
     }

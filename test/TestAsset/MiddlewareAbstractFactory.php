@@ -1,9 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\TestAsset;
 
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
+
+use function class_exists;
 
 class MiddlewareAbstractFactory implements AbstractFactoryInterface
 {
@@ -21,9 +25,9 @@ class MiddlewareAbstractFactory implements AbstractFactoryInterface
         return class_exists($classname);
     }
 
-    public function __invoke(ContainerInterface $container, $name, array $options = null)
+    public function __invoke(ContainerInterface $container, $name, ?array $options = null)
     {
         $classname = $this->classmap[$name];
-        return new $classname;
+        return new $classname();
     }
 }

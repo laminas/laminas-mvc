@@ -15,27 +15,22 @@ use Laminas\Stdlib\ResponseInterface as Response;
 class SendResponseListener extends AbstractListenerAggregate implements
     EventManagerAwareInterface
 {
-    /**
-     * @var SendResponseEvent
-     */
+    /** @var SendResponseEvent */
     protected $event;
 
-    /**
-     * @var EventManagerInterface
-     */
+    /** @var EventManagerInterface */
     protected $eventManager;
 
     /**
      * Inject an EventManager instance
      *
-     * @param  EventManagerInterface $eventManager
      * @return SendResponseListener
      */
     public function setEventManager(EventManagerInterface $eventManager)
     {
         $eventManager->setIdentifiers([
-            __CLASS__,
-            get_class($this),
+            self::class,
+            static::class,
         ]);
         $this->eventManager = $eventManager;
         $this->attachDefaultListeners();
@@ -60,7 +55,6 @@ class SendResponseListener extends AbstractListenerAggregate implements
     /**
      * Attach the aggregate to the specified event manager
      *
-     * @param  EventManagerInterface $events
      * @param  int $priority
      * @return void
      */
@@ -72,7 +66,6 @@ class SendResponseListener extends AbstractListenerAggregate implements
     /**
      * Send the response
      *
-     * @param  MvcEvent $e
      * @return void
      */
     public function sendResponse(MvcEvent $e)
@@ -103,7 +96,6 @@ class SendResponseListener extends AbstractListenerAggregate implements
     /**
      * Set the send response event
      *
-     * @param SendResponseEvent $e
      * @return SendResponseEvent
      */
     public function setEvent(SendResponseEvent $e)

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Service;
 
 use Laminas\Mvc\Service\ServiceListenerFactory;
@@ -15,7 +17,7 @@ class ServiceListenerFactoryTest extends TestCase
                                ->setMethods(['get'])
                                ->getMock();
 
-        $this->factory  = new ServiceListenerFactory();
+        $this->factory = new ServiceListenerFactory();
     }
 
     public function testInvalidOptionType()

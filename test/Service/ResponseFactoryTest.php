@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Service;
 
 use Interop\Container\ContainerInterface;
@@ -14,7 +16,7 @@ class ResponseFactoryTest extends TestCase
 
     public function testFactoryCreatesHttpResponse()
     {
-        $factory = new ResponseFactory();
+        $factory  = new ResponseFactory();
         $response = $factory($this->prophesize(ContainerInterface::class)->reveal(), 'Response');
         $this->assertInstanceOf(HttpResponse::class, $response);
     }
