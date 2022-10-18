@@ -59,7 +59,7 @@ class AcceptableViewModelSelector extends AbstractPlugin
     public function __invoke(
         array $matchAgainst = null,
         $returnDefault = true,
-        & $resultReference = null
+        &$resultReference = null
     ) {
         return $this->getViewModel($matchAgainst, $returnDefault, $resultReference);
     }
@@ -76,7 +76,7 @@ class AcceptableViewModelSelector extends AbstractPlugin
     public function getViewModel(
         array $matchAgainst = null,
         $returnDefault = true,
-        & $resultReference = null
+        &$resultReference = null
     ) {
         $name = $this->getViewModelName($matchAgainst, $returnDefault, $resultReference);
 
@@ -102,7 +102,7 @@ class AcceptableViewModelSelector extends AbstractPlugin
     public function getViewModelName(
         array $matchAgainst = null,
         $returnDefault = true,
-        & $resultReference = null
+        &$resultReference = null
     ) {
         $res = $this->match($matchAgainst);
         if ($res) {
