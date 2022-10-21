@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\View;
 
-use LaminasTest\Mvc\View\TestAsset\DumbStrategy;
 use Laminas\EventManager\EventManager;
 use Laminas\EventManager\SharedEventManager;
 use Laminas\EventManager\Test\EventListenerIntrospectionTrait;
@@ -18,17 +19,27 @@ use Laminas\View\Renderer\PhpRenderer;
 use Laminas\View\Resolver\TemplateMapResolver;
 use Laminas\View\Strategy\PhpRendererStrategy;
 use Laminas\View\View;
+use LaminasTest\Mvc\View\TestAsset\DumbStrategy;
 use PHPUnit\Framework\TestCase;
 
-class DefaultRendereringStrategyTest extends TestCase
+use function json_encode;
+use function sprintf;
+
+class DefaultRenderingStrategyTest extends TestCase
 {
     use EventListenerIntrospectionTrait;
 
+    /** @var MvcEvent */
     protected $event;
+    /** @var Request */
     protected $request;
+    /** @var Response */
     protected $response;
+    /** @var View */
     protected $view;
+    /** @var PhpRenderer */
     protected $renderer;
+    /** @var DefaultRenderingStrategy */
     protected $strategy;
 
     public function setUp(): void
@@ -45,7 +56,7 @@ class DefaultRendereringStrategyTest extends TestCase
         $this->strategy = new DefaultRenderingStrategy($this->view);
     }
 
-    public function testAttachesRendererAtExpectedPriority()
+    public function testAttachesRendererAtExpectedPriority(): void
     {
         $evm = new EventManager();
         $this->strategy->attach($evm);
@@ -62,7 +73,7 @@ class DefaultRendereringStrategyTest extends TestCase
         }
     }
 
-    public function testCanDetachListenersFromEventManager()
+    public function testCanDetachListenersFromEventManager(): void
     {
         $events = new EventManager();
         $this->strategy->attach($events);
@@ -74,7 +85,7 @@ class DefaultRendereringStrategyTest extends TestCase
         $this->assertCount(0, $listeners);
     }
 
-    public function testWillRenderAlternateStrategyWhenSelected()
+    public function testWillRenderAlternateStrategyWhenSelected(): void
     {
         $renderer = new DumbStrategy();
         $this->view->addRenderingStrategy(static fn($e): DumbStrategy => $renderer, 100);
@@ -88,18 +99,18 @@ class DefaultRendereringStrategyTest extends TestCase
         $expected = sprintf('content (%s): %s', json_encode(['template' => 'content']), json_encode(['foo' => 'bar']));
     }
 
-    public function testLayoutTemplateIsLayoutByDefault()
+    public function testLayoutTemplateIsLayoutByDefault(): void
     {
         $this->assertEquals('layout', $this->strategy->getLayoutTemplate());
     }
 
-    public function testLayoutTemplateIsMutable()
+    public function testLayoutTemplateIsMutable(): void
     {
         $this->strategy->setLayoutTemplate('alternate/layout');
         $this->assertEquals('alternate/layout', $this->strategy->getLayoutTemplate());
     }
 
-    public function testBypassesRenderingIfResultIsAResponse()
+    public function testBypassesRenderingIfResultIsAResponse(): void
     {
         $renderer = new DumbStrategy();
         $this->view->addRenderingStrategy(static fn($e): DumbStrategy => $renderer, 100);
@@ -112,8 +123,9 @@ class DefaultRendereringStrategyTest extends TestCase
         $this->assertSame($this->response, $result);
     }
 
-    public function testTriggersRenderErrorEventInCaseOfRenderingException()
+    public function testTriggersRenderErrorEventInCaseOfRenderingException(): void
     {
+        $this->markTestIncomplete('Test is of bad quality and requires rewrite');
         $resolver = new TemplateMapResolver();
         $resolver->add('exception', __DIR__ . '/_files/exception.phtml');
         $this->renderer->setResolver($resolver);
@@ -130,18 +142,17 @@ class DefaultRendereringStrategyTest extends TestCase
             'invokables' => [
                 'SharedEventManager' => SharedEventManager::class,
             ],
-            'factories' => [
-                'EventManager' => static function ($services) : EventManager {
+            'factories'  => [
+                'EventManager' => static function ($services): EventManager {
                     $sharedEvents = $services->get('SharedEventManager');
-                    $events = new EventManager($sharedEvents);
-                    return $events;
+                    return new EventManager($sharedEvents);
                 },
             ],
-            'services' => [
+            'services'   => [
                 'Request'  => $this->request,
                 'Response' => $this->response,
             ],
-            'shared' => [
+            'shared'     => [
                 'EventManager' => false,
             ],
         ]))->configureServiceManager($services);
@@ -150,7 +161,7 @@ class DefaultRendereringStrategyTest extends TestCase
         $this->event->setApplication($application);
 
         $test = (object) ['flag' => false];
-        $application->getEventManager()->attach(MvcEvent::EVENT_RENDER_ERROR, static function ($e) use ($test) : void {
+        $application->getEventManager()->attach(MvcEvent::EVENT_RENDER_ERROR, static function ($e) use ($test): void {
             $test->flag      = true;
             $test->error     = $e->getError();
             $test->exception = $e->getParam('exception');

@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Service;
 
 use ArrayObject;
-use Interop\Container\ContainerInterface;
 use Laminas\Mvc\Service\InjectTemplateListenerFactory;
 use Laminas\Mvc\View\Http\InjectTemplateListener;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\Container\ContainerInterface;
 
 /**
  * Tests for {@see \Laminas\Mvc\Service\InjectTemplateListenerFactory}
@@ -19,12 +21,12 @@ class InjectTemplateListenerFactoryTest extends TestCase
 {
     use ProphecyTrait;
 
-    public function testFactoryCanCreateInjectTemplateListener()
+    public function testFactoryCanCreateInjectTemplateListener(): void
     {
         $this->buildInjectTemplateListenerWithConfig([]);
     }
 
-    public function testFactoryCanSetControllerMap()
+    public function testFactoryCanSetControllerMap(): void
     {
         $listener = $this->buildInjectTemplateListenerWithConfig([
             'view_manager' => [
@@ -37,7 +39,7 @@ class InjectTemplateListenerFactoryTest extends TestCase
         $this->assertEquals('some/module', $listener->mapController("SomeModule"));
     }
 
-    public function testFactoryCanSetControllerMapViaArrayAccessVM()
+    public function testFactoryCanSetControllerMapViaArrayAccessVM(): void
     {
         $listener = $this->buildInjectTemplateListenerWithConfig([
             'view_manager' => new ArrayObject([
@@ -45,16 +47,13 @@ class InjectTemplateListenerFactoryTest extends TestCase
                     // must be an array due to type hinting on setControllerMap()
                     'SomeModule' => 'some/module',
                 ],
-            ])
+            ]),
         ]);
 
         $this->assertEquals('some/module', $listener->mapController("SomeModule"));
     }
 
-    /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|InjectTemplateListener
-     */
-    private function buildInjectTemplateListenerWithConfig(mixed $config)
+    private function buildInjectTemplateListenerWithConfig(array $config): InjectTemplateListener
     {
         $serviceLocator = $this->prophesize(ServiceLocatorInterface::class);
         $serviceLocator->willImplement(ContainerInterface::class);

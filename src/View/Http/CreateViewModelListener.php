@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laminas\Mvc\View\Http;
 
 use Laminas\EventManager\AbstractListenerAggregate;
@@ -47,7 +49,7 @@ class CreateViewModelListener extends AbstractListenerAggregate
             return;
         }
 
-        $model = new ViewModel;
+        $model = new ViewModel();
         $e->setResult($model);
     }
 }

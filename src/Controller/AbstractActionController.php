@@ -1,11 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laminas\Mvc\Controller;
 
-use Laminas\Mvc\Exception\DomainException;
 use Laminas\Mvc\Exception;
+use Laminas\Mvc\Exception\DomainException;
 use Laminas\Mvc\MvcEvent;
 use Laminas\View\Model\ViewModel;
+
+use function method_exists;
 
 /**
  * Basic action controller
@@ -25,7 +29,7 @@ abstract class AbstractActionController extends AbstractController
     public function indexAction()
     {
         return new ViewModel([
-            'content' => 'Placeholder page'
+            'content' => 'Placeholder page',
         ]);
     }
 
@@ -47,7 +51,6 @@ abstract class AbstractActionController extends AbstractController
     /**
      * Execute the request
      *
-     * @param  MvcEvent $e
      * @return mixed
      * @throws Exception\DomainException
      */

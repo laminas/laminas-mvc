@@ -1,9 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laminas\Mvc\Service;
 
 use ArrayAccess;
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
+
+use function is_array;
 
 trait HttpViewManagerConfigTrait
 {
@@ -16,7 +20,8 @@ trait HttpViewManagerConfigTrait
     {
         $config = $container->has('config') ? $container->get('config') : [];
 
-        if (isset($config['view_manager'])
+        if (
+            isset($config['view_manager'])
             && (is_array($config['view_manager'])
                 || $config['view_manager'] instanceof ArrayAccess
             )

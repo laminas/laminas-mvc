@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Controller;
 
-use LaminasTest\Mvc\Controller\TestAsset\SampleController;
 use Laminas\EventManager\EventManager;
 use Laminas\EventManager\SharedEventManager;
 use Laminas\Mvc\Controller\ControllerManager;
 use Laminas\Mvc\Controller\PluginManager;
 use Laminas\ServiceManager\Config;
 use Laminas\ServiceManager\ServiceManager;
+use LaminasTest\Mvc\Controller\TestAsset\SampleController;
 use PHPUnit\Framework\TestCase;
 
 class IntegrationTest extends TestCase
@@ -19,25 +21,27 @@ class IntegrationTest extends TestCase
 
         $this->services = new ServiceManager();
         (new Config([
-            'services' => [
+            'services'  => [
                 'SharedEventManager' => $this->sharedEvents,
             ],
             'factories' => [
                 'ControllerPluginManager' => static fn($services): PluginManager => new PluginManager($services),
-                'EventManager' => fn(): EventManager => new EventManager($this->sharedEvents),
+                'EventManager'            => fn(): EventManager => new EventManager($this->sharedEvents),
             ],
-            'shared' => [
+            'shared'    => [
                 'EventManager' => false,
             ],
         ]))->configureServiceManager($this->services);
     }
 
-    public function testPluginReceivesCurrentController()
+    public function testPluginReceivesCurrentController(): void
     {
-        $controllers = new ControllerManager($this->services, ['factories' => [
-            'first'  => static fn($services): SampleController => new SampleController(),
-            'second' => static fn($services): SampleController => new SampleController(),
-        ]]);
+        $controllers = new ControllerManager($this->services, [
+            'factories' => [
+                'first'  => static fn($services): SampleController => new SampleController(),
+                'second' => static fn($services): SampleController => new SampleController(),
+            ],
+        ]);
 
         $first  = $controllers->get('first');
         $second = $controllers->get('second');

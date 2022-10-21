@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laminas\Mvc;
 
 use Laminas\EventManager\AbstractListenerAggregate;
@@ -15,27 +17,22 @@ use Laminas\Stdlib\ResponseInterface as Response;
 class SendResponseListener extends AbstractListenerAggregate implements
     EventManagerAwareInterface
 {
-    /**
-     * @var SendResponseEvent
-     */
+    /** @var SendResponseEvent */
     protected $event;
 
-    /**
-     * @var EventManagerInterface
-     */
+    /** @var EventManagerInterface */
     protected $eventManager;
 
     /**
      * Inject an EventManager instance
      *
-     * @param  EventManagerInterface $eventManager
      * @return SendResponseListener
      */
     public function setEventManager(EventManagerInterface $eventManager)
     {
         $eventManager->setIdentifiers([
             self::class,
-            $this::class,
+            static::class,
         ]);
         $this->eventManager = $eventManager;
         $this->attachDefaultListeners();
@@ -60,7 +57,6 @@ class SendResponseListener extends AbstractListenerAggregate implements
     /**
      * Attach the aggregate to the specified event manager
      *
-     * @param  EventManagerInterface $events
      * @param  int $priority
      * @return void
      */
@@ -119,10 +115,8 @@ class SendResponseListener extends AbstractListenerAggregate implements
      * You can attach your response sender before or after every default response sender implementation.
      * All default response sender implementation have negative priority.
      * You are able to attach listeners without giving a priority and your response sender would be first to try.
-     *
-     * @return SendResponseListener
      */
-    protected function attachDefaultListeners()
+    protected function attachDefaultListeners(): void
     {
         $events = $this->getEventManager();
         $events->attach(SendResponseEvent::EVENT_SEND_RESPONSE, new PhpEnvironmentResponseSender(), -1000);

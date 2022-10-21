@@ -1,8 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Controller\TestAsset;
 
 use Laminas\Http\Request as HttpRequest;
+
+use function strtoupper;
 
 class Request extends HttpRequest
 {
@@ -14,7 +18,7 @@ class Request extends HttpRequest
      */
     public function setMethod($method)
     {
-        $method = strtoupper($method);
+        $method       = strtoupper($method);
         $this->method = $method;
         return $this;
     }

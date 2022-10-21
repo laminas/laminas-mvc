@@ -1,8 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laminas\Mvc\ResponseSender;
 
 use Laminas\Http\Response\Stream;
+
+use function fpassthru;
 
 class SimpleStreamResponseSender extends AbstractResponseSender
 {
@@ -25,7 +29,6 @@ class SimpleStreamResponseSender extends AbstractResponseSender
     /**
      * Send stream response
      *
-     * @param  SendResponseEvent $event
      * @return SimpleStreamResponseSender
      */
     public function __invoke(SendResponseEvent $event)

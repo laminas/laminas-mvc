@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\View;
 
 use Exception;
@@ -12,6 +14,8 @@ use Laminas\Mvc\View\Http\ExceptionStrategy;
 use Laminas\View\Model\ViewModel;
 use PHPUnit\Framework\TestCase;
 
+use function count;
+
 class ExceptionStrategyTest extends TestCase
 {
     use EventListenerIntrospectionTrait;
@@ -21,29 +25,29 @@ class ExceptionStrategyTest extends TestCase
         $this->strategy = new ExceptionStrategy();
     }
 
-    public function testDisplayExceptionsIsDisabledByDefault()
+    public function testDisplayExceptionsIsDisabledByDefault(): void
     {
         $this->assertFalse($this->strategy->displayExceptions());
     }
 
-    public function testDisplayExceptionsFlagIsMutable()
+    public function testDisplayExceptionsFlagIsMutable(): void
     {
         $this->strategy->setDisplayExceptions(true);
         $this->assertTrue($this->strategy->displayExceptions());
     }
 
-    public function testExceptionTemplateHasASaneDefault()
+    public function testExceptionTemplateHasASaneDefault(): void
     {
         $this->assertEquals('error', $this->strategy->getExceptionTemplate());
     }
 
-    public function testExceptionTemplateIsMutable()
+    public function testExceptionTemplateIsMutable(): void
     {
         $this->strategy->setExceptionTemplate('pages/error');
         $this->assertEquals('pages/error', $this->strategy->getExceptionTemplate());
     }
 
-    public function test404ApplicationErrorsResultInNoOperations()
+    public function test404ApplicationErrorsResultInNoOperations(): void
     {
         $event = new MvcEvent();
         foreach ([Application::ERROR_CONTROLLER_NOT_FOUND, Application::ERROR_CONTROLLER_INVALID] as $error) {
@@ -66,9 +70,9 @@ class ExceptionStrategyTest extends TestCase
         $this->addToAssertionCount(1);
     }
 
-    public function testCatchesApplicationExceptions()
+    public function testCatchesApplicationExceptions(): void
     {
-        $exception = new Exception;
+        $exception = new Exception();
         $event     = new MvcEvent();
         $event->setParam('exception', $exception);
         $event->setError(Application::ERROR_EXCEPTION);
@@ -90,9 +94,9 @@ class ExceptionStrategyTest extends TestCase
         $this->assertEquals($this->strategy->displayExceptions(), $variables['display_exceptions']);
     }
 
-    public function testCatchesUnknownErrorTypes()
+    public function testCatchesUnknownErrorTypes(): void
     {
-        $exception = new Exception;
+        $exception = new Exception();
         $event     = new MvcEvent();
         $event->setParam('exception', $exception);
         $event->setError('custom_error');
@@ -102,7 +106,7 @@ class ExceptionStrategyTest extends TestCase
         $this->assertTrue($response->isServerError());
     }
 
-    public function testEmptyErrorInEventResultsInNoOperations()
+    public function testEmptyErrorInEventResultsInNoOperations(): void
     {
         $event = new MvcEvent();
         $this->strategy->prepareExceptionViewModel($event);
@@ -122,9 +126,9 @@ class ExceptionStrategyTest extends TestCase
         $this->addToAssertionCount(1);
     }
 
-    public function testDoesNothingIfEventResultIsAResponse()
+    public function testDoesNothingIfEventResultIsAResponse(): void
     {
-        $event = new MvcEvent();
+        $event    = new MvcEvent();
         $response = new Response();
         $event->setResponse($response);
         $event->setResult($response);
@@ -133,7 +137,7 @@ class ExceptionStrategyTest extends TestCase
         $this->assertNull($this->strategy->prepareExceptionViewModel($event));
     }
 
-    public function testAttachesListenerAtExpectedPriority()
+    public function testAttachesListenerAtExpectedPriority(): void
     {
         $events = new EventManager();
         $this->strategy->attach($events);
@@ -146,7 +150,7 @@ class ExceptionStrategyTest extends TestCase
         );
     }
 
-    public function testDetachesListeners()
+    public function testDetachesListeners(): void
     {
         $events = new EventManager();
         $this->strategy->attach($events);
@@ -157,9 +161,9 @@ class ExceptionStrategyTest extends TestCase
         $this->assertEquals(0, count($listeners));
     }
 
-    public function testReuseResponseStatusCodeIfItExists()
+    public function testReuseResponseStatusCodeIfItExists(): void
     {
-        $event = new MvcEvent();
+        $event    = new MvcEvent();
         $response = new Response();
         $response->setStatusCode(401);
         $event->setResponse($response);

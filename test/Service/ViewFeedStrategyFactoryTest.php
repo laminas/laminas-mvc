@@ -1,19 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Service;
 
-use Interop\Container\ContainerInterface;
 use Laminas\Mvc\Service\ViewFeedStrategyFactory;
 use Laminas\View\Renderer\FeedRenderer;
 use Laminas\View\Strategy\FeedStrategy;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\Container\ContainerInterface;
 
 class ViewFeedStrategyFactoryTest extends TestCase
 {
     use ProphecyTrait;
 
-    private function createContainer()
+    private function createContainer(): ContainerInterface
     {
         $renderer  = $this->prophesize(FeedRenderer::class);
         $container = $this->prophesize(ContainerInterface::class);
@@ -21,7 +23,7 @@ class ViewFeedStrategyFactoryTest extends TestCase
         return $container->reveal();
     }
 
-    public function testReturnsFeedStrategy()
+    public function testReturnsFeedStrategy(): void
     {
         $factory = new ViewFeedStrategyFactory();
         $result  = $factory($this->createContainer(), 'ViewFeedStrategy');

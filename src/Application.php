@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laminas\Mvc;
 
-use Laminas\Mvc\Service\ServiceManagerConfig;
 use Laminas\EventManager\EventManagerAwareInterface;
 use Laminas\EventManager\EventManagerInterface;
 use Laminas\ServiceManager\ServiceManager;
@@ -22,7 +23,6 @@ use Laminas\Stdlib\ResponseInterface;
  * - RouteListener
  * - Router
  * - DispatchListener
- * - MiddlewareListener
  * - ViewManager
  *
  * The most common workflow is:
@@ -48,7 +48,6 @@ class Application implements
     public const ERROR_CONTROLLER_INVALID         = 'error-controller-invalid';
     public const ERROR_EXCEPTION                  = 'error-exception';
     public const ERROR_ROUTER_NO_MATCH            = 'error-router-no-match';
-    public const ERROR_MIDDLEWARE_CANNOT_DISPATCH = 'error-middleware-cannot-dispatch';
 
     /**
      * Default application event listeners
@@ -57,7 +56,6 @@ class Application implements
      */
     protected $defaultListeners = [
         'RouteListener',
-        'MiddlewareListener',
         'DispatchListener',
         'HttpMethodListener',
         'ViewManager',
@@ -66,41 +64,33 @@ class Application implements
 
     /**
      * MVC event token
+     *
      * @var MvcEvent
      */
     protected $event;
 
-    /**
-     * @var EventManagerInterface
-     */
+    /** @var EventManagerInterface */
     protected $events;
 
-    /**
-     * @var RequestInterface
-     */
+    /** @var RequestInterface */
     protected $request;
 
-    /**
-     * @var ResponseInterface
-     */
+    /** @var ResponseInterface */
     protected $response;
 
-    /**
-     * Constructor
-     *
-     * @param null|EventManagerInterface $events
-     * @param null|RequestInterface $request
-     * @param null|ResponseInterface $response
-     */
     public function __construct(
         protected ServiceManager $serviceManager,
-        EventManagerInterface $events = null,
-        RequestInterface $request = null,
-        ResponseInterface $response = null
+        ?EventManagerInterface $events = null,
+        ?RequestInterface $request = null,
+        ?ResponseInterface $response = null
     ) {
         $this->setEventManager($events ?: $serviceManager->get('EventManager'));
-        $this->request        = $request ?: $serviceManager->get('Request');
-        $this->response       = $response ?: $serviceManager->get('Response');
+        $this->request  = $request ?: $serviceManager->get('Request');
+        $this->response = $response ?: $serviceManager->get('Response');
+
+        foreach ($this->defaultListeners as $listener) {
+            $serviceManager->get($listener)->attach($this->events);
+        }
     }
 
     /**
@@ -120,20 +110,12 @@ class Application implements
      * router. Attaches the ViewManager as a listener. Triggers the bootstrap
      * event.
      *
-     * @param array $listeners List of listeners to attach.
      * @return Application
      */
-    public function bootstrap(array $listeners = [])
+    public function bootstrap()
     {
         $serviceManager = $this->serviceManager;
         $events         = $this->events;
-
-        // Setup default listeners
-        $listeners = array_unique(array_merge($this->defaultListeners, $listeners));
-
-        foreach ($listeners as $listener) {
-            $serviceManager->get($listener)->attach($events);
-        }
 
         // Setup MVC Event
         $this->event = $event  = new MvcEvent();
@@ -193,14 +175,13 @@ class Application implements
     /**
      * Set the event manager instance
      *
-     * @param  EventManagerInterface $eventManager
      * @return Application
      */
     public function setEventManager(EventManagerInterface $eventManager)
     {
         $eventManager->setIdentifiers([
             self::class,
-            $this::class,
+            static::class,
         ]);
         $this->events = $eventManager;
         return $this;
@@ -216,48 +197,6 @@ class Application implements
     public function getEventManager()
     {
         return $this->events;
-    }
-
-    /**
-     * Static method for quick and easy initialization of the Application.
-     *
-     * If you use this init() method, you cannot specify a service with the
-     * name of 'ApplicationConfig' in your service manager config. This name is
-     * reserved to hold the array from application.config.php.
-     *
-     * The following services can only be overridden from application.config.php:
-     *
-     * - ModuleManager
-     * - SharedEventManager
-     * - EventManager & Laminas\EventManager\EventManagerInterface
-     *
-     * All other services are configured after module loading, thus can be
-     * overridden by modules.
-     *
-     * @param array $configuration
-     * @return Application
-     */
-    public static function init($configuration = [])
-    {
-        // Prepare the service manager
-        $smConfig = $configuration['service_manager'] ?? [];
-        $smConfig = new ServiceManagerConfig($smConfig);
-
-        $serviceManager = new ServiceManager();
-        $smConfig->configureServiceManager($serviceManager);
-        $serviceManager->setService('ApplicationConfig', $configuration);
-
-        // Load modules
-        $serviceManager->get('ModuleManager')->loadModules();
-
-        // Prepare list of listeners to bootstrap
-        $listenersFromAppConfig     = $configuration['listeners'] ?? [];
-        $config                     = $serviceManager->get('config');
-        $listenersFromConfigService = $config['listeners'] ?? [];
-
-        $listeners = array_unique(array_merge($listenersFromConfigService, $listenersFromAppConfig));
-
-        return $serviceManager->get('Application')->bootstrap($listeners);
     }
 
     /**
@@ -282,7 +221,7 @@ class Application implements
         $event  = $this->event;
 
         // Define callback used to determine whether or not to short-circuit
-        $shortCircuit = static function ($r) use ($event) : bool {
+        $shortCircuit = static function ($r) use ($event): bool {
             if ($r instanceof ResponseInterface) {
                 return true;
             }
@@ -341,7 +280,6 @@ class Application implements
      * Triggers "render" and "finish" events, and returns response from
      * event object.
      *
-     * @param  MvcEvent $event
      * @return Application
      */
     protected function completeRequest(MvcEvent $event)

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laminas\Mvc;
 
 use Laminas\EventManager\AbstractListenerAggregate;
@@ -7,11 +9,12 @@ use Laminas\EventManager\EventManagerInterface;
 use Laminas\Http\Request as HttpRequest;
 use Laminas\Http\Response as HttpResponse;
 
+use function in_array;
+use function strtoupper;
+
 class HttpMethodListener extends AbstractListenerAggregate
 {
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $allowedMethods = [
         HttpRequest::METHOD_CONNECT,
         HttpRequest::METHOD_DELETE,
@@ -25,9 +28,7 @@ class HttpMethodListener extends AbstractListenerAggregate
         HttpRequest::METHOD_TRACE,
     ];
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $enabled = true;
 
     /**
@@ -64,7 +65,7 @@ class HttpMethodListener extends AbstractListenerAggregate
      */
     public function onRoute(MvcEvent $e)
     {
-        $request = $e->getRequest();
+        $request  = $e->getRequest();
         $response = $e->getResponse();
 
         if (! $request instanceof HttpRequest || ! $response instanceof HttpResponse) {

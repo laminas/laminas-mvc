@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Application;
 
 use Laminas\Mvc\MvcEvent;
@@ -10,7 +12,7 @@ class RoutingSuccessTest extends TestCase
 {
     use PathControllerTrait;
 
-    public function testRoutingIsExcecutedDuringRun()
+    public function testRoutingIsExcecutedDuringRun(): void
     {
         $application = $this->prepareApplication();
 

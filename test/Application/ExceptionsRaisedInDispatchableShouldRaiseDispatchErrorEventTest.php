@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Application;
 
 use Laminas\Mvc\MvcEvent;
+use Laminas\Stdlib\ResponseInterface;
 use PHPUnit\Framework\TestCase;
 
 class ExceptionsRaisedInDispatchableShouldRaiseDispatchErrorEventTest extends TestCase
@@ -12,13 +15,13 @@ class ExceptionsRaisedInDispatchableShouldRaiseDispatchErrorEventTest extends Te
     /**
      * @group error-handling
      */
-    public function testExceptionsRaisedInDispatchableShouldRaiseDispatchErrorEvent()
+    public function testExceptionsRaisedInDispatchableShouldRaiseDispatchErrorEvent(): void
     {
         $application = $this->prepareApplication();
 
         $response = $application->getResponse();
         $events   = $application->getEventManager();
-        $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) use ($response) {
+        $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) use ($response): ResponseInterface {
             $exception = $e->getParam('exception');
             $this->assertInstanceOf('Exception', $exception);
             $response->setContent($exception->getMessage());

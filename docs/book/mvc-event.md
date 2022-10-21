@@ -94,7 +94,6 @@ priority):
 
 Class                          | Priority | Method Called | Triggers | Description
 -------------------------------|---------:|---------------|----------|------------
-`Laminas\Mvc\ModuleRouteListener` | 1        | `onRoute`     | none     | Determines if the module namespace should be prepended to the controller name. This is the case if the route match contains a parameter key matching the `MODULE_NAMESPACE` constant.
 `Laminas\Mvc\RouteListener`       | 1        | `onRoute`     | `MvcEvent::EVENT_DISPATCH_ERROR` (if no route is matched) | Tries to match the request to the router and return a `RouteMatch` object.
 
 ### Triggered By
@@ -143,7 +142,6 @@ priority to lower priority):
 
 Class                         | Priority | Method Called | Triggers | Description
 ------------------------------|---------:|---------------|----------|------------
-`Laminas\Mvc\MiddlewareListener` | 1        | `onDispatch`  | `MvcEvent::EVENT_DISPATCH_ERROR` (if an exception is raised during dispatch processes) | Load and dispatch the matched PSR-7 middleware from the service manager (and throws various exceptions if it does not).
 `Laminas\Mvc\DispatchListener`   | 1        | `onDispatch`  | `MvcEvent::EVENT_DISPATCH_ERROR` (if an exception is raised during dispatch processes) |  Load and dispatch the matched controller from the service manager (and throws various exceptions if it does not).
 `Laminas\Mvc\AbstractController` | 1        | `onDispatch`  | none     | The `onDispatch` method of the `AbstractController` is an abstract method. In `AbstractActionController`, for instance, it calls the action method.
 
@@ -196,7 +194,6 @@ Class                       | Priority | Method Called        | Description
 
 Class                         | In Method
 ------------------------------|----------
-`Laminas\Mvc\MiddlewareListener` | `onDispatch`
 `Laminas\Mvc\DispatchListener`   | `onDispatch`
 `Laminas\Mvc\DispatchListener`   | `marshallControllerNotFoundEvent`
 `Laminas\Mvc\DispatchListener`   | `marshallBadControllerEvent`

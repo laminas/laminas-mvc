@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc;
 
 use Laminas\EventManager\EventManagerInterface;
@@ -12,13 +14,11 @@ use Laminas\Stdlib\Response;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers Laminas\Mvc\HttpMethodListener
+ * @covers \Laminas\Mvc\HttpMethodListener
  */
 class HttpMethodListenerTest extends TestCase
 {
-    /**
-     * @var HttpMethodListener
-     */
+    /** @var HttpMethodListener */
     protected $listener;
 
     public function setUp(): void
@@ -26,9 +26,9 @@ class HttpMethodListenerTest extends TestCase
         $this->listener = new HttpMethodListener();
     }
 
-    public function testConstructor()
+    public function testConstructor(): void
     {
-        $methods = ['foo', 'bar'];
+        $methods  = ['foo', 'bar'];
         $listener = new HttpMethodListener(false, $methods);
 
         $this->assertFalse($listener->isEnabled());
@@ -38,7 +38,7 @@ class HttpMethodListenerTest extends TestCase
         $this->assertNotEmpty($listener->getAllowedMethods());
     }
 
-    public function testAttachesToRouteEvent()
+    public function testAttachesToRouteEvent(): void
     {
         $eventManager = $this->createMock(EventManagerInterface::class);
         $eventManager->expects($this->atLeastOnce())
@@ -48,7 +48,7 @@ class HttpMethodListenerTest extends TestCase
         $this->listener->attach($eventManager);
     }
 
-    public function testDoesntAttachIfDisabled()
+    public function testDoesntAttachIfDisabled(): void
     {
         $this->listener->setEnabled(false);
 
@@ -59,7 +59,7 @@ class HttpMethodListenerTest extends TestCase
         $this->listener->attach($eventManager);
     }
 
-    public function testOnRouteDoesNothingIfNotHttpEnvironment()
+    public function testOnRouteDoesNothingIfNotHttpEnvironment(): void
     {
         $event = new MvcEvent();
         $event->setRequest(new Request());
@@ -72,9 +72,9 @@ class HttpMethodListenerTest extends TestCase
         $this->assertNull($this->listener->onRoute($event));
     }
 
-    public function testOnRouteDoesNothingIfIfMethodIsAllowed()
+    public function testOnRouteDoesNothingIfIfMethodIsAllowed(): void
     {
-        $event = new MvcEvent();
+        $event   = new MvcEvent();
         $request = new HttpRequest();
         $request->setMethod('foo');
         $event->setRequest($request);
@@ -85,9 +85,9 @@ class HttpMethodListenerTest extends TestCase
         $this->assertNull($this->listener->onRoute($event));
     }
 
-    public function testOnRouteReturns405ResponseIfMethodNotAllowed()
+    public function testOnRouteReturns405ResponseIfMethodNotAllowed(): void
     {
-        $event = new MvcEvent();
+        $event   = new MvcEvent();
         $request = new HttpRequest();
         $request->setMethod('foo');
         $event->setRequest($request);

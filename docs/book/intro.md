@@ -84,7 +84,7 @@ Let's now turn to modules, as they are the basic units of a web application.
 ## Basic Module Structure
 
 A module may contain anything: PHP code, including MVC functionality; library
-code; view scripts; and/or or public assets such as images, CSS, and JavaScript.
+code; view scripts; and/or public assets such as images, CSS, and JavaScript.
 The only requirement &mdash; and even this is optional &mdash; is that a module
 acts as a PHP namespace and that it contains a `Module` class under that
 namespace.  This class is eventually consumed by laminas-modulemanager to perform a
@@ -241,8 +241,6 @@ Once you've done this, there are two additional actions you can take. The first 
 the application. In the default implementation, this does the following:
 
 - Attaches the default route listener (`Laminas\Mvc\RouteListener`).
-- Attaches the middleware dispatch listener (`Laminas\Mvc\MiddlewareListener`)
-  (v2.7.0 and up).
 - Attaches the default dispatch listener (`Laminas\Mvc\DispatchListener`).
 - Attaches the `ViewManager` listener (`Laminas\Mvc\View\ViewManager`).
 - Creates the `MvcEvent`, and injects it with the application, request, and

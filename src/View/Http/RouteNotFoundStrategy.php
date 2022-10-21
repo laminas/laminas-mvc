@@ -1,9 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laminas\Mvc\View\Http;
 
-use Exception;
-use Throwable;
 use Laminas\EventManager\AbstractListenerAggregate;
 use Laminas\EventManager\EventManagerInterface;
 use Laminas\Http\Response as HttpResponse;
@@ -11,6 +11,9 @@ use Laminas\Mvc\Application;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Stdlib\ResponseInterface as Response;
 use Laminas\View\Model\ViewModel;
+use Throwable;
+
+use function is_string;
 
 class RouteNotFoundStrategy extends AbstractListenerAggregate
 {
@@ -124,7 +127,6 @@ class RouteNotFoundStrategy extends AbstractListenerAggregate
      * If a "controller not found" or "invalid controller" error type is
      * encountered, sets the response status code to 404.
      *
-     * @param  MvcEvent $e
      * @return void
      */
     public function detectNotFoundError(MvcEvent $e)
@@ -139,7 +141,7 @@ class RouteNotFoundStrategy extends AbstractListenerAggregate
             case Application::ERROR_CONTROLLER_INVALID:
             case Application::ERROR_ROUTER_NO_MATCH:
                 $this->reason = $error;
-                $response = $e->getResponse();
+                $response     = $e->getResponse();
                 if (! $response) {
                     $response = new HttpResponse();
                     $e->setResponse($response);
@@ -165,7 +167,7 @@ class RouteNotFoundStrategy extends AbstractListenerAggregate
         }
 
         $response = $e->getResponse();
-        if ($response->getStatusCode() != 404) {
+        if ($response->getStatusCode() !== 404) {
             // Only handle 404 responses
             return;
         }
@@ -205,7 +207,6 @@ class RouteNotFoundStrategy extends AbstractListenerAggregate
      * and, if so, injects it into the model. If not, it injects
      * Application::ERROR_CONTROLLER_CANNOT_DISPATCH.
      *
-     * @param  ViewModel $model
      * @return void
      */
     protected function injectNotFoundReason(ViewModel $model)
@@ -245,8 +246,7 @@ class RouteNotFoundStrategy extends AbstractListenerAggregate
 
         $exception = $e->getParam('exception', false);
 
-        // @TODO clean up once PHP 7 requirement is enforced
-        if (! $exception instanceof Exception && ! $exception instanceof Throwable) {
+        if (! $exception instanceof Throwable) {
             return;
         }
 

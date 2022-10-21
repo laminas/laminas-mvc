@@ -1,17 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laminas\Mvc;
 
-use Throwable;
-use Exception;
-use Laminas\Mvc\Controller\ControllerManager;
-use Laminas\Mvc\Exception\InvalidControllerException;
 use ArrayObject;
+use Exception;
 use Laminas\EventManager\AbstractListenerAggregate;
 use Laminas\EventManager\EventManagerInterface;
+use Laminas\Mvc\Controller\ControllerManager;
+use Laminas\Mvc\Exception\InvalidControllerException;
 use Laminas\Router\RouteMatch;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
 use Laminas\Stdlib\ArrayUtils;
+use Throwable;
+
+use function function_exists;
+use function is_object;
 
 /**
  * Default dispatch listener
@@ -44,7 +49,6 @@ class DispatchListener extends AbstractListenerAggregate
     /**
      * Attach listeners to an event manager
      *
-     * @param  EventManagerInterface $events
      * @param  int $priority
      * @return void
      */
@@ -74,7 +78,6 @@ class DispatchListener extends AbstractListenerAggregate
         $application       = $e->getApplication();
         $controllerManager = $this->controllerManager;
 
-
         // Query abstract controllers, too!
         if (! $controllerManager->has($controllerName)) {
             $return = $this->marshalControllerNotFoundEvent(
@@ -100,9 +103,6 @@ class DispatchListener extends AbstractListenerAggregate
         } catch (Throwable $exception) {
             $return = $this->marshalBadControllerEvent($controllerName, $e, $application, $exception);
             return $this->complete($return, $e);
-        } catch (Exception $exception) {  // @TODO clean up once PHP 7 requirement is enforced
-            $return = $this->marshalBadControllerEvent($controllerName, $e, $application, $exception);
-            return $this->complete($return, $e);
         }
 
         if ($controller instanceof InjectApplicationEventInterface) {
@@ -111,22 +111,15 @@ class DispatchListener extends AbstractListenerAggregate
 
         $request  = $e->getRequest();
         $response = $application->getResponse();
-        $caughtException = null;
 
         try {
             $return = $controller->dispatch($request, $response);
         } catch (Throwable $ex) {
-            $caughtException = $ex;
-        } catch (Exception $ex) {  // @TODO clean up once PHP 7 requirement is enforced
-            $caughtException = $ex;
-        }
-
-        if ($caughtException !== null) {
             $e->setName(MvcEvent::EVENT_DISPATCH_ERROR);
             $e->setError($application::ERROR_EXCEPTION);
             $e->setController($controllerName);
             $e->setControllerClass($controller::class);
-            $e->setParam('exception', $caughtException);
+            $e->setParam('exception', $ex);
 
             $return = $application->getEventManager()->triggerEvent($e)->last();
             if (! $return) {
@@ -141,8 +134,7 @@ class DispatchListener extends AbstractListenerAggregate
     {
         $error     = $e->getError();
         $exception = $e->getParam('exception');
-        // @TODO clean up once PHP 7 requirement is enforced
-        if ($exception instanceof Exception || $exception instanceof Throwable) {
+        if ($exception instanceof Throwable) {
             zend_monitor_custom_event_ex(
                 $error,
                 $exception->getMessage(),

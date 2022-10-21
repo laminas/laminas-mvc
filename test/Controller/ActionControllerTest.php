@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Controller;
 
 use Laminas\EventManager\EventManager;
@@ -15,16 +17,24 @@ use Laminas\Mvc\MvcEvent;
 use Laminas\Router\RouteMatch;
 use Laminas\ServiceManager\ServiceManager;
 use Laminas\Stdlib\DispatchableInterface;
+use Laminas\Stdlib\ResponseInterface;
 use Laminas\View\Model\ModelInterface;
 use LaminasTest\Mvc\Controller\TestAsset\SampleController;
 use LaminasTest\Mvc\Controller\TestAsset\SampleInterface;
 use PHPUnit\Framework\TestCase;
 
+use function method_exists;
+use function var_export;
+
 class ActionControllerTest extends TestCase
 {
+    /** @var AbstractActionController */
     public $controller;
+    /** @var MvcEvent */
     public $event;
+    /** @var Request */
     public $request;
+    /** @var ResponseInterface|null */
     public $response;
 
     public function setUp(): void
@@ -42,40 +52,37 @@ class ActionControllerTest extends TestCase
         $this->controller->setEventManager($this->events);
     }
 
-    /**
-     * @return EventManager
-     */
-    protected function createEventManager(SharedEventManagerInterface $sharedManager)
+    protected function createEventManager(SharedEventManagerInterface $sharedManager): EventManager
     {
         return new EventManager($sharedManager);
     }
 
-    public function testDispatchInvokesNotFoundActionWhenNoActionPresentInRouteMatch()
+    public function testDispatchInvokesNotFoundActionWhenNoActionPresentInRouteMatch(): void
     {
-        $result = $this->controller->dispatch($this->request, $this->response);
+        $result   = $this->controller->dispatch($this->request, $this->response);
         $response = $this->controller->getResponse();
         $this->assertEquals(404, $response->getStatusCode());
         $this->assertInstanceOf(ModelInterface::class, $result);
         $this->assertEquals('content', $result->captureTo());
         $vars = $result->getVariables();
-        $this->assertArrayHasKey('content', $vars, var_export($vars, 1));
+        $this->assertArrayHasKey('content', $vars, var_export($vars, true));
         $this->assertStringContainsString('Page not found', $vars['content']);
     }
 
-    public function testDispatchInvokesNotFoundActionWhenInvalidActionPresentInRouteMatch()
+    public function testDispatchInvokesNotFoundActionWhenInvalidActionPresentInRouteMatch(): void
     {
         $this->routeMatch->setParam('action', 'totally-made-up-action');
-        $result = $this->controller->dispatch($this->request, $this->response);
+        $result   = $this->controller->dispatch($this->request, $this->response);
         $response = $this->controller->getResponse();
         $this->assertEquals(404, $response->getStatusCode());
         $this->assertInstanceOf(ModelInterface::class, $result);
         $this->assertEquals('content', $result->captureTo());
         $vars = $result->getVariables();
-        $this->assertArrayHasKey('content', $vars, var_export($vars, 1));
+        $this->assertArrayHasKey('content', $vars, var_export($vars, true));
         $this->assertStringContainsString('Page not found', $vars['content']);
     }
 
-    public function testDispatchInvokesProvidedActionWhenMethodExists()
+    public function testDispatchInvokesProvidedActionWhenMethodExists(): void
     {
         $this->routeMatch->setParam('action', 'test');
         $result = $this->controller->dispatch($this->request, $this->response);
@@ -83,7 +90,7 @@ class ActionControllerTest extends TestCase
         $this->assertStringContainsString('test', $result['content']);
     }
 
-    public function testDispatchCallsActionMethodBasedOnNormalizingAction()
+    public function testDispatchCallsActionMethodBasedOnNormalizingAction(): void
     {
         $this->routeMatch->setParam('action', 'test.some-strangely_separated.words');
         $result = $this->controller->dispatch($this->request, $this->response);
@@ -91,7 +98,7 @@ class ActionControllerTest extends TestCase
         $this->assertStringContainsString('Test Some Strangely Separated Words', $result['content']);
     }
 
-    public function testShortCircuitsBeforeActionIfPreDispatchReturnsAResponse()
+    public function testShortCircuitsBeforeActionIfPreDispatchReturnsAResponse(): void
     {
         $response = new Response();
         $response->setContent('short circuited!');
@@ -104,7 +111,7 @@ class ActionControllerTest extends TestCase
         $this->assertSame($response, $result);
     }
 
-    public function testPostDispatchEventAllowsReplacingResponse()
+    public function testPostDispatchEventAllowsReplacingResponse(): void
     {
         $response = new Response();
         $response->setContent('short circuited!');
@@ -117,7 +124,7 @@ class ActionControllerTest extends TestCase
         $this->assertSame($response, $result);
     }
 
-    public function testEventManagerListensOnDispatchableInterfaceByDefault()
+    public function testEventManagerListensOnDispatchableInterfaceByDefault(): void
     {
         $response = new Response();
         $response->setContent('short circuited!');
@@ -132,7 +139,7 @@ class ActionControllerTest extends TestCase
         $this->assertSame($response, $result);
     }
 
-    public function testEventManagerListensOnActionControllerClassByDefault()
+    public function testEventManagerListensOnActionControllerClassByDefault(): void
     {
         $response = new Response();
         $response->setContent('short circuited!');
@@ -147,7 +154,7 @@ class ActionControllerTest extends TestCase
         $this->assertSame($response, $result);
     }
 
-    public function testEventManagerListensOnClassNameByDefault()
+    public function testEventManagerListensOnClassNameByDefault(): void
     {
         $response = new Response();
         $response->setContent('short circuited!');
@@ -162,7 +169,7 @@ class ActionControllerTest extends TestCase
         $this->assertSame($response, $result);
     }
 
-    public function testEventManagerListensOnInterfaceName()
+    public function testEventManagerListensOnInterfaceName(): void
     {
         $response = new Response();
         $response->setContent('short circuited!');
@@ -177,7 +184,7 @@ class ActionControllerTest extends TestCase
         $this->assertSame($response, $result);
     }
 
-    public function testDispatchInjectsEventIntoController()
+    public function testDispatchInjectsEventIntoController(): void
     {
         $this->controller->dispatch($this->request, $this->response);
         $event = $this->controller->getEvent();
@@ -185,30 +192,30 @@ class ActionControllerTest extends TestCase
         $this->assertSame($this->event, $event);
     }
 
-    public function testControllerIsEventAware()
+    public function testControllerIsEventAware(): void
     {
         $this->assertInstanceOf(InjectApplicationEventInterface::class, $this->controller);
     }
 
-    public function testControllerIsPluggable()
+    public function testControllerIsPluggable(): void
     {
         $this->assertTrue(method_exists($this->controller, 'plugin'));
     }
 
-    public function testComposesPluginManagerByDefault()
+    public function testComposesPluginManagerByDefault(): void
     {
         $plugins = $this->controller->getPluginManager();
         $this->assertInstanceOf(PluginManager::class, $plugins);
     }
 
-    public function testPluginManagerComposesController()
+    public function testPluginManagerComposesController(): void
     {
         $plugins    = $this->controller->getPluginManager();
         $controller = $plugins->getController();
         $this->assertSame($this->controller, $controller);
     }
 
-    public function testInjectingPluginManagerSetsControllerWhenPossible()
+    public function testInjectingPluginManagerSetsControllerWhenPossible(): void
     {
         $plugins = new PluginManager(new ServiceManager());
         $this->assertNull($plugins->getController());
@@ -217,13 +224,13 @@ class ActionControllerTest extends TestCase
         $this->assertSame($plugins, $this->controller->getPluginManager());
     }
 
-    public function testMethodOverloadingShouldReturnPluginWhenFound()
+    public function testMethodOverloadingShouldReturnPluginWhenFound(): void
     {
         $plugin = $this->controller->url();
         $this->assertInstanceOf(Url::class, $plugin);
     }
 
-    public function testMethodOverloadingShouldInvokePluginAsFunctorIfPossible()
+    public function testMethodOverloadingShouldInvokePluginAsFunctorIfPossible(): void
     {
         $model = $this->event->getViewModel();
         $this->controller->layout('alternate/layout');

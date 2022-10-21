@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laminas\Mvc\View\Http;
 
 use Laminas\EventManager\AbstractListenerAggregate;
@@ -14,12 +16,14 @@ class ExceptionStrategy extends AbstractListenerAggregate
 {
     /**
      * Display exceptions?
+     *
      * @var bool
      */
     protected $displayExceptions = false;
 
     /**
      * Name of exception template
+     *
      * @var string
      */
     protected $exceptionTemplate = 'error';

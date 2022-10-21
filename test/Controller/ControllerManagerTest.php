@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Controller;
 
 use Laminas\EventManager\EventManager;
@@ -18,16 +20,16 @@ class ControllerManagerTest extends TestCase
 {
     public function setUp(): void
     {
-        $this->sharedEvents   = new SharedEventManager;
-        $this->events         = $this->createEventManager($this->sharedEvents);
+        $this->sharedEvents = new SharedEventManager();
+        $this->events       = $this->createEventManager($this->sharedEvents);
 
         $this->services = new ServiceManager();
         (new Config([
             'factories' => [
-                'ControllerPluginManager' => static fn($services): ControllerPluginManager =>
-                    new ControllerPluginManager($services),
+                'ControllerPluginManager' => static fn($services): ControllerPluginManager
+                    => new ControllerPluginManager($services),
             ],
-            'services' => [
+            'services'  => [
                 'EventManager'       => $this->events,
                 'SharedEventManager' => $this->sharedEvents,
             ],
@@ -36,16 +38,12 @@ class ControllerManagerTest extends TestCase
         $this->controllers = new ControllerManager($this->services);
     }
 
-    /**
-     * @param SharedEventManager
-     * @return EventManager
-     */
-    protected function createEventManager(SharedEventManagerInterface $sharedManager)
+    protected function createEventManager(SharedEventManagerInterface $sharedManager): EventManager
     {
         return new EventManager($sharedManager);
     }
 
-    public function testCanInjectEventManager()
+    public function testCanInjectEventManager(): void
     {
         $controller = new SampleController();
 
@@ -59,7 +57,7 @@ class ControllerManagerTest extends TestCase
         $this->assertSame($this->sharedEvents, $events->getSharedManager());
     }
 
-    public function testCanInjectPluginManager()
+    public function testCanInjectPluginManager(): void
     {
         $controller = new SampleController();
 
@@ -68,7 +66,7 @@ class ControllerManagerTest extends TestCase
         $this->assertSame($this->services->get('ControllerPluginManager'), $controller->getPluginManager());
     }
 
-    public function testInjectEventManagerWillNotOverwriteExistingEventManagerIfItAlreadyHasASharedManager()
+    public function testInjectEventManagerWillNotOverwriteExistingEventManagerIfItAlreadyHasASharedManager(): void
     {
         $events     = $this->createEventManager($this->sharedEvents);
         $controller = new SampleController();
@@ -81,10 +79,10 @@ class ControllerManagerTest extends TestCase
     }
 
     /**
-     * @covers Laminas\ServiceManager\ServiceManager::has
-     * @covers Laminas\ServiceManager\AbstractPluginManager::get
+     * @covers \Laminas\ServiceManager\ServiceManager::has
+     * @covers \Laminas\ServiceManager\AbstractPluginManager::get
      */
-    public function testDoNotUsePeeringServiceManagers()
+    public function testDoNotUsePeeringServiceManagers(): void
     {
         $this->assertFalse($this->controllers->has('EventManager'));
         $this->expectException(ServiceNotFoundException::class);

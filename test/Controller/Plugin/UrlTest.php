@@ -1,18 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Controller\Plugin;
 
 use ArrayIterator;
 use Laminas\Mvc\Controller\Plugin\Url as UrlPlugin;
 use Laminas\Mvc\Exception\DomainException;
 use Laminas\Mvc\Exception\RuntimeException;
-use Laminas\Mvc\ModuleRouteListener;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Router\Http\Literal as LiteralRoute;
 use Laminas\Router\Http\Segment;
 use Laminas\Router\Http\Segment as SegmentRoute;
-use Laminas\Router\Http\TreeRouteStack;
-use Laminas\Router\Http\Wildcard;
 use Laminas\Router\RouteMatch;
 use Laminas\Router\SimpleRouteStack;
 use LaminasTest\Mvc\Controller\TestAsset\SampleController;
@@ -22,7 +21,7 @@ class UrlTest extends TestCase
 {
     public function setUp(): void
     {
-        $router = new SimpleRouteStack;
+        $router = new SimpleRouteStack();
         $router->addRoute('home', LiteralRoute::factory([
             'route'    => '/',
             'defaults' => [
@@ -30,10 +29,10 @@ class UrlTest extends TestCase
             ],
         ]));
         $router->addRoute('default', [
-            'type' => Segment::class,
+            'type'    => Segment::class,
             'options' => [
                 'route' => '/:controller[/:action]',
-            ]
+            ],
         ]);
         $this->router = $router;
 
@@ -46,13 +45,13 @@ class UrlTest extends TestCase
         $this->plugin = $this->controller->plugin('url');
     }
 
-    public function testPluginCanGenerateUrlWhenProperlyConfigured()
+    public function testPluginCanGenerateUrlWhenProperlyConfigured(): void
     {
         $url = $this->plugin->fromRoute('home');
         $this->assertEquals('/', $url);
     }
 
-    public function testModel()
+    public function testModel(): void
     {
         $it = new ArrayIterator(['controller' => 'ctrl', 'action' => 'act']);
 
@@ -60,7 +59,7 @@ class UrlTest extends TestCase
         $this->assertEquals('/ctrl/act', $url);
     }
 
-    public function testPluginWithoutControllerRaisesDomainException()
+    public function testPluginWithoutControllerRaisesDomainException(): void
     {
         $plugin = new UrlPlugin();
         $this->expectException(DomainException::class);
@@ -68,7 +67,7 @@ class UrlTest extends TestCase
         $plugin->fromRoute('home');
     }
 
-    public function testPluginWithoutControllerEventRaisesDomainException()
+    public function testPluginWithoutControllerEventRaisesDomainException(): void
     {
         $controller = new SampleController();
         $plugin     = $controller->plugin('url');
@@ -77,7 +76,7 @@ class UrlTest extends TestCase
         $plugin->fromRoute('home');
     }
 
-    public function testPluginWithoutRouterInEventRaisesDomainException()
+    public function testPluginWithoutRouterInEventRaisesDomainException(): void
     {
         $controller = new SampleController();
         $event      = new MvcEvent();
@@ -88,14 +87,14 @@ class UrlTest extends TestCase
         $plugin->fromRoute('home');
     }
 
-    public function testPluginWithoutRouteMatchesInEventRaisesExceptionWhenNoRouteProvided()
+    public function testPluginWithoutRouteMatchesInEventRaisesExceptionWhenNoRouteProvided(): void
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('RouteMatch');
         $url = $this->plugin->fromRoute();
     }
 
-    public function testPluginWithRouteMatchesReturningNoMatchedRouteNameRaisesExceptionWhenNoRouteProvided()
+    public function testPluginWithRouteMatchesReturningNoMatchedRouteNameRaisesExceptionWhenNoRouteProvided(): void
     {
         $event = $this->controller->getEvent();
         $event->setRouteMatch(new RouteMatch([]));
@@ -104,7 +103,7 @@ class UrlTest extends TestCase
         $url = $this->plugin->fromRoute();
     }
 
-    public function testPassingNoArgumentsWithValidRouteMatchGeneratesUrl()
+    public function testPassingNoArgumentsWithValidRouteMatchGeneratesUrl(): void
     {
         $routeMatch = new RouteMatch([]);
         $routeMatch->setMatchedRouteName('home');
@@ -113,7 +112,7 @@ class UrlTest extends TestCase
         $this->assertEquals('/', $url);
     }
 
-    public function testCanReuseMatchedParameters()
+    public function testCanReuseMatchedParameters(): void
     {
         $this->router->addRoute('replace', SegmentRoute::factory([
             'route'    => '/:controller/:action',
@@ -130,7 +129,7 @@ class UrlTest extends TestCase
         $this->assertEquals('/foo/bar', $url);
     }
 
-    public function testCanPassBooleanValueForThirdArgumentToAllowReusingRouteMatches()
+    public function testCanPassBooleanValueForThirdArgumentToAllowReusingRouteMatches(): void
     {
         $this->router->addRoute('replace', SegmentRoute::factory([
             'route'    => '/:controller/:action',
@@ -145,52 +144,5 @@ class UrlTest extends TestCase
         $this->controller->getEvent()->setRouteMatch($routeMatch);
         $url = $this->plugin->fromRoute('replace', ['action' => 'bar'], true);
         $this->assertEquals('/foo/bar', $url);
-    }
-
-    /**
-     *
-     */
-    public function testRemovesModuleRouteListenerParamsWhenReusingMatchedParameters()
-    {
-        $router = new TreeRouteStack;
-        $router->addRoute('default', [
-            'type' => Segment::class,
-            'options' => [
-                'route'    => '/:controller/:action',
-                'defaults' => [
-                    ModuleRouteListener::MODULE_NAMESPACE => 'LaminasTest\Mvc\Controller\TestAsset',
-                    'controller' => 'SampleController',
-                    'action'     => 'Dash'
-                ]
-            ],
-            'child_routes' => [
-                'wildcard' => [
-                    'type'    => Wildcard::class,
-                    'options' => [
-                        'param_delimiter'     => '=',
-                        'key_value_delimiter' => '%'
-                    ]
-                ]
-            ]
-        ]);
-
-        $routeMatch = new RouteMatch([
-            ModuleRouteListener::MODULE_NAMESPACE => 'LaminasTest\Mvc\Controller\TestAsset',
-            'controller' => 'Rainbow'
-        ]);
-        $routeMatch->setMatchedRouteName('default/wildcard');
-
-        $event = new MvcEvent();
-        $event->setRouter($router)
-              ->setRouteMatch($routeMatch);
-
-        $moduleRouteListener = new ModuleRouteListener();
-        $moduleRouteListener->onRoute($event);
-
-        $controller = new SampleController();
-        $controller->setEvent($event);
-        $url = $controller->plugin('url')->fromRoute('default/wildcard', ['Twenty' => 'Cooler'], true);
-
-        $this->assertEquals('/Rainbow/Dash=Twenty%Cooler', $url);
     }
 }

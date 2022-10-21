@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laminas\Mvc;
 
 use Laminas\EventManager\Event;
@@ -12,7 +14,7 @@ use Laminas\View\Model\ViewModel;
 
 class MvcEvent extends Event
 {
-    /**#@+
+    /**
      * Mvc events triggered by eventmanager
      */
     public const EVENT_BOOTSTRAP      = 'bootstrap';
@@ -22,38 +24,26 @@ class MvcEvent extends Event
     public const EVENT_RENDER         = 'render';
     public const EVENT_RENDER_ERROR   = 'render.error';
     public const EVENT_ROUTE          = 'route';
-    /**#@-*/
 
+    /** @var ApplicationInterface */
     protected $application;
 
-    /**
-     * @var Request
-     */
+    /** @var Request */
     protected $request;
 
-    /**
-     * @var Response
-     */
+    /** @var Response */
     protected $response;
 
-    /**
-     * @var mixed
-     */
+    /** @var mixed */
     protected $result;
 
-    /**
-     * @var RouteStackInterface
-     */
+    /** @var RouteStackInterface */
     protected $router;
 
-    /**
-     * @var null|RouteMatch
-     */
+    /** @var null|RouteMatch */
     protected $routeMatch;
 
-    /**
-     * @var Model
-     */
+    /** @var Model */
     protected $viewModel;
 
     /**

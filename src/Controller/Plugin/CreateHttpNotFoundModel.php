@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laminas\Mvc\Controller\Plugin;
 
 use Laminas\Http\Response;
@@ -9,7 +11,6 @@ class CreateHttpNotFoundModel extends AbstractPlugin
 {
     /**
      * Create an HTTP view model representing a "not found" page
-     *
      *
      * @return ViewModel
      */

@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laminas\Mvc\Service;
 
-use Interop\Container\ContainerInterface;
 use Laminas\Mvc\Controller\ControllerManager;
 use Laminas\ServiceManager\Factory\FactoryInterface;
+use Psr\Container\ContainerInterface;
 
 class ControllerManagerFactory implements FactoryInterface
 {
@@ -18,16 +20,19 @@ class ControllerManagerFactory implements FactoryInterface
      * Finally, it will attempt to inject the controller plugin manager
      * if the controller implements a setPluginManager() method.
      *
-     * @param  ContainerInterface $container
      * @param  string $name
      * @param  null|array $options
      * @return ControllerManager
      */
-    public function __invoke(ContainerInterface $container, $name, array $options = null)
+    public function __invoke(ContainerInterface $container, $name, ?array $options = null)
     {
         if ($options) {
             return new ControllerManager($container, $options);
         }
-        return new ControllerManager($container);
+        $managerConfig = [];
+        if ($container->has('config')) {
+            $managerConfig = $container->get('config')['controllers'] ?? [];
+        }
+        return new ControllerManager($container, $managerConfig);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laminas\Mvc\ResponseSender;
 
 use Laminas\Http\PhpEnvironment\Response;
@@ -9,7 +11,6 @@ class PhpEnvironmentResponseSender extends HttpResponseSender
     /**
      * Send php environment response
      *
-     * @param  SendResponseEvent $event
      * @return PhpEnvironmentResponseSender
      */
     public function __invoke(SendResponseEvent $event)

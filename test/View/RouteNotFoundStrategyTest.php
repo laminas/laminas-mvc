@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\View;
 
 use Exception;
@@ -24,7 +26,7 @@ class RouteNotFoundStrategyTest extends TestCase
         $this->strategy = new RouteNotFoundStrategy();
     }
 
-    public function notFoundResponseProvider()
+    public function notFoundResponseProvider(): array
     {
         return [
             ['bar', 'assertEquals'],
@@ -35,9 +37,10 @@ class RouteNotFoundStrategyTest extends TestCase
     }
 
     /**
+     * @param mixed $result
      * @dataProvider notFoundResponseProvider
      */
-    public function testLeavesReturnedMessageIntact($result, $assertion)
+    public function testLeavesReturnedMessageIntact($result, string $assertion): void
     {
         $response = new Response();
         $event    = new MvcEvent();
@@ -64,7 +67,7 @@ class RouteNotFoundStrategyTest extends TestCase
         }
     }
 
-    public function test404ErrorsInject404ResponseStatusCode()
+    public function test404ErrorsInject404ResponseStatusCode(): void
     {
         $response = new Response();
         $event    = new MvcEvent();
@@ -82,7 +85,7 @@ class RouteNotFoundStrategyTest extends TestCase
         }
     }
 
-    public function testRouterAndDispatchErrorsInjectReasonInViewModelWhenAllowed()
+    public function testRouterAndDispatchErrorsInjectReasonInViewModelWhenAllowed(): void
     {
         $response = new Response();
         $event    = new MvcEvent();
@@ -113,7 +116,7 @@ class RouteNotFoundStrategyTest extends TestCase
         }
     }
 
-    public function testNon404ErrorsInjectNoStatusCode()
+    public function testNon404ErrorsInjectNoStatusCode(): void
     {
         $response = new Response();
         $event    = new MvcEvent();
@@ -130,7 +133,7 @@ class RouteNotFoundStrategyTest extends TestCase
         }
     }
 
-    public function testResponseAsResultDoesNotPrepare404ViewModel()
+    public function testResponseAsResultDoesNotPrepare404ViewModel(): void
     {
         $response = new Response();
         $event    = new MvcEvent();
@@ -148,7 +151,7 @@ class RouteNotFoundStrategyTest extends TestCase
         $this->addToAssertionCount(1);
     }
 
-    public function testNon404ResponseDoesNotPrepare404ViewModel()
+    public function testNon404ResponseDoesNotPrepare404ViewModel(): void
     {
         $response = new Response();
         $event    = new MvcEvent();
@@ -166,7 +169,7 @@ class RouteNotFoundStrategyTest extends TestCase
         $this->addToAssertionCount(1);
     }
 
-    public function test404ResponsePrepares404ViewModelWithTemplateFromStrategy()
+    public function test404ResponsePrepares404ViewModelWithTemplateFromStrategy(): void
     {
         $response = new Response();
         $event    = new MvcEvent();
@@ -181,7 +184,7 @@ class RouteNotFoundStrategyTest extends TestCase
         $this->assertTrue(isset($variables['message']));
     }
 
-    public function test404ResponsePrepares404ViewModelWithReasonWhenAllowed()
+    public function test404ResponsePrepares404ViewModelWithReasonWhenAllowed(): void
     {
         $response = new Response();
         $event    = new MvcEvent();
@@ -204,7 +207,7 @@ class RouteNotFoundStrategyTest extends TestCase
         }
     }
 
-    public function test404ResponsePrepares404ViewModelWithExceptionWhenAllowed()
+    public function test404ResponsePrepares404ViewModelWithExceptionWhenAllowed(): void
     {
         $response  = new Response();
         $event     = new MvcEvent();
@@ -230,7 +233,7 @@ class RouteNotFoundStrategyTest extends TestCase
         }
     }
 
-    public function test404ResponsePrepares404ViewModelWithControllerWhenAllowed()
+    public function test404ResponsePrepares404ViewModelWithControllerWhenAllowed(): void
     {
         $response        = new Response();
         $event           = new MvcEvent();
@@ -262,10 +265,10 @@ class RouteNotFoundStrategyTest extends TestCase
         }
     }
 
-    public function testInjectsHttpResponseIntoEventIfNoneAlreadyPresent()
+    public function testInjectsHttpResponseIntoEventIfNoneAlreadyPresent(): void
     {
-        $event    = new MvcEvent();
-        $errors   = [
+        $event  = new MvcEvent();
+        $errors = [
             'not-found' => Application::ERROR_CONTROLLER_NOT_FOUND,
             'invalid'   => Application::ERROR_CONTROLLER_INVALID,
         ];
@@ -278,25 +281,25 @@ class RouteNotFoundStrategyTest extends TestCase
         }
     }
 
-    public function testNotFoundTemplateDefaultsToError()
+    public function testNotFoundTemplateDefaultsToError(): void
     {
         $this->assertEquals('error', $this->strategy->getNotFoundTemplate());
     }
 
-    public function testNotFoundTemplateIsMutable()
+    public function testNotFoundTemplateIsMutable(): void
     {
         $this->strategy->setNotFoundTemplate('alternate/error');
         $this->assertEquals('alternate/error', $this->strategy->getNotFoundTemplate());
     }
 
-    public function testAttachesListenersAtExpectedPriorities()
+    public function testAttachesListenersAtExpectedPriorities(): void
     {
         $events = new EventManager();
         $this->strategy->attach($events);
 
         $evs = [
-            MvcEvent::EVENT_DISPATCH => -90,
-            MvcEvent::EVENT_DISPATCH_ERROR => 1
+            MvcEvent::EVENT_DISPATCH       => -90,
+            MvcEvent::EVENT_DISPATCH_ERROR => 1,
         ];
         foreach ($evs as $event => $expectedPriority) {
             $this->assertListenerAtPriority(
@@ -315,7 +318,7 @@ class RouteNotFoundStrategyTest extends TestCase
         );
     }
 
-    public function testDetachesListeners()
+    public function testDetachesListeners(): void
     {
         $events = new EventManager();
         $this->strategy->attach($events);

@@ -1,20 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\ResponseSender;
 
 use Laminas\Http\PhpEnvironment\Response;
 use Laminas\Mvc\ResponseSender\PhpEnvironmentResponseSender;
 use Laminas\Mvc\ResponseSender\SendResponseEvent;
 use Laminas\Stdlib\ResponseInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+
+use function ob_get_clean;
+use function ob_start;
 
 class PhpEnvironmentResponseSenderTest extends TestCase
 {
-    public function testSendResponseIgnoresInvalidResponseTypes()
+    public function testSendResponseIgnoresInvalidResponseTypes(): void
     {
-        $mockResponse = $this->getMockForAbstractClass(ResponseInterface::class);
+        $mockResponse          = $this->getMockForAbstractClass(ResponseInterface::class);
         $mockSendResponseEvent = $this->getSendResponseEventMock();
-        $mockSendResponseEvent->expects($this->any())->method('getResponse')->will($this->returnValue($mockResponse));
+        $mockSendResponseEvent->method('getResponse')->willReturn($mockResponse);
         $responseSender = new PhpEnvironmentResponseSender();
         ob_start();
         $responseSender($mockSendResponseEvent);
@@ -22,12 +28,12 @@ class PhpEnvironmentResponseSenderTest extends TestCase
         $this->assertEquals('', $body);
     }
 
-    public function testSendResponseTwoTimesPrintsResponseOnlyOnce()
+    public function testSendResponseTwoTimesPrintsResponseOnlyOnce(): void
     {
         $mockResponse = $this->createMock(Response::class);
-        $mockResponse->expects($this->any())->method('getContent')->will($this->returnValue('body'));
+        $mockResponse->method('getContent')->willReturn('body');
         $mockSendResponseEvent = $this->getSendResponseEventMock();
-        $mockSendResponseEvent->expects($this->any())->method('getResponse')->will($this->returnValue($mockResponse));
+        $mockSendResponseEvent->method('getResponse')->willReturn($mockResponse);
         $mockSendResponseEvent->expects($this->once())->method('setContentSent');
         $responseSender = new PhpEnvironmentResponseSender();
         ob_start();
@@ -41,22 +47,24 @@ class PhpEnvironmentResponseSenderTest extends TestCase
         $this->assertEquals('', $body);
     }
 
-    protected function getSendResponseEventMock()
+    /**
+     * @return SendResponseEvent&MockObject
+     */
+    protected function getSendResponseEventMock(): MockObject
     {
-        $returnValue = false;
+        $returnValue           = false;
         $mockSendResponseEvent = $this->getMockBuilder(SendResponseEvent::class)
-            ->setMethods(['getResponse', 'contentSent', 'setContentSent'])
+            ->onlyMethods(['getResponse', 'contentSent', 'setContentSent'])
             ->getMock();
 
-        $mockSendResponseEvent->expects($this->any())
-            ->method('contentSent')
-            ->will($this->returnCallback(static function () use (&$returnValue) : bool {
+        $mockSendResponseEvent->method('contentSent')
+            ->willReturnCallback(static function () use (&$returnValue): bool {
                 if (false === $returnValue) {
                     $returnValue = true;
                     return false;
                 }
                 return true;
-            }));
+            });
         return $mockSendResponseEvent;
     }
 }

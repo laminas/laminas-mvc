@@ -1,19 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laminas\Mvc\Controller;
 
-use Interop\Container\ContainerInterface;
 use Laminas\EventManager\EventManagerAwareInterface;
 use Laminas\EventManager\SharedEventManagerInterface;
 use Laminas\ServiceManager\AbstractPluginManager;
 use Laminas\ServiceManager\ConfigInterface;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
 use Laminas\Stdlib\DispatchableInterface;
+use Psr\Container\ContainerInterface;
+
+use function get_debug_type;
+use function method_exists;
+use function sprintf;
 
 /**
  * Manager for loading controllers
  *
  * Does not define any controllers by default, but does add a validator.
+ *
+ * @extends AbstractPluginManager<DispatchableInterface>
  */
 class ControllerManager extends AbstractPluginManager
 {
@@ -27,7 +35,7 @@ class ControllerManager extends AbstractPluginManager
     /**
      * Controllers must be of this type.
      *
-     * @var string
+     * @var class-string
      */
     protected $instanceOf = DispatchableInterface::class;
 
@@ -47,17 +55,13 @@ class ControllerManager extends AbstractPluginManager
         parent::__construct($configOrContainerInstance, $config);
     }
 
-    /**
-     * Validate a plugin
-     *
-     * {@inheritDoc}
-     */
-    public function validate($plugin)
+    /** {@inheritDoc} */
+    public function validate(mixed $instance): void
     {
-        if (! $plugin instanceof $this->instanceOf) {
+        if (! $instance instanceof $this->instanceOf) {
             throw new InvalidServiceException(sprintf(
                 'Plugin of type "%s" is invalid; must implement %s',
-                (get_debug_type($plugin)),
+                get_debug_type($instance),
                 $this->instanceOf
             ));
         }
@@ -73,7 +77,6 @@ class ControllerManager extends AbstractPluginManager
      * the shared EM injection needs to happen; the conditional will always
      * pass.
      *
-     * @param ContainerInterface $container
      * @param DispatchableInterface $controller
      */
     public function injectEventManager(ContainerInterface $container, $controller)

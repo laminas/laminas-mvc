@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laminas\Mvc;
 
+use Laminas\EventManager\EventsCapableInterface;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\Stdlib\RequestInterface;
 use Laminas\Stdlib\ResponseInterface;
-use Laminas\EventManager\EventsCapableInterface;
 
 interface ApplicationInterface extends EventsCapableInterface
 {

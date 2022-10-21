@@ -1,18 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laminas\Mvc\Controller\Plugin;
 
-use Laminas\Mvc\Exception\DomainException;
 use Laminas\Mvc\Exception;
+use Laminas\Mvc\Exception\DomainException;
 use Laminas\Mvc\InjectApplicationEventInterface;
 use Laminas\Mvc\MvcEvent;
 use Laminas\View\Model\ModelInterface as Model;
 
 class Layout extends AbstractPlugin
 {
-    /**
-     * @var MvcEvent
-     */
+    /** @var MvcEvent */
     protected $event;
 
     /**
@@ -49,7 +49,7 @@ class Layout extends AbstractPlugin
      * Get the event
      *
      * @return MvcEvent
-     * @throws Exception\DomainException if unable to find event
+     * @throws Exception\DomainException If unable to find event.
      */
     protected function getEvent()
     {
