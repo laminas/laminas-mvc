@@ -15,13 +15,13 @@ class MvcEvent extends Event
     /**#@+
      * Mvc events triggered by eventmanager
      */
-    const EVENT_BOOTSTRAP      = 'bootstrap';
-    const EVENT_DISPATCH       = 'dispatch';
-    const EVENT_DISPATCH_ERROR = 'dispatch.error';
-    const EVENT_FINISH         = 'finish';
-    const EVENT_RENDER         = 'render';
-    const EVENT_RENDER_ERROR   = 'render.error';
-    const EVENT_ROUTE          = 'route';
+    public const EVENT_BOOTSTRAP      = 'bootstrap';
+    public const EVENT_DISPATCH       = 'dispatch';
+    public const EVENT_DISPATCH_ERROR = 'dispatch.error';
+    public const EVENT_FINISH         = 'finish';
+    public const EVENT_RENDER         = 'render';
+    public const EVENT_RENDER_ERROR   = 'render.error';
+    public const EVENT_ROUTE          = 'route';
     /**#@-*/
 
     protected $application;
@@ -59,7 +59,6 @@ class MvcEvent extends Event
     /**
      * Set application instance
      *
-     * @param  ApplicationInterface $application
      * @return MvcEvent
      */
     public function setApplication(ApplicationInterface $application)
@@ -92,7 +91,6 @@ class MvcEvent extends Event
     /**
      * Set router
      *
-     * @param RouteStackInterface $router
      * @return MvcEvent
      */
     public function setRouter(RouteStackInterface $router)
@@ -115,7 +113,6 @@ class MvcEvent extends Event
     /**
      * Set route match
      *
-     * @param RouteMatch $matches
      * @return MvcEvent
      */
     public function setRouteMatch(RouteMatch $matches)
@@ -138,7 +135,6 @@ class MvcEvent extends Event
     /**
      * Set request
      *
-     * @param Request $request
      * @return MvcEvent
      */
     public function setRequest(Request $request)
@@ -161,7 +157,6 @@ class MvcEvent extends Event
     /**
      * Set response
      *
-     * @param Response $response
      * @return MvcEvent
      */
     public function setResponse(Response $response)
@@ -174,7 +169,6 @@ class MvcEvent extends Event
     /**
      * Set the view model
      *
-     * @param  Model $viewModel
      * @return MvcEvent
      */
     public function setViewModel(Model $viewModel)
@@ -209,10 +203,9 @@ class MvcEvent extends Event
     /**
      * Set result
      *
-     * @param mixed $result
      * @return MvcEvent
      */
-    public function setResult($result)
+    public function setResult(mixed $result)
     {
         $this->setParam('__RESULT__', $result);
         $this->result = $result;

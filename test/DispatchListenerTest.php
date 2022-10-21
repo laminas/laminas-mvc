@@ -2,6 +2,9 @@
 
 namespace LaminasTest\Mvc;
 
+use stdClass;
+use LaminasTest\Mvc\Controller\TestAsset\ControllerLoaderAbstractFactory;
+use LaminasTest\Mvc\Controller\TestAsset\UnlocatableControllerLoaderAbstractFactory;
 use Laminas\EventManager\EventManager;
 use Laminas\Http\Request;
 use Laminas\Http\Response;
@@ -44,16 +47,19 @@ class DispatchListenerTest extends TestCase
     public function testControllerManagerUsingAbstractFactory()
     {
         $controllerManager = new ControllerManager(new ServiceManager(), ['abstract_factories' => [
-            Controller\TestAsset\ControllerLoaderAbstractFactory::class,
+            ControllerLoaderAbstractFactory::class,
         ]]);
         $listener = new DispatchListener($controllerManager);
 
         $event = $this->createMvcEvent('path');
 
         $log = [];
-        $event->getApplication()->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) use (&$log) {
-            $log['error'] = $e->getError();
-        });
+        $event->getApplication()->getEventManager()->attach(
+            MvcEvent::EVENT_DISPATCH_ERROR,
+            static function ($e) use (&$log) : void {
+                $log['error'] = $e->getError();
+            }
+        );
 
         $return = $listener->onDispatch($event);
 
@@ -65,16 +71,19 @@ class DispatchListenerTest extends TestCase
     public function testUnlocatableControllerViaAbstractFactory()
     {
         $controllerManager = new ControllerManager(new ServiceManager(), ['abstract_factories' => [
-            Controller\TestAsset\UnlocatableControllerLoaderAbstractFactory::class,
+            UnlocatableControllerLoaderAbstractFactory::class,
         ]]);
         $listener = new DispatchListener($controllerManager);
 
         $event = $this->createMvcEvent('path');
 
         $log = [];
-        $event->getApplication()->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e) use (&$log) {
-            $log['error'] = $e->getError();
-        });
+        $event->getApplication()->getEventManager()->attach(
+            MvcEvent::EVENT_DISPATCH_ERROR,
+            static function ($e) use (&$log) : void {
+                $log['error'] = $e->getError();
+            }
+        );
 
         $return = $listener->onDispatch($event);
 
@@ -84,20 +93,18 @@ class DispatchListenerTest extends TestCase
 
     /**
      * @dataProvider alreadySetMvcEventResultProvider
-     *
-     * @param mixed $alreadySetResult
      */
-    public function testWillNotDispatchWhenAnMvcEventResultIsAlreadySet($alreadySetResult)
+    public function testWillNotDispatchWhenAnMvcEventResultIsAlreadySet(mixed $alreadySetResult)
     {
         $event = $this->createMvcEvent('path');
 
         $event->setResult($alreadySetResult);
 
         $listener = new DispatchListener(new ControllerManager(new ServiceManager(), ['abstract_factories' => [
-            Controller\TestAsset\UnlocatableControllerLoaderAbstractFactory::class,
+            UnlocatableControllerLoaderAbstractFactory::class,
         ]]));
 
-        $event->getApplication()->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, function () {
+        $event->getApplication()->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, static function () : void {
             self::fail('No dispatch failures should be raised - dispatch should be skipped');
         });
 
@@ -116,13 +123,13 @@ class DispatchListenerTest extends TestCase
             [true],
             [false],
             [[]],
-            [new \stdClass()],
+            [new stdClass()],
             [$this],
             [$this->createMock(ModelInterface::class)],
             [$this->createMock(ResponseInterface::class)],
             [$this->createMock(Response::class)],
             [['view model data' => 'as an array']],
-            [['foo' => new \stdClass()]],
+            [['foo' => new stdClass()]],
             ['a response string'],
         ];
     }

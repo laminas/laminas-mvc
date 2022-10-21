@@ -2,6 +2,7 @@
 
 namespace LaminasTest\Mvc\Controller\Plugin;
 
+use ArrayIterator;
 use Laminas\Mvc\Controller\Plugin\Url as UrlPlugin;
 use Laminas\Mvc\Exception\DomainException;
 use Laminas\Mvc\Exception\RuntimeException;
@@ -53,7 +54,7 @@ class UrlTest extends TestCase
 
     public function testModel()
     {
-        $it = new \ArrayIterator(['controller' => 'ctrl', 'action' => 'act']);
+        $it = new ArrayIterator(['controller' => 'ctrl', 'action' => 'act']);
 
         $url = $this->plugin->fromRoute('default', $it);
         $this->assertEquals('/ctrl/act', $url);

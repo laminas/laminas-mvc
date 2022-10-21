@@ -9,7 +9,6 @@ abstract class AbstractResponseSender implements ResponseSenderInterface
     /**
      * Send HTTP headers
      *
-     * @param  SendResponseEvent $event
      * @return self
      */
     public function sendHeaders(SendResponseEvent $event)

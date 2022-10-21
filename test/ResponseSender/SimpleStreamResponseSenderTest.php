@@ -2,6 +2,9 @@
 
 namespace LaminasTest\Mvc\ResponseSender;
 
+use Laminas\Stdlib\ResponseInterface;
+use Laminas\Http\Response\Stream;
+use Laminas\Mvc\ResponseSender\SendResponseEvent;
 use Laminas\Http\Response;
 use Laminas\Mvc\ResponseSender;
 use Laminas\Mvc\ResponseSender\SimpleStreamResponseSender;
@@ -12,7 +15,7 @@ class SimpleStreamResponseSenderTest extends TestCase
 {
     public function testSendResponseIgnoresInvalidResponseTypes()
     {
-        $mockResponse = $this->getMockForAbstractClass(Stdlib\ResponseInterface::class);
+        $mockResponse = $this->getMockForAbstractClass(ResponseInterface::class);
         $mockSendResponseEvent = $this->getSendResponseEventMock($mockResponse);
         $responseSender = new SimpleStreamResponseSender();
         ob_start();
@@ -24,7 +27,7 @@ class SimpleStreamResponseSenderTest extends TestCase
     public function testSendResponseTwoTimesPrintsResponseOnlyOnce()
     {
         $file = fopen(__DIR__ . '/TestAsset/sample-stream-file.txt', 'rb');
-        $mockResponse = $this->createMock(Response\Stream::class);
+        $mockResponse = $this->createMock(Stream::class);
         $mockResponse->expects($this->once())->method('getStream')->will($this->returnValue($file));
         $mockSendResponseEvent = $this->getSendResponseEventMock($mockResponse);
         $responseSender = new SimpleStreamResponseSender();
@@ -42,7 +45,7 @@ class SimpleStreamResponseSenderTest extends TestCase
 
     protected function getSendResponseEventMock($response)
     {
-        $mockSendResponseEvent = $this->getMockBuilder(ResponseSender\SendResponseEvent::class)
+        $mockSendResponseEvent = $this->getMockBuilder(SendResponseEvent::class)
             ->setMethods(['getResponse'])
             ->getMock();
         $mockSendResponseEvent->expects($this->any())->method('getResponse')->will($this->returnValue($response));

@@ -2,6 +2,7 @@
 
 namespace LaminasTest\Mvc;
 
+use Laminas\Router\Http\TreeRouteStack;
 use Laminas\EventManager\EventManager;
 use Laminas\Http\PhpEnvironment\Request;
 use Laminas\Mvc\ModuleRouteListener;
@@ -17,7 +18,7 @@ class ModuleRouteListenerTest extends TestCase
     {
         $this->request             = new Request();
         $this->events              = new EventManager();
-        $this->router              = new Router\Http\TreeRouteStack();
+        $this->router              = new TreeRouteStack();
         $this->routeListener       = new RouteListener();
         $this->moduleRouteListener = new ModuleRouteListener();
 

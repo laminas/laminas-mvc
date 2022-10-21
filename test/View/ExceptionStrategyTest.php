@@ -2,6 +2,7 @@
 
 namespace LaminasTest\Mvc\View;
 
+use Exception;
 use Laminas\EventManager\EventManager;
 use Laminas\EventManager\Test\EventListenerIntrospectionTrait;
 use Laminas\Http\Response;
@@ -67,7 +68,7 @@ class ExceptionStrategyTest extends TestCase
 
     public function testCatchesApplicationExceptions()
     {
-        $exception = new \Exception;
+        $exception = new Exception;
         $event     = new MvcEvent();
         $event->setParam('exception', $exception);
         $event->setError(Application::ERROR_EXCEPTION);
@@ -91,7 +92,7 @@ class ExceptionStrategyTest extends TestCase
 
     public function testCatchesUnknownErrorTypes()
     {
-        $exception = new \Exception;
+        $exception = new Exception;
         $event     = new MvcEvent();
         $event->setParam('exception', $exception);
         $event->setError('custom_error');

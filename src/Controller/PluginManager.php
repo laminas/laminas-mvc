@@ -2,6 +2,15 @@
 
 namespace Laminas\Mvc\Controller;
 
+use Laminas\Mvc\Controller\Plugin\PluginInterface;
+use Laminas\Mvc\Controller\Plugin\AcceptableViewModelSelector;
+use Laminas\Mvc\Controller\Plugin\Forward;
+use Laminas\Mvc\Controller\Plugin\Layout;
+use Laminas\Mvc\Controller\Plugin\Params;
+use Laminas\Mvc\Controller\Plugin\Redirect;
+use Laminas\Mvc\Controller\Plugin\Url;
+use Laminas\Mvc\Controller\Plugin\CreateHttpNotFoundModel;
+use Laminas\Mvc\Controller\Plugin\Service\ForwardFactory;
 use Laminas\ServiceManager\AbstractPluginManager;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
 use Laminas\ServiceManager\Factory\InvokableFactory;
@@ -20,63 +29,63 @@ class PluginManager extends AbstractPluginManager
      *
      * @var string
      */
-    protected $instanceOf = Plugin\PluginInterface::class;
+    protected $instanceOf = PluginInterface::class;
 
     /**
      * @var string[] Default aliases
      */
     protected $aliases = [
-        'AcceptableViewModelSelector' => Plugin\AcceptableViewModelSelector::class,
-        'acceptableViewModelSelector' => Plugin\AcceptableViewModelSelector::class,
-        'acceptableviewmodelselector' => Plugin\AcceptableViewModelSelector::class,
-        'Forward'                     => Plugin\Forward::class,
-        'forward'                     => Plugin\Forward::class,
-        'Layout'                      => Plugin\Layout::class,
-        'layout'                      => Plugin\Layout::class,
-        'Params'                      => Plugin\Params::class,
-        'params'                      => Plugin\Params::class,
-        'Redirect'                    => Plugin\Redirect::class,
-        'redirect'                    => Plugin\Redirect::class,
-        'Url'                         => Plugin\Url::class,
-        'url'                         => Plugin\Url::class,
-        'CreateHttpNotFoundModel'     => Plugin\CreateHttpNotFoundModel::class,
-        'createHttpNotFoundModel'     => Plugin\CreateHttpNotFoundModel::class,
-        'createhttpnotfoundmodel'     => Plugin\CreateHttpNotFoundModel::class,
+        'AcceptableViewModelSelector' => AcceptableViewModelSelector::class,
+        'acceptableViewModelSelector' => AcceptableViewModelSelector::class,
+        'acceptableviewmodelselector' => AcceptableViewModelSelector::class,
+        'Forward'                     => Forward::class,
+        'forward'                     => Forward::class,
+        'Layout'                      => Layout::class,
+        'layout'                      => Layout::class,
+        'Params'                      => Params::class,
+        'params'                      => Params::class,
+        'Redirect'                    => Redirect::class,
+        'redirect'                    => Redirect::class,
+        'Url'                         => Url::class,
+        'url'                         => Url::class,
+        'CreateHttpNotFoundModel'     => CreateHttpNotFoundModel::class,
+        'createHttpNotFoundModel'     => CreateHttpNotFoundModel::class,
+        'createhttpnotfoundmodel'     => CreateHttpNotFoundModel::class,
 
         // Legacy Zend Framework aliases
-        \Zend\Mvc\Controller\Plugin\Forward::class => Plugin\Forward::class,
-        \Zend\Mvc\Controller\Plugin\AcceptableViewModelSelector::class => Plugin\AcceptableViewModelSelector::class,
-        \Zend\Mvc\Controller\Plugin\Layout::class => Plugin\Layout::class,
-        \Zend\Mvc\Controller\Plugin\Params::class => Plugin\Params::class,
-        \Zend\Mvc\Controller\Plugin\Redirect::class => Plugin\Redirect::class,
-        \Zend\Mvc\Controller\Plugin\Url::class => Plugin\Url::class,
-        \Zend\Mvc\Controller\Plugin\CreateHttpNotFoundModel::class => Plugin\CreateHttpNotFoundModel::class,
+        \Zend\Mvc\Controller\Plugin\Forward::class => Forward::class,
+        \Zend\Mvc\Controller\Plugin\AcceptableViewModelSelector::class => AcceptableViewModelSelector::class,
+        \Zend\Mvc\Controller\Plugin\Layout::class => Layout::class,
+        \Zend\Mvc\Controller\Plugin\Params::class => Params::class,
+        \Zend\Mvc\Controller\Plugin\Redirect::class => Redirect::class,
+        \Zend\Mvc\Controller\Plugin\Url::class => Url::class,
+        \Zend\Mvc\Controller\Plugin\CreateHttpNotFoundModel::class => CreateHttpNotFoundModel::class,
 
         // v2 normalized FQCNs
-        'zendmvccontrollerpluginforward' => Plugin\Forward::class,
-        'zendmvccontrollerpluginacceptableviewmodelselector' => Plugin\AcceptableViewModelSelector::class,
-        'zendmvccontrollerpluginlayout' => Plugin\Layout::class,
-        'zendmvccontrollerpluginparams' => Plugin\Params::class,
-        'zendmvccontrollerpluginredirect' => Plugin\Redirect::class,
-        'zendmvccontrollerpluginurl' => Plugin\Url::class,
-        'zendmvccontrollerplugincreatehttpnotfoundmodel' => Plugin\CreateHttpNotFoundModel::class,
+        'zendmvccontrollerpluginforward' => Forward::class,
+        'zendmvccontrollerpluginacceptableviewmodelselector' => AcceptableViewModelSelector::class,
+        'zendmvccontrollerpluginlayout' => Layout::class,
+        'zendmvccontrollerpluginparams' => Params::class,
+        'zendmvccontrollerpluginredirect' => Redirect::class,
+        'zendmvccontrollerpluginurl' => Url::class,
+        'zendmvccontrollerplugincreatehttpnotfoundmodel' => CreateHttpNotFoundModel::class,
     ];
 
     /**
      * @var string[]|callable[] Default factories
      */
     protected $factories = [
-        Plugin\Forward::class                     => Plugin\Service\ForwardFactory::class,
-        Plugin\AcceptableViewModelSelector::class => InvokableFactory::class,
-        Plugin\Layout::class                      => InvokableFactory::class,
-        Plugin\Params::class                      => InvokableFactory::class,
-        Plugin\Redirect::class                    => InvokableFactory::class,
-        Plugin\Url::class                         => InvokableFactory::class,
-        Plugin\CreateHttpNotFoundModel::class     => InvokableFactory::class,
+        Forward::class                     => ForwardFactory::class,
+        AcceptableViewModelSelector::class => InvokableFactory::class,
+        Layout::class                      => InvokableFactory::class,
+        Params::class                      => InvokableFactory::class,
+        Redirect::class                    => InvokableFactory::class,
+        Url::class                         => InvokableFactory::class,
+        CreateHttpNotFoundModel::class     => InvokableFactory::class,
 
         // v2 normalized names
 
-        'laminasmvccontrollerpluginforward'                     => Plugin\Service\ForwardFactory::class,
+        'laminasmvccontrollerpluginforward'                     => ForwardFactory::class,
         'laminasmvccontrollerpluginacceptableviewmodelselector' => InvokableFactory::class,
         'laminasmvccontrollerpluginlayout'                      => InvokableFactory::class,
         'laminasmvccontrollerpluginparams'                      => InvokableFactory::class,
@@ -115,7 +124,6 @@ class PluginManager extends AbstractPluginManager
     /**
      * Set controller
      *
-     * @param  DispatchableInterface $controller
      * @return PluginManager
      */
     public function setController(DispatchableInterface $controller)
@@ -168,7 +176,7 @@ class PluginManager extends AbstractPluginManager
         if (! $plugin instanceof $this->instanceOf) {
             throw new InvalidServiceException(sprintf(
                 'Plugin of type "%s" is invalid; must implement %s',
-                (is_object($plugin) ? get_class($plugin) : gettype($plugin)),
+                (get_debug_type($plugin)),
                 $this->instanceOf
             ));
         }

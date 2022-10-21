@@ -22,10 +22,14 @@ class SendResponseListenerTest extends TestCase
     {
         $listener = new SendResponseListener();
         $result = [];
-        $listener->getEventManager()->attach(SendResponseEvent::EVENT_SEND_RESPONSE, function ($e) use (&$result) {
-            $result['target'] = $e->getTarget();
-            $result['response'] = $e->getResponse();
-        }, 10000);
+        $listener->getEventManager()->attach(
+            SendResponseEvent::EVENT_SEND_RESPONSE,
+            static function ($e) use (&$result) : void {
+                $result['target'] = $e->getTarget();
+                $result['response'] = $e->getResponse();
+            },
+            10000
+        );
         $mockResponse = $this->getMockForAbstractClass(ResponseInterface::class);
         $mockMvcEvent = $this->getMockBuilder(MvcEvent::class)
             ->setMethods(['getResponse'])

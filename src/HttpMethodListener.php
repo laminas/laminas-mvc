@@ -60,7 +60,6 @@ class HttpMethodListener extends AbstractListenerAggregate
     }
 
     /**
-     * @param  MvcEvent $e
      * @return void|HttpResponse
      */
     public function onRoute(MvcEvent $e)
@@ -91,9 +90,6 @@ class HttpMethodListener extends AbstractListenerAggregate
         return $this->allowedMethods;
     }
 
-    /**
-     * @param array $allowedMethods
-     */
     public function setAllowedMethods(array $allowedMethods)
     {
         foreach ($allowedMethods as &$value) {

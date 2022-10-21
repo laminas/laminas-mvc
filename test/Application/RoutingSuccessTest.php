@@ -16,7 +16,7 @@ class RoutingSuccessTest extends TestCase
 
         $log = [];
 
-        $application->getEventManager()->attach(MvcEvent::EVENT_ROUTE, function ($e) use (&$log) {
+        $application->getEventManager()->attach(MvcEvent::EVENT_ROUTE, function ($e) use (&$log): void {
             $match = $e->getRouteMatch();
             $this->assertInstanceOf(RouteMatch::class, $match, 'Did not receive expected route match');
             $log['route-match'] = $match;

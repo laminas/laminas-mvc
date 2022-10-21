@@ -27,7 +27,6 @@ class InjectRoutematchParamsListener extends AbstractListenerAggregate
     /**
      * Take parameters from RouteMatch and inject them into the request.
      *
-     * @param  MvcEvent $e
      * @return void
      */
     public function injectParams(MvcEvent $e)

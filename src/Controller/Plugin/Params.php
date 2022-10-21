@@ -2,6 +2,8 @@
 
 namespace Laminas\Mvc\Controller\Plugin;
 
+use ArrayAccess;
+use Laminas\Http\Header\HeaderInterface;
 use Laminas\Mvc\Exception\RuntimeException;
 use Laminas\Mvc\InjectApplicationEventInterface;
 
@@ -11,10 +13,9 @@ class Params extends AbstractPlugin
      * Grabs a param from route match by default.
      *
      * @param string $param
-     * @param mixed $default
      * @return mixed
      */
-    public function __invoke($param = null, $default = null)
+    public function __invoke($param = null, mixed $default = null)
     {
         if ($param === null) {
             return $this;
@@ -27,9 +28,9 @@ class Params extends AbstractPlugin
      *
      * @param  string $name File name to retrieve, or null to get all.
      * @param  mixed $default Default value to use when the file is missing.
-     * @return array|\ArrayAccess|null
+     * @return array|ArrayAccess|null
      */
-    public function fromFiles($name = null, $default = null)
+    public function fromFiles($name = null, mixed $default = null)
     {
         if ($name === null) {
             return $this->getController()->getRequest()->getFiles($name, $default)->toArray();
@@ -43,9 +44,9 @@ class Params extends AbstractPlugin
      *
      * @param  string $header Header name to retrieve, or null to get all.
      * @param  mixed $default Default value to use when the requested header is missing.
-     * @return null|\Laminas\Http\Header\HeaderInterface
+     * @return null|HeaderInterface
      */
-    public function fromHeader($header = null, $default = null)
+    public function fromHeader($header = null, mixed $default = null)
     {
         if ($header === null) {
             return $this->getController()->getRequest()->getHeaders($header, $default)->toArray();
@@ -61,7 +62,7 @@ class Params extends AbstractPlugin
      * @param mixed $default Default value to use when the parameter is missing.
      * @return mixed
      */
-    public function fromPost($param = null, $default = null)
+    public function fromPost($param = null, mixed $default = null)
     {
         if ($param === null) {
             return $this->getController()->getRequest()->getPost($param, $default)->toArray();
@@ -77,7 +78,7 @@ class Params extends AbstractPlugin
      * @param mixed $default Default value to use when the parameter is missing.
      * @return mixed
      */
-    public function fromQuery($param = null, $default = null)
+    public function fromQuery($param = null, mixed $default = null)
     {
         if ($param === null) {
             return $this->getController()->getRequest()->getQuery($param, $default)->toArray();
@@ -94,7 +95,7 @@ class Params extends AbstractPlugin
      * @return mixed
      * @throws RuntimeException
      */
-    public function fromRoute($param = null, $default = null)
+    public function fromRoute($param = null, mixed $default = null)
     {
         $controller = $this->getController();
 

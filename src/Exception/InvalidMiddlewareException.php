@@ -7,10 +7,7 @@ namespace Laminas\Mvc\Exception;
  */
 class InvalidMiddlewareException extends RuntimeException
 {
-    /**
-     * @var string
-     */
-    private $middlewareName;
+    private ?string $middlewareName = null;
 
     /**
      * @param string $middlewareName
@@ -35,6 +32,6 @@ class InvalidMiddlewareException extends RuntimeException
      */
     public function toMiddlewareName()
     {
-        return null !== $this->middlewareName ? $this->middlewareName : '';
+        return $this->middlewareName ?? '';
     }
 }

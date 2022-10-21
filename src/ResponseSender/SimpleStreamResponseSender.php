@@ -9,7 +9,6 @@ class SimpleStreamResponseSender extends AbstractResponseSender
     /**
      * Send the stream
      *
-     * @param  SendResponseEvent $event
      * @return SimpleStreamResponseSender
      */
     public function sendStream(SendResponseEvent $event)

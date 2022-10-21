@@ -2,6 +2,7 @@
 
 namespace LaminasTest\Mvc\Service;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Laminas\EventManager\EventManager;
 use Laminas\EventManager\EventManagerAwareInterface;
 use Laminas\EventManager\SharedEventManagerInterface;
@@ -17,15 +18,9 @@ use stdClass;
  */
 class ServiceManagerConfigTest extends TestCase
 {
-    /**
-     * @var ServiceManagerConfig
-     */
-    private $config;
+    private ServiceManagerConfig $config;
 
-    /**
-     * @var ServiceManager
-     */
-    private $services;
+    private ServiceManager $services;
 
     /**
      * {@inheritDoc}
@@ -67,9 +62,7 @@ class ServiceManagerConfigTest extends TestCase
                 'foo' => stdClass::class,
             ],
             'factories' => [
-                'bar' => function () {
-                    return new stdClass();
-                },
+                'bar' => static fn(): \stdClass => new stdClass(),
             ],
         ];
 
@@ -88,9 +81,7 @@ class ServiceManagerConfigTest extends TestCase
                 'foo' => stdClass::class,
             ],
             'factories' => [
-                'ModuleManager' => function () {
-                    return new stdClass();
-                },
+                'ModuleManager' => static fn(): \stdClass => new stdClass(),
             ],
         ];
 
@@ -108,7 +99,7 @@ class ServiceManagerConfigTest extends TestCase
         /*
          * Create delegator closure
          */
-        $delegator = function ($container, $name, $callback, array $options = null) {
+        $delegator = static function ($container, $name, $callback, array $options = null) {
             $service = $callback();
             $service->bar = 'baz';
             return $service;
@@ -145,9 +136,7 @@ class ServiceManagerConfigTest extends TestCase
                 'EventManagerAwareInitializer' => $initializer,
             ],
             'factories' => [
-                'EventManagerAware' => function () use ($instance) {
-                    return $instance;
-                },
+                'EventManagerAware' => static fn(): MockObject => $instance,
             ],
         ]);
         $serviceManager = new ServiceManager();

@@ -2,6 +2,9 @@
 
 namespace LaminasTest\Mvc\Service;
 
+use Laminas\Mvc\Controller\ControllerManager;
+use Laminas\ServiceManager\Exception\ExceptionInterface;
+use LaminasTest\Mvc\Service\TestAsset\Dispatchable;
 use Laminas\EventManager\SharedEventManager;
 use Laminas\Mvc\Service\ControllerManagerFactory;
 use Laminas\Mvc\Service\ControllerPluginManagerFactory;
@@ -23,7 +26,7 @@ class ControllerManagerFactoryTest extends TestCase
     protected $services;
 
     /**
-     * @var \Laminas\Mvc\Controller\ControllerManager
+     * @var ControllerManager
      */
     protected $loader;
 
@@ -75,18 +78,18 @@ class ControllerManagerFactoryTest extends TestCase
         ]])))->configureServiceManager($services);
         $loader = $services->get('ControllerManager');
 
-        $this->expectException(Exception\ExceptionInterface::class);
+        $this->expectException(ExceptionInterface::class);
         $loader->get('foo');
     }
 
     public function testControllerLoadedCanBeInjectedWithValuesFromPeer()
     {
         $loader = $this->services->get('ControllerManager');
-        $loader->setAlias('LaminasTest\Dispatchable', TestAsset\Dispatchable::class);
-        $loader->setFactory(TestAsset\Dispatchable::class, InvokableFactory::class);
+        $loader->setAlias('LaminasTest\Dispatchable', Dispatchable::class);
+        $loader->setFactory(Dispatchable::class, InvokableFactory::class);
 
         $controller = $loader->get('LaminasTest\Dispatchable');
-        $this->assertInstanceOf(TestAsset\Dispatchable::class, $controller);
+        $this->assertInstanceOf(Dispatchable::class, $controller);
         $this->assertSame($this->services->get('EventManager'), $controller->getEventManager());
         $this->assertSame($this->services->get('ControllerPluginManager'), $controller->getPluginManager());
     }

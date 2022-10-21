@@ -2,6 +2,9 @@
 
 namespace LaminasTest\Mvc\Service;
 
+use Laminas\View\Helper\Doctype;
+use Laminas\View\Helper\Url;
+use Laminas\View\Helper\BasePath;
 use Laminas\Http\PhpEnvironment\Request;
 use Laminas\Mvc\Application;
 use Laminas\Mvc\MvcEvent;
@@ -44,7 +47,7 @@ class ViewHelperManagerFactoryTest extends TestCase
         $manager = $this->factory->__invoke($this->services, 'doctype');
         $this->assertInstanceof(HelperPluginManager::class, $manager);
         $doctype = $manager->get('doctype');
-        $this->assertInstanceof(Helper\Doctype::class, $doctype);
+        $this->assertInstanceof(Doctype::class, $doctype);
     }
 
     public function urlHelperNames()
@@ -52,7 +55,7 @@ class ViewHelperManagerFactoryTest extends TestCase
         return [
             ['url'],
             ['Url'],
-            [Helper\Url::class],
+            [Url::class],
             ['laminasviewhelperurl'],
         ];
     }
@@ -65,7 +68,7 @@ class ViewHelperManagerFactoryTest extends TestCase
     {
         $this->markTestSkipped(sprintf(
             '%s::%s skipped until laminas-view and the url() view helper are updated to use laminas-router',
-            get_class($this),
+            $this::class,
             __FUNCTION__
         ));
 
@@ -92,7 +95,7 @@ class ViewHelperManagerFactoryTest extends TestCase
 
     public function basePathConfiguration()
     {
-        $names = ['basepath', 'basePath', 'BasePath', Helper\BasePath::class, 'laminasviewhelperbasepath'];
+        $names = ['basepath', 'basePath', 'BasePath', BasePath::class, 'laminasviewhelperbasepath'];
 
         $configurations = [
             'hard-coded' => [[
@@ -105,7 +108,7 @@ class ViewHelperManagerFactoryTest extends TestCase
 
             'request-base' => [[
                 'config' => [], // fails creating plugin manager without this
-                'Request' => function () {
+                'Request' => function (): object {
                     $request = $this->prophesize(Request::class);
                     $request->getBasePath()->willReturn('/foo/bat');
                     return $request->reveal();
@@ -139,7 +142,7 @@ class ViewHelperManagerFactoryTest extends TestCase
 
         $plugins = $this->factory->__invoke($this->services, HelperPluginManager::class);
         $helper = $plugins->get($name);
-        $this->assertInstanceof(Helper\BasePath::class, $helper);
+        $this->assertInstanceof(BasePath::class, $helper);
         $this->assertEquals($expected, $helper());
     }
 
@@ -148,7 +151,7 @@ class ViewHelperManagerFactoryTest extends TestCase
         return [
             ['doctype'],
             ['Doctype'],
-            [Helper\Doctype::class],
+            [Doctype::class],
             ['laminasviewhelperdoctype'],
         ];
     }
@@ -161,13 +164,13 @@ class ViewHelperManagerFactoryTest extends TestCase
     {
         $this->services->setService('config', [
             'view_manager' => [
-                'doctype' => Helper\Doctype::HTML5,
+                'doctype' => Doctype::HTML5,
             ],
         ]);
 
         $plugins = $this->factory->__invoke($this->services, HelperPluginManager::class);
         $helper = $plugins->get($name);
-        $this->assertInstanceof(Helper\Doctype::class, $helper);
+        $this->assertInstanceof(Doctype::class, $helper);
         $this->assertEquals('<!DOCTYPE html>', (string) $helper);
     }
 }
