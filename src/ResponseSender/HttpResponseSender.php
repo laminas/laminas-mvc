@@ -9,7 +9,6 @@ class HttpResponseSender extends AbstractResponseSender
     /**
      * Send content
      *
-     * @param  SendResponseEvent $event
      * @return HttpResponseSender
      */
     public function sendContent(SendResponseEvent $event)

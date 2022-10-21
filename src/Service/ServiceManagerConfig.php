@@ -64,16 +64,12 @@ class ServiceManagerConfig extends Config
      */
     public function __construct(array $config = [])
     {
-        $this->config['factories']['ServiceManager'] = function ($container) {
-            return $container;
-        };
+        $this->config['factories']['ServiceManager'] = static fn($container) => $container;
 
-        $this->config['factories']['SharedEventManager'] = function () {
-            return new SharedEventManager();
-        };
+        $this->config['factories']['SharedEventManager'] = static fn(): SharedEventManager => new SharedEventManager();
 
         $this->config['initializers'] = ArrayUtils::merge($this->config['initializers'], [
-            'EventManagerAwareInitializer' => function ($first, $second) {
+            'EventManagerAwareInitializer' => static function ($first, $second) : void {
                 if ($first instanceof ContainerInterface) {
                     $container = $first;
                     $instance = $second;
@@ -81,20 +77,16 @@ class ServiceManagerConfig extends Config
                     $container = $second;
                     $instance = $first;
                 }
-
                 if (! $instance instanceof EventManagerAwareInterface) {
                     return;
                 }
-
                 $eventManager = $instance->getEventManager();
-
                 // If the instance has an EM WITH an SEM composed, do nothing.
                 if ($eventManager instanceof EventManagerInterface
                     && $eventManager->getSharedManager() instanceof SharedEventManagerInterface
                 ) {
                     return;
                 }
-
                 $instance->setEventManager($container->get('EventManager'));
             },
         ]);

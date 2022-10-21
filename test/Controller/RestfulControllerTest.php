@@ -309,9 +309,11 @@ class RestfulControllerTest extends TestCase
     {
         $response = new Response();
         $response->setContent('short circuited!');
-        $this->controller->getEventManager()->attach(MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
-            return $response;
-        }, 10);
+        $this->controller->getEventManager()->attach(
+            MvcEvent::EVENT_DISPATCH,
+            static fn($e): Response => $response,
+            10
+        );
         $result = $this->controller->dispatch($this->request, $this->response);
         $this->assertSame($response, $result);
     }
@@ -320,9 +322,11 @@ class RestfulControllerTest extends TestCase
     {
         $response = new Response();
         $response->setContent('short circuited!');
-        $this->controller->getEventManager()->attach(MvcEvent::EVENT_DISPATCH, function ($e) use ($response) {
-            return $response;
-        }, -10);
+        $this->controller->getEventManager()->attach(
+            MvcEvent::EVENT_DISPATCH,
+            static fn($e): Response => $response,
+            -10
+        );
         $result = $this->controller->dispatch($this->request, $this->response);
         $this->assertSame($response, $result);
     }
@@ -334,9 +338,7 @@ class RestfulControllerTest extends TestCase
         $this->sharedEvents->attach(
             DispatchableInterface::class,
             MvcEvent::EVENT_DISPATCH,
-            function ($e) use ($response) {
-                return $response;
-            },
+            static fn($e): Response => $response,
             10
         );
         $result = $this->controller->dispatch($this->request, $this->response);
@@ -350,9 +352,7 @@ class RestfulControllerTest extends TestCase
         $this->sharedEvents->attach(
             AbstractRestfulController::class,
             MvcEvent::EVENT_DISPATCH,
-            function ($e) use ($response) {
-                return $response;
-            },
+            static fn($e): Response => $response,
             10
         );
         $result = $this->controller->dispatch($this->request, $this->response);
@@ -364,11 +364,9 @@ class RestfulControllerTest extends TestCase
         $response = new Response();
         $response->setContent('short circuited!');
         $this->sharedEvents->attach(
-            get_class($this->controller),
+            $this->controller::class,
             MvcEvent::EVENT_DISPATCH,
-            function ($e) use ($response) {
-                return $response;
-            },
+            static fn($e): Response => $response,
             10
         );
         $result = $this->controller->dispatch($this->request, $this->response);

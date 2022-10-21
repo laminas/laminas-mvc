@@ -2,6 +2,7 @@
 
 namespace LaminasTest\Mvc\View;
 
+use Exception;
 use Laminas\EventManager\EventManager;
 use Laminas\EventManager\Test\EventListenerIntrospectionTrait;
 use Laminas\Http\Response;
@@ -16,10 +17,7 @@ class RouteNotFoundStrategyTest extends TestCase
 {
     use EventListenerIntrospectionTrait;
 
-    /**
-     * @var RouteNotFoundStrategy
-     */
-    private $strategy;
+    private RouteNotFoundStrategy $strategy;
 
     public function setUp(): void
     {
@@ -210,7 +208,7 @@ class RouteNotFoundStrategyTest extends TestCase
     {
         $response  = new Response();
         $event     = new MvcEvent();
-        $exception = new \Exception();
+        $exception = new Exception();
         $event->setParam('exception', $exception);
 
         foreach ([true, false] as $allow) {

@@ -12,7 +12,7 @@ class SendResponseEvent extends Event
     /**#@+
      * Send response events triggered by eventmanager
      */
-    const EVENT_SEND_RESPONSE = 'sendResponse';
+    public const EVENT_SEND_RESPONSE = 'sendResponse';
     /**#@-*/
 
     /**
@@ -36,7 +36,6 @@ class SendResponseEvent extends Event
     protected $contentSent = [];
 
     /**
-     * @param ResponseInterface $response
      * @return SendResponseEvent
      */
     public function setResponse(ResponseInterface $response)
@@ -47,7 +46,7 @@ class SendResponseEvent extends Event
     }
 
     /**
-     * @return \Laminas\Stdlib\ResponseInterface
+     * @return ResponseInterface
      */
     public function getResponse()
     {

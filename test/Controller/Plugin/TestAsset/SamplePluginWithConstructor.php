@@ -6,11 +6,8 @@ use Laminas\Mvc\Controller\Plugin\AbstractPlugin;
 
 class SamplePluginWithConstructor extends AbstractPlugin
 {
-    protected $bar;
-
-    public function __construct($bar = 'baz')
+    public function __construct(protected $bar = 'baz')
     {
-        $this->bar = $bar;
     }
 
     public function getBar()

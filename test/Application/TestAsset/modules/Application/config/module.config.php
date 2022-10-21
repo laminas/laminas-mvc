@@ -2,6 +2,7 @@
 
 namespace Application;
 
+use Application\Controller\PathController;
 use Laminas\Http\PhpEnvironment\Request as HttpRequest;
 use Laminas\Http\PhpEnvironment\Response as HttpResponse;
 use Laminas\Mvc\Service\HttpViewManagerFactory;
@@ -10,9 +11,7 @@ use Laminas\Router\Http\HttpRouterFactory;
 return [
     'controllers' => [
         'factories' => [
-            'path' => function () {
-                return new Controller\PathController();
-            },
+            'path' => static fn(): PathController => new PathController(),
         ],
     ],
     'router' => [
@@ -30,12 +29,8 @@ return [
     ],
     'service_manager' => [
         'factories' => [
-            'Request' => function () {
-                return new HttpRequest();
-            },
-            'Response' => function () {
-                return new HttpResponse();
-            },
+            'Request' => static fn(): HttpRequest => new HttpRequest(),
+            'Response' => static fn(): HttpResponse => new HttpResponse(),
             'Router'      => HttpRouterFactory::class,
             'ViewManager' => HttpViewManagerFactory::class,
         ],

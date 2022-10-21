@@ -2,6 +2,7 @@
 
 namespace LaminasTest\Mvc\Controller;
 
+use stdClass;
 use Laminas\EventManager\EventManager;
 use Laminas\EventManager\EventManagerInterface;
 use Laminas\Http\Request;
@@ -31,20 +32,14 @@ class MiddlewareControllerTest extends TestCase
      */
     private $responsePrototype;
 
-    /**
-     * @var EventManagerInterface
-     */
-    private $eventManager;
+    private EventManagerInterface $eventManager;
 
     /**
      * @var AbstractController|\PHPUnit_Framework_MockObject_MockObject
      */
     private $controller;
 
-    /**
-     * @var MvcEvent
-     */
-    private $event;
+    private MvcEvent $event;
 
     /**
      * {@inheritDoc}
@@ -80,17 +75,17 @@ class MiddlewareControllerTest extends TestCase
         $response         = new Response();
         $result           = $this->createMock(ResponseInterface::class);
         /* @var $dispatchListener callable|\PHPUnit_Framework_MockObject_MockObject */
-        $dispatchListener = $this->getMockBuilder(\stdClass::class)->setMethods(['__invoke'])->getMock();
+        $dispatchListener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
 
         $this->eventManager->attach(MvcEvent::EVENT_DISPATCH, $dispatchListener, 100);
-        $this->eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, function () {
+        $this->eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, static function () : void {
             self::fail('No dispatch error expected');
         }, 100);
 
         $dispatchListener
             ->expects(self::once())
             ->method('__invoke')
-            ->with(self::callback(function (MvcEvent $event) use ($request, $response) {
+            ->with(self::callback(function (MvcEvent $event) use ($request, $response): bool {
                 self::assertSame($this->event, $event);
                 self::assertSame(MvcEvent::EVENT_DISPATCH, $event->getName());
                 self::assertSame($this->controller, $event->getTarget());
@@ -114,14 +109,14 @@ class MiddlewareControllerTest extends TestCase
         $request          = $this->createMock(RequestInterface::class);
         $response         = new Response();
         /* @var $dispatchListener callable|\PHPUnit_Framework_MockObject_MockObject */
-        $dispatchListener = $this->getMockBuilder(\stdClass::class)->setMethods(['__invoke'])->getMock();
+        $dispatchListener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
 
         $this->eventManager->attach(MvcEvent::EVENT_DISPATCH, $dispatchListener, 100);
 
         $dispatchListener
             ->expects(self::once())
             ->method('__invoke')
-            ->with(self::callback(function (MvcEvent $event) use ($request, $response) {
+            ->with(self::callback(function (MvcEvent $event) use ($request, $response): bool {
                 self::assertSame($this->event, $event);
                 self::assertSame(MvcEvent::EVENT_DISPATCH, $event->getName());
                 self::assertSame($this->controller, $event->getTarget());

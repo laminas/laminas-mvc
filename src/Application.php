@@ -2,6 +2,7 @@
 
 namespace Laminas\Mvc;
 
+use Laminas\Mvc\Service\ServiceManagerConfig;
 use Laminas\EventManager\EventManagerAwareInterface;
 use Laminas\EventManager\EventManagerInterface;
 use Laminas\ServiceManager\ServiceManager;
@@ -42,12 +43,12 @@ class Application implements
     ApplicationInterface,
     EventManagerAwareInterface
 {
-    const ERROR_CONTROLLER_CANNOT_DISPATCH = 'error-controller-cannot-dispatch';
-    const ERROR_CONTROLLER_NOT_FOUND       = 'error-controller-not-found';
-    const ERROR_CONTROLLER_INVALID         = 'error-controller-invalid';
-    const ERROR_EXCEPTION                  = 'error-exception';
-    const ERROR_ROUTER_NO_MATCH            = 'error-router-no-match';
-    const ERROR_MIDDLEWARE_CANNOT_DISPATCH = 'error-middleware-cannot-dispatch';
+    public const ERROR_CONTROLLER_CANNOT_DISPATCH = 'error-controller-cannot-dispatch';
+    public const ERROR_CONTROLLER_NOT_FOUND       = 'error-controller-not-found';
+    public const ERROR_CONTROLLER_INVALID         = 'error-controller-invalid';
+    public const ERROR_EXCEPTION                  = 'error-exception';
+    public const ERROR_ROUTER_NO_MATCH            = 'error-router-no-match';
+    public const ERROR_MIDDLEWARE_CANNOT_DISPATCH = 'error-middleware-cannot-dispatch';
 
     /**
      * Default application event listeners
@@ -75,7 +76,7 @@ class Application implements
     protected $events;
 
     /**
-     * @var \Laminas\Stdlib\RequestInterface
+     * @var RequestInterface
      */
     protected $request;
 
@@ -85,25 +86,18 @@ class Application implements
     protected $response;
 
     /**
-     * @var ServiceManager
-     */
-    protected $serviceManager;
-
-    /**
      * Constructor
      *
-     * @param ServiceManager $serviceManager
      * @param null|EventManagerInterface $events
      * @param null|RequestInterface $request
      * @param null|ResponseInterface $response
      */
     public function __construct(
-        ServiceManager $serviceManager,
+        protected ServiceManager $serviceManager,
         EventManagerInterface $events = null,
         RequestInterface $request = null,
         ResponseInterface $response = null
     ) {
-        $this->serviceManager = $serviceManager;
         $this->setEventManager($events ?: $serviceManager->get('EventManager'));
         $this->request        = $request ?: $serviceManager->get('Request');
         $this->response       = $response ?: $serviceManager->get('Response');
@@ -169,7 +163,7 @@ class Application implements
     /**
      * Get the request object
      *
-     * @return \Laminas\Stdlib\RequestInterface
+     * @return RequestInterface
      */
     public function getRequest()
     {
@@ -205,8 +199,8 @@ class Application implements
     public function setEventManager(EventManagerInterface $eventManager)
     {
         $eventManager->setIdentifiers([
-            __CLASS__,
-            get_class($this),
+            self::class,
+            $this::class,
         ]);
         $this->events = $eventManager;
         return $this;
@@ -246,8 +240,8 @@ class Application implements
     public static function init($configuration = [])
     {
         // Prepare the service manager
-        $smConfig = isset($configuration['service_manager']) ? $configuration['service_manager'] : [];
-        $smConfig = new Service\ServiceManagerConfig($smConfig);
+        $smConfig = $configuration['service_manager'] ?? [];
+        $smConfig = new ServiceManagerConfig($smConfig);
 
         $serviceManager = new ServiceManager();
         $smConfig->configureServiceManager($serviceManager);
@@ -257,9 +251,9 @@ class Application implements
         $serviceManager->get('ModuleManager')->loadModules();
 
         // Prepare list of listeners to bootstrap
-        $listenersFromAppConfig     = isset($configuration['listeners']) ? $configuration['listeners'] : [];
+        $listenersFromAppConfig     = $configuration['listeners'] ?? [];
         $config                     = $serviceManager->get('config');
-        $listenersFromConfigService = isset($config['listeners']) ? $config['listeners'] : [];
+        $listenersFromConfigService = $config['listeners'] ?? [];
 
         $listeners = array_unique(array_merge($listenersFromConfigService, $listenersFromAppConfig));
 
@@ -288,7 +282,7 @@ class Application implements
         $event  = $this->event;
 
         // Define callback used to determine whether or not to short-circuit
-        $shortCircuit = function ($r) use ($event) {
+        $shortCircuit = static function ($r) use ($event) : bool {
             if ($r instanceof ResponseInterface) {
                 return true;
             }

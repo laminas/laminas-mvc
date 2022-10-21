@@ -10,7 +10,6 @@ trait HttpViewManagerConfigTrait
     /**
      * Retrieve view_manager configuration, if present.
      *
-     * @param ContainerInterface $container
      * @return array
      */
     private function getConfig(ContainerInterface $container)

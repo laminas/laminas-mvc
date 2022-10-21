@@ -2,6 +2,11 @@
 
 namespace LaminasTest\Mvc\Application;
 
+use Laminas\Router\Http\Literal;
+use Laminas\Router\ConfigProvider;
+use LaminasTest\Mvc\TestAsset\MockViewManager;
+use LaminasTest\Mvc\TestAsset\MockSendResponseListener;
+use LaminasTest\Mvc\TestAsset\StubBootstrapListener;
 use Laminas\Http\PhpEnvironment\Request;
 use Laminas\Http\PhpEnvironment\Response;
 use Laminas\Mvc\Service\ServiceListenerFactory;
@@ -20,7 +25,7 @@ trait MissingControllerTrait
             'router' => [
                 'routes' => [
                     'path' => [
-                        'type' => Router\Http\Literal::class,
+                        'type' => Literal::class,
                         'options' => [
                             'route' => '/bad',
                             'defaults' => [
@@ -40,23 +45,21 @@ trait MissingControllerTrait
 
         $serviceConfig = ArrayUtils::merge(
             $serviceConfig,
-            (new Router\ConfigProvider())->getDependencyConfig()
+            (new ConfigProvider())->getDependencyConfig()
         );
 
         $serviceConfig = ArrayUtils::merge(
             $serviceConfig,
             [
                 'factories' => [
-                    'Router' => function ($services) {
-                        return $services->get('HttpRouter');
-                    },
+                    'Router' => static fn($services) => $services->get('HttpRouter'),
                 ],
                 'invokables' => [
                     'Request'              => Request::class,
                     'Response'             => Response::class,
-                    'ViewManager'          => TestAsset\MockViewManager::class,
-                    'SendResponseListener' => TestAsset\MockSendResponseListener::class,
-                    'BootstrapListener'    => TestAsset\StubBootstrapListener::class,
+                    'ViewManager'          => MockViewManager::class,
+                    'SendResponseListener' => MockSendResponseListener::class,
+                    'BootstrapListener'    => StubBootstrapListener::class,
                 ],
                 'services' => [
                     'config' => $config,

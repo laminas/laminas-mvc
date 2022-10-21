@@ -9,7 +9,7 @@ class Middleware
 {
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $next = null)
     {
-        $response->getBody()->write(__CLASS__);
+        $response->getBody()->write(self::class);
         return $response;
     }
 }

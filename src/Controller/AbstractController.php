@@ -2,6 +2,14 @@
 
 namespace Laminas\Mvc\Controller;
 
+use Laminas\View\Model\ModelInterface;
+use Laminas\Http\Header\Accept\FieldValuePart\AbstractFieldValuePart;
+use Laminas\Mvc\Controller\Plugin\Forward;
+use Laminas\Mvc\Controller\Plugin\Layout;
+use Laminas\Mvc\Controller\Plugin\Params;
+use Laminas\Mvc\Controller\Plugin\Redirect;
+use Laminas\Mvc\Controller\Plugin\Url;
+use Laminas\View\Model\ViewModel;
 use Laminas\EventManager\EventInterface as Event;
 use Laminas\EventManager\EventManager;
 use Laminas\EventManager\EventManagerAwareInterface;
@@ -20,14 +28,14 @@ use Laminas\Stdlib\ResponseInterface as Response;
  *
  * Convenience methods for pre-built plugins (@see __call):
  * @codingStandardsIgnoreStart
- * @method \Laminas\View\Model\ModelInterface acceptableViewModelSelector(array $matchAgainst = null, bool $returnDefault = true, \Laminas\Http\Header\Accept\FieldValuePart\AbstractFieldValuePart $resultReference = null)
+ * @method ModelInterface acceptableViewModelSelector(array $matchAgainst = null, bool $returnDefault = true, AbstractFieldValuePart $resultReference = null)
  * @codingStandardsIgnoreEnd
- * @method \Laminas\Mvc\Controller\Plugin\Forward forward()
- * @method \Laminas\Mvc\Controller\Plugin\Layout|\Laminas\View\Model\ModelInterface layout(string $template = null)
- * @method \Laminas\Mvc\Controller\Plugin\Params|mixed params(string $param = null, mixed $default = null)
- * @method \Laminas\Mvc\Controller\Plugin\Redirect redirect()
- * @method \Laminas\Mvc\Controller\Plugin\Url url()
- * @method \Laminas\View\Model\ViewModel createHttpNotFoundModel(Response $response)
+ * @method Forward forward()
+ * @method Layout|ModelInterface layout(string $template = null)
+ * @method Params|mixed params(string $param = null, mixed $default = null)
+ * @method Redirect redirect()
+ * @method Url url()
+ * @method ViewModel createHttpNotFoundModel(Response $response)
  */
 abstract class AbstractController implements
     Dispatchable,
@@ -94,9 +102,7 @@ abstract class AbstractController implements
         $e->setResponse($response);
         $e->setTarget($this);
 
-        $result = $this->getEventManager()->triggerEventUntil(function ($test) {
-            return ($test instanceof Response);
-        }, $e);
+        $result = $this->getEventManager()->triggerEventUntil(static fn($test): bool => $test instanceof Response, $e);
 
         if ($result->stopped()) {
             return $result->last();
@@ -141,10 +147,10 @@ abstract class AbstractController implements
      */
     public function setEventManager(EventManagerInterface $events)
     {
-        $className = get_class($this);
+        $className = $this::class;
 
         $identifiers = [
-            __CLASS__,
+            self::class,
             $className,
         ];
 
@@ -235,7 +241,6 @@ abstract class AbstractController implements
     /**
      * Set plugin manager
      *
-     * @param  PluginManager $plugins
      * @return AbstractController
      */
     public function setPluginManager(PluginManager $plugins)

@@ -52,11 +52,9 @@ class InjectTemplateListenerFactoryTest extends TestCase
     }
 
     /**
-     * @param mixed $config
-     *
-     * @return \PHPUnit_Framework_MockObject_MockObject|\Laminas\Mvc\View\Http\InjectTemplateListener
+     * @return \PHPUnit_Framework_MockObject_MockObject|InjectTemplateListener
      */
-    private function buildInjectTemplateListenerWithConfig($config)
+    private function buildInjectTemplateListenerWithConfig(mixed $config)
     {
         $serviceLocator = $this->prophesize(ServiceLocatorInterface::class);
         $serviceLocator->willImplement(ContainerInterface::class);

@@ -2,6 +2,7 @@
 
 namespace LaminasTest\Mvc\View;
 
+use LaminasTest\Mvc\View\TestAsset\DumbStrategy;
 use Laminas\EventManager\EventManager;
 use Laminas\EventManager\SharedEventManager;
 use Laminas\EventManager\Test\EventListenerIntrospectionTrait;
@@ -75,10 +76,8 @@ class DefaultRendereringStrategyTest extends TestCase
 
     public function testWillRenderAlternateStrategyWhenSelected()
     {
-        $renderer = new TestAsset\DumbStrategy();
-        $this->view->addRenderingStrategy(function ($e) use ($renderer) {
-            return $renderer;
-        }, 100);
+        $renderer = new DumbStrategy();
+        $this->view->addRenderingStrategy(static fn($e): DumbStrategy => $renderer, 100);
         $model = new ViewModel(['foo' => 'bar']);
         $model->setOption('template', 'content');
         $this->event->setResult($model);
@@ -102,10 +101,8 @@ class DefaultRendereringStrategyTest extends TestCase
 
     public function testBypassesRenderingIfResultIsAResponse()
     {
-        $renderer = new TestAsset\DumbStrategy();
-        $this->view->addRenderingStrategy(function ($e) use ($renderer) {
-            return $renderer;
-        }, 100);
+        $renderer = new DumbStrategy();
+        $this->view->addRenderingStrategy(static fn($e): DumbStrategy => $renderer, 100);
         $model = new ViewModel(['foo' => 'bar']);
         $model->setOption('template', 'content');
         $this->event->setViewModel($model);
@@ -134,7 +131,7 @@ class DefaultRendereringStrategyTest extends TestCase
                 'SharedEventManager' => SharedEventManager::class,
             ],
             'factories' => [
-                'EventManager' => function ($services) {
+                'EventManager' => static function ($services) : EventManager {
                     $sharedEvents = $services->get('SharedEventManager');
                     $events = new EventManager($sharedEvents);
                     return $events;
@@ -153,7 +150,7 @@ class DefaultRendereringStrategyTest extends TestCase
         $this->event->setApplication($application);
 
         $test = (object) ['flag' => false];
-        $application->getEventManager()->attach(MvcEvent::EVENT_RENDER_ERROR, function ($e) use ($test) {
+        $application->getEventManager()->attach(MvcEvent::EVENT_RENDER_ERROR, static function ($e) use ($test) : void {
             $test->flag      = true;
             $test->error     = $e->getError();
             $test->exception = $e->getParam('exception');

@@ -6,5 +6,5 @@ use Laminas\Paginator\AdapterPluginManager as PaginatorPluginManager;
 
 class PaginatorPluginManagerFactory extends AbstractPluginManagerFactory
 {
-    const PLUGIN_MANAGER_CLASS = PaginatorPluginManager::class;
+    public const PLUGIN_MANAGER_CLASS = PaginatorPluginManager::class;
 }

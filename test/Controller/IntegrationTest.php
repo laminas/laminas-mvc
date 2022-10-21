@@ -2,6 +2,7 @@
 
 namespace LaminasTest\Mvc\Controller;
 
+use LaminasTest\Mvc\Controller\TestAsset\SampleController;
 use Laminas\EventManager\EventManager;
 use Laminas\EventManager\SharedEventManager;
 use Laminas\Mvc\Controller\ControllerManager;
@@ -22,12 +23,8 @@ class IntegrationTest extends TestCase
                 'SharedEventManager' => $this->sharedEvents,
             ],
             'factories' => [
-                'ControllerPluginManager' => function ($services) {
-                    return new PluginManager($services);
-                },
-                'EventManager' => function () {
-                    return new EventManager($this->sharedEvents);
-                },
+                'ControllerPluginManager' => static fn($services): PluginManager => new PluginManager($services),
+                'EventManager' => fn(): EventManager => new EventManager($this->sharedEvents),
             ],
             'shared' => [
                 'EventManager' => false,
@@ -38,12 +35,8 @@ class IntegrationTest extends TestCase
     public function testPluginReceivesCurrentController()
     {
         $controllers = new ControllerManager($this->services, ['factories' => [
-            'first'  => function ($services) {
-                return new TestAsset\SampleController();
-            },
-            'second' => function ($services) {
-                return new TestAsset\SampleController();
-            },
+            'first'  => static fn($services): SampleController => new SampleController(),
+            'second' => static fn($services): SampleController => new SampleController(),
         ]]);
 
         $first  = $controllers->get('first');

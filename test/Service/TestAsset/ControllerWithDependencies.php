@@ -2,6 +2,7 @@
 
 namespace LaminasTest\Mvc\Service\TestAsset;
 
+use stdClass;
 use Laminas\Stdlib\DispatchableInterface;
 use Laminas\Stdlib\RequestInterface;
 use Laminas\Stdlib\ResponseInterface;
@@ -9,14 +10,11 @@ use Laminas\Stdlib\ResponseInterface;
 class ControllerWithDependencies implements DispatchableInterface
 {
     /**
-     * @var \stdClass
+     * @var stdClass
      */
     public $injectedValue;
 
-    /**
-     * @param \stdClass $injected
-     */
-    public function setInjectedValue(\stdClass $injected)
+    public function setInjectedValue(stdClass $injected)
     {
         $this->injectedValue = $injected;
     }

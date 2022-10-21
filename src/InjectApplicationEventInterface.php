@@ -9,7 +9,6 @@ interface InjectApplicationEventInterface
     /**
      * Compose an Event
      *
-     * @param  Event $event
      * @return void
      */
     public function setEvent(Event $event);

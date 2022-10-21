@@ -20,7 +20,7 @@ class ForwardFactory implements FactoryInterface
         if (! $container->has('ControllerManager')) {
             throw new ServiceNotCreatedException(sprintf(
                 '%s requires that the application service manager contains a "%s" service; none found',
-                __CLASS__,
+                self::class,
                 'ControllerManager'
             ));
         }
