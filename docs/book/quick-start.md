@@ -84,29 +84,82 @@ If you are at all uncertain about the source of a variable in your view, escape 
 
 Routes determine which controller to call based on the URI and other information from the request.
 
-Configure a route and a controller in `module/Application/config/module.config.php`:
+A couple of array values are declared for routes and controllers are added to  `module/Application/config/module.config.php` as shown below:
 
 ```php
+<?php
+
+declare(strict_types=1);
+
+// Declaring our module's namespace here.  Allows us to automatically reference classes in the 
+// src folder of our module with pathnames relative to the src folder. 
+namespace Application;
+
+// Explicitly referencing these classes permits us to reference them by their names below. 
+use Laminas\Router\Http\Literal;
+use Laminas\Router\Http\Segment;
+use Laminas\ServiceManager\Factory\InvokableFactory;
+
 return [
     'router' => [
         'routes' => [
-            // Route name: used to generate links, among other things.
+            'home' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
+            'application' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/application[/:action]',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
+            // New Route: used to generate links, among other things.
             'hello-world' => [
-                'type' => Laminas\Router\Http\Literal::class, // exact match of URI path
+                'type' => Literal::class, // exact match of URI path
                 'options' => [
                     'route' => '/hello/world', // URI path
                     'defaults' => [
-                        'controller' => Application\Controller\HelloController::class, // unique name
+                        'controller' => Controller\HelloController::class, // unique name
                         'action'     => 'world',
                     ],
                 ],
             ],
+            // end of New route insertion
         ],
     ],
     'controllers' => [
         // Tell the application how to instantiate our controller class
         'factories' => [
-            Application\Controller\HelloController::class => Laminas\ServiceManager\Factory\InvokableFactory::class,
+            Controller\IndexController::class => InvokableFactory::class,
+            // Add the HelloController class to the array of invokable controllers. 
+            Controller\HelloController::class => InvokableFactory::class,
+
+        ],
+    ],
+    'view_manager' => [
+        'display_not_found_reason' => true,
+        'display_exceptions'       => true,
+        'doctype'                  => 'HTML5',
+        'not_found_template'       => 'error/404',
+        'exception_template'       => 'error/index',
+        'template_map' => [
+            'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
+            'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
+            'error/404'               => __DIR__ . '/../view/error/404.phtml',
+            'error/index'             => __DIR__ . '/../view/error/index.phtml',
+        ],
+        'template_path_stack' => [
+            __DIR__ . '/../view',
         ],
     ],
 ];
