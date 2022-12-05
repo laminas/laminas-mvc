@@ -463,12 +463,12 @@ class SomeController extends AbstractActionController
     }
 }</code></pre>
 <p>The above would return a standard <code>Laminas\View\Model\ViewModel</code> instance if no
-criterias are met, and the specified view model types if a specific criteria
+criteria are met, and the specified view model types if a specific criterion
 is met. Rules are matched in order, with the first match "winning".
 Make sure to put your fallback view model <em>first</em> as a fallback for unknown
 content types or <code>*/*</code>.</p>
 <blockquote>
-<p>Browsers are sending <code>*/*</code> as last content type of the Accept header so you have to define every
+<p>Browsers are sending <code>*/*</code> as last content type of the Accept header, so you have to define every
 acceptable view model and their content type.</p>
 </blockquote>
 <h2 id="forward-plugin">Forward Plugin</h2>
@@ -567,6 +567,8 @@ you will need to do the following steps:</p>
 </ul>
 <p>In each case, the <code>Response</code> object is returned. If you return this immediately,
 you can effectively short-circuit execution of the request.</p>
+<p>By default, the returned <code>Response</code> object has the HTTP status set to <code>302</code>. To
+set a different status use the <code>Laminas\Http\Respons::setStatusCode</code> method.</p>
 <blockquote>
 <h3 id="requires-mvcevent">Requires MvcEvent</h3>
 <p>This plugin requires that the controller invoking it implements
@@ -574,7 +576,12 @@ you can effectively short-circuit execution of the request.</p>
 retrieves the router from the event object.</p>
 </blockquote>
 <p>As an example:</p>
-<pre class="highlight"><code class="language-php">return $this-&gt;redirect()-&gt;toRoute('login-success');</code></pre>
+<pre class="highlight"><code class="language-php">return $this-&gt;redirect()-&gt;toRoute('login-success');
+
+// with status code using fluent interface
+return $this-&gt;redirect()
+    -&gt;toRoute('new-landing-page')
+    -&gt;setStatusCode(\Laminas\Http\Response::STATUS_CODE_301);</code></pre>
 <h2 id="url-plugin">Url Plugin</h2>
 <p>You may need to generate URLs from route definitions within your controllers;
 for example, to seed the view, generate headers, etc. While the <code>MvcEvent</code>
