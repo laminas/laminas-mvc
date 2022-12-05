@@ -71,12 +71,12 @@ class SomeController extends AbstractActionController
 ```
 
 The above would return a standard `Laminas\View\Model\ViewModel` instance if no
-criterias are met, and the specified view model types if a specific criteria
+criteria are met, and the specified view model types if a specific criterion
 is met. Rules are matched in order, with the first match "winning".
 Make sure to put your fallback view model *first* as a fallback for unknown
 content types or `*/*`.
 
-> Browsers are sending `*/*` as last content type of the Accept header so you have to define every
+> Browsers are sending `*/*` as last content type of the Accept header, so you have to define every
 > acceptable view model and their content type.
 
 ## Forward Plugin
@@ -192,6 +192,9 @@ The `Redirect` plugin does this work for you. It offers three methods:
 In each case, the `Response` object is returned. If you return this immediately,
 you can effectively short-circuit execution of the request.
 
+By default, the returned `Response` object has the HTTP status set to `302`. To
+set a different status use the `Laminas\Http\Respons::setStatusCode` method.
+
 > ### Requires MvcEvent
 >
 > This plugin requires that the controller invoking it implements
@@ -202,6 +205,11 @@ As an example:
 
 ```php
 return $this->redirect()->toRoute('login-success');
+
+// with status code using fluent interface
+return $this->redirect()
+    ->toRoute('new-landing-page')
+    ->setStatusCode(\Laminas\Http\Response::STATUS_CODE_301);
 ```
 
 ## Url Plugin
