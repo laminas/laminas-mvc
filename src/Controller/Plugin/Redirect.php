@@ -8,9 +8,6 @@ use Laminas\Mvc\Exception;
 use Laminas\Mvc\InjectApplicationEventInterface;
 use Laminas\Mvc\MvcEvent;
 
-/**
- * @todo       allow specifying status code as a default, or as an option to methods
- */
 class Redirect extends AbstractPlugin
 {
     protected $event;
