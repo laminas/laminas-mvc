@@ -7,12 +7,14 @@ namespace LaminasTest\Mvc\Application;
 use Laminas\Http\PhpEnvironment\Request;
 use Laminas\Http\PhpEnvironment\Response;
 use Laminas\Mvc\Application;
-use Laminas\Mvc\ConfigProvider;
 use Laminas\Mvc\Controller\ControllerManager;
-use Laminas\Router;
+use Laminas\Router\ConfigProvider;
+use Laminas\Router\Http\Literal;
 use Laminas\ServiceManager\ServiceManager;
 use Laminas\Stdlib\ArrayUtils;
-use LaminasTest\Mvc\TestAsset;
+use LaminasTest\Mvc\TestAsset\MockSendResponseListener;
+use LaminasTest\Mvc\TestAsset\MockViewManager;
+use LaminasTest\Mvc\TestAsset\StubBootstrapListener;
 use stdClass;
 
 trait InvalidControllerTypeTrait
@@ -23,7 +25,7 @@ trait InvalidControllerTypeTrait
             'router' => [
                 'routes' => [
                     'path' => [
-                        'type'    => Router\Http\Literal::class,
+                        'type'    => Literal::class,
                         'options' => [
                             'route'    => '/bad',
                             'defaults' => [
@@ -37,20 +39,18 @@ trait InvalidControllerTypeTrait
         ];
 
         $serviceConfig = ArrayUtils::merge(
-            (new ConfigProvider())->getDependencies(),
-            (new Router\ConfigProvider())->getDependencyConfig()
-        );
-
-        $serviceConfig = ArrayUtils::merge(
-            $serviceConfig,
+            ArrayUtils::merge(
+                (new \Laminas\Mvc\ConfigProvider())->getDependencies(),
+                (new ConfigProvider())->getDependencyConfig(),
+            ),
             [
                 'aliases'    => [
                     'ControllerLoader' => 'ControllerManager',
                 ],
                 'factories'  => [
-                    'ControllerManager' => static fn($services) => new ControllerManager($services, [
+                    'ControllerManager' => static fn($services): ControllerManager => new ControllerManager($services, [
                         'factories' => [
-                            'bad' => static fn() => new stdClass(),
+                            'bad' => static fn(): stdClass => new stdClass(),
                         ],
                     ]),
                     'Router'            => static fn($services) => $services->get('HttpRouter'),
@@ -58,9 +58,9 @@ trait InvalidControllerTypeTrait
                 'invokables' => [
                     'Request'              => Request::class,
                     'Response'             => Response::class,
-                    'ViewManager'          => TestAsset\MockViewManager::class,
-                    'SendResponseListener' => TestAsset\MockSendResponseListener::class,
-                    'BootstrapListener'    => TestAsset\StubBootstrapListener::class,
+                    'ViewManager'          => MockViewManager::class,
+                    'SendResponseListener' => MockSendResponseListener::class,
+                    'BootstrapListener'    => StubBootstrapListener::class,
                 ],
                 'services'   => [
                     'config' => $config,

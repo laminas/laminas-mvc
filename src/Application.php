@@ -78,19 +78,12 @@ class Application implements
     /** @var ResponseInterface */
     protected $response;
 
-    /** @var ServiceManager */
-    protected $serviceManager;
-
-    /**
-     * Constructor
-     */
     public function __construct(
-        ServiceManager $serviceManager,
+        protected ServiceManager $serviceManager,
         ?EventManagerInterface $events = null,
         ?RequestInterface $request = null,
         ?ResponseInterface $response = null
     ) {
-        $this->serviceManager = $serviceManager;
         $this->setEventManager($events ?: $serviceManager->get('EventManager'));
         $this->request  = $request ?: $serviceManager->get('Request');
         $this->response = $response ?: $serviceManager->get('Response');

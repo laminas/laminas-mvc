@@ -73,10 +73,11 @@ class ForwardTest extends TestCase
                         ],
                     ]);
                 },
-                'ControllerPluginManager' => static fn($services, $name) => new PluginManager($services),
-                'EventManager'            => fn($services, $name)
+                'ControllerPluginManager' => static fn($services, $name): PluginManager => new PluginManager($services),
+                'EventManager'            => fn($services, $name): EventManager
                     => $this->createEventManager($services->get('SharedEventManager')),
-                'SharedEventManager'      => static fn($services, $name) => new SharedEventManager(),
+                'SharedEventManager'      => static fn($services, $name): SharedEventManager
+                    => new SharedEventManager(),
             ],
             'shared'    => [
                 'EventManager' => false,
@@ -119,7 +120,7 @@ class ForwardTest extends TestCase
 
     public function testDispatchRaisesDomainExceptionIfDiscoveredControllerIsNotDispatchable(): void
     {
-        $this->controllers->setFactory('bogus', static fn() => new stdClass());
+        $this->controllers->setFactory('bogus', static fn(): stdClass => new stdClass());
         $plugin = new ForwardPlugin($this->controllers);
         $plugin->setController($this->controller);
 
@@ -155,10 +156,11 @@ class ForwardTest extends TestCase
                         ],
                     ]);
                 },
-                'ControllerPluginManager' => static fn($services) => new PluginManager($services),
-                'EventManager'            => fn($services, $name)
+                'ControllerPluginManager' => static fn($services): PluginManager => new PluginManager($services),
+                'EventManager'            => fn($services, $name): EventManager
                     => $this->createEventManager($services->get('SharedEventManager')),
-                'SharedEventManager'      => static fn($services, $name) => new SharedEventManager(),
+                'SharedEventManager'      => static fn($services, $name): SharedEventManager
+                    => new SharedEventManager(),
             ],
             'shared'    => [
                 'EventManager' => false,

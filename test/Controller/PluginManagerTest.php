@@ -8,6 +8,9 @@ use Laminas\Mvc\Controller\PluginManager;
 use Laminas\ServiceManager\Factory\InvokableFactory;
 use Laminas\ServiceManager\ServiceManager;
 use LaminasTest\Mvc\Controller\Plugin\TestAsset\SamplePlugin;
+use LaminasTest\Mvc\Controller\Plugin\TestAsset\SamplePluginFactory;
+use LaminasTest\Mvc\Controller\Plugin\TestAsset\SamplePluginWithConstructor;
+use LaminasTest\Mvc\Controller\Plugin\TestAsset\SamplePluginWithConstructorFactory;
 use LaminasTest\Mvc\Controller\TestAsset\SampleController;
 use PHPUnit\Framework\TestCase;
 
@@ -48,8 +51,8 @@ class PluginManagerTest extends TestCase
     public function testGetWithConstructor(): void
     {
         $pluginManager = new PluginManager(new ServiceManager(), [
-            'aliases'   => ['samplePlugin' => Plugin\TestAsset\SamplePluginWithConstructor::class],
-            'factories' => [Plugin\TestAsset\SamplePluginWithConstructor::class => InvokableFactory::class],
+            'aliases'   => ['samplePlugin' => SamplePluginWithConstructor::class],
+            'factories' => [SamplePluginWithConstructor::class => InvokableFactory::class],
         ]);
         $plugin        = $pluginManager->get('samplePlugin');
         $this->assertEquals('baz', $plugin->getBar());
@@ -58,8 +61,8 @@ class PluginManagerTest extends TestCase
     public function testGetWithConstructorAndOptions(): void
     {
         $pluginManager = new PluginManager(new ServiceManager(), [
-            'aliases'   => ['samplePlugin' => Plugin\TestAsset\SamplePluginWithConstructor::class],
-            'factories' => [Plugin\TestAsset\SamplePluginWithConstructor::class => InvokableFactory::class],
+            'aliases'   => ['samplePlugin' => SamplePluginWithConstructor::class],
+            'factories' => [SamplePluginWithConstructor::class => InvokableFactory::class],
         ]);
         $plugin        = $pluginManager->get('samplePlugin', ['foo']);
         $this->assertEquals(['foo'], $plugin->getBar());
@@ -69,7 +72,7 @@ class PluginManagerTest extends TestCase
     {
         $pluginManager = new PluginManager(new ServiceManager(), [
             'factories' => [
-                'samplePlugin' => Plugin\TestAsset\SamplePluginFactory::class,
+                'samplePlugin' => SamplePluginFactory::class,
             ],
         ]);
         $plugin        = $pluginManager->get('samplePlugin');
@@ -80,11 +83,11 @@ class PluginManagerTest extends TestCase
     {
         $pluginManager = new PluginManager(new ServiceManager(), [
             'factories' => [
-                'samplePlugin' => Plugin\TestAsset\SamplePluginWithConstructorFactory::class,
+                'samplePlugin' => SamplePluginWithConstructorFactory::class,
             ],
         ]);
         $plugin        = $pluginManager->get('samplePlugin', ['foo']);
-        $this->assertInstanceOf(Plugin\TestAsset\SamplePluginWithConstructor::class, $plugin);
-        $this->assertEquals(['foo'], $plugin->getBar());
+        $this->assertInstanceOf(SamplePluginWithConstructor::class, $plugin);
+        $this->assertEquals($plugin->getBar(), ['foo']);
     }
 }

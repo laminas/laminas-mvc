@@ -19,7 +19,7 @@ class ViewJsonStrategyFactoryTest extends TestCase
     {
         $renderer  = $this->prophesize(JsonRenderer::class);
         $container = $this->prophesize(ContainerInterface::class);
-        $container->get('ViewJsonRenderer')->will(fn() => $renderer->reveal());
+        $container->get('ViewJsonRenderer')->will(fn(): object => $renderer->reveal());
         return $container->reveal();
     }
 

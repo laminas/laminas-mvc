@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Laminas\Mvc\Controller;
 
 use Laminas\Mvc\Exception;
+use Laminas\Mvc\Exception\DomainException;
 use Laminas\Mvc\MvcEvent;
 use Laminas\View\Model\ViewModel;
 
@@ -61,7 +62,7 @@ abstract class AbstractActionController extends AbstractController
              * @todo Determine requirements for when route match is missing.
              *       Potentially allow pulling directly from request metadata?
              */
-            throw new Exception\DomainException('Missing route matches; unsure how to retrieve action');
+            throw new DomainException('Missing route matches; unsure how to retrieve action');
         }
 
         $action = $routeMatch->getParam('action', 'not-found');

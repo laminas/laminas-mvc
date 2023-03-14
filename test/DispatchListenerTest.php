@@ -15,6 +15,8 @@ use Laminas\Router\RouteMatch;
 use Laminas\ServiceManager\ServiceManager;
 use Laminas\Stdlib\ResponseInterface;
 use Laminas\View\Model\ModelInterface;
+use LaminasTest\Mvc\Controller\TestAsset\ControllerLoaderAbstractFactory;
+use LaminasTest\Mvc\Controller\TestAsset\UnlocatableControllerLoaderAbstractFactory;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use stdClass;
@@ -50,7 +52,7 @@ class DispatchListenerTest extends TestCase
     {
         $controllerManager = new ControllerManager(new ServiceManager(), [
             'abstract_factories' => [
-                Controller\TestAsset\ControllerLoaderAbstractFactory::class,
+                ControllerLoaderAbstractFactory::class,
             ],
         ]);
         $listener          = new DispatchListener($controllerManager);
@@ -76,7 +78,7 @@ class DispatchListenerTest extends TestCase
     {
         $controllerManager = new ControllerManager(new ServiceManager(), [
             'abstract_factories' => [
-                Controller\TestAsset\UnlocatableControllerLoaderAbstractFactory::class,
+                UnlocatableControllerLoaderAbstractFactory::class,
             ],
         ]);
         $listener          = new DispatchListener($controllerManager);
@@ -99,9 +101,8 @@ class DispatchListenerTest extends TestCase
 
     /**
      * @dataProvider alreadySetMvcEventResultProvider
-     * @param mixed $alreadySetResult
      */
-    public function testWillNotDispatchWhenAnMvcEventResultIsAlreadySet($alreadySetResult): void
+    public function testWillNotDispatchWhenAnMvcEventResultIsAlreadySet(mixed $alreadySetResult): void
     {
         $event = $this->createMvcEvent('path');
 
@@ -109,7 +110,7 @@ class DispatchListenerTest extends TestCase
 
         $listener = new DispatchListener(new ControllerManager(new ServiceManager(), [
             'abstract_factories' => [
-                Controller\TestAsset\UnlocatableControllerLoaderAbstractFactory::class,
+                UnlocatableControllerLoaderAbstractFactory::class,
             ],
         ]));
 

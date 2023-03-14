@@ -193,10 +193,9 @@ class MvcEvent extends Event
     /**
      * Set result
      *
-     * @param mixed $result
      * @return MvcEvent
      */
-    public function setResult($result)
+    public function setResult(mixed $result)
     {
         $this->setParam('__RESULT__', $result);
         $this->result = $result;

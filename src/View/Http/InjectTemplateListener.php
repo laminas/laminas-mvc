@@ -19,8 +19,9 @@ use function is_string;
 use function krsort;
 use function preg_replace;
 use function rtrim;
+use function str_contains;
+use function str_starts_with;
 use function strlen;
-use function strpos;
 use function strrpos;
 use function strtolower;
 use function substr;
@@ -97,7 +98,6 @@ class InjectTemplateListener extends AbstractListenerAggregate
     /**
      * Set map of controller namespace -> template pairs
      *
-     * @param  array $map
      * @return self
      */
     public function setControllerMap(array $map)
@@ -122,7 +122,7 @@ class InjectTemplateListener extends AbstractListenerAggregate
                 // merging have no feature to remove entries
                 false === $replacement
                 // Match full class or full namespace
-                || ! ($controller === $namespace || strpos($controller, $namespace . '\\') === 0)
+                || ! ($controller === $namespace || str_starts_with($controller, $namespace . '\\'))
             ) {
                 continue;
             }
@@ -181,7 +181,7 @@ class InjectTemplateListener extends AbstractListenerAggregate
      */
     protected function deriveControllerClass($controller)
     {
-        if (false !== strpos($controller, '\\')) {
+        if (str_contains($controller, '\\')) {
             $controller = substr($controller, strrpos($controller, '\\') + 1);
         }
 

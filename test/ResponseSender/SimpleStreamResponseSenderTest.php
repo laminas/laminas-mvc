@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace LaminasTest\Mvc\ResponseSender;
 
-use Laminas\Http\Response;
+use Laminas\Http\Response\Stream;
 use Laminas\Mvc\ResponseSender\SendResponseEvent;
 use Laminas\Mvc\ResponseSender\SimpleStreamResponseSender;
 use Laminas\Stdlib;
+use Laminas\Stdlib\ResponseInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -20,7 +21,7 @@ class SimpleStreamResponseSenderTest extends TestCase
 {
     public function testSendResponseIgnoresInvalidResponseTypes(): void
     {
-        $mockResponse          = $this->getMockForAbstractClass(Stdlib\ResponseInterface::class);
+        $mockResponse          = $this->getMockForAbstractClass(ResponseInterface::class);
         $mockSendResponseEvent = $this->getSendResponseEventMock($mockResponse);
         $responseSender        = new SimpleStreamResponseSender();
         ob_start();
@@ -32,7 +33,7 @@ class SimpleStreamResponseSenderTest extends TestCase
     public function testSendResponseTwoTimesPrintsResponseOnlyOnce(): void
     {
         $file         = fopen(__DIR__ . '/TestAsset/sample-stream-file.txt', 'rb');
-        $mockResponse = $this->createMock(Response\Stream::class);
+        $mockResponse = $this->createMock(Stream::class);
         $mockResponse->expects($this->once())->method('getStream')->willReturn($file);
         $mockSendResponseEvent = $this->getSendResponseEventMock($mockResponse);
         $responseSender        = new SimpleStreamResponseSender();

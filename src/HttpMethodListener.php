@@ -91,9 +91,6 @@ class HttpMethodListener extends AbstractListenerAggregate
         return $this->allowedMethods;
     }
 
-    /**
-     * @param array $allowedMethods
-     */
     public function setAllowedMethods(array $allowedMethods)
     {
         foreach ($allowedMethods as &$value) {

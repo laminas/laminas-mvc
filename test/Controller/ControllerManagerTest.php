@@ -26,7 +26,8 @@ class ControllerManagerTest extends TestCase
         $this->services = new ServiceManager();
         (new Config([
             'factories' => [
-                'ControllerPluginManager' => static fn($services) => new ControllerPluginManager($services),
+                'ControllerPluginManager' => static fn($services): ControllerPluginManager
+                    => new ControllerPluginManager($services),
             ],
             'services'  => [
                 'EventManager'       => $this->events,

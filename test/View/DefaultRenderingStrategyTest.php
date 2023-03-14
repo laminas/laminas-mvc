@@ -19,6 +19,7 @@ use Laminas\View\Renderer\PhpRenderer;
 use Laminas\View\Resolver\TemplateMapResolver;
 use Laminas\View\Strategy\PhpRendererStrategy;
 use Laminas\View\View;
+use LaminasTest\Mvc\View\TestAsset\DumbStrategy;
 use PHPUnit\Framework\TestCase;
 
 use function json_encode;
@@ -86,8 +87,8 @@ class DefaultRenderingStrategyTest extends TestCase
 
     public function testWillRenderAlternateStrategyWhenSelected(): void
     {
-        $renderer = new TestAsset\DumbStrategy();
-        $this->view->addRenderingStrategy(static fn($e) => $renderer, 100);
+        $renderer = new DumbStrategy();
+        $this->view->addRenderingStrategy(static fn($e): DumbStrategy => $renderer, 100);
         $model = new ViewModel(['foo' => 'bar']);
         $model->setOption('template', 'content');
         $this->event->setResult($model);
@@ -111,8 +112,8 @@ class DefaultRenderingStrategyTest extends TestCase
 
     public function testBypassesRenderingIfResultIsAResponse(): void
     {
-        $renderer = new TestAsset\DumbStrategy();
-        $this->view->addRenderingStrategy(static fn($e) => $renderer, 100);
+        $renderer = new DumbStrategy();
+        $this->view->addRenderingStrategy(static fn($e): DumbStrategy => $renderer, 100);
         $model = new ViewModel(['foo' => 'bar']);
         $model->setOption('template', 'content');
         $this->event->setViewModel($model);

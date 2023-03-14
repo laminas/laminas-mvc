@@ -10,9 +10,13 @@ use Laminas\Mvc\Application;
 use Laminas\Mvc\ConfigProvider;
 use Laminas\Mvc\Controller\ControllerManager;
 use Laminas\Router;
+use Laminas\Router\Http\Literal;
 use Laminas\ServiceManager\ServiceManager;
 use Laminas\Stdlib\ArrayUtils;
 use LaminasTest\Mvc\TestAsset;
+use LaminasTest\Mvc\TestAsset\MockSendResponseListener;
+use LaminasTest\Mvc\TestAsset\MockViewManager;
+use LaminasTest\Mvc\TestAsset\StubBootstrapListener;
 
 trait PathControllerTrait
 {
@@ -22,7 +26,7 @@ trait PathControllerTrait
             'router' => [
                 'routes' => [
                     'path' => [
-                        'type'    => Router\Http\Literal::class,
+                        'type'    => Literal::class,
                         'options' => [
                             'route'    => '/path',
                             'defaults' => [
@@ -35,12 +39,10 @@ trait PathControllerTrait
         ];
 
         $serviceConfig = ArrayUtils::merge(
-            (new ConfigProvider())->getDependencies(),
-            (new Router\ConfigProvider())->getDependencyConfig()
-        );
-
-        $serviceConfig = ArrayUtils::merge(
-            $serviceConfig,
+            ArrayUtils::merge(
+                (new ConfigProvider())->getDependencies(),
+                (new Router\ConfigProvider())->getDependencyConfig(),
+            ),
             [
                 'aliases'    => [
                     'ControllerLoader' => ControllerManager::class,
@@ -56,9 +58,9 @@ trait PathControllerTrait
                 'invokables' => [
                     'Request'              => Request::class,
                     'Response'             => Response::class,
-                    'ViewManager'          => TestAsset\MockViewManager::class,
-                    'SendResponseListener' => TestAsset\MockSendResponseListener::class,
-                    'BootstrapListener'    => TestAsset\StubBootstrapListener::class,
+                    'ViewManager'          => MockViewManager::class,
+                    'SendResponseListener' => MockSendResponseListener::class,
+                    'BootstrapListener'    => StubBootstrapListener::class,
                 ],
                 'services'   => [
                     'config' => $config,

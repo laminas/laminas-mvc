@@ -23,12 +23,8 @@ class DefaultRenderingStrategy extends AbstractListenerAggregate
      */
     protected $layoutTemplate = 'layout';
 
-    /** @var View */
-    protected $view;
-
-    public function __construct(View $view)
+    public function __construct(protected View $view)
     {
-        $this->view = $view;
     }
 
     /**

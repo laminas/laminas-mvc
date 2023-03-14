@@ -6,6 +6,7 @@ namespace Laminas\Mvc\Controller\Plugin;
 
 use Laminas\Http\Response;
 use Laminas\Mvc\Exception;
+use Laminas\Mvc\Exception\DomainException;
 use Laminas\Mvc\InjectApplicationEventInterface;
 use Laminas\Mvc\MvcEvent;
 
@@ -37,7 +38,7 @@ class Redirect extends AbstractPlugin
     {
         $controller = $this->getController();
         if (! $controller || ! method_exists($controller, 'plugin')) {
-            throw new Exception\DomainException(
+            throw new DomainException(
                 'Redirect plugin requires a controller that defines the plugin() method'
             );
         }
@@ -92,7 +93,7 @@ class Redirect extends AbstractPlugin
         $event    = $this->getEvent();
         $response = $event->getResponse();
         if (! $response instanceof Response) {
-            throw new Exception\DomainException('Redirect plugin requires event compose a response');
+            throw new DomainException('Redirect plugin requires event compose a response');
         }
         $this->response = $response;
         return $this->response;
@@ -112,7 +113,7 @@ class Redirect extends AbstractPlugin
 
         $controller = $this->getController();
         if (! $controller instanceof InjectApplicationEventInterface) {
-            throw new Exception\DomainException(
+            throw new DomainException(
                 'Redirect plugin requires a controller that implements InjectApplicationEventInterface'
             );
         }

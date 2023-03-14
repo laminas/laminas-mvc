@@ -10,6 +10,7 @@ use Laminas\Mvc\Controller\ControllerManager;
 use Laminas\Mvc\Controller\PluginManager;
 use Laminas\ServiceManager\Config;
 use Laminas\ServiceManager\ServiceManager;
+use LaminasTest\Mvc\Controller\TestAsset\SampleController;
 use PHPUnit\Framework\TestCase;
 
 class IntegrationTest extends TestCase
@@ -24,8 +25,8 @@ class IntegrationTest extends TestCase
                 'SharedEventManager' => $this->sharedEvents,
             ],
             'factories' => [
-                'ControllerPluginManager' => static fn($services) => new PluginManager($services),
-                'EventManager'            => fn() => new EventManager($this->sharedEvents),
+                'ControllerPluginManager' => static fn($services): PluginManager => new PluginManager($services),
+                'EventManager'            => fn(): EventManager => new EventManager($this->sharedEvents),
             ],
             'shared'    => [
                 'EventManager' => false,
@@ -37,8 +38,8 @@ class IntegrationTest extends TestCase
     {
         $controllers = new ControllerManager($this->services, [
             'factories' => [
-                'first'  => static fn($services) => new TestAsset\SampleController(),
-                'second' => static fn($services) => new TestAsset\SampleController(),
+                'first'  => static fn($services): SampleController => new SampleController(),
+                'second' => static fn($services): SampleController => new SampleController(),
             ],
         ]);
 

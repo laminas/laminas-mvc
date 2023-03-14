@@ -42,11 +42,8 @@ use function is_object;
  */
 class DispatchListener extends AbstractListenerAggregate
 {
-    private ControllerManager $controllerManager;
-
-    public function __construct(ControllerManager $controllerManager)
+    public function __construct(private ControllerManager $controllerManager)
     {
-        $this->controllerManager = $controllerManager;
     }
 
     /**
@@ -150,10 +147,9 @@ class DispatchListener extends AbstractListenerAggregate
     /**
      * Complete the dispatch
      *
-     * @param  mixed $return
      * @return mixed
      */
-    protected function complete($return, MvcEvent $event)
+    protected function complete(mixed $return, MvcEvent $event)
     {
         if (! is_object($return)) {
             if (ArrayUtils::hasStringKeys($return)) {

@@ -8,9 +8,11 @@ use Laminas\EventManager\EventInterface as Event;
 use Laminas\EventManager\EventManager;
 use Laminas\EventManager\EventManagerAwareInterface;
 use Laminas\EventManager\EventManagerInterface;
+use Laminas\Http\Header\Accept\FieldValuePart\AbstractFieldValuePart;
 use Laminas\Http\PhpEnvironment\Response as HttpResponse;
 use Laminas\Http\Request as HttpRequest;
 use Laminas\Mvc\Controller\Plugin\Forward;
+use Laminas\Mvc\Controller\Plugin\Layout;
 use Laminas\Mvc\Controller\Plugin\Params;
 use Laminas\Mvc\Controller\Plugin\Redirect;
 use Laminas\Mvc\Controller\Plugin\Url;
@@ -40,7 +42,7 @@ use function ucwords;
  *
  * Convenience methods for pre-built plugins (@see __call):
  * @codingStandardsIgnoreStart
- * @method \Laminas\View\Model\ModelInterface acceptableViewModelSelector(array $matchAgainst = null, bool $returnDefault = true, \Laminas\Http\Header\Accept\FieldValuePart\AbstractFieldValuePart $resultReference = null)
+ * @method ModelInterface acceptableViewModelSelector(array $matchAgainst = null, bool $returnDefault = true, AbstractFieldValuePart $resultReference = null)
  * @codingStandardsIgnoreEnd
  * @method Forward forward()
  * @method Layout|ModelInterface layout(string $template = null)
@@ -99,7 +101,7 @@ abstract class AbstractController implements
         $e->setResponse($response);
         $e->setTarget($this);
 
-        $result = $this->getEventManager()->triggerEventUntil(static fn($test) => $test instanceof Response, $e);
+        $result = $this->getEventManager()->triggerEventUntil(static fn($test): bool => $test instanceof Response, $e);
 
         if ($result->stopped()) {
             return $result->last();

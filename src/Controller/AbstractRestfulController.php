@@ -8,6 +8,9 @@ use JsonException;
 use Laminas\Http\Header\ContentType;
 use Laminas\Http\Request as HttpRequest;
 use Laminas\Mvc\Exception;
+use Laminas\Mvc\Exception\DomainException;
+use Laminas\Mvc\Exception\InvalidArgumentException;
+use Laminas\Mvc\Exception\RuntimeException;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Router\RouteMatch;
 use Laminas\Stdlib\RequestInterface as Request;
@@ -17,17 +20,16 @@ use function array_key_exists;
 use function array_shift;
 use function count;
 use function explode;
-use function gettype;
+use function get_debug_type;
 use function is_array;
 use function is_callable;
-use function is_object;
 use function json_decode;
 use function method_exists;
 use function parse_str;
 use function reset;
 use function sprintf;
+use function str_contains;
 use function stripos;
-use function strpos;
 use function strtolower;
 use function trim;
 
@@ -104,10 +106,9 @@ abstract class AbstractRestfulController extends AbstractController
     /**
      * Create a new resource
      *
-     * @param  mixed $data
      * @return mixed
      */
-    public function create($data)
+    public function create(mixed $data)
     {
         $this->response->setStatusCode(405);
 
@@ -119,10 +120,9 @@ abstract class AbstractRestfulController extends AbstractController
     /**
      * Delete an existing resource
      *
-     * @param  mixed $id
      * @return mixed
      */
-    public function delete($id)
+    public function delete(mixed $id)
     {
         $this->response->setStatusCode(405);
 
@@ -149,10 +149,9 @@ abstract class AbstractRestfulController extends AbstractController
     /**
      * Return single resource
      *
-     * @param  mixed $id
      * @return mixed
      */
-    public function get($id)
+    public function get(mixed $id)
     {
         $this->response->setStatusCode(405);
 
@@ -238,10 +237,9 @@ abstract class AbstractRestfulController extends AbstractController
      * Not marked as abstract, as that would introduce a BC break
      * (introduced in 2.1.0); instead, raises an exception if not implemented.
      *
-     * @param  mixed $data
      * @return mixed
      */
-    public function replaceList($data)
+    public function replaceList(mixed $data)
     {
         $this->response->setStatusCode(405);
 
@@ -256,10 +254,9 @@ abstract class AbstractRestfulController extends AbstractController
      * Not marked as abstract, as that would introduce a BC break
      * (introduced in 2.2.0); instead, raises an exception if not implemented.
      *
-     * @param  mixed $data
      * @return mixed
      */
-    public function patchList($data)
+    public function patchList(mixed $data)
     {
         $this->response->setStatusCode(405);
 
@@ -271,11 +268,9 @@ abstract class AbstractRestfulController extends AbstractController
     /**
      * Update an existing resource
      *
-     * @param  mixed $id
-     * @param  mixed $data
      * @return mixed
      */
-    public function update($id, $data)
+    public function update(mixed $id, mixed $data)
     {
         $this->response->setStatusCode(405);
 
@@ -312,7 +307,7 @@ abstract class AbstractRestfulController extends AbstractController
     public function dispatch(Request $request, ?Response $response = null)
     {
         if (! $request instanceof HttpRequest) {
-            throw new Exception\InvalidArgumentException('Expected an HTTP request');
+            throw new InvalidArgumentException('Expected an HTTP request');
         }
 
         return parent::dispatch($request, $response);
@@ -333,7 +328,7 @@ abstract class AbstractRestfulController extends AbstractController
              * @todo Determine requirements for when route match is missing.
              *       Potentially allow pulling directly from request metadata?
              */
-            throw new Exception\DomainException('Missing route matches; unsure how to retrieve action');
+            throw new DomainException('Missing route matches; unsure how to retrieve action');
         }
 
         $request = $e->getRequest();
@@ -421,7 +416,7 @@ abstract class AbstractRestfulController extends AbstractController
                 try {
                     $action = 'patchList';
                     $return = $this->patchList($data);
-                } catch (Exception\RuntimeException $ex) {
+                } catch (RuntimeException) {
                     $response = $e->getResponse();
                     $response->setStatusCode(405);
                     return $response;
@@ -489,7 +484,7 @@ abstract class AbstractRestfulController extends AbstractController
         }
 
         $requestedContentType = $headerContentType->getFieldValue();
-        if (false !== strpos($requestedContentType, ';')) {
+        if (str_contains($requestedContentType, ';')) {
             $headerData           = explode(';', $requestedContentType);
             $requestedContentType = array_shift($headerData);
         }
@@ -534,9 +529,9 @@ abstract class AbstractRestfulController extends AbstractController
     public function addHttpMethodHandler($method, $handler) /* Callable */
     {
         if (! is_callable($handler)) {
-            throw new Exception\InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Invalid HTTP method handler: must be a callable; received "%s"',
-                is_object($handler) ? $handler::class : gettype($handler)
+                get_debug_type($handler)
             ));
         }
         $method                              = strtolower($method);
@@ -579,12 +574,11 @@ abstract class AbstractRestfulController extends AbstractController
      * value, the method assumes that we have non-urlencoded content and
      * returns the raw content; otherwise, the array created is returned.
      *
-     * @param  mixed $request
      * @return object|string|array
      * @throws Exception\DomainException If a JSON request was made, but no
      *    method for parsing JSON is available.
      */
-    protected function processBodyContent($request)
+    protected function processBodyContent(mixed $request)
     {
         $content = $request->getContent();
 
@@ -618,7 +612,6 @@ abstract class AbstractRestfulController extends AbstractController
      */
     protected function jsonDecode(string $string)
     {
-        // @TODO Drop as ext-json is included by default in 7.4 and can't be disabled in 8.0
         return json_decode($string, $this->jsonDecodeType, 512, JSON_THROW_ON_ERROR);
     }
 }

@@ -7,17 +7,26 @@ namespace LaminasTest\Mvc;
 use Laminas\EventManager\EventManager;
 use Laminas\EventManager\SharedEventManager;
 use Laminas\EventManager\Test\EventListenerIntrospectionTrait;
-use Laminas\Http\PhpEnvironment;
+use Laminas\Http\PhpEnvironment\Request;
 use Laminas\Http\PhpEnvironment\Response;
 use Laminas\Mvc\Application;
-use Laminas\Mvc\ConfigProvider;
 use Laminas\Mvc\Controller\ControllerManager;
 use Laminas\Mvc\MvcEvent;
-use Laminas\Router;
+use Laminas\Router\ConfigProvider;
+use Laminas\Router\Http\Literal;
+use Laminas\Router\RouteMatch;
+use Laminas\Router\RouterFactory;
+use Laminas\Router\SimpleRouteStack;
 use Laminas\ServiceManager\ServiceManager;
 use Laminas\Stdlib\ArrayUtils;
 use Laminas\Stdlib\ResponseInterface;
 use Laminas\View\Model\ViewModel;
+use LaminasTest\Mvc\Controller\TestAsset\BadController;
+use LaminasTest\Mvc\Controller\TestAsset\SampleController;
+use LaminasTest\Mvc\TestAsset\MockSendResponseListener;
+use LaminasTest\Mvc\TestAsset\MockViewManager;
+use LaminasTest\Mvc\TestAsset\PathController;
+use LaminasTest\Mvc\TestAsset\StubBootstrapListener;
 use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
 use ReflectionProperty;
@@ -25,7 +34,6 @@ use stdClass;
 
 use function array_shift;
 use function array_values;
-use function get_class;
 use function is_array;
 use function sprintf;
 use function var_export;
@@ -43,21 +51,20 @@ class ApplicationTest extends TestCase
     public function setUp(): void
     {
         $serviceConfig        = ArrayUtils::merge(
-            (new ConfigProvider())->getDependencies(),
-            (new Router\ConfigProvider())->getDependencyConfig()
-        );
-        $serviceConfig        = ArrayUtils::merge(
-            $serviceConfig,
+            ArrayUtils::merge(
+                (new \Laminas\Mvc\ConfigProvider())->getDependencies(),
+                (new ConfigProvider())->getDependencyConfig(),
+            ),
             [
                 'invokables' => [
-                    'Request'              => PhpEnvironment\Request::class,
-                    'Response'             => PhpEnvironment\Response::class,
-                    'ViewManager'          => TestAsset\MockViewManager::class,
-                    'SendResponseListener' => TestAsset\MockSendResponseListener::class,
-                    'BootstrapListener'    => TestAsset\StubBootstrapListener::class,
+                    'Request'              => Request::class,
+                    'Response'             => Response::class,
+                    'ViewManager'          => MockViewManager::class,
+                    'SendResponseListener' => MockSendResponseListener::class,
+                    'BootstrapListener'    => StubBootstrapListener::class,
                 ],
                 'factories'  => [
-                    'Router' => Router\RouterFactory::class,
+                    'Router' => RouterFactory::class,
                 ],
                 'services'   => [
                     'config' => [],
@@ -202,7 +209,7 @@ class ApplicationTest extends TestCase
         $request->setUri('http://example.local/path');
 
         $router = $this->serviceManager->get('HttpRouter');
-        $route  = Router\Http\Literal::factory([
+        $route  = Literal::factory([
             'route'    => '/path',
             'defaults' => [
                 'controller' => 'path',
@@ -215,7 +222,7 @@ class ApplicationTest extends TestCase
         if ($addService) {
             $this->services->addFactory('ControllerManager', static fn($services) => new ControllerManager($services, [
                 'factories' => [
-                    'path' => static fn() => new TestAsset\PathController(),
+                    'path' => static fn(): PathController => new PathController(),
                 ],
             ]));
         }
@@ -230,7 +237,7 @@ class ApplicationTest extends TestCase
         $request->setUri('http://example.local/sample');
 
         $router = $this->serviceManager->get('HttpRouter');
-        $route  = Router\Http\Literal::factory([
+        $route  = Literal::factory([
             'route'    => '/sample',
             'defaults' => [
                 'controller' => 'sample',
@@ -243,7 +250,7 @@ class ApplicationTest extends TestCase
             'ControllerManager',
             static fn($services) => new ControllerManager($services, [
                 'factories' => [
-                    'sample' => static fn() => new Controller\TestAsset\SampleController(),
+                    'sample' => static fn(): SampleController => new SampleController(),
                 ],
             ])
         );
@@ -258,7 +265,7 @@ class ApplicationTest extends TestCase
         $request->setUri('http://example.local/bad');
 
         $router = $this->serviceManager->get('HttpRouter');
-        $route  = Router\Http\Literal::factory([
+        $route  = Literal::factory([
             'route'    => '/bad',
             'defaults' => [
                 'controller' => 'bad',
@@ -270,7 +277,7 @@ class ApplicationTest extends TestCase
         if ($addService) {
             $this->serviceManager->get('ControllerManager')->setFactory(
                 'bad',
-                static fn() => new Controller\TestAsset\BadController()
+                static fn(): BadController => new BadController()
             );
         }
 
@@ -296,7 +303,7 @@ class ApplicationTest extends TestCase
     public function testRoutingFailureShouldTriggerDispatchError(): void
     {
         $application = $this->setupBadController();
-        $router      = new Router\SimpleRouteStack();
+        $router      = new SimpleRouteStack();
         $event       = $application->getMvcEvent();
         $event->setRouter($router);
 
@@ -318,7 +325,7 @@ class ApplicationTest extends TestCase
         $application      = $this->setupPathController(false);
         $controllerLoader = $application->getServiceManager()->get('ControllerManager');
         $response         = new Response();
-        $application->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, static fn($e) => $response);
+        $application->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, static fn($e): Response => $response);
 
         $result = $application->run();
         $this->assertSame($application, $result, $result::class);
@@ -328,7 +335,7 @@ class ApplicationTest extends TestCase
     public function testFailureForRouteToReturnRouteMatchShouldPopulateEventError(): void
     {
         $application = $this->setupBadController();
-        $router      = new Router\SimpleRouteStack();
+        $router      = new SimpleRouteStack();
         $event       = $application->getMvcEvent();
         $event->setRouter($router);
 
@@ -350,7 +357,7 @@ class ApplicationTest extends TestCase
         $this->application->bootstrap();
         $response = $this->application->getResponse();
         $events   = $this->application->getEventManager();
-        $events->attach(MvcEvent::EVENT_ROUTE, static fn($e) => $response, 100);
+        $events->attach(MvcEvent::EVENT_ROUTE, static fn($e): ResponseInterface => $response, 100);
 
         $token = new stdClass();
         $events->attach(MvcEvent::EVENT_FINISH, static function ($e) use ($token): void {
@@ -368,7 +375,7 @@ class ApplicationTest extends TestCase
         $response = $this->application->getResponse();
         $events   = $this->application->getEventManager();
         $events->clearListeners(MvcEvent::EVENT_ROUTE);
-        $events->attach(MvcEvent::EVENT_DISPATCH, static fn($e) => $response, 100);
+        $events->attach(MvcEvent::EVENT_DISPATCH, static fn($e): ResponseInterface => $response, 100);
 
         $token = new stdClass();
         $events->attach(MvcEvent::EVENT_FINISH, static function ($e) use ($token): void {
@@ -387,7 +394,7 @@ class ApplicationTest extends TestCase
         $events   = $application->getEventManager();
         $response = $application->getResponse();
         $events->attach(MvcEvent::EVENT_FINISH, static function ($e) use ($response): ResponseInterface {
-            $response->setContent("EventClass: " . get_class($e->getTarget()));
+            $response->setContent("EventClass: " . $e->getTarget()::class);
             return $response;
         });
 
@@ -484,14 +491,14 @@ class ApplicationTest extends TestCase
 
         $routeMock->expects($this->once())->method('__invoke')->willReturnCallback(
             static function (MvcEvent $event): void {
-                    $event->stopPropagation(true);
-                    $event->setRouteMatch(new Router\RouteMatch([]));
+                $event->stopPropagation(true);
+                $event->setRouteMatch(new RouteMatch([]));
             }
         );
         $dispatchMock->expects($this->once())->method('__invoke')->willReturn($response);
         $finishMock->expects($this->once())->method('__invoke')->willReturnCallback(
             static function (MvcEvent $event): void {
-                    $event->stopPropagation(true);
+                $event->stopPropagation(true);
             }
         );
 
@@ -524,7 +531,7 @@ class ApplicationTest extends TestCase
         $errorMock->expects($this->once())->method('__invoke')->willReturnCallback(
             static function (MvcEvent $event): void {
                 $event->stopPropagation(true);
-                $event->setRouteMatch(new Router\RouteMatch([]));
+                $event->setRouteMatch(new RouteMatch([]));
                 $event->setError('');
             }
         );

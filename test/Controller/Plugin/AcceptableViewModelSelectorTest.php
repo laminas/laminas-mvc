@@ -9,7 +9,9 @@ use Laminas\Http\Header\Accept\FieldValuePart\AcceptFieldValuePart;
 use Laminas\Http\Request;
 use Laminas\Mvc\Exception\InvalidArgumentException;
 use Laminas\Mvc\MvcEvent;
-use Laminas\View\Model;
+use Laminas\View\Model\FeedModel;
+use Laminas\View\Model\JsonModel;
+use Laminas\View\Model\ViewModel;
 use LaminasTest\Mvc\Controller\TestAsset\SampleController;
 use PHPUnit\Framework\TestCase;
 
@@ -32,15 +34,15 @@ class AcceptableViewModelSelectorTest extends TestCase
     public function testHonorsAcceptPrecedenceAndPriorityWhenInvoked(): void
     {
         $arr = [
-            Model\JsonModel::class => [
+            JsonModel::class => [
                 'application/json',
                 'application/javascript',
             ],
-            Model\FeedModel::class => [
+            FeedModel::class => [
                 'application/rss+xml',
                 'application/atom+xml',
             ],
-            Model\ViewModel::class => '*/*',
+            ViewModel::class => '*/*',
         ];
 
         $header = Accept::fromString(
@@ -48,22 +50,22 @@ class AcceptableViewModelSelectorTest extends TestCase
         );
         $this->request->getHeaders()->addHeader($header);
         $plugin = $this->plugin;
-        $plugin->setDefaultViewModelName(Model\FeedModel::class);
+        $plugin->setDefaultViewModelName(FeedModel::class);
         $result = $plugin($arr);
 
-        $this->assertInstanceOf(Model\ViewModel::class, $result);
-        $this->assertNotInstanceOf(Model\FeedModel::class, $result); // Ensure the default wasn't selected
-        $this->assertNotInstanceOf(Model\JsonModel::class, $result);
+        $this->assertInstanceOf(ViewModel::class, $result);
+        $this->assertNotInstanceOf(FeedModel::class, $result); // Ensure the default wasn't selected
+        $this->assertNotInstanceOf(JsonModel::class, $result);
     }
 
     public function testDefaultViewModelName(): void
     {
         $arr = [
-            Model\JsonModel::class => [
+            JsonModel::class => [
                 'application/json',
                 'application/javascript',
             ],
-            Model\FeedModel::class => [
+            FeedModel::class => [
                 'application/rss+xml',
                 'application/atom+xml',
             ],
@@ -74,25 +76,25 @@ class AcceptableViewModelSelectorTest extends TestCase
         $plugin = $this->plugin;
         $result = $plugin->getViewModelName($arr);
 
-        $this->assertEquals(Model\ViewModel::class, $result); //   Default Default View Model Name
+        $this->assertEquals(ViewModel::class, $result); //   Default Default View Model Name
 
-        $plugin->setDefaultViewModelName(Model\FeedModel::class);
-        $this->assertEquals($plugin->getDefaultViewModelName(), Model\FeedModel::class); // Test getter along the way
-        $this->assertInstanceOf(Model\FeedModel::class, $plugin($arr));
+        $plugin->setDefaultViewModelName(FeedModel::class);
+        $this->assertEquals($plugin->getDefaultViewModelName(), FeedModel::class); // Test getter along the way
+        $this->assertInstanceOf(FeedModel::class, $plugin($arr));
     }
 
     public function testSelectsViewModelBasedOnAcceptHeaderWhenInvokedAsFunctor(): void
     {
         $arr = [
-            Model\JsonModel::class => [
+            JsonModel::class => [
                 'application/json',
                 'application/javascript',
             ],
-            Model\FeedModel::class => [
+            FeedModel::class => [
                 'application/rss+xml',
                 'application/atom+xml',
             ],
-            Model\ViewModel::class => '*/*',
+            ViewModel::class => '*/*',
         ];
 
         $plugin = $this->plugin;
@@ -100,17 +102,17 @@ class AcceptableViewModelSelectorTest extends TestCase
         $this->request->getHeaders()->addHeader($header);
         $result = $plugin($arr);
 
-        $this->assertInstanceOf(Model\FeedModel::class, $result);
+        $this->assertInstanceOf(FeedModel::class, $result);
     }
 
     public function testInvokeWithoutDefaultsReturnsNullWhenNoMatchesOccur(): void
     {
         $arr = [
-            Model\JsonModel::class => [
+            JsonModel::class => [
                 'application/json',
                 'application/javascript',
             ],
-            Model\FeedModel::class => [
+            FeedModel::class => [
                 'application/rss+xml',
                 'application/atom+xml',
             ],
@@ -131,21 +133,21 @@ class AcceptableViewModelSelectorTest extends TestCase
         $this->request->getHeaders()->addHeader($header);
 
         $ref    = null;
-        $result = $plugin([Model\ViewModel::class => '*/*'], false, $ref);
-        $this->assertInstanceOf(Model\ViewModel::class, $result);
-        $this->assertNotInstanceOf(Model\JsonModel::class, $result);
-        $this->assertNotInstanceOf(Model\FeedModel::class, $result);
+        $result = $plugin([ViewModel::class => '*/*'], false, $ref);
+        $this->assertInstanceOf(ViewModel::class, $result);
+        $this->assertNotInstanceOf(JsonModel::class, $result);
+        $this->assertNotInstanceOf(FeedModel::class, $result);
         $this->assertInstanceOf(AcceptFieldValuePart::class, $ref);
     }
 
     public function testGetViewModelNameWithoutDefaults(): void
     {
         $arr = [
-            Model\JsonModel::class => [
+            JsonModel::class => [
                 'application/json',
                 'application/javascript',
             ],
-            Model\FeedModel::class => [
+            FeedModel::class => [
                 'application/rss+xml',
                 'application/atom+xml',
             ],
@@ -159,8 +161,9 @@ class AcceptableViewModelSelectorTest extends TestCase
         $this->assertNull($result);
 
         $ref    = null;
-        $result = $plugin->getViewModelName([Model\ViewModel::class => '*/*'], false, $ref);
-        $this->assertEquals(Model\ViewModel::class, $result);
+        $result = $plugin->getViewModelName([ViewModel::class => '*/*'], false, $ref);
+
+        $this->assertEquals(ViewModel::class, $result);
         $this->assertInstanceOf(AcceptFieldValuePart::class, $ref);
     }
 
@@ -170,7 +173,7 @@ class AcceptableViewModelSelectorTest extends TestCase
         $header = Accept::fromString('Accept: text/html; version=0.2');
         $this->request->getHeaders()->addHeader($header);
 
-        $arr = [Model\ViewModel::class => '*/*'];
+        $arr = [ViewModel::class => '*/*'];
         $plugin->setDefaultMatchAgainst($arr);
         $this->assertEquals($plugin->getDefaultMatchAgainst(), $arr);
         $result = $plugin->match();

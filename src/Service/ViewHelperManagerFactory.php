@@ -89,7 +89,7 @@ class ViewHelperManagerFactory implements FactoryInterface
     private function createUrlHelperFactory(ContainerInterface $services)
     {
         return static function () use ($services): Url {
-            $helper = new ViewHelper\Url();
+            $helper = new Url();
             $helper->setRouter($services->get('HttpRouter'));
             $match = $services->get('Application')
                 ->getMvcEvent()
@@ -112,7 +112,7 @@ class ViewHelperManagerFactory implements FactoryInterface
     {
         return static function () use ($services): BasePath {
             $config = $services->has('config') ? $services->get('config') : [];
-            $helper = new ViewHelper\BasePath();
+            $helper = new BasePath();
             if (isset($config['view_manager']) && isset($config['view_manager']['base_path'])) {
                 $helper->setBasePath($config['view_manager']['base_path']);
                 return $helper;
@@ -138,7 +138,7 @@ class ViewHelperManagerFactory implements FactoryInterface
         return static function () use ($services): Doctype {
             $config = $services->has('config') ? $services->get('config') : [];
             $config = $config['view_manager'] ?? [];
-            $helper = new ViewHelper\Doctype();
+            $helper = new Doctype();
             if (isset($config['doctype']) && $config['doctype']) {
                 $helper->setDoctype($config['doctype']);
             }

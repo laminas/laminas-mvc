@@ -7,6 +7,7 @@ namespace Laminas\Mvc\Controller\Plugin;
 use Laminas\EventManager\SharedEventManagerInterface as SharedEvents;
 use Laminas\Mvc\Controller\ControllerManager;
 use Laminas\Mvc\Exception;
+use Laminas\Mvc\Exception\DomainException;
 use Laminas\Mvc\InjectApplicationEventInterface;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Mvc\View\Http\InjectViewModelListener;
@@ -23,9 +24,6 @@ use function var_export;
 
 class Forward extends AbstractPlugin
 {
-    /** @var ControllerManager */
-    protected $controllers;
-
     /** @var MvcEvent */
     protected $event;
 
@@ -38,9 +36,8 @@ class Forward extends AbstractPlugin
     /** @var array[]|null */
     protected $listenersToDetach;
 
-    public function __construct(ControllerManager $controllers)
+    public function __construct(protected ControllerManager $controllers)
     {
-        $this->controllers = $controllers;
     }
 
     /**
@@ -124,7 +121,7 @@ class Forward extends AbstractPlugin
         }
 
         if ($this->numNestedForwards > $this->maxNestedForwards) {
-            throw new Exception\DomainException(
+            throw new DomainException(
                 "Circular forwarding detected: greater than $this->maxNestedForwards nested forwards"
             );
         }
@@ -235,7 +232,7 @@ class Forward extends AbstractPlugin
 
         $controller = $this->getController();
         if (! $controller instanceof InjectApplicationEventInterface) {
-            throw new Exception\DomainException(sprintf(
+            throw new DomainException(sprintf(
                 'Forward plugin requires a controller that implements InjectApplicationEventInterface; received %s',
                 is_object($controller) ? $controller::class : var_export($controller, true)
             ));

@@ -8,21 +8,11 @@ use Laminas\Mvc\Controller\Plugin\AbstractPlugin;
 
 class SamplePluginWithConstructor extends AbstractPlugin
 {
-    /** @var mixed */
-    protected $bar;
-
-    /**
-     * @param mixed $bar
-     */
-    public function __construct($bar = 'baz')
+    public function __construct(protected mixed $bar = 'baz')
     {
-        $this->bar = $bar;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getBar()
+    public function getBar(): mixed
     {
         return $this->bar;
     }

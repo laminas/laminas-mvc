@@ -12,8 +12,7 @@ use Laminas\ServiceManager\Exception\InvalidServiceException;
 use Laminas\Stdlib\DispatchableInterface;
 use Psr\Container\ContainerInterface;
 
-use function gettype;
-use function is_object;
+use function get_debug_type;
 use function method_exists;
 use function sprintf;
 
@@ -56,17 +55,13 @@ class ControllerManager extends AbstractPluginManager
         parent::__construct($configOrContainerInstance, $config);
     }
 
-    /**
-     * Validate a plugin
-     *
-     * {@inheritDoc}
-     */
-    public function validate($instance): void
+    /** {@inheritDoc} */
+    public function validate(mixed $instance): void
     {
         if (! $instance instanceof $this->instanceOf) {
             throw new InvalidServiceException(sprintf(
                 'Plugin of type "%s" is invalid; must implement %s',
-                is_object($instance) ? $instance::class : gettype($instance),
+                get_debug_type($instance),
                 $this->instanceOf
             ));
         }

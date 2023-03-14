@@ -23,7 +23,6 @@ use LaminasTest\Mvc\Controller\TestAsset\SampleController;
 use LaminasTest\Mvc\Controller\TestAsset\SampleInterface;
 use PHPUnit\Framework\TestCase;
 
-use function get_class;
 use function method_exists;
 use function var_export;
 
@@ -103,7 +102,11 @@ class ActionControllerTest extends TestCase
     {
         $response = new Response();
         $response->setContent('short circuited!');
-        $this->controller->getEventManager()->attach(MvcEvent::EVENT_DISPATCH, static fn($e) => $response, 100);
+        $this->controller->getEventManager()->attach(
+            MvcEvent::EVENT_DISPATCH,
+            static fn($e): Response => $response,
+            100
+        );
         $result = $this->controller->dispatch($this->request, $this->response);
         $this->assertSame($response, $result);
     }
@@ -112,7 +115,11 @@ class ActionControllerTest extends TestCase
     {
         $response = new Response();
         $response->setContent('short circuited!');
-        $this->controller->getEventManager()->attach(MvcEvent::EVENT_DISPATCH, static fn($e) => $response, -10);
+        $this->controller->getEventManager()->attach(
+            MvcEvent::EVENT_DISPATCH,
+            static fn($e): Response => $response,
+            -10
+        );
         $result = $this->controller->dispatch($this->request, $this->response);
         $this->assertSame($response, $result);
     }
@@ -122,7 +129,12 @@ class ActionControllerTest extends TestCase
         $response = new Response();
         $response->setContent('short circuited!');
         $sharedEvents = $this->controller->getEventManager()->getSharedManager();
-        $sharedEvents->attach(DispatchableInterface::class, MvcEvent::EVENT_DISPATCH, static fn($e) => $response, 10);
+        $sharedEvents->attach(
+            DispatchableInterface::class,
+            MvcEvent::EVENT_DISPATCH,
+            static fn($e): Response => $response,
+            10
+        );
         $result = $this->controller->dispatch($this->request, $this->response);
         $this->assertSame($response, $result);
     }
@@ -135,7 +147,7 @@ class ActionControllerTest extends TestCase
         $sharedEvents->attach(
             AbstractActionController::class,
             MvcEvent::EVENT_DISPATCH,
-            static fn($e) => $response,
+            static fn($e): Response => $response,
             10
         );
         $result = $this->controller->dispatch($this->request, $this->response);
@@ -147,7 +159,12 @@ class ActionControllerTest extends TestCase
         $response = new Response();
         $response->setContent('short circuited!');
         $sharedEvents = $this->controller->getEventManager()->getSharedManager();
-        $sharedEvents->attach(get_class($this->controller), MvcEvent::EVENT_DISPATCH, static fn($e) => $response, 10);
+        $sharedEvents->attach(
+            $this->controller::class,
+            MvcEvent::EVENT_DISPATCH,
+            static fn($e): Response => $response,
+            10
+        );
         $result = $this->controller->dispatch($this->request, $this->response);
         $this->assertSame($response, $result);
     }
@@ -157,7 +174,12 @@ class ActionControllerTest extends TestCase
         $response = new Response();
         $response->setContent('short circuited!');
         $sharedEvents = $this->controller->getEventManager()->getSharedManager();
-        $sharedEvents->attach(SampleInterface::class, MvcEvent::EVENT_DISPATCH, static fn($e) => $response, 10);
+        $sharedEvents->attach(
+            SampleInterface::class,
+            MvcEvent::EVENT_DISPATCH,
+            static fn($e): Response => $response,
+            10
+        );
         $result = $this->controller->dispatch($this->request, $this->response);
         $this->assertSame($response, $result);
     }

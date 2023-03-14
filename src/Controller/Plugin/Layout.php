@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Laminas\Mvc\Controller\Plugin;
 
 use Laminas\Mvc\Exception;
+use Laminas\Mvc\Exception\DomainException;
 use Laminas\Mvc\InjectApplicationEventInterface;
 use Laminas\Mvc\MvcEvent;
 use Laminas\View\Model\ModelInterface as Model;
@@ -58,7 +59,7 @@ class Layout extends AbstractPlugin
 
         $controller = $this->getController();
         if (! $controller instanceof InjectApplicationEventInterface) {
-            throw new Exception\DomainException(
+            throw new DomainException(
                 'Layout plugin requires a controller that implements InjectApplicationEventInterface'
             );
         }
@@ -85,7 +86,7 @@ class Layout extends AbstractPlugin
         $event     = $this->getEvent();
         $viewModel = $event->getViewModel();
         if (! $viewModel instanceof Model) {
-            throw new Exception\DomainException('Layout plugin requires that event view model is populated');
+            throw new DomainException('Layout plugin requires that event view model is populated');
         }
         return $viewModel;
     }
