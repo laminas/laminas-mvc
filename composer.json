@@ -28,7 +28,7 @@
     "extra": {
     },
     "require": {
-        "php": "~8.0.0 || ~8.1.0",
+        "php": "~8.0.0 || ~8.1.0 || ~8.2.0",
         "ext-json": "*",
         "laminas/laminas-eventmanager": "^3.4",
         "laminas/laminas-http": "^2.15",
