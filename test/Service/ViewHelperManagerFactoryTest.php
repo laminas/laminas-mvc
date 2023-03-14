@@ -12,12 +12,14 @@ use Laminas\Mvc\Service\ViewHelperManagerFactory;
 use Laminas\Router\RouteMatch;
 use Laminas\Router\RouteStackInterface;
 use Laminas\ServiceManager\ServiceManager;
-use Laminas\View\Helper;
 use Laminas\View\HelperPluginManager;
 use PHPUnit\Framework\TestCase;
 
 class ViewHelperManagerFactoryTest extends TestCase
 {
+    private ServiceManager $services;
+    private ViewHelperManagerFactory $factory;
+
     public function setUp(): void
     {
         $this->services = new ServiceManager();

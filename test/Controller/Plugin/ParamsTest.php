@@ -5,6 +5,7 @@ namespace LaminasTest\Mvc\Controller\Plugin;
 use Laminas\Http\Header\GenericHeader;
 use Laminas\Http\Request;
 use Laminas\Http\Response;
+use Laminas\Mvc\Controller\Plugin\Params;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Router\RouteMatch;
 use LaminasTest\Mvc\Controller\TestAsset\SampleController;
@@ -12,6 +13,10 @@ use PHPUnit\Framework\TestCase;
 
 class ParamsTest extends TestCase
 {
+    private Request $request;
+    private SampleController $controller;
+    private Params $plugin;
+
     public function setUp(): void
     {
         $this->request = new Request;

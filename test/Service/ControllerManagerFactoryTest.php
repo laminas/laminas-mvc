@@ -29,6 +29,7 @@ class ControllerManagerFactoryTest extends TestCase
      * @var ControllerManager
      */
     protected $loader;
+    private array $defaultServiceConfig;
 
     public function setUp(): void
     {
