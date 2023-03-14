@@ -39,7 +39,7 @@
         "laminas/laminas-view": "^2.14"
     },
     "require-dev": {
-        "http-interop/http-middleware": "^0.4.1",
+        "http-interop/http-middleware": "^0.5.0",
         "laminas/laminas-coding-standard": "^2.4.0",
         "laminas/laminas-json": "^3.3",
         "laminas/laminas-psr7bridge": "^1.8",
