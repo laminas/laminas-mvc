@@ -130,7 +130,7 @@ class ApplicationTest extends TestCase
     }
 
     /**
-     * @dataProvider bootstrapRegistersListenersProvider
+     * @dataProvider bootstrapRegistersListenerProvider
      */
     public function testBootstrapRegistersListeners(string $listenerServiceName, string $event, string $method): void
     {
@@ -142,7 +142,7 @@ class ApplicationTest extends TestCase
         $this->assertContains([$listenerService, $method], $listeners);
     }
 
-    public function bootstrapRegistersListenersProvider(): array
+    public function bootstrapRegistersListenerProvider(): array
     {
         // @codingStandardsIgnoreStart
         //                     [ Service Name,           Event,                       Method,        isCustom ]

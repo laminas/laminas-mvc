@@ -4,40 +4,21 @@ declare(strict_types=1);
 
 namespace Laminas\Mvc\Service;
 
+use Laminas\EventManager\EventManagerInterface;
 use Laminas\Mvc\Application;
-use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\Mvc\ApplicationListenerProvider;
 use Psr\Container\ContainerInterface;
 
-class ApplicationFactory implements FactoryInterface
+final class ApplicationFactory
 {
-    /**
-     * Create the Application service
-     *
-     * Creates a Laminas\Mvc\Application service, passing it the configuration
-     * service and the service manager instance.
-     *
-     * @param  string $name
-     * @param  null|array $options
-     * @return Application
-     */
-    public function __invoke(ContainerInterface $container, $name, ?array $options = null)
+    public function __invoke(ContainerInterface $container): Application
     {
-        $application = new Application(
+        return new Application(
             $container,
-            $container->get('EventManager'),
+            $container->get(EventManagerInterface::class),
+            $container->get(ApplicationListenerProvider::class),
             $container->get('Request'),
             $container->get('Response')
         );
-
-        if (! $container->has('config')) {
-            return $application;
-        }
-
-        $em        = $application->getEventManager();
-        $listeners = $container->get('config')[Application::class]['listeners'] ?? [];
-        foreach ($listeners as $listener) {
-            $container->get($listener)->attach($em);
-        }
-        return $application;
     }
 }
