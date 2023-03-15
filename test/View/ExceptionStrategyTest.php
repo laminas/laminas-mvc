@@ -16,6 +16,8 @@ class ExceptionStrategyTest extends TestCase
 {
     use EventListenerIntrospectionTrait;
 
+    private ExceptionStrategy $strategy;
+
     public function setUp(): void
     {
         $this->strategy = new ExceptionStrategy();

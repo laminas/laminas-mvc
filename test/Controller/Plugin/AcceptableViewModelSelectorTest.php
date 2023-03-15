@@ -2,6 +2,7 @@
 
 namespace LaminasTest\Mvc\Controller\Plugin;
 
+use Laminas\Mvc\Controller\Plugin\AcceptableViewModelSelector;
 use Laminas\View\Model\JsonModel;
 use Laminas\View\Model\FeedModel;
 use Laminas\View\Model\ViewModel;
@@ -16,6 +17,11 @@ use PHPUnit\Framework\TestCase;
 
 class AcceptableViewModelSelectorTest extends TestCase
 {
+    private Request $request;
+    private MvcEvent $event;
+    private SampleController $controller;
+    private AcceptableViewModelSelector $plugin;
+
     public function setUp(): void
     {
         $this->request = new Request();

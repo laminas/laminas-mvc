@@ -9,6 +9,9 @@ use PHPUnit\Framework\TestCase;
 
 class ServiceListenerFactoryTest extends TestCase
 {
+    private ServiceManager $sm;
+    private ServiceListenerFactory $factory;
+
     public function setUp(): void
     {
         $this->sm = $this->getMockBuilder(ServiceManager::class)

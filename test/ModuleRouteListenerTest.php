@@ -14,6 +14,12 @@ use PHPUnit\Framework\TestCase;
 
 class ModuleRouteListenerTest extends TestCase
 {
+    private Request $request;
+    private EventManager $events;
+    private TreeRouteStack $router;
+    private RouteListener $routeListener;
+    private ModuleRouteListener $moduleRouteListener;
+
     public function setUp(): void
     {
         $this->request             = new Request();

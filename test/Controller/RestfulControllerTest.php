@@ -28,6 +28,8 @@ class RestfulControllerTest extends TestCase
     public $response;
     public $routeMatch;
     public $event;
+    private SharedEventManager $sharedEvents;
+    private EventManager $events;
 
     public function setUp(): void
     {
