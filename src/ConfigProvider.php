@@ -14,6 +14,7 @@ use Laminas\Mvc\Controller\PluginManager;
 use Laminas\Mvc\RouteListener;
 use Laminas\Mvc\SendResponseListener;
 use Laminas\Mvc\Service\ApplicationFactory;
+use Laminas\Mvc\Service\ApplicationListenersProviderFactory;
 use Laminas\Mvc\Service\ControllerManagerFactory;
 use Laminas\Mvc\Service\ControllerPluginManagerFactory;
 use Laminas\Mvc\Service\DispatchListenerFactory;
@@ -59,7 +60,10 @@ class ConfigProvider
     public function __invoke(): array
     {
         return [
-            'dependencies' => $this->getDependencies(),
+            'dependencies'     => $this->getDependencies(),
+            Application::class => [
+                'listeners' => [],
+            ],
         ];
     }
 
@@ -97,36 +101,37 @@ class ConfigProvider
                 ControllerManager::class           => 'ControllerManager',
             ],
             'factories'    => [
-                'EventManager'                  => EventManagerFactory::class,
-                'SharedEventManager'            => static fn() => new SharedEventManager(),
-                'Application'                   => ApplicationFactory::class,
-                'ControllerManager'             => ControllerManagerFactory::class,
-                'ControllerPluginManager'       => ControllerPluginManagerFactory::class,
-                'DispatchListener'              => DispatchListenerFactory::class,
-                'HttpExceptionStrategy'         => HttpExceptionStrategyFactory::class,
-                'HttpMethodListener'            => HttpMethodListenerFactory::class,
-                'HttpRouteNotFoundStrategy'     => HttpRouteNotFoundStrategyFactory::class,
-                'HttpViewManager'               => HttpViewManagerFactory::class,
-                'InjectTemplateListener'        => InjectTemplateListenerFactory::class,
-                'PaginatorPluginManager'        => PaginatorPluginManagerFactory::class,
-                'Request'                       => RequestFactory::class,
-                'Response'                      => ResponseFactory::class,
-                'ViewHelperManager'             => ViewHelperManagerFactory::class,
-                DefaultRenderingStrategy::class => HttpDefaultRenderingStrategyFactory::class,
-                'ViewFeedStrategy'              => ViewFeedStrategyFactory::class,
-                'ViewJsonStrategy'              => ViewJsonStrategyFactory::class,
-                'ViewManager'                   => ViewManagerFactory::class,
-                'ViewResolver'                  => ViewResolverFactory::class,
-                'ViewTemplateMapResolver'       => ViewTemplateMapResolverFactory::class,
-                'ViewTemplatePathStack'         => ViewTemplatePathStackFactory::class,
-                'ViewPrefixPathStackResolver'   => ViewPrefixPathStackResolverFactory::class,
-                RouteListener::class            => InvokableFactory::class,
-                SendResponseListener::class     => SendResponseListenerFactory::class,
-                FeedRenderer::class             => InvokableFactory::class,
-                JsonRenderer::class             => InvokableFactory::class,
-                PhpRenderer::class              => ViewPhpRendererFactory::class,
-                PhpRendererStrategy::class      => ViewPhpRendererStrategyFactory::class,
-                View::class                     => ViewFactory::class,
+                'EventManager'                      => EventManagerFactory::class,
+                'SharedEventManager'                => static fn() => new SharedEventManager(),
+                'Application'                       => ApplicationFactory::class,
+                'ControllerManager'                 => ControllerManagerFactory::class,
+                'ControllerPluginManager'           => ControllerPluginManagerFactory::class,
+                'DispatchListener'                  => DispatchListenerFactory::class,
+                'HttpExceptionStrategy'             => HttpExceptionStrategyFactory::class,
+                'HttpMethodListener'                => HttpMethodListenerFactory::class,
+                'HttpRouteNotFoundStrategy'         => HttpRouteNotFoundStrategyFactory::class,
+                'HttpViewManager'                   => HttpViewManagerFactory::class,
+                'InjectTemplateListener'            => InjectTemplateListenerFactory::class,
+                'PaginatorPluginManager'            => PaginatorPluginManagerFactory::class,
+                'Request'                           => RequestFactory::class,
+                'Response'                          => ResponseFactory::class,
+                'ViewHelperManager'                 => ViewHelperManagerFactory::class,
+                DefaultRenderingStrategy::class     => HttpDefaultRenderingStrategyFactory::class,
+                'ViewFeedStrategy'                  => ViewFeedStrategyFactory::class,
+                'ViewJsonStrategy'                  => ViewJsonStrategyFactory::class,
+                'ViewManager'                       => ViewManagerFactory::class,
+                'ViewResolver'                      => ViewResolverFactory::class,
+                'ViewTemplateMapResolver'           => ViewTemplateMapResolverFactory::class,
+                'ViewTemplatePathStack'             => ViewTemplatePathStackFactory::class,
+                'ViewPrefixPathStackResolver'       => ViewPrefixPathStackResolverFactory::class,
+                ApplicationListenersProvider::class => ApplicationListenersProviderFactory::class,
+                RouteListener::class                => InvokableFactory::class,
+                SendResponseListener::class         => SendResponseListenerFactory::class,
+                FeedRenderer::class                 => InvokableFactory::class,
+                JsonRenderer::class                 => InvokableFactory::class,
+                PhpRenderer::class                  => ViewPhpRendererFactory::class,
+                PhpRendererStrategy::class          => ViewPhpRendererStrategyFactory::class,
+                View::class                         => ViewFactory::class,
             ],
             'shared'       => [
                 'EventManager' => false,
