@@ -18,6 +18,11 @@ use PHPUnit\Framework\TestCase;
 
 class ControllerManagerTest extends TestCase
 {
+    private SharedEventManager $sharedEvents;
+    private EventManager $events;
+    private ServiceManager $services;
+    private ControllerManager $controllers;
+
     public function setUp(): void
     {
         $this->sharedEvents = new SharedEventManager();

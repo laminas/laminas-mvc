@@ -7,6 +7,7 @@ namespace LaminasTest\Mvc\Controller\Plugin;
 use Laminas\Http\Header\Accept;
 use Laminas\Http\Header\Accept\FieldValuePart\AcceptFieldValuePart;
 use Laminas\Http\Request;
+use Laminas\Mvc\Controller\Plugin\AcceptableViewModelSelector;
 use Laminas\Mvc\Exception\InvalidArgumentException;
 use Laminas\Mvc\MvcEvent;
 use Laminas\View\Model\FeedModel;
@@ -17,6 +18,11 @@ use PHPUnit\Framework\TestCase;
 
 class AcceptableViewModelSelectorTest extends TestCase
 {
+    private Request $request;
+    private MvcEvent $event;
+    private SampleController $controller;
+    private AcceptableViewModelSelector $plugin;
+
     public function setUp(): void
     {
         $this->request = new Request();

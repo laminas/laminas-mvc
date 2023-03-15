@@ -36,6 +36,9 @@ class ActionControllerTest extends TestCase
     public $request;
     /** @var ResponseInterface|null */
     public $response;
+    private RouteMatch $routeMatch;
+    private SharedEventManager $sharedEvents;
+    private EventManager $events;
 
     public function setUp(): void
     {

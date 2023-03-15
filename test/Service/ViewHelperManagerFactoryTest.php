@@ -23,6 +23,9 @@ use function sprintf;
 
 class ViewHelperManagerFactoryTest extends TestCase
 {
+    private ServiceManager $services;
+    private ViewHelperManagerFactory $factory;
+
     public function setUp(): void
     {
         $this->services = new ServiceManager();

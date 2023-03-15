@@ -18,6 +18,10 @@ class InjectViewModelListenerTest extends TestCase
 {
     use EventListenerIntrospectionTrait;
 
+    private InjectViewModelListener $listener;
+    private MvcEvent $event;
+    private RouteMatch $routeMatch;
+
     protected function setUp(): void
     {
         $this->listener   = new InjectViewModelListener();

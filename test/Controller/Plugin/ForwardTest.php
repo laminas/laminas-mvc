@@ -40,6 +40,7 @@ class ForwardTest extends TestCase
 
     /** @var Forward */
     private $plugin;
+    private ServiceManager $services;
 
     public function setUp(): void
     {

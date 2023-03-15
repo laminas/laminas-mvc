@@ -13,6 +13,10 @@ use PHPUnit\Framework\TestCase;
 
 class LayoutTest extends TestCase
 {
+    private MvcEvent $event;
+    private SampleController $controller;
+    private LayoutPlugin $plugin;
+
     public function setUp(): void
     {
         $this->event      = $event = new MvcEvent();

@@ -43,6 +43,8 @@ class RestfulControllerTest extends TestCase
     public $routeMatch;
     /** @var MvcEvent */
     public $event;
+    private SharedEventManager $sharedEvents;
+    private EventManager $events;
 
     public function setUp(): void
     {

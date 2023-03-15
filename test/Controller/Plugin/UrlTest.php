@@ -19,6 +19,10 @@ use PHPUnit\Framework\TestCase;
 
 class UrlTest extends TestCase
 {
+    private SimpleRouteStack $router;
+    private SampleController $controller;
+    private UrlPlugin $plugin;
+
     public function setUp(): void
     {
         $router = new SimpleRouteStack();

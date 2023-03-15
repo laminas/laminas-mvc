@@ -18,6 +18,13 @@ use PHPUnit\Framework\TestCase;
 
 class RedirectTest extends TestCase
 {
+    private Response $response;
+    private SimpleRouteStack $router;
+    private RouteMatch $routeMatch;
+    private MvcEvent $event;
+    private SampleController $controller;
+    private RedirectPlugin $plugin;
+
     public function setUp(): void
     {
         $this->response = new Response();
