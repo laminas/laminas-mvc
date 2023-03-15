@@ -17,7 +17,10 @@ use function sprintf;
 use const SORT_REGULAR;
 
 /**
- * Provides lazy container 
+ * Double-dispatch listener provider for Application to ensure default listeners and to ensure listeners attached
+ * once on Application instantiation.
+ *
+ * Delays fetching listener aggregates from container until attempt to attach them is made.
  */
 final class ApplicationListenersProvider
 {
