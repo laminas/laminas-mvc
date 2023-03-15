@@ -1,50 +1,109 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.30.0@d0bc6e25d89f649e4f36a534f330f8bb4643dd69">
+<files psalm-version="5.8.0@9cf4f60a333f779ad3bc704a555920e81d4fdcda">
   <file src="src/Application.php">
-    <ImplementedReturnTypeMismatch occurrences="1">
+    <ImplementedReturnTypeMismatch>
       <code>Application</code>
     </ImplementedReturnTypeMismatch>
-    <MissingClosureParamType occurrences="1">
+    <MissingClosureParamType>
       <code>$r</code>
     </MissingClosureParamType>
-    <PropertyNotSetInConstructor occurrences="1">
+    <MixedArgument>
+      <code><![CDATA[$events ?: $serviceManager->get('EventManager')]]></code>
+      <code>$listener</code>
+      <code><![CDATA[$serviceManager->get('Router')]]></code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$listener</code>
+      <code>$response</code>
+      <code>$response</code>
+      <code><![CDATA[$this->request]]></code>
+      <code><![CDATA[$this->response]]></code>
+    </MixedAssignment>
+    <MixedInferredReturnType>
+      <code>array|object</code>
+    </MixedInferredReturnType>
+    <MixedMethodCall>
+      <code>attach</code>
+    </MixedMethodCall>
+    <MixedReturnStatement>
+      <code><![CDATA[$this->serviceManager->get('config')]]></code>
+    </MixedReturnStatement>
+    <PropertyNotSetInConstructor>
       <code>$event</code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/ConfigProvider.php">
-    <MissingClosureParamType occurrences="2">
+    <MissingClosureParamType>
       <code>$first</code>
       <code>$second</code>
     </MissingClosureParamType>
+    <MixedArgument>
+      <code><![CDATA[$container->get('EventManager')]]></code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$container</code>
+      <code>$instance</code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code>get</code>
+    </MixedMethodCall>
   </file>
   <file src="src/Controller/AbstractActionController.php">
-    <PossiblyNullReference occurrences="1">
+    <MixedArgument>
+      <code>$action</code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$action</code>
+      <code>$actionResponse</code>
+      <code>$helper</code>
+    </MixedAssignment>
+    <MixedFunctionCall>
+      <code><![CDATA[$helper($event->getResponse())]]></code>
+    </MixedFunctionCall>
+    <MixedInferredReturnType>
+      <code>ViewModel</code>
+    </MixedInferredReturnType>
+    <MixedReturnStatement>
+      <code><![CDATA[$helper($event->getResponse())]]></code>
+    </MixedReturnStatement>
+    <PossiblyNullReference>
       <code>setParam</code>
     </PossiblyNullReference>
+    <PossiblyUnusedMethod>
+      <code>indexAction</code>
+      <code>notFoundAction</code>
+    </PossiblyUnusedMethod>
   </file>
   <file src="src/Controller/AbstractController.php">
-    <DocblockTypeContradiction occurrences="10">
-      <code>! $this-&gt;event</code>
-      <code>! $this-&gt;events</code>
-      <code>! $this-&gt;plugins</code>
-      <code>! $this-&gt;request</code>
-      <code>! $this-&gt;response</code>
-      <code>$this-&gt;event</code>
-      <code>$this-&gt;events</code>
-      <code>$this-&gt;plugins</code>
-      <code>$this-&gt;request</code>
-      <code>$this-&gt;response</code>
+    <DocblockTypeContradiction>
+      <code><![CDATA[! $this->event]]></code>
+      <code><![CDATA[! $this->events]]></code>
+      <code><![CDATA[! $this->plugins]]></code>
+      <code><![CDATA[! $this->request]]></code>
+      <code><![CDATA[! $this->response]]></code>
+      <code><![CDATA[$this->event]]></code>
+      <code><![CDATA[$this->events]]></code>
+      <code><![CDATA[$this->plugins]]></code>
+      <code><![CDATA[$this->request]]></code>
+      <code><![CDATA[$this->response]]></code>
     </DocblockTypeContradiction>
-    <ImplementedReturnTypeMismatch occurrences="1">
+    <ImplementedReturnTypeMismatch>
       <code>AbstractController</code>
     </ImplementedReturnTypeMismatch>
-    <LessSpecificReturnStatement occurrences="1">
-      <code>$this-&gt;event</code>
+    <InvalidArgument>
+      <code><![CDATA[array_merge(
+            $identifiers,
+            array_values(class_implements($className)),
+            (array) $this->eventIdentifier
+        )]]></code>
+    </InvalidArgument>
+    <LessSpecificReturnStatement>
+      <code><![CDATA[$this->event]]></code>
     </LessSpecificReturnStatement>
-    <MissingClosureParamType occurrences="1">
+    <MissingClosureParamType>
       <code>$test</code>
     </MissingClosureParamType>
-    <MissingConstructor occurrences="40">
+    <MissingConstructor>
       <code>$event</code>
       <code>$event</code>
       <code>$event</code>
@@ -86,29 +145,96 @@
       <code>$response</code>
       <code>$response</code>
     </MissingConstructor>
-    <MoreSpecificReturnType occurrences="1">
+    <MixedAssignment>
+      <code>$plugin</code>
+    </MixedAssignment>
+    <MoreSpecificReturnType>
       <code>MvcEvent</code>
     </MoreSpecificReturnType>
-    <ParamNameMismatch occurrences="2">
+    <ParamNameMismatch>
       <code>$e</code>
       <code>$events</code>
     </ParamNameMismatch>
+    <PossiblyUnusedMethod>
+      <code>getRequest</code>
+    </PossiblyUnusedMethod>
+    <PossiblyUnusedReturnValue>
+      <code>mixed</code>
+    </PossiblyUnusedReturnValue>
   </file>
   <file src="src/Controller/AbstractRestfulController.php">
-    <DocblockTypeContradiction occurrences="2">
+    <DocblockTypeContradiction>
       <code>! $headerContentType</code>
       <code>$headerContentType</code>
     </DocblockTypeContradiction>
-    <PossiblyNullArgument occurrences="1">
+    <MixedArgument>
+      <code>$action</code>
+      <code>$content</code>
+      <code>$contentTypeValue</code>
+      <code>$request</code>
+      <code><![CDATA[$request->getContent()]]></code>
+      <code><![CDATA[$request->getContent()]]></code>
+      <code><![CDATA[$request->getMethod()]]></code>
+    </MixedArgument>
+    <MixedArrayOffset>
+      <code><![CDATA[$this->customHttpMethodsMap[$method]]]></code>
+    </MixedArrayOffset>
+    <MixedAssignment>
+      <code>$action</code>
+      <code>$action</code>
+      <code>$callable</code>
+      <code>$content</code>
+      <code>$contentTypeValue</code>
+      <code>$headResult</code>
+      <code>$id</code>
+      <code>$id</code>
+      <code>$id</code>
+      <code>$id</code>
+      <code>$id</code>
+      <code>$return</code>
+      <code>$return</code>
+      <code>$return</code>
+      <code>$return</code>
+      <code>$return</code>
+      <code>$return</code>
+      <code>$return</code>
+      <code>$return</code>
+      <code>$return</code>
+      <code>$return</code>
+      <code>$return</code>
+    </MixedAssignment>
+    <MixedFunctionCall>
+      <code>$callable($e)</code>
+    </MixedFunctionCall>
+    <MixedInferredReturnType>
+      <code>object|string|array</code>
+    </MixedInferredReturnType>
+    <MixedMethodCall>
+      <code>get</code>
+      <code>get</code>
+      <code>getContent</code>
+      <code>toArray</code>
+    </MixedMethodCall>
+    <MixedReturnStatement>
+      <code>$content</code>
+      <code><![CDATA[$this->jsonDecode($request->getContent())]]></code>
+    </MixedReturnStatement>
+    <PossiblyNullArgument>
       <code>$contentType</code>
     </PossiblyNullArgument>
-    <RedundantCastGivenDocblockType occurrences="1">
+    <PossiblyUnusedMethod>
+      <code>notFoundAction</code>
+    </PossiblyUnusedMethod>
+    <PossiblyUnusedReturnValue>
+      <code>mixed</code>
+    </PossiblyUnusedReturnValue>
+    <RedundantCastGivenDocblockType>
       <code>(string) $name</code>
     </RedundantCastGivenDocblockType>
-    <TypeDoesNotContainType occurrences="1">
+    <TypeDoesNotContainType>
       <code>! is_array($parsedParams)</code>
     </TypeDoesNotContainType>
-    <UndefinedInterfaceMethod occurrences="18">
+    <UndefinedInterfaceMethod>
       <code>getHeaders</code>
       <code>getMethod</code>
       <code>getPost</code>
@@ -130,34 +256,46 @@
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/Controller/ControllerManager.php">
-    <DocblockTypeContradiction occurrences="2">
+    <ArgumentTypeCoercion>
+      <code>$config</code>
+    </ArgumentTypeCoercion>
+    <DocblockTypeContradiction>
       <code>! $events</code>
       <code>! $events</code>
     </DocblockTypeContradiction>
-    <InvalidArgument occurrences="1">
-      <code>$config</code>
-    </InvalidArgument>
-    <MissingReturnType occurrences="2">
+    <MissingReturnType>
       <code>injectEventManager</code>
       <code>injectPluginManager</code>
     </MissingReturnType>
-    <NonInvariantDocblockPropertyType occurrences="1">
+    <MixedArgument>
+      <code><![CDATA[$container->get('EventManager')]]></code>
+    </MixedArgument>
+    <NonInvariantDocblockPropertyType>
       <code>$instanceOf</code>
     </NonInvariantDocblockPropertyType>
   </file>
   <file src="src/Controller/LazyControllerAbstractFactory.php">
-    <LessSpecificReturnStatement occurrences="3">
+    <LessSpecificReturnStatement>
       <code>new $requestedName()</code>
       <code>new $requestedName()</code>
       <code>new $requestedName(...$parameters)</code>
     </LessSpecificReturnStatement>
-    <MissingParamType occurrences="1">
+    <MissingParamType>
       <code>$requestedName</code>
     </MissingParamType>
-    <MoreSpecificReturnType occurrences="1">
+    <MixedArgument>
+      <code>$requestedName</code>
+      <code>$requestedName</code>
+    </MixedArgument>
+    <MixedMethodCall>
+      <code>new $requestedName()</code>
+      <code>new $requestedName()</code>
+      <code>new $requestedName(...$parameters)</code>
+    </MixedMethodCall>
+    <MoreSpecificReturnType>
       <code>DispatchableInterface</code>
     </MoreSpecificReturnType>
-    <UndefinedClass occurrences="9">
+    <UndefinedClass>
       <code>ConsoleAdapterInterface</code>
       <code>FilterPluginManager</code>
       <code>HydratorPluginManager</code>
@@ -170,100 +308,200 @@
     </UndefinedClass>
   </file>
   <file src="src/Controller/Plugin/AcceptableViewModelSelector.php">
-    <DocblockTypeContradiction occurrences="1">
+    <DocblockTypeContradiction>
       <code>is_array($modelAcceptString)</code>
     </DocblockTypeContradiction>
-    <InvalidArgument occurrences="1">
+    <InvalidArgument>
       <code>$name</code>
     </InvalidArgument>
-    <InvalidReturnStatement occurrences="3">
+    <InvalidCast>
+      <code>$name</code>
+    </InvalidCast>
+    <InvalidReturnStatement>
       <code>$res</code>
-      <code>$this-&gt;defaultViewModelName</code>
-      <code>$this-&gt;extractViewModelName($res)</code>
+      <code><![CDATA[$this->defaultViewModelName]]></code>
+      <code><![CDATA[$this->extractViewModelName($res)]]></code>
     </InvalidReturnStatement>
-    <InvalidReturnType occurrences="2">
-      <code>AbstractFieldValuePart|null</code>
-      <code>ModelInterface|null</code>
-    </InvalidReturnType>
-    <LessSpecificReturnStatement occurrences="1">
+    <LessSpecificReturnStatement>
       <code>new $name()</code>
     </LessSpecificReturnStatement>
-    <MissingConstructor occurrences="3">
+    <MissingConstructor>
       <code>$defaultMatchAgainst</code>
       <code>$event</code>
       <code>$request</code>
     </MissingConstructor>
-    <MoreSpecificReturnType occurrences="1">
+    <MixedArgument>
+      <code>$modelAcceptString</code>
+      <code>$modelName</code>
+      <code>$modelString</code>
+    </MixedArgument>
+    <MixedArgumentTypeCoercion>
+      <code>$modelName</code>
+    </MixedArgumentTypeCoercion>
+    <MixedArrayAccess>
+      <code>$modelAcceptString[key($modelAcceptString)]</code>
+      <code><![CDATA[$res->getMatchedAgainst()->params[self::INJECT_VIEWMODEL_NAME]]]></code>
+    </MixedArrayAccess>
+    <MixedAssignment>
+      <code>$modelAcceptString</code>
+      <code>$modelName</code>
+      <code>$modelString</code>
+      <code>$modelStrings</code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code>new $name()</code>
+    </MixedMethodCall>
+    <MixedOperand>
+      <code>$modelAcceptString</code>
+    </MixedOperand>
+    <MoreSpecificReturnType>
       <code>ModelInterface|null</code>
     </MoreSpecificReturnType>
-    <PossiblyInvalidMethodCall occurrences="2">
+    <PossiblyInvalidMethodCall>
       <code>get</code>
       <code>has</code>
     </PossiblyInvalidMethodCall>
-    <PossiblyNullArgument occurrences="1">
+    <PossiblyNullArgument>
       <code>$modelName</code>
     </PossiblyNullArgument>
-    <PossiblyNullArrayAccess occurrences="1">
-      <code>$res-&gt;getMatchedAgainst()-&gt;params[self::INJECT_VIEWMODEL_NAME]</code>
+    <PossiblyNullArrayAccess>
+      <code><![CDATA[$res->getMatchedAgainst()->params[self::INJECT_VIEWMODEL_NAME]]]></code>
     </PossiblyNullArrayAccess>
-    <PossiblyNullPropertyAssignmentValue occurrences="1">
+    <PossiblyNullPropertyAssignmentValue>
       <code>$matchAgainst</code>
     </PossiblyNullPropertyAssignmentValue>
-    <PossiblyNullPropertyFetch occurrences="1">
-      <code>$res-&gt;getMatchedAgainst()-&gt;params</code>
+    <PossiblyNullPropertyFetch>
+      <code><![CDATA[$res->getMatchedAgainst()->params]]></code>
     </PossiblyNullPropertyFetch>
-    <PossiblyUndefinedMethod occurrences="2">
+    <PossiblyUndefinedMethod>
       <code>get</code>
       <code>has</code>
     </PossiblyUndefinedMethod>
-    <RedundantCastGivenDocblockType occurrences="1">
+    <RedundantCastGivenDocblockType>
       <code>(string) $defaultViewModelName</code>
     </RedundantCastGivenDocblockType>
-    <RedundantConditionGivenDocblockType occurrences="5">
+    <RedundantConditionGivenDocblockType>
       <code>$modelAcceptString</code>
-      <code>$this-&gt;event</code>
-      <code>$this-&gt;event</code>
-      <code>$this-&gt;request</code>
-      <code>$this-&gt;request</code>
+      <code><![CDATA[$this->event]]></code>
+      <code><![CDATA[$this->request]]></code>
     </RedundantConditionGivenDocblockType>
   </file>
   <file src="src/Controller/Plugin/Forward.php">
-    <PossiblyNullArgument occurrences="1">
+    <MixedArgument>
+      <code>$callback</code>
+      <code>$currentEvent</code>
+      <code>$eventName</code>
+      <code>$priority</code>
+    </MixedArgument>
+    <MixedArgumentTypeCoercion>
+      <code>$eventName</code>
+      <code>$id</code>
+    </MixedArgumentTypeCoercion>
+    <MixedArrayAccess>
+      <code><![CDATA[$current['class']]]></code>
+      <code><![CDATA[$current['event']]]></code>
+      <code><![CDATA[$current['event']]]></code>
+      <code><![CDATA[$current['id']]]></code>
+      <code><![CDATA[$current['id']]]></code>
+      <code><![CDATA[$current['id']]]></code>
+    </MixedArrayAccess>
+    <MixedArrayOffset>
+      <code><![CDATA[$formattedProblems[$current['id']]]]></code>
+      <code><![CDATA[$formattedProblems[$current['id']]]]></code>
+      <code><![CDATA[$formattedProblems[$current['id']]]]></code>
+      <code><![CDATA[$formattedProblems[$current['id']]]]></code>
+      <code><![CDATA[$formattedProblems[$current['id']]]]></code>
+      <code><![CDATA[$formattedProblems[$current['id']][$current['event']]]]></code>
+      <code><![CDATA[$formattedProblems[$current['id']][$current['event']]]]></code>
+      <code><![CDATA[$formattedProblems[$current['id']][$current['event']]]]></code>
+      <code>$results[$id][$eventName][$priority]</code>
+    </MixedArrayOffset>
+    <MixedAssignment>
+      <code>$callback</code>
+      <code>$callbacks</code>
+      <code>$class</code>
+      <code>$controller</code>
+      <code>$current</code>
+      <code>$current</code>
+      <code>$currentCallback</code>
+      <code>$currentEvent</code>
+      <code>$currentPriorityEvents</code>
+      <code>$eventArray</code>
+      <code>$eventName</code>
+      <code><![CDATA[$formattedProblems[$current['id']][$current['event']][]]]></code>
+      <code>$priority</code>
+      <code>$priority</code>
+      <code>$results[$id][$eventName][$priority]</code>
+      <code>$return</code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code>dispatch</code>
+    </MixedMethodCall>
+    <MixedPropertyTypeCoercion>
+      <code>$listeners</code>
+    </MixedPropertyTypeCoercion>
+    <PossiblyNullArgument>
       <code>$sharedEvents</code>
     </PossiblyNullArgument>
-    <PossiblyNullReference occurrences="1">
+    <PossiblyNullReference>
       <code>getMatchedRouteName</code>
     </PossiblyNullReference>
-    <PropertyNotSetInConstructor occurrences="1">
+    <PossiblyUnusedMethod>
+      <code>setMaxNestedForwards</code>
+    </PossiblyUnusedMethod>
+    <PropertyNotSetInConstructor>
       <code>$event</code>
     </PropertyNotSetInConstructor>
-    <RedundantCastGivenDocblockType occurrences="1">
+    <RedundantCastGivenDocblockType>
       <code>(int) $maxNestedForwards</code>
     </RedundantCastGivenDocblockType>
-    <RedundantConditionGivenDocblockType occurrences="4">
+    <RedundantConditionGivenDocblockType>
       <code>$event</code>
-      <code>$event</code>
-      <code>$this-&gt;event</code>
-      <code>$this-&gt;event</code>
+      <code><![CDATA[$this->event]]></code>
     </RedundantConditionGivenDocblockType>
-    <UndefinedDocblockClass occurrences="1">
+    <UndefinedDocblockClass>
       <code>callable|CallbackHandler</code>
     </UndefinedDocblockClass>
   </file>
   <file src="src/Controller/Plugin/Layout.php">
-    <MissingConstructor occurrences="1">
+    <MissingConstructor>
       <code>$event</code>
     </MissingConstructor>
-    <RedundantCastGivenDocblockType occurrences="1">
+    <RedundantCastGivenDocblockType>
       <code>(string) $template</code>
     </RedundantCastGivenDocblockType>
-    <RedundantConditionGivenDocblockType occurrences="2">
-      <code>$this-&gt;event</code>
-      <code>$this-&gt;event</code>
+    <RedundantConditionGivenDocblockType>
+      <code><![CDATA[$this->event]]></code>
     </RedundantConditionGivenDocblockType>
   </file>
   <file src="src/Controller/Plugin/Params.php">
-    <PossiblyNullReference occurrences="8">
+    <MixedInferredReturnType>
+      <code>array|ArrayAccess|null</code>
+      <code>null|HeaderInterface</code>
+    </MixedInferredReturnType>
+    <MixedMethodCall>
+      <code>getFiles</code>
+      <code>getFiles</code>
+      <code>getHeaders</code>
+      <code>getHeaders</code>
+      <code>getParam</code>
+      <code>getParams</code>
+      <code>getPost</code>
+      <code>getPost</code>
+      <code>getQuery</code>
+      <code>getQuery</code>
+      <code>toArray</code>
+      <code>toArray</code>
+      <code>toArray</code>
+      <code>toArray</code>
+    </MixedMethodCall>
+    <MixedReturnStatement>
+      <code><![CDATA[$this->getController()->getRequest()->getFiles($name, $default)]]></code>
+      <code><![CDATA[$this->getController()->getRequest()->getFiles($name, $default)->toArray()]]></code>
+      <code><![CDATA[$this->getController()->getRequest()->getHeaders($header, $default)]]></code>
+      <code><![CDATA[$this->getController()->getRequest()->getHeaders($header, $default)->toArray()]]></code>
+    </MixedReturnStatement>
+    <PossiblyNullReference>
       <code>getRequest</code>
       <code>getRequest</code>
       <code>getRequest</code>
@@ -273,7 +511,7 @@
       <code>getRequest</code>
       <code>getRequest</code>
     </PossiblyNullReference>
-    <UndefinedInterfaceMethod occurrences="10">
+    <UndefinedInterfaceMethod>
       <code>getRequest</code>
       <code>getRequest</code>
       <code>getRequest</code>
@@ -287,45 +525,93 @@
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/Controller/Plugin/Redirect.php">
-    <DocblockTypeContradiction occurrences="1">
+    <DocblockTypeContradiction>
       <code>is_scalar($options)</code>
     </DocblockTypeContradiction>
-    <MissingConstructor occurrences="2">
+    <MissingConstructor>
       <code>$event</code>
       <code>$response</code>
     </MissingConstructor>
-    <RedundantConditionGivenDocblockType occurrences="4">
-      <code>$this-&gt;event</code>
-      <code>$this-&gt;event</code>
-      <code>$this-&gt;response</code>
-      <code>$this-&gt;response</code>
+    <MixedArgument>
+      <code>$url</code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$url</code>
+      <code>$url</code>
+      <code>$urlPlugin</code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code>fromRoute</code>
+      <code>fromRoute</code>
+    </MixedMethodCall>
+    <RedundantConditionGivenDocblockType>
+      <code><![CDATA[$this->event]]></code>
+      <code><![CDATA[$this->response]]></code>
     </RedundantConditionGivenDocblockType>
   </file>
   <file src="src/Controller/Plugin/Service/ForwardFactory.php">
-    <MissingParamType occurrences="1">
+    <MissingParamType>
       <code>$name</code>
     </MissingParamType>
+    <MixedArgument>
+      <code>$controllers</code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$controllers</code>
+    </MixedAssignment>
   </file>
   <file src="src/Controller/Plugin/Url.php">
-    <PossiblyInvalidArgument occurrences="1">
+    <DocblockTypeContradiction>
+      <code>$params instanceof Traversable</code>
+    </DocblockTypeContradiction>
+    <MixedArgument>
+      <code>$routeMatchParams</code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$matches</code>
+      <code><![CDATA[$options['name']]]></code>
+      <code>$route</code>
+      <code>$routeMatchParams</code>
+      <code>$router</code>
+    </MixedAssignment>
+    <MixedInferredReturnType>
+      <code>string</code>
+    </MixedInferredReturnType>
+    <MixedMethodCall>
+      <code>getMatchedRouteName</code>
+      <code>getParams</code>
+    </MixedMethodCall>
+    <MixedReturnStatement>
+      <code><![CDATA[$router->assemble($params, $options)]]></code>
+    </MixedReturnStatement>
+    <PossiblyInvalidArgument>
       <code>$options</code>
     </PossiblyInvalidArgument>
-    <PossiblyInvalidArrayAssignment occurrences="1">
-      <code>$options['name']</code>
+    <PossiblyInvalidArrayAssignment>
+      <code><![CDATA[$options['name']]]></code>
     </PossiblyInvalidArrayAssignment>
   </file>
   <file src="src/Controller/PluginManager.php">
-    <DocblockTypeContradiction occurrences="1">
+    <DocblockTypeContradiction>
       <code>is_object($plugin)</code>
     </DocblockTypeContradiction>
-    <NonInvariantDocblockPropertyType occurrences="2">
+    <MixedArgument>
+      <code>$plugin</code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$plugin</code>
+    </MixedAssignment>
+    <MixedReturnStatement>
+      <code>$plugin</code>
+    </MixedReturnStatement>
+    <NonInvariantDocblockPropertyType>
       <code>$factories</code>
       <code>$instanceOf</code>
     </NonInvariantDocblockPropertyType>
-    <ParamNameMismatch occurrences="1">
+    <ParamNameMismatch>
       <code>$name</code>
     </ParamNameMismatch>
-    <UndefinedClass occurrences="7">
+    <UndefinedClass>
       <code>\Zend\Mvc\Controller\Plugin\AcceptableViewModelSelector</code>
       <code>\Zend\Mvc\Controller\Plugin\CreateHttpNotFoundModel</code>
       <code>\Zend\Mvc\Controller\Plugin\Forward</code>
@@ -336,35 +622,111 @@
     </UndefinedClass>
   </file>
   <file src="src/DispatchListener.php">
-    <ArgumentTypeCoercion occurrences="3">
+    <ArgumentTypeCoercion>
       <code>$application</code>
       <code>$application</code>
       <code>$application</code>
     </ArgumentTypeCoercion>
-    <MissingReturnType occurrences="1">
+    <MissingReturnType>
       <code>reportMonitorEvent</code>
     </MissingReturnType>
-    <UndefinedConstant occurrences="3">
+    <MixedArgument>
+      <code>$application::ERROR_CONTROLLER_INVALID</code>
+      <code>$application::ERROR_CONTROLLER_NOT_FOUND</code>
+      <code>$application::ERROR_EXCEPTION</code>
+      <code>$application::ERROR_EXCEPTION</code>
+      <code>$controllerName</code>
+      <code>$controllerName</code>
+      <code>$controllerName</code>
+      <code>$controllerName</code>
+      <code>$controllerName</code>
+      <code>$controllerName</code>
+      <code>$return</code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$controller</code>
+      <code>$controllerName</code>
+      <code>$exception</code>
+      <code>$return</code>
+      <code>$return</code>
+      <code>$return</code>
+      <code>$return</code>
+      <code>$return</code>
+      <code>$return</code>
+      <code>$return</code>
+      <code>$return</code>
+      <code>$return</code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code>dispatch</code>
+    </MixedMethodCall>
+    <UndefinedConstant>
       <code>$application::ERROR_CONTROLLER_INVALID</code>
       <code>$application::ERROR_CONTROLLER_NOT_FOUND</code>
       <code>$application::ERROR_EXCEPTION</code>
     </UndefinedConstant>
-    <UndefinedFunction occurrences="1"/>
+    <UndefinedFunction>
+      <code><![CDATA[zend_monitor_custom_event_ex(
+                $error,
+                $exception->getMessage(),
+                'Laminas Exception',
+                ['code' => $exception->getCode(), 'trace' => $exception->getTraceAsString()]
+            )]]></code>
+    </UndefinedFunction>
+  </file>
+  <file src="src/Exception/BadMethodCallException.php">
+    <UnusedClass>
+      <code>BadMethodCallException</code>
+    </UnusedClass>
+  </file>
+  <file src="src/Exception/InvalidControllerException.php">
+    <UnusedClass>
+      <code>InvalidControllerException</code>
+    </UnusedClass>
+  </file>
+  <file src="src/Exception/InvalidPluginException.php">
+    <UnusedClass>
+      <code>InvalidPluginException</code>
+    </UnusedClass>
+  </file>
+  <file src="src/Exception/MissingLocatorException.php">
+    <UnusedClass>
+      <code>MissingLocatorException</code>
+    </UnusedClass>
   </file>
   <file src="src/HttpMethodListener.php">
-    <MissingReturnType occurrences="2">
+    <MissingReturnType>
       <code>setAllowedMethods</code>
       <code>setEnabled</code>
     </MissingReturnType>
-    <RedundantCastGivenDocblockType occurrences="1">
+    <MixedArgument>
+      <code>$value</code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$value</code>
+    </MixedAssignment>
+    <RedundantCastGivenDocblockType>
       <code>(bool) $enabled</code>
     </RedundantCastGivenDocblockType>
   </file>
   <file src="src/MvcEvent.php">
-    <DocblockTypeContradiction occurrences="1">
-      <code>null === $this-&gt;viewModel</code>
+    <DocblockTypeContradiction>
+      <code><![CDATA[null === $this->viewModel]]></code>
     </DocblockTypeContradiction>
-    <PropertyNotSetInConstructor occurrences="5">
+    <MissingTemplateParam>
+      <code>MvcEvent</code>
+    </MissingTemplateParam>
+    <MixedInferredReturnType>
+      <code>string</code>
+      <code>string</code>
+      <code>string</code>
+    </MixedInferredReturnType>
+    <MixedReturnStatement>
+      <code><![CDATA[$this->getParam('controller')]]></code>
+      <code><![CDATA[$this->getParam('controller-class')]]></code>
+      <code><![CDATA[$this->getParam('error', '')]]></code>
+    </MixedReturnStatement>
+    <PropertyNotSetInConstructor>
       <code>$application</code>
       <code>$request</code>
       <code>$response</code>
@@ -373,143 +735,383 @@
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/ResponseSender/AbstractResponseSender.php">
-    <UndefinedInterfaceMethod occurrences="2">
+    <MixedArgument>
+      <code><![CDATA[$header->toString()]]></code>
+      <code>$status</code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$header</code>
+      <code>$status</code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code>toString</code>
+    </MixedMethodCall>
+    <UndefinedInterfaceMethod>
       <code>getHeaders</code>
       <code>renderStatusLine</code>
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/ResponseSender/HttpResponseSender.php">
-    <ImplementedReturnTypeMismatch occurrences="1">
+    <ImplementedReturnTypeMismatch>
       <code>HttpResponseSender</code>
     </ImplementedReturnTypeMismatch>
-    <UndefinedMethod occurrences="1">
+    <MixedArgument>
+      <code><![CDATA[$response->getContent()]]></code>
+    </MixedArgument>
+    <PossiblyUnusedMethod>
+      <code>sendContent</code>
+    </PossiblyUnusedMethod>
+    <UndefinedMethod>
       <code>sendContent</code>
     </UndefinedMethod>
   </file>
   <file src="src/ResponseSender/PhpEnvironmentResponseSender.php">
-    <ImplementedReturnTypeMismatch occurrences="1">
+    <ImplementedReturnTypeMismatch>
       <code>PhpEnvironmentResponseSender</code>
     </ImplementedReturnTypeMismatch>
-    <UndefinedMethod occurrences="1">
+    <UndefinedMethod>
       <code>sendContent</code>
     </UndefinedMethod>
   </file>
   <file src="src/ResponseSender/SendResponseEvent.php">
-    <NonInvariantDocblockPropertyType occurrences="1">
+    <MissingTemplateParam>
+      <code>SendResponseEvent</code>
+    </MissingTemplateParam>
+    <MixedArrayAssignment>
+      <code>$contentSent[$responseObjectHash]</code>
+      <code>$headersSent[$responseObjectHash]</code>
+    </MixedArrayAssignment>
+    <MixedAssignment>
+      <code>$contentSent</code>
+      <code>$headersSent</code>
+    </MixedAssignment>
+    <NonInvariantDocblockPropertyType>
       <code>$name</code>
     </NonInvariantDocblockPropertyType>
-    <PropertyNotSetInConstructor occurrences="1">
+    <PropertyNotSetInConstructor>
       <code>$response</code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/ResponseSender/SimpleStreamResponseSender.php">
-    <ImplementedReturnTypeMismatch occurrences="1">
+    <ImplementedReturnTypeMismatch>
       <code>SimpleStreamResponseSender</code>
     </ImplementedReturnTypeMismatch>
-    <InvalidNullableReturnType occurrences="1">
+    <InvalidNullableReturnType>
       <code>SimpleStreamResponseSender</code>
     </InvalidNullableReturnType>
-    <UndefinedInterfaceMethod occurrences="1">
+    <MixedArgument>
+      <code>$stream</code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$stream</code>
+    </MixedAssignment>
+    <PossiblyUnusedReturnValue>
+      <code>SimpleStreamResponseSender</code>
+    </PossiblyUnusedReturnValue>
+    <UndefinedInterfaceMethod>
       <code>getStream</code>
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/RouteListener.php">
-    <InvalidReturnStatement occurrences="1">
-      <code>$event-&gt;getParams()</code>
+    <InvalidReturnStatement>
+      <code><![CDATA[$event->getParams()]]></code>
     </InvalidReturnStatement>
-    <PossiblyInvalidMethodCall occurrences="1">
+    <MixedAssignment>
+      <code>$results</code>
+    </MixedAssignment>
+    <MixedInferredReturnType>
+      <code>null|RouteMatch</code>
+    </MixedInferredReturnType>
+    <MixedMethodCall>
+      <code>getEventManager</code>
+      <code>last</code>
+      <code>triggerEvent</code>
+    </MixedMethodCall>
+    <MixedReturnStatement>
+      <code><![CDATA[$results->last()]]></code>
+    </MixedReturnStatement>
+    <PossiblyInvalidMethodCall>
       <code>getEventManager</code>
     </PossiblyInvalidMethodCall>
-    <PossiblyNullReference occurrences="1">
+    <PossiblyNullReference>
       <code>getEventManager</code>
     </PossiblyNullReference>
   </file>
   <file src="src/SendResponseListener.php">
-    <ImplementedReturnTypeMismatch occurrences="1">
+    <ImplementedReturnTypeMismatch>
       <code>SendResponseListener</code>
     </ImplementedReturnTypeMismatch>
-    <InvalidReturnStatement occurrences="1">
+    <InvalidReturnStatement>
       <code>$this</code>
     </InvalidReturnStatement>
-    <InvalidReturnType occurrences="1">
+    <InvalidReturnType>
       <code>SendResponseEvent</code>
     </InvalidReturnType>
-    <MissingConstructor occurrences="2">
+    <MissingConstructor>
       <code>$event</code>
       <code>$eventManager</code>
     </MissingConstructor>
   </file>
   <file src="src/Service/AbstractPluginManagerFactory.php">
-    <LessSpecificReturnStatement occurrences="1">
+    <LessSpecificReturnStatement>
       <code>new $pluginManagerClass($container, $options)</code>
     </LessSpecificReturnStatement>
-    <MoreSpecificReturnType occurrences="1">
+    <MixedAssignment>
+      <code>$pluginManagerClass</code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code>new $pluginManagerClass($container, $options)</code>
+    </MixedMethodCall>
+    <MoreSpecificReturnType>
       <code>AbstractPluginManager</code>
     </MoreSpecificReturnType>
   </file>
   <file src="src/Service/ApplicationFactory.php">
-    <ArgumentTypeCoercion occurrences="1">
+    <ArgumentTypeCoercion>
       <code>$container</code>
     </ArgumentTypeCoercion>
+    <MixedArgument>
+      <code><![CDATA[$container->get('EventManager')]]></code>
+      <code><![CDATA[$container->get('Request')]]></code>
+      <code><![CDATA[$container->get('Response')]]></code>
+      <code>$listener</code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$listener</code>
+      <code>$listeners</code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code>attach</code>
+    </MixedMethodCall>
+  </file>
+  <file src="src/Service/ControllerManagerFactory.php">
+    <MixedArgument>
+      <code>$managerConfig</code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$managerConfig</code>
+    </MixedAssignment>
   </file>
   <file src="src/Service/ControllerPluginManagerFactory.php">
-    <InvalidArgument occurrences="2">
+    <MixedArgument>
       <code>$managerConfig</code>
-      <code>$options</code>
-    </InvalidArgument>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$managerConfig</code>
+    </MixedAssignment>
+  </file>
+  <file src="src/Service/DispatchListenerFactory.php">
+    <MixedArgument>
+      <code><![CDATA[$container->get('ControllerManager')]]></code>
+    </MixedArgument>
+  </file>
+  <file src="src/Service/EventManagerFactory.php">
+    <MixedArgument>
+      <code>$shared</code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$shared</code>
+    </MixedAssignment>
   </file>
   <file src="src/Service/HttpDefaultRenderingStrategyFactory.php">
-    <MissingReturnType occurrences="1">
+    <MissingReturnType>
       <code>injectLayoutTemplate</code>
     </MissingReturnType>
+    <MixedArgument>
+      <code><![CDATA[$container->get(View::class)]]></code>
+      <code>$layout</code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$layout</code>
+    </MixedAssignment>
   </file>
   <file src="src/Service/HttpExceptionStrategyFactory.php">
-    <MissingReturnType occurrences="2">
+    <MissingReturnType>
       <code>injectDisplayExceptions</code>
       <code>injectExceptionTemplate</code>
     </MissingReturnType>
+    <MixedArgument>
+      <code>$flag</code>
+      <code>$template</code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$flag</code>
+      <code>$template</code>
+    </MixedAssignment>
   </file>
   <file src="src/Service/HttpMethodListenerFactory.php">
-    <MissingParamType occurrences="1">
+    <MissingParamType>
       <code>$name</code>
     </MissingParamType>
-    <PossiblyNullArgument occurrences="1">
+    <MixedArgument>
+      <code>$enabled</code>
+      <code>$listenerConfig</code>
+    </MixedArgument>
+    <MixedArrayAccess>
+      <code><![CDATA[$config['http_methods_listener']]]></code>
+    </MixedArrayAccess>
+    <MixedAssignment>
+      <code>$config</code>
+      <code>$enabled</code>
+      <code>$listenerConfig</code>
+    </MixedAssignment>
+    <PossiblyNullArgument>
       <code>$allowedMethods</code>
     </PossiblyNullArgument>
   </file>
   <file src="src/Service/HttpRouteNotFoundStrategyFactory.php">
-    <MissingReturnType occurrences="3">
+    <MissingReturnType>
       <code>injectDisplayExceptions</code>
       <code>injectDisplayNotFoundReason</code>
       <code>injectNotFoundTemplate</code>
     </MissingReturnType>
+    <MixedArgument>
+      <code>$flag</code>
+      <code>$flag</code>
+      <code>$template</code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$flag</code>
+      <code>$flag</code>
+      <code>$template</code>
+    </MixedAssignment>
   </file>
   <file src="src/Service/HttpViewManagerConfigTrait.php">
-    <InvalidReturnType occurrences="1">
+    <InvalidReturnType>
       <code>array</code>
     </InvalidReturnType>
+    <MixedAssignment>
+      <code>$config</code>
+    </MixedAssignment>
   </file>
   <file src="src/Service/InjectTemplateListenerFactory.php">
-    <MissingParamType occurrences="1">
+    <MissingParamType>
       <code>$name</code>
     </MissingParamType>
+    <MixedArrayAccess>
+      <code><![CDATA[$config['view_manager']['controller_map']]]></code>
+    </MixedArrayAccess>
+    <MixedAssignment>
+      <code>$config</code>
+    </MixedAssignment>
   </file>
   <file src="src/Service/PaginatorPluginManagerFactory.php">
-    <UndefinedClass occurrences="1">
+    <InvalidClassConstantType>
+      <code>PLUGIN_MANAGER_CLASS</code>
+    </InvalidClassConstantType>
+    <InvalidConstantAssignmentValue>
+      <code>PLUGIN_MANAGER_CLASS = PaginatorPluginManager::class</code>
+    </InvalidConstantAssignmentValue>
+    <UndefinedClass>
       <code>PaginatorPluginManager</code>
     </UndefinedClass>
   </file>
+  <file src="src/Service/SendResponseListenerFactory.php">
+    <MixedArgument>
+      <code><![CDATA[$container->get('EventManager')]]></code>
+    </MixedArgument>
+  </file>
+  <file src="src/Service/ViewFactory.php">
+    <MixedArgument>
+      <code>$events</code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$events</code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code>attach</code>
+    </MixedMethodCall>
+  </file>
+  <file src="src/Service/ViewFeedStrategyFactory.php">
+    <MixedArgument>
+      <code><![CDATA[$container->get('ViewFeedRenderer')]]></code>
+    </MixedArgument>
+  </file>
   <file src="src/Service/ViewHelperManagerFactory.php">
-    <InvalidArgument occurrences="1">
+    <ArgumentTypeCoercion>
       <code>$managerConfig</code>
-    </InvalidArgument>
-    <RedundantCondition occurrences="2">
-      <code>$options</code>
+    </ArgumentTypeCoercion>
+    <MixedArgument>
+      <code><![CDATA[$config['doctype']]]></code>
+      <code><![CDATA[$config['view_manager']['base_path']]]></code>
+      <code>$managerConfig</code>
+      <code><![CDATA[$request->getBasePath()]]></code>
+      <code><![CDATA[$services->get('HttpRouter')]]></code>
+    </MixedArgument>
+    <MixedArrayAccess>
+      <code><![CDATA[$config['view_manager']]]></code>
+      <code><![CDATA[$config['view_manager']['base_path']]]></code>
+    </MixedArrayAccess>
+    <MixedArrayAssignment>
+      <code><![CDATA[$managerConfig['aliases']['laminasviewhelperbasepath']]]></code>
+      <code><![CDATA[$managerConfig['aliases']['laminasviewhelperdoctype']]]></code>
+      <code><![CDATA[$managerConfig['aliases']['laminasviewhelperurl']]]></code>
+      <code><![CDATA[$managerConfig['factories'][ViewHelper\BasePath::class]]]></code>
+      <code><![CDATA[$managerConfig['factories'][ViewHelper\Doctype::class]]]></code>
+      <code><![CDATA[$managerConfig['factories'][ViewHelper\Url::class]]]></code>
+    </MixedArrayAssignment>
+    <MixedAssignment>
+      <code>$config</code>
+      <code>$config</code>
+      <code>$config</code>
+      <code>$managerConfig</code>
+      <code>$match</code>
+      <code><![CDATA[$options['factories']]]></code>
+      <code>$request</code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code>getMvcEvent</code>
+      <code>getRouteMatch</code>
+    </MixedMethodCall>
+    <PossiblyUnusedProperty>
+      <code>$defaultHelperMapClasses</code>
+    </PossiblyUnusedProperty>
+    <RedundantCondition>
       <code>$options</code>
     </RedundantCondition>
   </file>
+  <file src="src/Service/ViewJsonStrategyFactory.php">
+    <MixedArgument>
+      <code>$jsonRenderer</code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$jsonRenderer</code>
+    </MixedAssignment>
+  </file>
+  <file src="src/Service/ViewManagerFactory.php">
+    <MixedInferredReturnType>
+      <code>HttpViewManager</code>
+    </MixedInferredReturnType>
+    <MixedReturnStatement>
+      <code><![CDATA[$container->get('HttpViewManager')]]></code>
+    </MixedReturnStatement>
+  </file>
+  <file src="src/Service/ViewPhpRendererFactory.php">
+    <MixedArgument>
+      <code><![CDATA[$container->get('ViewHelperManager')]]></code>
+      <code><![CDATA[$container->get('ViewResolver')]]></code>
+    </MixedArgument>
+  </file>
+  <file src="src/Service/ViewPhpRendererStrategyFactory.php">
+    <MixedArgument>
+      <code><![CDATA[$container->get(PhpRenderer::class)]]></code>
+    </MixedArgument>
+  </file>
+  <file src="src/Service/ViewPrefixPathStackResolverFactory.php">
+    <MixedArgument>
+      <code>$prefixes</code>
+    </MixedArgument>
+    <MixedArrayAccess>
+      <code><![CDATA[$config['view_manager']]]></code>
+      <code><![CDATA[$config['view_manager']['prefix_template_path_stack']]]></code>
+    </MixedArrayAccess>
+    <MixedAssignment>
+      <code>$config</code>
+      <code>$prefixes</code>
+    </MixedAssignment>
+  </file>
   <file src="src/Service/ViewResolverFactory.php">
-    <InvalidArgument occurrences="6">
+    <InvalidArgument>
       <code>$mapResolver</code>
       <code>$mapResolver</code>
       <code>$pathResolver</code>
@@ -517,183 +1119,417 @@
       <code>$prefixPathStackResolver</code>
       <code>$prefixPathStackResolver</code>
     </InvalidArgument>
-    <UndefinedDocblockClass occurrences="3">
+    <UndefinedDocblockClass>
       <code>$mapResolver</code>
       <code>$pathResolver</code>
       <code>$prefixPathStackResolver</code>
     </UndefinedDocblockClass>
   </file>
+  <file src="src/Service/ViewTemplateMapResolverFactory.php">
+    <MixedArgument>
+      <code>$map</code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$config</code>
+      <code>$config</code>
+      <code>$map</code>
+    </MixedAssignment>
+  </file>
+  <file src="src/Service/ViewTemplatePathStackFactory.php">
+    <MixedArgument>
+      <code><![CDATA[$config['default_template_suffix']]]></code>
+      <code><![CDATA[$config['template_path_stack']]]></code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$config</code>
+      <code>$config</code>
+    </MixedAssignment>
+  </file>
+  <file src="src/View/Http/CreateViewModelListener.php">
+    <MixedArgument>
+      <code>$result</code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$result</code>
+    </MixedAssignment>
+  </file>
   <file src="src/View/Http/DefaultRenderingStrategy.php">
-    <RedundantCastGivenDocblockType occurrences="1">
+    <MixedAssignment>
+      <code>$result</code>
+    </MixedAssignment>
+    <RedundantCastGivenDocblockType>
       <code>(string) $layoutTemplate</code>
     </RedundantCastGivenDocblockType>
   </file>
   <file src="src/View/Http/ExceptionStrategy.php">
-    <DocblockTypeContradiction occurrences="2">
+    <DocblockTypeContradiction>
       <code>! $response</code>
       <code>$response</code>
     </DocblockTypeContradiction>
-    <RedundantCastGivenDocblockType occurrences="2">
+    <MixedAssignment>
+      <code>$result</code>
+      <code>$statusCode</code>
+    </MixedAssignment>
+    <RedundantCastGivenDocblockType>
       <code>(bool) $displayExceptions</code>
       <code>(string) $exceptionTemplate</code>
     </RedundantCastGivenDocblockType>
-    <UndefinedInterfaceMethod occurrences="2">
+    <UndefinedInterfaceMethod>
       <code>getStatusCode</code>
       <code>setStatusCode</code>
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/View/Http/InjectRoutematchParamsListener.php">
-    <MissingReturnType occurrences="1">
+    <MissingReturnType>
       <code>setOverwrite</code>
     </MissingReturnType>
-    <PossiblyNullReference occurrences="1">
+    <MixedAssignment>
+      <code>$params</code>
+      <code>$val</code>
+      <code>$val</code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code>offsetExists</code>
+    </MixedMethodCall>
+    <PossiblyNullReference>
       <code>getParams</code>
     </PossiblyNullReference>
-    <UndefinedMethod occurrences="1">
+    <UndefinedMethod>
       <code>get</code>
     </UndefinedMethod>
+    <UnusedClass>
+      <code>InjectRoutematchParamsListener</code>
+    </UnusedClass>
   </file>
   <file src="src/View/Http/InjectTemplateListener.php">
-    <MissingReturnType occurrences="1">
+    <MissingReturnType>
       <code>setPreferRouteMatchController</code>
     </MissingReturnType>
-    <PossiblyFalseArgument occurrences="1">
+    <MixedArgument>
+      <code>$action</code>
+      <code>$controller</code>
+      <code>$preferRouteMatchController</code>
+    </MixedArgument>
+    <MixedArgumentTypeCoercion>
+      <code>$namespace</code>
+    </MixedArgumentTypeCoercion>
+    <MixedAssignment>
+      <code>$action</code>
+      <code>$controller</code>
+      <code>$preferRouteMatchController</code>
+      <code>$replacement</code>
+      <code>$routeMatchController</code>
+    </MixedAssignment>
+    <PossiblyFalseArgument>
       <code>$template</code>
     </PossiblyFalseArgument>
-    <PossiblyFalseOperand occurrences="2">
+    <PossiblyFalseOperand>
       <code>$template</code>
-      <code>strrpos($controller, '\\')</code>
+      <code><![CDATA[strrpos($controller, '\\')]]></code>
     </PossiblyFalseOperand>
-    <PossiblyNullReference occurrences="1">
+    <PossiblyNullReference>
       <code>getParam</code>
     </PossiblyNullReference>
-    <RedundantCastGivenDocblockType occurrences="1">
+    <RedundantCastGivenDocblockType>
       <code>(bool) $preferRouteMatchController</code>
     </RedundantCastGivenDocblockType>
   </file>
   <file src="src/View/Http/RouteNotFoundStrategy.php">
-    <DocblockTypeContradiction occurrences="2">
+    <DocblockTypeContradiction>
       <code>! $response</code>
       <code>$response</code>
     </DocblockTypeContradiction>
-    <RedundantCastGivenDocblockType occurrences="3">
+    <MixedAssignment>
+      <code>$controller</code>
+      <code>$vars</code>
+    </MixedAssignment>
+    <RedundantCastGivenDocblockType>
       <code>(bool) $displayExceptions</code>
       <code>(bool) $displayNotFoundReason</code>
       <code>(string) $notFoundTemplate</code>
     </RedundantCastGivenDocblockType>
-    <UndefinedInterfaceMethod occurrences="2">
+    <UndefinedInterfaceMethod>
       <code>getStatusCode</code>
       <code>setStatusCode</code>
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/View/Http/ViewManager.php">
-    <MissingConstructor occurrences="3">
+    <MissingConstructor>
       <code>$config</code>
       <code>$event</code>
       <code>$services</code>
     </MissingConstructor>
-    <MissingReturnType occurrences="1">
+    <MissingReturnType>
       <code>injectViewModelIntoPlugin</code>
     </MissingReturnType>
-    <PossiblyNullReference occurrences="1">
+    <MixedArgument>
+      <code>$layoutTemplate</code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$config</code>
+      <code>$exceptionStrategy</code>
+      <code>$injectTemplateListener</code>
+      <code>$layoutTemplate</code>
+      <code>$listener</code>
+      <code>$listener</code>
+      <code>$mvcRenderingStrategy</code>
+      <code>$plugin</code>
+      <code>$plugins</code>
+      <code>$routeNotFoundStrategy</code>
+      <code><![CDATA[$this->config]]></code>
+      <code><![CDATA[$this->view]]></code>
+    </MixedAssignment>
+    <MixedInferredReturnType>
+      <code>View</code>
+    </MixedInferredReturnType>
+    <MixedMethodCall>
+      <code>attach</code>
+      <code>attach</code>
+      <code>attach</code>
+      <code>get</code>
+      <code>getLayoutTemplate</code>
+      <code>setRoot</code>
+    </MixedMethodCall>
+    <MixedReturnStatement>
+      <code><![CDATA[$this->view]]></code>
+    </MixedReturnStatement>
+    <PossiblyNullReference>
       <code>attach</code>
     </PossiblyNullReference>
-    <PropertyTypeCoercion occurrences="1">
+    <PropertyTypeCoercion>
       <code>$services</code>
     </PropertyTypeCoercion>
   </file>
   <file src="test/Application/AllowsReturningEarlyFromRoutingTest.php">
-    <MissingClosureParamType occurrences="1">
+    <MissingClosureParamType>
       <code>$e</code>
     </MissingClosureParamType>
+    <UnusedClosureParam>
+      <code>$e</code>
+    </UnusedClosureParam>
   </file>
   <file src="test/Application/BadControllerTrait.php">
-    <InvalidArgument occurrences="1">
+    <ArgumentTypeCoercion>
       <code>$serviceConfig</code>
-    </InvalidArgument>
-    <MissingClosureParamType occurrences="2">
+    </ArgumentTypeCoercion>
+    <MissingClosureParamType>
       <code>$services</code>
       <code>$services</code>
     </MissingClosureParamType>
-    <MissingClosureReturnType occurrences="1">
-      <code>static fn($services) =&gt; $services-&gt;get('HttpRouter')</code>
+    <MissingClosureReturnType>
+      <code><![CDATA[static fn($services) => $services->get('HttpRouter')]]></code>
     </MissingClosureReturnType>
+    <MixedArgument>
+      <code>$services</code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$application</code>
+      <code>$request</code>
+    </MixedAssignment>
+    <MixedInferredReturnType>
+      <code>Application</code>
+    </MixedInferredReturnType>
+    <MixedMethodCall>
+      <code>bootstrap</code>
+      <code>get</code>
+      <code>setUri</code>
+    </MixedMethodCall>
   </file>
   <file src="test/Application/ControllerIsDispatchedTest.php">
-    <UndefinedInterfaceMethod occurrences="1">
+    <MixedArgument>
+      <code><![CDATA[$response->getContent()]]></code>
+      <code><![CDATA[$response->toString()]]></code>
+    </MixedArgument>
+    <UndefinedInterfaceMethod>
       <code>toString</code>
     </UndefinedInterfaceMethod>
   </file>
   <file src="test/Application/ExceptionsRaisedInDispatchableShouldRaiseDispatchErrorEventTest.php">
-    <ArgumentTypeCoercion occurrences="1">
-      <code>'Exception'</code>
+    <ArgumentTypeCoercion>
+      <code><![CDATA['Exception']]></code>
     </ArgumentTypeCoercion>
-    <MissingClosureParamType occurrences="1">
+    <MissingClosureParamType>
       <code>$e</code>
     </MissingClosureParamType>
+    <MixedArgument>
+      <code><![CDATA[$response->getContent()]]></code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$exception</code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code>getMessage</code>
+      <code>getParam</code>
+    </MixedMethodCall>
   </file>
   <file src="test/Application/InabilityToRetrieveControllerShouldTriggerDispatchErrorTest.php">
-    <MissingClosureParamType occurrences="1">
+    <MissingClosureParamType>
       <code>$e</code>
     </MissingClosureParamType>
+    <MixedArgument>
+      <code><![CDATA[$response->getContent()]]></code>
+      <code><![CDATA[$response->getContent()]]></code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$controller</code>
+      <code>$error</code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code>getController</code>
+      <code>getError</code>
+    </MixedMethodCall>
+    <MixedOperand>
+      <code>$controller</code>
+      <code>$error</code>
+    </MixedOperand>
   </file>
   <file src="test/Application/InabilityToRetrieveControllerShouldTriggerExceptionTest.php">
-    <MissingClosureParamType occurrences="1">
+    <MissingClosureParamType>
       <code>$e</code>
     </MissingClosureParamType>
+    <MixedArgument>
+      <code><![CDATA[$response->getContent()]]></code>
+      <code><![CDATA[$response->getContent()]]></code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$controller</code>
+      <code>$error</code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code>getController</code>
+      <code>getError</code>
+    </MixedMethodCall>
+    <MixedOperand>
+      <code>$controller</code>
+      <code>$error</code>
+    </MixedOperand>
   </file>
   <file src="test/Application/InvalidControllerTypeShouldTriggerDispatchErrorTest.php">
-    <MissingClosureParamType occurrences="1">
+    <MissingClosureParamType>
       <code>$e</code>
     </MissingClosureParamType>
+    <MixedArgument>
+      <code><![CDATA[$response->getContent()]]></code>
+      <code><![CDATA[$response->getContent()]]></code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$class</code>
+      <code>$controller</code>
+      <code>$error</code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code>getController</code>
+      <code>getControllerClass</code>
+      <code>getError</code>
+    </MixedMethodCall>
+    <MixedOperand>
+      <code>$class</code>
+      <code>$controller</code>
+      <code>$error</code>
+    </MixedOperand>
   </file>
   <file src="test/Application/InvalidControllerTypeTrait.php">
-    <InvalidArgument occurrences="1">
+    <ArgumentTypeCoercion>
       <code>$serviceConfig</code>
-    </InvalidArgument>
-    <MissingClosureParamType occurrences="2">
+    </ArgumentTypeCoercion>
+    <MissingClosureParamType>
       <code>$services</code>
       <code>$services</code>
     </MissingClosureParamType>
-    <MissingClosureReturnType occurrences="1">
-      <code>static fn($services) =&gt; $services-&gt;get('HttpRouter')</code>
+    <MissingClosureReturnType>
+      <code><![CDATA[static fn($services) => $services->get('HttpRouter')]]></code>
     </MissingClosureReturnType>
+    <MixedArgument>
+      <code>$services</code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$application</code>
+      <code>$request</code>
+    </MixedAssignment>
+    <MixedInferredReturnType>
+      <code>Application</code>
+    </MixedInferredReturnType>
+    <MixedMethodCall>
+      <code>bootstrap</code>
+      <code>get</code>
+      <code>setUri</code>
+    </MixedMethodCall>
   </file>
   <file src="test/Application/MissingControllerTrait.php">
-    <InvalidArgument occurrences="1">
+    <ArgumentTypeCoercion>
       <code>$serviceConfig</code>
-    </InvalidArgument>
-    <MissingClosureParamType occurrences="1">
+    </ArgumentTypeCoercion>
+    <MissingClosureParamType>
       <code>$services</code>
     </MissingClosureParamType>
-    <MissingClosureReturnType occurrences="1">
-      <code>static fn($services) =&gt; $services-&gt;get('HttpRouter')</code>
+    <MissingClosureReturnType>
+      <code><![CDATA[static fn($services) => $services->get('HttpRouter')]]></code>
     </MissingClosureReturnType>
+    <MixedAssignment>
+      <code>$application</code>
+      <code>$request</code>
+    </MixedAssignment>
+    <MixedInferredReturnType>
+      <code>Application</code>
+    </MixedInferredReturnType>
+    <MixedMethodCall>
+      <code>bootstrap</code>
+      <code>get</code>
+      <code>setUri</code>
+    </MixedMethodCall>
   </file>
   <file src="test/Application/PathControllerTrait.php">
-    <InvalidArgument occurrences="1">
+    <ArgumentTypeCoercion>
       <code>$serviceConfig</code>
-    </InvalidArgument>
-    <MissingClosureParamType occurrences="2">
+    </ArgumentTypeCoercion>
+    <MissingClosureParamType>
       <code>$services</code>
       <code>$services</code>
     </MissingClosureParamType>
-    <MissingClosureReturnType occurrences="1">
-      <code>static fn($services) =&gt; $services-&gt;get('HttpRouter')</code>
+    <MissingClosureReturnType>
+      <code><![CDATA[static fn($services) => $services->get('HttpRouter')]]></code>
     </MissingClosureReturnType>
+    <MixedArgument>
+      <code>$services</code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$application</code>
+      <code>$request</code>
+    </MixedAssignment>
+    <MixedInferredReturnType>
+      <code>Application</code>
+    </MixedInferredReturnType>
+    <MixedMethodCall>
+      <code>bootstrap</code>
+      <code>get</code>
+      <code>setUri</code>
+    </MixedMethodCall>
   </file>
   <file src="test/Application/RoutingSuccessTest.php">
-    <MissingClosureParamType occurrences="1">
+    <MissingClosureParamType>
       <code>$e</code>
     </MissingClosureParamType>
+    <MixedArgument>
+      <code>$log</code>
+    </MixedArgument>
+    <MixedArrayAccess>
+      <code><![CDATA[$log['route-match']]]></code>
+    </MixedArrayAccess>
+    <MixedArrayAssignment>
+      <code><![CDATA[$log['route-match']]]></code>
+    </MixedArrayAssignment>
+    <MixedMethodCall>
+      <code>getRouteMatch</code>
+    </MixedMethodCall>
   </file>
   <file src="test/ApplicationTest.php">
-    <ArgumentTypeCoercion occurrences="3">
+    <ArgumentTypeCoercion>
       <code>$eventManager</code>
       <code>$eventManager</code>
       <code>$events</code>
+      <code>$serviceConfig</code>
     </ArgumentTypeCoercion>
-    <DeprecatedMethod occurrences="7">
+    <DeprecatedMethod>
       <code>setMethods</code>
       <code>setMethods</code>
       <code>setMethods</code>
@@ -702,7 +1538,7 @@
       <code>setMethods</code>
       <code>setMethods</code>
     </DeprecatedMethod>
-    <InvalidArgument occurrences="8">
+    <InvalidArgument>
       <code>$dispatchMock</code>
       <code>$dispatchMock</code>
       <code>$errorMock</code>
@@ -710,9 +1546,8 @@
       <code>$finishMock</code>
       <code>$routeMock</code>
       <code>$routeMock</code>
-      <code>$serviceConfig</code>
     </InvalidArgument>
-    <MissingClosureParamType occurrences="14">
+    <MissingClosureParamType>
       <code>$e</code>
       <code>$e</code>
       <code>$e</code>
@@ -727,27 +1562,159 @@
       <code>$e</code>
       <code>$e</code>
       <code>$e</code>
+      <code>$services</code>
     </MissingClosureParamType>
-    <MissingClosureReturnType occurrences="2">
-      <code>static fn($e) =&gt; $e-&gt;getResponse()-&gt;setContent($e-&gt;getResponse()-&gt;getBody() . 'foobar')</code>
+    <MissingClosureReturnType>
+      <code><![CDATA[static fn($e) => $e->getResponse()->setContent($e->getResponse()->getBody() . 'foobar')]]></code>
       <code>static function (MvcEvent $event) {</code>
     </MissingClosureReturnType>
-    <UndefinedInterfaceMethod occurrences="1">
+    <MixedArgument>
+      <code>$defaultListenerName</code>
+      <code><![CDATA[$response->getContent()]]></code>
+      <code><![CDATA[$response->getContent()]]></code>
+      <code>$router</code>
+      <code>$router</code>
+      <code>$services</code>
+      <code><![CDATA[$this->application->getResponse()->getBody()]]></code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$controllerLoader</code>
+      <code>$controllerManager</code>
+      <code>$defaultListener</code>
+      <code>$defaultListenerName</code>
+      <code>$defaultListenersNames</code>
+      <code>$defaultListeners[]</code>
+      <code>$error</code>
+      <code>$error</code>
+      <code>$events</code>
+      <code>$listener</code>
+      <code>$listener</code>
+      <code>$listenerService</code>
+      <code>$registeredListeners[]</code>
+      <code>$request</code>
+      <code>$request</code>
+      <code>$request</code>
+      <code>$request</code>
+      <code>$response</code>
+      <code>$router</code>
+      <code>$router</code>
+      <code>$router</code>
+      <code>$router</code>
+      <code>$sharedEvents</code>
+      <code>$smConfig</code>
+      <code><![CDATA[$this->application]]></code>
+    </MixedAssignment>
+    <MixedInferredReturnType>
+      <code>array</code>
+      <code>array</code>
+      <code>array</code>
+    </MixedInferredReturnType>
+    <MixedMethodCall>
+      <code>addFactory</code>
+      <code>addRoute</code>
+      <code>addRoute</code>
+      <code>addRoute</code>
+      <code>getBody</code>
+      <code>getError</code>
+      <code>getError</code>
+      <code>getResponse</code>
+      <code>getResponse</code>
+      <code>getResponse</code>
+      <code>getResponse</code>
+      <code>getSharedManager</code>
+      <code>getTarget</code>
+      <code>setContent</code>
+      <code>setFactory</code>
+      <code>setResult</code>
+      <code>setUri</code>
+      <code>setUri</code>
+      <code>setUri</code>
+    </MixedMethodCall>
+    <MixedOperand>
+      <code><![CDATA[$e->getResponse()->getBody()]]></code>
+      <code>$error</code>
+      <code>$error</code>
+    </MixedOperand>
+    <MixedReturnStatement>
+      <code><![CDATA[$r->getValue($events)]]></code>
+    </MixedReturnStatement>
+    <PossiblyUnusedParam>
+      <code>$events</code>
+    </PossiblyUnusedParam>
+    <UndefinedInterfaceMethod>
       <code>getBody</code>
     </UndefinedInterfaceMethod>
-    <UndefinedThisPropertyFetch occurrences="1">
-      <code>$this-&gt;services</code>
+    <UndefinedThisPropertyFetch>
+      <code><![CDATA[$this->services]]></code>
     </UndefinedThisPropertyFetch>
+    <UnevaluatedCode>
+      <code>$event = new MvcEvent();</code>
+      <code><![CDATA[$event->setApplication($this->application)
+              ->setRequest($this->application->getRequest())
+              ->setResponse($this->application->getResponse())
+              ->setRouter($this->serviceManager->get('Router'));]]></code>
+      <code><![CDATA[$event->setTarget($this->application);]]></code>
+      <code><![CDATA[$event->stopPropagation(true);]]></code>
+      <code><![CDATA[$listener = static function ($e) use ($marker): void {
+            $marker->{$e->getName()} = $e->propagationIsStopped();
+            $e->stopPropagation(true);
+        };]]></code>
+      <code>$marker   = (object) $marker;</code>
+      <code>$marker = [];</code>
+      <code><![CDATA[$r = new ReflectionProperty($this->application, 'event');]]></code>
+      <code><![CDATA[$r->setAccessible(true);]]></code>
+      <code><![CDATA[$r->setValue($this->application, $event);]]></code>
+      <code><![CDATA[$this->application->run();]]></code>
+      <code>foreach ($events as $event) {
+            $marker[$event] = true;
+        }</code>
+      <code><![CDATA[foreach ($events as $event) {
+            $this->application->getEventManager()->attach($event, $listener);
+        }]]></code>
+      <code><![CDATA[foreach ($events as $event) {
+            $this->assertFalse($marker->{$event}, sprintf('Assertion failed for event "%s"', $event));
+        }]]></code>
+    </UnevaluatedCode>
+    <UnusedClosureParam>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+    </UnusedClosureParam>
+    <UnusedMethod>
+      <code>getIdentifiersFromSharedEventManager</code>
+    </UnusedMethod>
+    <UnusedVariable>
+      <code>$controllerLoader</code>
+      <code>$controllerManager</code>
+      <code>$response</code>
+      <code>$response</code>
+    </UnusedVariable>
   </file>
   <file src="test/Controller/AbstractControllerTest.php">
-    <PossiblyInvalidArgument occurrences="5">
+    <MixedMethodCall>
+      <code>method</code>
+      <code>method</code>
+      <code>method</code>
+      <code>method</code>
+      <code>method</code>
+      <code>with</code>
+      <code>with</code>
+      <code>with</code>
+      <code>with</code>
+      <code>with</code>
+    </MixedMethodCall>
+    <PossiblyInvalidArgument>
       <code>$eventManager</code>
       <code>$eventManager</code>
       <code>$eventManager</code>
       <code>$eventManager</code>
       <code>$eventManager</code>
     </PossiblyInvalidArgument>
-    <PossiblyUndefinedMethod occurrences="10">
+    <PossiblyUndefinedMethod>
       <code>expects</code>
       <code>expects</code>
       <code>expects</code>
@@ -761,7 +1728,7 @@
     </PossiblyUndefinedMethod>
   </file>
   <file src="test/Controller/ActionControllerTest.php">
-    <MissingClosureParamType occurrences="6">
+    <MissingClosureParamType>
       <code>$e</code>
       <code>$e</code>
       <code>$e</code>
@@ -769,41 +1736,99 @@
       <code>$e</code>
       <code>$e</code>
     </MissingClosureParamType>
-    <PossiblyNullReference occurrences="4">
+    <MixedArgument>
+      <code><![CDATA[$result['content']]]></code>
+      <code><![CDATA[$result['content']]]></code>
+      <code><![CDATA[$vars['content']]]></code>
+      <code><![CDATA[$vars['content']]]></code>
+    </MixedArgument>
+    <PossiblyNullReference>
       <code>attach</code>
       <code>attach</code>
       <code>attach</code>
       <code>attach</code>
     </PossiblyNullReference>
-    <PossiblyUndefinedMethod occurrences="2">
+    <PossiblyUndefinedMethod>
       <code>$result</code>
       <code>$result</code>
     </PossiblyUndefinedMethod>
-    <RedundantConditionGivenDocblockType occurrences="2">
+    <RedundantConditionGivenDocblockType>
       <code>assertNotNull</code>
       <code>assertTrue</code>
     </RedundantConditionGivenDocblockType>
-    <UndefinedInterfaceMethod occurrences="2">
+    <UndefinedInterfaceMethod>
       <code>getStatusCode</code>
       <code>getStatusCode</code>
     </UndefinedInterfaceMethod>
+    <UnusedClosureParam>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+    </UnusedClosureParam>
   </file>
   <file src="test/Controller/ControllerManagerTest.php">
-    <InvalidArgument occurrences="1"/>
-    <MissingClosureParamType occurrences="1">
+    <MissingClosureParamType>
       <code>$services</code>
     </MissingClosureParamType>
+    <MixedArgument>
+      <code>$services</code>
+    </MixedArgument>
   </file>
   <file src="test/Controller/IntegrationTest.php">
-    <InvalidArgument occurrences="1"/>
-    <MissingClosureParamType occurrences="3">
+    <MissingClosureParamType>
       <code>$services</code>
       <code>$services</code>
       <code>$services</code>
     </MissingClosureParamType>
+    <MixedArgument>
+      <code>$services</code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$first</code>
+      <code>$plugin1</code>
+      <code>$plugin2</code>
+      <code>$second</code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code>getController</code>
+      <code>getController</code>
+      <code>plugin</code>
+      <code>plugin</code>
+    </MixedMethodCall>
+    <UnusedClosureParam>
+      <code>$services</code>
+      <code>$services</code>
+    </UnusedClosureParam>
   </file>
   <file src="test/Controller/LazyControllerAbstractFactoryTest.php">
-    <PossiblyInvalidMethodCall occurrences="8">
+    <MixedArgument>
+      <code><![CDATA[$this->container->reveal()]]></code>
+      <code><![CDATA[$this->container->reveal()]]></code>
+      <code><![CDATA[$this->container->reveal()]]></code>
+      <code><![CDATA[$this->container->reveal()]]></code>
+      <code><![CDATA[$this->container->reveal()]]></code>
+      <code><![CDATA[$this->container->reveal()]]></code>
+      <code><![CDATA[$this->container->reveal()]]></code>
+      <code><![CDATA[$this->container->reveal()]]></code>
+      <code><![CDATA[$this->container->reveal()]]></code>
+      <code><![CDATA[$this->container->reveal()]]></code>
+      <code><![CDATA[$this->container->reveal()]]></code>
+    </MixedArgument>
+    <MixedInferredReturnType>
+      <code>array</code>
+    </MixedInferredReturnType>
+    <MixedMethodCall>
+      <code>willReturn</code>
+      <code>willReturn</code>
+      <code>willReturn</code>
+      <code>willReturn</code>
+      <code>willReturn</code>
+      <code>willReturn</code>
+    </MixedMethodCall>
+    <PossiblyInvalidMethodCall>
       <code>willReturn</code>
       <code>willReturn</code>
       <code>willReturn</code>
@@ -813,7 +1838,7 @@
       <code>willReturn</code>
       <code>willReturn</code>
     </PossiblyInvalidMethodCall>
-    <PossiblyUndefinedMethod occurrences="11">
+    <PossiblyUndefinedMethod>
       <code>reveal</code>
       <code>reveal</code>
       <code>reveal</code>
@@ -828,7 +1853,10 @@
     </PossiblyUndefinedMethod>
   </file>
   <file src="test/Controller/Plugin/AcceptableViewModelSelectorTest.php">
-    <PossiblyInvalidMethodCall occurrences="8">
+    <MixedAssignment>
+      <code><![CDATA[$this->plugin]]></code>
+    </MixedAssignment>
+    <PossiblyInvalidMethodCall>
       <code>addHeader</code>
       <code>addHeader</code>
       <code>addHeader</code>
@@ -838,7 +1866,7 @@
       <code>addHeader</code>
       <code>addHeader</code>
     </PossiblyInvalidMethodCall>
-    <PossiblyUndefinedMethod occurrences="8">
+    <PossiblyUndefinedMethod>
       <code>addHeader</code>
       <code>addHeader</code>
       <code>addHeader</code>
@@ -848,10 +1876,12 @@
       <code>addHeader</code>
       <code>addHeader</code>
     </PossiblyUndefinedMethod>
+    <UnusedProperty>
+      <code>$event</code>
+    </UnusedProperty>
   </file>
   <file src="test/Controller/Plugin/ForwardTest.php">
-    <InvalidArgument occurrences="2"/>
-    <MissingClosureParamType occurrences="18">
+    <MissingClosureParamType>
       <code>$e</code>
       <code>$name</code>
       <code>$name</code>
@@ -871,31 +1901,133 @@
       <code>$services</code>
       <code>$services</code>
     </MissingClosureParamType>
-    <MissingReturnType occurrences="1">
+    <MissingReturnType>
       <code>testProblemListenersAreDetachedAndReattachedWhenPluginDispatchesRequestedController</code>
     </MissingReturnType>
-    <PossiblyNullReference occurrences="2">
+    <MixedArgument>
+      <code>$controllers</code>
+      <code><![CDATA[$controllers->get('sample')]]></code>
+      <code>$plugins</code>
+      <code>$plugins</code>
+      <code>$plugins</code>
+      <code>$plugins</code>
+      <code>$services</code>
+      <code>$services</code>
+      <code>$services</code>
+      <code>$services</code>
+      <code><![CDATA[$services->get('SharedEventManager')]]></code>
+      <code><![CDATA[$services->get('SharedEventManager')]]></code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$controllers</code>
+      <code>$events</code>
+      <code>$events</code>
+      <code>$events</code>
+      <code>$plugin</code>
+      <code>$plugins</code>
+      <code>$plugins</code>
+      <code>$plugins</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code><![CDATA[$this->controllers]]></code>
+      <code><![CDATA[$this->plugin]]></code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+    </MixedMethodCall>
+    <PossiblyNullReference>
       <code>getParams</code>
       <code>getParams</code>
     </PossiblyNullReference>
+    <UnusedClosureParam>
+      <code>$e</code>
+      <code>$name</code>
+      <code>$name</code>
+      <code>$name</code>
+      <code>$name</code>
+      <code>$name</code>
+      <code>$name</code>
+      <code>$services</code>
+      <code>$services</code>
+      <code>$services</code>
+      <code>$services</code>
+      <code>$services</code>
+    </UnusedClosureParam>
+    <UnusedProperty>
+      <code>$plugins</code>
+    </UnusedProperty>
+    <UnusedVariable>
+      <code>$events</code>
+      <code>$events</code>
+      <code>$events</code>
+      <code>$plugin</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+    </UnusedVariable>
+  </file>
+  <file src="test/Controller/Plugin/LayoutTest.php">
+    <MixedAssignment>
+      <code><![CDATA[$this->plugin]]></code>
+    </MixedAssignment>
   </file>
   <file src="test/Controller/Plugin/ParamsTest.php">
-    <PossiblyInvalidMethodCall occurrences="3">
+    <MixedAssignment>
+      <code><![CDATA[$this->plugin]]></code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code>set</code>
+      <code>set</code>
+      <code>set</code>
+      <code>set</code>
+      <code>set</code>
+      <code>set</code>
+      <code>set</code>
+    </MixedMethodCall>
+    <PossiblyInvalidMethodCall>
       <code>addHeader</code>
       <code>addHeader</code>
       <code>addHeader</code>
     </PossiblyInvalidMethodCall>
-    <PossiblyUndefinedMethod occurrences="3">
+    <PossiblyUndefinedMethod>
       <code>addHeader</code>
       <code>addHeader</code>
       <code>addHeader</code>
     </PossiblyUndefinedMethod>
   </file>
   <file src="test/Controller/Plugin/RedirectTest.php">
-    <InvalidArgument occurrences="1">
+    <InvalidArgument>
       <code>true</code>
     </InvalidArgument>
-    <PossiblyInvalidMethodCall occurrences="7">
+    <MixedAssignment>
+      <code>$plugin</code>
+      <code>$plugin</code>
+      <code>$plugin</code>
+      <code><![CDATA[$this->plugin]]></code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code>toRoute</code>
+      <code>toRoute</code>
+      <code>toRoute</code>
+    </MixedMethodCall>
+    <PossiblyInvalidMethodCall>
       <code>getFieldValue</code>
       <code>getFieldValue</code>
       <code>getFieldValue</code>
@@ -904,7 +2036,7 @@
       <code>getFieldValue</code>
       <code>getFieldValue</code>
     </PossiblyInvalidMethodCall>
-    <PossiblyUndefinedMethod occurrences="7">
+    <PossiblyUndefinedMethod>
       <code>getFieldValue</code>
       <code>getFieldValue</code>
       <code>getFieldValue</code>
@@ -913,30 +2045,151 @@
       <code>getFieldValue</code>
       <code>getFieldValue</code>
     </PossiblyUndefinedMethod>
+    <UnusedVariable>
+      <code>$url</code>
+    </UnusedVariable>
   </file>
   <file src="test/Controller/Plugin/TestAsset/ListenerStub.php">
-    <MissingReturnType occurrences="1">
+    <MissingReturnType>
       <code>myCallback</code>
     </MissingReturnType>
+    <PossiblyUnusedMethod>
+      <code>myCallback</code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="test/Controller/Plugin/UrlTest.php">
+    <MixedAssignment>
+      <code>$plugin</code>
+      <code>$plugin</code>
+      <code><![CDATA[$this->plugin]]></code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code>fromRoute</code>
+      <code>fromRoute</code>
+    </MixedMethodCall>
+    <UnusedVariable>
+      <code>$url</code>
+      <code>$url</code>
+    </UnusedVariable>
   </file>
   <file src="test/Controller/PluginManagerTest.php">
-    <InvalidArgument occurrences="6"/>
+    <MixedAssignment>
+      <code>$plugin</code>
+      <code>$plugin</code>
+      <code>$plugin</code>
+      <code>$plugin</code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code>getBar</code>
+      <code>getBar</code>
+      <code>getController</code>
+      <code>getController</code>
+    </MixedMethodCall>
   </file>
   <file src="test/Controller/RestfulControllerTest.php">
-    <MissingClosureParamType occurrences="5">
+    <MissingClosureParamType>
       <code>$e</code>
       <code>$e</code>
       <code>$e</code>
       <code>$e</code>
       <code>$e</code>
     </MissingClosureParamType>
-    <PossiblyInvalidMethodCall occurrences="4">
+    <MixedArgument>
+      <code><![CDATA[$allow->getFieldValue()]]></code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code><![CDATA[$result['content']]]></code>
+      <code><![CDATA[$result['content']]]></code>
+      <code><![CDATA[$result['description']]]></code>
+      <code>$test</code>
+      <code>$test</code>
+      <code>$test</code>
+      <code>$test</code>
+      <code>$test</code>
+    </MixedArgument>
+    <MixedArgumentTypeCoercion>
+      <code>$name</code>
+    </MixedArgumentTypeCoercion>
+    <MixedArrayAccess>
+      <code><![CDATA[$result['content']]]></code>
+      <code><![CDATA[$result['content']]]></code>
+      <code><![CDATA[$result['data']]]></code>
+      <code><![CDATA[$result['description']]]></code>
+      <code><![CDATA[$result['entities']]]></code>
+      <code><![CDATA[$result['entity']]]></code>
+      <code><![CDATA[$result['entity']]]></code>
+      <code><![CDATA[$result['entity']]]></code>
+      <code><![CDATA[$result['entity']]]></code>
+      <code><![CDATA[$result['entity']]]></code>
+      <code><![CDATA[$result['id']]]></code>
+      <code><![CDATA[$test['id']]]></code>
+      <code><![CDATA[$test['id']]]></code>
+      <code><![CDATA[$test['name']]]></code>
+      <code><![CDATA[$test['name']]]></code>
+      <code><![CDATA[$test['type']]]></code>
+    </MixedArrayAccess>
+    <MixedAssignment>
+      <code>$content</code>
+      <code>$content</code>
+      <code>$header</code>
+      <code>$headers</code>
+      <code>$post</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$test</code>
+      <code>$test</code>
+      <code>$value</code>
+    </MixedAssignment>
+    <MixedInferredReturnType>
+      <code>array</code>
+      <code>array</code>
+      <code>array</code>
+    </MixedInferredReturnType>
+    <MixedMethodCall>
+      <code>fromArray</code>
+      <code>get</code>
+      <code>get</code>
+      <code>getContent</code>
+      <code>getFieldValue</code>
+      <code>getFieldValue</code>
+      <code>getHeaders</code>
+      <code>getHeaders</code>
+      <code>getStatusCode</code>
+      <code>getStatusCode</code>
+      <code>has</code>
+      <code>has</code>
+      <code>set</code>
+    </MixedMethodCall>
+    <PossiblyInvalidMethodCall>
       <code>addHeaderLine</code>
       <code>addHeaderLine</code>
       <code>addHeaderLine</code>
       <code>getFieldValue</code>
     </PossiblyInvalidMethodCall>
-    <PossiblyUndefinedMethod occurrences="19">
+    <PossiblyUndefinedMethod>
       <code>$result</code>
       <code>$result</code>
       <code>$result</code>
@@ -957,32 +2210,49 @@
       <code>getStatusCode</code>
       <code>getStatusCode</code>
     </PossiblyUndefinedMethod>
-    <RedundantConditionGivenDocblockType occurrences="2">
+    <RedundantConditionGivenDocblockType>
       <code>assertNotNull</code>
       <code>assertTrue</code>
     </RedundantConditionGivenDocblockType>
-    <TypeDoesNotContainType occurrences="1">
+    <TypeDoesNotContainType>
       <code>assertEmpty</code>
     </TypeDoesNotContainType>
-    <UndefinedInterfaceMethod occurrences="3">
+    <UndefinedInterfaceMethod>
       <code>getHeaders</code>
       <code>getStatusCode</code>
       <code>getStatusCode</code>
     </UndefinedInterfaceMethod>
+    <UnusedClosureParam>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+    </UnusedClosureParam>
+    <UnusedVariable>
+      <code>$result</code>
+    </UnusedVariable>
   </file>
   <file src="test/Controller/TestAsset/AbstractControllerStub.php">
-    <InvalidReturnType occurrences="1">
+    <InvalidReturnType>
       <code>onDispatch</code>
     </InvalidReturnType>
   </file>
   <file src="test/Controller/TestAsset/BadController.php">
-    <MissingReturnType occurrences="2">
+    <MissingReturnType>
       <code>testAction</code>
       <code>testPhp7ErrorAction</code>
     </MissingReturnType>
+    <PossiblyUnusedMethod>
+      <code>testAction</code>
+      <code>testPhp7ErrorAction</code>
+    </PossiblyUnusedMethod>
   </file>
   <file src="test/Controller/TestAsset/ControllerAcceptingConfigToConstructor.php">
-    <PropertyNotSetInConstructor occurrences="5">
+    <PossiblyUnusedMethod>
+      <code>__construct</code>
+    </PossiblyUnusedMethod>
+    <PropertyNotSetInConstructor>
       <code>ControllerAcceptingConfigToConstructor</code>
       <code>ControllerAcceptingConfigToConstructor</code>
       <code>ControllerAcceptingConfigToConstructor</code>
@@ -991,7 +2261,10 @@
     </PropertyNotSetInConstructor>
   </file>
   <file src="test/Controller/TestAsset/ControllerAcceptingWellKnownServicesAsConstructorParameters.php">
-    <PropertyNotSetInConstructor occurrences="5">
+    <PossiblyUnusedMethod>
+      <code>__construct</code>
+    </PossiblyUnusedMethod>
+    <PropertyNotSetInConstructor>
       <code>ControllerAcceptingWellKnownServicesAsConstructorParameters</code>
       <code>ControllerAcceptingWellKnownServicesAsConstructorParameters</code>
       <code>ControllerAcceptingWellKnownServicesAsConstructorParameters</code>
@@ -1000,12 +2273,25 @@
     </PropertyNotSetInConstructor>
   </file>
   <file src="test/Controller/TestAsset/ControllerLoaderAbstractFactory.php">
-    <ParamNameMismatch occurrences="1">
+    <MixedArgument>
+      <code>$classname</code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$classname</code>
+      <code>$classname</code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code>new $classname()</code>
+    </MixedMethodCall>
+    <ParamNameMismatch>
       <code>$name</code>
     </ParamNameMismatch>
   </file>
   <file src="test/Controller/TestAsset/ControllerWithEmptyConstructor.php">
-    <PropertyNotSetInConstructor occurrences="5">
+    <PossiblyUnusedMethod>
+      <code>__construct</code>
+    </PossiblyUnusedMethod>
+    <PropertyNotSetInConstructor>
       <code>ControllerWithEmptyConstructor</code>
       <code>ControllerWithEmptyConstructor</code>
       <code>ControllerWithEmptyConstructor</code>
@@ -1014,7 +2300,10 @@
     </PropertyNotSetInConstructor>
   </file>
   <file src="test/Controller/TestAsset/ControllerWithMixedConstructorParameters.php">
-    <PropertyNotSetInConstructor occurrences="5">
+    <PossiblyUnusedMethod>
+      <code>__construct</code>
+    </PossiblyUnusedMethod>
+    <PropertyNotSetInConstructor>
       <code>ControllerWithMixedConstructorParameters</code>
       <code>ControllerWithMixedConstructorParameters</code>
       <code>ControllerWithMixedConstructorParameters</code>
@@ -1023,7 +2312,10 @@
     </PropertyNotSetInConstructor>
   </file>
   <file src="test/Controller/TestAsset/ControllerWithScalarParameters.php">
-    <PropertyNotSetInConstructor occurrences="5">
+    <PossiblyUnusedMethod>
+      <code>__construct</code>
+    </PossiblyUnusedMethod>
+    <PropertyNotSetInConstructor>
       <code>ControllerWithScalarParameters</code>
       <code>ControllerWithScalarParameters</code>
       <code>ControllerWithScalarParameters</code>
@@ -1032,7 +2324,10 @@
     </PropertyNotSetInConstructor>
   </file>
   <file src="test/Controller/TestAsset/ControllerWithTypeHintedConstructorParameter.php">
-    <PropertyNotSetInConstructor occurrences="5">
+    <PossiblyUnusedMethod>
+      <code>__construct</code>
+    </PossiblyUnusedMethod>
+    <PropertyNotSetInConstructor>
       <code>ControllerWithTypeHintedConstructorParameter</code>
       <code>ControllerWithTypeHintedConstructorParameter</code>
       <code>ControllerWithTypeHintedConstructorParameter</code>
@@ -1041,198 +2336,470 @@
     </PropertyNotSetInConstructor>
   </file>
   <file src="test/Controller/TestAsset/ControllerWithUnionTypeHintedConstructorParameter.php">
-    <PropertyNotSetInConstructor occurrences="6">
+    <PossiblyUnusedMethod>
+      <code>__construct</code>
+    </PossiblyUnusedMethod>
+    <PossiblyUnusedParam>
       <code>$sample</code>
+    </PossiblyUnusedParam>
+    <PossiblyUnusedProperty>
+      <code>$sample</code>
+    </PossiblyUnusedProperty>
+    <PropertyNotSetInConstructor>
       <code>ControllerWithUnionTypeHintedConstructorParameter</code>
       <code>ControllerWithUnionTypeHintedConstructorParameter</code>
       <code>ControllerWithUnionTypeHintedConstructorParameter</code>
       <code>ControllerWithUnionTypeHintedConstructorParameter</code>
       <code>ControllerWithUnionTypeHintedConstructorParameter</code>
     </PropertyNotSetInConstructor>
-    <UndefinedClass occurrences="2">
+    <UndefinedClass>
       <code>SampleInterface|AnotherSampleInterface</code>
       <code>SampleInterface|AnotherSampleInterface $sample</code>
     </UndefinedClass>
   </file>
   <file src="test/Controller/TestAsset/ForwardController.php">
-    <LessSpecificImplementedReturnType occurrences="1">
+    <LessSpecificImplementedReturnType>
       <code>mixed</code>
     </LessSpecificImplementedReturnType>
-    <PossiblyNullReference occurrences="1">
+    <MixedMethodCall>
+      <code>fromRoute</code>
+    </MixedMethodCall>
+    <PossiblyNullReference>
       <code>getParams</code>
     </PossiblyNullReference>
+    <PossiblyUnusedMethod>
+      <code>testAction</code>
+      <code>testMatchesAction</code>
+    </PossiblyUnusedMethod>
   </file>
   <file src="test/Controller/TestAsset/Request.php">
-    <LessSpecificImplementedReturnType occurrences="1">
+    <LessSpecificImplementedReturnType>
       <code>Request</code>
     </LessSpecificImplementedReturnType>
   </file>
   <file src="test/Controller/TestAsset/RestfulTestController.php">
-    <InvalidReturnStatement occurrences="1">
-      <code>$items</code>
-    </InvalidReturnStatement>
-    <InvalidReturnType occurrences="1">
-      <code>array|Traversable</code>
-    </InvalidReturnType>
-    <LessSpecificReturnStatement occurrences="2">
+    <InvalidArrayAccess>
+      <code><![CDATA[$items['name']]]></code>
+    </InvalidArrayAccess>
+    <LessSpecificReturnStatement>
       <code>$response</code>
       <code>$response</code>
     </LessSpecificReturnStatement>
-    <MoreSpecificImplementedParamType occurrences="5">
+    <MixedArrayAccess>
+      <code><![CDATA[$entity['id']]]></code>
+      <code><![CDATA[$row['id']]]></code>
+    </MixedArrayAccess>
+    <MixedArrayAssignment>
+      <code><![CDATA[$data['id']]]></code>
+    </MixedArrayAssignment>
+    <MixedAssignment>
+      <code><![CDATA[$data['id']]]></code>
+      <code>$entity</code>
+      <code>$headers</code>
+      <code>$row</code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code>addHeaderLine</code>
+      <code>addHeaderLine</code>
+      <code>addHeaderLine</code>
+    </MixedMethodCall>
+    <MoreSpecificImplementedParamType>
       <code>$data</code>
       <code>$data</code>
       <code>$id</code>
       <code>$items</code>
       <code>$items</code>
     </MoreSpecificImplementedParamType>
-    <MoreSpecificReturnType occurrences="2">
+    <MoreSpecificReturnType>
       <code>Response</code>
       <code>Response</code>
     </MoreSpecificReturnType>
-    <ParamNameMismatch occurrences="2">
+    <ParamNameMismatch>
       <code>$items</code>
       <code>$items</code>
     </ParamNameMismatch>
-    <UndefinedInterfaceMethod occurrences="5">
-      <code>$items</code>
+    <PossiblyUnusedMethod>
+      <code>editAction</code>
+      <code>testSomeStrangelySeparatedWordsAction</code>
+    </PossiblyUnusedMethod>
+    <PossiblyUnusedReturnValue>
+      <code>mixed</code>
+    </PossiblyUnusedReturnValue>
+    <UndefinedInterfaceMethod>
       <code>getHeaders</code>
       <code>getHeaders</code>
       <code>getHeaders</code>
       <code>setStatusCode</code>
     </UndefinedInterfaceMethod>
   </file>
+  <file src="test/Controller/TestAsset/SampleController.php">
+    <PossiblyUnusedMethod>
+      <code>testAction</code>
+      <code>testCircularAction</code>
+      <code>testSomeStrangelySeparatedWordsAction</code>
+    </PossiblyUnusedMethod>
+  </file>
   <file src="test/Controller/TestAsset/UneventfulController.php">
-    <InvalidReturnType occurrences="1">
+    <InvalidReturnType>
       <code>dispatch</code>
     </InvalidReturnType>
   </file>
   <file src="test/Controller/TestAsset/UnlocatableControllerLoaderAbstractFactory.php">
-    <LessSpecificImplementedReturnType occurrences="1">
+    <LessSpecificImplementedReturnType>
       <code>mixed</code>
     </LessSpecificImplementedReturnType>
-    <ParamNameMismatch occurrences="1">
+    <ParamNameMismatch>
       <code>$name</code>
     </ParamNameMismatch>
   </file>
   <file src="test/Controller/TestAsset/UnlocatableEventfulController.php">
-    <InvalidNullableReturnType occurrences="1">
+    <InvalidNullableReturnType>
       <code>?Event</code>
     </InvalidNullableReturnType>
-    <InvalidReturnType occurrences="1">
+    <InvalidReturnType>
       <code>dispatch</code>
     </InvalidReturnType>
-    <NullableReturnStatement occurrences="1">
-      <code>$this-&gt;event</code>
+    <NullableReturnStatement>
+      <code><![CDATA[$this->event]]></code>
     </NullableReturnStatement>
+    <UnusedClass>
+      <code>UnlocatableEventfulController</code>
+    </UnusedClass>
   </file>
   <file src="test/DispatchListenerTest.php">
-    <MissingClosureParamType occurrences="2">
+    <MissingClosureParamType>
       <code>$e</code>
       <code>$e</code>
     </MissingClosureParamType>
-    <UndefinedInterfaceMethod occurrences="1">
+    <MixedArgument>
+      <code>$log</code>
+    </MixedArgument>
+    <MixedArrayAccess>
+      <code><![CDATA[$log['error']]]></code>
+    </MixedArrayAccess>
+    <MixedArrayAssignment>
+      <code><![CDATA[$log['error']]]></code>
+      <code><![CDATA[$log['error']]]></code>
+    </MixedArrayAssignment>
+    <MixedAssignment>
+      <code><![CDATA[$log['error']]]></code>
+      <code><![CDATA[$log['error']]]></code>
+      <code>$return</code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code>getError</code>
+      <code>getError</code>
+    </MixedMethodCall>
+    <UndefinedInterfaceMethod>
       <code>getStatusCode</code>
     </UndefinedInterfaceMethod>
+    <UnusedVariable>
+      <code>$return</code>
+    </UnusedVariable>
   </file>
   <file src="test/ResponseSender/AbstractResponseSenderTest.php">
-    <DeprecatedMethod occurrences="1">
+    <DeprecatedMethod>
       <code>setMethods</code>
     </DeprecatedMethod>
-    <MissingReturnType occurrences="1">
+    <MissingReturnType>
       <code>testSendHeadersSendsStatusLast</code>
     </MissingReturnType>
-    <UndefinedFunction occurrences="2">
-      <code>xdebug_info('mode')</code>
-      <code>xdebug_info('mode')</code>
-    </UndefinedFunction>
+    <MixedArgument>
+      <code>$header</code>
+      <code><![CDATA[xdebug_info('mode')]]></code>
+      <code><![CDATA[xdebug_info('mode')]]></code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$header</code>
+    </MixedAssignment>
   </file>
   <file src="test/SendResponseListenerTest.php">
-    <MissingClosureParamType occurrences="1">
+    <MissingClosureParamType>
       <code>$e</code>
     </MissingClosureParamType>
+    <MixedArrayAssignment>
+      <code><![CDATA[$result['response']]]></code>
+      <code><![CDATA[$result['target']]]></code>
+    </MixedArrayAssignment>
+    <MixedAssignment>
+      <code><![CDATA[$result['response']]]></code>
+      <code><![CDATA[$result['target']]]></code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code>getResponse</code>
+      <code>getTarget</code>
+    </MixedMethodCall>
   </file>
   <file src="test/Service/ControllerManagerFactoryTest.php">
-    <InvalidArgument occurrences="2">
-      <code>$this-&gt;defaultServiceConfig</code>
-    </InvalidArgument>
+    <ArgumentTypeCoercion>
+      <code><![CDATA[array_merge_recursive($this->defaultServiceConfig, [
+            'services' => [
+                'foo' => $this,
+            ],
+        ])]]></code>
+    </ArgumentTypeCoercion>
+    <MixedAssignment>
+      <code>$controllerPluginManager</code>
+      <code>$loader</code>
+      <code>$loader</code>
+      <code>$loader</code>
+      <code>$plugin</code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>getController</code>
+      <code>setAlias</code>
+      <code>setAlias</code>
+      <code>setController</code>
+      <code>setFactory</code>
+      <code>setFactory</code>
+      <code>setFactory</code>
+    </MixedMethodCall>
+    <PossiblyUnusedProperty>
+      <code>$loader</code>
+    </PossiblyUnusedProperty>
   </file>
   <file src="test/Service/HttpMethodListenerFactoryTest.php">
-    <InvalidPropertyAssignmentValue occurrences="1">
-      <code>$this-&gt;prophesize(ServiceLocatorInterface::class)</code>
+    <InvalidPropertyAssignmentValue>
+      <code><![CDATA[$this->prophesize(ServiceLocatorInterface::class)]]></code>
     </InvalidPropertyAssignmentValue>
-    <PossiblyUndefinedMethod occurrences="1">
+    <MixedArgument>
+      <code><![CDATA[$this->serviceLocator->reveal()]]></code>
+      <code><![CDATA[$this->serviceLocator->reveal()]]></code>
+    </MixedArgument>
+    <MixedMethodCall>
+      <code>willReturn</code>
+    </MixedMethodCall>
+    <PossiblyUndefinedMethod>
       <code>get</code>
     </PossiblyUndefinedMethod>
-    <PossiblyUndefinedVariable occurrences="1">
+    <PossiblyUndefinedVariable>
       <code>$config</code>
     </PossiblyUndefinedVariable>
-    <UndefinedInterfaceMethod occurrences="2">
+    <UndefinedInterfaceMethod>
       <code>reveal</code>
       <code>reveal</code>
     </UndefinedInterfaceMethod>
   </file>
   <file src="test/Service/TestAsset/ControllerWithDependencies.php">
-    <InvalidReturnType occurrences="1">
+    <InvalidReturnType>
       <code>dispatch</code>
     </InvalidReturnType>
-    <MissingConstructor occurrences="1">
+    <MissingConstructor>
       <code>$injectedValue</code>
     </MissingConstructor>
-    <MissingReturnType occurrences="1">
+    <MissingReturnType>
       <code>setInjectedValue</code>
     </MissingReturnType>
+    <UnusedClass>
+      <code>ControllerWithDependencies</code>
+    </UnusedClass>
   </file>
   <file src="test/Service/TestAsset/Dispatchable.php">
-    <LessSpecificImplementedReturnType occurrences="1">
+    <LessSpecificImplementedReturnType>
+      <code>mixed</code>
       <code>mixed</code>
     </LessSpecificImplementedReturnType>
   </file>
   <file src="test/Service/TestAsset/EventManagerAwareObject.php">
-    <MissingConstructor occurrences="1">
+    <MissingConstructor>
       <code>$events</code>
     </MissingConstructor>
-    <ParamNameMismatch occurrences="1">
+    <ParamNameMismatch>
       <code>$events</code>
     </ParamNameMismatch>
+    <UnusedClass>
+      <code>EventManagerAwareObject</code>
+    </UnusedClass>
+  </file>
+  <file src="test/Service/TestAsset/InvalidDispatchableClass.php">
+    <PossiblyUnusedMethod>
+      <code>__construct</code>
+    </PossiblyUnusedMethod>
   </file>
   <file src="test/Service/ViewHelperManagerFactoryTest.php">
-    <DeprecatedMethod occurrences="1">
+    <DeprecatedMethod>
       <code>prophesize</code>
     </DeprecatedMethod>
+    <MixedArgument>
+      <code>$value</code>
+    </MixedArgument>
+    <MixedArgumentTypeCoercion>
+      <code>$key</code>
+      <code>$key</code>
+      <code>$value</code>
+    </MixedArgumentTypeCoercion>
+    <MixedAssignment>
+      <code>$value</code>
+    </MixedAssignment>
+    <MixedInferredReturnType>
+      <code>array</code>
+      <code>array</code>
+      <code>array</code>
+      <code>iterable</code>
+    </MixedInferredReturnType>
+    <PossiblyUnusedParam>
+      <code>$name</code>
+    </PossiblyUnusedParam>
+    <UnevaluatedCode>
+      <code><![CDATA[$application = $this->prophesize(Application::class);]]></code>
+      <code><![CDATA[$application->getMvcEvent()->willReturn($mvcEvent->reveal());]]></code>
+      <code><![CDATA[$helper  = $manager->get($name);]]></code>
+      <code><![CDATA[$manager = $this->factory->__invoke($this->services, HelperPluginManager::class);]]></code>
+      <code><![CDATA[$mvcEvent   = $this->prophesize(MvcEvent::class);]]></code>
+      <code><![CDATA[$mvcEvent->getRouteMatch()->willReturn($routeMatch);]]></code>
+      <code><![CDATA[$routeMatch = $this->prophesize(RouteMatch::class)->reveal();]]></code>
+      <code><![CDATA[$router = $this->prophesize(RouteStackInterface::class)->reveal();]]></code>
+      <code><![CDATA[$this->assertAttributeSame($routeMatch, 'routeMatch', $helper, 'Route match was not injected');]]></code>
+      <code><![CDATA[$this->assertAttributeSame($router, 'router', $helper, 'Router was not injected');]]></code>
+      <code><![CDATA[$this->services->setService('Application', $application->reveal());]]></code>
+      <code><![CDATA[$this->services->setService('HttpRouter', $router);]]></code>
+      <code><![CDATA[$this->services->setService('Router', $router);]]></code>
+      <code><![CDATA[$this->services->setService('config', []);]]></code>
+    </UnevaluatedCode>
   </file>
   <file src="test/TestAsset/Locator.php">
-    <ParamNameMismatch occurrences="2">
+    <MixedFunctionCall>
+      <code><![CDATA[$this->services[$name]($options)]]></code>
+      <code><![CDATA[$this->services[$name]()]]></code>
+    </MixedFunctionCall>
+    <ParamNameMismatch>
       <code>$name</code>
       <code>$name</code>
     </ParamNameMismatch>
+    <UnusedClass>
+      <code>Locator</code>
+    </UnusedClass>
+  </file>
+  <file src="test/TestAsset/StubBootstrapListener.php">
+    <MixedArgument>
+      <code>$listener</code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$listener</code>
+    </MixedAssignment>
+    <PossiblyUnusedMethod>
+      <code>getListeners</code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="test/View/CreateViewModelListenerTest.php">
+    <MixedAssignment>
+      <code>$result</code>
+    </MixedAssignment>
+    <MixedInferredReturnType>
+      <code>array</code>
+    </MixedInferredReturnType>
   </file>
   <file src="test/View/DefaultRenderingStrategyTest.php">
-    <MissingClosureParamType occurrences="2">
+    <MissingClosureParamType>
       <code>$e</code>
       <code>$e</code>
     </MissingClosureParamType>
+    <PossiblyUnusedProperty>
+      <code>$renderer</code>
+    </PossiblyUnusedProperty>
+    <UnevaluatedCode>
+      <code><![CDATA[$application = new Application($services, $services->get('EventManager'), $this->request, $this->response);]]></code>
+      <code><![CDATA[$application->getEventManager()->attach(MvcEvent::EVENT_RENDER_ERROR, static function ($e) use ($test): void {
+            $test->flag      = true;
+            $test->error     = $e->getError();
+            $test->exception = $e->getParam('exception');
+        });]]></code>
+      <code>$model = new ViewModel();</code>
+      <code><![CDATA[$model->setTemplate('exception');]]></code>
+      <code>$resolver = new TemplateMapResolver();</code>
+      <code><![CDATA[$resolver->add('exception', __DIR__ . '/_files/exception.phtml');]]></code>
+      <code>$services = new ServiceManager();</code>
+      <code><![CDATA[$strategy = new PhpRendererStrategy($this->renderer);]]></code>
+      <code><![CDATA[$strategy->attach($this->view->getEventManager());]]></code>
+      <code><![CDATA[$test = (object) ['flag' => false];]]></code>
+      <code><![CDATA[$this->assertEquals(Application::ERROR_EXCEPTION, $test->error);]]></code>
+      <code><![CDATA[$this->assertInstanceOf('Exception', $test->exception);]]></code>
+      <code><![CDATA[$this->assertStringContainsString('script', $test->exception->getMessage());]]></code>
+      <code><![CDATA[$this->assertTrue($test->flag);]]></code>
+      <code><![CDATA[$this->event->setApplication($application);]]></code>
+      <code><![CDATA[$this->event->setViewModel($model);]]></code>
+      <code><![CDATA[$this->renderer->setResolver($resolver);]]></code>
+      <code><![CDATA[$this->strategy->render($this->event);]]></code>
+      <code><![CDATA[(new Config([
+            'invokables' => [
+                'SharedEventManager' => SharedEventManager::class,
+            ],
+            'factories'  => [
+                'EventManager' => static function ($services): EventManager {
+                    $sharedEvents = $services->get('SharedEventManager');
+                    return new EventManager($sharedEvents);
+                },
+            ],
+            'services'   => [
+                'Request'  => $this->request,
+                'Response' => $this->response,
+            ],
+            'shared'     => [
+                'EventManager' => false,
+            ],
+        ]))->configureServiceManager($services);]]></code>
+    </UnevaluatedCode>
+    <UnusedClosureParam>
+      <code>$e</code>
+      <code>$e</code>
+    </UnusedClosureParam>
+    <UnusedVariable>
+      <code>$expected</code>
+    </UnusedVariable>
   </file>
   <file src="test/View/ExceptionStrategyTest.php">
-    <InternalMethod occurrences="2">
+    <InternalMethod>
       <code>addToAssertionCount</code>
       <code>addToAssertionCount</code>
     </InternalMethod>
-    <PossiblyInvalidArgument occurrences="3">
+    <MixedArgument>
+      <code>$variables</code>
+      <code>$variables</code>
+      <code>$variables</code>
+      <code>$variables</code>
+      <code>$variables</code>
+      <code>$variables</code>
+      <code>$variables</code>
+      <code>$variables</code>
+      <code>$variables</code>
+      <code><![CDATA[$variables['message']]]></code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$model</code>
+      <code>$model</code>
+      <code>$model</code>
+      <code>$variables</code>
+      <code>$variables</code>
+      <code>$variables</code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code>getTemplate</code>
+      <code>getTemplate</code>
+      <code>getTemplate</code>
+      <code>getVariables</code>
+      <code>getVariables</code>
+      <code>getVariables</code>
+    </MixedMethodCall>
+    <PossiblyInvalidArgument>
       <code>$variables</code>
       <code>$variables</code>
       <code>$variables</code>
     </PossiblyInvalidArgument>
-    <PossiblyUndefinedMethod occurrences="3">
-      <code>$variables</code>
-      <code>$variables</code>
-      <code>$variables</code>
-    </PossiblyUndefinedMethod>
-    <RedundantConditionGivenDocblockType occurrences="3">
+    <PossiblyInvalidArrayAccess>
+      <code><![CDATA[$variables['display_exceptions']]]></code>
+      <code><![CDATA[$variables['exception']]]></code>
+      <code><![CDATA[$variables['message']]]></code>
+    </PossiblyInvalidArrayAccess>
+    <RedundantConditionGivenDocblockType>
       <code>null !== $response</code>
       <code>null !== $response</code>
       <code>null !== $response</code>
     </RedundantConditionGivenDocblockType>
-    <UndefinedInterfaceMethod occurrences="5">
+    <UndefinedInterfaceMethod>
       <code>getStatusCode</code>
       <code>getStatusCode</code>
       <code>getStatusCode</code>
@@ -1240,31 +2807,57 @@
       <code>isServerError</code>
     </UndefinedInterfaceMethod>
   </file>
+  <file src="test/View/InjectTemplateListenerTest.php">
+    <MixedArgument>
+      <code>$preferRouteMatchControllerRouteMatchConfig</code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$preferRouteMatchControllerRouteMatchConfig</code>
+    </MixedAssignment>
+  </file>
   <file src="test/View/InjectViewModelListenerTest.php">
-    <MissingReturnType occurrences="1">
+    <MissingReturnType>
       <code>testDetachesListeners</code>
     </MissingReturnType>
+    <MixedAssignment>
+      <code>$child</code>
+    </MixedAssignment>
   </file>
   <file src="test/View/RouteNotFoundStrategyTest.php">
-    <InternalMethod occurrences="2">
+    <InternalMethod>
       <code>addToAssertionCount</code>
       <code>addToAssertionCount</code>
     </InternalMethod>
-    <PossiblyInvalidArgument occurrences="2">
+    <MixedAssignment>
+      <code>$model</code>
+      <code>$model</code>
+    </MixedAssignment>
+    <MixedInferredReturnType>
+      <code>array</code>
+    </MixedInferredReturnType>
+    <PossiblyInvalidArgument>
       <code>$variables</code>
       <code>$variables</code>
     </PossiblyInvalidArgument>
-    <PossiblyNullArgument occurrences="1">
+    <PossiblyNullArgument>
       <code>$error</code>
     </PossiblyNullArgument>
   </file>
   <file src="test/View/TestAsset/DumbStrategy.php">
-    <PossiblyInvalidArgument occurrences="2">
+    <InvalidArgument>
       <code>$options</code>
+    </InvalidArgument>
+    <MixedArgument>
+      <code>$nameOrModel</code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code>$nameOrModel</code>
+    </MixedAssignment>
+    <PossiblyInvalidArgument>
       <code>$variables</code>
     </PossiblyInvalidArgument>
-    <UndefinedInterfaceMethod occurrences="1">
-      <code>$options</code>
-    </UndefinedInterfaceMethod>
+    <PossiblyUnusedProperty>
+      <code>$resolver</code>
+    </PossiblyUnusedProperty>
   </file>
 </files>
