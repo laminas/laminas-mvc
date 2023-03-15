@@ -17,6 +17,10 @@ class InjectTemplateListenerTest extends TestCase
 {
     use EventListenerIntrospectionTrait;
 
+    private InjectTemplateListener $listener;
+    private MvcEvent $event;
+    private RouteMatch $routeMatch;
+
     public function setUp(): void
     {
         $controllerMap  = [

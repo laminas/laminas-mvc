@@ -18,6 +18,9 @@ class CreateViewModelListenerTest extends TestCase
 {
     use EventListenerIntrospectionTrait;
 
+    private CreateViewModelListener $listener;
+    private MvcEvent $event;
+
     public function setUp(): void
     {
         $this->listener = new CreateViewModelListener();
