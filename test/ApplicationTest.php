@@ -283,9 +283,8 @@ class ApplicationTest extends TestCase
 
     public function testLocatorExceptionShouldTriggerDispatchError(): void
     {
-        $application      = $this->setupPathController(false);
-        $controllerLoader = $application->getServiceManager()->get('ControllerManager');
-        $response         = new Response();
+        $application = $this->setupPathController(false);
+        $response    = new Response();
         $application->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, static fn($e): Response => $response);
 
         $result = $application->run();
@@ -365,9 +364,8 @@ class ApplicationTest extends TestCase
 
     public function testOnDispatchErrorEventPassedToTriggersShouldBeTheOriginalOne(): void
     {
-        $application       = $this->setupPathController(false);
-        $controllerManager = $application->getServiceManager()->get('ControllerManager');
-        $model             = $this->createMock(ViewModel::class);
+        $application = $this->setupPathController(false);
+        $model       = $this->createMock(ViewModel::class);
         $application->getEventManager()->attach(
             MvcEvent::EVENT_DISPATCH_ERROR,
             static function ($e) use ($model): void {

@@ -6,9 +6,9 @@ namespace Laminas\Mvc;
 
 use Laminas\EventManager\EventManagerInterface;
 use Laminas\EventManager\EventsCapableInterface;
-use Laminas\ServiceManager\ServiceManager;
 use Laminas\Stdlib\RequestInterface;
 use Laminas\Stdlib\ResponseInterface;
+use Psr\Container\ContainerInterface;
 
 /**
  * Main application class for invoking applications
@@ -63,7 +63,7 @@ class Application implements EventsCapableInterface
     protected $response;
 
     public function __construct(
-        protected ServiceManager $serviceManager,
+        protected ContainerInterface $container,
         EventManagerInterface $events,
         ApplicationListenersProvider $listenersProvider,
         ?RequestInterface $request = null,
@@ -71,8 +71,8 @@ class Application implements EventsCapableInterface
     ) {
         $this->setEventManager($events);
         $listenersProvider->registerListeners($this);
-        $this->request  = $request ?: $serviceManager->get('Request');
-        $this->response = $response ?: $serviceManager->get('Response');
+        $this->request  = $request ?: $container->get('Request');
+        $this->response = $response ?: $container->get('Response');
     }
 
     /**
@@ -86,8 +86,8 @@ class Application implements EventsCapableInterface
      */
     public function bootstrap()
     {
-        $serviceManager = $this->serviceManager;
-        $events         = $this->events;
+        $container = $this->container;
+        $events    = $this->events;
 
         // Setup MVC Event
         $this->event = $event  = new MvcEvent();
@@ -96,7 +96,7 @@ class Application implements EventsCapableInterface
         $event->setApplication($this);
         $event->setRequest($this->request);
         $event->setResponse($this->response);
-        $event->setRouter($serviceManager->get('Router'));
+        $event->setRouter($container->get('Router'));
 
         // Trigger bootstrap events
         $events->triggerEvent($event);
@@ -107,11 +107,11 @@ class Application implements EventsCapableInterface
     /**
      * Retrieve the service manager
      *
-     * @return ServiceManager
+     * @deprecated Since 4.0.0 and will be removed in 5.0.0
      */
-    public function getServiceManager()
+    public function getServiceManager(): ContainerInterface
     {
-        return $this->serviceManager;
+        return $this->container;
     }
 
     /**
