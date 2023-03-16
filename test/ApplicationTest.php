@@ -34,7 +34,6 @@ use stdClass;
 
 use function array_values;
 use function sprintf;
-use function var_export;
 
 class ApplicationTest extends TestCase
 {
@@ -110,17 +109,6 @@ class ApplicationTest extends TestCase
     public function testServiceManagerIsPopulated(): void
     {
         $this->assertSame($this->serviceManager, $this->application->getServiceManager());
-    }
-
-    public function testConfigIsPopulated(): void
-    {
-        $smConfig  = $this->serviceManager->get('config');
-        $appConfig = $this->application->getConfig();
-        $this->assertEquals(
-            $smConfig,
-            $appConfig,
-            sprintf('SM config: %s; App config: %s', var_export($smConfig, true), var_export($appConfig, true))
-        );
     }
 
     private function getIdentifiersFromSharedEventManager(SharedEventManager $events): array
