@@ -519,7 +519,7 @@ priority):</p>
 <thead>
 <tr>
 <th>Class</th>
-<th align="right">Priority</th>
+<th style="text-align: right;">Priority</th>
 <th>Method Called</th>
 <th>Triggers</th>
 <th>Description</th>
@@ -528,7 +528,7 @@ priority):</p>
 <tbody>
 <tr>
 <td><code>Laminas\Mvc\View\Http\ViewManager</code></td>
-<td align="right">10000</td>
+<td style="text-align: right;">10000</td>
 <td><code>onBootstrap</code></td>
 <td>none</td>
 <td>Prepares the view layer (instantiate a <code>Laminas\Mvc\View\Http\ViewManager</code>).</td>
@@ -559,7 +559,7 @@ priority):</p>
 <thead>
 <tr>
 <th>Class</th>
-<th align="right">Priority</th>
+<th style="text-align: right;">Priority</th>
 <th>Method Called</th>
 <th>Triggers</th>
 <th>Description</th>
@@ -568,14 +568,14 @@ priority):</p>
 <tbody>
 <tr>
 <td><code>Laminas\Mvc\ModuleRouteListener</code></td>
-<td align="right">1</td>
+<td style="text-align: right;">1</td>
 <td><code>onRoute</code></td>
 <td>none</td>
 <td>Determines if the module namespace should be prepended to the controller name. This is the case if the route match contains a parameter key matching the <code>MODULE_NAMESPACE</code> constant.</td>
 </tr>
 <tr>
 <td><code>Laminas\Mvc\RouteListener</code></td>
-<td align="right">1</td>
+<td style="text-align: right;">1</td>
 <td><code>onRoute</code></td>
 <td><code>MvcEvent::EVENT_DISPATCH_ERROR</code> (if no route is matched)</td>
 <td>Tries to match the request to the router and return a <code>RouteMatch</code> object.</td>
@@ -610,7 +610,7 @@ priority):</p>
 <thead>
 <tr>
 <th>Class</th>
-<th align="right">Priority</th>
+<th style="text-align: right;">Priority</th>
 <th>Method Called</th>
 <th>Description</th>
 </tr>
@@ -618,31 +618,31 @@ priority):</p>
 <tbody>
 <tr>
 <td><code>Laminas\Mvc\View\Console\InjectNamedConsoleParamsListener</code></td>
-<td align="right">1000</td>
+<td style="text-align: right;">1000</td>
 <td><code>injectNamedParams</code></td>
 <td>Merge all params (route match params and params in the command), and add them to the <code>Request</code> object.</td>
 </tr>
 <tr>
 <td><code>Laminas\Mvc\View\Console\CreateViewModelListener</code></td>
-<td align="right">-80</td>
+<td style="text-align: right;">-80</td>
 <td><code>createViewModelFromArray</code></td>
 <td>If the controller action returns an associative array, this listener casts it to a <code>ConsoleModel</code> object.</td>
 </tr>
 <tr>
 <td><code>Laminas\Mvc\View\Console\CreateViewModelListener</code></td>
-<td align="right">-80</td>
+<td style="text-align: right;">-80</td>
 <td><code>createViewModelFromString</code></td>
 <td>If the controller action returns a string, this listener casts it to a <code>ConsoleModel</code> object.</td>
 </tr>
 <tr>
 <td><code>Laminas\Mvc\View\Console\CreateViewModelListener</code></td>
-<td align="right">-80</td>
+<td style="text-align: right;">-80</td>
 <td><code>createViewModelFromNull</code></td>
 <td>If the controller action returns null, this listener casts it to a <code>ConsoleModel</code> object.</td>
 </tr>
 <tr>
 <td><code>Laminas\Mvc\View\Console\InjectViewModelListener</code></td>
-<td align="right">-100</td>
+<td style="text-align: right;">-100</td>
 <td><code>injectViewModel</code></td>
 <td>Inserts the <code>ViewModel</code> (in this case, a <code>ConsoleModel</code>) and adds it to the MvcEvent object. It either (a) adds it as a child to the default, composed view model, or (b) replaces it if the result is marked as terminal.</td>
 </tr>
@@ -654,7 +654,7 @@ priority):</p>
 <thead>
 <tr>
 <th>Class</th>
-<th align="right">Priority</th>
+<th style="text-align: right;">Priority</th>
 <th>Method Called</th>
 <th>Description</th>
 </tr>
@@ -662,31 +662,31 @@ priority):</p>
 <tbody>
 <tr>
 <td><code>Laminas\Mvc\View\Http\CreateViewModelListener</code></td>
-<td align="right">-80</td>
+<td style="text-align: right;">-80</td>
 <td><code>createViewModelFromArray</code></td>
 <td>If the controller action returns an associative array, this listener casts it to a <code>ViewModel</code> object.</td>
 </tr>
 <tr>
 <td><code>Laminas\Mvc\View\Http\CreateViewModelListener</code></td>
-<td align="right">-80</td>
+<td style="text-align: right;">-80</td>
 <td><code>createViewModelFromNull</code></td>
 <td>If the controller action returns null, this listener casts it to a <code>ViewModel</code> object.</td>
 </tr>
 <tr>
 <td><code>Laminas\Mvc\View\Http\RouteNotFoundStrategy</code></td>
-<td align="right">-90</td>
+<td style="text-align: right;">-90</td>
 <td><code>prepareNotFoundViewModel</code></td>
 <td>Creates and return a 404 <code>ViewModel</code>.</td>
 </tr>
 <tr>
 <td><code>Laminas\Mvc\View\Http\InjectTemplateListener</code></td>
-<td align="right">-90</td>
+<td style="text-align: right;">-90</td>
 <td><code>injectTemplate</code></td>
 <td>Injects a template into the view model, if none present. Template name is derived from the controller found in the route match, and, optionally, the action, if present.</td>
 </tr>
 <tr>
 <td><code>Laminas\Mvc\View\Http\InjectViewModelListener</code></td>
-<td align="right">-100</td>
+<td style="text-align: right;">-100</td>
 <td><code>injectViewModel</code></td>
 <td>Inserts the <code>ViewModel</code> (in this case, a <code>ViewModel</code>) and adds it to the <code>MvcEvent</code> object. It either (a) adds it as a child to the default, composed view model, or (b) replaces it if the result is marked as terminable.</td>
 </tr>
@@ -699,7 +699,7 @@ priority to lower priority):</p>
 <thead>
 <tr>
 <th>Class</th>
-<th align="right">Priority</th>
+<th style="text-align: right;">Priority</th>
 <th>Method Called</th>
 <th>Triggers</th>
 <th>Description</th>
@@ -708,21 +708,21 @@ priority to lower priority):</p>
 <tbody>
 <tr>
 <td><code>Laminas\Mvc\MiddlewareListener</code></td>
-<td align="right">1</td>
+<td style="text-align: right;">1</td>
 <td><code>onDispatch</code></td>
 <td><code>MvcEvent::EVENT_DISPATCH_ERROR</code> (if an exception is raised during dispatch processes)</td>
 <td>Load and dispatch the matched PSR-7 middleware from the service manager (and throws various exceptions if it does not).</td>
 </tr>
 <tr>
 <td><code>Laminas\Mvc\DispatchListener</code></td>
-<td align="right">1</td>
+<td style="text-align: right;">1</td>
 <td><code>onDispatch</code></td>
 <td><code>MvcEvent::EVENT_DISPATCH_ERROR</code> (if an exception is raised during dispatch processes)</td>
 <td>Load and dispatch the matched controller from the service manager (and throws various exceptions if it does not).</td>
 </tr>
 <tr>
 <td><code>Laminas\Mvc\AbstractController</code></td>
-<td align="right">1</td>
+<td style="text-align: right;">1</td>
 <td><code>onDispatch</code></td>
 <td>none</td>
 <td>The <code>onDispatch</code> method of the <code>AbstractController</code> is an abstract method. In <code>AbstractActionController</code>, for instance, it calls the action method.</td>
@@ -762,7 +762,7 @@ priority):</p>
 <thead>
 <tr>
 <th>Class</th>
-<th align="right">Priority</th>
+<th style="text-align: right;">Priority</th>
 <th>Method Called</th>
 <th>Description</th>
 </tr>
@@ -770,19 +770,19 @@ priority):</p>
 <tbody>
 <tr>
 <td><code>Laminas\Mvc\View\Console\RouteNotFoundStrategy</code></td>
-<td align="right">1</td>
+<td style="text-align: right;">1</td>
 <td><code>handleRouteNotFoundError</code></td>
 <td>Detect if an error is a "route not found" condition. If a “controller not found” or “invalid controller” error type is encountered, sets the response status code to 404.</td>
 </tr>
 <tr>
 <td><code>Laminas\Mvc\View\Console\ExceptionStrategy</code></td>
-<td align="right">1</td>
+<td style="text-align: right;">1</td>
 <td><code>prepareExceptionViewModel</code></td>
 <td>Create an exception view model, and sets the status code to 404.</td>
 </tr>
 <tr>
 <td><code>Laminas\Mvc\View\Console\InjectViewModelListener</code></td>
-<td align="right">-100</td>
+<td style="text-align: right;">-100</td>
 <td><code>injectViewModel</code></td>
 <td>Inserts the <code>ViewModel</code> (in this case, a <code>ConsoleModel</code>) and adds it to the <code>MvcEvent</code> object. It either (a) adds it as a child to the default, composed view model, or (b) replaces it if the result is marked as terminable.</td>
 </tr>
@@ -794,7 +794,7 @@ priority):</p>
 <thead>
 <tr>
 <th>Class</th>
-<th align="right">Priority</th>
+<th style="text-align: right;">Priority</th>
 <th>Method Called</th>
 <th>Description</th>
 </tr>
@@ -802,25 +802,25 @@ priority):</p>
 <tbody>
 <tr>
 <td><code>Laminas\Mvc\View\Http\RouteNotFoundStrategy</code></td>
-<td align="right">1</td>
+<td style="text-align: right;">1</td>
 <td><code>detectNotFoundError</code></td>
 <td>Detect if an error is a 404 condition. If a “controller not found” or “invalid controller” error type is encountered, sets the response status code to 404.</td>
 </tr>
 <tr>
 <td><code>Laminas\Mvc\View\Http\RouteNotFoundStrategy</code></td>
-<td align="right">1</td>
+<td style="text-align: right;">1</td>
 <td><code>prepareNotFoundViewModel</code></td>
 <td>Create and return a 404 view model.</td>
 </tr>
 <tr>
 <td><code>Laminas\Mvc\View\Http\ExceptionStrategy</code></td>
-<td align="right">1</td>
+<td style="text-align: right;">1</td>
 <td><code>prepareExceptionViewModel</code></td>
 <td>Create an exception view model and set the status code to 404.</td>
 </tr>
 <tr>
 <td><code>Laminas\Mvc\View\Http\InjectViewModelListener</code></td>
-<td align="right">-100</td>
+<td style="text-align: right;">-100</td>
 <td><code>injectViewModel</code></td>
 <td>Inserts the <code>ViewModel</code> (in this case, a <code>ViewModel</code>) and adds it to the MvcEvent object. It either (a) adds it as a child to the default, composed view model, or (b) replaces it if the result is marked as terminable.</td>
 </tr>
@@ -832,7 +832,7 @@ priority):</p>
 <thead>
 <tr>
 <th>Class</th>
-<th align="right">Priority</th>
+<th style="text-align: right;">Priority</th>
 <th>Method Called</th>
 <th>Description</th>
 </tr>
@@ -840,7 +840,7 @@ priority):</p>
 <tbody>
 <tr>
 <td><code>Laminas\Mvc\DispatchListener</code></td>
-<td align="right">1</td>
+<td style="text-align: right;">1</td>
 <td><code>reportMonitorEvent</code></td>
 <td>Used for monitoring when Zend Server is used.</td>
 </tr>
@@ -883,7 +883,7 @@ priority):</p>
 <thead>
 <tr>
 <th>Class</th>
-<th align="right">Priority</th>
+<th style="text-align: right;">Priority</th>
 <th>Method Called</th>
 <th>Description</th>
 </tr>
@@ -891,7 +891,7 @@ priority):</p>
 <tbody>
 <tr>
 <td><code>Laminas\Mvc\View\Console\DefaultRenderingStrategy</code></td>
-<td align="right">-10000</td>
+<td style="text-align: right;">-10000</td>
 <td><code>render</code></td>
 <td>Render the view.</td>
 </tr>
@@ -903,7 +903,7 @@ priority):</p>
 <thead>
 <tr>
 <th>Class</th>
-<th align="right">Priority</th>
+<th style="text-align: right;">Priority</th>
 <th>Method Called</th>
 <th>Description</th>
 </tr>
@@ -911,7 +911,7 @@ priority):</p>
 <tbody>
 <tr>
 <td><code>Laminas\Mvc\View\Http\DefaultRenderingStrategy</code></td>
-<td align="right">-10000</td>
+<td style="text-align: right;">-10000</td>
 <td><code>render</code></td>
 <td>Render the view.</td>
 </tr>
@@ -945,7 +945,7 @@ priority):</p>
 <thead>
 <tr>
 <th>Class</th>
-<th align="right">Priority</th>
+<th style="text-align: right;">Priority</th>
 <th>Method Called</th>
 <th>Description</th>
 </tr>
@@ -953,13 +953,13 @@ priority):</p>
 <tbody>
 <tr>
 <td><code>Laminas\Mvc\View\Console\ExceptionStrategy</code></td>
-<td align="right">1</td>
+<td style="text-align: right;">1</td>
 <td><code>prepareExceptionViewModel</code></td>
 <td>Create an exception view model and set the status code to 404.</td>
 </tr>
 <tr>
 <td><code>Laminas\Mvc\View\Console\InjectViewModelListener</code></td>
-<td align="right">-100</td>
+<td style="text-align: right;">-100</td>
 <td><code>injectViewModel</code></td>
 <td>Inserts the <code>ViewModel</code> (in this case, a <code>ConsoleModel</code>) and adds it to the <code>MvcEvent</code> object. It either (a) adds it as a child to the default, composed view model, or (b) replaces it if the result is marked as terminable.</td>
 </tr>
@@ -971,7 +971,7 @@ priority):</p>
 <thead>
 <tr>
 <th>Class</th>
-<th align="right">Priority</th>
+<th style="text-align: right;">Priority</th>
 <th>Method Called</th>
 <th>Description</th>
 </tr>
@@ -979,19 +979,19 @@ priority):</p>
 <tbody>
 <tr>
 <td><code>Laminas\Mvc\View\Http\ExceptionStrategy</code></td>
-<td align="right">1</td>
+<td style="text-align: right;">1</td>
 <td><code>prepareExceptionViewModel</code></td>
 <td>Create an exception view model and set the status code to 404.</td>
 </tr>
 <tr>
 <td><code>Laminas\Mvc\View\Http\InjectViewModelListener</code></td>
-<td align="right">-100</td>
+<td style="text-align: right;">-100</td>
 <td><code>injectViewModel</code></td>
 <td>Inserts the <code>ViewModel</code> (in this case, a <code>ViewModel</code>) and adds it to the MvcEvent object. It either (a) adds it as a child to the default, composed view model, or (b) replaces it if the result is marked as terminable.</td>
 </tr>
 <tr>
 <td><code>Laminas\Mvc\View\Http\DefaultRenderingStrategy</code></td>
-<td align="right">-10000</td>
+<td style="text-align: right;">-10000</td>
 <td><code>render</code></td>
 <td>Render the view</td>
 </tr>
@@ -1023,7 +1023,7 @@ priority):</p>
 <thead>
 <tr>
 <th>Class</th>
-<th align="right">Priority</th>
+<th style="text-align: right;">Priority</th>
 <th>Method Called</th>
 <th>Description</th>
 </tr>
@@ -1031,7 +1031,7 @@ priority):</p>
 <tbody>
 <tr>
 <td><code>Laminas\Mvc\SendResponseListener</code></td>
-<td align="right">-10000</td>
+<td style="text-align: right;">-10000</td>
 <td><code>sendResponse</code></td>
 <td>Triggers the <code>SendResponseEvent</code> in order to prepare the response (see the next chapter for more information about <code>SendResponseEvent</code>).</td>
 </tr>
