@@ -1,6 +1,6 @@
 # laminas-mvc
 
-[![Build Status](https://github.com/laminas/laminas-mvc/workflows/Continuous%20Integration/badge.svg)](https://github.com/laminas/laminas-mvc/actions?query=workflow%3A"Continuous+Integration")
+[![Continuous Integration](https://github.com/laminas/laminas-mvc/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/laminas/laminas-mvc/actions/workflows/continuous-integration.yml)
 
 > ## 🇷🇺 Русским гражданам
 >
