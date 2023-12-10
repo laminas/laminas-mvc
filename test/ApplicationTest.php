@@ -76,18 +76,6 @@ class ApplicationTest extends TestCase
         $this->application = $this->serviceManager->get('Application');
     }
 
-    public function testRequestIsPopulatedFromServiceManager(): void
-    {
-        $request = $this->serviceManager->get('Request');
-        $this->assertSame($request, $this->application->getRequest());
-    }
-
-    public function testResponseIsPopulatedFromServiceManager(): void
-    {
-        $response = $this->serviceManager->get('Response');
-        $this->assertSame($response, $this->application->getResponse());
-    }
-
     public function testEventManagerIsPopulated(): void
     {
         $events       = $this->serviceManager->get('EventManager');
@@ -152,13 +140,11 @@ class ApplicationTest extends TestCase
         $event = $this->application->getMvcEvent();
         $this->assertInstanceOf(MvcEvent::class, $event);
 
-        $request  = $this->application->getRequest();
-        $response = $this->application->getResponse();
         $router   = $this->serviceManager->get('HttpRouter');
 
         $this->assertFalse($event->isError());
-        $this->assertSame($request, $event->getRequest());
-        $this->assertSame($response, $event->getResponse());
+        $this->assertNull($event->getRequest());
+        $this->assertNull($event->getResponse());
         $this->assertSame($router, $event->getRouter());
         $this->assertSame($this->application, $event->getApplication());
         $this->assertSame($this->application, $event->getTarget());
@@ -268,15 +254,18 @@ class ApplicationTest extends TestCase
         $event       = $application->getMvcEvent();
         $event->setRouter($router);
 
-        $response = $application->getResponse();
         $events   = $application->getEventManager();
-        $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, static function ($e) use ($response): ResponseInterface {
+        $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, static function (MvcEvent $e): ResponseInterface {
             $error = $e->getError();
+            $response = $e->getResponse();
             $response->setContent("Code: " . $error);
             return $response;
         });
 
         $application->run();
+
+        $response = $event->getResponse();
+        self::assertInstanceOf(ResponseInterface::class, $response);
         $this->assertTrue($event->isError());
         $this->assertStringContainsString(Application::ERROR_ROUTER_NO_MATCH, $response->getContent());
     }
@@ -287,9 +276,8 @@ class ApplicationTest extends TestCase
         $response    = new Response();
         $application->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, static fn($e): Response => $response);
 
-        $result = $application->run();
-        $this->assertSame($application, $result, $result::class);
-        $this->assertSame($response, $result->getResponse(), $result::class);
+        $application->run();
+        $this->assertSame($response, $application->getMvcEvent()->getResponse());
     }
 
     public function testFailureForRouteToReturnRouteMatchShouldPopulateEventError(): void
@@ -299,10 +287,10 @@ class ApplicationTest extends TestCase
         $event       = $application->getMvcEvent();
         $event->setRouter($router);
 
-        $response = $application->getResponse();
         $events   = $application->getEventManager();
-        $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, static function ($e) use ($response): ResponseInterface {
+        $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, static function (MvcEvent $e): ResponseInterface {
             $error = $e->getError();
+            $response = $e->getResponse();
             $response->setContent("Code: " . $error);
             return $response;
         });
@@ -315,7 +303,7 @@ class ApplicationTest extends TestCase
     public function testFinishShouldRunEvenIfRouteEventReturnsResponse(): void
     {
         $this->application->bootstrap();
-        $response = $this->application->getResponse();
+        $response = new Response();
         $events   = $this->application->getEventManager();
         $events->attach(MvcEvent::EVENT_ROUTE, static fn($e): ResponseInterface => $response, 100);
 
@@ -332,7 +320,7 @@ class ApplicationTest extends TestCase
     public function testFinishShouldRunEvenIfDispatchEventReturnsResponse(): void
     {
         $this->application->bootstrap();
-        $response = $this->application->getResponse();
+        $response = new Response();
         $events   = $this->application->getEventManager();
         $events->clearListeners(MvcEvent::EVENT_ROUTE);
         $events->attach(MvcEvent::EVENT_DISPATCH, static fn($e): ResponseInterface => $response, 100);
@@ -352,13 +340,15 @@ class ApplicationTest extends TestCase
         $application = $this->setupActionController();
 
         $events   = $application->getEventManager();
-        $response = $application->getResponse();
-        $events->attach(MvcEvent::EVENT_FINISH, static function ($e) use ($response): ResponseInterface {
+        $events->attach(MvcEvent::EVENT_FINISH, static function (MvcEvent $e): ResponseInterface {
+            $response = $e->getResponse();
             $response->setContent("EventClass: " . $e->getTarget()::class);
             return $response;
         });
 
         $application->run();
+        $response = $application->getMvcEvent()->getResponse();
+        self::assertInstanceOf(ResponseInterface::class, $response);
         $this->assertStringContainsString(Application::class, $response->getContent());
     }
 
@@ -382,7 +372,6 @@ class ApplicationTest extends TestCase
     {
         $this->application->bootstrap();
         $testResponse = new Response();
-        $response     = $this->application->getResponse();
         $events       = $this->application->getEventManager();
         $events->clearListeners(MvcEvent::EVENT_DISPATCH);
         $events->attach(MvcEvent::EVENT_ROUTE, static function ($e) use ($testResponse): Response {
@@ -404,7 +393,6 @@ class ApplicationTest extends TestCase
     {
         $this->application->bootstrap();
         $testResponse = new Response();
-        $response     = $this->application->getResponse();
         $events       = $this->application->getEventManager();
         $events->clearListeners(MvcEvent::EVENT_ROUTE);
         $events->attach(MvcEvent::EVENT_DISPATCH, static function ($e) use ($testResponse): Response {

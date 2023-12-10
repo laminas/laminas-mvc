@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Laminas\Mvc;
 
+use Closure;
 use Laminas\EventManager\EventManagerInterface;
 use Laminas\EventManager\EventsCapableInterface;
+use Laminas\Http\Request;
+use Laminas\Http\Response;
 use Laminas\Stdlib\RequestInterface;
 use Laminas\Stdlib\ResponseInterface;
 use Psr\Container\ContainerInterface;
@@ -56,23 +59,19 @@ class Application implements EventsCapableInterface
 
     protected EventManagerInterface $events;
 
-    /** @var RequestInterface */
-    protected $request;
-
-    /** @var ResponseInterface */
-    protected $response;
-
+    /**
+     * @param Closure():Request $requestFactory
+     * @param Closure():Response $responseFactory
+     */
     public function __construct(
         protected ContainerInterface $container,
         EventManagerInterface $events,
         ApplicationListenersProvider $listenersProvider,
-        ?RequestInterface $request = null,
-        ?ResponseInterface $response = null
+        protected Closure $requestFactory,
+        protected Closure $responseFactory,
     ) {
         $this->setEventManager($events);
         $listenersProvider->registerListeners($this);
-        $this->request  = $request ?: $container->get('Request');
-        $this->response = $response ?: $container->get('Response');
     }
 
     /**
@@ -94,8 +93,6 @@ class Application implements EventsCapableInterface
         $event->setName(MvcEvent::EVENT_BOOTSTRAP);
         $event->setTarget($this);
         $event->setApplication($this);
-        $event->setRequest($this->request);
-        $event->setResponse($this->response);
         $event->setRouter($container->get('Router'));
 
         // Trigger bootstrap events
@@ -117,21 +114,25 @@ class Application implements EventsCapableInterface
     /**
      * Get the request object
      *
-     * @return RequestInterface
+     * @deprecated Since 4.0.0 and will be removed in 5.0.0
+     *
+     * @return null|RequestInterface
      */
     public function getRequest()
     {
-        return $this->request;
+        return $this->event->getRequest();
     }
 
     /**
      * Get the response object
      *
-     * @return ResponseInterface
+     * @deprecated Since 4.0.0 and will be removed in 5.0.0
+     *
+     * @return null|ResponseInterface
      */
     public function getResponse()
     {
-        return $this->response;
+        return $this->event->getResponse();
     }
 
     /**
@@ -182,7 +183,10 @@ class Application implements EventsCapableInterface
         $events = $this->events;
         $event  = $this->event;
 
-        // Define callback used to determine whether or not to short-circuit
+        $event->setRequest(($this->requestFactory)());
+        $event->setResponse(($this->responseFactory)());
+
+        // Define callback used to determine whether to short-circuit
         $shortCircuit = static function ($r) use ($event): bool {
             if ($r instanceof ResponseInterface) {
                 return true;
@@ -205,7 +209,6 @@ class Application implements EventsCapableInterface
                 $event->setResponse($response);
                 $event->stopPropagation(false); // Clear before triggering
                 $events->triggerEvent($event);
-                $this->response = $response;
                 return $this;
             }
         }
@@ -227,12 +230,9 @@ class Application implements EventsCapableInterface
             $event->setResponse($response);
             $event->stopPropagation(false); // Clear before triggering
             $events->triggerEvent($event);
-            $this->response = $response;
             return $this;
         }
 
-        $response = $this->response;
-        $event->setResponse($response);
         return $this->completeRequest($event);
     }
 

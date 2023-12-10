@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Laminas\Mvc\Service;
 
 use Laminas\EventManager\EventManagerInterface;
+use Laminas\Http\Request;
+use Laminas\Http\Response;
 use Laminas\Mvc\Application;
 use Laminas\Mvc\ApplicationListenersProvider;
 use Psr\Container\ContainerInterface;
@@ -17,8 +19,8 @@ final class ApplicationFactory
             $container,
             $container->get(EventManagerInterface::class),
             $container->get(ApplicationListenersProvider::class),
-            $container->get('Request'),
-            $container->get('Response')
+            static fn (): Request => $container->get('Request'),
+            static fn (): Response => $container->get('Response')
         );
     }
 }

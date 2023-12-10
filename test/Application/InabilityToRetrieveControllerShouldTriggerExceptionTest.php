@@ -20,16 +20,19 @@ class InabilityToRetrieveControllerShouldTriggerExceptionTest extends TestCase
     {
         $application = $this->prepareApplication();
 
-        $response = $application->getResponse();
         $events   = $application->getEventManager();
-        $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, static function ($e) use ($response): ResponseInterface {
+        $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, static function (MvcEvent $e): ResponseInterface {
             $error      = $e->getError();
             $controller = $e->getController();
+            $response = $e->getResponse();
             $response->setContent("Code: " . $error . '; Controller: ' . $controller);
             return $response;
         });
 
         $application->run();
+
+        $response = $application->getMvcEvent()->getResponse();
+        self::assertInstanceOf(ResponseInterface::class, $response);
         $this->assertStringContainsString(Application::ERROR_CONTROLLER_NOT_FOUND, $response->getContent());
         $this->assertStringContainsString('bad', $response->getContent());
     }

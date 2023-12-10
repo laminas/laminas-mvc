@@ -28,10 +28,10 @@ class MvcEvent extends Event
     /** @var Application */
     protected $application;
 
-    /** @var Request */
+    /** @var null|Request */
     protected $request;
 
-    /** @var Response */
+    /** @var null|Response */
     protected $response;
 
     /** @var mixed */
@@ -115,7 +115,7 @@ class MvcEvent extends Event
     /**
      * Get request
      *
-     * @return Request
+     * @return null|Request
      */
     public function getRequest()
     {
@@ -137,7 +137,7 @@ class MvcEvent extends Event
     /**
      * Get response
      *
-     * @return Response
+     * @return null|Response
      */
     public function getResponse()
     {
