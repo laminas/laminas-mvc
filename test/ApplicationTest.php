@@ -10,12 +10,12 @@ use Laminas\EventManager\Test\EventListenerIntrospectionTrait;
 use Laminas\Http\PhpEnvironment\Request;
 use Laminas\Http\PhpEnvironment\Response;
 use Laminas\Mvc\Application;
+use Laminas\Mvc\ConfigProvider;
 use Laminas\Mvc\Controller\ControllerManager;
 use Laminas\Mvc\MvcEvent;
-use Laminas\Router\ConfigProvider;
+use Laminas\Router;
 use Laminas\Router\Http\Literal;
 use Laminas\Router\RouteMatch;
-use Laminas\Router\RouterFactory;
 use Laminas\Router\SimpleRouteStack;
 use Laminas\ServiceManager\ServiceManager;
 use Laminas\Stdlib\ArrayUtils;
@@ -32,9 +32,7 @@ use ReflectionMethod;
 use ReflectionProperty;
 use stdClass;
 
-use function array_shift;
 use function array_values;
-use function is_array;
 use function sprintf;
 use function var_export;
 
@@ -50,12 +48,8 @@ class ApplicationTest extends TestCase
 
     public function setUp(): void
     {
-        $serviceConfig        = ArrayUtils::merge(
-            ArrayUtils::merge(
-                (new \Laminas\Mvc\ConfigProvider())->getDependencies(),
-                (new ConfigProvider())->getDependencyConfig(),
-            ),
-            [
+        $testConfig = [
+            'dependencies' => [
                 'invokables' => [
                     'Request'              => Request::class,
                     'Response'             => Response::class,
@@ -63,15 +57,22 @@ class ApplicationTest extends TestCase
                     'SendResponseListener' => MockSendResponseListener::class,
                     'BootstrapListener'    => StubBootstrapListener::class,
                 ],
-                'factories'  => [
-                    'Router' => RouterFactory::class,
-                ],
                 'services'   => [
                     'config' => [],
                 ],
-            ]
+            ],
+        ];
+
+        $config                                       = ArrayUtils::merge(
+            ArrayUtils::merge(
+                (new ConfigProvider())(),
+                (new Router\ConfigProvider())(),
+            ),
+            $testConfig
         );
-        $this->serviceManager = new ServiceManager($serviceConfig);
+        $config['dependencies']['services']['config'] = $config;
+
+        $this->serviceManager = new ServiceManager($config['dependencies']);
         $this->serviceManager->setAllowOverride(true);
         $this->application = $this->serviceManager->get('Application');
     }
@@ -130,9 +131,9 @@ class ApplicationTest extends TestCase
     }
 
     /**
-     * @dataProvider bootstrapRegistersListenersProvider
+     * @dataProvider defaultApplicationListenersProvider
      */
-    public function testBootstrapRegistersListeners(string $listenerServiceName, string $event, string $method): void
+    public function testHasRegisteredDefaultListeners(string $listenerServiceName, string $event, string $method): void
     {
         $listenerService = $this->serviceManager->get($listenerServiceName);
         $this->application->bootstrap();
@@ -142,7 +143,7 @@ class ApplicationTest extends TestCase
         $this->assertContains([$listenerService, $method], $listeners);
     }
 
-    public function bootstrapRegistersListenersProvider(): array
+    public function defaultApplicationListenersProvider(): array
     {
         // @codingStandardsIgnoreStart
         //                     [ Service Name,           Event,                       Method,        isCustom ]
@@ -154,34 +155,6 @@ class ApplicationTest extends TestCase
             'http_method'   => ['HttpMethodListener'   , MvcEvent::EVENT_ROUTE     , 'onRoute',      false],
         ];
         // @codingStandardsIgnoreEnd
-    }
-
-    public function testBootstrapAlwaysRegistersDefaultListeners(): void
-    {
-        $r = new ReflectionProperty($this->application, 'defaultListeners');
-        $r->setAccessible(true);
-        $defaultListenersNames = $r->getValue($this->application);
-        $defaultListeners      = [];
-        foreach ($defaultListenersNames as $defaultListenerName) {
-            $defaultListeners[] = $this->serviceManager->get($defaultListenerName);
-        }
-
-        $this->application->bootstrap();
-        $eventManager = $this->application->getEventManager();
-
-        $registeredListeners = [];
-        foreach ($this->getEventsFromEventManager($eventManager) as $event) {
-            foreach ($this->getListenersForEvent($event, $eventManager) as $listener) {
-                if (is_array($listener)) {
-                    $listener = array_shift($listener);
-                }
-                $registeredListeners[] = $listener;
-            }
-        }
-
-        foreach ($defaultListeners as $defaultListener) {
-            $this->assertContains($defaultListener, $registeredListeners);
-        }
     }
 
     public function testBootstrapRegistersConfiguredMvcEvent(): void

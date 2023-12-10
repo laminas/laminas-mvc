@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.8.0@9cf4f60a333f779ad3bc704a555920e81d4fdcda">
+<files psalm-version="5.17.0@c620f6e80d0abfca532b00bda366062aaedf6e5d">
   <file src="src/Application.php">
-    <ImplementedReturnTypeMismatch>
-      <code>Application</code>
-    </ImplementedReturnTypeMismatch>
     <MissingClosureParamType>
       <code>$r</code>
     </MissingClosureParamType>
     <MixedArgument>
-      <code><![CDATA[$events ?: $serviceManager->get('EventManager')]]></code>
-      <code>$listener</code>
       <code><![CDATA[$serviceManager->get('Router')]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$listener</code>
       <code>$response</code>
       <code>$response</code>
       <code><![CDATA[$this->request]]></code>
@@ -22,9 +16,6 @@
     <MixedInferredReturnType>
       <code>array|object</code>
     </MixedInferredReturnType>
-    <MixedMethodCall>
-      <code>attach</code>
-    </MixedMethodCall>
     <MixedReturnStatement>
       <code><![CDATA[$this->serviceManager->get('config')]]></code>
     </MixedReturnStatement>
@@ -176,9 +167,6 @@
       <code><![CDATA[$request->getContent()]]></code>
       <code><![CDATA[$request->getMethod()]]></code>
     </MixedArgument>
-    <MixedArrayOffset>
-      <code><![CDATA[$this->customHttpMethodsMap[$method]]]></code>
-    </MixedArrayOffset>
     <MixedAssignment>
       <code>$action</code>
       <code>$action</code>
@@ -331,7 +319,6 @@
       <code>$request</code>
     </MissingConstructor>
     <MixedArgument>
-      <code>$modelAcceptString</code>
       <code>$modelName</code>
       <code>$modelString</code>
     </MixedArgument>
@@ -343,7 +330,6 @@
       <code><![CDATA[$res->getMatchedAgainst()->params[self::INJECT_VIEWMODEL_NAME]]]></code>
     </MixedArrayAccess>
     <MixedAssignment>
-      <code>$modelAcceptString</code>
       <code>$modelName</code>
       <code>$modelString</code>
       <code>$modelStrings</code>
@@ -351,9 +337,6 @@
     <MixedMethodCall>
       <code>new $name()</code>
     </MixedMethodCall>
-    <MixedOperand>
-      <code>$modelAcceptString</code>
-    </MixedOperand>
     <MoreSpecificReturnType>
       <code>ModelInterface|null</code>
     </MoreSpecificReturnType>
@@ -622,11 +605,6 @@
     </UndefinedClass>
   </file>
   <file src="src/DispatchListener.php">
-    <ArgumentTypeCoercion>
-      <code>$application</code>
-      <code>$application</code>
-      <code>$application</code>
-    </ArgumentTypeCoercion>
     <MissingReturnType>
       <code>reportMonitorEvent</code>
     </MissingReturnType>
@@ -660,11 +638,6 @@
     <MixedMethodCall>
       <code>dispatch</code>
     </MixedMethodCall>
-    <UndefinedConstant>
-      <code>$application::ERROR_CONTROLLER_INVALID</code>
-      <code>$application::ERROR_CONTROLLER_NOT_FOUND</code>
-      <code>$application::ERROR_EXCEPTION</code>
-    </UndefinedConstant>
     <UndefinedFunction>
       <code><![CDATA[zend_monitor_custom_event_ex(
                 $error,
@@ -871,18 +844,9 @@
       <code>$container</code>
     </ArgumentTypeCoercion>
     <MixedArgument>
-      <code><![CDATA[$container->get('EventManager')]]></code>
       <code><![CDATA[$container->get('Request')]]></code>
       <code><![CDATA[$container->get('Response')]]></code>
-      <code>$listener</code>
     </MixedArgument>
-    <MixedAssignment>
-      <code>$listener</code>
-      <code>$listeners</code>
-    </MixedAssignment>
-    <MixedMethodCall>
-      <code>attach</code>
-    </MixedMethodCall>
   </file>
   <file src="src/Service/ControllerManagerFactory.php">
     <MixedArgument>
@@ -1296,9 +1260,6 @@
     <PossiblyNullReference>
       <code>attach</code>
     </PossiblyNullReference>
-    <PropertyTypeCoercion>
-      <code>$services</code>
-    </PropertyTypeCoercion>
   </file>
   <file src="test/Application/AllowsReturningEarlyFromRoutingTest.php">
     <MissingClosureParamType>
@@ -1309,9 +1270,6 @@
     </UnusedClosureParam>
   </file>
   <file src="test/Application/BadControllerTrait.php">
-    <ArgumentTypeCoercion>
-      <code>$serviceConfig</code>
-    </ArgumentTypeCoercion>
     <MissingClosureParamType>
       <code>$services</code>
       <code>$services</code>
@@ -1429,16 +1387,10 @@
     </MixedOperand>
   </file>
   <file src="test/Application/InvalidControllerTypeTrait.php">
-    <ArgumentTypeCoercion>
-      <code>$serviceConfig</code>
-    </ArgumentTypeCoercion>
     <MissingClosureParamType>
       <code>$services</code>
       <code>$services</code>
     </MissingClosureParamType>
-    <MissingClosureReturnType>
-      <code><![CDATA[static fn($services) => $services->get('HttpRouter')]]></code>
-    </MissingClosureReturnType>
     <MixedArgument>
       <code>$services</code>
     </MixedArgument>
@@ -1451,20 +1403,10 @@
     </MixedInferredReturnType>
     <MixedMethodCall>
       <code>bootstrap</code>
-      <code>get</code>
       <code>setUri</code>
     </MixedMethodCall>
   </file>
   <file src="test/Application/MissingControllerTrait.php">
-    <ArgumentTypeCoercion>
-      <code>$serviceConfig</code>
-    </ArgumentTypeCoercion>
-    <MissingClosureParamType>
-      <code>$services</code>
-    </MissingClosureParamType>
-    <MissingClosureReturnType>
-      <code><![CDATA[static fn($services) => $services->get('HttpRouter')]]></code>
-    </MissingClosureReturnType>
     <MixedAssignment>
       <code>$application</code>
       <code>$request</code>
@@ -1474,21 +1416,15 @@
     </MixedInferredReturnType>
     <MixedMethodCall>
       <code>bootstrap</code>
-      <code>get</code>
       <code>setUri</code>
     </MixedMethodCall>
   </file>
   <file src="test/Application/PathControllerTrait.php">
-    <ArgumentTypeCoercion>
-      <code>$serviceConfig</code>
-    </ArgumentTypeCoercion>
     <MissingClosureParamType>
       <code>$services</code>
       <code>$services</code>
     </MissingClosureParamType>
-    <MissingClosureReturnType>
-      <code><![CDATA[static fn($services) => $services->get('HttpRouter')]]></code>
-    </MissingClosureReturnType>
+    <MissingClosureReturnType/>
     <MixedArgument>
       <code>$services</code>
     </MixedArgument>
@@ -1501,7 +1437,6 @@
     </MixedInferredReturnType>
     <MixedMethodCall>
       <code>bootstrap</code>
-      <code>get</code>
       <code>setUri</code>
     </MixedMethodCall>
   </file>
@@ -1509,25 +1444,13 @@
     <MissingClosureParamType>
       <code>$e</code>
     </MissingClosureParamType>
-    <MixedArgument>
-      <code>$log</code>
-    </MixedArgument>
-    <MixedArrayAccess>
-      <code><![CDATA[$log['route-match']]]></code>
-    </MixedArrayAccess>
-    <MixedArrayAssignment>
-      <code><![CDATA[$log['route-match']]]></code>
-    </MixedArrayAssignment>
     <MixedMethodCall>
       <code>getRouteMatch</code>
     </MixedMethodCall>
   </file>
   <file src="test/ApplicationTest.php">
     <ArgumentTypeCoercion>
-      <code>$eventManager</code>
-      <code>$eventManager</code>
       <code>$events</code>
-      <code>$serviceConfig</code>
     </ArgumentTypeCoercion>
     <DeprecatedMethod>
       <code>setMethods</code>
@@ -1569,7 +1492,6 @@
       <code>static function (MvcEvent $event) {</code>
     </MissingClosureReturnType>
     <MixedArgument>
-      <code>$defaultListenerName</code>
       <code><![CDATA[$response->getContent()]]></code>
       <code><![CDATA[$response->getContent()]]></code>
       <code>$router</code>
@@ -1580,17 +1502,10 @@
     <MixedAssignment>
       <code>$controllerLoader</code>
       <code>$controllerManager</code>
-      <code>$defaultListener</code>
-      <code>$defaultListenerName</code>
-      <code>$defaultListenersNames</code>
-      <code>$defaultListeners[]</code>
       <code>$error</code>
       <code>$error</code>
       <code>$events</code>
-      <code>$listener</code>
-      <code>$listener</code>
       <code>$listenerService</code>
-      <code>$registeredListeners[]</code>
       <code>$request</code>
       <code>$request</code>
       <code>$request</code>
@@ -2471,16 +2386,6 @@
       <code>$e</code>
       <code>$e</code>
     </MissingClosureParamType>
-    <MixedArgument>
-      <code>$log</code>
-    </MixedArgument>
-    <MixedArrayAccess>
-      <code><![CDATA[$log['error']]]></code>
-    </MixedArrayAccess>
-    <MixedArrayAssignment>
-      <code><![CDATA[$log['error']]]></code>
-      <code><![CDATA[$log['error']]]></code>
-    </MixedArrayAssignment>
     <MixedAssignment>
       <code><![CDATA[$log['error']]]></code>
       <code><![CDATA[$log['error']]]></code>
@@ -2517,10 +2422,6 @@
     <MissingClosureParamType>
       <code>$e</code>
     </MissingClosureParamType>
-    <MixedArrayAssignment>
-      <code><![CDATA[$result['response']]]></code>
-      <code><![CDATA[$result['target']]]></code>
-    </MixedArrayAssignment>
     <MixedAssignment>
       <code><![CDATA[$result['response']]]></code>
       <code><![CDATA[$result['target']]]></code>
@@ -2819,9 +2720,6 @@
     <MissingReturnType>
       <code>testDetachesListeners</code>
     </MissingReturnType>
-    <MixedAssignment>
-      <code>$child</code>
-    </MixedAssignment>
   </file>
   <file src="test/View/RouteNotFoundStrategyTest.php">
     <InternalMethod>

@@ -7,7 +7,8 @@ namespace LaminasTest\Mvc\Application;
 use Laminas\Http\PhpEnvironment\Request;
 use Laminas\Http\PhpEnvironment\Response;
 use Laminas\Mvc\Application;
-use Laminas\Router\ConfigProvider;
+use Laminas\Mvc\ConfigProvider;
+use Laminas\Router;
 use Laminas\Router\Http\Literal;
 use Laminas\ServiceManager\ServiceManager;
 use Laminas\Stdlib\ArrayUtils;
@@ -19,8 +20,8 @@ trait MissingControllerTrait
 {
     public function prepareApplication(): Application
     {
-        $config = [
-            'router' => [
+        $testConfig = [
+            'router'       => [
                 'routes' => [
                     'path' => [
                         'type'    => Literal::class,
@@ -34,17 +35,7 @@ trait MissingControllerTrait
                     ],
                 ],
             ],
-        ];
-
-        $serviceConfig = ArrayUtils::merge(
-            ArrayUtils::merge(
-                (new \Laminas\Mvc\ConfigProvider())->getDependencies(),
-                (new ConfigProvider())->getDependencyConfig(),
-            ),
-            [
-                'factories'  => [
-                    'Router' => static fn($services) => $services->get('HttpRouter'),
-                ],
+            'dependencies' => [
                 'invokables' => [
                     'Request'              => Request::class,
                     'Response'             => Response::class,
@@ -52,13 +43,21 @@ trait MissingControllerTrait
                     'SendResponseListener' => MockSendResponseListener::class,
                     'BootstrapListener'    => StubBootstrapListener::class,
                 ],
-                'services'   => [
-                    'config' => $config,
-                ],
-            ]
+            ],
+        ];
+
+        $config = ArrayUtils::merge(
+            ArrayUtils::merge(
+                (new ConfigProvider())(),
+                (new Router\ConfigProvider())(),
+            ),
+            $testConfig
         );
-        $services      = new ServiceManager($serviceConfig);
-        $application   = $services->get('Application');
+
+        $config['dependencies']['services']['config'] = $config;
+
+        $services    = new ServiceManager($config['dependencies']);
+        $application = $services->get('Application');
 
         $request = $services->get('Request');
         $request->setUri('http://example.local/bad');

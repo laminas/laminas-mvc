@@ -9,7 +9,7 @@ use Laminas\EventManager\SharedEventManager;
 use Laminas\EventManager\SharedEventManagerInterface;
 use Laminas\Http\Request;
 use Laminas\Http\Response;
-use Laminas\Mvc\ApplicationInterface;
+use Laminas\Mvc\Application;
 use Laminas\Mvc\Controller\ControllerManager;
 use Laminas\Mvc\Controller\Plugin\Forward;
 use Laminas\Mvc\Controller\Plugin\Forward as ForwardPlugin;
@@ -45,7 +45,7 @@ class ForwardTest extends TestCase
     public function setUp(): void
     {
         $eventManager    = $this->createEventManager(new SharedEventManager());
-        $mockApplication = $this->createMock(ApplicationInterface::class);
+        $mockApplication = $this->createMock(Application::class);
         $mockApplication->expects($this->any())->method('getEventManager')->will($this->returnValue($eventManager));
 
         $event = new MvcEvent();
@@ -202,7 +202,7 @@ class ForwardTest extends TestCase
         ]);
         // @codingStandardsIgnoreEnd
         $events      = $this->createEventManager($sharedEvents);
-        $application = $this->createMock(ApplicationInterface::class);
+        $application = $this->createMock(Application::class);
         $application->method('getEventManager')->willReturn($events);
         $event = $this->controller->getEvent();
         $event->setApplication($application);
@@ -234,7 +234,7 @@ class ForwardTest extends TestCase
             ->willReturn([-50 => [$myCallback]]);
         $events = $this->createEventManager($sharedEvents);
 
-        $application = $this->createMock(ApplicationInterface::class);
+        $application = $this->createMock(Application::class);
         $application->method('getEventManager')->willReturn($events);
         $event = $this->controller->getEvent();
         $event->setApplication($application);
@@ -269,7 +269,7 @@ class ForwardTest extends TestCase
             ->willReturn([-50 => [$myCallback]]);
         $events = $this->createEventManager($sharedEvents);
 
-        $application = $this->createMock(ApplicationInterface::class);
+        $application = $this->createMock(Application::class);
         $application->method('getEventManager')->willReturn($events);
         $event = $this->controller->getEvent();
         $event->setApplication($application);

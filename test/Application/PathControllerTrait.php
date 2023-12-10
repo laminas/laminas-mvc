@@ -22,8 +22,8 @@ trait PathControllerTrait
 {
     public function prepareApplication(): Application
     {
-        $config = [
-            'router' => [
+        $testConfig = [
+            'router'       => [
                 'routes' => [
                     'path' => [
                         'type'    => Literal::class,
@@ -36,14 +36,7 @@ trait PathControllerTrait
                     ],
                 ],
             ],
-        ];
-
-        $serviceConfig = ArrayUtils::merge(
-            ArrayUtils::merge(
-                (new ConfigProvider())->getDependencies(),
-                (new Router\ConfigProvider())->getDependencyConfig(),
-            ),
-            [
+            'dependencies' => [
                 'aliases'    => [
                     'ControllerLoader' => ControllerManager::class,
                 ],
@@ -53,7 +46,6 @@ trait PathControllerTrait
                             'path' => static fn() => new TestAsset\PathController(),
                         ],
                     ]),
-                    'Router'            => static fn($services) => $services->get('HttpRouter'),
                 ],
                 'invokables' => [
                     'Request'              => Request::class,
@@ -62,13 +54,20 @@ trait PathControllerTrait
                     'SendResponseListener' => MockSendResponseListener::class,
                     'BootstrapListener'    => StubBootstrapListener::class,
                 ],
-                'services'   => [
-                    'config' => $config,
-                ],
-            ]
+            ],
+        ];
+
+        $config                                       = ArrayUtils::merge(
+            ArrayUtils::merge(
+                (new ConfigProvider())(),
+                (new Router\ConfigProvider())(),
+            ),
+            $testConfig
         );
-        $services      = new ServiceManager($serviceConfig);
-        $application   = $services->get('Application');
+        $config['dependencies']['services']['config'] = $config;
+
+        $services    = new ServiceManager($config['dependencies']);
+        $application = $services->get('Application');
 
         $request = $services->get('Request');
         $request->setUri('http://example.local/path');
