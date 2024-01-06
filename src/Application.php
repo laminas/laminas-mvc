@@ -4,44 +4,32 @@ declare(strict_types=1);
 
 namespace Laminas\Mvc;
 
-use Laminas\EventManager\EventManagerAwareInterface;
+use Closure;
 use Laminas\EventManager\EventManagerInterface;
-use Laminas\ServiceManager\ServiceManager;
+use Laminas\EventManager\EventsCapableInterface;
+use Laminas\Http\Request;
+use Laminas\Http\Response;
 use Laminas\Stdlib\RequestInterface;
 use Laminas\Stdlib\ResponseInterface;
+use Psr\Container\ContainerInterface;
 
 /**
  * Main application class for invoking applications
  *
- * Expects the user will provide a configured ServiceManager, configured with
- * the following services:
- *
- * - EventManager
- * - ModuleManager
- * - Request
- * - Response
- * - RouteListener
- * - Router
- * - DispatchListener
- * - ViewManager
- *
  * The most common workflow is:
  * <code>
- * $services = new Laminas\ServiceManager\ServiceManager($servicesConfig);
- * $app      = new Application($appConfig, $services);
+ * $container = new Laminas\ServiceManager\ServiceManager($dependencies);
+ * $app = $container->get('Application');
  * $app->bootstrap();
- * $response = $app->run();
- * $response->send();
+ * $app->run();
  * </code>
  *
- * bootstrap() opts in to the default route, dispatch, and view listeners,
- * sets up the MvcEvent, and triggers the bootstrap event. This can be omitted
- * if you wish to setup your own listeners and/or workflow; alternately, you
- * can simply extend the class to override such behavior.
+ * bootstrap() sets up the MvcEvent and triggers the bootstrap event. Bootstrap event could be used to configure
+ * application. Most of the application and its dependencies preparation is expected to be handled by dependency
+ * injection container. Request specific configuration can be performed during prepare event triggered early in the
+ * run().
  */
-class Application implements
-    ApplicationInterface,
-    EventManagerAwareInterface
+class Application implements EventsCapableInterface
 {
     public const ERROR_CONTROLLER_CANNOT_DISPATCH = 'error-controller-cannot-dispatch';
     public const ERROR_CONTROLLER_NOT_FOUND       = 'error-controller-not-found';
@@ -50,81 +38,47 @@ class Application implements
     public const ERROR_ROUTER_NO_MATCH            = 'error-router-no-match';
 
     /**
-     * Default application event listeners
-     *
-     * @var array
-     */
-    protected $defaultListeners = [
-        'RouteListener',
-        'DispatchListener',
-        'HttpMethodListener',
-        'ViewManager',
-        'SendResponseListener',
-    ];
-
-    /**
      * MVC event token
-     *
-     * @var MvcEvent
      */
-    protected $event;
+    protected MvcEvent $event;
 
-    /** @var EventManagerInterface */
-    protected $events;
-
-    /** @var RequestInterface */
-    protected $request;
-
-    /** @var ResponseInterface */
-    protected $response;
-
-    public function __construct(
-        protected ServiceManager $serviceManager,
-        ?EventManagerInterface $events = null,
-        ?RequestInterface $request = null,
-        ?ResponseInterface $response = null
-    ) {
-        $this->setEventManager($events ?: $serviceManager->get('EventManager'));
-        $this->request  = $request ?: $serviceManager->get('Request');
-        $this->response = $response ?: $serviceManager->get('Response');
-
-        foreach ($this->defaultListeners as $listener) {
-            $serviceManager->get($listener)->attach($this->events);
-        }
-    }
+    protected EventManagerInterface $events;
 
     /**
-     * Retrieve the application configuration
-     *
-     * @return array|object
+     * @param Closure():Request $requestFactory
+     * @param Closure():Response $responseFactory
      */
-    public function getConfig()
-    {
-        return $this->serviceManager->get('config');
+    public function __construct(
+        protected ContainerInterface $container,
+        EventManagerInterface $events,
+        ApplicationListenersProvider $listenersProvider,
+        protected Closure $requestFactory,
+        protected Closure $responseFactory,
+    ) {
+        $this->setEventManager($events);
+        $listenersProvider->registerListeners($this);
+        $this->event = new MvcEvent();
+        $this->event->setApplication($this);
     }
 
     /**
      * Bootstrap the application
      *
-     * Defines and binds the MvcEvent, and passes it the request, response, and
-     * router. Attaches the ViewManager as a listener. Triggers the bootstrap
-     * event.
+     * Defines and binds the MvcEvent, and passes it the router. Triggers the bootstrap event.
      *
      * @return Application
      */
     public function bootstrap()
     {
-        $serviceManager = $this->serviceManager;
-        $events         = $this->events;
+        $container = $this->container;
+        $events    = $this->events;
 
         // Setup MVC Event
-        $this->event = $event  = new MvcEvent();
+        $event = $this->event;
         $event->setName(MvcEvent::EVENT_BOOTSTRAP);
         $event->setTarget($this);
         $event->setApplication($this);
-        $event->setRequest($this->request);
-        $event->setResponse($this->response);
-        $event->setRouter($serviceManager->get('Router'));
+        $event->setRouter($container->get('Router'));
 
         // Trigger bootstrap events
         $events->triggerEvent($event);
@@ -135,66 +89,58 @@ class Application implements
     /**
      * Retrieve the service manager
      *
-     * @return ServiceManager
+     * @deprecated Since 4.0.0 and will be removed in 5.0.0
      */
-    public function getServiceManager()
+    public function getServiceManager(): ContainerInterface
     {
-        return $this->serviceManager;
+        return $this->container;
     }
 
     /**
      * Get the request object
      *
-     * @return RequestInterface
+     * @deprecated Since 4.0.0 and will be removed in 5.0.0
+     *
+     * @return null|RequestInterface
      */
     public function getRequest()
     {
-        return $this->request;
+        return $this->event->getRequest();
     }
 
     /**
      * Get the response object
      *
-     * @return ResponseInterface
+     * @deprecated Since 4.0.0 and will be removed in 5.0.0
+     *
+     * @return null|ResponseInterface
      */
     public function getResponse()
     {
-        return $this->response;
+        return $this->event->getResponse();
     }
 
     /**
      * Get the MVC event instance
-     *
-     * @return MvcEvent
      */
-    public function getMvcEvent()
+    public function getMvcEvent(): MvcEvent
     {
         return $this->event;
     }
 
     /**
      * Set the event manager instance
-     *
-     * @return Application
      */
-    public function setEventManager(EventManagerInterface $eventManager)
+    protected function setEventManager(EventManagerInterface $eventManager): void
     {
         $eventManager->setIdentifiers([
             self::class,
             static::class,
         ]);
         $this->events = $eventManager;
-        return $this;
     }
 
-    /**
-     * Retrieve the event manager
-     *
-     * Lazy-loads an EventManager instance if none registered.
-     *
-     * @return EventManagerInterface
-     */
-    public function getEventManager()
+    public function getEventManager(): EventManagerInterface
     {
         return $this->events;
     }
@@ -202,6 +148,8 @@ class Application implements
     /**
      * Run the application
      *
+     * @triggers prepare(MvcEvent)
+     *           Allows last minute request dependent preparation logic.
      * @triggers route(MvcEvent)
      *           Routes the request, and sets the RouteMatch object in the event.
      * @triggers dispatch(MvcEvent)
@@ -213,6 +161,8 @@ class Application implements
      *           discovered controller, and controller class (if known).
      *           Typically, a handler should return a populated Response object
      *           that can be returned immediately.
+     * @triggers finish(MvcEvent)
+     *           Event for post-request cleanup. Responsible for emitting response via SendResponseListener.
      * @return self
      */
     public function run()
@@ -220,7 +170,16 @@ class Application implements
         $events = $this->events;
         $event  = $this->event;
 
-        // Define callback used to determine whether or not to short-circuit
+        $event->setRequest(($this->requestFactory)());
+        $event->setResponse(($this->responseFactory)());
+
+        // Trigger prepare event
+        $event->setName(MvcEvent::EVENT_PREPARE);
+        $event->stopPropagation(false);
+        $event->setTarget($this);
+        $events->triggerEvent($event);
+
+        // Define callback used to determine whether to short-circuit
         $shortCircuit = static function ($r) use ($event): bool {
             if ($r instanceof ResponseInterface) {
                 return true;
@@ -243,7 +202,6 @@ class Application implements
                 $event->setResponse($response);
                 $event->stopPropagation(false); // Clear before triggering
                 $events->triggerEvent($event);
-                $this->response = $response;
                 return $this;
             }
         }
@@ -265,12 +223,9 @@ class Application implements
             $event->setResponse($response);
             $event->stopPropagation(false); // Clear before triggering
             $events->triggerEvent($event);
-            $this->response = $response;
             return $this;
         }
 
-        $response = $this->response;
-        $event->setResponse($response);
         return $this->completeRequest($event);
     }
 

@@ -24,11 +24,11 @@ class ViewResolverFactory implements FactoryInterface
     {
         $resolver = new ViewResolver\AggregateResolver();
 
-        /** @var ResolverInterface $mapResolver */
+        /** @var ViewResolver\ResolverInterface $mapResolver */
         $mapResolver = $container->get('ViewTemplateMapResolver');
-        /** @var ResolverInterface $pathResolver */
+        /** @var ViewResolver\ResolverInterface $pathResolver */
         $pathResolver = $container->get('ViewTemplatePathStack');
-        /** @var ResolverInterface $prefixPathStackResolver */
+        /** @var ViewResolver\ResolverInterface $prefixPathStackResolver */
         $prefixPathStackResolver = $container->get('ViewPrefixPathStackResolver');
 
         $resolver

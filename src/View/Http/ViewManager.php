@@ -10,10 +10,10 @@ use Laminas\EventManager\EventManagerInterface;
 use Laminas\EventManager\ListenerAggregateInterface;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Mvc\View\Http\InjectTemplateListener;
-use Laminas\ServiceManager\ServiceManager;
 use Laminas\Stdlib\DispatchableInterface;
 use Laminas\View\Model\ModelInterface;
 use Laminas\View\View;
+use Psr\Container\ContainerInterface;
 use Traversable;
 
 use function is_array;
@@ -49,12 +49,17 @@ class ViewManager extends AbstractListenerAggregate
     /** @var MvcEvent */
     protected $event;
 
-    /** @var ServiceManager */
-    protected $services;
+    protected ContainerInterface $services;
 
     protected ?View $view = null;
 
     protected ?ModelInterface $viewModel = null;
+
+    public function __construct(
+        ContainerInterface $container
+    ) {
+        $this->services = $container;
+    }
 
     /**
      * {@inheritDoc}
@@ -70,26 +75,24 @@ class ViewManager extends AbstractListenerAggregate
     public function onBootstrap(MvcEvent $event): void
     {
         $application  = $event->getApplication();
-        $services     = $application->getServiceManager();
-        $config       = $services->get('config');
+        $config       = $this->services->get('config');
         $events       = $application->getEventManager();
         $sharedEvents = $events->getSharedManager();
 
-        $this->config   = isset($config['view_manager'])
+        $this->config = isset($config['view_manager'])
             && (is_array($config['view_manager'])
             || $config['view_manager'] instanceof ArrayAccess)
                 ? $config['view_manager']
                 : [];
-        $this->services = $services;
-        $this->event    = $event;
+        $this->event  = $event;
 
-        $routeNotFoundStrategy = $services->get('HttpRouteNotFoundStrategy');
-        $exceptionStrategy     = $services->get('HttpExceptionStrategy');
-        $mvcRenderingStrategy  = $services->get('HttpDefaultRenderingStrategy');
+        $routeNotFoundStrategy = $this->services->get('HttpRouteNotFoundStrategy');
+        $exceptionStrategy     = $this->services->get('HttpExceptionStrategy');
+        $mvcRenderingStrategy  = $this->services->get('HttpDefaultRenderingStrategy');
 
         $this->injectViewModelIntoPlugin();
 
-        $injectTemplateListener  = $services->get(InjectTemplateListener::class);
+        $injectTemplateListener  = $this->services->get(InjectTemplateListener::class);
         $createViewModelListener = new CreateViewModelListener();
         $injectViewModelListener = new InjectViewModelListener();
 
