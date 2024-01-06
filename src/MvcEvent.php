@@ -18,12 +18,12 @@ class MvcEvent extends Event
      * Mvc events triggered by eventmanager
      */
     public const EVENT_BOOTSTRAP      = 'bootstrap';
+    public const EVENT_ROUTE          = 'route';
     public const EVENT_DISPATCH       = 'dispatch';
     public const EVENT_DISPATCH_ERROR = 'dispatch.error';
-    public const EVENT_FINISH         = 'finish';
     public const EVENT_RENDER         = 'render';
     public const EVENT_RENDER_ERROR   = 'render.error';
-    public const EVENT_ROUTE          = 'route';
+    public const EVENT_FINISH         = 'finish';
 
     /** @var Application */
     protected $application;
@@ -115,6 +115,7 @@ class MvcEvent extends Event
     /**
      * Get request
      *
+     * @psalm-ignore-nullable-return Has actual request object most of the time except for bootstrap event
      * @return null|Request
      */
     public function getRequest()
@@ -137,6 +138,7 @@ class MvcEvent extends Event
     /**
      * Get response
      *
+     * @psalm-ignore-nullable-return Has actual response object most of the time except for bootstrap event
      * @return null|Response
      */
     public function getResponse()
