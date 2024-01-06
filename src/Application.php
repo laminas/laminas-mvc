@@ -16,31 +16,18 @@ use Psr\Container\ContainerInterface;
 /**
  * Main application class for invoking applications
  *
- * Expects the user will provide a configured ServiceManager, configured with
- * the following services:
- *
- * - EventManager
- * - ModuleManager
- * - Request
- * - Response
- * - RouteListener
- * - Router
- * - DispatchListener
- * - ViewManager
- *
  * The most common workflow is:
  * <code>
- * $services = new Laminas\ServiceManager\ServiceManager($servicesConfig);
- * $app      = new Application($appConfig, $services);
+ * $container = new Laminas\ServiceManager\ServiceManager($dependencies);
+ * $app = $container->get('Application');
  * $app->bootstrap();
- * $response = $app->run();
- * $response->send();
+ * $app->run();
  * </code>
  *
- * bootstrap() opts in to the default route, dispatch, and view listeners,
- * sets up the MvcEvent, and triggers the bootstrap event. This can be omitted
- * if you wish to setup your own listeners and/or workflow; alternately, you
- * can simply extend the class to override such behavior.
+ * bootstrap() sets up the MvcEvent and triggers the bootstrap event. Bootstrap event could be used to configure
+ * application. Most of the application and its dependencies preparation is expected to be handled by dependency
+ * injection container. Request specific configuration can be performed during prepare event triggered early in the
+ * run().
  */
 class Application implements EventsCapableInterface
 {
@@ -77,9 +64,7 @@ class Application implements EventsCapableInterface
     /**
      * Bootstrap the application
      *
-     * Defines and binds the MvcEvent, and passes it the request, response, and
-     * router. Attaches the ViewManager as a listener. Triggers the bootstrap
-     * event.
+     * Defines and binds the MvcEvent, and passes it the router. Triggers the bootstrap event.
      *
      * @return Application
      */
@@ -165,6 +150,8 @@ class Application implements EventsCapableInterface
     /**
      * Run the application
      *
+     * @triggers prepare(MvcEvent)
+     *           Allows last minute request dependent preparation logic.
      * @triggers route(MvcEvent)
      *           Routes the request, and sets the RouteMatch object in the event.
      * @triggers dispatch(MvcEvent)
@@ -176,6 +163,8 @@ class Application implements EventsCapableInterface
      *           discovered controller, and controller class (if known).
      *           Typically, a handler should return a populated Response object
      *           that can be returned immediately.
+     * @triggers finish(MvcEvent)
+     *           Event for post-request cleanup. Responsible for emitting response via SendResponseListener.
      * @return self
      */
     public function run()
