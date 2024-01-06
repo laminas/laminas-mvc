@@ -186,6 +186,12 @@ class Application implements EventsCapableInterface
         $event->setRequest(($this->requestFactory)());
         $event->setResponse(($this->responseFactory)());
 
+        // Trigger prepare event
+        $event->setName(MvcEvent::EVENT_PREPARE);
+        $event->stopPropagation(false);
+        $event->setTarget($this);
+        $events->triggerEvent($event);
+
         // Define callback used to determine whether to short-circuit
         $shortCircuit = static function ($r) use ($event): bool {
             if ($r instanceof ResponseInterface) {

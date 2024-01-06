@@ -18,6 +18,7 @@ class MvcEvent extends Event
      * Mvc events triggered by eventmanager
      */
     public const EVENT_BOOTSTRAP      = 'bootstrap';
+    public const EVENT_PREPARE        = 'prepare';
     public const EVENT_ROUTE          = 'route';
     public const EVENT_DISPATCH       = 'dispatch';
     public const EVENT_DISPATCH_ERROR = 'dispatch.error';

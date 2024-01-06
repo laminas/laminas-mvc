@@ -150,6 +150,36 @@ class ApplicationTest extends TestCase
         $this->assertSame($this->application, $event->getTarget());
     }
 
+    public function testRequestIsPopulatedForPrepareEvent(): void
+    {
+        $this->application->bootstrap();
+        $request = null;
+
+        $this->application
+            ->getEventManager()
+            ->attach(MvcEvent::EVENT_PREPARE, static function (MvcEvent $e) use (&$request) {
+                $request = $e->getRequest();
+            });
+
+        $this->application->run();
+        $this->assertInstanceOf(Request::class, $request);
+    }
+
+    public function testResponseIsPopulatedForPrepareEvent(): void
+    {
+        $this->application->bootstrap();
+        $response = null;
+
+        $this->application
+            ->getEventManager()
+            ->attach(MvcEvent::EVENT_PREPARE, static function (MvcEvent $e) use (&$response) {
+                $response = $e->getResponse();
+            });
+
+        $this->application->run();
+        $this->assertInstanceOf(Response::class, $response);
+    }
+
     public function setupPathController(bool $addService = true): Application
     {
         $request = $this->serviceManager->get('Request');
