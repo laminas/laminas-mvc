@@ -140,7 +140,7 @@ class ApplicationTest extends TestCase
         $event = $this->application->getMvcEvent();
         $this->assertInstanceOf(MvcEvent::class, $event);
 
-        $router   = $this->serviceManager->get('HttpRouter');
+        $router = $this->serviceManager->get('HttpRouter');
 
         $this->assertFalse($event->isError());
         $this->assertNull($event->getRequest());
@@ -242,7 +242,7 @@ class ApplicationTest extends TestCase
         $application->run();
         $this->assertStringContainsString(
             'foobar',
-            $this->application->getResponse()->getBody(),
+            $application->getMvcEvent()->getResponse()->getBody(),
             'The "finish" event was not triggered ("foobar" not in response)'
         );
     }
@@ -254,9 +254,9 @@ class ApplicationTest extends TestCase
         $event       = $application->getMvcEvent();
         $event->setRouter($router);
 
-        $events   = $application->getEventManager();
+        $events = $application->getEventManager();
         $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, static function (MvcEvent $e): ResponseInterface {
-            $error = $e->getError();
+            $error    = $e->getError();
             $response = $e->getResponse();
             $response->setContent("Code: " . $error);
             return $response;
@@ -287,9 +287,9 @@ class ApplicationTest extends TestCase
         $event       = $application->getMvcEvent();
         $event->setRouter($router);
 
-        $events   = $application->getEventManager();
+        $events = $application->getEventManager();
         $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, static function (MvcEvent $e): ResponseInterface {
-            $error = $e->getError();
+            $error    = $e->getError();
             $response = $e->getResponse();
             $response->setContent("Code: " . $error);
             return $response;
@@ -339,7 +339,7 @@ class ApplicationTest extends TestCase
     {
         $application = $this->setupActionController();
 
-        $events   = $application->getEventManager();
+        $events = $application->getEventManager();
         $events->attach(MvcEvent::EVENT_FINISH, static function (MvcEvent $e): ResponseInterface {
             $response = $e->getResponse();
             $response->setContent("EventClass: " . $e->getTarget()::class);

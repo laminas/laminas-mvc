@@ -20,12 +20,12 @@ class InvalidControllerTypeShouldTriggerDispatchErrorTest extends TestCase
     {
         $application = $this->prepareApplication();
 
-        $events   = $application->getEventManager();
+        $events = $application->getEventManager();
         $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, static function (MvcEvent $e): ResponseInterface {
             $error      = $e->getError();
             $controller = $e->getController();
             $class      = $e->getControllerClass();
-            $response = $e->getResponse();
+            $response   = $e->getResponse();
             $response->setContent("Code: " . $error . '; Controller: ' . $controller . '; Class: ' . $class);
             return $response;
         });

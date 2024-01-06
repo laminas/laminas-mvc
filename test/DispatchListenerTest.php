@@ -29,7 +29,6 @@ class DispatchListenerTest extends TestCase
 
     public function createMvcEvent(string $controllerMatched): MvcEvent
     {
-        $response   = new Response();
         $routeMatch = $this->prophesize(RouteMatch::class);
         $routeMatch->getParam('controller', 'not-found')->willReturn($controllerMatched);
 
@@ -37,11 +36,10 @@ class DispatchListenerTest extends TestCase
 
         $application = $this->prophesize(Application::class);
         $application->getEventManager()->willReturn($eventManager);
-        $application->getResponse()->willReturn($response);
 
         $event = new MvcEvent();
         $event->setRequest(new Request());
-        $event->setResponse($response);
+        $event->setResponse(new Response());
         $event->setApplication($application->reveal());
         $event->setRouteMatch($routeMatch->reveal());
 

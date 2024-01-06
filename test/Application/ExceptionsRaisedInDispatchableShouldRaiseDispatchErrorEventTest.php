@@ -20,7 +20,7 @@ class ExceptionsRaisedInDispatchableShouldRaiseDispatchErrorEventTest extends Te
     {
         $application = $this->prepareApplication();
 
-        $events   = $application->getEventManager();
+        $events = $application->getEventManager();
         $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, function (MvcEvent $e): ResponseInterface {
             $exception = $e->getParam('exception');
             $this->assertInstanceOf('Exception', $exception);
