@@ -39,10 +39,8 @@ class Application implements EventsCapableInterface
 
     /**
      * MVC event token
-     *
-     * @var MvcEvent
      */
-    protected $event;
+    protected MvcEvent $event;
 
     protected EventManagerInterface $events;
 
@@ -59,6 +57,8 @@ class Application implements EventsCapableInterface
     ) {
         $this->setEventManager($events);
         $listenersProvider->registerListeners($this);
+        $this->event = new MvcEvent();
+        $this->event->setApplication($this);
     }
 
     /**
@@ -74,7 +74,7 @@ class Application implements EventsCapableInterface
         $events    = $this->events;
 
         // Setup MVC Event
-        $this->event = $event  = new MvcEvent();
+        $event = $this->event;
         $event->setName(MvcEvent::EVENT_BOOTSTRAP);
         $event->setTarget($this);
         $event->setApplication($this);
@@ -122,10 +122,8 @@ class Application implements EventsCapableInterface
 
     /**
      * Get the MVC event instance
-     *
-     * @return MvcEvent
      */
-    public function getMvcEvent()
+    public function getMvcEvent(): MvcEvent
     {
         return $this->event;
     }

@@ -135,7 +135,6 @@ class ApplicationTest extends TestCase
 
     public function testBootstrapRegistersConfiguredMvcEvent(): void
     {
-        $this->assertNull($this->application->getMvcEvent());
         $this->application->bootstrap();
         $event = $this->application->getMvcEvent();
         $this->assertInstanceOf(MvcEvent::class, $event);
