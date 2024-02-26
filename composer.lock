@@ -787,16 +787,16 @@
         },
         {
             "name": "laminas/laminas-validator",
-            "version": "2.47.0",
+            "version": "2.49.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-validator.git",
-                "reference": "5c3fc8c4f1263cda5c5f14aed874fdadd5b90bbd"
+                "reference": "d58c2e7d3cd420554400dd8cca694fafa3b8e45f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-validator/zipball/5c3fc8c4f1263cda5c5f14aed874fdadd5b90bbd",
-                "reference": "5c3fc8c4f1263cda5c5f14aed874fdadd5b90bbd",
+                "url": "https://api.github.com/repos/laminas/laminas-validator/zipball/d58c2e7d3cd420554400dd8cca694fafa3b8e45f",
+                "reference": "d58c2e7d3cd420554400dd8cca694fafa3b8e45f",
                 "shasum": ""
             },
             "require": {
@@ -810,16 +810,16 @@
             },
             "require-dev": {
                 "laminas/laminas-coding-standard": "^2.5",
-                "laminas/laminas-db": "^2.18",
-                "laminas/laminas-filter": "^2.33",
-                "laminas/laminas-i18n": "^2.24.1",
-                "laminas/laminas-session": "^2.17",
+                "laminas/laminas-db": "^2.19",
+                "laminas/laminas-filter": "^2.34",
+                "laminas/laminas-i18n": "^2.26.0",
+                "laminas/laminas-session": "^2.18",
                 "laminas/laminas-uri": "^2.11.0",
-                "phpunit/phpunit": "^10.5.2",
+                "phpunit/phpunit": "^10.5.10",
                 "psalm/plugin-phpunit": "^0.18.4",
                 "psr/http-client": "^1.0.3",
                 "psr/http-factory": "^1.0.2",
-                "vimeo/psalm": "^5.17"
+                "vimeo/psalm": "^5.22.1"
             },
             "suggest": {
                 "laminas/laminas-db": "Laminas\\Db component, required by the (No)RecordExists validator",
@@ -867,7 +867,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2024-01-17T11:31:50+00:00"
+            "time": "2024-02-22T16:46:06+00:00"
         },
         {
             "name": "laminas/laminas-view",
@@ -2209,16 +2209,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "9.6.16",
+            "version": "9.6.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "3767b2c56ce02d01e3491046f33466a1ae60a37f"
+                "reference": "1a156980d78a6666721b7e8e8502fe210b587fcd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/3767b2c56ce02d01e3491046f33466a1ae60a37f",
-                "reference": "3767b2c56ce02d01e3491046f33466a1ae60a37f",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/1a156980d78a6666721b7e8e8502fe210b587fcd",
+                "reference": "1a156980d78a6666721b7e8e8502fe210b587fcd",
                 "shasum": ""
             },
             "require": {
@@ -2292,7 +2292,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.6.16"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.6.17"
             },
             "funding": [
                 {
@@ -2308,7 +2308,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-01-19T07:03:14+00:00"
+            "time": "2024-02-23T13:14:51+00:00"
         },
         {
             "name": "sebastian/cli-parser",
