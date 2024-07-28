@@ -1,77 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.8.0@9cf4f60a333f779ad3bc704a555920e81d4fdcda">
+<files psalm-version="5.25.0@01a8eb06b9e9cc6cfb6a320bf9fb14331919d505">
   <file src="src/Application.php">
-    <ImplementedReturnTypeMismatch>
-      <code>Application</code>
-    </ImplementedReturnTypeMismatch>
     <MissingClosureParamType>
-      <code>$r</code>
+      <code><![CDATA[$r]]></code>
     </MissingClosureParamType>
     <MixedArgument>
-      <code><![CDATA[$events ?: $serviceManager->get('EventManager')]]></code>
-      <code>$listener</code>
+      <code><![CDATA[$listener]]></code>
       <code><![CDATA[$serviceManager->get('Router')]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$listener</code>
-      <code>$response</code>
-      <code>$response</code>
+      <code><![CDATA[$listener]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
       <code><![CDATA[$this->request]]></code>
       <code><![CDATA[$this->response]]></code>
     </MixedAssignment>
     <MixedInferredReturnType>
-      <code>array|object</code>
+      <code><![CDATA[array|object]]></code>
     </MixedInferredReturnType>
     <MixedMethodCall>
-      <code>attach</code>
+      <code><![CDATA[attach]]></code>
     </MixedMethodCall>
     <MixedReturnStatement>
       <code><![CDATA[$this->serviceManager->get('config')]]></code>
     </MixedReturnStatement>
     <PropertyNotSetInConstructor>
-      <code>$event</code>
+      <code><![CDATA[$event]]></code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/ConfigProvider.php">
     <MissingClosureParamType>
-      <code>$first</code>
-      <code>$second</code>
+      <code><![CDATA[$first]]></code>
+      <code><![CDATA[$second]]></code>
     </MissingClosureParamType>
     <MixedArgument>
       <code><![CDATA[$container->get('EventManager')]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$container</code>
-      <code>$instance</code>
+      <code><![CDATA[$container]]></code>
+      <code><![CDATA[$instance]]></code>
     </MixedAssignment>
     <MixedMethodCall>
-      <code>get</code>
+      <code><![CDATA[get]]></code>
     </MixedMethodCall>
   </file>
   <file src="src/Controller/AbstractActionController.php">
     <MixedArgument>
-      <code>$action</code>
+      <code><![CDATA[$action]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$action</code>
-      <code>$actionResponse</code>
-      <code>$helper</code>
+      <code><![CDATA[$action]]></code>
+      <code><![CDATA[$actionResponse]]></code>
+      <code><![CDATA[$helper]]></code>
     </MixedAssignment>
     <MixedFunctionCall>
       <code><![CDATA[$helper($event->getResponse())]]></code>
     </MixedFunctionCall>
     <MixedInferredReturnType>
-      <code>ViewModel</code>
+      <code><![CDATA[ViewModel]]></code>
     </MixedInferredReturnType>
     <MixedReturnStatement>
       <code><![CDATA[$helper($event->getResponse())]]></code>
     </MixedReturnStatement>
     <PossiblyNullReference>
-      <code>setParam</code>
+      <code><![CDATA[setParam]]></code>
     </PossiblyNullReference>
     <PossiblyUnusedMethod>
-      <code>indexAction</code>
-      <code>notFoundAction</code>
+      <code><![CDATA[indexAction]]></code>
+      <code><![CDATA[notFoundAction]]></code>
     </PossiblyUnusedMethod>
   </file>
   <file src="src/Controller/AbstractController.php">
@@ -88,7 +84,7 @@
       <code><![CDATA[$this->response]]></code>
     </DocblockTypeContradiction>
     <ImplementedReturnTypeMismatch>
-      <code>AbstractController</code>
+      <code><![CDATA[AbstractController]]></code>
     </ImplementedReturnTypeMismatch>
     <InvalidArgument>
       <code><![CDATA[array_merge(
@@ -101,301 +97,293 @@
       <code><![CDATA[$this->event]]></code>
     </LessSpecificReturnStatement>
     <MissingClosureParamType>
-      <code>$test</code>
+      <code><![CDATA[$test]]></code>
     </MissingClosureParamType>
     <MissingConstructor>
-      <code>$event</code>
-      <code>$event</code>
-      <code>$event</code>
-      <code>$event</code>
-      <code>$event</code>
-      <code>$event</code>
-      <code>$event</code>
-      <code>$event</code>
-      <code>$events</code>
-      <code>$events</code>
-      <code>$events</code>
-      <code>$events</code>
-      <code>$events</code>
-      <code>$events</code>
-      <code>$events</code>
-      <code>$events</code>
-      <code>$plugins</code>
-      <code>$plugins</code>
-      <code>$plugins</code>
-      <code>$plugins</code>
-      <code>$plugins</code>
-      <code>$plugins</code>
-      <code>$plugins</code>
-      <code>$plugins</code>
-      <code>$request</code>
-      <code>$request</code>
-      <code>$request</code>
-      <code>$request</code>
-      <code>$request</code>
-      <code>$request</code>
-      <code>$request</code>
-      <code>$request</code>
-      <code>$response</code>
-      <code>$response</code>
-      <code>$response</code>
-      <code>$response</code>
-      <code>$response</code>
-      <code>$response</code>
-      <code>$response</code>
-      <code>$response</code>
+      <code><![CDATA[$event]]></code>
+      <code><![CDATA[$event]]></code>
+      <code><![CDATA[$event]]></code>
+      <code><![CDATA[$event]]></code>
+      <code><![CDATA[$event]]></code>
+      <code><![CDATA[$event]]></code>
+      <code><![CDATA[$event]]></code>
+      <code><![CDATA[$event]]></code>
+      <code><![CDATA[$events]]></code>
+      <code><![CDATA[$events]]></code>
+      <code><![CDATA[$events]]></code>
+      <code><![CDATA[$events]]></code>
+      <code><![CDATA[$events]]></code>
+      <code><![CDATA[$events]]></code>
+      <code><![CDATA[$events]]></code>
+      <code><![CDATA[$events]]></code>
+      <code><![CDATA[$plugins]]></code>
+      <code><![CDATA[$plugins]]></code>
+      <code><![CDATA[$plugins]]></code>
+      <code><![CDATA[$plugins]]></code>
+      <code><![CDATA[$plugins]]></code>
+      <code><![CDATA[$plugins]]></code>
+      <code><![CDATA[$plugins]]></code>
+      <code><![CDATA[$plugins]]></code>
+      <code><![CDATA[$request]]></code>
+      <code><![CDATA[$request]]></code>
+      <code><![CDATA[$request]]></code>
+      <code><![CDATA[$request]]></code>
+      <code><![CDATA[$request]]></code>
+      <code><![CDATA[$request]]></code>
+      <code><![CDATA[$request]]></code>
+      <code><![CDATA[$request]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
     </MissingConstructor>
     <MixedAssignment>
-      <code>$plugin</code>
+      <code><![CDATA[$plugin]]></code>
     </MixedAssignment>
     <MoreSpecificReturnType>
-      <code>MvcEvent</code>
+      <code><![CDATA[MvcEvent]]></code>
     </MoreSpecificReturnType>
     <ParamNameMismatch>
-      <code>$e</code>
-      <code>$events</code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$events]]></code>
     </ParamNameMismatch>
     <PossiblyUnusedMethod>
-      <code>getRequest</code>
+      <code><![CDATA[getRequest]]></code>
     </PossiblyUnusedMethod>
     <PossiblyUnusedReturnValue>
-      <code>mixed</code>
+      <code><![CDATA[mixed]]></code>
     </PossiblyUnusedReturnValue>
   </file>
   <file src="src/Controller/AbstractRestfulController.php">
     <DocblockTypeContradiction>
-      <code>! $headerContentType</code>
-      <code>$headerContentType</code>
+      <code><![CDATA[! $headerContentType]]></code>
+      <code><![CDATA[$headerContentType]]></code>
     </DocblockTypeContradiction>
     <MixedArgument>
-      <code>$action</code>
-      <code>$content</code>
-      <code>$contentTypeValue</code>
-      <code>$request</code>
+      <code><![CDATA[$action]]></code>
+      <code><![CDATA[$content]]></code>
+      <code><![CDATA[$contentTypeValue]]></code>
+      <code><![CDATA[$request]]></code>
       <code><![CDATA[$request->getContent()]]></code>
       <code><![CDATA[$request->getContent()]]></code>
       <code><![CDATA[$request->getMethod()]]></code>
     </MixedArgument>
-    <MixedArrayOffset>
-      <code><![CDATA[$this->customHttpMethodsMap[$method]]]></code>
-    </MixedArrayOffset>
     <MixedAssignment>
-      <code>$action</code>
-      <code>$action</code>
-      <code>$callable</code>
-      <code>$content</code>
-      <code>$contentTypeValue</code>
-      <code>$headResult</code>
-      <code>$id</code>
-      <code>$id</code>
-      <code>$id</code>
-      <code>$id</code>
-      <code>$id</code>
-      <code>$return</code>
-      <code>$return</code>
-      <code>$return</code>
-      <code>$return</code>
-      <code>$return</code>
-      <code>$return</code>
-      <code>$return</code>
-      <code>$return</code>
-      <code>$return</code>
-      <code>$return</code>
-      <code>$return</code>
+      <code><![CDATA[$action]]></code>
+      <code><![CDATA[$action]]></code>
+      <code><![CDATA[$callable]]></code>
+      <code><![CDATA[$content]]></code>
+      <code><![CDATA[$contentTypeValue]]></code>
+      <code><![CDATA[$headResult]]></code>
+      <code><![CDATA[$id]]></code>
+      <code><![CDATA[$id]]></code>
+      <code><![CDATA[$id]]></code>
+      <code><![CDATA[$id]]></code>
+      <code><![CDATA[$id]]></code>
+      <code><![CDATA[$return]]></code>
+      <code><![CDATA[$return]]></code>
+      <code><![CDATA[$return]]></code>
+      <code><![CDATA[$return]]></code>
+      <code><![CDATA[$return]]></code>
+      <code><![CDATA[$return]]></code>
+      <code><![CDATA[$return]]></code>
+      <code><![CDATA[$return]]></code>
+      <code><![CDATA[$return]]></code>
+      <code><![CDATA[$return]]></code>
+      <code><![CDATA[$return]]></code>
     </MixedAssignment>
     <MixedFunctionCall>
-      <code>$callable($e)</code>
+      <code><![CDATA[$callable($e)]]></code>
     </MixedFunctionCall>
     <MixedInferredReturnType>
-      <code>object|string|array</code>
+      <code><![CDATA[object|string|array]]></code>
     </MixedInferredReturnType>
     <MixedMethodCall>
-      <code>get</code>
-      <code>get</code>
-      <code>getContent</code>
-      <code>toArray</code>
+      <code><![CDATA[get]]></code>
+      <code><![CDATA[get]]></code>
+      <code><![CDATA[getContent]]></code>
+      <code><![CDATA[toArray]]></code>
     </MixedMethodCall>
     <MixedReturnStatement>
-      <code>$content</code>
+      <code><![CDATA[$content]]></code>
       <code><![CDATA[$this->jsonDecode($request->getContent())]]></code>
     </MixedReturnStatement>
     <PossiblyNullArgument>
-      <code>$contentType</code>
+      <code><![CDATA[$contentType]]></code>
     </PossiblyNullArgument>
     <PossiblyUnusedMethod>
-      <code>notFoundAction</code>
+      <code><![CDATA[notFoundAction]]></code>
     </PossiblyUnusedMethod>
     <PossiblyUnusedReturnValue>
-      <code>mixed</code>
+      <code><![CDATA[mixed]]></code>
     </PossiblyUnusedReturnValue>
     <RedundantCastGivenDocblockType>
-      <code>(string) $name</code>
+      <code><![CDATA[(string) $name]]></code>
     </RedundantCastGivenDocblockType>
     <TypeDoesNotContainType>
-      <code>! is_array($parsedParams)</code>
+      <code><![CDATA[! is_array($parsedParams)]]></code>
     </TypeDoesNotContainType>
     <UndefinedInterfaceMethod>
-      <code>getHeaders</code>
-      <code>getMethod</code>
-      <code>getPost</code>
-      <code>getQuery</code>
-      <code>setStatusCode</code>
-      <code>setStatusCode</code>
-      <code>setStatusCode</code>
-      <code>setStatusCode</code>
-      <code>setStatusCode</code>
-      <code>setStatusCode</code>
-      <code>setStatusCode</code>
-      <code>setStatusCode</code>
-      <code>setStatusCode</code>
-      <code>setStatusCode</code>
-      <code>setStatusCode</code>
-      <code>setStatusCode</code>
-      <code>setStatusCode</code>
-      <code>setStatusCode</code>
+      <code><![CDATA[getHeaders]]></code>
+      <code><![CDATA[getMethod]]></code>
+      <code><![CDATA[getPost]]></code>
+      <code><![CDATA[getQuery]]></code>
+      <code><![CDATA[setStatusCode]]></code>
+      <code><![CDATA[setStatusCode]]></code>
+      <code><![CDATA[setStatusCode]]></code>
+      <code><![CDATA[setStatusCode]]></code>
+      <code><![CDATA[setStatusCode]]></code>
+      <code><![CDATA[setStatusCode]]></code>
+      <code><![CDATA[setStatusCode]]></code>
+      <code><![CDATA[setStatusCode]]></code>
+      <code><![CDATA[setStatusCode]]></code>
+      <code><![CDATA[setStatusCode]]></code>
+      <code><![CDATA[setStatusCode]]></code>
+      <code><![CDATA[setStatusCode]]></code>
+      <code><![CDATA[setStatusCode]]></code>
+      <code><![CDATA[setStatusCode]]></code>
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/Controller/ControllerManager.php">
     <ArgumentTypeCoercion>
-      <code>$config</code>
+      <code><![CDATA[$config]]></code>
     </ArgumentTypeCoercion>
     <DocblockTypeContradiction>
-      <code>! $events</code>
-      <code>! $events</code>
+      <code><![CDATA[! $events]]></code>
+      <code><![CDATA[! $events]]></code>
     </DocblockTypeContradiction>
     <MissingReturnType>
-      <code>injectEventManager</code>
-      <code>injectPluginManager</code>
+      <code><![CDATA[injectEventManager]]></code>
+      <code><![CDATA[injectPluginManager]]></code>
     </MissingReturnType>
     <MixedArgument>
       <code><![CDATA[$container->get('EventManager')]]></code>
     </MixedArgument>
     <NonInvariantDocblockPropertyType>
-      <code>$instanceOf</code>
+      <code><![CDATA[$instanceOf]]></code>
     </NonInvariantDocblockPropertyType>
   </file>
   <file src="src/Controller/LazyControllerAbstractFactory.php">
     <LessSpecificReturnStatement>
-      <code>new $requestedName()</code>
-      <code>new $requestedName()</code>
-      <code>new $requestedName(...$parameters)</code>
+      <code><![CDATA[new $requestedName()]]></code>
+      <code><![CDATA[new $requestedName()]]></code>
+      <code><![CDATA[new $requestedName(...$parameters)]]></code>
     </LessSpecificReturnStatement>
     <MissingParamType>
-      <code>$requestedName</code>
+      <code><![CDATA[$requestedName]]></code>
     </MissingParamType>
     <MixedArgument>
-      <code>$requestedName</code>
-      <code>$requestedName</code>
+      <code><![CDATA[$requestedName]]></code>
+      <code><![CDATA[$requestedName]]></code>
     </MixedArgument>
     <MixedMethodCall>
-      <code>new $requestedName()</code>
-      <code>new $requestedName()</code>
-      <code>new $requestedName(...$parameters)</code>
+      <code><![CDATA[new $requestedName()]]></code>
+      <code><![CDATA[new $requestedName()]]></code>
+      <code><![CDATA[new $requestedName(...$parameters)]]></code>
     </MixedMethodCall>
     <MoreSpecificReturnType>
-      <code>DispatchableInterface</code>
+      <code><![CDATA[DispatchableInterface]]></code>
     </MoreSpecificReturnType>
     <UndefinedClass>
-      <code>ConsoleAdapterInterface</code>
-      <code>FilterPluginManager</code>
-      <code>HydratorPluginManager</code>
-      <code>InputFilterPluginManager</code>
-      <code>LogFilterManager</code>
-      <code>LogFormatterManager</code>
-      <code>LogProcessorManager</code>
-      <code>LogWriterManager</code>
-      <code>SerializerAdapterManager</code>
+      <code><![CDATA[ConsoleAdapterInterface]]></code>
+      <code><![CDATA[FilterPluginManager]]></code>
+      <code><![CDATA[HydratorPluginManager]]></code>
+      <code><![CDATA[InputFilterPluginManager]]></code>
+      <code><![CDATA[LogFilterManager]]></code>
+      <code><![CDATA[LogFormatterManager]]></code>
+      <code><![CDATA[LogProcessorManager]]></code>
+      <code><![CDATA[LogWriterManager]]></code>
+      <code><![CDATA[SerializerAdapterManager]]></code>
     </UndefinedClass>
   </file>
   <file src="src/Controller/Plugin/AcceptableViewModelSelector.php">
     <DocblockTypeContradiction>
-      <code>is_array($modelAcceptString)</code>
+      <code><![CDATA[is_array($modelAcceptString)]]></code>
     </DocblockTypeContradiction>
     <InvalidArgument>
-      <code>$name</code>
+      <code><![CDATA[$name]]></code>
     </InvalidArgument>
     <InvalidCast>
-      <code>$name</code>
+      <code><![CDATA[$name]]></code>
     </InvalidCast>
     <InvalidReturnStatement>
-      <code>$res</code>
+      <code><![CDATA[$res]]></code>
       <code><![CDATA[$this->defaultViewModelName]]></code>
       <code><![CDATA[$this->extractViewModelName($res)]]></code>
     </InvalidReturnStatement>
     <LessSpecificReturnStatement>
-      <code>new $name()</code>
+      <code><![CDATA[new $name()]]></code>
     </LessSpecificReturnStatement>
     <MissingConstructor>
-      <code>$defaultMatchAgainst</code>
-      <code>$event</code>
-      <code>$request</code>
+      <code><![CDATA[$defaultMatchAgainst]]></code>
+      <code><![CDATA[$event]]></code>
+      <code><![CDATA[$request]]></code>
     </MissingConstructor>
     <MixedArgument>
-      <code>$modelAcceptString</code>
-      <code>$modelName</code>
-      <code>$modelString</code>
+      <code><![CDATA[$modelName]]></code>
+      <code><![CDATA[$modelString]]></code>
     </MixedArgument>
     <MixedArgumentTypeCoercion>
-      <code>$modelName</code>
+      <code><![CDATA[$modelName]]></code>
     </MixedArgumentTypeCoercion>
     <MixedArrayAccess>
-      <code>$modelAcceptString[key($modelAcceptString)]</code>
+      <code><![CDATA[$modelAcceptString[key($modelAcceptString)]]]></code>
       <code><![CDATA[$res->getMatchedAgainst()->params[self::INJECT_VIEWMODEL_NAME]]]></code>
     </MixedArrayAccess>
     <MixedAssignment>
-      <code>$modelAcceptString</code>
-      <code>$modelName</code>
-      <code>$modelString</code>
-      <code>$modelStrings</code>
+      <code><![CDATA[$modelName]]></code>
+      <code><![CDATA[$modelString]]></code>
+      <code><![CDATA[$modelStrings]]></code>
     </MixedAssignment>
     <MixedMethodCall>
-      <code>new $name()</code>
+      <code><![CDATA[new $name()]]></code>
     </MixedMethodCall>
-    <MixedOperand>
-      <code>$modelAcceptString</code>
-    </MixedOperand>
     <MoreSpecificReturnType>
-      <code>ModelInterface|null</code>
+      <code><![CDATA[ModelInterface|null]]></code>
     </MoreSpecificReturnType>
     <PossiblyInvalidMethodCall>
-      <code>get</code>
-      <code>has</code>
+      <code><![CDATA[get]]></code>
+      <code><![CDATA[has]]></code>
     </PossiblyInvalidMethodCall>
     <PossiblyNullArgument>
-      <code>$modelName</code>
+      <code><![CDATA[$modelName]]></code>
     </PossiblyNullArgument>
     <PossiblyNullArrayAccess>
       <code><![CDATA[$res->getMatchedAgainst()->params[self::INJECT_VIEWMODEL_NAME]]]></code>
     </PossiblyNullArrayAccess>
     <PossiblyNullPropertyAssignmentValue>
-      <code>$matchAgainst</code>
+      <code><![CDATA[$matchAgainst]]></code>
     </PossiblyNullPropertyAssignmentValue>
     <PossiblyNullPropertyFetch>
       <code><![CDATA[$res->getMatchedAgainst()->params]]></code>
     </PossiblyNullPropertyFetch>
     <PossiblyUndefinedMethod>
-      <code>get</code>
-      <code>has</code>
+      <code><![CDATA[get]]></code>
+      <code><![CDATA[has]]></code>
     </PossiblyUndefinedMethod>
     <RedundantCastGivenDocblockType>
-      <code>(string) $defaultViewModelName</code>
+      <code><![CDATA[(string) $defaultViewModelName]]></code>
     </RedundantCastGivenDocblockType>
     <RedundantConditionGivenDocblockType>
-      <code>$modelAcceptString</code>
+      <code><![CDATA[$modelAcceptString]]></code>
       <code><![CDATA[$this->event]]></code>
       <code><![CDATA[$this->request]]></code>
     </RedundantConditionGivenDocblockType>
   </file>
   <file src="src/Controller/Plugin/Forward.php">
     <MixedArgument>
-      <code>$callback</code>
-      <code>$currentEvent</code>
-      <code>$eventName</code>
-      <code>$priority</code>
+      <code><![CDATA[$callback]]></code>
+      <code><![CDATA[$currentEvent]]></code>
+      <code><![CDATA[$eventName]]></code>
+      <code><![CDATA[$priority]]></code>
     </MixedArgument>
     <MixedArgumentTypeCoercion>
-      <code>$eventName</code>
-      <code>$id</code>
+      <code><![CDATA[$eventName]]></code>
+      <code><![CDATA[$id]]></code>
     </MixedArgumentTypeCoercion>
     <MixedArrayAccess>
       <code><![CDATA[$current['class']]]></code>
@@ -414,61 +402,61 @@
       <code><![CDATA[$formattedProblems[$current['id']][$current['event']]]]></code>
       <code><![CDATA[$formattedProblems[$current['id']][$current['event']]]]></code>
       <code><![CDATA[$formattedProblems[$current['id']][$current['event']]]]></code>
-      <code>$results[$id][$eventName][$priority]</code>
+      <code><![CDATA[$results[$id][$eventName][$priority]]]></code>
     </MixedArrayOffset>
     <MixedAssignment>
-      <code>$callback</code>
-      <code>$callbacks</code>
-      <code>$class</code>
-      <code>$controller</code>
-      <code>$current</code>
-      <code>$current</code>
-      <code>$currentCallback</code>
-      <code>$currentEvent</code>
-      <code>$currentPriorityEvents</code>
-      <code>$eventArray</code>
-      <code>$eventName</code>
+      <code><![CDATA[$callback]]></code>
+      <code><![CDATA[$callbacks]]></code>
+      <code><![CDATA[$class]]></code>
+      <code><![CDATA[$controller]]></code>
+      <code><![CDATA[$current]]></code>
+      <code><![CDATA[$current]]></code>
+      <code><![CDATA[$currentCallback]]></code>
+      <code><![CDATA[$currentEvent]]></code>
+      <code><![CDATA[$currentPriorityEvents]]></code>
+      <code><![CDATA[$eventArray]]></code>
+      <code><![CDATA[$eventName]]></code>
       <code><![CDATA[$formattedProblems[$current['id']][$current['event']][]]]></code>
-      <code>$priority</code>
-      <code>$priority</code>
-      <code>$results[$id][$eventName][$priority]</code>
-      <code>$return</code>
+      <code><![CDATA[$priority]]></code>
+      <code><![CDATA[$priority]]></code>
+      <code><![CDATA[$results[$id][$eventName][$priority]]]></code>
+      <code><![CDATA[$return]]></code>
     </MixedAssignment>
     <MixedMethodCall>
-      <code>dispatch</code>
+      <code><![CDATA[dispatch]]></code>
     </MixedMethodCall>
     <MixedPropertyTypeCoercion>
-      <code>$listeners</code>
+      <code><![CDATA[$listeners]]></code>
     </MixedPropertyTypeCoercion>
     <PossiblyNullArgument>
-      <code>$sharedEvents</code>
+      <code><![CDATA[$sharedEvents]]></code>
     </PossiblyNullArgument>
     <PossiblyNullReference>
-      <code>getMatchedRouteName</code>
+      <code><![CDATA[getMatchedRouteName]]></code>
     </PossiblyNullReference>
     <PossiblyUnusedMethod>
-      <code>setMaxNestedForwards</code>
+      <code><![CDATA[setMaxNestedForwards]]></code>
     </PossiblyUnusedMethod>
     <PropertyNotSetInConstructor>
-      <code>$event</code>
+      <code><![CDATA[$event]]></code>
     </PropertyNotSetInConstructor>
     <RedundantCastGivenDocblockType>
-      <code>(int) $maxNestedForwards</code>
+      <code><![CDATA[(int) $maxNestedForwards]]></code>
     </RedundantCastGivenDocblockType>
     <RedundantConditionGivenDocblockType>
-      <code>$event</code>
+      <code><![CDATA[$event]]></code>
       <code><![CDATA[$this->event]]></code>
     </RedundantConditionGivenDocblockType>
     <UndefinedDocblockClass>
-      <code>callable|CallbackHandler</code>
+      <code><![CDATA[callable|CallbackHandler]]></code>
     </UndefinedDocblockClass>
   </file>
   <file src="src/Controller/Plugin/Layout.php">
     <MissingConstructor>
-      <code>$event</code>
+      <code><![CDATA[$event]]></code>
     </MissingConstructor>
     <RedundantCastGivenDocblockType>
-      <code>(string) $template</code>
+      <code><![CDATA[(string) $template]]></code>
     </RedundantCastGivenDocblockType>
     <RedundantConditionGivenDocblockType>
       <code><![CDATA[$this->event]]></code>
@@ -476,24 +464,24 @@
   </file>
   <file src="src/Controller/Plugin/Params.php">
     <MixedInferredReturnType>
-      <code>array|ArrayAccess|null</code>
-      <code>null|HeaderInterface</code>
+      <code><![CDATA[array|ArrayAccess|null]]></code>
+      <code><![CDATA[null|HeaderInterface]]></code>
     </MixedInferredReturnType>
     <MixedMethodCall>
-      <code>getFiles</code>
-      <code>getFiles</code>
-      <code>getHeaders</code>
-      <code>getHeaders</code>
-      <code>getParam</code>
-      <code>getParams</code>
-      <code>getPost</code>
-      <code>getPost</code>
-      <code>getQuery</code>
-      <code>getQuery</code>
-      <code>toArray</code>
-      <code>toArray</code>
-      <code>toArray</code>
-      <code>toArray</code>
+      <code><![CDATA[getFiles]]></code>
+      <code><![CDATA[getFiles]]></code>
+      <code><![CDATA[getHeaders]]></code>
+      <code><![CDATA[getHeaders]]></code>
+      <code><![CDATA[getParam]]></code>
+      <code><![CDATA[getParams]]></code>
+      <code><![CDATA[getPost]]></code>
+      <code><![CDATA[getPost]]></code>
+      <code><![CDATA[getQuery]]></code>
+      <code><![CDATA[getQuery]]></code>
+      <code><![CDATA[toArray]]></code>
+      <code><![CDATA[toArray]]></code>
+      <code><![CDATA[toArray]]></code>
+      <code><![CDATA[toArray]]></code>
     </MixedMethodCall>
     <MixedReturnStatement>
       <code><![CDATA[$this->getController()->getRequest()->getFiles($name, $default)]]></code>
@@ -502,47 +490,47 @@
       <code><![CDATA[$this->getController()->getRequest()->getHeaders($header, $default)->toArray()]]></code>
     </MixedReturnStatement>
     <PossiblyNullReference>
-      <code>getRequest</code>
-      <code>getRequest</code>
-      <code>getRequest</code>
-      <code>getRequest</code>
-      <code>getRequest</code>
-      <code>getRequest</code>
-      <code>getRequest</code>
-      <code>getRequest</code>
+      <code><![CDATA[getRequest]]></code>
+      <code><![CDATA[getRequest]]></code>
+      <code><![CDATA[getRequest]]></code>
+      <code><![CDATA[getRequest]]></code>
+      <code><![CDATA[getRequest]]></code>
+      <code><![CDATA[getRequest]]></code>
+      <code><![CDATA[getRequest]]></code>
+      <code><![CDATA[getRequest]]></code>
     </PossiblyNullReference>
     <UndefinedInterfaceMethod>
-      <code>getRequest</code>
-      <code>getRequest</code>
-      <code>getRequest</code>
-      <code>getRequest</code>
-      <code>getRequest</code>
-      <code>getRequest</code>
-      <code>getRequest</code>
-      <code>getRequest</code>
-      <code>getRouteMatch</code>
-      <code>getRouteMatch</code>
+      <code><![CDATA[getRequest]]></code>
+      <code><![CDATA[getRequest]]></code>
+      <code><![CDATA[getRequest]]></code>
+      <code><![CDATA[getRequest]]></code>
+      <code><![CDATA[getRequest]]></code>
+      <code><![CDATA[getRequest]]></code>
+      <code><![CDATA[getRequest]]></code>
+      <code><![CDATA[getRequest]]></code>
+      <code><![CDATA[getRouteMatch]]></code>
+      <code><![CDATA[getRouteMatch]]></code>
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/Controller/Plugin/Redirect.php">
     <DocblockTypeContradiction>
-      <code>is_scalar($options)</code>
+      <code><![CDATA[is_scalar($options)]]></code>
     </DocblockTypeContradiction>
     <MissingConstructor>
-      <code>$event</code>
-      <code>$response</code>
+      <code><![CDATA[$event]]></code>
+      <code><![CDATA[$response]]></code>
     </MissingConstructor>
     <MixedArgument>
-      <code>$url</code>
+      <code><![CDATA[$url]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$url</code>
-      <code>$url</code>
-      <code>$urlPlugin</code>
+      <code><![CDATA[$url]]></code>
+      <code><![CDATA[$url]]></code>
+      <code><![CDATA[$urlPlugin]]></code>
     </MixedAssignment>
     <MixedMethodCall>
-      <code>fromRoute</code>
-      <code>fromRoute</code>
+      <code><![CDATA[fromRoute]]></code>
+      <code><![CDATA[fromRoute]]></code>
     </MixedMethodCall>
     <RedundantConditionGivenDocblockType>
       <code><![CDATA[$this->event]]></code>
@@ -551,41 +539,41 @@
   </file>
   <file src="src/Controller/Plugin/Service/ForwardFactory.php">
     <MissingParamType>
-      <code>$name</code>
+      <code><![CDATA[$name]]></code>
     </MissingParamType>
     <MixedArgument>
-      <code>$controllers</code>
+      <code><![CDATA[$controllers]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$controllers</code>
+      <code><![CDATA[$controllers]]></code>
     </MixedAssignment>
   </file>
   <file src="src/Controller/Plugin/Url.php">
     <DocblockTypeContradiction>
-      <code>$params instanceof Traversable</code>
+      <code><![CDATA[$params instanceof Traversable]]></code>
     </DocblockTypeContradiction>
     <MixedArgument>
-      <code>$routeMatchParams</code>
+      <code><![CDATA[$routeMatchParams]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$matches</code>
+      <code><![CDATA[$matches]]></code>
       <code><![CDATA[$options['name']]]></code>
-      <code>$route</code>
-      <code>$routeMatchParams</code>
-      <code>$router</code>
+      <code><![CDATA[$route]]></code>
+      <code><![CDATA[$routeMatchParams]]></code>
+      <code><![CDATA[$router]]></code>
     </MixedAssignment>
     <MixedInferredReturnType>
-      <code>string</code>
+      <code><![CDATA[string]]></code>
     </MixedInferredReturnType>
     <MixedMethodCall>
-      <code>getMatchedRouteName</code>
-      <code>getParams</code>
+      <code><![CDATA[getMatchedRouteName]]></code>
+      <code><![CDATA[getParams]]></code>
     </MixedMethodCall>
     <MixedReturnStatement>
       <code><![CDATA[$router->assemble($params, $options)]]></code>
     </MixedReturnStatement>
     <PossiblyInvalidArgument>
-      <code>$options</code>
+      <code><![CDATA[$options]]></code>
     </PossiblyInvalidArgument>
     <PossiblyInvalidArrayAssignment>
       <code><![CDATA[$options['name']]]></code>
@@ -593,78 +581,68 @@
   </file>
   <file src="src/Controller/PluginManager.php">
     <DocblockTypeContradiction>
-      <code>is_object($plugin)</code>
+      <code><![CDATA[is_object($plugin)]]></code>
     </DocblockTypeContradiction>
     <MixedArgument>
-      <code>$plugin</code>
+      <code><![CDATA[$plugin]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$plugin</code>
+      <code><![CDATA[$plugin]]></code>
     </MixedAssignment>
     <MixedReturnStatement>
-      <code>$plugin</code>
+      <code><![CDATA[$plugin]]></code>
     </MixedReturnStatement>
     <NonInvariantDocblockPropertyType>
-      <code>$factories</code>
-      <code>$instanceOf</code>
+      <code><![CDATA[$factories]]></code>
+      <code><![CDATA[$instanceOf]]></code>
     </NonInvariantDocblockPropertyType>
     <ParamNameMismatch>
-      <code>$name</code>
+      <code><![CDATA[$name]]></code>
     </ParamNameMismatch>
     <UndefinedClass>
-      <code>\Zend\Mvc\Controller\Plugin\AcceptableViewModelSelector</code>
-      <code>\Zend\Mvc\Controller\Plugin\CreateHttpNotFoundModel</code>
-      <code>\Zend\Mvc\Controller\Plugin\Forward</code>
-      <code>\Zend\Mvc\Controller\Plugin\Layout</code>
-      <code>\Zend\Mvc\Controller\Plugin\Params</code>
-      <code>\Zend\Mvc\Controller\Plugin\Redirect</code>
-      <code>\Zend\Mvc\Controller\Plugin\Url</code>
+      <code><![CDATA[\Zend\Mvc\Controller\Plugin\AcceptableViewModelSelector]]></code>
+      <code><![CDATA[\Zend\Mvc\Controller\Plugin\CreateHttpNotFoundModel]]></code>
+      <code><![CDATA[\Zend\Mvc\Controller\Plugin\Forward]]></code>
+      <code><![CDATA[\Zend\Mvc\Controller\Plugin\Layout]]></code>
+      <code><![CDATA[\Zend\Mvc\Controller\Plugin\Params]]></code>
+      <code><![CDATA[\Zend\Mvc\Controller\Plugin\Redirect]]></code>
+      <code><![CDATA[\Zend\Mvc\Controller\Plugin\Url]]></code>
     </UndefinedClass>
   </file>
   <file src="src/DispatchListener.php">
-    <ArgumentTypeCoercion>
-      <code>$application</code>
-      <code>$application</code>
-      <code>$application</code>
-    </ArgumentTypeCoercion>
     <MissingReturnType>
-      <code>reportMonitorEvent</code>
+      <code><![CDATA[reportMonitorEvent]]></code>
     </MissingReturnType>
     <MixedArgument>
-      <code>$application::ERROR_CONTROLLER_INVALID</code>
-      <code>$application::ERROR_CONTROLLER_NOT_FOUND</code>
-      <code>$application::ERROR_EXCEPTION</code>
-      <code>$application::ERROR_EXCEPTION</code>
-      <code>$controllerName</code>
-      <code>$controllerName</code>
-      <code>$controllerName</code>
-      <code>$controllerName</code>
-      <code>$controllerName</code>
-      <code>$controllerName</code>
-      <code>$return</code>
+      <code><![CDATA[$application::ERROR_CONTROLLER_INVALID]]></code>
+      <code><![CDATA[$application::ERROR_CONTROLLER_NOT_FOUND]]></code>
+      <code><![CDATA[$application::ERROR_EXCEPTION]]></code>
+      <code><![CDATA[$application::ERROR_EXCEPTION]]></code>
+      <code><![CDATA[$controllerName]]></code>
+      <code><![CDATA[$controllerName]]></code>
+      <code><![CDATA[$controllerName]]></code>
+      <code><![CDATA[$controllerName]]></code>
+      <code><![CDATA[$controllerName]]></code>
+      <code><![CDATA[$controllerName]]></code>
+      <code><![CDATA[$return]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$controller</code>
-      <code>$controllerName</code>
-      <code>$exception</code>
-      <code>$return</code>
-      <code>$return</code>
-      <code>$return</code>
-      <code>$return</code>
-      <code>$return</code>
-      <code>$return</code>
-      <code>$return</code>
-      <code>$return</code>
-      <code>$return</code>
+      <code><![CDATA[$controller]]></code>
+      <code><![CDATA[$controllerName]]></code>
+      <code><![CDATA[$exception]]></code>
+      <code><![CDATA[$return]]></code>
+      <code><![CDATA[$return]]></code>
+      <code><![CDATA[$return]]></code>
+      <code><![CDATA[$return]]></code>
+      <code><![CDATA[$return]]></code>
+      <code><![CDATA[$return]]></code>
+      <code><![CDATA[$return]]></code>
+      <code><![CDATA[$return]]></code>
+      <code><![CDATA[$return]]></code>
     </MixedAssignment>
     <MixedMethodCall>
-      <code>dispatch</code>
+      <code><![CDATA[dispatch]]></code>
     </MixedMethodCall>
-    <UndefinedConstant>
-      <code>$application::ERROR_CONTROLLER_INVALID</code>
-      <code>$application::ERROR_CONTROLLER_NOT_FOUND</code>
-      <code>$application::ERROR_EXCEPTION</code>
-    </UndefinedConstant>
     <UndefinedFunction>
       <code><![CDATA[zend_monitor_custom_event_ex(
                 $error,
@@ -676,37 +654,37 @@
   </file>
   <file src="src/Exception/BadMethodCallException.php">
     <UnusedClass>
-      <code>BadMethodCallException</code>
+      <code><![CDATA[BadMethodCallException]]></code>
     </UnusedClass>
   </file>
   <file src="src/Exception/InvalidControllerException.php">
     <UnusedClass>
-      <code>InvalidControllerException</code>
+      <code><![CDATA[InvalidControllerException]]></code>
     </UnusedClass>
   </file>
   <file src="src/Exception/InvalidPluginException.php">
     <UnusedClass>
-      <code>InvalidPluginException</code>
+      <code><![CDATA[InvalidPluginException]]></code>
     </UnusedClass>
   </file>
   <file src="src/Exception/MissingLocatorException.php">
     <UnusedClass>
-      <code>MissingLocatorException</code>
+      <code><![CDATA[MissingLocatorException]]></code>
     </UnusedClass>
   </file>
   <file src="src/HttpMethodListener.php">
     <MissingReturnType>
-      <code>setAllowedMethods</code>
-      <code>setEnabled</code>
+      <code><![CDATA[setAllowedMethods]]></code>
+      <code><![CDATA[setEnabled]]></code>
     </MissingReturnType>
     <MixedArgument>
-      <code>$value</code>
+      <code><![CDATA[$value]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$value</code>
+      <code><![CDATA[$value]]></code>
     </MixedAssignment>
     <RedundantCastGivenDocblockType>
-      <code>(bool) $enabled</code>
+      <code><![CDATA[(bool) $enabled]]></code>
     </RedundantCastGivenDocblockType>
   </file>
   <file src="src/MvcEvent.php">
@@ -714,12 +692,12 @@
       <code><![CDATA[null === $this->viewModel]]></code>
     </DocblockTypeContradiction>
     <MissingTemplateParam>
-      <code>MvcEvent</code>
+      <code><![CDATA[MvcEvent]]></code>
     </MissingTemplateParam>
     <MixedInferredReturnType>
-      <code>string</code>
-      <code>string</code>
-      <code>string</code>
+      <code><![CDATA[string]]></code>
+      <code><![CDATA[string]]></code>
+      <code><![CDATA[string]]></code>
     </MixedInferredReturnType>
     <MixedReturnStatement>
       <code><![CDATA[$this->getParam('controller')]]></code>
@@ -727,89 +705,89 @@
       <code><![CDATA[$this->getParam('error', '')]]></code>
     </MixedReturnStatement>
     <PropertyNotSetInConstructor>
-      <code>$application</code>
-      <code>$request</code>
-      <code>$response</code>
-      <code>$router</code>
-      <code>$viewModel</code>
+      <code><![CDATA[$application]]></code>
+      <code><![CDATA[$request]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$router]]></code>
+      <code><![CDATA[$viewModel]]></code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/ResponseSender/AbstractResponseSender.php">
     <MixedArgument>
       <code><![CDATA[$header->toString()]]></code>
-      <code>$status</code>
+      <code><![CDATA[$status]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$header</code>
-      <code>$status</code>
+      <code><![CDATA[$header]]></code>
+      <code><![CDATA[$status]]></code>
     </MixedAssignment>
     <MixedMethodCall>
-      <code>toString</code>
+      <code><![CDATA[toString]]></code>
     </MixedMethodCall>
     <UndefinedInterfaceMethod>
-      <code>getHeaders</code>
-      <code>renderStatusLine</code>
+      <code><![CDATA[getHeaders]]></code>
+      <code><![CDATA[renderStatusLine]]></code>
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/ResponseSender/HttpResponseSender.php">
     <ImplementedReturnTypeMismatch>
-      <code>HttpResponseSender</code>
+      <code><![CDATA[HttpResponseSender]]></code>
     </ImplementedReturnTypeMismatch>
     <MixedArgument>
       <code><![CDATA[$response->getContent()]]></code>
     </MixedArgument>
     <PossiblyUnusedMethod>
-      <code>sendContent</code>
+      <code><![CDATA[sendContent]]></code>
     </PossiblyUnusedMethod>
     <UndefinedMethod>
-      <code>sendContent</code>
+      <code><![CDATA[sendContent]]></code>
     </UndefinedMethod>
   </file>
   <file src="src/ResponseSender/PhpEnvironmentResponseSender.php">
     <ImplementedReturnTypeMismatch>
-      <code>PhpEnvironmentResponseSender</code>
+      <code><![CDATA[PhpEnvironmentResponseSender]]></code>
     </ImplementedReturnTypeMismatch>
     <UndefinedMethod>
-      <code>sendContent</code>
+      <code><![CDATA[sendContent]]></code>
     </UndefinedMethod>
   </file>
   <file src="src/ResponseSender/SendResponseEvent.php">
     <MissingTemplateParam>
-      <code>SendResponseEvent</code>
+      <code><![CDATA[SendResponseEvent]]></code>
     </MissingTemplateParam>
     <MixedArrayAssignment>
-      <code>$contentSent[$responseObjectHash]</code>
-      <code>$headersSent[$responseObjectHash]</code>
+      <code><![CDATA[$contentSent[$responseObjectHash]]]></code>
+      <code><![CDATA[$headersSent[$responseObjectHash]]]></code>
     </MixedArrayAssignment>
     <MixedAssignment>
-      <code>$contentSent</code>
-      <code>$headersSent</code>
+      <code><![CDATA[$contentSent]]></code>
+      <code><![CDATA[$headersSent]]></code>
     </MixedAssignment>
     <NonInvariantDocblockPropertyType>
-      <code>$name</code>
+      <code><![CDATA[$name]]></code>
     </NonInvariantDocblockPropertyType>
     <PropertyNotSetInConstructor>
-      <code>$response</code>
+      <code><![CDATA[$response]]></code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/ResponseSender/SimpleStreamResponseSender.php">
     <ImplementedReturnTypeMismatch>
-      <code>SimpleStreamResponseSender</code>
+      <code><![CDATA[SimpleStreamResponseSender]]></code>
     </ImplementedReturnTypeMismatch>
     <InvalidNullableReturnType>
-      <code>SimpleStreamResponseSender</code>
+      <code><![CDATA[SimpleStreamResponseSender]]></code>
     </InvalidNullableReturnType>
     <MixedArgument>
-      <code>$stream</code>
+      <code><![CDATA[$stream]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$stream</code>
+      <code><![CDATA[$stream]]></code>
     </MixedAssignment>
     <PossiblyUnusedReturnValue>
-      <code>SimpleStreamResponseSender</code>
+      <code><![CDATA[SimpleStreamResponseSender]]></code>
     </PossiblyUnusedReturnValue>
     <UndefinedInterfaceMethod>
-      <code>getStream</code>
+      <code><![CDATA[getStream]]></code>
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/RouteListener.php">
@@ -817,87 +795,87 @@
       <code><![CDATA[$event->getParams()]]></code>
     </InvalidReturnStatement>
     <MixedAssignment>
-      <code>$results</code>
+      <code><![CDATA[$results]]></code>
     </MixedAssignment>
     <MixedInferredReturnType>
-      <code>null|RouteMatch</code>
+      <code><![CDATA[null|RouteMatch]]></code>
     </MixedInferredReturnType>
     <MixedMethodCall>
-      <code>getEventManager</code>
-      <code>last</code>
-      <code>triggerEvent</code>
+      <code><![CDATA[getEventManager]]></code>
+      <code><![CDATA[last]]></code>
+      <code><![CDATA[triggerEvent]]></code>
     </MixedMethodCall>
     <MixedReturnStatement>
       <code><![CDATA[$results->last()]]></code>
     </MixedReturnStatement>
     <PossiblyInvalidMethodCall>
-      <code>getEventManager</code>
+      <code><![CDATA[getEventManager]]></code>
     </PossiblyInvalidMethodCall>
     <PossiblyNullReference>
-      <code>getEventManager</code>
+      <code><![CDATA[getEventManager]]></code>
     </PossiblyNullReference>
   </file>
   <file src="src/SendResponseListener.php">
     <ImplementedReturnTypeMismatch>
-      <code>SendResponseListener</code>
+      <code><![CDATA[SendResponseListener]]></code>
     </ImplementedReturnTypeMismatch>
     <InvalidReturnStatement>
-      <code>$this</code>
+      <code><![CDATA[$this]]></code>
     </InvalidReturnStatement>
     <InvalidReturnType>
-      <code>SendResponseEvent</code>
+      <code><![CDATA[SendResponseEvent]]></code>
     </InvalidReturnType>
     <MissingConstructor>
-      <code>$event</code>
-      <code>$eventManager</code>
+      <code><![CDATA[$event]]></code>
+      <code><![CDATA[$eventManager]]></code>
     </MissingConstructor>
   </file>
   <file src="src/Service/AbstractPluginManagerFactory.php">
     <LessSpecificReturnStatement>
-      <code>new $pluginManagerClass($container, $options)</code>
+      <code><![CDATA[new $pluginManagerClass($container, $options)]]></code>
     </LessSpecificReturnStatement>
     <MixedAssignment>
-      <code>$pluginManagerClass</code>
+      <code><![CDATA[$pluginManagerClass]]></code>
     </MixedAssignment>
     <MixedMethodCall>
-      <code>new $pluginManagerClass($container, $options)</code>
+      <code><![CDATA[new $pluginManagerClass($container, $options)]]></code>
     </MixedMethodCall>
     <MoreSpecificReturnType>
-      <code>AbstractPluginManager</code>
+      <code><![CDATA[AbstractPluginManager]]></code>
     </MoreSpecificReturnType>
   </file>
   <file src="src/Service/ApplicationFactory.php">
     <ArgumentTypeCoercion>
-      <code>$container</code>
+      <code><![CDATA[$container]]></code>
     </ArgumentTypeCoercion>
     <MixedArgument>
       <code><![CDATA[$container->get('EventManager')]]></code>
       <code><![CDATA[$container->get('Request')]]></code>
       <code><![CDATA[$container->get('Response')]]></code>
-      <code>$listener</code>
+      <code><![CDATA[$listener]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$listener</code>
-      <code>$listeners</code>
+      <code><![CDATA[$listener]]></code>
+      <code><![CDATA[$listeners]]></code>
     </MixedAssignment>
     <MixedMethodCall>
-      <code>attach</code>
+      <code><![CDATA[attach]]></code>
     </MixedMethodCall>
   </file>
   <file src="src/Service/ControllerManagerFactory.php">
     <MixedArgument>
-      <code>$managerConfig</code>
+      <code><![CDATA[$managerConfig]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$managerConfig</code>
+      <code><![CDATA[$managerConfig]]></code>
     </MixedAssignment>
   </file>
   <file src="src/Service/ControllerPluginManagerFactory.php">
     <MixedArgument>
-      <code>$managerConfig</code>
+      <code><![CDATA[$managerConfig]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$managerConfig</code>
+      <code><![CDATA[$managerConfig]]></code>
     </MixedAssignment>
   </file>
   <file src="src/Service/DispatchListenerFactory.php">
@@ -907,103 +885,100 @@
   </file>
   <file src="src/Service/EventManagerFactory.php">
     <MixedArgument>
-      <code>$shared</code>
+      <code><![CDATA[$shared]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$shared</code>
+      <code><![CDATA[$shared]]></code>
     </MixedAssignment>
   </file>
   <file src="src/Service/HttpDefaultRenderingStrategyFactory.php">
     <MissingReturnType>
-      <code>injectLayoutTemplate</code>
+      <code><![CDATA[injectLayoutTemplate]]></code>
     </MissingReturnType>
     <MixedArgument>
       <code><![CDATA[$container->get(View::class)]]></code>
-      <code>$layout</code>
+      <code><![CDATA[$layout]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$layout</code>
+      <code><![CDATA[$layout]]></code>
     </MixedAssignment>
   </file>
   <file src="src/Service/HttpExceptionStrategyFactory.php">
     <MissingReturnType>
-      <code>injectDisplayExceptions</code>
-      <code>injectExceptionTemplate</code>
+      <code><![CDATA[injectDisplayExceptions]]></code>
+      <code><![CDATA[injectExceptionTemplate]]></code>
     </MissingReturnType>
     <MixedArgument>
-      <code>$flag</code>
-      <code>$template</code>
+      <code><![CDATA[$flag]]></code>
+      <code><![CDATA[$template]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$flag</code>
-      <code>$template</code>
+      <code><![CDATA[$flag]]></code>
+      <code><![CDATA[$template]]></code>
     </MixedAssignment>
   </file>
   <file src="src/Service/HttpMethodListenerFactory.php">
     <MissingParamType>
-      <code>$name</code>
+      <code><![CDATA[$name]]></code>
     </MissingParamType>
     <MixedArgument>
-      <code>$enabled</code>
-      <code>$listenerConfig</code>
+      <code><![CDATA[$enabled]]></code>
+      <code><![CDATA[$listenerConfig]]></code>
     </MixedArgument>
     <MixedArrayAccess>
       <code><![CDATA[$config['http_methods_listener']]]></code>
     </MixedArrayAccess>
     <MixedAssignment>
-      <code>$config</code>
-      <code>$enabled</code>
-      <code>$listenerConfig</code>
+      <code><![CDATA[$config]]></code>
+      <code><![CDATA[$enabled]]></code>
+      <code><![CDATA[$listenerConfig]]></code>
     </MixedAssignment>
     <PossiblyNullArgument>
-      <code>$allowedMethods</code>
+      <code><![CDATA[$allowedMethods]]></code>
     </PossiblyNullArgument>
   </file>
   <file src="src/Service/HttpRouteNotFoundStrategyFactory.php">
     <MissingReturnType>
-      <code>injectDisplayExceptions</code>
-      <code>injectDisplayNotFoundReason</code>
-      <code>injectNotFoundTemplate</code>
+      <code><![CDATA[injectDisplayExceptions]]></code>
+      <code><![CDATA[injectDisplayNotFoundReason]]></code>
+      <code><![CDATA[injectNotFoundTemplate]]></code>
     </MissingReturnType>
     <MixedArgument>
-      <code>$flag</code>
-      <code>$flag</code>
-      <code>$template</code>
+      <code><![CDATA[$flag]]></code>
+      <code><![CDATA[$flag]]></code>
+      <code><![CDATA[$template]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$flag</code>
-      <code>$flag</code>
-      <code>$template</code>
+      <code><![CDATA[$flag]]></code>
+      <code><![CDATA[$flag]]></code>
+      <code><![CDATA[$template]]></code>
     </MixedAssignment>
   </file>
   <file src="src/Service/HttpViewManagerConfigTrait.php">
     <InvalidReturnType>
-      <code>array</code>
+      <code><![CDATA[array]]></code>
     </InvalidReturnType>
     <MixedAssignment>
-      <code>$config</code>
+      <code><![CDATA[$config]]></code>
     </MixedAssignment>
   </file>
   <file src="src/Service/InjectTemplateListenerFactory.php">
     <MissingParamType>
-      <code>$name</code>
+      <code><![CDATA[$name]]></code>
     </MissingParamType>
     <MixedArrayAccess>
       <code><![CDATA[$config['view_manager']['controller_map']]]></code>
     </MixedArrayAccess>
     <MixedAssignment>
-      <code>$config</code>
+      <code><![CDATA[$config]]></code>
     </MixedAssignment>
   </file>
   <file src="src/Service/PaginatorPluginManagerFactory.php">
     <InvalidClassConstantType>
-      <code>PLUGIN_MANAGER_CLASS</code>
+      <code><![CDATA[PLUGIN_MANAGER_CLASS]]></code>
     </InvalidClassConstantType>
-    <InvalidConstantAssignmentValue>
-      <code>PLUGIN_MANAGER_CLASS = PaginatorPluginManager::class</code>
-    </InvalidConstantAssignmentValue>
     <UndefinedClass>
-      <code>PaginatorPluginManager</code>
+      <code><![CDATA[PaginatorPluginManager]]></code>
     </UndefinedClass>
   </file>
   <file src="src/Service/SendResponseListenerFactory.php">
@@ -1013,13 +988,13 @@
   </file>
   <file src="src/Service/ViewFactory.php">
     <MixedArgument>
-      <code>$events</code>
+      <code><![CDATA[$events]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$events</code>
+      <code><![CDATA[$events]]></code>
     </MixedAssignment>
     <MixedMethodCall>
-      <code>attach</code>
+      <code><![CDATA[attach]]></code>
     </MixedMethodCall>
   </file>
   <file src="src/Service/ViewFeedStrategyFactory.php">
@@ -1029,12 +1004,12 @@
   </file>
   <file src="src/Service/ViewHelperManagerFactory.php">
     <ArgumentTypeCoercion>
-      <code>$managerConfig</code>
+      <code><![CDATA[$managerConfig]]></code>
     </ArgumentTypeCoercion>
     <MixedArgument>
       <code><![CDATA[$config['doctype']]]></code>
       <code><![CDATA[$config['view_manager']['base_path']]]></code>
-      <code>$managerConfig</code>
+      <code><![CDATA[$managerConfig]]></code>
       <code><![CDATA[$request->getBasePath()]]></code>
       <code><![CDATA[$services->get('HttpRouter')]]></code>
     </MixedArgument>
@@ -1051,36 +1026,36 @@
       <code><![CDATA[$managerConfig['factories'][ViewHelper\Url::class]]]></code>
     </MixedArrayAssignment>
     <MixedAssignment>
-      <code>$config</code>
-      <code>$config</code>
-      <code>$config</code>
-      <code>$managerConfig</code>
-      <code>$match</code>
+      <code><![CDATA[$config]]></code>
+      <code><![CDATA[$config]]></code>
+      <code><![CDATA[$config]]></code>
+      <code><![CDATA[$managerConfig]]></code>
+      <code><![CDATA[$match]]></code>
       <code><![CDATA[$options['factories']]]></code>
-      <code>$request</code>
+      <code><![CDATA[$request]]></code>
     </MixedAssignment>
     <MixedMethodCall>
-      <code>getMvcEvent</code>
-      <code>getRouteMatch</code>
+      <code><![CDATA[getMvcEvent]]></code>
+      <code><![CDATA[getRouteMatch]]></code>
     </MixedMethodCall>
     <PossiblyUnusedProperty>
-      <code>$defaultHelperMapClasses</code>
+      <code><![CDATA[$defaultHelperMapClasses]]></code>
     </PossiblyUnusedProperty>
     <RedundantCondition>
-      <code>$options</code>
+      <code><![CDATA[$options]]></code>
     </RedundantCondition>
   </file>
   <file src="src/Service/ViewJsonStrategyFactory.php">
     <MixedArgument>
-      <code>$jsonRenderer</code>
+      <code><![CDATA[$jsonRenderer]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$jsonRenderer</code>
+      <code><![CDATA[$jsonRenderer]]></code>
     </MixedAssignment>
   </file>
   <file src="src/Service/ViewManagerFactory.php">
     <MixedInferredReturnType>
-      <code>HttpViewManager</code>
+      <code><![CDATA[HttpViewManager]]></code>
     </MixedInferredReturnType>
     <MixedReturnStatement>
       <code><![CDATA[$container->get('HttpViewManager')]]></code>
@@ -1099,40 +1074,40 @@
   </file>
   <file src="src/Service/ViewPrefixPathStackResolverFactory.php">
     <MixedArgument>
-      <code>$prefixes</code>
+      <code><![CDATA[$prefixes]]></code>
     </MixedArgument>
     <MixedArrayAccess>
       <code><![CDATA[$config['view_manager']]]></code>
       <code><![CDATA[$config['view_manager']['prefix_template_path_stack']]]></code>
     </MixedArrayAccess>
     <MixedAssignment>
-      <code>$config</code>
-      <code>$prefixes</code>
+      <code><![CDATA[$config]]></code>
+      <code><![CDATA[$prefixes]]></code>
     </MixedAssignment>
   </file>
   <file src="src/Service/ViewResolverFactory.php">
     <InvalidArgument>
-      <code>$mapResolver</code>
-      <code>$mapResolver</code>
-      <code>$pathResolver</code>
-      <code>$pathResolver</code>
-      <code>$prefixPathStackResolver</code>
-      <code>$prefixPathStackResolver</code>
+      <code><![CDATA[$mapResolver]]></code>
+      <code><![CDATA[$mapResolver]]></code>
+      <code><![CDATA[$pathResolver]]></code>
+      <code><![CDATA[$pathResolver]]></code>
+      <code><![CDATA[$prefixPathStackResolver]]></code>
+      <code><![CDATA[$prefixPathStackResolver]]></code>
     </InvalidArgument>
     <UndefinedDocblockClass>
-      <code>$mapResolver</code>
-      <code>$pathResolver</code>
-      <code>$prefixPathStackResolver</code>
+      <code><![CDATA[$mapResolver]]></code>
+      <code><![CDATA[$pathResolver]]></code>
+      <code><![CDATA[$prefixPathStackResolver]]></code>
     </UndefinedDocblockClass>
   </file>
   <file src="src/Service/ViewTemplateMapResolverFactory.php">
     <MixedArgument>
-      <code>$map</code>
+      <code><![CDATA[$map]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$config</code>
-      <code>$config</code>
-      <code>$map</code>
+      <code><![CDATA[$config]]></code>
+      <code><![CDATA[$config]]></code>
+      <code><![CDATA[$map]]></code>
     </MixedAssignment>
   </file>
   <file src="src/Service/ViewTemplatePathStackFactory.php">
@@ -1141,198 +1116,195 @@
       <code><![CDATA[$config['template_path_stack']]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$config</code>
-      <code>$config</code>
+      <code><![CDATA[$config]]></code>
+      <code><![CDATA[$config]]></code>
     </MixedAssignment>
   </file>
   <file src="src/View/Http/CreateViewModelListener.php">
     <MixedArgument>
-      <code>$result</code>
+      <code><![CDATA[$result]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$result</code>
+      <code><![CDATA[$result]]></code>
     </MixedAssignment>
   </file>
   <file src="src/View/Http/DefaultRenderingStrategy.php">
     <MixedAssignment>
-      <code>$result</code>
+      <code><![CDATA[$result]]></code>
     </MixedAssignment>
     <RedundantCastGivenDocblockType>
-      <code>(string) $layoutTemplate</code>
+      <code><![CDATA[(string) $layoutTemplate]]></code>
     </RedundantCastGivenDocblockType>
   </file>
   <file src="src/View/Http/ExceptionStrategy.php">
     <DocblockTypeContradiction>
-      <code>! $response</code>
-      <code>$response</code>
+      <code><![CDATA[! $response]]></code>
+      <code><![CDATA[$response]]></code>
     </DocblockTypeContradiction>
     <MixedAssignment>
-      <code>$result</code>
-      <code>$statusCode</code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$statusCode]]></code>
     </MixedAssignment>
     <RedundantCastGivenDocblockType>
-      <code>(bool) $displayExceptions</code>
-      <code>(string) $exceptionTemplate</code>
+      <code><![CDATA[(bool) $displayExceptions]]></code>
+      <code><![CDATA[(string) $exceptionTemplate]]></code>
     </RedundantCastGivenDocblockType>
     <UndefinedInterfaceMethod>
-      <code>getStatusCode</code>
-      <code>setStatusCode</code>
+      <code><![CDATA[getStatusCode]]></code>
+      <code><![CDATA[setStatusCode]]></code>
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/View/Http/InjectRoutematchParamsListener.php">
     <MissingReturnType>
-      <code>setOverwrite</code>
+      <code><![CDATA[setOverwrite]]></code>
     </MissingReturnType>
     <MixedAssignment>
-      <code>$params</code>
-      <code>$val</code>
-      <code>$val</code>
+      <code><![CDATA[$params]]></code>
+      <code><![CDATA[$val]]></code>
+      <code><![CDATA[$val]]></code>
     </MixedAssignment>
     <MixedMethodCall>
-      <code>offsetExists</code>
+      <code><![CDATA[offsetExists]]></code>
     </MixedMethodCall>
     <PossiblyNullReference>
-      <code>getParams</code>
+      <code><![CDATA[getParams]]></code>
     </PossiblyNullReference>
     <UndefinedMethod>
-      <code>get</code>
+      <code><![CDATA[get]]></code>
     </UndefinedMethod>
     <UnusedClass>
-      <code>InjectRoutematchParamsListener</code>
+      <code><![CDATA[InjectRoutematchParamsListener]]></code>
     </UnusedClass>
   </file>
   <file src="src/View/Http/InjectTemplateListener.php">
     <MissingReturnType>
-      <code>setPreferRouteMatchController</code>
+      <code><![CDATA[setPreferRouteMatchController]]></code>
     </MissingReturnType>
     <MixedArgument>
-      <code>$action</code>
-      <code>$controller</code>
-      <code>$preferRouteMatchController</code>
+      <code><![CDATA[$action]]></code>
+      <code><![CDATA[$controller]]></code>
+      <code><![CDATA[$preferRouteMatchController]]></code>
     </MixedArgument>
     <MixedArgumentTypeCoercion>
-      <code>$namespace</code>
+      <code><![CDATA[$namespace]]></code>
     </MixedArgumentTypeCoercion>
     <MixedAssignment>
-      <code>$action</code>
-      <code>$controller</code>
-      <code>$preferRouteMatchController</code>
-      <code>$replacement</code>
-      <code>$routeMatchController</code>
+      <code><![CDATA[$action]]></code>
+      <code><![CDATA[$controller]]></code>
+      <code><![CDATA[$preferRouteMatchController]]></code>
+      <code><![CDATA[$replacement]]></code>
+      <code><![CDATA[$routeMatchController]]></code>
     </MixedAssignment>
     <PossiblyFalseArgument>
-      <code>$template</code>
+      <code><![CDATA[$template]]></code>
     </PossiblyFalseArgument>
     <PossiblyFalseOperand>
-      <code>$template</code>
+      <code><![CDATA[$template]]></code>
       <code><![CDATA[strrpos($controller, '\\')]]></code>
     </PossiblyFalseOperand>
     <PossiblyNullReference>
-      <code>getParam</code>
+      <code><![CDATA[getParam]]></code>
     </PossiblyNullReference>
     <RedundantCastGivenDocblockType>
-      <code>(bool) $preferRouteMatchController</code>
+      <code><![CDATA[(bool) $preferRouteMatchController]]></code>
     </RedundantCastGivenDocblockType>
   </file>
   <file src="src/View/Http/RouteNotFoundStrategy.php">
     <DocblockTypeContradiction>
-      <code>! $response</code>
-      <code>$response</code>
+      <code><![CDATA[! $response]]></code>
+      <code><![CDATA[$response]]></code>
     </DocblockTypeContradiction>
     <MixedAssignment>
-      <code>$controller</code>
-      <code>$vars</code>
+      <code><![CDATA[$controller]]></code>
+      <code><![CDATA[$vars]]></code>
     </MixedAssignment>
     <RedundantCastGivenDocblockType>
-      <code>(bool) $displayExceptions</code>
-      <code>(bool) $displayNotFoundReason</code>
-      <code>(string) $notFoundTemplate</code>
+      <code><![CDATA[(bool) $displayExceptions]]></code>
+      <code><![CDATA[(bool) $displayNotFoundReason]]></code>
+      <code><![CDATA[(string) $notFoundTemplate]]></code>
     </RedundantCastGivenDocblockType>
     <UndefinedInterfaceMethod>
-      <code>getStatusCode</code>
-      <code>setStatusCode</code>
+      <code><![CDATA[getStatusCode]]></code>
+      <code><![CDATA[setStatusCode]]></code>
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/View/Http/ViewManager.php">
     <MissingConstructor>
-      <code>$config</code>
-      <code>$event</code>
-      <code>$services</code>
+      <code><![CDATA[$config]]></code>
+      <code><![CDATA[$event]]></code>
+      <code><![CDATA[$services]]></code>
     </MissingConstructor>
     <MissingReturnType>
-      <code>injectViewModelIntoPlugin</code>
+      <code><![CDATA[injectViewModelIntoPlugin]]></code>
     </MissingReturnType>
     <MixedArgument>
-      <code>$layoutTemplate</code>
+      <code><![CDATA[$layoutTemplate]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$config</code>
-      <code>$exceptionStrategy</code>
-      <code>$injectTemplateListener</code>
-      <code>$layoutTemplate</code>
-      <code>$listener</code>
-      <code>$listener</code>
-      <code>$mvcRenderingStrategy</code>
-      <code>$plugin</code>
-      <code>$plugins</code>
-      <code>$routeNotFoundStrategy</code>
+      <code><![CDATA[$config]]></code>
+      <code><![CDATA[$exceptionStrategy]]></code>
+      <code><![CDATA[$injectTemplateListener]]></code>
+      <code><![CDATA[$layoutTemplate]]></code>
+      <code><![CDATA[$listener]]></code>
+      <code><![CDATA[$listener]]></code>
+      <code><![CDATA[$mvcRenderingStrategy]]></code>
+      <code><![CDATA[$plugin]]></code>
+      <code><![CDATA[$plugins]]></code>
+      <code><![CDATA[$routeNotFoundStrategy]]></code>
       <code><![CDATA[$this->config]]></code>
       <code><![CDATA[$this->view]]></code>
     </MixedAssignment>
     <MixedInferredReturnType>
-      <code>View</code>
+      <code><![CDATA[View]]></code>
     </MixedInferredReturnType>
     <MixedMethodCall>
-      <code>attach</code>
-      <code>attach</code>
-      <code>attach</code>
-      <code>get</code>
-      <code>getLayoutTemplate</code>
-      <code>setRoot</code>
+      <code><![CDATA[attach]]></code>
+      <code><![CDATA[attach]]></code>
+      <code><![CDATA[attach]]></code>
+      <code><![CDATA[get]]></code>
+      <code><![CDATA[getLayoutTemplate]]></code>
+      <code><![CDATA[setRoot]]></code>
     </MixedMethodCall>
     <MixedReturnStatement>
       <code><![CDATA[$this->view]]></code>
     </MixedReturnStatement>
     <PossiblyNullReference>
-      <code>attach</code>
+      <code><![CDATA[attach]]></code>
     </PossiblyNullReference>
-    <PropertyTypeCoercion>
-      <code>$services</code>
-    </PropertyTypeCoercion>
   </file>
   <file src="test/Application/AllowsReturningEarlyFromRoutingTest.php">
     <MissingClosureParamType>
-      <code>$e</code>
+      <code><![CDATA[$e]]></code>
     </MissingClosureParamType>
     <UnusedClosureParam>
-      <code>$e</code>
+      <code><![CDATA[$e]]></code>
     </UnusedClosureParam>
   </file>
   <file src="test/Application/BadControllerTrait.php">
     <ArgumentTypeCoercion>
-      <code>$serviceConfig</code>
+      <code><![CDATA[$serviceConfig]]></code>
     </ArgumentTypeCoercion>
     <MissingClosureParamType>
-      <code>$services</code>
-      <code>$services</code>
+      <code><![CDATA[$services]]></code>
+      <code><![CDATA[$services]]></code>
     </MissingClosureParamType>
     <MissingClosureReturnType>
       <code><![CDATA[static fn($services) => $services->get('HttpRouter')]]></code>
     </MissingClosureReturnType>
     <MixedArgument>
-      <code>$services</code>
+      <code><![CDATA[$services]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$application</code>
-      <code>$request</code>
+      <code><![CDATA[$application]]></code>
+      <code><![CDATA[$request]]></code>
     </MixedAssignment>
     <MixedInferredReturnType>
-      <code>Application</code>
+      <code><![CDATA[Application]]></code>
     </MixedInferredReturnType>
     <MixedMethodCall>
-      <code>bootstrap</code>
-      <code>get</code>
-      <code>setUri</code>
+      <code><![CDATA[bootstrap]]></code>
+      <code><![CDATA[get]]></code>
+      <code><![CDATA[setUri]]></code>
     </MixedMethodCall>
   </file>
   <file src="test/Application/ControllerIsDispatchedTest.php">
@@ -1341,7 +1313,7 @@
       <code><![CDATA[$response->toString()]]></code>
     </MixedArgument>
     <UndefinedInterfaceMethod>
-      <code>toString</code>
+      <code><![CDATA[toString]]></code>
     </UndefinedInterfaceMethod>
   </file>
   <file src="test/Application/ExceptionsRaisedInDispatchableShouldRaiseDispatchErrorEventTest.php">
@@ -1349,306 +1321,297 @@
       <code><![CDATA['Exception']]></code>
     </ArgumentTypeCoercion>
     <MissingClosureParamType>
-      <code>$e</code>
+      <code><![CDATA[$e]]></code>
     </MissingClosureParamType>
     <MixedArgument>
       <code><![CDATA[$response->getContent()]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$exception</code>
+      <code><![CDATA[$exception]]></code>
     </MixedAssignment>
     <MixedMethodCall>
-      <code>getMessage</code>
-      <code>getParam</code>
+      <code><![CDATA[getMessage]]></code>
+      <code><![CDATA[getParam]]></code>
     </MixedMethodCall>
   </file>
   <file src="test/Application/InabilityToRetrieveControllerShouldTriggerDispatchErrorTest.php">
     <MissingClosureParamType>
-      <code>$e</code>
+      <code><![CDATA[$e]]></code>
     </MissingClosureParamType>
     <MixedArgument>
       <code><![CDATA[$response->getContent()]]></code>
       <code><![CDATA[$response->getContent()]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$controller</code>
-      <code>$error</code>
+      <code><![CDATA[$controller]]></code>
+      <code><![CDATA[$error]]></code>
     </MixedAssignment>
     <MixedMethodCall>
-      <code>getController</code>
-      <code>getError</code>
+      <code><![CDATA[getController]]></code>
+      <code><![CDATA[getError]]></code>
     </MixedMethodCall>
     <MixedOperand>
-      <code>$controller</code>
-      <code>$error</code>
+      <code><![CDATA[$controller]]></code>
+      <code><![CDATA[$error]]></code>
     </MixedOperand>
   </file>
   <file src="test/Application/InabilityToRetrieveControllerShouldTriggerExceptionTest.php">
     <MissingClosureParamType>
-      <code>$e</code>
+      <code><![CDATA[$e]]></code>
     </MissingClosureParamType>
     <MixedArgument>
       <code><![CDATA[$response->getContent()]]></code>
       <code><![CDATA[$response->getContent()]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$controller</code>
-      <code>$error</code>
+      <code><![CDATA[$controller]]></code>
+      <code><![CDATA[$error]]></code>
     </MixedAssignment>
     <MixedMethodCall>
-      <code>getController</code>
-      <code>getError</code>
+      <code><![CDATA[getController]]></code>
+      <code><![CDATA[getError]]></code>
     </MixedMethodCall>
     <MixedOperand>
-      <code>$controller</code>
-      <code>$error</code>
+      <code><![CDATA[$controller]]></code>
+      <code><![CDATA[$error]]></code>
     </MixedOperand>
   </file>
   <file src="test/Application/InvalidControllerTypeShouldTriggerDispatchErrorTest.php">
     <MissingClosureParamType>
-      <code>$e</code>
+      <code><![CDATA[$e]]></code>
     </MissingClosureParamType>
     <MixedArgument>
       <code><![CDATA[$response->getContent()]]></code>
       <code><![CDATA[$response->getContent()]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$class</code>
-      <code>$controller</code>
-      <code>$error</code>
+      <code><![CDATA[$class]]></code>
+      <code><![CDATA[$controller]]></code>
+      <code><![CDATA[$error]]></code>
     </MixedAssignment>
     <MixedMethodCall>
-      <code>getController</code>
-      <code>getControllerClass</code>
-      <code>getError</code>
+      <code><![CDATA[getController]]></code>
+      <code><![CDATA[getControllerClass]]></code>
+      <code><![CDATA[getError]]></code>
     </MixedMethodCall>
     <MixedOperand>
-      <code>$class</code>
-      <code>$controller</code>
-      <code>$error</code>
+      <code><![CDATA[$class]]></code>
+      <code><![CDATA[$controller]]></code>
+      <code><![CDATA[$error]]></code>
     </MixedOperand>
   </file>
   <file src="test/Application/InvalidControllerTypeTrait.php">
     <ArgumentTypeCoercion>
-      <code>$serviceConfig</code>
+      <code><![CDATA[$serviceConfig]]></code>
     </ArgumentTypeCoercion>
     <MissingClosureParamType>
-      <code>$services</code>
-      <code>$services</code>
+      <code><![CDATA[$services]]></code>
+      <code><![CDATA[$services]]></code>
     </MissingClosureParamType>
     <MissingClosureReturnType>
       <code><![CDATA[static fn($services) => $services->get('HttpRouter')]]></code>
     </MissingClosureReturnType>
     <MixedArgument>
-      <code>$services</code>
+      <code><![CDATA[$services]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$application</code>
-      <code>$request</code>
+      <code><![CDATA[$application]]></code>
+      <code><![CDATA[$request]]></code>
     </MixedAssignment>
     <MixedInferredReturnType>
-      <code>Application</code>
+      <code><![CDATA[Application]]></code>
     </MixedInferredReturnType>
     <MixedMethodCall>
-      <code>bootstrap</code>
-      <code>get</code>
-      <code>setUri</code>
+      <code><![CDATA[bootstrap]]></code>
+      <code><![CDATA[get]]></code>
+      <code><![CDATA[setUri]]></code>
     </MixedMethodCall>
   </file>
   <file src="test/Application/MissingControllerTrait.php">
     <ArgumentTypeCoercion>
-      <code>$serviceConfig</code>
+      <code><![CDATA[$serviceConfig]]></code>
     </ArgumentTypeCoercion>
     <MissingClosureParamType>
-      <code>$services</code>
+      <code><![CDATA[$services]]></code>
     </MissingClosureParamType>
     <MissingClosureReturnType>
       <code><![CDATA[static fn($services) => $services->get('HttpRouter')]]></code>
     </MissingClosureReturnType>
     <MixedAssignment>
-      <code>$application</code>
-      <code>$request</code>
+      <code><![CDATA[$application]]></code>
+      <code><![CDATA[$request]]></code>
     </MixedAssignment>
     <MixedInferredReturnType>
-      <code>Application</code>
+      <code><![CDATA[Application]]></code>
     </MixedInferredReturnType>
     <MixedMethodCall>
-      <code>bootstrap</code>
-      <code>get</code>
-      <code>setUri</code>
+      <code><![CDATA[bootstrap]]></code>
+      <code><![CDATA[get]]></code>
+      <code><![CDATA[setUri]]></code>
     </MixedMethodCall>
   </file>
   <file src="test/Application/PathControllerTrait.php">
     <ArgumentTypeCoercion>
-      <code>$serviceConfig</code>
+      <code><![CDATA[$serviceConfig]]></code>
     </ArgumentTypeCoercion>
     <MissingClosureParamType>
-      <code>$services</code>
-      <code>$services</code>
+      <code><![CDATA[$services]]></code>
+      <code><![CDATA[$services]]></code>
     </MissingClosureParamType>
     <MissingClosureReturnType>
       <code><![CDATA[static fn($services) => $services->get('HttpRouter')]]></code>
     </MissingClosureReturnType>
     <MixedArgument>
-      <code>$services</code>
+      <code><![CDATA[$services]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$application</code>
-      <code>$request</code>
+      <code><![CDATA[$application]]></code>
+      <code><![CDATA[$request]]></code>
     </MixedAssignment>
     <MixedInferredReturnType>
-      <code>Application</code>
+      <code><![CDATA[Application]]></code>
     </MixedInferredReturnType>
     <MixedMethodCall>
-      <code>bootstrap</code>
-      <code>get</code>
-      <code>setUri</code>
+      <code><![CDATA[bootstrap]]></code>
+      <code><![CDATA[get]]></code>
+      <code><![CDATA[setUri]]></code>
     </MixedMethodCall>
   </file>
   <file src="test/Application/RoutingSuccessTest.php">
     <MissingClosureParamType>
-      <code>$e</code>
+      <code><![CDATA[$e]]></code>
     </MissingClosureParamType>
-    <MixedArgument>
-      <code>$log</code>
-    </MixedArgument>
-    <MixedArrayAccess>
-      <code><![CDATA[$log['route-match']]]></code>
-    </MixedArrayAccess>
-    <MixedArrayAssignment>
-      <code><![CDATA[$log['route-match']]]></code>
-    </MixedArrayAssignment>
     <MixedMethodCall>
-      <code>getRouteMatch</code>
+      <code><![CDATA[getRouteMatch]]></code>
     </MixedMethodCall>
   </file>
   <file src="test/ApplicationTest.php">
     <ArgumentTypeCoercion>
-      <code>$eventManager</code>
-      <code>$eventManager</code>
-      <code>$events</code>
-      <code>$serviceConfig</code>
+      <code><![CDATA[$eventManager]]></code>
+      <code><![CDATA[$eventManager]]></code>
+      <code><![CDATA[$events]]></code>
+      <code><![CDATA[$serviceConfig]]></code>
     </ArgumentTypeCoercion>
     <DeprecatedMethod>
-      <code>setMethods</code>
-      <code>setMethods</code>
-      <code>setMethods</code>
-      <code>setMethods</code>
-      <code>setMethods</code>
-      <code>setMethods</code>
-      <code>setMethods</code>
+      <code><![CDATA[setMethods]]></code>
+      <code><![CDATA[setMethods]]></code>
+      <code><![CDATA[setMethods]]></code>
+      <code><![CDATA[setMethods]]></code>
+      <code><![CDATA[setMethods]]></code>
+      <code><![CDATA[setMethods]]></code>
+      <code><![CDATA[setMethods]]></code>
     </DeprecatedMethod>
     <InvalidArgument>
-      <code>$dispatchMock</code>
-      <code>$dispatchMock</code>
-      <code>$errorMock</code>
-      <code>$finishMock</code>
-      <code>$finishMock</code>
-      <code>$routeMock</code>
-      <code>$routeMock</code>
+      <code><![CDATA[$dispatchMock]]></code>
+      <code><![CDATA[$dispatchMock]]></code>
+      <code><![CDATA[$errorMock]]></code>
+      <code><![CDATA[$finishMock]]></code>
+      <code><![CDATA[$finishMock]]></code>
+      <code><![CDATA[$routeMock]]></code>
+      <code><![CDATA[$routeMock]]></code>
     </InvalidArgument>
     <MissingClosureParamType>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$services</code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$services]]></code>
     </MissingClosureParamType>
     <MissingClosureReturnType>
       <code><![CDATA[static fn($e) => $e->getResponse()->setContent($e->getResponse()->getBody() . 'foobar')]]></code>
-      <code>static function (MvcEvent $event) {</code>
+      <code><![CDATA[static function (MvcEvent $event) {]]></code>
     </MissingClosureReturnType>
     <MixedArgument>
-      <code>$defaultListenerName</code>
+      <code><![CDATA[$defaultListenerName]]></code>
       <code><![CDATA[$response->getContent()]]></code>
       <code><![CDATA[$response->getContent()]]></code>
-      <code>$router</code>
-      <code>$router</code>
-      <code>$services</code>
+      <code><![CDATA[$router]]></code>
+      <code><![CDATA[$router]]></code>
+      <code><![CDATA[$services]]></code>
       <code><![CDATA[$this->application->getResponse()->getBody()]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$controllerLoader</code>
-      <code>$controllerManager</code>
-      <code>$defaultListener</code>
-      <code>$defaultListenerName</code>
-      <code>$defaultListenersNames</code>
-      <code>$defaultListeners[]</code>
-      <code>$error</code>
-      <code>$error</code>
-      <code>$events</code>
-      <code>$listener</code>
-      <code>$listener</code>
-      <code>$listenerService</code>
-      <code>$registeredListeners[]</code>
-      <code>$request</code>
-      <code>$request</code>
-      <code>$request</code>
-      <code>$request</code>
-      <code>$response</code>
-      <code>$router</code>
-      <code>$router</code>
-      <code>$router</code>
-      <code>$router</code>
-      <code>$sharedEvents</code>
-      <code>$smConfig</code>
+      <code><![CDATA[$controllerLoader]]></code>
+      <code><![CDATA[$controllerManager]]></code>
+      <code><![CDATA[$defaultListener]]></code>
+      <code><![CDATA[$defaultListenerName]]></code>
+      <code><![CDATA[$defaultListenersNames]]></code>
+      <code><![CDATA[$defaultListeners[]]]></code>
+      <code><![CDATA[$error]]></code>
+      <code><![CDATA[$error]]></code>
+      <code><![CDATA[$events]]></code>
+      <code><![CDATA[$listener]]></code>
+      <code><![CDATA[$listener]]></code>
+      <code><![CDATA[$listenerService]]></code>
+      <code><![CDATA[$registeredListeners[]]]></code>
+      <code><![CDATA[$request]]></code>
+      <code><![CDATA[$request]]></code>
+      <code><![CDATA[$request]]></code>
+      <code><![CDATA[$request]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$router]]></code>
+      <code><![CDATA[$router]]></code>
+      <code><![CDATA[$router]]></code>
+      <code><![CDATA[$router]]></code>
+      <code><![CDATA[$sharedEvents]]></code>
+      <code><![CDATA[$smConfig]]></code>
       <code><![CDATA[$this->application]]></code>
     </MixedAssignment>
     <MixedInferredReturnType>
-      <code>array</code>
-      <code>array</code>
-      <code>array</code>
+      <code><![CDATA[array]]></code>
+      <code><![CDATA[array]]></code>
+      <code><![CDATA[array]]></code>
     </MixedInferredReturnType>
     <MixedMethodCall>
-      <code>addFactory</code>
-      <code>addRoute</code>
-      <code>addRoute</code>
-      <code>addRoute</code>
-      <code>getBody</code>
-      <code>getError</code>
-      <code>getError</code>
-      <code>getResponse</code>
-      <code>getResponse</code>
-      <code>getResponse</code>
-      <code>getResponse</code>
-      <code>getSharedManager</code>
-      <code>getTarget</code>
-      <code>setContent</code>
-      <code>setFactory</code>
-      <code>setResult</code>
-      <code>setUri</code>
-      <code>setUri</code>
-      <code>setUri</code>
+      <code><![CDATA[addFactory]]></code>
+      <code><![CDATA[addRoute]]></code>
+      <code><![CDATA[addRoute]]></code>
+      <code><![CDATA[addRoute]]></code>
+      <code><![CDATA[getBody]]></code>
+      <code><![CDATA[getError]]></code>
+      <code><![CDATA[getError]]></code>
+      <code><![CDATA[getResponse]]></code>
+      <code><![CDATA[getResponse]]></code>
+      <code><![CDATA[getResponse]]></code>
+      <code><![CDATA[getResponse]]></code>
+      <code><![CDATA[getSharedManager]]></code>
+      <code><![CDATA[getTarget]]></code>
+      <code><![CDATA[setContent]]></code>
+      <code><![CDATA[setFactory]]></code>
+      <code><![CDATA[setResult]]></code>
+      <code><![CDATA[setUri]]></code>
+      <code><![CDATA[setUri]]></code>
+      <code><![CDATA[setUri]]></code>
     </MixedMethodCall>
     <MixedOperand>
       <code><![CDATA[$e->getResponse()->getBody()]]></code>
-      <code>$error</code>
-      <code>$error</code>
+      <code><![CDATA[$error]]></code>
+      <code><![CDATA[$error]]></code>
     </MixedOperand>
     <MixedReturnStatement>
       <code><![CDATA[$r->getValue($events)]]></code>
     </MixedReturnStatement>
     <PossiblyUnusedParam>
-      <code>$events</code>
+      <code><![CDATA[$events]]></code>
     </PossiblyUnusedParam>
     <UndefinedInterfaceMethod>
-      <code>getBody</code>
+      <code><![CDATA[getBody]]></code>
     </UndefinedInterfaceMethod>
     <UndefinedThisPropertyFetch>
       <code><![CDATA[$this->services]]></code>
     </UndefinedThisPropertyFetch>
     <UnevaluatedCode>
-      <code>$event = new MvcEvent();</code>
+      <code><![CDATA[$event = new MvcEvent();]]></code>
       <code><![CDATA[$event->setApplication($this->application)
               ->setRequest($this->application->getRequest())
               ->setResponse($this->application->getResponse())
@@ -1659,15 +1622,15 @@
             $marker->{$e->getName()} = $e->propagationIsStopped();
             $e->stopPropagation(true);
         };]]></code>
-      <code>$marker   = (object) $marker;</code>
-      <code>$marker = [];</code>
+      <code><![CDATA[$marker   = (object) $marker;]]></code>
+      <code><![CDATA[$marker = [];]]></code>
       <code><![CDATA[$r = new ReflectionProperty($this->application, 'event');]]></code>
       <code><![CDATA[$r->setAccessible(true);]]></code>
       <code><![CDATA[$r->setValue($this->application, $event);]]></code>
       <code><![CDATA[$this->application->run();]]></code>
-      <code>foreach ($events as $event) {
+      <code><![CDATA[foreach ($events as $event) {
             $marker[$event] = true;
-        }</code>
+        }]]></code>
       <code><![CDATA[foreach ($events as $event) {
             $this->application->getEventManager()->attach($event, $listener);
         }]]></code>
@@ -1676,65 +1639,65 @@
         }]]></code>
     </UnevaluatedCode>
     <UnusedClosureParam>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
     </UnusedClosureParam>
     <UnusedMethod>
-      <code>getIdentifiersFromSharedEventManager</code>
+      <code><![CDATA[getIdentifiersFromSharedEventManager]]></code>
     </UnusedMethod>
     <UnusedVariable>
-      <code>$controllerLoader</code>
-      <code>$controllerManager</code>
-      <code>$response</code>
-      <code>$response</code>
+      <code><![CDATA[$controllerLoader]]></code>
+      <code><![CDATA[$controllerManager]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
     </UnusedVariable>
   </file>
   <file src="test/Controller/AbstractControllerTest.php">
     <MixedMethodCall>
-      <code>method</code>
-      <code>method</code>
-      <code>method</code>
-      <code>method</code>
-      <code>method</code>
-      <code>with</code>
-      <code>with</code>
-      <code>with</code>
-      <code>with</code>
-      <code>with</code>
+      <code><![CDATA[method]]></code>
+      <code><![CDATA[method]]></code>
+      <code><![CDATA[method]]></code>
+      <code><![CDATA[method]]></code>
+      <code><![CDATA[method]]></code>
+      <code><![CDATA[with]]></code>
+      <code><![CDATA[with]]></code>
+      <code><![CDATA[with]]></code>
+      <code><![CDATA[with]]></code>
+      <code><![CDATA[with]]></code>
     </MixedMethodCall>
     <PossiblyInvalidArgument>
-      <code>$eventManager</code>
-      <code>$eventManager</code>
-      <code>$eventManager</code>
-      <code>$eventManager</code>
-      <code>$eventManager</code>
+      <code><![CDATA[$eventManager]]></code>
+      <code><![CDATA[$eventManager]]></code>
+      <code><![CDATA[$eventManager]]></code>
+      <code><![CDATA[$eventManager]]></code>
+      <code><![CDATA[$eventManager]]></code>
     </PossiblyInvalidArgument>
     <PossiblyUndefinedMethod>
-      <code>expects</code>
-      <code>expects</code>
-      <code>expects</code>
-      <code>expects</code>
-      <code>expects</code>
-      <code>setEventManager</code>
-      <code>setEventManager</code>
-      <code>setEventManager</code>
-      <code>setEventManager</code>
-      <code>setEventManager</code>
+      <code><![CDATA[expects]]></code>
+      <code><![CDATA[expects]]></code>
+      <code><![CDATA[expects]]></code>
+      <code><![CDATA[expects]]></code>
+      <code><![CDATA[expects]]></code>
+      <code><![CDATA[setEventManager]]></code>
+      <code><![CDATA[setEventManager]]></code>
+      <code><![CDATA[setEventManager]]></code>
+      <code><![CDATA[setEventManager]]></code>
+      <code><![CDATA[setEventManager]]></code>
     </PossiblyUndefinedMethod>
   </file>
   <file src="test/Controller/ActionControllerTest.php">
     <MissingClosureParamType>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
     </MissingClosureParamType>
     <MixedArgument>
       <code><![CDATA[$result['content']]]></code>
@@ -1743,64 +1706,64 @@
       <code><![CDATA[$vars['content']]]></code>
     </MixedArgument>
     <PossiblyNullReference>
-      <code>attach</code>
-      <code>attach</code>
-      <code>attach</code>
-      <code>attach</code>
+      <code><![CDATA[attach]]></code>
+      <code><![CDATA[attach]]></code>
+      <code><![CDATA[attach]]></code>
+      <code><![CDATA[attach]]></code>
     </PossiblyNullReference>
     <PossiblyUndefinedMethod>
-      <code>$result</code>
-      <code>$result</code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
     </PossiblyUndefinedMethod>
     <RedundantConditionGivenDocblockType>
-      <code>assertNotNull</code>
-      <code>assertTrue</code>
+      <code><![CDATA[assertNotNull]]></code>
+      <code><![CDATA[assertTrue]]></code>
     </RedundantConditionGivenDocblockType>
     <UndefinedInterfaceMethod>
-      <code>getStatusCode</code>
-      <code>getStatusCode</code>
+      <code><![CDATA[getStatusCode]]></code>
+      <code><![CDATA[getStatusCode]]></code>
     </UndefinedInterfaceMethod>
     <UnusedClosureParam>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
     </UnusedClosureParam>
   </file>
   <file src="test/Controller/ControllerManagerTest.php">
     <MissingClosureParamType>
-      <code>$services</code>
+      <code><![CDATA[$services]]></code>
     </MissingClosureParamType>
     <MixedArgument>
-      <code>$services</code>
+      <code><![CDATA[$services]]></code>
     </MixedArgument>
   </file>
   <file src="test/Controller/IntegrationTest.php">
     <MissingClosureParamType>
-      <code>$services</code>
-      <code>$services</code>
-      <code>$services</code>
+      <code><![CDATA[$services]]></code>
+      <code><![CDATA[$services]]></code>
+      <code><![CDATA[$services]]></code>
     </MissingClosureParamType>
     <MixedArgument>
-      <code>$services</code>
+      <code><![CDATA[$services]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$first</code>
-      <code>$plugin1</code>
-      <code>$plugin2</code>
-      <code>$second</code>
+      <code><![CDATA[$first]]></code>
+      <code><![CDATA[$plugin1]]></code>
+      <code><![CDATA[$plugin2]]></code>
+      <code><![CDATA[$second]]></code>
     </MixedAssignment>
     <MixedMethodCall>
-      <code>getController</code>
-      <code>getController</code>
-      <code>plugin</code>
-      <code>plugin</code>
+      <code><![CDATA[getController]]></code>
+      <code><![CDATA[getController]]></code>
+      <code><![CDATA[plugin]]></code>
+      <code><![CDATA[plugin]]></code>
     </MixedMethodCall>
     <UnusedClosureParam>
-      <code>$services</code>
-      <code>$services</code>
+      <code><![CDATA[$services]]></code>
+      <code><![CDATA[$services]]></code>
     </UnusedClosureParam>
   </file>
   <file src="test/Controller/LazyControllerAbstractFactoryTest.php">
@@ -1818,38 +1781,38 @@
       <code><![CDATA[$this->container->reveal()]]></code>
     </MixedArgument>
     <MixedInferredReturnType>
-      <code>array</code>
+      <code><![CDATA[array]]></code>
     </MixedInferredReturnType>
     <MixedMethodCall>
-      <code>willReturn</code>
-      <code>willReturn</code>
-      <code>willReturn</code>
-      <code>willReturn</code>
-      <code>willReturn</code>
-      <code>willReturn</code>
+      <code><![CDATA[willReturn]]></code>
+      <code><![CDATA[willReturn]]></code>
+      <code><![CDATA[willReturn]]></code>
+      <code><![CDATA[willReturn]]></code>
+      <code><![CDATA[willReturn]]></code>
+      <code><![CDATA[willReturn]]></code>
     </MixedMethodCall>
     <PossiblyInvalidMethodCall>
-      <code>willReturn</code>
-      <code>willReturn</code>
-      <code>willReturn</code>
-      <code>willReturn</code>
-      <code>willReturn</code>
-      <code>willReturn</code>
-      <code>willReturn</code>
-      <code>willReturn</code>
+      <code><![CDATA[willReturn]]></code>
+      <code><![CDATA[willReturn]]></code>
+      <code><![CDATA[willReturn]]></code>
+      <code><![CDATA[willReturn]]></code>
+      <code><![CDATA[willReturn]]></code>
+      <code><![CDATA[willReturn]]></code>
+      <code><![CDATA[willReturn]]></code>
+      <code><![CDATA[willReturn]]></code>
     </PossiblyInvalidMethodCall>
     <PossiblyUndefinedMethod>
-      <code>reveal</code>
-      <code>reveal</code>
-      <code>reveal</code>
-      <code>reveal</code>
-      <code>reveal</code>
-      <code>reveal</code>
-      <code>reveal</code>
-      <code>reveal</code>
-      <code>reveal</code>
-      <code>reveal</code>
-      <code>reveal</code>
+      <code><![CDATA[reveal]]></code>
+      <code><![CDATA[reveal]]></code>
+      <code><![CDATA[reveal]]></code>
+      <code><![CDATA[reveal]]></code>
+      <code><![CDATA[reveal]]></code>
+      <code><![CDATA[reveal]]></code>
+      <code><![CDATA[reveal]]></code>
+      <code><![CDATA[reveal]]></code>
+      <code><![CDATA[reveal]]></code>
+      <code><![CDATA[reveal]]></code>
+      <code><![CDATA[reveal]]></code>
     </PossiblyUndefinedMethod>
   </file>
   <file src="test/Controller/Plugin/AcceptableViewModelSelectorTest.php">
@@ -1857,117 +1820,117 @@
       <code><![CDATA[$this->plugin]]></code>
     </MixedAssignment>
     <PossiblyInvalidMethodCall>
-      <code>addHeader</code>
-      <code>addHeader</code>
-      <code>addHeader</code>
-      <code>addHeader</code>
-      <code>addHeader</code>
-      <code>addHeader</code>
-      <code>addHeader</code>
-      <code>addHeader</code>
+      <code><![CDATA[addHeader]]></code>
+      <code><![CDATA[addHeader]]></code>
+      <code><![CDATA[addHeader]]></code>
+      <code><![CDATA[addHeader]]></code>
+      <code><![CDATA[addHeader]]></code>
+      <code><![CDATA[addHeader]]></code>
+      <code><![CDATA[addHeader]]></code>
+      <code><![CDATA[addHeader]]></code>
     </PossiblyInvalidMethodCall>
     <PossiblyUndefinedMethod>
-      <code>addHeader</code>
-      <code>addHeader</code>
-      <code>addHeader</code>
-      <code>addHeader</code>
-      <code>addHeader</code>
-      <code>addHeader</code>
-      <code>addHeader</code>
-      <code>addHeader</code>
+      <code><![CDATA[addHeader]]></code>
+      <code><![CDATA[addHeader]]></code>
+      <code><![CDATA[addHeader]]></code>
+      <code><![CDATA[addHeader]]></code>
+      <code><![CDATA[addHeader]]></code>
+      <code><![CDATA[addHeader]]></code>
+      <code><![CDATA[addHeader]]></code>
+      <code><![CDATA[addHeader]]></code>
     </PossiblyUndefinedMethod>
     <UnusedProperty>
-      <code>$event</code>
+      <code><![CDATA[$event]]></code>
     </UnusedProperty>
   </file>
   <file src="test/Controller/Plugin/ForwardTest.php">
     <MissingClosureParamType>
-      <code>$e</code>
-      <code>$name</code>
-      <code>$name</code>
-      <code>$name</code>
-      <code>$name</code>
-      <code>$name</code>
-      <code>$name</code>
-      <code>$services</code>
-      <code>$services</code>
-      <code>$services</code>
-      <code>$services</code>
-      <code>$services</code>
-      <code>$services</code>
-      <code>$services</code>
-      <code>$services</code>
-      <code>$services</code>
-      <code>$services</code>
-      <code>$services</code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$name]]></code>
+      <code><![CDATA[$name]]></code>
+      <code><![CDATA[$name]]></code>
+      <code><![CDATA[$name]]></code>
+      <code><![CDATA[$name]]></code>
+      <code><![CDATA[$name]]></code>
+      <code><![CDATA[$services]]></code>
+      <code><![CDATA[$services]]></code>
+      <code><![CDATA[$services]]></code>
+      <code><![CDATA[$services]]></code>
+      <code><![CDATA[$services]]></code>
+      <code><![CDATA[$services]]></code>
+      <code><![CDATA[$services]]></code>
+      <code><![CDATA[$services]]></code>
+      <code><![CDATA[$services]]></code>
+      <code><![CDATA[$services]]></code>
+      <code><![CDATA[$services]]></code>
     </MissingClosureParamType>
     <MissingReturnType>
-      <code>testProblemListenersAreDetachedAndReattachedWhenPluginDispatchesRequestedController</code>
+      <code><![CDATA[testProblemListenersAreDetachedAndReattachedWhenPluginDispatchesRequestedController]]></code>
     </MissingReturnType>
     <MixedArgument>
-      <code>$controllers</code>
+      <code><![CDATA[$controllers]]></code>
       <code><![CDATA[$controllers->get('sample')]]></code>
-      <code>$plugins</code>
-      <code>$plugins</code>
-      <code>$plugins</code>
-      <code>$plugins</code>
-      <code>$services</code>
-      <code>$services</code>
-      <code>$services</code>
-      <code>$services</code>
+      <code><![CDATA[$plugins]]></code>
+      <code><![CDATA[$plugins]]></code>
+      <code><![CDATA[$plugins]]></code>
+      <code><![CDATA[$plugins]]></code>
+      <code><![CDATA[$services]]></code>
+      <code><![CDATA[$services]]></code>
+      <code><![CDATA[$services]]></code>
+      <code><![CDATA[$services]]></code>
       <code><![CDATA[$services->get('SharedEventManager')]]></code>
       <code><![CDATA[$services->get('SharedEventManager')]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$controllers</code>
-      <code>$events</code>
-      <code>$events</code>
-      <code>$events</code>
-      <code>$plugin</code>
-      <code>$plugins</code>
-      <code>$plugins</code>
-      <code>$plugins</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
+      <code><![CDATA[$controllers]]></code>
+      <code><![CDATA[$events]]></code>
+      <code><![CDATA[$events]]></code>
+      <code><![CDATA[$events]]></code>
+      <code><![CDATA[$plugin]]></code>
+      <code><![CDATA[$plugins]]></code>
+      <code><![CDATA[$plugins]]></code>
+      <code><![CDATA[$plugins]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
       <code><![CDATA[$this->controllers]]></code>
       <code><![CDATA[$this->plugin]]></code>
     </MixedAssignment>
     <MixedMethodCall>
-      <code>get</code>
-      <code>get</code>
-      <code>get</code>
-      <code>get</code>
+      <code><![CDATA[get]]></code>
+      <code><![CDATA[get]]></code>
+      <code><![CDATA[get]]></code>
+      <code><![CDATA[get]]></code>
     </MixedMethodCall>
     <PossiblyNullReference>
-      <code>getParams</code>
-      <code>getParams</code>
+      <code><![CDATA[getParams]]></code>
+      <code><![CDATA[getParams]]></code>
     </PossiblyNullReference>
     <UnusedClosureParam>
-      <code>$e</code>
-      <code>$name</code>
-      <code>$name</code>
-      <code>$name</code>
-      <code>$name</code>
-      <code>$name</code>
-      <code>$name</code>
-      <code>$services</code>
-      <code>$services</code>
-      <code>$services</code>
-      <code>$services</code>
-      <code>$services</code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$name]]></code>
+      <code><![CDATA[$name]]></code>
+      <code><![CDATA[$name]]></code>
+      <code><![CDATA[$name]]></code>
+      <code><![CDATA[$name]]></code>
+      <code><![CDATA[$name]]></code>
+      <code><![CDATA[$services]]></code>
+      <code><![CDATA[$services]]></code>
+      <code><![CDATA[$services]]></code>
+      <code><![CDATA[$services]]></code>
+      <code><![CDATA[$services]]></code>
     </UnusedClosureParam>
     <UnusedProperty>
-      <code>$plugins</code>
+      <code><![CDATA[$plugins]]></code>
     </UnusedProperty>
     <UnusedVariable>
-      <code>$events</code>
-      <code>$events</code>
-      <code>$events</code>
-      <code>$plugin</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
+      <code><![CDATA[$events]]></code>
+      <code><![CDATA[$events]]></code>
+      <code><![CDATA[$events]]></code>
+      <code><![CDATA[$plugin]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
     </UnusedVariable>
   </file>
   <file src="test/Controller/Plugin/LayoutTest.php">
@@ -1978,144 +1941,144 @@
   <file src="test/Controller/Plugin/ParamsTest.php">
     <MixedAssignment>
       <code><![CDATA[$this->plugin]]></code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
     </MixedAssignment>
     <MixedMethodCall>
-      <code>set</code>
-      <code>set</code>
-      <code>set</code>
-      <code>set</code>
-      <code>set</code>
-      <code>set</code>
-      <code>set</code>
+      <code><![CDATA[set]]></code>
+      <code><![CDATA[set]]></code>
+      <code><![CDATA[set]]></code>
+      <code><![CDATA[set]]></code>
+      <code><![CDATA[set]]></code>
+      <code><![CDATA[set]]></code>
+      <code><![CDATA[set]]></code>
     </MixedMethodCall>
     <PossiblyInvalidMethodCall>
-      <code>addHeader</code>
-      <code>addHeader</code>
-      <code>addHeader</code>
+      <code><![CDATA[addHeader]]></code>
+      <code><![CDATA[addHeader]]></code>
+      <code><![CDATA[addHeader]]></code>
     </PossiblyInvalidMethodCall>
     <PossiblyUndefinedMethod>
-      <code>addHeader</code>
-      <code>addHeader</code>
-      <code>addHeader</code>
+      <code><![CDATA[addHeader]]></code>
+      <code><![CDATA[addHeader]]></code>
+      <code><![CDATA[addHeader]]></code>
     </PossiblyUndefinedMethod>
   </file>
   <file src="test/Controller/Plugin/RedirectTest.php">
     <InvalidArgument>
-      <code>true</code>
+      <code><![CDATA[true]]></code>
     </InvalidArgument>
     <MixedAssignment>
-      <code>$plugin</code>
-      <code>$plugin</code>
-      <code>$plugin</code>
+      <code><![CDATA[$plugin]]></code>
+      <code><![CDATA[$plugin]]></code>
+      <code><![CDATA[$plugin]]></code>
       <code><![CDATA[$this->plugin]]></code>
     </MixedAssignment>
     <MixedMethodCall>
-      <code>toRoute</code>
-      <code>toRoute</code>
-      <code>toRoute</code>
+      <code><![CDATA[toRoute]]></code>
+      <code><![CDATA[toRoute]]></code>
+      <code><![CDATA[toRoute]]></code>
     </MixedMethodCall>
     <PossiblyInvalidMethodCall>
-      <code>getFieldValue</code>
-      <code>getFieldValue</code>
-      <code>getFieldValue</code>
-      <code>getFieldValue</code>
-      <code>getFieldValue</code>
-      <code>getFieldValue</code>
-      <code>getFieldValue</code>
+      <code><![CDATA[getFieldValue]]></code>
+      <code><![CDATA[getFieldValue]]></code>
+      <code><![CDATA[getFieldValue]]></code>
+      <code><![CDATA[getFieldValue]]></code>
+      <code><![CDATA[getFieldValue]]></code>
+      <code><![CDATA[getFieldValue]]></code>
+      <code><![CDATA[getFieldValue]]></code>
     </PossiblyInvalidMethodCall>
     <PossiblyUndefinedMethod>
-      <code>getFieldValue</code>
-      <code>getFieldValue</code>
-      <code>getFieldValue</code>
-      <code>getFieldValue</code>
-      <code>getFieldValue</code>
-      <code>getFieldValue</code>
-      <code>getFieldValue</code>
+      <code><![CDATA[getFieldValue]]></code>
+      <code><![CDATA[getFieldValue]]></code>
+      <code><![CDATA[getFieldValue]]></code>
+      <code><![CDATA[getFieldValue]]></code>
+      <code><![CDATA[getFieldValue]]></code>
+      <code><![CDATA[getFieldValue]]></code>
+      <code><![CDATA[getFieldValue]]></code>
     </PossiblyUndefinedMethod>
     <UnusedVariable>
-      <code>$url</code>
+      <code><![CDATA[$url]]></code>
     </UnusedVariable>
   </file>
   <file src="test/Controller/Plugin/TestAsset/ListenerStub.php">
     <MissingReturnType>
-      <code>myCallback</code>
+      <code><![CDATA[myCallback]]></code>
     </MissingReturnType>
     <PossiblyUnusedMethod>
-      <code>myCallback</code>
+      <code><![CDATA[myCallback]]></code>
     </PossiblyUnusedMethod>
   </file>
   <file src="test/Controller/Plugin/UrlTest.php">
     <MixedAssignment>
-      <code>$plugin</code>
-      <code>$plugin</code>
+      <code><![CDATA[$plugin]]></code>
+      <code><![CDATA[$plugin]]></code>
       <code><![CDATA[$this->plugin]]></code>
     </MixedAssignment>
     <MixedMethodCall>
-      <code>fromRoute</code>
-      <code>fromRoute</code>
+      <code><![CDATA[fromRoute]]></code>
+      <code><![CDATA[fromRoute]]></code>
     </MixedMethodCall>
     <UnusedVariable>
-      <code>$url</code>
-      <code>$url</code>
+      <code><![CDATA[$url]]></code>
+      <code><![CDATA[$url]]></code>
     </UnusedVariable>
   </file>
   <file src="test/Controller/PluginManagerTest.php">
     <MixedAssignment>
-      <code>$plugin</code>
-      <code>$plugin</code>
-      <code>$plugin</code>
-      <code>$plugin</code>
+      <code><![CDATA[$plugin]]></code>
+      <code><![CDATA[$plugin]]></code>
+      <code><![CDATA[$plugin]]></code>
+      <code><![CDATA[$plugin]]></code>
     </MixedAssignment>
     <MixedMethodCall>
-      <code>getBar</code>
-      <code>getBar</code>
-      <code>getController</code>
-      <code>getController</code>
+      <code><![CDATA[getBar]]></code>
+      <code><![CDATA[getBar]]></code>
+      <code><![CDATA[getController]]></code>
+      <code><![CDATA[getController]]></code>
     </MixedMethodCall>
   </file>
   <file src="test/Controller/RestfulControllerTest.php">
     <MissingClosureParamType>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
     </MissingClosureParamType>
     <MixedArgument>
       <code><![CDATA[$allow->getFieldValue()]]></code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
       <code><![CDATA[$result['content']]]></code>
       <code><![CDATA[$result['content']]]></code>
       <code><![CDATA[$result['description']]]></code>
-      <code>$test</code>
-      <code>$test</code>
-      <code>$test</code>
-      <code>$test</code>
-      <code>$test</code>
+      <code><![CDATA[$test]]></code>
+      <code><![CDATA[$test]]></code>
+      <code><![CDATA[$test]]></code>
+      <code><![CDATA[$test]]></code>
+      <code><![CDATA[$test]]></code>
     </MixedArgument>
     <MixedArgumentTypeCoercion>
-      <code>$name</code>
+      <code><![CDATA[$name]]></code>
     </MixedArgumentTypeCoercion>
     <MixedArrayAccess>
       <code><![CDATA[$result['content']]]></code>
@@ -2136,245 +2099,245 @@
       <code><![CDATA[$test['type']]]></code>
     </MixedArrayAccess>
     <MixedAssignment>
-      <code>$content</code>
-      <code>$content</code>
-      <code>$header</code>
-      <code>$headers</code>
-      <code>$post</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$test</code>
-      <code>$test</code>
-      <code>$value</code>
+      <code><![CDATA[$content]]></code>
+      <code><![CDATA[$content]]></code>
+      <code><![CDATA[$header]]></code>
+      <code><![CDATA[$headers]]></code>
+      <code><![CDATA[$post]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$test]]></code>
+      <code><![CDATA[$test]]></code>
+      <code><![CDATA[$value]]></code>
     </MixedAssignment>
     <MixedInferredReturnType>
-      <code>array</code>
-      <code>array</code>
-      <code>array</code>
+      <code><![CDATA[array]]></code>
+      <code><![CDATA[array]]></code>
+      <code><![CDATA[array]]></code>
     </MixedInferredReturnType>
     <MixedMethodCall>
-      <code>fromArray</code>
-      <code>get</code>
-      <code>get</code>
-      <code>getContent</code>
-      <code>getFieldValue</code>
-      <code>getFieldValue</code>
-      <code>getHeaders</code>
-      <code>getHeaders</code>
-      <code>getStatusCode</code>
-      <code>getStatusCode</code>
-      <code>has</code>
-      <code>has</code>
-      <code>set</code>
+      <code><![CDATA[fromArray]]></code>
+      <code><![CDATA[get]]></code>
+      <code><![CDATA[get]]></code>
+      <code><![CDATA[getContent]]></code>
+      <code><![CDATA[getFieldValue]]></code>
+      <code><![CDATA[getFieldValue]]></code>
+      <code><![CDATA[getHeaders]]></code>
+      <code><![CDATA[getHeaders]]></code>
+      <code><![CDATA[getStatusCode]]></code>
+      <code><![CDATA[getStatusCode]]></code>
+      <code><![CDATA[has]]></code>
+      <code><![CDATA[has]]></code>
+      <code><![CDATA[set]]></code>
     </MixedMethodCall>
     <PossiblyInvalidMethodCall>
-      <code>addHeaderLine</code>
-      <code>addHeaderLine</code>
-      <code>addHeaderLine</code>
-      <code>getFieldValue</code>
+      <code><![CDATA[addHeaderLine]]></code>
+      <code><![CDATA[addHeaderLine]]></code>
+      <code><![CDATA[addHeaderLine]]></code>
+      <code><![CDATA[getFieldValue]]></code>
     </PossiblyInvalidMethodCall>
     <PossiblyUndefinedMethod>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>addHeaderLine</code>
-      <code>addHeaderLine</code>
-      <code>addHeaderLine</code>
-      <code>getFieldValue</code>
-      <code>getHeaders</code>
-      <code>getHeaders</code>
-      <code>getStatusCode</code>
-      <code>getStatusCode</code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[addHeaderLine]]></code>
+      <code><![CDATA[addHeaderLine]]></code>
+      <code><![CDATA[addHeaderLine]]></code>
+      <code><![CDATA[getFieldValue]]></code>
+      <code><![CDATA[getHeaders]]></code>
+      <code><![CDATA[getHeaders]]></code>
+      <code><![CDATA[getStatusCode]]></code>
+      <code><![CDATA[getStatusCode]]></code>
     </PossiblyUndefinedMethod>
     <RedundantConditionGivenDocblockType>
-      <code>assertNotNull</code>
-      <code>assertTrue</code>
+      <code><![CDATA[assertNotNull]]></code>
+      <code><![CDATA[assertTrue]]></code>
     </RedundantConditionGivenDocblockType>
     <TypeDoesNotContainType>
-      <code>assertEmpty</code>
+      <code><![CDATA[assertEmpty]]></code>
     </TypeDoesNotContainType>
     <UndefinedInterfaceMethod>
-      <code>getHeaders</code>
-      <code>getStatusCode</code>
-      <code>getStatusCode</code>
+      <code><![CDATA[getHeaders]]></code>
+      <code><![CDATA[getStatusCode]]></code>
+      <code><![CDATA[getStatusCode]]></code>
     </UndefinedInterfaceMethod>
     <UnusedClosureParam>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
     </UnusedClosureParam>
     <UnusedVariable>
-      <code>$result</code>
+      <code><![CDATA[$result]]></code>
     </UnusedVariable>
   </file>
   <file src="test/Controller/TestAsset/AbstractControllerStub.php">
     <InvalidReturnType>
-      <code>onDispatch</code>
+      <code><![CDATA[onDispatch]]></code>
     </InvalidReturnType>
   </file>
   <file src="test/Controller/TestAsset/BadController.php">
     <MissingReturnType>
-      <code>testAction</code>
-      <code>testPhp7ErrorAction</code>
+      <code><![CDATA[testAction]]></code>
+      <code><![CDATA[testPhp7ErrorAction]]></code>
     </MissingReturnType>
     <PossiblyUnusedMethod>
-      <code>testAction</code>
-      <code>testPhp7ErrorAction</code>
+      <code><![CDATA[testAction]]></code>
+      <code><![CDATA[testPhp7ErrorAction]]></code>
     </PossiblyUnusedMethod>
   </file>
   <file src="test/Controller/TestAsset/ControllerAcceptingConfigToConstructor.php">
     <PossiblyUnusedMethod>
-      <code>__construct</code>
+      <code><![CDATA[__construct]]></code>
     </PossiblyUnusedMethod>
     <PropertyNotSetInConstructor>
-      <code>ControllerAcceptingConfigToConstructor</code>
-      <code>ControllerAcceptingConfigToConstructor</code>
-      <code>ControllerAcceptingConfigToConstructor</code>
-      <code>ControllerAcceptingConfigToConstructor</code>
-      <code>ControllerAcceptingConfigToConstructor</code>
+      <code><![CDATA[ControllerAcceptingConfigToConstructor]]></code>
+      <code><![CDATA[ControllerAcceptingConfigToConstructor]]></code>
+      <code><![CDATA[ControllerAcceptingConfigToConstructor]]></code>
+      <code><![CDATA[ControllerAcceptingConfigToConstructor]]></code>
+      <code><![CDATA[ControllerAcceptingConfigToConstructor]]></code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="test/Controller/TestAsset/ControllerAcceptingWellKnownServicesAsConstructorParameters.php">
     <PossiblyUnusedMethod>
-      <code>__construct</code>
+      <code><![CDATA[__construct]]></code>
     </PossiblyUnusedMethod>
     <PropertyNotSetInConstructor>
-      <code>ControllerAcceptingWellKnownServicesAsConstructorParameters</code>
-      <code>ControllerAcceptingWellKnownServicesAsConstructorParameters</code>
-      <code>ControllerAcceptingWellKnownServicesAsConstructorParameters</code>
-      <code>ControllerAcceptingWellKnownServicesAsConstructorParameters</code>
-      <code>ControllerAcceptingWellKnownServicesAsConstructorParameters</code>
+      <code><![CDATA[ControllerAcceptingWellKnownServicesAsConstructorParameters]]></code>
+      <code><![CDATA[ControllerAcceptingWellKnownServicesAsConstructorParameters]]></code>
+      <code><![CDATA[ControllerAcceptingWellKnownServicesAsConstructorParameters]]></code>
+      <code><![CDATA[ControllerAcceptingWellKnownServicesAsConstructorParameters]]></code>
+      <code><![CDATA[ControllerAcceptingWellKnownServicesAsConstructorParameters]]></code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="test/Controller/TestAsset/ControllerLoaderAbstractFactory.php">
     <MixedArgument>
-      <code>$classname</code>
+      <code><![CDATA[$classname]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$classname</code>
-      <code>$classname</code>
+      <code><![CDATA[$classname]]></code>
+      <code><![CDATA[$classname]]></code>
     </MixedAssignment>
     <MixedMethodCall>
-      <code>new $classname()</code>
+      <code><![CDATA[new $classname()]]></code>
     </MixedMethodCall>
     <ParamNameMismatch>
-      <code>$name</code>
+      <code><![CDATA[$name]]></code>
     </ParamNameMismatch>
   </file>
   <file src="test/Controller/TestAsset/ControllerWithEmptyConstructor.php">
     <PossiblyUnusedMethod>
-      <code>__construct</code>
+      <code><![CDATA[__construct]]></code>
     </PossiblyUnusedMethod>
     <PropertyNotSetInConstructor>
-      <code>ControllerWithEmptyConstructor</code>
-      <code>ControllerWithEmptyConstructor</code>
-      <code>ControllerWithEmptyConstructor</code>
-      <code>ControllerWithEmptyConstructor</code>
-      <code>ControllerWithEmptyConstructor</code>
+      <code><![CDATA[ControllerWithEmptyConstructor]]></code>
+      <code><![CDATA[ControllerWithEmptyConstructor]]></code>
+      <code><![CDATA[ControllerWithEmptyConstructor]]></code>
+      <code><![CDATA[ControllerWithEmptyConstructor]]></code>
+      <code><![CDATA[ControllerWithEmptyConstructor]]></code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="test/Controller/TestAsset/ControllerWithMixedConstructorParameters.php">
     <PossiblyUnusedMethod>
-      <code>__construct</code>
+      <code><![CDATA[__construct]]></code>
     </PossiblyUnusedMethod>
     <PropertyNotSetInConstructor>
-      <code>ControllerWithMixedConstructorParameters</code>
-      <code>ControllerWithMixedConstructorParameters</code>
-      <code>ControllerWithMixedConstructorParameters</code>
-      <code>ControllerWithMixedConstructorParameters</code>
-      <code>ControllerWithMixedConstructorParameters</code>
+      <code><![CDATA[ControllerWithMixedConstructorParameters]]></code>
+      <code><![CDATA[ControllerWithMixedConstructorParameters]]></code>
+      <code><![CDATA[ControllerWithMixedConstructorParameters]]></code>
+      <code><![CDATA[ControllerWithMixedConstructorParameters]]></code>
+      <code><![CDATA[ControllerWithMixedConstructorParameters]]></code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="test/Controller/TestAsset/ControllerWithScalarParameters.php">
     <PossiblyUnusedMethod>
-      <code>__construct</code>
+      <code><![CDATA[__construct]]></code>
     </PossiblyUnusedMethod>
     <PropertyNotSetInConstructor>
-      <code>ControllerWithScalarParameters</code>
-      <code>ControllerWithScalarParameters</code>
-      <code>ControllerWithScalarParameters</code>
-      <code>ControllerWithScalarParameters</code>
-      <code>ControllerWithScalarParameters</code>
+      <code><![CDATA[ControllerWithScalarParameters]]></code>
+      <code><![CDATA[ControllerWithScalarParameters]]></code>
+      <code><![CDATA[ControllerWithScalarParameters]]></code>
+      <code><![CDATA[ControllerWithScalarParameters]]></code>
+      <code><![CDATA[ControllerWithScalarParameters]]></code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="test/Controller/TestAsset/ControllerWithTypeHintedConstructorParameter.php">
     <PossiblyUnusedMethod>
-      <code>__construct</code>
+      <code><![CDATA[__construct]]></code>
     </PossiblyUnusedMethod>
     <PropertyNotSetInConstructor>
-      <code>ControllerWithTypeHintedConstructorParameter</code>
-      <code>ControllerWithTypeHintedConstructorParameter</code>
-      <code>ControllerWithTypeHintedConstructorParameter</code>
-      <code>ControllerWithTypeHintedConstructorParameter</code>
-      <code>ControllerWithTypeHintedConstructorParameter</code>
+      <code><![CDATA[ControllerWithTypeHintedConstructorParameter]]></code>
+      <code><![CDATA[ControllerWithTypeHintedConstructorParameter]]></code>
+      <code><![CDATA[ControllerWithTypeHintedConstructorParameter]]></code>
+      <code><![CDATA[ControllerWithTypeHintedConstructorParameter]]></code>
+      <code><![CDATA[ControllerWithTypeHintedConstructorParameter]]></code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="test/Controller/TestAsset/ControllerWithUnionTypeHintedConstructorParameter.php">
     <PossiblyUnusedMethod>
-      <code>__construct</code>
+      <code><![CDATA[__construct]]></code>
     </PossiblyUnusedMethod>
     <PossiblyUnusedParam>
-      <code>$sample</code>
+      <code><![CDATA[$sample]]></code>
     </PossiblyUnusedParam>
     <PossiblyUnusedProperty>
-      <code>$sample</code>
+      <code><![CDATA[$sample]]></code>
     </PossiblyUnusedProperty>
     <PropertyNotSetInConstructor>
-      <code>ControllerWithUnionTypeHintedConstructorParameter</code>
-      <code>ControllerWithUnionTypeHintedConstructorParameter</code>
-      <code>ControllerWithUnionTypeHintedConstructorParameter</code>
-      <code>ControllerWithUnionTypeHintedConstructorParameter</code>
-      <code>ControllerWithUnionTypeHintedConstructorParameter</code>
+      <code><![CDATA[ControllerWithUnionTypeHintedConstructorParameter]]></code>
+      <code><![CDATA[ControllerWithUnionTypeHintedConstructorParameter]]></code>
+      <code><![CDATA[ControllerWithUnionTypeHintedConstructorParameter]]></code>
+      <code><![CDATA[ControllerWithUnionTypeHintedConstructorParameter]]></code>
+      <code><![CDATA[ControllerWithUnionTypeHintedConstructorParameter]]></code>
     </PropertyNotSetInConstructor>
     <UndefinedClass>
-      <code>SampleInterface|AnotherSampleInterface</code>
-      <code>SampleInterface|AnotherSampleInterface $sample</code>
+      <code><![CDATA[SampleInterface|AnotherSampleInterface]]></code>
+      <code><![CDATA[SampleInterface|AnotherSampleInterface $sample]]></code>
     </UndefinedClass>
   </file>
   <file src="test/Controller/TestAsset/ForwardController.php">
     <LessSpecificImplementedReturnType>
-      <code>mixed</code>
+      <code><![CDATA[mixed]]></code>
     </LessSpecificImplementedReturnType>
     <MixedMethodCall>
-      <code>fromRoute</code>
+      <code><![CDATA[fromRoute]]></code>
     </MixedMethodCall>
     <PossiblyNullReference>
-      <code>getParams</code>
+      <code><![CDATA[getParams]]></code>
     </PossiblyNullReference>
     <PossiblyUnusedMethod>
-      <code>testAction</code>
-      <code>testMatchesAction</code>
+      <code><![CDATA[testAction]]></code>
+      <code><![CDATA[testMatchesAction]]></code>
     </PossiblyUnusedMethod>
   </file>
   <file src="test/Controller/TestAsset/Request.php">
     <LessSpecificImplementedReturnType>
-      <code>Request</code>
+      <code><![CDATA[Request]]></code>
     </LessSpecificImplementedReturnType>
   </file>
   <file src="test/Controller/TestAsset/RestfulTestController.php">
@@ -2382,8 +2345,8 @@
       <code><![CDATA[$items['name']]]></code>
     </InvalidArrayAccess>
     <LessSpecificReturnStatement>
-      <code>$response</code>
-      <code>$response</code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
     </LessSpecificReturnStatement>
     <MixedArrayAccess>
       <code><![CDATA[$entity['id']]]></code>
@@ -2394,140 +2357,126 @@
     </MixedArrayAssignment>
     <MixedAssignment>
       <code><![CDATA[$data['id']]]></code>
-      <code>$entity</code>
-      <code>$headers</code>
-      <code>$row</code>
+      <code><![CDATA[$entity]]></code>
+      <code><![CDATA[$headers]]></code>
+      <code><![CDATA[$row]]></code>
     </MixedAssignment>
     <MixedMethodCall>
-      <code>addHeaderLine</code>
-      <code>addHeaderLine</code>
-      <code>addHeaderLine</code>
+      <code><![CDATA[addHeaderLine]]></code>
+      <code><![CDATA[addHeaderLine]]></code>
+      <code><![CDATA[addHeaderLine]]></code>
     </MixedMethodCall>
     <MoreSpecificImplementedParamType>
-      <code>$data</code>
-      <code>$data</code>
-      <code>$id</code>
-      <code>$items</code>
-      <code>$items</code>
+      <code><![CDATA[$data]]></code>
+      <code><![CDATA[$data]]></code>
+      <code><![CDATA[$id]]></code>
+      <code><![CDATA[$items]]></code>
+      <code><![CDATA[$items]]></code>
     </MoreSpecificImplementedParamType>
     <MoreSpecificReturnType>
-      <code>Response</code>
-      <code>Response</code>
+      <code><![CDATA[Response]]></code>
+      <code><![CDATA[Response]]></code>
     </MoreSpecificReturnType>
     <ParamNameMismatch>
-      <code>$items</code>
-      <code>$items</code>
+      <code><![CDATA[$items]]></code>
+      <code><![CDATA[$items]]></code>
     </ParamNameMismatch>
     <PossiblyUnusedMethod>
-      <code>editAction</code>
-      <code>testSomeStrangelySeparatedWordsAction</code>
+      <code><![CDATA[editAction]]></code>
+      <code><![CDATA[testSomeStrangelySeparatedWordsAction]]></code>
     </PossiblyUnusedMethod>
     <PossiblyUnusedReturnValue>
-      <code>mixed</code>
+      <code><![CDATA[mixed]]></code>
     </PossiblyUnusedReturnValue>
     <UndefinedInterfaceMethod>
-      <code>getHeaders</code>
-      <code>getHeaders</code>
-      <code>getHeaders</code>
-      <code>setStatusCode</code>
+      <code><![CDATA[getHeaders]]></code>
+      <code><![CDATA[getHeaders]]></code>
+      <code><![CDATA[getHeaders]]></code>
+      <code><![CDATA[setStatusCode]]></code>
     </UndefinedInterfaceMethod>
   </file>
   <file src="test/Controller/TestAsset/SampleController.php">
     <PossiblyUnusedMethod>
-      <code>testAction</code>
-      <code>testCircularAction</code>
-      <code>testSomeStrangelySeparatedWordsAction</code>
+      <code><![CDATA[testAction]]></code>
+      <code><![CDATA[testCircularAction]]></code>
+      <code><![CDATA[testSomeStrangelySeparatedWordsAction]]></code>
     </PossiblyUnusedMethod>
   </file>
   <file src="test/Controller/TestAsset/UneventfulController.php">
     <InvalidReturnType>
-      <code>dispatch</code>
+      <code><![CDATA[dispatch]]></code>
     </InvalidReturnType>
   </file>
   <file src="test/Controller/TestAsset/UnlocatableControllerLoaderAbstractFactory.php">
     <LessSpecificImplementedReturnType>
-      <code>mixed</code>
+      <code><![CDATA[mixed]]></code>
     </LessSpecificImplementedReturnType>
     <ParamNameMismatch>
-      <code>$name</code>
+      <code><![CDATA[$name]]></code>
     </ParamNameMismatch>
   </file>
   <file src="test/Controller/TestAsset/UnlocatableEventfulController.php">
     <InvalidNullableReturnType>
-      <code>?Event</code>
+      <code><![CDATA[?Event]]></code>
     </InvalidNullableReturnType>
     <InvalidReturnType>
-      <code>dispatch</code>
+      <code><![CDATA[dispatch]]></code>
     </InvalidReturnType>
     <NullableReturnStatement>
       <code><![CDATA[$this->event]]></code>
     </NullableReturnStatement>
     <UnusedClass>
-      <code>UnlocatableEventfulController</code>
+      <code><![CDATA[UnlocatableEventfulController]]></code>
     </UnusedClass>
   </file>
   <file src="test/DispatchListenerTest.php">
     <MissingClosureParamType>
-      <code>$e</code>
-      <code>$e</code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
     </MissingClosureParamType>
-    <MixedArgument>
-      <code>$log</code>
-    </MixedArgument>
-    <MixedArrayAccess>
-      <code><![CDATA[$log['error']]]></code>
-    </MixedArrayAccess>
-    <MixedArrayAssignment>
-      <code><![CDATA[$log['error']]]></code>
-      <code><![CDATA[$log['error']]]></code>
-    </MixedArrayAssignment>
     <MixedAssignment>
       <code><![CDATA[$log['error']]]></code>
       <code><![CDATA[$log['error']]]></code>
-      <code>$return</code>
+      <code><![CDATA[$return]]></code>
     </MixedAssignment>
     <MixedMethodCall>
-      <code>getError</code>
-      <code>getError</code>
+      <code><![CDATA[getError]]></code>
+      <code><![CDATA[getError]]></code>
     </MixedMethodCall>
     <UndefinedInterfaceMethod>
-      <code>getStatusCode</code>
+      <code><![CDATA[getStatusCode]]></code>
     </UndefinedInterfaceMethod>
     <UnusedVariable>
-      <code>$return</code>
+      <code><![CDATA[$return]]></code>
     </UnusedVariable>
   </file>
   <file src="test/ResponseSender/AbstractResponseSenderTest.php">
     <DeprecatedMethod>
-      <code>setMethods</code>
+      <code><![CDATA[setMethods]]></code>
     </DeprecatedMethod>
     <MissingReturnType>
-      <code>testSendHeadersSendsStatusLast</code>
+      <code><![CDATA[testSendHeadersSendsStatusLast]]></code>
     </MissingReturnType>
     <MixedArgument>
-      <code>$header</code>
+      <code><![CDATA[$header]]></code>
       <code><![CDATA[xdebug_info('mode')]]></code>
       <code><![CDATA[xdebug_info('mode')]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$header</code>
+      <code><![CDATA[$header]]></code>
     </MixedAssignment>
   </file>
   <file src="test/SendResponseListenerTest.php">
     <MissingClosureParamType>
-      <code>$e</code>
+      <code><![CDATA[$e]]></code>
     </MissingClosureParamType>
-    <MixedArrayAssignment>
-      <code><![CDATA[$result['response']]]></code>
-      <code><![CDATA[$result['target']]]></code>
-    </MixedArrayAssignment>
     <MixedAssignment>
       <code><![CDATA[$result['response']]]></code>
       <code><![CDATA[$result['target']]]></code>
     </MixedAssignment>
     <MixedMethodCall>
-      <code>getResponse</code>
-      <code>getTarget</code>
+      <code><![CDATA[getResponse]]></code>
+      <code><![CDATA[getTarget]]></code>
     </MixedMethodCall>
   </file>
   <file src="test/Service/ControllerManagerFactoryTest.php">
@@ -2539,27 +2488,27 @@
         ])]]></code>
     </ArgumentTypeCoercion>
     <MixedAssignment>
-      <code>$controllerPluginManager</code>
-      <code>$loader</code>
-      <code>$loader</code>
-      <code>$loader</code>
-      <code>$plugin</code>
+      <code><![CDATA[$controllerPluginManager]]></code>
+      <code><![CDATA[$loader]]></code>
+      <code><![CDATA[$loader]]></code>
+      <code><![CDATA[$loader]]></code>
+      <code><![CDATA[$plugin]]></code>
     </MixedAssignment>
     <MixedMethodCall>
-      <code>get</code>
-      <code>get</code>
-      <code>get</code>
-      <code>get</code>
-      <code>getController</code>
-      <code>setAlias</code>
-      <code>setAlias</code>
-      <code>setController</code>
-      <code>setFactory</code>
-      <code>setFactory</code>
-      <code>setFactory</code>
+      <code><![CDATA[get]]></code>
+      <code><![CDATA[get]]></code>
+      <code><![CDATA[get]]></code>
+      <code><![CDATA[get]]></code>
+      <code><![CDATA[getController]]></code>
+      <code><![CDATA[setAlias]]></code>
+      <code><![CDATA[setAlias]]></code>
+      <code><![CDATA[setController]]></code>
+      <code><![CDATA[setFactory]]></code>
+      <code><![CDATA[setFactory]]></code>
+      <code><![CDATA[setFactory]]></code>
     </MixedMethodCall>
     <PossiblyUnusedProperty>
-      <code>$loader</code>
+      <code><![CDATA[$loader]]></code>
     </PossiblyUnusedProperty>
   </file>
   <file src="test/Service/HttpMethodListenerFactoryTest.php">
@@ -2571,78 +2520,78 @@
       <code><![CDATA[$this->serviceLocator->reveal()]]></code>
     </MixedArgument>
     <MixedMethodCall>
-      <code>willReturn</code>
+      <code><![CDATA[willReturn]]></code>
     </MixedMethodCall>
     <PossiblyUndefinedMethod>
-      <code>get</code>
+      <code><![CDATA[get]]></code>
     </PossiblyUndefinedMethod>
     <PossiblyUndefinedVariable>
-      <code>$config</code>
+      <code><![CDATA[$config]]></code>
     </PossiblyUndefinedVariable>
     <UndefinedInterfaceMethod>
-      <code>reveal</code>
-      <code>reveal</code>
+      <code><![CDATA[reveal]]></code>
+      <code><![CDATA[reveal]]></code>
     </UndefinedInterfaceMethod>
   </file>
   <file src="test/Service/TestAsset/ControllerWithDependencies.php">
     <InvalidReturnType>
-      <code>dispatch</code>
+      <code><![CDATA[dispatch]]></code>
     </InvalidReturnType>
     <MissingConstructor>
-      <code>$injectedValue</code>
+      <code><![CDATA[$injectedValue]]></code>
     </MissingConstructor>
     <MissingReturnType>
-      <code>setInjectedValue</code>
+      <code><![CDATA[setInjectedValue]]></code>
     </MissingReturnType>
     <UnusedClass>
-      <code>ControllerWithDependencies</code>
+      <code><![CDATA[ControllerWithDependencies]]></code>
     </UnusedClass>
   </file>
   <file src="test/Service/TestAsset/Dispatchable.php">
     <LessSpecificImplementedReturnType>
-      <code>mixed</code>
-      <code>mixed</code>
+      <code><![CDATA[mixed]]></code>
+      <code><![CDATA[mixed]]></code>
     </LessSpecificImplementedReturnType>
   </file>
   <file src="test/Service/TestAsset/EventManagerAwareObject.php">
     <MissingConstructor>
-      <code>$events</code>
+      <code><![CDATA[$events]]></code>
     </MissingConstructor>
     <ParamNameMismatch>
-      <code>$events</code>
+      <code><![CDATA[$events]]></code>
     </ParamNameMismatch>
     <UnusedClass>
-      <code>EventManagerAwareObject</code>
+      <code><![CDATA[EventManagerAwareObject]]></code>
     </UnusedClass>
   </file>
   <file src="test/Service/TestAsset/InvalidDispatchableClass.php">
     <PossiblyUnusedMethod>
-      <code>__construct</code>
+      <code><![CDATA[__construct]]></code>
     </PossiblyUnusedMethod>
   </file>
   <file src="test/Service/ViewHelperManagerFactoryTest.php">
     <DeprecatedMethod>
-      <code>prophesize</code>
+      <code><![CDATA[prophesize]]></code>
     </DeprecatedMethod>
     <MixedArgument>
-      <code>$value</code>
+      <code><![CDATA[$value]]></code>
     </MixedArgument>
     <MixedArgumentTypeCoercion>
-      <code>$key</code>
-      <code>$key</code>
-      <code>$value</code>
+      <code><![CDATA[$key]]></code>
+      <code><![CDATA[$key]]></code>
+      <code><![CDATA[$value]]></code>
     </MixedArgumentTypeCoercion>
     <MixedAssignment>
-      <code>$value</code>
+      <code><![CDATA[$value]]></code>
     </MixedAssignment>
     <MixedInferredReturnType>
-      <code>array</code>
-      <code>array</code>
-      <code>array</code>
-      <code>iterable</code>
+      <code><![CDATA[array]]></code>
+      <code><![CDATA[array]]></code>
+      <code><![CDATA[array]]></code>
+      <code><![CDATA[iterable]]></code>
     </MixedInferredReturnType>
     <PossiblyUnusedParam>
-      <code>$name</code>
+      <code><![CDATA[$name]]></code>
     </PossiblyUnusedParam>
     <UnevaluatedCode>
       <code><![CDATA[$application = $this->prophesize(Application::class);]]></code>
@@ -2667,39 +2616,39 @@
       <code><![CDATA[$this->services[$name]()]]></code>
     </MixedFunctionCall>
     <ParamNameMismatch>
-      <code>$name</code>
-      <code>$name</code>
+      <code><![CDATA[$name]]></code>
+      <code><![CDATA[$name]]></code>
     </ParamNameMismatch>
     <UnusedClass>
-      <code>Locator</code>
+      <code><![CDATA[Locator]]></code>
     </UnusedClass>
   </file>
   <file src="test/TestAsset/StubBootstrapListener.php">
     <MixedArgument>
-      <code>$listener</code>
+      <code><![CDATA[$listener]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$listener</code>
+      <code><![CDATA[$listener]]></code>
     </MixedAssignment>
     <PossiblyUnusedMethod>
-      <code>getListeners</code>
+      <code><![CDATA[getListeners]]></code>
     </PossiblyUnusedMethod>
   </file>
   <file src="test/View/CreateViewModelListenerTest.php">
     <MixedAssignment>
-      <code>$result</code>
+      <code><![CDATA[$result]]></code>
     </MixedAssignment>
     <MixedInferredReturnType>
-      <code>array</code>
+      <code><![CDATA[array]]></code>
     </MixedInferredReturnType>
   </file>
   <file src="test/View/DefaultRenderingStrategyTest.php">
     <MissingClosureParamType>
-      <code>$e</code>
-      <code>$e</code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
     </MissingClosureParamType>
     <PossiblyUnusedProperty>
-      <code>$renderer</code>
+      <code><![CDATA[$renderer]]></code>
     </PossiblyUnusedProperty>
     <UnevaluatedCode>
       <code><![CDATA[$application = new Application($services, $services->get('EventManager'), $this->request, $this->response);]]></code>
@@ -2708,11 +2657,11 @@
             $test->error     = $e->getError();
             $test->exception = $e->getParam('exception');
         });]]></code>
-      <code>$model = new ViewModel();</code>
+      <code><![CDATA[$model = new ViewModel();]]></code>
       <code><![CDATA[$model->setTemplate('exception');]]></code>
-      <code>$resolver = new TemplateMapResolver();</code>
+      <code><![CDATA[$resolver = new TemplateMapResolver();]]></code>
       <code><![CDATA[$resolver->add('exception', __DIR__ . '/_files/exception.phtml');]]></code>
-      <code>$services = new ServiceManager();</code>
+      <code><![CDATA[$services = new ServiceManager();]]></code>
       <code><![CDATA[$strategy = new PhpRendererStrategy($this->renderer);]]></code>
       <code><![CDATA[$strategy->attach($this->view->getEventManager());]]></code>
       <code><![CDATA[$test = (object) ['flag' => false];]]></code>
@@ -2744,50 +2693,50 @@
         ]))->configureServiceManager($services);]]></code>
     </UnevaluatedCode>
     <UnusedClosureParam>
-      <code>$e</code>
-      <code>$e</code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
     </UnusedClosureParam>
     <UnusedVariable>
-      <code>$expected</code>
+      <code><![CDATA[$expected]]></code>
     </UnusedVariable>
   </file>
   <file src="test/View/ExceptionStrategyTest.php">
     <InternalMethod>
-      <code>addToAssertionCount</code>
-      <code>addToAssertionCount</code>
+      <code><![CDATA[addToAssertionCount]]></code>
+      <code><![CDATA[addToAssertionCount]]></code>
     </InternalMethod>
     <MixedArgument>
-      <code>$variables</code>
-      <code>$variables</code>
-      <code>$variables</code>
-      <code>$variables</code>
-      <code>$variables</code>
-      <code>$variables</code>
-      <code>$variables</code>
-      <code>$variables</code>
-      <code>$variables</code>
+      <code><![CDATA[$variables]]></code>
+      <code><![CDATA[$variables]]></code>
+      <code><![CDATA[$variables]]></code>
+      <code><![CDATA[$variables]]></code>
+      <code><![CDATA[$variables]]></code>
+      <code><![CDATA[$variables]]></code>
+      <code><![CDATA[$variables]]></code>
+      <code><![CDATA[$variables]]></code>
+      <code><![CDATA[$variables]]></code>
       <code><![CDATA[$variables['message']]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$model</code>
-      <code>$model</code>
-      <code>$model</code>
-      <code>$variables</code>
-      <code>$variables</code>
-      <code>$variables</code>
+      <code><![CDATA[$model]]></code>
+      <code><![CDATA[$model]]></code>
+      <code><![CDATA[$model]]></code>
+      <code><![CDATA[$variables]]></code>
+      <code><![CDATA[$variables]]></code>
+      <code><![CDATA[$variables]]></code>
     </MixedAssignment>
     <MixedMethodCall>
-      <code>getTemplate</code>
-      <code>getTemplate</code>
-      <code>getTemplate</code>
-      <code>getVariables</code>
-      <code>getVariables</code>
-      <code>getVariables</code>
+      <code><![CDATA[getTemplate]]></code>
+      <code><![CDATA[getTemplate]]></code>
+      <code><![CDATA[getTemplate]]></code>
+      <code><![CDATA[getVariables]]></code>
+      <code><![CDATA[getVariables]]></code>
+      <code><![CDATA[getVariables]]></code>
     </MixedMethodCall>
     <PossiblyInvalidArgument>
-      <code>$variables</code>
-      <code>$variables</code>
-      <code>$variables</code>
+      <code><![CDATA[$variables]]></code>
+      <code><![CDATA[$variables]]></code>
+      <code><![CDATA[$variables]]></code>
     </PossiblyInvalidArgument>
     <PossiblyInvalidArrayAccess>
       <code><![CDATA[$variables['display_exceptions']]]></code>
@@ -2795,69 +2744,66 @@
       <code><![CDATA[$variables['message']]]></code>
     </PossiblyInvalidArrayAccess>
     <RedundantConditionGivenDocblockType>
-      <code>null !== $response</code>
-      <code>null !== $response</code>
-      <code>null !== $response</code>
+      <code><![CDATA[null !== $response]]></code>
+      <code><![CDATA[null !== $response]]></code>
+      <code><![CDATA[null !== $response]]></code>
     </RedundantConditionGivenDocblockType>
     <UndefinedInterfaceMethod>
-      <code>getStatusCode</code>
-      <code>getStatusCode</code>
-      <code>getStatusCode</code>
-      <code>isServerError</code>
-      <code>isServerError</code>
+      <code><![CDATA[getStatusCode]]></code>
+      <code><![CDATA[getStatusCode]]></code>
+      <code><![CDATA[getStatusCode]]></code>
+      <code><![CDATA[isServerError]]></code>
+      <code><![CDATA[isServerError]]></code>
     </UndefinedInterfaceMethod>
   </file>
   <file src="test/View/InjectTemplateListenerTest.php">
     <MixedArgument>
-      <code>$preferRouteMatchControllerRouteMatchConfig</code>
+      <code><![CDATA[$preferRouteMatchControllerRouteMatchConfig]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$preferRouteMatchControllerRouteMatchConfig</code>
+      <code><![CDATA[$preferRouteMatchControllerRouteMatchConfig]]></code>
     </MixedAssignment>
   </file>
   <file src="test/View/InjectViewModelListenerTest.php">
     <MissingReturnType>
-      <code>testDetachesListeners</code>
+      <code><![CDATA[testDetachesListeners]]></code>
     </MissingReturnType>
-    <MixedAssignment>
-      <code>$child</code>
-    </MixedAssignment>
   </file>
   <file src="test/View/RouteNotFoundStrategyTest.php">
     <InternalMethod>
-      <code>addToAssertionCount</code>
-      <code>addToAssertionCount</code>
+      <code><![CDATA[addToAssertionCount]]></code>
+      <code><![CDATA[addToAssertionCount]]></code>
     </InternalMethod>
     <MixedAssignment>
-      <code>$model</code>
-      <code>$model</code>
+      <code><![CDATA[$model]]></code>
+      <code><![CDATA[$model]]></code>
     </MixedAssignment>
     <MixedInferredReturnType>
-      <code>array</code>
+      <code><![CDATA[array]]></code>
     </MixedInferredReturnType>
     <PossiblyInvalidArgument>
-      <code>$variables</code>
-      <code>$variables</code>
+      <code><![CDATA[$variables]]></code>
+      <code><![CDATA[$variables]]></code>
     </PossiblyInvalidArgument>
     <PossiblyNullArgument>
-      <code>$error</code>
+      <code><![CDATA[$error]]></code>
     </PossiblyNullArgument>
   </file>
   <file src="test/View/TestAsset/DumbStrategy.php">
     <InvalidArgument>
-      <code>$options</code>
+      <code><![CDATA[$options]]></code>
     </InvalidArgument>
     <MixedArgument>
-      <code>$nameOrModel</code>
+      <code><![CDATA[$nameOrModel]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code>$nameOrModel</code>
+      <code><![CDATA[$nameOrModel]]></code>
     </MixedAssignment>
     <PossiblyInvalidArgument>
-      <code>$variables</code>
+      <code><![CDATA[$variables]]></code>
     </PossiblyInvalidArgument>
     <PossiblyUnusedProperty>
-      <code>$resolver</code>
+      <code><![CDATA[$resolver]]></code>
     </PossiblyUnusedProperty>
   </file>
 </files>
