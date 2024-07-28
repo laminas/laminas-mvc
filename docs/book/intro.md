@@ -84,7 +84,7 @@ Let's now turn to modules, as they are the basic units of a web application.
 ## Basic Module Structure
 
 A module may contain anything: PHP code, including MVC functionality; library
-code; view scripts; and/or or public assets such as images, CSS, and JavaScript.
+code; view scripts; and/or public assets such as images, CSS, and JavaScript.
 The only requirement &mdash; and even this is optional &mdash; is that a module
 acts as a PHP namespace and that it contains a `Module` class under that
 namespace.  This class is eventually consumed by laminas-modulemanager to perform a
