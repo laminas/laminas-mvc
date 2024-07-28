@@ -57,9 +57,9 @@ The following changes were made to the `Laminas\Mvc\Application` constructor:
 
 - The first `$configuration` argument was removed, as it was not used.
 - Three additional, optional arguments were added:
-  - `Laminas\EventManager\EventManagerInterface $events = null`
-  - `Laminas\Stdlib\RequestInterface $request = null`
-  - `Laminas\Stdlib\ResponseInterface $response = null`
+    - `Laminas\EventManager\EventManagerInterface $events = null`
+    - `Laminas\Stdlib\RequestInterface $request = null`
+    - `Laminas\Stdlib\ResponseInterface $response = null`
 
 End-users using the skeleton application and the default `Application` factory
 will not notice a change. Those who are directly instantiating the `Application`
