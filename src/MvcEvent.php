@@ -25,7 +25,7 @@ class MvcEvent extends Event
     public const EVENT_RENDER_ERROR   = 'render.error';
     public const EVENT_ROUTE          = 'route';
 
-    /** @var ApplicationInterface */
+    /** @var Application */
     protected $application;
 
     /** @var Request */
@@ -51,7 +51,7 @@ class MvcEvent extends Event
      *
      * @return MvcEvent
      */
-    public function setApplication(ApplicationInterface $application)
+    public function setApplication(Application $application)
     {
         $this->setParam('application', $application);
         $this->application = $application;
@@ -61,7 +61,7 @@ class MvcEvent extends Event
     /**
      * Get application instance
      *
-     * @return ApplicationInterface
+     * @return Application
      */
     public function getApplication()
     {
