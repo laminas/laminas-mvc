@@ -48,19 +48,6 @@ class Application implements EventsCapableInterface
     public const ERROR_ROUTER_NO_MATCH            = 'error-router-no-match';
 
     /**
-     * Default application event listeners
-     *
-     * @var array
-     */
-    protected $defaultListeners = [
-        'RouteListener',
-        'DispatchListener',
-        'HttpMethodListener',
-        'ViewManager',
-        'SendResponseListener',
-    ];
-
-    /**
      * MVC event token
      *
      * @var MvcEvent
@@ -78,16 +65,14 @@ class Application implements EventsCapableInterface
     public function __construct(
         protected ServiceManager $serviceManager,
         EventManagerInterface $events,
+        ApplicationListenerProvider $listenerProvider,
         ?RequestInterface $request = null,
         ?ResponseInterface $response = null
     ) {
         $this->setEventManager($events);
+        $listenerProvider->registerListeners($this);
         $this->request  = $request ?: $serviceManager->get('Request');
         $this->response = $response ?: $serviceManager->get('Response');
-
-        foreach ($this->defaultListeners as $listener) {
-            $serviceManager->get($listener)->attach($this->events);
-        }
     }
 
     /**

@@ -5,11 +5,9 @@
       <code><![CDATA[$r]]></code>
     </MissingClosureParamType>
     <MixedArgument>
-      <code><![CDATA[$listener]]></code>
       <code><![CDATA[$serviceManager->get('Router')]]></code>
     </MixedArgument>
     <MixedAssignment>
-      <code><![CDATA[$listener]]></code>
       <code><![CDATA[$response]]></code>
       <code><![CDATA[$response]]></code>
       <code><![CDATA[$this->request]]></code>
@@ -18,9 +16,6 @@
     <MixedInferredReturnType>
       <code><![CDATA[array|object]]></code>
     </MixedInferredReturnType>
-    <MixedMethodCall>
-      <code><![CDATA[attach]]></code>
-    </MixedMethodCall>
     <MixedReturnStatement>
       <code><![CDATA[$this->serviceManager->get('config')]]></code>
     </MixedReturnStatement>
@@ -849,18 +844,9 @@
       <code><![CDATA[$container]]></code>
     </ArgumentTypeCoercion>
     <MixedArgument>
-      <code><![CDATA[$container->get('EventManager')]]></code>
       <code><![CDATA[$container->get('Request')]]></code>
       <code><![CDATA[$container->get('Response')]]></code>
-      <code><![CDATA[$listener]]></code>
     </MixedArgument>
-    <MixedAssignment>
-      <code><![CDATA[$listener]]></code>
-      <code><![CDATA[$listeners]]></code>
-    </MixedAssignment>
-    <MixedMethodCall>
-      <code><![CDATA[attach]]></code>
-    </MixedMethodCall>
   </file>
   <file src="src/Service/ControllerManagerFactory.php">
     <MixedArgument>
@@ -1281,9 +1267,6 @@
     </UnusedClosureParam>
   </file>
   <file src="test/Application/BadControllerTrait.php">
-    <ArgumentTypeCoercion>
-      <code><![CDATA[$serviceConfig]]></code>
-    </ArgumentTypeCoercion>
     <MissingClosureParamType>
       <code><![CDATA[$services]]></code>
       <code><![CDATA[$services]]></code>
@@ -1401,16 +1384,10 @@
     </MixedOperand>
   </file>
   <file src="test/Application/InvalidControllerTypeTrait.php">
-    <ArgumentTypeCoercion>
-      <code><![CDATA[$serviceConfig]]></code>
-    </ArgumentTypeCoercion>
     <MissingClosureParamType>
       <code><![CDATA[$services]]></code>
       <code><![CDATA[$services]]></code>
     </MissingClosureParamType>
-    <MissingClosureReturnType>
-      <code><![CDATA[static fn($services) => $services->get('HttpRouter')]]></code>
-    </MissingClosureReturnType>
     <MixedArgument>
       <code><![CDATA[$services]]></code>
     </MixedArgument>
@@ -1423,20 +1400,10 @@
     </MixedInferredReturnType>
     <MixedMethodCall>
       <code><![CDATA[bootstrap]]></code>
-      <code><![CDATA[get]]></code>
       <code><![CDATA[setUri]]></code>
     </MixedMethodCall>
   </file>
   <file src="test/Application/MissingControllerTrait.php">
-    <ArgumentTypeCoercion>
-      <code><![CDATA[$serviceConfig]]></code>
-    </ArgumentTypeCoercion>
-    <MissingClosureParamType>
-      <code><![CDATA[$services]]></code>
-    </MissingClosureParamType>
-    <MissingClosureReturnType>
-      <code><![CDATA[static fn($services) => $services->get('HttpRouter')]]></code>
-    </MissingClosureReturnType>
     <MixedAssignment>
       <code><![CDATA[$application]]></code>
       <code><![CDATA[$request]]></code>
@@ -1446,21 +1413,15 @@
     </MixedInferredReturnType>
     <MixedMethodCall>
       <code><![CDATA[bootstrap]]></code>
-      <code><![CDATA[get]]></code>
       <code><![CDATA[setUri]]></code>
     </MixedMethodCall>
   </file>
   <file src="test/Application/PathControllerTrait.php">
-    <ArgumentTypeCoercion>
-      <code><![CDATA[$serviceConfig]]></code>
-    </ArgumentTypeCoercion>
     <MissingClosureParamType>
       <code><![CDATA[$services]]></code>
       <code><![CDATA[$services]]></code>
     </MissingClosureParamType>
-    <MissingClosureReturnType>
-      <code><![CDATA[static fn($services) => $services->get('HttpRouter')]]></code>
-    </MissingClosureReturnType>
+    <MissingClosureReturnType/>
     <MixedArgument>
       <code><![CDATA[$services]]></code>
     </MixedArgument>
@@ -1473,7 +1434,6 @@
     </MixedInferredReturnType>
     <MixedMethodCall>
       <code><![CDATA[bootstrap]]></code>
-      <code><![CDATA[get]]></code>
       <code><![CDATA[setUri]]></code>
     </MixedMethodCall>
   </file>
@@ -1487,10 +1447,7 @@
   </file>
   <file src="test/ApplicationTest.php">
     <ArgumentTypeCoercion>
-      <code><![CDATA[$eventManager]]></code>
-      <code><![CDATA[$eventManager]]></code>
       <code><![CDATA[$events]]></code>
-      <code><![CDATA[$serviceConfig]]></code>
     </ArgumentTypeCoercion>
     <DeprecatedMethod>
       <code><![CDATA[setMethods]]></code>
@@ -1532,7 +1489,6 @@
       <code><![CDATA[static function (MvcEvent $event) {]]></code>
     </MissingClosureReturnType>
     <MixedArgument>
-      <code><![CDATA[$defaultListenerName]]></code>
       <code><![CDATA[$response->getContent()]]></code>
       <code><![CDATA[$response->getContent()]]></code>
       <code><![CDATA[$router]]></code>
@@ -1543,17 +1499,10 @@
     <MixedAssignment>
       <code><![CDATA[$controllerLoader]]></code>
       <code><![CDATA[$controllerManager]]></code>
-      <code><![CDATA[$defaultListener]]></code>
-      <code><![CDATA[$defaultListenerName]]></code>
-      <code><![CDATA[$defaultListenersNames]]></code>
-      <code><![CDATA[$defaultListeners[]]]></code>
       <code><![CDATA[$error]]></code>
       <code><![CDATA[$error]]></code>
       <code><![CDATA[$events]]></code>
-      <code><![CDATA[$listener]]></code>
-      <code><![CDATA[$listener]]></code>
       <code><![CDATA[$listenerService]]></code>
-      <code><![CDATA[$registeredListeners[]]]></code>
       <code><![CDATA[$request]]></code>
       <code><![CDATA[$request]]></code>
       <code><![CDATA[$request]]></code>
