@@ -34,12 +34,12 @@
         "laminas/laminas-http": "^2.15",
         "laminas/laminas-modulemanager": "^2.8",
         "laminas/laminas-router": "^3.11.1",
-        "laminas/laminas-servicemanager": "^3.20.0",
+        "laminas/laminas-servicemanager": "^3.20.0 || ^4.0.0",
         "laminas/laminas-stdlib": "^3.6",
         "laminas/laminas-view": "^2.14"
     },
     "require-dev": {
-        "laminas/laminas-coding-standard": "^2.5.0",
+        "laminas/laminas-coding-standard": "^3.0.0",
         "laminas/laminas-json": "^3.6",
         "phpspec/prophecy": "^1.17.0",
         "phpspec/prophecy-phpunit": "^2.0.2",
