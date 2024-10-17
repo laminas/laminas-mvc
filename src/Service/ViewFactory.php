@@ -15,7 +15,7 @@ class ViewFactory implements FactoryInterface
      * @param  null|array $options
      * @return View
      */
-    public function __invoke(ContainerInterface $container, $name, array $options = null)
+    public function __invoke(ContainerInterface $container, $name, ?array $options = null)
     {
         $view   = new View();
         $events = $container->get('EventManager');

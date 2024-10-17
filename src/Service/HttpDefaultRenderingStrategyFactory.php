@@ -17,7 +17,7 @@ class HttpDefaultRenderingStrategyFactory implements FactoryInterface
      * @param  null|array $options
      * @return DefaultRenderingStrategy
      */
-    public function __invoke(ContainerInterface $container, $name, array $options = null)
+    public function __invoke(ContainerInterface $container, $name, ?array $options = null)
     {
         $strategy = new DefaultRenderingStrategy($container->get(View::class));
         $config   = $this->getConfig($container);

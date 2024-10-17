@@ -16,7 +16,7 @@ class HttpRouteNotFoundStrategyFactory implements FactoryInterface
      * @param  null|array $options
      * @return RouteNotFoundStrategy
      */
-    public function __invoke(ContainerInterface $container, $name, array $options = null)
+    public function __invoke(ContainerInterface $container, $name, ?array $options = null)
     {
         $strategy = new RouteNotFoundStrategy();
         $config   = $this->getConfig($container);

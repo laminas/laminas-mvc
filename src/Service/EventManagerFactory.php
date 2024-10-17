@@ -19,7 +19,7 @@ class EventManagerFactory implements FactoryInterface
      * @param  null|array $options
      * @return EventManager
      */
-    public function __invoke(ContainerInterface $container, $name, array $options = null)
+    public function __invoke(ContainerInterface $container, $name, ?array $options = null)
     {
         $shared = $container->has('SharedEventManager') ? $container->get('SharedEventManager') : null;
 

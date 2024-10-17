@@ -165,7 +165,7 @@ class MiddlewareListener extends AbstractListenerAggregate
         $middlewareName,
         MvcEvent $event,
         Application $application,
-        Exception $exception = null
+        ?Exception $exception = null
     ) {
         $event->setName(MvcEvent::EVENT_DISPATCH_ERROR);
         $event->setError($type);
