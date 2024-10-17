@@ -94,9 +94,9 @@ class Application implements
      */
     public function __construct(
         protected ServiceManager $serviceManager,
-        EventManagerInterface $events = null,
-        RequestInterface $request = null,
-        ResponseInterface $response = null
+        ?EventManagerInterface $events = null,
+        ?RequestInterface $request = null,
+        ?ResponseInterface $response = null
     ) {
         $this->setEventManager($events ?: $serviceManager->get('EventManager'));
         $this->request        = $request ?: $serviceManager->get('Request');

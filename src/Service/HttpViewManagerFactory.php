@@ -16,7 +16,7 @@ class HttpViewManagerFactory implements FactoryInterface
      * @param  null|array $options
      * @return HttpViewManager
      */
-    public function __invoke(ContainerInterface $container, $name, array $options = null)
+    public function __invoke(ContainerInterface $container, $name, ?array $options = null)
     {
         return new HttpViewManager();
     }

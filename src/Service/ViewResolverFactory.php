@@ -20,7 +20,7 @@ class ViewResolverFactory implements FactoryInterface
      * @param  null|array $options
      * @return ViewResolver\AggregateResolver
      */
-    public function __invoke(ContainerInterface $container, $name, array $options = null)
+    public function __invoke(ContainerInterface $container, $name, ?array $options = null)
     {
         $resolver = new ViewResolver\AggregateResolver();
 
