@@ -27,7 +27,7 @@ class ModuleManagerFactory implements FactoryInterface
      * @param  null|array $options
      * @return ModuleManager
      */
-    public function __invoke(ContainerInterface $container, $name, array $options = null)
+    public function __invoke(ContainerInterface $container, $name, ?array $options = null)
     {
         $configuration    = $container->get('ApplicationConfig');
         $listenerOptions  = new ListenerOptions($configuration['module_listener_options']);

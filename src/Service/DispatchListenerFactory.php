@@ -16,7 +16,7 @@ class DispatchListenerFactory implements FactoryInterface
      * @param  null|array $options
      * @return DispatchListener
      */
-    public function __invoke(ContainerInterface $container, $name, array $options = null)
+    public function __invoke(ContainerInterface $container, $name, ?array $options = null)
     {
         return new DispatchListener($container->get('ControllerManager'));
     }

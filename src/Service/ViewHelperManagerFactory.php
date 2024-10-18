@@ -34,7 +34,7 @@ class ViewHelperManagerFactory extends AbstractPluginManagerFactory
      * @return HelperPluginManager
      * @throws ServiceNotCreatedException
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null)
     {
         $options = $options ?: [];
         $options['factories'] ??= [];
