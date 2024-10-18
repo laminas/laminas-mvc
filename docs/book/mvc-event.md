@@ -169,7 +169,7 @@ The following listeners are only attached in a console context:
 
 Class                                           | Priority | Method Called               | Description
 ------------------------------------------------|---------:|-----------------------------|------------
-`Laminas\Mvc\View\Console\RouteNotFoundStrategy`   | 1        | `handleRouteNotFoundError ` | Detect if an error is a "route not found" condition. If a “controller not found” or “invalid controller” error type is encountered, sets the response status code to 404.
+`Laminas\Mvc\View\Console\RouteNotFoundStrategy`   | 1        | `handleRouteNotFoundError` | Detect if an error is a "route not found" condition. If a “controller not found” or “invalid controller” error type is encountered, sets the response status code to 404.
 `Laminas\Mvc\View\Console\ExceptionStrategy`       | 1        | `prepareExceptionViewModel` | Create an exception view model, and sets the status code to 404.
 `Laminas\Mvc\View\Console\InjectViewModelListener` | -100     | `injectViewModel`           | Inserts the `ViewModel` (in this case, a `ConsoleModel`) and adds it to the `MvcEvent` object. It either (a) adds it as a child to the default, composed view model, or (b) replaces it if the result is marked as terminable.
 

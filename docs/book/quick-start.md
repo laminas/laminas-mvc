@@ -118,7 +118,7 @@ The associated class will then be instantiated and invoked.
 
 Learn more about routing [in the laminas-router documentation](https://docs.laminas.dev/laminas-router/routing).
 
-## Test it Out!
+## Test it Out
 
 Create a new vhost pointing its document root to the `public` directory of your application, and fire it up in a browser.
 You should see the default homepage template of [laminas-mvc-skeleton](https://github.com/laminas/laminas-mvc-skeleton).

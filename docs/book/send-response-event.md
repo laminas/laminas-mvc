@@ -22,7 +22,7 @@ Class                                                        | Priority | Method
 ------------------------------------------------------------ | -------: | ------------- | -----------
 `Laminas\Mvc\SendResponseListener\PhpEnvironmentResponseSender` | -1000    | `__invoke`    | This is used in HTTP contexts (this is the most often used).
 `Laminas\Mvc\SendResponseListener\ConsoleResponseSender`        | -2000    | `__invoke`    | This is used in console contexts.
-`Laminas\Mvc\SendResponseListener\SimpleStreamResponseSender`   | -3000    | `__invoke`    |
+`Laminas\Mvc\SendResponseListener\SimpleStreamResponseSender`   | -3000    | `__invoke`    | This is used in HTTP context to pass through stream directly to output.
 
 Because each listener has negative priority, adding your own logic to modify the
 `Response` involves adding a new listener without priority (as priority defaults
