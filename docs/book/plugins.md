@@ -234,13 +234,13 @@ generate a URL string from the provided parameters. It has the following
 signature:
 
 - `fromRoute(string $route = null, array $params = [], array $options = [], bool $reuseMatchedParams = false): string`, where:
-  - `$name`: the name of the route to use for URL generation.
-  - `$params`: Any parameter substitutions to use with the named route.
-  - `$options`: Options used by the router when generating the URL (e.g., `force_canonical`, `query`, etc.).
-  - `$reuseMatchedParams`: Whether or not to use route match parameters from the
-    current URL when generating the new URL. This will only affect cases where
-    the specified `$name` matches the currently matched route; the default is
-    `true`.
+    - `$name`: the name of the route to use for URL generation.
+    - `$params`: Any parameter substitutions to use with the named route.
+    - `$options`: Options used by the router when generating the URL (e.g., `force_canonical`, `query`, etc.).
+    - `$reuseMatchedParams`: Whether or not to use route match parameters from the
+      current URL when generating the new URL. This will only affect cases where
+      the specified `$name` matches the currently matched route; the default is
+      `true`.
 
 > ### Requires MvcEvent
 >
