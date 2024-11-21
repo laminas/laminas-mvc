@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\ResponseSender;
 
 use Laminas\Http\PhpEnvironment\Response;
@@ -8,11 +10,14 @@ use Laminas\Mvc\ResponseSender\SendResponseEvent;
 use Laminas\Stdlib\ResponseInterface;
 use PHPUnit\Framework\TestCase;
 
+use function ob_get_clean;
+use function ob_start;
+
 class PhpEnvironmentResponseSenderTest extends TestCase
 {
     public function testSendResponseIgnoresInvalidResponseTypes()
     {
-        $mockResponse = $this->getMockForAbstractClass(ResponseInterface::class);
+        $mockResponse          = $this->getMockForAbstractClass(ResponseInterface::class);
         $mockSendResponseEvent = $this->getSendResponseEventMock();
         $mockSendResponseEvent->expects($this->any())->method('getResponse')->will($this->returnValue($mockResponse));
         $responseSender = new PhpEnvironmentResponseSender();
@@ -41,16 +46,16 @@ class PhpEnvironmentResponseSenderTest extends TestCase
         $this->assertEquals('', $body);
     }
 
-    protected function getSendResponseEventMock()
+    protected function getSendResponseEventMock(): SendResponseEvent
     {
-        $returnValue = false;
+        $returnValue           = false;
         $mockSendResponseEvent = $this->getMockBuilder(SendResponseEvent::class)
             ->onlyMethods(['getResponse', 'contentSent', 'setContentSent'])
             ->getMock();
 
         $mockSendResponseEvent->expects($this->any())
             ->method('contentSent')
-            ->will($this->returnCallback(static function () use (&$returnValue) : bool {
+            ->will($this->returnCallback(static function () use (&$returnValue): bool {
                 if (false === $returnValue) {
                     $returnValue = true;
                     return false;

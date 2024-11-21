@@ -2,6 +2,7 @@
 
 namespace Laminas\Mvc\Controller;
 
+// phpcs:ignore
 use Interop\Container\ContainerInterface;
 use Laminas\Console\Adapter\AdapterInterface as ConsoleAdapterInterface;
 use Laminas\Filter\FilterPluginManager;
@@ -20,6 +21,12 @@ use Laminas\Validator\ValidatorPluginManager;
 use ReflectionClass;
 use ReflectionNamedType;
 use ReflectionParameter;
+
+use function array_map;
+use function class_exists;
+use function class_implements;
+use function in_array;
+use function sprintf;
 
 /**
  * Reflection-based factory for controllers.
@@ -136,7 +143,6 @@ class LazyControllerAbstractFactory implements AbstractFactoryInterface
      *
      * Returns a callback for resolving a parameter to a value.
      *
-     * @param ContainerInterface $container
      * @param string $requestedName
      * @return callable
      */
@@ -149,7 +155,6 @@ class LazyControllerAbstractFactory implements AbstractFactoryInterface
          *   resolved to a service in the container.
          */
         return function (ReflectionParameter $parameter) use ($container, $requestedName) {
-
             $parameterType = $parameter->getType();
             if ($parameterType === null) {
                 return null;
@@ -163,7 +168,8 @@ class LazyControllerAbstractFactory implements AbstractFactoryInterface
             }
 
             if ($parameterType->getName() === 'array') {
-                if ($parameter->getName() === 'config'
+                if (
+                    $parameter->getName() === 'config'
                     && $container->has('config')
                 ) {
                     return $container->get('config');

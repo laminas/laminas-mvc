@@ -2,6 +2,7 @@
 
 namespace Laminas\Mvc\Service;
 
+// phpcs:ignore
 use Interop\Container\ContainerInterface;
 use Laminas\Mvc\SendResponseListener;
 

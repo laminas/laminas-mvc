@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Controller\Plugin;
 
 use ArrayIterator;
@@ -26,7 +28,7 @@ class UrlTest extends TestCase
 
     public function setUp(): void
     {
-        $router = new SimpleRouteStack;
+        $router = new SimpleRouteStack();
         $router->addRoute('home', LiteralRoute::factory([
             'route'    => '/',
             'defaults' => [
@@ -34,10 +36,10 @@ class UrlTest extends TestCase
             ],
         ]));
         $router->addRoute('default', [
-            'type' => Segment::class,
+            'type'    => Segment::class,
             'options' => [
                 'route' => '/:controller[/:action]',
-            ]
+            ],
         ]);
         $this->router = $router;
 
@@ -50,13 +52,13 @@ class UrlTest extends TestCase
         $this->plugin = $this->controller->plugin('url');
     }
 
-    public function testPluginCanGenerateUrlWhenProperlyConfigured()
+    public function testPluginCanGenerateUrlWhenProperlyConfigured(): void
     {
         $url = $this->plugin->fromRoute('home');
         $this->assertEquals('/', $url);
     }
 
-    public function testModel()
+    public function testModel(): void
     {
         $it = new ArrayIterator(['controller' => 'ctrl', 'action' => 'act']);
 
@@ -64,7 +66,7 @@ class UrlTest extends TestCase
         $this->assertEquals('/ctrl/act', $url);
     }
 
-    public function testPluginWithoutControllerRaisesDomainException()
+    public function testPluginWithoutControllerRaisesDomainException(): void
     {
         $plugin = new UrlPlugin();
         $this->expectException(DomainException::class);
@@ -72,7 +74,7 @@ class UrlTest extends TestCase
         $plugin->fromRoute('home');
     }
 
-    public function testPluginWithoutControllerEventRaisesDomainException()
+    public function testPluginWithoutControllerEventRaisesDomainException(): void
     {
         $controller = new SampleController();
         $plugin     = $controller->plugin('url');
@@ -81,7 +83,7 @@ class UrlTest extends TestCase
         $plugin->fromRoute('home');
     }
 
-    public function testPluginWithoutRouterInEventRaisesDomainException()
+    public function testPluginWithoutRouterInEventRaisesDomainException(): void
     {
         $controller = new SampleController();
         $event      = new MvcEvent();
@@ -92,14 +94,14 @@ class UrlTest extends TestCase
         $plugin->fromRoute('home');
     }
 
-    public function testPluginWithoutRouteMatchesInEventRaisesExceptionWhenNoRouteProvided()
+    public function testPluginWithoutRouteMatchesInEventRaisesExceptionWhenNoRouteProvided(): void
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('RouteMatch');
         $url = $this->plugin->fromRoute();
     }
 
-    public function testPluginWithRouteMatchesReturningNoMatchedRouteNameRaisesExceptionWhenNoRouteProvided()
+    public function testPluginWithRouteMatchesReturningNoMatchedRouteNameRaisesExceptionWhenNoRouteProvided(): void
     {
         $event = $this->controller->getEvent();
         $event->setRouteMatch(new RouteMatch([]));
@@ -108,7 +110,7 @@ class UrlTest extends TestCase
         $url = $this->plugin->fromRoute();
     }
 
-    public function testPassingNoArgumentsWithValidRouteMatchGeneratesUrl()
+    public function testPassingNoArgumentsWithValidRouteMatchGeneratesUrl(): void
     {
         $routeMatch = new RouteMatch([]);
         $routeMatch->setMatchedRouteName('home');
@@ -117,7 +119,7 @@ class UrlTest extends TestCase
         $this->assertEquals('/', $url);
     }
 
-    public function testCanReuseMatchedParameters()
+    public function testCanReuseMatchedParameters(): void
     {
         $this->router->addRoute('replace', SegmentRoute::factory([
             'route'    => '/:controller/:action',
@@ -134,7 +136,7 @@ class UrlTest extends TestCase
         $this->assertEquals('/foo/bar', $url);
     }
 
-    public function testCanPassBooleanValueForThirdArgumentToAllowReusingRouteMatches()
+    public function testCanPassBooleanValueForThirdArgumentToAllowReusingRouteMatches(): void
     {
         $this->router->addRoute('replace', SegmentRoute::factory([
             'route'    => '/:controller/:action',
@@ -151,36 +153,33 @@ class UrlTest extends TestCase
         $this->assertEquals('/foo/bar', $url);
     }
 
-    /**
-     *
-     */
-    public function testRemovesModuleRouteListenerParamsWhenReusingMatchedParameters()
+    public function testRemovesModuleRouteListenerParamsWhenReusingMatchedParameters(): void
     {
-        $router = new TreeRouteStack;
+        $router = new TreeRouteStack();
         $router->addRoute('default', [
-            'type' => Segment::class,
-            'options' => [
+            'type'         => Segment::class,
+            'options'      => [
                 'route'    => '/:controller/:action',
                 'defaults' => [
                     ModuleRouteListener::MODULE_NAMESPACE => 'LaminasTest\Mvc\Controller\TestAsset',
-                    'controller' => 'SampleController',
-                    'action'     => 'Dash'
-                ]
+                    'controller'                          => 'SampleController',
+                    'action'                              => 'Dash',
+                ],
             ],
             'child_routes' => [
                 'wildcard' => [
                     'type'    => Wildcard::class,
                     'options' => [
                         'param_delimiter'     => '=',
-                        'key_value_delimiter' => '%'
-                    ]
-                ]
-            ]
+                        'key_value_delimiter' => '%',
+                    ],
+                ],
+            ],
         ]);
 
         $routeMatch = new RouteMatch([
             ModuleRouteListener::MODULE_NAMESPACE => 'LaminasTest\Mvc\Controller\TestAsset',
-            'controller' => 'Rainbow'
+            'controller'                          => 'Rainbow',
         ]);
         $routeMatch->setMatchedRouteName('default/wildcard');
 

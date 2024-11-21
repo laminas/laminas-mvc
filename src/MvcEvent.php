@@ -22,38 +22,25 @@ class MvcEvent extends Event
     public const EVENT_RENDER         = 'render';
     public const EVENT_RENDER_ERROR   = 'render.error';
     public const EVENT_ROUTE          = 'route';
-    /**#@-*/
-
+    /** @var ApplicationInterface|null */
     protected $application;
 
-    /**
-     * @var Request
-     */
+    /** @var Request */
     protected $request;
 
-    /**
-     * @var Response
-     */
+    /** @var Response */
     protected $response;
 
-    /**
-     * @var mixed
-     */
+    /** @var mixed */
     protected $result;
 
-    /**
-     * @var RouteStackInterface
-     */
+    /** @var RouteStackInterface */
     protected $router;
 
-    /**
-     * @var null|RouteMatch
-     */
+    /** @var null|RouteMatch */
     protected $routeMatch;
 
-    /**
-     * @var Model
-     */
+    /** @var Model */
     protected $viewModel;
 
     /**

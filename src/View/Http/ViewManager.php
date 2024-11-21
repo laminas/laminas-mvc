@@ -2,15 +2,20 @@
 
 namespace Laminas\Mvc\View\Http;
 
-use Laminas\View\Model\ModelInterface;
 use ArrayAccess;
 use Laminas\EventManager\AbstractListenerAggregate;
 use Laminas\EventManager\EventManagerInterface;
 use Laminas\EventManager\ListenerAggregateInterface;
 use Laminas\Mvc\MvcEvent;
+use Laminas\Mvc\View\Http\InjectTemplateListener;
 use Laminas\ServiceManager\ServiceManager;
+use Laminas\Stdlib\DispatchableInterface;
+use Laminas\View\Model\ModelInterface;
 use Laminas\View\View;
 use Traversable;
+
+use function is_array;
+use function is_string;
 
 /**
  * Prepares the view layer
@@ -36,33 +41,34 @@ use Traversable;
  */
 class ViewManager extends AbstractListenerAggregate
 {
-    /**
-     * @var object application configuration service
-     */
+    /** @var object application configuration service */
     protected $config;
 
-    /**
-     * @var MvcEvent
-     */
+    /** @var MvcEvent */
     protected $event;
 
-    /**
-     * @var ServiceManager
-     */
+    /** @var ServiceManager */
     protected $services;
 
-    /**@+
+    /**
      * Various properties representing strategies and objects instantiated and
      * configured by the view manager
+     *
+     * @var mixed
      */
     protected $helperManager;
+    /** @var mixed */
     protected $mvcRenderingStrategy;
+    /** @var mixed */
     protected $renderer;
+    /** @var mixed */
     protected $rendererStrategy;
+    /** @var mixed */
     protected $resolver;
+    /** @var mixed */
     protected $view;
+    /** @var mixed */
     protected $viewModel;
-    /**@-*/
 
     /**
      * {@inheritDoc}
@@ -75,7 +81,7 @@ class ViewManager extends AbstractListenerAggregate
     /**
      * Prepares the view layer
      *
-     * @param  $event
+     * @param MvcEvent $event
      * @return void
      */
     public function onBootstrap($event)
@@ -94,13 +100,13 @@ class ViewManager extends AbstractListenerAggregate
         $this->services = $services;
         $this->event    = $event;
 
-        $routeNotFoundStrategy   = $services->get('HttpRouteNotFoundStrategy');
-        $exceptionStrategy       = $services->get('HttpExceptionStrategy');
-        $mvcRenderingStrategy    = $services->get('HttpDefaultRenderingStrategy');
+        $routeNotFoundStrategy = $services->get('HttpRouteNotFoundStrategy');
+        $exceptionStrategy     = $services->get('HttpExceptionStrategy');
+        $mvcRenderingStrategy  = $services->get('HttpDefaultRenderingStrategy');
 
         $this->injectViewModelIntoPlugin();
 
-        $injectTemplateListener  = $services->get(\Laminas\Mvc\View\Http\InjectTemplateListener::class);
+        $injectTemplateListener  = $services->get(InjectTemplateListener::class);
         $createViewModelListener = new CreateViewModelListener();
         $injectViewModelListener = new InjectViewModelListener();
 
@@ -114,31 +120,31 @@ class ViewManager extends AbstractListenerAggregate
         $mvcRenderingStrategy->attach($events);
 
         $sharedEvents->attach(
-            \Laminas\Stdlib\DispatchableInterface::class,
+            DispatchableInterface::class,
             MvcEvent::EVENT_DISPATCH,
             [$createViewModelListener, 'createViewModelFromArray'],
             -80
         );
         $sharedEvents->attach(
-            \Laminas\Stdlib\DispatchableInterface::class,
+            DispatchableInterface::class,
             MvcEvent::EVENT_DISPATCH,
             [$routeNotFoundStrategy, 'prepareNotFoundViewModel'],
             -90
         );
         $sharedEvents->attach(
-            \Laminas\Stdlib\DispatchableInterface::class,
+            DispatchableInterface::class,
             MvcEvent::EVENT_DISPATCH,
             [$createViewModelListener, 'createViewModelFromNull'],
             -80
         );
         $sharedEvents->attach(
-            \Laminas\Stdlib\DispatchableInterface::class,
+            DispatchableInterface::class,
             MvcEvent::EVENT_DISPATCH,
             [$injectTemplateListener, 'injectTemplate'],
             -90
         );
         $sharedEvents->attach(
-            \Laminas\Stdlib\DispatchableInterface::class,
+            DispatchableInterface::class,
             MvcEvent::EVENT_DISPATCH,
             [$injectViewModelListener, 'injectViewModel'],
             -100
@@ -187,7 +193,6 @@ class ViewManager extends AbstractListenerAggregate
      * latter allows each to trigger before the default mvc rendering strategy,
      * and for them to trigger in the order they are registered.
      *
-     * @param EventManagerInterface $events
      * @return void
      */
     protected function registerMvcRenderingStrategies(EventManagerInterface $events)

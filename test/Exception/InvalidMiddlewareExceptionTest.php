@@ -1,16 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc;
 
 use Laminas\Mvc\Exception\InvalidMiddlewareException;
 use PHPUnit\Framework\TestCase;
+
+use function uniqid;
 
 final class InvalidMiddlewareExceptionTest extends TestCase
 {
     public function testFromMiddlewareName()
     {
         $middlewareName = uniqid('middlewareName', true);
-        $exception = InvalidMiddlewareException::fromMiddlewareName($middlewareName);
+        $exception      = InvalidMiddlewareException::fromMiddlewareName($middlewareName);
 
         $this->assertInstanceOf(InvalidMiddlewareException::class, $exception);
         $this->assertSame('Cannot dispatch middleware ' . $middlewareName, $exception->getMessage());

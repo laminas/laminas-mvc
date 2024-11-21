@@ -2,6 +2,7 @@
 
 namespace Laminas\Mvc\Service;
 
+// phpcs:ignore
 use Interop\Container\ContainerInterface;
 use Laminas\Mvc\View\Http\ExceptionStrategy;
 use Laminas\ServiceManager\Factory\FactoryInterface;
@@ -11,12 +12,11 @@ class HttpExceptionStrategyFactory implements FactoryInterface
     use HttpViewManagerConfigTrait;
 
     /**
-     * @param  ContainerInterface $container
-     * @param  string $name
+     * @param  string $requestedName
      * @param  null|array $options
      * @return ExceptionStrategy
      */
-    public function __invoke(ContainerInterface $container, $name, ?array $options = null)
+    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null)
     {
         $strategy = new ExceptionStrategy();
         $config   = $this->getConfig($container);

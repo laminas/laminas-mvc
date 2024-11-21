@@ -2,8 +2,8 @@
 
 namespace Laminas\Mvc;
 
-use Throwable;
 use Exception;
+// phpcs:ignore
 use Interop\Container\ContainerInterface;
 use Interop\Http\ServerMiddleware\MiddlewareInterface;
 use Laminas\EventManager\AbstractListenerAggregate;
@@ -14,7 +14,11 @@ use Laminas\Psr7Bridge\Psr7Response;
 use Laminas\Stratigility\MiddlewarePipe;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
+use Throwable;
 
+use function is_array;
+use function is_callable;
+use function is_string;
 use function sprintf;
 use function trigger_error;
 
@@ -28,7 +32,6 @@ class MiddlewareListener extends AbstractListenerAggregate
     /**
      * Attach listeners to an event manager
      *
-     * @param  EventManagerInterface $events
      * @param  int                   $priority
      * @return void
      */

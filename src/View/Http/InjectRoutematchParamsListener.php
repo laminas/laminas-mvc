@@ -32,7 +32,7 @@ class InjectRoutematchParamsListener extends AbstractListenerAggregate
     public function injectParams(MvcEvent $e)
     {
         $routeMatchParams = $e->getRouteMatch()->getParams();
-        $request = $e->getRequest();
+        $request          = $e->getRequest();
 
         if (! $request instanceof HttpRequest) {
             // unsupported request type

@@ -25,7 +25,6 @@ class HttpResponseSender extends AbstractResponseSender
     /**
      * Send HTTP response
      *
-     * @param  SendResponseEvent $event
      * @return HttpResponseSender
      */
     public function __invoke(SendResponseEvent $event)

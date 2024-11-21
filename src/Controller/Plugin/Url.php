@@ -2,16 +2,21 @@
 
 namespace Laminas\Mvc\Controller\Plugin;
 
-use Laminas\Mvc\Exception\RuntimeException;
-use Laminas\Mvc\Exception\InvalidArgumentException;
-use Laminas\Mvc\Exception\DomainException;
 use Laminas\EventManager\EventInterface;
-use Laminas\Mvc\Exception;
+use Laminas\Mvc\Exception\DomainException;
+use Laminas\Mvc\Exception\InvalidArgumentException;
+use Laminas\Mvc\Exception\RuntimeException;
 use Laminas\Mvc\InjectApplicationEventInterface;
 use Laminas\Mvc\ModuleRouteListener;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Router\RouteStackInterface;
 use Traversable;
+
+use function array_merge;
+use function func_num_args;
+use function is_array;
+use function is_bool;
+use function iterator_to_array;
 
 class Url extends AbstractPlugin
 {
@@ -23,7 +28,6 @@ class Url extends AbstractPlugin
      * @param  array|bool         $options            RouteInterface-specific options to use in url generation, if any.
      *                                                If boolean, and no fourth argument, used as $reuseMatchedParams.
      * @param  bool               $reuseMatchedParams Whether to reuse matched parameters
-     *
      * @throws RuntimeException
      * @throws InvalidArgumentException
      * @throws DomainException
@@ -63,9 +67,9 @@ class Url extends AbstractPlugin
             );
         }
 
-        if (3 == func_num_args() && is_bool($options)) {
+        if (3 === func_num_args() && is_bool($options)) {
             $reuseMatchedParams = $options;
-            $options = [];
+            $options            = [];
         }
 
         if ($route === null) {

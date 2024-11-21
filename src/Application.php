@@ -2,12 +2,15 @@
 
 namespace Laminas\Mvc;
 
-use Laminas\Mvc\Service\ServiceManagerConfig;
 use Laminas\EventManager\EventManagerAwareInterface;
 use Laminas\EventManager\EventManagerInterface;
+use Laminas\Mvc\Service\ServiceManagerConfig;
 use Laminas\ServiceManager\ServiceManager;
 use Laminas\Stdlib\RequestInterface;
 use Laminas\Stdlib\ResponseInterface;
+
+use function array_merge;
+use function array_unique;
 
 /**
  * Main application class for invoking applications
@@ -66,31 +69,22 @@ class Application implements
 
     /**
      * MVC event token
+     *
      * @var MvcEvent
      */
     protected $event;
 
-    /**
-     * @var EventManagerInterface
-     */
+    /** @var EventManagerInterface */
     protected $events;
 
-    /**
-     * @var RequestInterface
-     */
+    /** @var RequestInterface */
     protected $request;
 
-    /**
-     * @var ResponseInterface
-     */
+    /** @var ResponseInterface */
     protected $response;
 
     /**
      * Constructor
-     *
-     * @param null|EventManagerInterface $events
-     * @param null|RequestInterface $request
-     * @param null|ResponseInterface $response
      */
     public function __construct(
         protected ServiceManager $serviceManager,
@@ -99,8 +93,8 @@ class Application implements
         ?ResponseInterface $response = null
     ) {
         $this->setEventManager($events ?: $serviceManager->get('EventManager'));
-        $this->request        = $request ?: $serviceManager->get('Request');
-        $this->response       = $response ?: $serviceManager->get('Response');
+        $this->request  = $request ?: $serviceManager->get('Request');
+        $this->response = $response ?: $serviceManager->get('Response');
     }
 
     /**
@@ -193,7 +187,6 @@ class Application implements
     /**
      * Set the event manager instance
      *
-     * @param  EventManagerInterface $eventManager
      * @return Application
      */
     public function setEventManager(EventManagerInterface $eventManager)
@@ -282,7 +275,7 @@ class Application implements
         $event  = $this->event;
 
         // Define callback used to determine whether or not to short-circuit
-        $shortCircuit = static function ($r) use ($event) : bool {
+        $shortCircuit = static function ($r) use ($event): bool {
             if ($r instanceof ResponseInterface) {
                 return true;
             }
@@ -341,7 +334,6 @@ class Application implements
      * Triggers "render" and "finish" events, and returns response from
      * event object.
      *
-     * @param  MvcEvent $event
      * @return Application
      */
     protected function completeRequest(MvcEvent $event)

@@ -1,30 +1,37 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Controller\TestAsset;
 
+// phpcs:ignore
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 use LaminasTest\Mvc\TestAsset\PathController;
 
+use function class_exists;
+
 class ControllerLoaderAbstractFactory implements AbstractFactoryInterface
 {
-    protected $classmap = [
+    protected array $classmap = [
         'path' => PathController::class,
     ];
 
-    public function canCreate(ContainerInterface $container, $name)
+    /** @inheritDoc */
+    public function canCreate(ContainerInterface $container, $requestedName): bool
     {
-        if (! isset($this->classmap[$name])) {
+        if (! isset($this->classmap[$requestedName])) {
             return false;
         }
 
-        $classname = $this->classmap[$name];
+        $classname = $this->classmap[$requestedName];
         return class_exists($classname);
     }
 
-    public function __invoke(ContainerInterface $container, $name, ?array $options = null)
+    /** @inheritDoc */
+    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null)
     {
-        $classname = $this->classmap[$name];
-        return new $classname;
+        $classname = $this->classmap[$requestedName];
+        return new $classname();
     }
 }

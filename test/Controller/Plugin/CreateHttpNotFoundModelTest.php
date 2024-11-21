@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Controller\Plugin;
 
 use Laminas\Http\Response;
@@ -14,12 +16,12 @@ use PHPUnit\Framework\TestCase;
  */
 class CreateHttpNotFoundModelTest extends TestCase
 {
-    public function testBuildsModelWithErrorMessageAndSetsResponseStatusCode()
+    public function testBuildsModelWithErrorMessageAndSetsResponseStatusCode(): void
     {
         $response = new Response();
         $plugin   = new CreateHttpNotFoundModel();
 
-        $model    = $plugin->__invoke($response);
+        $model = $plugin->__invoke($response);
 
         $this->assertInstanceOf(ViewModel::class, $model);
         $this->assertSame('Page not found', $model->getVariable('content'));

@@ -1,26 +1,30 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Controller\TestAsset;
 
+use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractRestfulController;
+use Laminas\Stdlib\ResponseInterface;
+use Traversable;
+
+use function array_merge;
+use function is_array;
 
 class RestfulTestController extends AbstractRestfulController
 {
-    public $entities = [];
-    public $entity   = [];
+    public array $entities      = [];
+    public array|object $entity = [];
 
-    /**
-     * @var \Laminas\Stdlib\ResponseInterface|null
-     */
-    public $headResponse;
+    public ?ResponseInterface $headResponse = null;
 
     /**
      * Create a new resource
      *
-     * @param  mixed $data
      * @return mixed
      */
-    public function create($data)
+    public function create(mixed $data): array
     {
         return ['entity' => $data];
     }
@@ -28,10 +32,9 @@ class RestfulTestController extends AbstractRestfulController
     /**
      * Delete an existing resource
      *
-     * @param  mixed $id
      * @return mixed
      */
-    public function delete($id)
+    public function delete(mixed $id): array
     {
         $this->entity = [];
         return [];
@@ -40,14 +43,14 @@ class RestfulTestController extends AbstractRestfulController
     /**
      * Delete the collection
      *
-     * @return \Laminas\Http\Response
+     * @inheritDoc
      */
-    public function deleteList($data)
+    public function deleteList($data): Response
     {
         if (is_array($this->entity)) {
             foreach ($data as $row) {
                 foreach ($this->entity as $index => $entity) {
-                    if ($row['id'] == $entity['id']) {
+                    if ($row['id'] === $entity['id']) {
                         unset($this->entity[$index]);
                         break;
                     }
@@ -65,10 +68,9 @@ class RestfulTestController extends AbstractRestfulController
     /**
      * Return single resource
      *
-     * @param  mixed $id
      * @return mixed
      */
-    public function get($id)
+    public function get(mixed $id): array
     {
         return ['entity' => $this->entity];
     }
@@ -78,7 +80,7 @@ class RestfulTestController extends AbstractRestfulController
      *
      * @return mixed
      */
-    public function getList()
+    public function getList(): array
     {
         return ['entities' => $this->entities];
     }
@@ -86,25 +88,21 @@ class RestfulTestController extends AbstractRestfulController
     /**
      * Retrieve the headers for a given resource
      *
-     * @return void
+     * @inheritDoc
      */
-    public function head($id = null)
+    public function head($id = null): ?ResponseInterface
     {
         if ($id) {
             $this->getResponse()->getHeaders()->addHeaderLine('X-Laminas-Id', $id);
         }
 
-        if ($this->headResponse) {
-            return $this->headResponse;
-        }
+        return $this->headResponse;
     }
 
     /**
      * Return list of allowed HTTP methods
-     *
-     * @return \Laminas\Http\Response
      */
-    public function options()
+    public function options(): Response
     {
         $response = $this->getResponse();
         $headers  = $response->getHeaders();
@@ -117,9 +115,8 @@ class RestfulTestController extends AbstractRestfulController
      *
      * @param  int $id
      * @param  array $data
-     * @return array
      */
-    public function patch($id, $data)
+    public function patch($id, $data): array
     {
         $entity     = (array) $this->entity;
         $data['id'] = $id;
@@ -130,10 +127,9 @@ class RestfulTestController extends AbstractRestfulController
     /**
      * Replace the entire resource collection
      *
-     * @param  array|\Traversable $items
-     * @return array|\Traversable
+     * @param  array|Traversable $items
      */
-    public function replaceList($items)
+    public function replaceList($items): iterable
     {
         return $items;
     }
@@ -141,14 +137,15 @@ class RestfulTestController extends AbstractRestfulController
     /**
      * Modify an entire resource collection
      *
-     * @param  array|\Traversable $items
-     * @return array|\Traversable
+     * @param  array|Traversable $items
+     * @return array|Traversable
      */
-    public function patchList($items)
+    public function patchList($items): iterable
     {
         //This isn't great code to have in a test class, but I seems the simplest without BC breaks.
-        if (isset($items['name'])
-            && $items['name'] == 'testDispatchViaPatchWithoutIdentifierReturns405ResponseIfPatchListThrowsException'
+        if (
+            isset($items['name'])
+            && $items['name'] === 'testDispatchViaPatchWithoutIdentifierReturns405ResponseIfPatchListThrowsException'
         ) {
             parent::patchList($items);
         }
@@ -162,23 +159,23 @@ class RestfulTestController extends AbstractRestfulController
      * @param  mixed $data
      * @return mixed
      */
-    public function update($id, $data)
+    public function update($id, $data): array
     {
         $data['id'] = $id;
         return ['entity' => $data];
     }
 
-    public function editAction()
+    public function editAction(): array
     {
         return ['content' => __FUNCTION__];
     }
 
-    public function testSomeStrangelySeparatedWordsAction()
+    public function testSomeStrangelySeparatedWordsAction(): array
     {
         return ['content' => 'Test Some Strangely Separated Words'];
     }
 
-    public function describe()
+    public function describe(): array
     {
         return ['description' => __METHOD__];
     }

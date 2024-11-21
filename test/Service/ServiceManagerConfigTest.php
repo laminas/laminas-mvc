@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Service;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use Laminas\EventManager\EventManager;
 use Laminas\EventManager\EventManagerAwareInterface;
 use Laminas\EventManager\SharedEventManagerInterface;
@@ -10,6 +11,7 @@ use Laminas\Mvc\Service\ServiceManagerConfig;
 use Laminas\ServiceManager\Factory\InvokableFactory;
 use Laminas\ServiceManager\ServiceManager;
 use LaminasTest\Mvc\Service\TestAsset\EventManagerAwareObject;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -32,18 +34,14 @@ class ServiceManagerConfigTest extends TestCase
         $this->config->configureServiceManager($this->services);
     }
 
-    /**
-     * @param null|SharedEventManagerInterface
-     * @return EventManager
-     */
-    protected function createEventManager(?SharedEventManagerInterface $sharedManager = null)
+    protected function createEventManager(?SharedEventManagerInterface $sharedManager = null): EventManager
     {
         return new EventManager($sharedManager ?: $this->services->get('SharedEventManager'));
     }
 
-    public function testEventManagerAwareInterfaceIsNotInjectedIfPresentButSharedManagerIs()
+    public function testEventManagerAwareInterfaceIsNotInjectedIfPresentButSharedManagerIs(): void
     {
-        $events = $this->createEventManager();
+        $events                                 = $this->createEventManager();
         EventManagerAwareObject::$defaultEvents = $events;
 
         $this->services->setAlias('EventManagerAwareObject', EventManagerAwareObject::class);
@@ -55,14 +53,14 @@ class ServiceManagerConfigTest extends TestCase
         $this->assertSame($this->services->get('SharedEventManager'), $events->getSharedManager());
     }
 
-    public function testCanMergeCustomConfigWithDefaultConfig()
+    public function testCanMergeCustomConfigWithDefaultConfig(): void
     {
         $custom = [
             'invokables' => [
                 'foo' => stdClass::class,
             ],
-            'factories' => [
-                'bar' => static fn(): \stdClass => new stdClass(),
+            'factories'  => [
+                'bar' => static fn(): stdClass => new stdClass(),
             ],
         ];
 
@@ -74,14 +72,14 @@ class ServiceManagerConfigTest extends TestCase
         $this->assertTrue($sm->has('ModuleManager'));
     }
 
-    public function testCanOverrideDefaultConfigWithCustomConfig()
+    public function testCanOverrideDefaultConfigWithCustomConfig(): void
     {
         $custom = [
             'invokables' => [
                 'foo' => stdClass::class,
             ],
-            'factories' => [
-                'ModuleManager' => static fn(): \stdClass => new stdClass(),
+            'factories'  => [
+                'ModuleManager' => static fn(): stdClass => new stdClass(),
             ],
         ];
 
@@ -94,26 +92,26 @@ class ServiceManagerConfigTest extends TestCase
         $this->assertInstanceOf(stdClass::class, $sm->get('ModuleManager'));
     }
 
-    public function testCanAddDelegators()
+    public function testCanAddDelegators(): void
     {
         /*
          * Create delegator closure
          */
         $delegator = static function ($container, $name, $callback, ?array $options = null) {
-            $service = $callback();
+            $service      = $callback();
             $service->bar = 'baz';
             return $service;
         };
 
         $config = [
-            'aliases' => [
+            'aliases'    => [
                 'foo' => stdClass::class,
             ],
-            'factories' => [
+            'factories'  => [
                 stdClass::class => InvokableFactory::class,
             ],
             'delegators' => [
-                stdClass::class => [ $delegator ],
+                stdClass::class => [$delegator],
             ],
         ];
 
@@ -125,7 +123,7 @@ class ServiceManagerConfigTest extends TestCase
         $this->assertEquals('baz', $std->bar);
     }
 
-    public function testEventManagerInitializerCanBeReplaced()
+    public function testEventManagerInitializerCanBeReplaced(): void
     {
         $instance       = $this->createMock(EventManagerAwareInterface::class);
         $initializer    = $this->getMockBuilder(stdClass::class)
@@ -135,7 +133,7 @@ class ServiceManagerConfigTest extends TestCase
             'initializers' => [
                 'EventManagerAwareInitializer' => $initializer,
             ],
-            'factories' => [
+            'factories'    => [
                 'EventManagerAware' => static fn(): MockObject => $instance,
             ],
         ]);
@@ -150,7 +148,7 @@ class ServiceManagerConfigTest extends TestCase
         $serviceManager->get('EventManagerAware');
     }
 
-    public function testCreatesAFactoryForTheServiceManagerThatReturnsIt()
+    public function testCreatesAFactoryForTheServiceManagerThatReturnsIt(): void
     {
         $serviceManager = new ServiceManager();
         $config         = new ServiceManagerConfig();

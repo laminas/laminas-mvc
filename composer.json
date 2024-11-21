@@ -39,8 +39,8 @@
         "laminas/laminas-view": "^2.18.0"
     },
     "require-dev": {
-        "laminas/laminas-coding-standard": "^2.5.0",
-        "laminas/laminas-json": "^3.6",
+        "laminas/laminas-coding-standard": "^3.0.1",
+        "laminas/laminas-json": "^3.7",
         "phpunit/phpunit": "^10.5.38",
         "webmozart/assert": "^1.11"
     },

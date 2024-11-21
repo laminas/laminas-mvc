@@ -1,35 +1,36 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Application;
 
-use Laminas\Router\Http\Literal;
-use Laminas\Router\ConfigProvider;
-use LaminasTest\Mvc\TestAsset\MockViewManager;
-use LaminasTest\Mvc\TestAsset\MockSendResponseListener;
-use LaminasTest\Mvc\TestAsset\StubBootstrapListener;
 use Laminas\Http\PhpEnvironment\Request;
 use Laminas\Http\PhpEnvironment\Response;
+use Laminas\Mvc\ApplicationInterface;
 use Laminas\Mvc\Controller\ControllerManager;
 use Laminas\Mvc\Service\ServiceListenerFactory;
 use Laminas\Mvc\Service\ServiceManagerConfig;
-use Laminas\Router;
+use Laminas\Router\ConfigProvider;
+use Laminas\Router\Http\Literal;
 use Laminas\ServiceManager\ServiceManager;
 use Laminas\Stdlib\ArrayUtils;
 use LaminasTest\Mvc\Controller\TestAsset\BadController;
-use LaminasTest\Mvc\TestAsset;
+use LaminasTest\Mvc\TestAsset\MockSendResponseListener;
+use LaminasTest\Mvc\TestAsset\MockViewManager;
+use LaminasTest\Mvc\TestAsset\StubBootstrapListener;
 use ReflectionProperty;
 
 trait BadControllerTrait
 {
-    public function prepareApplication()
+    public function prepareApplication(): ApplicationInterface
     {
         $config = [
             'router' => [
                 'routes' => [
                     'path' => [
-                        'type' => Literal::class,
+                        'type'    => Literal::class,
                         'options' => [
-                            'route' => '/bad',
+                            'route'    => '/bad',
                             'defaults' => [
                                 'controller' => 'bad',
                                 'action'     => 'test',
@@ -41,7 +42,7 @@ trait BadControllerTrait
         ];
 
         $serviceListener = new ServiceListenerFactory();
-        $r = new ReflectionProperty($serviceListener, 'defaultServiceConfig');
+        $r               = new ReflectionProperty($serviceListener, 'defaultServiceConfig');
         $r->setAccessible(true);
         $serviceConfig = $r->getValue($serviceListener);
 
@@ -53,15 +54,17 @@ trait BadControllerTrait
         $serviceConfig = ArrayUtils::merge(
             $serviceConfig,
             [
-                'aliases' => [
-                    'ControllerLoader'  => ControllerManager::class,
+                'aliases'    => [
+                    'ControllerLoader' => ControllerManager::class,
                 ],
-                'factories' => [
+                'factories'  => [
                     'ControllerManager' => static fn($services): ControllerManager =>
-                        new ControllerManager($services, ['factories' => [
-                        'bad' => static fn(): BadController => new BadController(),
-                    ]]),
-                    'Router' => static fn($services) => $services->get('HttpRouter'),
+                        new ControllerManager($services, [
+                            'factories' => [
+                                'bad' => static fn(): BadController => new BadController(),
+                            ],
+                        ]),
+                    'Router'            => static fn($services) => $services->get('HttpRouter'),
                 ],
                 'invokables' => [
                     'Request'              => Request::class,
@@ -70,8 +73,8 @@ trait BadControllerTrait
                     'SendResponseListener' => MockSendResponseListener::class,
                     'BootstrapListener'    => StubBootstrapListener::class,
                 ],
-                'services' => [
-                    'config' => $config,
+                'services'   => [
+                    'config'            => $config,
                     'ApplicationConfig' => [
                         'modules'                 => [],
                         'module_listener_options' => [
@@ -83,7 +86,7 @@ trait BadControllerTrait
                 ],
             ]
         );
-        $services = new ServiceManager();
+        $services      = new ServiceManager();
         (new ServiceManagerConfig($serviceConfig))->configureServiceManager($services);
         $application = $services->get('Application');
 

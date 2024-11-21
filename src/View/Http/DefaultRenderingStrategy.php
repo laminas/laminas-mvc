@@ -3,7 +3,6 @@
 namespace Laminas\Mvc\View\Http;
 
 use Exception;
-use Throwable;
 use Laminas\EventManager\AbstractListenerAggregate;
 use Laminas\EventManager\EventManagerInterface;
 use Laminas\Mvc\Application;
@@ -11,6 +10,7 @@ use Laminas\Mvc\MvcEvent;
 use Laminas\Stdlib\ResponseInterface as Response;
 use Laminas\View\Model\ModelInterface as ViewModel;
 use Laminas\View\View;
+use Throwable;
 
 class DefaultRenderingStrategy extends AbstractListenerAggregate
 {
@@ -23,8 +23,6 @@ class DefaultRenderingStrategy extends AbstractListenerAggregate
 
     /**
      * Set view
-     *
-     * @return DefaultRenderingStrategy
      */
     public function __construct(protected View $view)
     {
@@ -91,8 +89,6 @@ class DefaultRenderingStrategy extends AbstractListenerAggregate
         try {
             $view->render($viewModel);
         } catch (Throwable $ex) {
-            $caughtException = $ex;
-        } catch (Exception $ex) {  // @TODO clean up once PHP 7 requirement is enforced
             $caughtException = $ex;
         }
 

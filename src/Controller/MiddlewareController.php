@@ -15,17 +15,18 @@ use Laminas\Stratigility\MiddlewarePipe;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
+use function sprintf;
+
 /**
- * @internal don't use this in your codebase, or else @ocramius will hunt you
+ * @internal don't use this in your codebase, or else \@ocramius will hunt you
  *     down. This is just an internal hack to make middleware trigger
  *     'dispatch' events attached to the DispatchableInterface identifier.
  *
- *     Specifically, it will receive a @see MiddlewarePipe and a
- *     @see ResponseInterface prototype, and then dispatch the pipe whilst still
+ *     Specifically, it will receive a \@see MiddlewarePipe and a
+ *     \@see ResponseInterface prototype, and then dispatch the pipe whilst still
  *     behaving like a normal controller. That is needed for any events
- *     attached to the @see \Laminas\Stdlib\DispatchableInterface identifier to
- *     reach their listeners on any attached
- *     @see \Laminas\EventManager\SharedEventManagerInterface
+ *     attached to the \@see \Laminas\Stdlib\DispatchableInterface identifier to
+ *     reach their listeners on any attached \@see \Laminas\EventManager\SharedEventManagerInterface
  */
 final class MiddlewareController extends AbstractController
 {
@@ -35,7 +36,7 @@ final class MiddlewareController extends AbstractController
         EventManagerInterface $eventManager,
         MvcEvent $event
     ) {
-        $this->eventIdentifier   = self::class;
+        $this->eventIdentifier = self::class;
 
         $this->setEventManager($eventManager);
         $this->setEvent($event);
@@ -55,7 +56,7 @@ final class MiddlewareController extends AbstractController
         );
 
         $result = $this->pipe->process($psr7Request, new CallableDelegateDecorator(
-            static function () : void {
+            static function (): void {
                 throw ReachedFinalHandlerException::create();
             },
             $this->responsePrototype
@@ -68,7 +69,6 @@ final class MiddlewareController extends AbstractController
 
     /**
      * @return ServerRequest
-     *
      * @throws RuntimeException
      */
     private function loadRequest()
@@ -87,10 +87,9 @@ final class MiddlewareController extends AbstractController
     }
 
     /**
-     * @param RouteMatch|null $routeMatch
      * @return ServerRequestInterface
      */
-    private function populateRequestParametersFromRoute(ServerRequestInterface $request, RouteMatch $routeMatch = null)
+    private function populateRequestParametersFromRoute(ServerRequestInterface $request, ?RouteMatch $routeMatch = null)
     {
         if (! $routeMatch) {
             return $request;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\ResponseSender;
 
 use Laminas\Http\Headers;
@@ -7,6 +9,13 @@ use Laminas\Http\Response;
 use Laminas\Mvc\ResponseSender\AbstractResponseSender;
 use Laminas\Mvc\ResponseSender\SendResponseEvent;
 use PHPUnit\Framework\TestCase;
+
+use function array_diff;
+use function array_shift;
+use function count;
+use function function_exists;
+use function phpversion;
+use function version_compare;
 
 class AbstractResponseSenderTest extends TestCase
 {
@@ -18,9 +27,9 @@ class AbstractResponseSenderTest extends TestCase
         if (! function_exists('xdebug_get_headers')) {
             $this->markTestSkipped('Xdebug extension needed, skipped test');
         }
-        $headers = [
+        $headers  = [
             'Content-Length: 2000',
-            'Transfer-Encoding: chunked'
+            'Transfer-Encoding: chunked',
         ];
         $response = new Response();
         $response->getHeaders()->addHeaders($headers);
@@ -39,7 +48,7 @@ class AbstractResponseSenderTest extends TestCase
         $responseSender->sendHeaders($mockSendResponseEvent);
 
         $sentHeaders = xdebug_get_headers();
-        $diff = array_diff($sentHeaders, $headers);
+        $diff        = array_diff($sentHeaders, $headers);
 
         if (count($diff)) {
             $header = array_shift($diff);

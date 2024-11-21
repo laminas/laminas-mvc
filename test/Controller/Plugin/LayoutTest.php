@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Controller\Plugin;
 
 use Laminas\Mvc\Controller\Plugin\Layout as LayoutPlugin;
@@ -24,7 +26,7 @@ class LayoutTest extends TestCase
         $this->plugin = $this->controller->plugin('layout');
     }
 
-    public function testPluginWithoutControllerRaisesDomainException()
+    public function testPluginWithoutControllerRaisesDomainException(): void
     {
         $plugin = new LayoutPlugin();
         $this->expectException(DomainException::class);
@@ -32,7 +34,7 @@ class LayoutTest extends TestCase
         $plugin->setTemplate('home');
     }
 
-    public function testSetTemplateAltersTemplateInEventViewModel()
+    public function testSetTemplateAltersTemplateInEventViewModel(): void
     {
         $model = new ViewModel();
         $model->setTemplate('layout');
@@ -42,7 +44,7 @@ class LayoutTest extends TestCase
         $this->assertEquals('alternate/layout', $model->getTemplate());
     }
 
-    public function testInvokeProxiesToSetTemplate()
+    public function testInvokeProxiesToSetTemplate(): void
     {
         $model = new ViewModel();
         $model->setTemplate('layout');
@@ -53,7 +55,7 @@ class LayoutTest extends TestCase
         $this->assertEquals('alternate/layout', $model->getTemplate());
     }
 
-    public function testCallingInvokeWithNoArgumentsReturnsViewModel()
+    public function testCallingInvokeWithNoArgumentsReturnsViewModel(): void
     {
         $model = new ViewModel();
         $model->setTemplate('layout');

@@ -1,17 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Application;
 
+use Application\Controller\PathController;
 use Laminas\Mvc\Application;
 use Laminas\Mvc\MvcEvent;
 use PHPUnit\Framework\TestCase;
+
+use function ob_get_clean;
+use function ob_start;
 
 class InitializationIntegrationTest extends TestCase
 {
     public function testDefaultInitializationWorkflow()
     {
         $appConfig = [
-            'modules' => [
+            'modules'                 => [
                 'Laminas\Router',
                 'Application',
             ],
@@ -33,8 +39,8 @@ class InitializationIntegrationTest extends TestCase
         $content = ob_get_clean();
 
         $response = $application->getResponse();
-        $this->assertStringContainsString(\Application\Controller\PathController::class, $response->getContent());
-        $this->assertStringContainsString(\Application\Controller\PathController::class, $content);
+        $this->assertStringContainsString(PathController::class, $response->getContent());
+        $this->assertStringContainsString(PathController::class, $content);
         $this->assertStringContainsString(MvcEvent::EVENT_DISPATCH, $response->toString());
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Laminas\Mvc\Service;
 
+// phpcs:ignore
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\View\Renderer\PhpRenderer;
@@ -9,12 +10,11 @@ use Laminas\View\Renderer\PhpRenderer;
 class ViewPhpRendererFactory implements FactoryInterface
 {
     /**
-     * @param  ContainerInterface $container
-     * @param  string $name
+     * @param  string $requestedName
      * @param  null|array $options
      * @return PhpRenderer
      */
-    public function __invoke(ContainerInterface $container, $name, ?array $options = null)
+    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null)
     {
         $renderer = new PhpRenderer();
         $renderer->setHelperPluginManager($container->get('ViewHelperManager'));

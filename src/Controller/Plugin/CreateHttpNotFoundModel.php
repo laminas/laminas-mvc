@@ -10,7 +10,6 @@ class CreateHttpNotFoundModel extends AbstractPlugin
     /**
      * Create an HTTP view model representing a "not found" page
      *
-     *
      * @return ViewModel
      */
     public function __invoke(Response $response)

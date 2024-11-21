@@ -9,7 +9,6 @@ interface PluginInterface
     /**
      * Set the current controller instance
      *
-     * @param  Dispatchable $controller
      * @return void
      */
     public function setController(Dispatchable $controller);

@@ -14,12 +14,14 @@ class ExceptionStrategy extends AbstractListenerAggregate
 {
     /**
      * Display exceptions?
+     *
      * @var bool
      */
     protected $displayExceptions = false;
 
     /**
      * Name of exception template
+     *
      * @var string
      */
     protected $exceptionTemplate = 'error';

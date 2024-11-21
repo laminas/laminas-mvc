@@ -47,7 +47,7 @@ class CreateViewModelListener extends AbstractListenerAggregate
             return;
         }
 
-        $model = new ViewModel;
+        $model = new ViewModel();
         $e->setResult($model);
     }
 }

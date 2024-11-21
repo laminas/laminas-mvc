@@ -1,17 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Application;
 
 use Laminas\Loader\StandardAutoloader;
 
 class Module
 {
-    public function getConfig()
+    public function getConfig(): array
     {
         return include __DIR__ . '/config/module.config.php';
     }
 
-    public function getAutoloaderConfig()
+    public function getAutoloaderConfig(): array
     {
         return [
             StandardAutoloader::class => [

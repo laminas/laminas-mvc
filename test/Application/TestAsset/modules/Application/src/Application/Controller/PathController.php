@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Application\Controller;
 
 use Laminas\Http\Response as HttpResponse;
@@ -9,6 +11,7 @@ use Laminas\Stdlib\ResponseInterface as Response;
 
 class PathController implements DispatchableInterface
 {
+    /** @inheritDoc */
     public function dispatch(Request $request, ?Response $response = null)
     {
         if (! $response) {

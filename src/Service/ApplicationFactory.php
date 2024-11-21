@@ -2,6 +2,7 @@
 
 namespace Laminas\Mvc\Service;
 
+// phpcs:ignore
 use Interop\Container\ContainerInterface;
 use Laminas\Mvc\Application;
 use Laminas\ServiceManager\Factory\FactoryInterface;
@@ -14,12 +15,11 @@ class ApplicationFactory implements FactoryInterface
      * Creates a Laminas\Mvc\Application service, passing it the configuration
      * service and the service manager instance.
      *
-     * @param  ContainerInterface $container
-     * @param  string $name
+     * @param  string $requestedName
      * @param  null|array $options
      * @return Application
      */
-    public function __invoke(ContainerInterface $container, $name, ?array $options = null)
+    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null)
     {
         return new Application(
             $container,

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\TestAsset;
 
 use Laminas\EventManager\EventManagerInterface;
@@ -8,10 +10,10 @@ use Laminas\Mvc\MvcEvent;
 
 class StubBootstrapListener implements ListenerAggregateInterface
 {
-    protected $listeners = [];
+    protected array $listeners = [];
 
     /**
-     * @see \Laminas\EventManager\ListenerAggregateInterface::attach()
+     * @inheritDoc
      */
     public function attach(EventManagerInterface $events, $priority = 1)
     {
@@ -19,7 +21,7 @@ class StubBootstrapListener implements ListenerAggregateInterface
     }
 
     /**
-     * @see \Laminas\EventManager\ListenerAggregateInterface::detach()
+     * @inheritDoc
      */
     public function detach(EventManagerInterface $events)
     {
@@ -30,12 +32,12 @@ class StubBootstrapListener implements ListenerAggregateInterface
         }
     }
 
-    public function getListeners()
+    public function getListeners(): array
     {
         return $this->listeners;
     }
 
-    public function onBootstrap($e)
+    public function onBootstrap(MvcEvent $e): void
     {
     }
 }

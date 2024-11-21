@@ -1,17 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Mvc\Service\TestAsset;
 
-use stdClass;
 use Laminas\Stdlib\DispatchableInterface;
 use Laminas\Stdlib\RequestInterface;
 use Laminas\Stdlib\ResponseInterface;
+use stdClass;
 
 class ControllerWithDependencies implements DispatchableInterface
 {
-    /**
-     * @var stdClass
-     */
+    /** @var stdClass */
     public $injectedValue;
 
     public function setInjectedValue(stdClass $injected)
