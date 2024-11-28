@@ -16,7 +16,6 @@ use Laminas\Stdlib\ResponseInterface as Response;
 use function array_key_exists;
 use function array_shift;
 use function call_user_func;
-use function class_exists;
 use function count;
 use function explode;
 use function function_exists;
