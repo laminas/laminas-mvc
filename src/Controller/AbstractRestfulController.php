@@ -18,7 +18,6 @@ use function array_shift;
 use function call_user_func;
 use function count;
 use function explode;
-use function function_exists;
 use function get_debug_type;
 use function is_array;
 use function is_callable;
@@ -601,22 +600,15 @@ abstract class AbstractRestfulController extends AbstractController
     /**
      * Decode a JSON string.
      *
-     * Uses json_decode by default. If that is not available, raises an exception.
+     * Uses json_decode by default.
      *
      * Marked protected to allow usage from extending classes.
      *
      * @param string $string
      * @return mixed
-     * @throws Exception\DomainException If no JSON decoding functionality is available.
      */
     protected function jsonDecode($string)
     {
-        if (function_exists('json_decode')) {
-            return json_decode($string, (bool) $this->jsonDecodeType);
-        }
-
-        throw new DomainException(
-            'Unable to parse JSON request, due to missing ext/json'
-        );
+        return json_decode($string, (bool) $this->jsonDecodeType);
     }
 }
