@@ -4,7 +4,6 @@ namespace Laminas\Mvc\Controller;
 
 use Laminas\Http\Header\ContentType;
 use Laminas\Http\Request as HttpRequest;
-use Laminas\Json\Json;
 use Laminas\Mvc\Exception;
 use Laminas\Mvc\Exception\DomainException;
 use Laminas\Mvc\Exception\InvalidArgumentException;
@@ -17,10 +16,8 @@ use Laminas\Stdlib\ResponseInterface as Response;
 use function array_key_exists;
 use function array_shift;
 use function call_user_func;
-use function class_exists;
 use function count;
 use function explode;
-use function function_exists;
 use function get_debug_type;
 use function is_array;
 use function is_callable;
@@ -62,13 +59,7 @@ abstract class AbstractRestfulController extends AbstractController
     protected $identifierName = 'id';
 
     /**
-     * Flag to pass to json_decode and/or Laminas\Json\Json::decode.
-     *
-     * The flags in Laminas\Json\Json::decode are integers, but when evaluated
-     * in a boolean context map to the flag passed as the second parameter
-     * to json_decode(). As such, you can specify either the Laminas\Json\Json
-     * constant or the boolean value. By default, starting in v3, we use
-     * the boolean value, and cast to integer if using Laminas\Json\Json::decode.
+     * Flag to pass to json_decode.
      *
      * Default value is boolean true, meaning JSON should be cast to
      * associative arrays (vs objects).
@@ -76,7 +67,7 @@ abstract class AbstractRestfulController extends AbstractController
      * Override the value in an extending class to set the default behavior
      * for your class.
      *
-     * @var int|bool
+     * @var bool
      */
     protected $jsonDecodeType = true;
 
@@ -609,30 +600,15 @@ abstract class AbstractRestfulController extends AbstractController
     /**
      * Decode a JSON string.
      *
-     * Uses json_decode by default. If that is not available, checks for
-     * availability of Laminas\Json\Json, and uses that if present.
-     *
-     * Otherwise, raises an exception.
+     * Uses json_decode by default.
      *
      * Marked protected to allow usage from extending classes.
      *
      * @param string $string
      * @return mixed
-     * @throws Exception\DomainException If no JSON decoding functionality is available.
      */
     protected function jsonDecode($string)
     {
-        if (function_exists('json_decode')) {
-            return json_decode($string, (bool) $this->jsonDecodeType);
-        }
-
-        if (class_exists(Json::class)) {
-            return Json::decode($string, (int) $this->jsonDecodeType);
-        }
-
-        throw new DomainException(sprintf(
-            'Unable to parse JSON request, due to missing ext/json and/or %s',
-            Json::class
-        ));
+        return json_decode($string, (bool) $this->jsonDecodeType);
     }
 }
