@@ -53,9 +53,9 @@ class ModuleRouteListenerTest extends TestCase
         $this->events->triggerEvent($event);
 
         $matches = $event->getRouteMatch();
-        $this->assertInstanceOf(RouteMatch::class, $matches);
-        $this->assertEquals('Foo\Index', $matches->getParam('controller'));
-        $this->assertEquals('Index', $matches->getParam(ModuleRouteListener::ORIGINAL_CONTROLLER));
+        self::assertInstanceOf(RouteMatch::class, $matches);
+        self::assertEquals('Foo\Index', $matches->getParam('controller'));
+        self::assertEquals('Index', $matches->getParam(ModuleRouteListener::ORIGINAL_CONTROLLER));
     }
 
     public function testRouteNotReturningModuleNamespaceInRouteMatchLeavesControllerUntouched(): void
@@ -77,8 +77,8 @@ class ModuleRouteListenerTest extends TestCase
         $this->events->triggerEvent($event);
 
         $matches = $event->getRouteMatch();
-        $this->assertInstanceOf(RouteMatch::class, $matches);
-        $this->assertEquals('Index', $matches->getParam('controller'));
+        self::assertInstanceOf(RouteMatch::class, $matches);
+        self::assertEquals('Index', $matches->getParam('controller'));
     }
 
     public function testMultipleRegistrationShouldNotResultInMultiplePrefixingOfControllerName(): void
@@ -104,9 +104,9 @@ class ModuleRouteListenerTest extends TestCase
         $this->events->triggerEvent($event);
 
         $matches = $event->getRouteMatch();
-        $this->assertInstanceOf(RouteMatch::class, $matches);
-        $this->assertEquals('Foo\Index', $matches->getParam('controller'));
-        $this->assertEquals('Index', $matches->getParam(ModuleRouteListener::ORIGINAL_CONTROLLER));
+        self::assertInstanceOf(RouteMatch::class, $matches);
+        self::assertEquals('Foo\Index', $matches->getParam('controller'));
+        self::assertEquals('Index', $matches->getParam(ModuleRouteListener::ORIGINAL_CONTROLLER));
     }
 
     public function testRouteMatchIsTransformedToProperControllerClassName(): void
@@ -133,8 +133,8 @@ class ModuleRouteListenerTest extends TestCase
         $this->events->triggerEvent($event);
 
         $matches = $event->getRouteMatch();
-        $this->assertInstanceOf(RouteMatch::class, $matches);
-        $this->assertEquals('Foo\SomeIndex', $matches->getParam('controller'));
-        $this->assertEquals('some-index', $matches->getParam(ModuleRouteListener::ORIGINAL_CONTROLLER));
+        self::assertInstanceOf(RouteMatch::class, $matches);
+        self::assertEquals('Foo\SomeIndex', $matches->getParam('controller'));
+        self::assertEquals('some-index', $matches->getParam(ModuleRouteListener::ORIGINAL_CONTROLLER));
     }
 }

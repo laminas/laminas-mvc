@@ -29,7 +29,7 @@ class InabilityToRetrieveControllerShouldTriggerDispatchErrorTest extends TestCa
         });
 
         $application->run();
-        $this->assertStringContainsString(Application::ERROR_CONTROLLER_NOT_FOUND, $response->getContent());
-        $this->assertStringContainsString('bad', $response->getContent());
+        self::assertStringContainsString(Application::ERROR_CONTROLLER_NOT_FOUND, $response->getContent());
+        self::assertStringContainsString('bad', $response->getContent());
     }
 }

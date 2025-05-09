@@ -19,7 +19,7 @@ class SendResponseListenerTest extends TestCase
         $listener    = new SendResponseListener();
         $identifiers = $listener->getEventManager()->getIdentifiers();
         $expected    = [SendResponseListener::class];
-        $this->assertEquals($expected, array_values($identifiers));
+        self::assertEquals($expected, array_values($identifiers));
     }
 
     public function testSendResponseTriggersSendResponseEvent(): void
@@ -44,6 +44,6 @@ class SendResponseListenerTest extends TestCase
             'target'   => $listener,
             'response' => $mockResponse,
         ];
-        $this->assertEquals($expected, $result);
+        self::assertEquals($expected, $result);
     }
 }

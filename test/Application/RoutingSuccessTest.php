@@ -20,12 +20,12 @@ class RoutingSuccessTest extends TestCase
 
         $application->getEventManager()->attach(MvcEvent::EVENT_ROUTE, function ($e) use (&$log): void {
             $match = $e->getRouteMatch();
-            $this->assertInstanceOf(RouteMatch::class, $match, 'Did not receive expected route match');
+            self::assertInstanceOf(RouteMatch::class, $match, 'Did not receive expected route match');
             $log['route-match'] = $match;
         }, -100);
 
         $application->run();
-        $this->assertArrayHasKey('route-match', $log);
-        $this->assertInstanceOf(RouteMatch::class, $log['route-match']);
+        self::assertArrayHasKey('route-match', $log);
+        self::assertInstanceOf(RouteMatch::class, $log['route-match']);
     }
 }

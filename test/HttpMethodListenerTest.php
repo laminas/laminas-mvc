@@ -30,11 +30,11 @@ class HttpMethodListenerTest extends TestCase
         $methods  = ['foo', 'bar'];
         $listener = new HttpMethodListener(false, $methods);
 
-        $this->assertFalse($listener->isEnabled());
-        $this->assertSame(['FOO', 'BAR'], $listener->getAllowedMethods());
+        self::assertFalse($listener->isEnabled());
+        self::assertSame(['FOO', 'BAR'], $listener->getAllowedMethods());
 
         $listener = new HttpMethodListener(true, []);
-        $this->assertNotEmpty($listener->getAllowedMethods());
+        self::assertNotEmpty($listener->getAllowedMethods());
     }
 
     public function testAttachesToRouteEvent(): void
@@ -63,12 +63,12 @@ class HttpMethodListenerTest extends TestCase
         $event = new MvcEvent();
         $event->setRequest(new Request());
 
-        $this->assertNull($this->listener->onRoute($event));
+        self::assertNull($this->listener->onRoute($event));
 
         $event->setRequest(new HttpRequest());
         $event->setResponse(new Response());
 
-        $this->assertNull($this->listener->onRoute($event));
+        self::assertNull($this->listener->onRoute($event));
     }
 
     public function testOnRouteDoesNothingIfIfMethodIsAllowed(): void
@@ -81,7 +81,7 @@ class HttpMethodListenerTest extends TestCase
 
         $this->listener->setAllowedMethods(['foo']);
 
-        $this->assertNull($this->listener->onRoute($event));
+        self::assertNull($this->listener->onRoute($event));
     }
 
     public function testOnRouteReturns405ResponseIfMethodNotAllowed(): void
@@ -94,7 +94,7 @@ class HttpMethodListenerTest extends TestCase
 
         $response = $this->listener->onRoute($event);
 
-        $this->assertInstanceOf(HttpResponse::class, $response);
-        $this->assertSame(405, $response->getStatusCode());
+        self::assertInstanceOf(HttpResponse::class, $response);
+        self::assertSame(405, $response->getStatusCode());
     }
 }

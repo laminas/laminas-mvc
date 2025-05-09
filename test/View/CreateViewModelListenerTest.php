@@ -37,8 +37,8 @@ class CreateViewModelListenerTest extends TestCase
         $this->listener->createViewModelFromArray($this->event);
 
         $test = $this->event->getResult();
-        $this->assertInstanceOf(ViewModel::class, $test);
-        $this->assertEquals($array, $test->getVariables());
+        self::assertInstanceOf(ViewModel::class, $test);
+        self::assertEquals($array, $test->getVariables());
     }
 
     public static function nonAssocArrayResults(): array
@@ -67,22 +67,22 @@ class CreateViewModelListenerTest extends TestCase
         $this->listener->createViewModelFromArray($this->event);
 
         $result = $this->event->getResult();
-        $this->assertEquals(gettype($test), gettype($result));
-        $this->assertEquals($test, $result);
+        self::assertEquals(gettype($test), gettype($result));
+        self::assertEquals($test, $result);
     }
 
     public function testAttachesListenersAtExpectedPriority(): void
     {
         $events = new EventManager();
         $this->listener->attach($events);
-        $this->assertListenerAtPriority(
+        self::assertListenerAtPriority(
             [$this->listener, 'createViewModelFromArray'],
             -80,
             MvcEvent::EVENT_DISPATCH,
             $events,
             'Did not find createViewModelFromArray listener in event list at expected priority'
         );
-        $this->assertListenerAtPriority(
+        self::assertListenerAtPriority(
             [$this->listener, 'createViewModelFromNull'],
             -80,
             MvcEvent::EVENT_DISPATCH,
@@ -96,11 +96,11 @@ class CreateViewModelListenerTest extends TestCase
         $events = new EventManager();
         $this->listener->attach($events);
         $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_DISPATCH, $events);
-        $this->assertEquals(2, count($listeners));
+        self::assertEquals(2, count($listeners));
 
         $this->listener->detach($events);
         $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_DISPATCH, $events);
-        $this->assertEquals(0, count($listeners));
+        self::assertEquals(0, count($listeners));
     }
 
     public function testViewModelCreatesViewModelWithEmptyArray(): void
@@ -108,7 +108,7 @@ class CreateViewModelListenerTest extends TestCase
         $this->event->setResult([]);
         $this->listener->createViewModelFromArray($this->event);
         $result = $this->event->getResult();
-        $this->assertInstanceOf(ViewModel::class, $result);
+        self::assertInstanceOf(ViewModel::class, $result);
     }
 
     public function testViewModelCreatesViewModelWithNullResult(): void
@@ -116,6 +116,6 @@ class CreateViewModelListenerTest extends TestCase
         $this->event->setResult(null);
         $this->listener->createViewModelFromNull($this->event);
         $result = $this->event->getResult();
-        $this->assertInstanceOf(ViewModel::class, $result);
+        self::assertInstanceOf(ViewModel::class, $result);
     }
 }

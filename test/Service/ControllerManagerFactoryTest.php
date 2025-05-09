@@ -58,7 +58,7 @@ class ControllerManagerFactoryTest extends TestCase
         $loader = $this->services->get('ControllerManager');
 
         // Ensure the class exists and can be autoloaded
-        $this->assertTrue(class_exists(InvalidDispatchableClass::class));
+        self::assertTrue(class_exists(InvalidDispatchableClass::class));
 
         $loader->setFactory(InvalidDispatchableClass::class, InvokableFactory::class);
 
@@ -67,7 +67,7 @@ class ControllerManagerFactoryTest extends TestCase
             $this->fail('Retrieving the invalid dispatchable should fail');
         } catch (Exception $e) {
             do {
-                $this->assertStringContainsString('Should not instantiate this', $e->getMessage());
+                self::assertStringContainsString('Should not instantiate this', $e->getMessage());
             } while ($e = $e->getPrevious());
         }
     }
@@ -93,9 +93,9 @@ class ControllerManagerFactoryTest extends TestCase
         $loader->setFactory(Dispatchable::class, InvokableFactory::class);
 
         $controller = $loader->get('LaminasTest\Dispatchable');
-        $this->assertInstanceOf(Dispatchable::class, $controller);
-        $this->assertSame($this->services->get('EventManager'), $controller->getEventManager());
-        $this->assertSame($this->services->get('ControllerPluginManager'), $controller->getPluginManager());
+        self::assertInstanceOf(Dispatchable::class, $controller);
+        self::assertSame($this->services->get('EventManager'), $controller->getEventManager());
+        self::assertSame($this->services->get('ControllerPluginManager'), $controller->getPluginManager());
     }
 
     public function testCallPluginWithControllerPluginManager()
@@ -108,6 +108,6 @@ class ControllerManagerFactoryTest extends TestCase
         $controllerPluginManager->setController($controller);
 
         $plugin = $controllerPluginManager->get('samplePlugin');
-        $this->assertEquals($controller, $plugin->getController());
+        self::assertEquals($controller, $plugin->getController());
     }
 }

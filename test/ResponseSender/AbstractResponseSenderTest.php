@@ -52,8 +52,8 @@ class AbstractResponseSenderTest extends TestCase
 
         if (count($diff)) {
             $header = array_shift($diff);
-            $this->assertContains('XDEBUG_SESSION', $header);
-            $this->assertEquals(0, count($diff));
+            self::assertContains('XDEBUG_SESSION', $header);
+            self::assertEquals(0, count($diff));
         }
 
         $expected = [];
@@ -62,7 +62,7 @@ class AbstractResponseSenderTest extends TestCase
         }
 
         $responseSender->sendHeaders($mockSendResponseEvent);
-        $this->assertEquals($expected, xdebug_get_headers());
+        self::assertEquals($expected, xdebug_get_headers());
     }
 
     /**
@@ -94,9 +94,9 @@ class AbstractResponseSenderTest extends TestCase
 
         $sentHeaders = xdebug_get_headers();
 
-        $this->assertCount(2, $sentHeaders);
-        $this->assertEquals('Location: example.com', $sentHeaders[0]);
-        $this->assertEquals(
+        self::assertCount(2, $sentHeaders);
+        self::assertEquals('Location: example.com', $sentHeaders[0]);
+        self::assertEquals(
             'X-Test: HTTP/1.1 202 Accepted',
             $sentHeaders[1],
             'Status header is sent last to prevent header() from overwriting the Laminas status code when a Location '

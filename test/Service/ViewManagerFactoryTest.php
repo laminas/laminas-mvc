@@ -24,6 +24,6 @@ class ViewManagerFactoryTest extends TestCase
     {
         $factory = new ViewManagerFactory();
         $result  = $factory($this->createContainer(), 'ViewManager');
-        $this->assertInstanceOf(HttpViewManager::class, $result);
+        self::assertInstanceOf(HttpViewManager::class, $result);
     }
 }

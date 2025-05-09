@@ -29,24 +29,24 @@ class ExceptionStrategyTest extends TestCase
 
     public function testDisplayExceptionsIsDisabledByDefault(): void
     {
-        $this->assertFalse($this->strategy->displayExceptions());
+        self::assertFalse($this->strategy->displayExceptions());
     }
 
     public function testDisplayExceptionsFlagIsMutable(): void
     {
         $this->strategy->setDisplayExceptions(true);
-        $this->assertTrue($this->strategy->displayExceptions());
+        self::assertTrue($this->strategy->displayExceptions());
     }
 
     public function testExceptionTemplateHasASaneDefault(): void
     {
-        $this->assertEquals('error', $this->strategy->getExceptionTemplate());
+        self::assertEquals('error', $this->strategy->getExceptionTemplate());
     }
 
     public function testExceptionTemplateIsMutable(): void
     {
         $this->strategy->setExceptionTemplate('pages/error');
-        $this->assertEquals('pages/error', $this->strategy->getExceptionTemplate());
+        self::assertEquals('pages/error', $this->strategy->getExceptionTemplate());
     }
 
     public function test404ApplicationErrorsResultInNoOperations(): void
@@ -57,15 +57,15 @@ class ExceptionStrategyTest extends TestCase
             $this->strategy->prepareExceptionViewModel($event);
             $response = $event->getResponse();
             if (null !== $response) {
-                $this->assertNotEquals(500, $response->getStatusCode());
+                self::assertNotEquals(500, $response->getStatusCode());
             }
             $model = $event->getResult();
             if (null !== $model) {
                 $variables = $model->getVariables();
-                $this->assertArrayNotHasKey('message', $variables);
-                $this->assertArrayNotHasKey('exception', $variables);
-                $this->assertArrayNotHasKey('display_exceptions', $variables);
-                $this->assertNotEquals('error', $model->getTemplate());
+                self::assertArrayNotHasKey('message', $variables);
+                self::assertArrayNotHasKey('exception', $variables);
+                self::assertArrayNotHasKey('display_exceptions', $variables);
+                self::assertNotEquals('error', $model->getTemplate());
             }
         }
 
@@ -81,19 +81,19 @@ class ExceptionStrategyTest extends TestCase
         $this->strategy->prepareExceptionViewModel($event);
 
         $response = $event->getResponse();
-        $this->assertTrue($response->isServerError());
+        self::assertTrue($response->isServerError());
 
         $model = $event->getResult();
-        $this->assertInstanceOf(ViewModel::class, $model);
-        $this->assertEquals($this->strategy->getExceptionTemplate(), $model->getTemplate());
+        self::assertInstanceOf(ViewModel::class, $model);
+        self::assertEquals($this->strategy->getExceptionTemplate(), $model->getTemplate());
 
         $variables = $model->getVariables();
-        $this->assertArrayHasKey('message', $variables);
-        $this->assertStringContainsString('error occurred', $variables['message']);
-        $this->assertArrayHasKey('exception', $variables);
-        $this->assertSame($exception, $variables['exception']);
-        $this->assertArrayHasKey('display_exceptions', $variables);
-        $this->assertEquals($this->strategy->displayExceptions(), $variables['display_exceptions']);
+        self::assertArrayHasKey('message', $variables);
+        self::assertStringContainsString('error occurred', $variables['message']);
+        self::assertArrayHasKey('exception', $variables);
+        self::assertSame($exception, $variables['exception']);
+        self::assertArrayHasKey('display_exceptions', $variables);
+        self::assertEquals($this->strategy->displayExceptions(), $variables['display_exceptions']);
     }
 
     public function testCatchesUnknownErrorTypes(): void
@@ -105,7 +105,7 @@ class ExceptionStrategyTest extends TestCase
         $this->strategy->prepareExceptionViewModel($event);
 
         $response = $event->getResponse();
-        $this->assertTrue($response->isServerError());
+        self::assertTrue($response->isServerError());
     }
 
     public function testEmptyErrorInEventResultsInNoOperations(): void
@@ -114,15 +114,15 @@ class ExceptionStrategyTest extends TestCase
         $this->strategy->prepareExceptionViewModel($event);
         $response = $event->getResponse();
         if (null !== $response) {
-            $this->assertNotEquals(500, $response->getStatusCode());
+            self::assertNotEquals(500, $response->getStatusCode());
         }
         $model = $event->getResult();
         if (null !== $model) {
             $variables = $model->getVariables();
-            $this->assertArrayNotHasKey('message', $variables);
-            $this->assertArrayNotHasKey('exception', $variables);
-            $this->assertArrayNotHasKey('display_exceptions', $variables);
-            $this->assertNotEquals('error', $model->getTemplate());
+            self::assertArrayNotHasKey('message', $variables);
+            self::assertArrayNotHasKey('exception', $variables);
+            self::assertArrayNotHasKey('display_exceptions', $variables);
+            self::assertNotEquals('error', $model->getTemplate());
         }
 
         $this->addToAssertionCount(1);
@@ -136,7 +136,7 @@ class ExceptionStrategyTest extends TestCase
         $event->setResult($response);
         $event->setError('foobar');
 
-        $this->assertNull($this->strategy->prepareExceptionViewModel($event));
+        self::assertNull($this->strategy->prepareExceptionViewModel($event));
     }
 
     public function testAttachesListenerAtExpectedPriority(): void
@@ -144,7 +144,7 @@ class ExceptionStrategyTest extends TestCase
         $events = new EventManager();
         $this->strategy->attach($events);
 
-        $this->assertListenerAtPriority(
+        self::assertListenerAtPriority(
             [$this->strategy, 'prepareExceptionViewModel'],
             1,
             MvcEvent::EVENT_DISPATCH_ERROR,
@@ -157,10 +157,10 @@ class ExceptionStrategyTest extends TestCase
         $events = new EventManager();
         $this->strategy->attach($events);
         $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_DISPATCH_ERROR, $events);
-        $this->assertEquals(1, count($listeners));
+        self::assertEquals(1, count($listeners));
         $this->strategy->detach($events);
         $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_DISPATCH_ERROR, $events);
-        $this->assertEquals(0, count($listeners));
+        self::assertEquals(0, count($listeners));
     }
 
     public function testReuseResponseStatusCodeIfItExists(): void
@@ -172,15 +172,15 @@ class ExceptionStrategyTest extends TestCase
         $this->strategy->prepareExceptionViewModel($event);
         $response = $event->getResponse();
         if (null !== $response) {
-            $this->assertEquals(401, $response->getStatusCode());
+            self::assertEquals(401, $response->getStatusCode());
         }
         $model = $event->getResult();
         if (null !== $model) {
             $variables = $model->getVariables();
-            $this->assertArrayNotHasKey('message', $variables);
-            $this->assertArrayNotHasKey('exception', $variables);
-            $this->assertArrayNotHasKey('display_exceptions', $variables);
-            $this->assertNotEquals('error', $model->getTemplate());
+            self::assertArrayNotHasKey('message', $variables);
+            self::assertArrayNotHasKey('exception', $variables);
+            self::assertArrayNotHasKey('display_exceptions', $variables);
+            self::assertNotEquals('error', $model->getTemplate());
         }
     }
 }

@@ -59,9 +59,9 @@ class AcceptableViewModelSelectorTest extends TestCase
         $plugin->setDefaultViewModelName(FeedModel::class);
         $result = $plugin($arr);
 
-        $this->assertInstanceOf(ViewModel::class, $result);
-        $this->assertNotInstanceOf(FeedModel::class, $result); // Ensure the default wasn't selected
-        $this->assertNotInstanceOf(JsonModel::class, $result);
+        self::assertInstanceOf(ViewModel::class, $result);
+        self::assertNotInstanceOf(FeedModel::class, $result); // Ensure the default wasn't selected
+        self::assertNotInstanceOf(JsonModel::class, $result);
     }
 
     public function testDefaultViewModelName(): void
@@ -82,11 +82,11 @@ class AcceptableViewModelSelectorTest extends TestCase
         $plugin = $this->plugin;
         $result = $plugin->getViewModelName($arr);
 
-        $this->assertEquals(ViewModel::class, $result); //   Default Default View Model Name
+        self::assertEquals(ViewModel::class, $result); //   Default Default View Model Name
 
         $plugin->setDefaultViewModelName(FeedModel::class);
-        $this->assertEquals($plugin->getDefaultViewModelName(), FeedModel::class); // Test getter along the way
-        $this->assertInstanceOf(FeedModel::class, $plugin($arr));
+        self::assertEquals($plugin->getDefaultViewModelName(), FeedModel::class); // Test getter along the way
+        self::assertInstanceOf(FeedModel::class, $plugin($arr));
     }
 
     public function testSelectsViewModelBasedOnAcceptHeaderWhenInvokedAsFunctor(): void
@@ -108,7 +108,7 @@ class AcceptableViewModelSelectorTest extends TestCase
         $this->request->getHeaders()->addHeader($header);
         $result = $plugin($arr);
 
-        $this->assertInstanceOf(FeedModel::class, $result);
+        self::assertInstanceOf(FeedModel::class, $result);
     }
 
     public function testInvokeWithoutDefaultsReturnsNullWhenNoMatchesOccur(): void
@@ -129,7 +129,7 @@ class AcceptableViewModelSelectorTest extends TestCase
         $this->request->getHeaders()->addHeader($header);
 
         $result = $plugin($arr, false);
-        $this->assertNull($result);
+        self::assertNull($result);
     }
 
     public function testInvokeReturnsFieldValuePartOnMatchWhenReferenceProvided(): void
@@ -140,10 +140,10 @@ class AcceptableViewModelSelectorTest extends TestCase
 
         $ref    = null;
         $result = $plugin([ViewModel::class => '*/*'], false, $ref);
-        $this->assertInstanceOf(ViewModel::class, $result);
-        $this->assertNotInstanceOf(JsonModel::class, $result);
-        $this->assertNotInstanceOf(FeedModel::class, $result);
-        $this->assertInstanceOf(AcceptFieldValuePart::class, $ref);
+        self::assertInstanceOf(ViewModel::class, $result);
+        self::assertNotInstanceOf(JsonModel::class, $result);
+        self::assertNotInstanceOf(FeedModel::class, $result);
+        self::assertInstanceOf(AcceptFieldValuePart::class, $ref);
     }
 
     public function testGetViewModelNameWithoutDefaults(): void
@@ -164,12 +164,12 @@ class AcceptableViewModelSelectorTest extends TestCase
         $this->request->getHeaders()->addHeader($header);
 
         $result = $plugin->getViewModelName($arr, false);
-        $this->assertNull($result);
+        self::assertNull($result);
 
         $ref    = null;
         $result = $plugin->getViewModelName([ViewModel::class => '*/*'], false, $ref);
-        $this->assertEquals(ViewModel::class, $result);
-        $this->assertInstanceOf(AcceptFieldValuePart::class, $ref);
+        self::assertEquals(ViewModel::class, $result);
+        self::assertInstanceOf(AcceptFieldValuePart::class, $ref);
     }
 
     public function testMatch(): void
@@ -180,10 +180,10 @@ class AcceptableViewModelSelectorTest extends TestCase
 
         $arr = [ViewModel::class => '*/*'];
         $plugin->setDefaultMatchAgainst($arr);
-        $this->assertEquals($plugin->getDefaultMatchAgainst(), $arr);
+        self::assertEquals($plugin->getDefaultMatchAgainst(), $arr);
         $result = $plugin->match();
-        $this->assertInstanceOf(AcceptFieldValuePart::class, $result);
-        $this->assertEquals($plugin->getDefaultMatchAgainst(), $arr);
+        self::assertInstanceOf(AcceptFieldValuePart::class, $result);
+        self::assertEquals($plugin->getDefaultMatchAgainst(), $arr);
     }
 
     public function testInvalidModel(): void

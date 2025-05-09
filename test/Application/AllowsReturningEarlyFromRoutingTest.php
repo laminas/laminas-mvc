@@ -21,7 +21,7 @@ class AllowsReturningEarlyFromRoutingTest extends TestCase
         $application->getEventManager()->attach(MvcEvent::EVENT_ROUTE, static fn($e): Response => $response);
 
         $result = $application->run();
-        $this->assertSame($application, $result);
-        $this->assertSame($response, $result->getResponse());
+        self::assertSame($application, $result);
+        self::assertSame($response, $result->getResponse());
     }
 }

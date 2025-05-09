@@ -24,7 +24,7 @@ class PhpEnvironmentResponseSenderTest extends TestCase
         ob_start();
         $responseSender($mockSendResponseEvent);
         $body = ob_get_clean();
-        $this->assertEquals('', $body);
+        self::assertEquals('', $body);
     }
 
     public function testSendResponseTwoTimesPrintsResponseOnlyOnce()
@@ -38,12 +38,12 @@ class PhpEnvironmentResponseSenderTest extends TestCase
         ob_start();
         $responseSender($mockSendResponseEvent);
         $body = ob_get_clean();
-        $this->assertEquals('body', $body);
+        self::assertEquals('body', $body);
 
         ob_start();
         $responseSender($mockSendResponseEvent);
         $body = ob_get_clean();
-        $this->assertEquals('', $body);
+        self::assertEquals('', $body);
     }
 
     protected function getSendResponseEventMock(): SendResponseEvent

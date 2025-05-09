@@ -45,27 +45,27 @@ class LazyControllerAbstractFactoryTest extends TestCase
     public function testCanCreateReturnsFalseForNonClassRequestedNames(string $requestedName): void
     {
         $factory = new LazyControllerAbstractFactory();
-        $this->assertFalse($factory->canCreate($this->container, $requestedName));
+        self::assertFalse($factory->canCreate($this->container, $requestedName));
     }
 
     public function testCanCreateReturnsFalseForClassesThatDoNotImplementDispatchableInterface(): void
     {
         $factory = new LazyControllerAbstractFactory();
-        $this->assertFalse($factory->canCreate($this->container, self::class));
+        self::assertFalse($factory->canCreate($this->container, self::class));
     }
 
     public function testFactoryInstantiatesClassDirectlyIfItHasNoConstructor(): void
     {
         $factory    = new LazyControllerAbstractFactory();
         $controller = $factory($this->container, SampleController::class);
-        $this->assertInstanceOf(SampleController::class, $controller);
+        self::assertInstanceOf(SampleController::class, $controller);
     }
 
     public function testFactoryInstantiatesClassDirectlyIfConstructorHasNoArguments(): void
     {
         $factory    = new LazyControllerAbstractFactory();
         $controller = $factory($this->container, ControllerWithEmptyConstructor::class);
-        $this->assertInstanceOf(ControllerWithEmptyConstructor::class, $controller);
+        self::assertInstanceOf(ControllerWithEmptyConstructor::class, $controller);
     }
 
     public function testFactoryRaisesExceptionWhenUnableToResolveATypeHintedService(): void
@@ -107,9 +107,9 @@ class LazyControllerAbstractFactoryTest extends TestCase
     {
         $factory    = new LazyControllerAbstractFactory();
         $controller = $factory($this->container, ControllerWithScalarParameters::class);
-        $this->assertInstanceOf(ControllerWithScalarParameters::class, $controller);
-        $this->assertNull($controller->foo);
-        $this->assertNull($controller->bar);
+        self::assertInstanceOf(ControllerWithScalarParameters::class, $controller);
+        self::assertNull($controller->foo);
+        self::assertNull($controller->bar);
     }
 
     public function testFactoryInjectsConfigServiceForConfigArgumentsTypeHintedAsArray(): void
@@ -120,8 +120,8 @@ class LazyControllerAbstractFactoryTest extends TestCase
 
         $factory    = new LazyControllerAbstractFactory();
         $controller = $factory($this->container, ControllerAcceptingConfigToConstructor::class);
-        $this->assertInstanceOf(ControllerAcceptingConfigToConstructor::class, $controller);
-        $this->assertEquals($config, $controller->config);
+        self::assertInstanceOf(ControllerAcceptingConfigToConstructor::class, $controller);
+        self::assertEquals($config, $controller->config);
     }
 
     public function testFactoryCanInjectKnownTypeHintedServices(): void
@@ -135,8 +135,8 @@ class LazyControllerAbstractFactoryTest extends TestCase
             $this->container,
             ControllerWithTypeHintedConstructorParameter::class
         );
-        $this->assertInstanceOf(ControllerWithTypeHintedConstructorParameter::class, $controller);
-        $this->assertSame($sample, $controller->sample);
+        self::assertInstanceOf(ControllerWithTypeHintedConstructorParameter::class, $controller);
+        self::assertSame($sample, $controller->sample);
     }
 
     public function testFactoryResolvesTypeHintsForServicesToWellKnownServiceNames(): void
@@ -150,11 +150,11 @@ class LazyControllerAbstractFactoryTest extends TestCase
             $this->container,
             ControllerAcceptingWellKnownServicesAsConstructorParameters::class
         );
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             ControllerAcceptingWellKnownServicesAsConstructorParameters::class,
             $controller
         );
-        $this->assertSame($validators, $controller->validators);
+        self::assertSame($validators, $controller->validators);
     }
 
     public function testFactoryCanSupplyAMixOfParameterTypes(): void
@@ -173,12 +173,12 @@ class LazyControllerAbstractFactoryTest extends TestCase
 
         $factory    = new LazyControllerAbstractFactory();
         $controller = $factory($this->container, ControllerWithMixedConstructorParameters::class);
-        $this->assertInstanceOf(ControllerWithMixedConstructorParameters::class, $controller);
+        self::assertInstanceOf(ControllerWithMixedConstructorParameters::class, $controller);
 
-        $this->assertEquals(['foo' => 'bar'], $controller->config);
-        $this->assertNull($controller->foo);
-        $this->assertEquals([], $controller->options);
-        $this->assertInstanceOf(SampleInterface::class, $controller->sample);
-        $this->assertInstanceOf(ValidatorPluginManager::class, $controller->validators);
+        self::assertEquals(['foo' => 'bar'], $controller->config);
+        self::assertNull($controller->foo);
+        self::assertEquals([], $controller->options);
+        self::assertInstanceOf(SampleInterface::class, $controller->sample);
+        self::assertInstanceOf(ValidatorPluginManager::class, $controller->validators);
     }
 }

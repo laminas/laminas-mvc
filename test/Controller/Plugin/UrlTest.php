@@ -55,7 +55,7 @@ class UrlTest extends TestCase
     public function testPluginCanGenerateUrlWhenProperlyConfigured(): void
     {
         $url = $this->plugin->fromRoute('home');
-        $this->assertEquals('/', $url);
+        self::assertEquals('/', $url);
     }
 
     public function testModel(): void
@@ -63,7 +63,7 @@ class UrlTest extends TestCase
         $it = new ArrayIterator(['controller' => 'ctrl', 'action' => 'act']);
 
         $url = $this->plugin->fromRoute('default', $it);
-        $this->assertEquals('/ctrl/act', $url);
+        self::assertEquals('/ctrl/act', $url);
     }
 
     public function testPluginWithoutControllerRaisesDomainException(): void
@@ -116,7 +116,7 @@ class UrlTest extends TestCase
         $routeMatch->setMatchedRouteName('home');
         $this->controller->getEvent()->setRouteMatch($routeMatch);
         $url = $this->plugin->fromRoute();
-        $this->assertEquals('/', $url);
+        self::assertEquals('/', $url);
     }
 
     public function testCanReuseMatchedParameters(): void
@@ -133,7 +133,7 @@ class UrlTest extends TestCase
         $routeMatch->setMatchedRouteName('replace');
         $this->controller->getEvent()->setRouteMatch($routeMatch);
         $url = $this->plugin->fromRoute('replace', ['action' => 'bar'], [], true);
-        $this->assertEquals('/foo/bar', $url);
+        self::assertEquals('/foo/bar', $url);
     }
 
     public function testCanPassBooleanValueForThirdArgumentToAllowReusingRouteMatches(): void
@@ -150,7 +150,7 @@ class UrlTest extends TestCase
         $routeMatch->setMatchedRouteName('replace');
         $this->controller->getEvent()->setRouteMatch($routeMatch);
         $url = $this->plugin->fromRoute('replace', ['action' => 'bar'], true);
-        $this->assertEquals('/foo/bar', $url);
+        self::assertEquals('/foo/bar', $url);
     }
 
     public function testRemovesModuleRouteListenerParamsWhenReusingMatchedParameters(): void
@@ -194,6 +194,6 @@ class UrlTest extends TestCase
         $controller->setEvent($event);
         $url = $controller->plugin('url')->fromRoute('default/wildcard', ['Twenty' => 'Cooler'], true);
 
-        $this->assertEquals('/Rainbow/Dash=Twenty%Cooler', $url);
+        self::assertEquals('/Rainbow/Dash=Twenty%Cooler', $url);
     }
 }
