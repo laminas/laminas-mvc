@@ -34,7 +34,7 @@
         "laminas/laminas-http": "^2.15",
         "laminas/laminas-modulemanager": "^2.16",
         "laminas/laminas-router": "^3.11.1",
-        "laminas/laminas-servicemanager": "^3.20.0",
+        "laminas/laminas-servicemanager": "^4.1.0",
         "laminas/laminas-stdlib": "^3.19",
         "laminas/laminas-view": "^2.18.0"
     },

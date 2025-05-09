@@ -169,7 +169,7 @@ class PluginManager extends AbstractPluginManager
      *
      * {@inheritDoc}
      */
-    public function validate($plugin)
+    public function validate(mixed $plugin)
     {
         if (! $plugin instanceof $this->instanceOf) {
             throw new InvalidServiceException(sprintf(
