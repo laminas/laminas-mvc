@@ -28,7 +28,7 @@
     "extra": {
     },
     "require": {
-        "php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0",
+        "php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
         "container-interop/container-interop": "^1.2",
         "laminas/laminas-eventmanager": "^3.4",
         "laminas/laminas-http": "^2.15",
@@ -36,7 +36,7 @@
         "laminas/laminas-router": "^3.11.1",
         "laminas/laminas-servicemanager": "^3.20.0",
         "laminas/laminas-stdlib": "^3.19",
-        "laminas/laminas-view": "^2.18.0"
+        "laminas/laminas-view": "dev-I-51993"
     },
     "require-dev": {
         "laminas/laminas-coding-standard": "^3.0.1",
