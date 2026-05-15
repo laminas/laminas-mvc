@@ -36,7 +36,7 @@
         "laminas/laminas-router": "^3.11.1",
         "laminas/laminas-servicemanager": "^3.20.0",
         "laminas/laminas-stdlib": "^3.19",
-        "laminas/laminas-view": "dev-I-51993"
+        "laminas/laminas-view": "dev-renovate/all-minor-patch"
     },
     "require-dev": {
         "laminas/laminas-coding-standard": "^3.0.1",
