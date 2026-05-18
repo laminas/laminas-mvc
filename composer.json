@@ -31,7 +31,7 @@
         "php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
         "container-interop/container-interop": "^1.2",
         "laminas/laminas-eventmanager": "^3.4",
-        "laminas/laminas-http": "^2.15",
+        "laminas/laminas-http": "^2.23",
         "laminas/laminas-modulemanager": "^2.16",
         "laminas/laminas-router": "^3.11.1",
         "laminas/laminas-servicemanager": "^4.5.1",
