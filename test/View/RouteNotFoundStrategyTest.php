@@ -50,18 +50,18 @@ class RouteNotFoundStrategyTest extends TestCase
         $this->strategy->prepareNotFoundViewModel($event);
 
         $viewModel = $event->getResult();
-        $this->assertInstanceOf(ModelInterface::class, $viewModel);
+        self::assertInstanceOf(ModelInterface::class, $viewModel);
 
         $variables = $viewModel->getVariables();
         switch ($assertion) {
             case 'assertEquals':
                 // Testing if we returned a message in the result
-                $this->assertEquals('bar', $variables['message']);
+                self::assertEquals('bar', $variables['message']);
                 break;
             case 'assertTrue':
                 // Testing if no message was returned in the result; in that
                 // case, default message is used from strategy
-                $this->assertTrue(isset($variables['message']));
+                self::assertTrue(isset($variables['message']));
                 break;
         }
     }
@@ -80,7 +80,7 @@ class RouteNotFoundStrategyTest extends TestCase
             $response->setStatusCode(200);
             $event->setError($error);
             $this->strategy->detectNotFoundError($event);
-            $this->assertTrue($response->isNotFound(), 'Failed asserting against ' . $key);
+            self::assertTrue($response->isNotFound(), 'Failed asserting against ' . $key);
         }
     }
 
@@ -103,13 +103,13 @@ class RouteNotFoundStrategyTest extends TestCase
                 $this->strategy->detectNotFoundError($event);
                 $this->strategy->prepareNotFoundViewModel($event);
                 $viewModel = $event->getResult();
-                $this->assertInstanceOf(ModelInterface::class, $viewModel);
+                self::assertInstanceOf(ModelInterface::class, $viewModel);
                 $variables = $viewModel->getVariables();
                 if ($allow) {
-                    $this->assertTrue(isset($variables['reason']));
-                    $this->assertEquals($key, $variables['reason']);
+                    self::assertTrue(isset($variables['reason']));
+                    self::assertEquals($key, $variables['reason']);
                 } else {
-                    $this->assertFalse(isset($variables['reason']));
+                    self::assertFalse(isset($variables['reason']));
                 }
             }
         }
@@ -128,7 +128,7 @@ class RouteNotFoundStrategyTest extends TestCase
             $response->setStatusCode(200);
             $event->setError($error);
             $this->strategy->detectNotFoundError($event);
-            $this->assertFalse($response->isNotFound());
+            self::assertFalse($response->isNotFound());
         }
     }
 
@@ -142,9 +142,9 @@ class RouteNotFoundStrategyTest extends TestCase
         $this->strategy->prepareNotFoundViewModel($event);
         $model = $event->getResult();
         if ($model instanceof ViewModel) {
-            $this->assertNotEquals($this->strategy->getNotFoundTemplate(), $model->getTemplate());
+            self::assertNotEquals($this->strategy->getNotFoundTemplate(), $model->getTemplate());
             $variables = $model->getVariables();
-            $this->assertArrayNotHasKey('message', $variables);
+            self::assertArrayNotHasKey('message', $variables);
         }
 
         $this->addToAssertionCount(1);
@@ -160,9 +160,9 @@ class RouteNotFoundStrategyTest extends TestCase
         $this->strategy->prepareNotFoundViewModel($event);
         $model = $event->getResult();
         if ($model instanceof ViewModel) {
-            $this->assertNotEquals($this->strategy->getNotFoundTemplate(), $model->getTemplate());
+            self::assertNotEquals($this->strategy->getNotFoundTemplate(), $model->getTemplate());
             $variables = $model->getVariables();
-            $this->assertArrayNotHasKey('message', $variables);
+            self::assertArrayNotHasKey('message', $variables);
         }
 
         $this->addToAssertionCount(1);
@@ -177,10 +177,10 @@ class RouteNotFoundStrategyTest extends TestCase
 
         $this->strategy->prepareNotFoundViewModel($event);
         $model = $event->getResult();
-        $this->assertInstanceOf(ModelInterface::class, $model);
-        $this->assertEquals($this->strategy->getNotFoundTemplate(), $model->getTemplate());
+        self::assertInstanceOf(ModelInterface::class, $model);
+        self::assertEquals($this->strategy->getNotFoundTemplate(), $model->getTemplate());
         $variables = $model->getVariables();
-        $this->assertTrue(isset($variables['message']));
+        self::assertTrue(isset($variables['message']));
     }
 
     public function test404ResponsePrepares404ViewModelWithReasonWhenAllowed(): void
@@ -195,13 +195,13 @@ class RouteNotFoundStrategyTest extends TestCase
             $event->setResponse($response);
             $this->strategy->prepareNotFoundViewModel($event);
             $model = $event->getResult();
-            $this->assertInstanceOf(ModelInterface::class, $model);
+            self::assertInstanceOf(ModelInterface::class, $model);
             $variables = $model->getVariables();
             if ($allow) {
-                $this->assertTrue(isset($variables['reason']));
-                $this->assertEquals(Application::ERROR_CONTROLLER_CANNOT_DISPATCH, $variables['reason']);
+                self::assertTrue(isset($variables['reason']));
+                self::assertEquals(Application::ERROR_CONTROLLER_CANNOT_DISPATCH, $variables['reason']);
             } else {
-                $this->assertFalse(isset($variables['reason']));
+                self::assertFalse(isset($variables['reason']));
             }
         }
     }
@@ -220,14 +220,14 @@ class RouteNotFoundStrategyTest extends TestCase
             $event->setResponse($response);
             $this->strategy->prepareNotFoundViewModel($event);
             $model = $event->getResult();
-            $this->assertInstanceOf(ModelInterface::class, $model);
+            self::assertInstanceOf(ModelInterface::class, $model);
             $variables = $model->getVariables();
             if ($allow) {
-                $this->assertTrue($variables['display_exceptions']);
-                $this->assertTrue(isset($variables['exception']));
-                $this->assertSame($exception, $variables['exception']);
+                self::assertTrue($variables['display_exceptions']);
+                self::assertTrue(isset($variables['exception']));
+                self::assertSame($exception, $variables['exception']);
             } else {
-                $this->assertFalse(isset($variables['exception']));
+                self::assertFalse(isset($variables['exception']));
             }
         }
     }
@@ -249,16 +249,16 @@ class RouteNotFoundStrategyTest extends TestCase
                 $event->setResponse($response);
                 $this->strategy->prepareNotFoundViewModel($event);
                 $model = $event->getResult();
-                $this->assertInstanceOf(ModelInterface::class, $model);
+                self::assertInstanceOf(ModelInterface::class, $model);
                 $variables = $model->getVariables();
                 if ($allow) {
-                    $this->assertTrue(isset($variables['controller']));
-                    $this->assertEquals($controller, $variables['controller']);
-                    $this->assertTrue(isset($variables['controller_class']));
-                    $this->assertEquals($controllerClass, $variables['controller_class']);
+                    self::assertTrue(isset($variables['controller']));
+                    self::assertEquals($controller, $variables['controller']);
+                    self::assertTrue(isset($variables['controller_class']));
+                    self::assertEquals($controllerClass, $variables['controller_class']);
                 } else {
-                    $this->assertFalse(isset($variables['controller']));
-                    $this->assertFalse(isset($variables['controller_class']));
+                    self::assertFalse(isset($variables['controller']));
+                    self::assertFalse(isset($variables['controller_class']));
                 }
             }
         }
@@ -275,20 +275,20 @@ class RouteNotFoundStrategyTest extends TestCase
             $event->setError($error);
             $this->strategy->detectNotFoundError($event);
             $response = $event->getResponse();
-            $this->assertInstanceOf(Response::class, $response);
-            $this->assertTrue($response->isNotFound(), 'Failed asserting against ' . $key);
+            self::assertInstanceOf(Response::class, $response);
+            self::assertTrue($response->isNotFound(), 'Failed asserting against ' . $key);
         }
     }
 
     public function testNotFoundTemplateDefaultsToError(): void
     {
-        $this->assertEquals('error', $this->strategy->getNotFoundTemplate());
+        self::assertEquals('error', $this->strategy->getNotFoundTemplate());
     }
 
     public function testNotFoundTemplateIsMutable()
     {
         $this->strategy->setNotFoundTemplate('alternate/error');
-        $this->assertEquals('alternate/error', $this->strategy->getNotFoundTemplate());
+        self::assertEquals('alternate/error', $this->strategy->getNotFoundTemplate());
     }
 
     public function testAttachesListenersAtExpectedPriorities(): void
@@ -301,7 +301,7 @@ class RouteNotFoundStrategyTest extends TestCase
             MvcEvent::EVENT_DISPATCH_ERROR => 1,
         ];
         foreach ($evs as $event => $expectedPriority) {
-            $this->assertListenerAtPriority(
+            self::assertListenerAtPriority(
                 [$this->strategy, 'prepareNotFoundViewModel'],
                 $expectedPriority,
                 $event,
@@ -309,7 +309,7 @@ class RouteNotFoundStrategyTest extends TestCase
             );
         }
 
-        $this->assertListenerAtPriority(
+        self::assertListenerAtPriority(
             [$this->strategy, 'detectNotFoundError'],
             1,
             $event,
@@ -322,15 +322,15 @@ class RouteNotFoundStrategyTest extends TestCase
         $events = new EventManager();
         $this->strategy->attach($events);
         $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_DISPATCH, $events);
-        $this->assertCount(1, $listeners);
+        self::assertCount(1, $listeners);
         $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_DISPATCH_ERROR, $events);
-        $this->assertCount(2, $listeners);
+        self::assertCount(2, $listeners);
 
         $this->strategy->detach($events);
 
         $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_DISPATCH, $events);
-        $this->assertCount(0, $listeners);
+        self::assertCount(0, $listeners);
         $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_DISPATCH_ERROR, $events);
-        $this->assertCount(0, $listeners);
+        self::assertCount(0, $listeners);
     }
 }

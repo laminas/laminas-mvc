@@ -42,13 +42,13 @@ class ControllerManager extends AbstractPluginManager
      * Injects an initializer for injecting controllers with an
      * event manager and plugin manager.
      *
-     * @param  ConfigInterface|ContainerInterface $configOrContainerInstance
+     * @param  ConfigInterface|ContainerInterface $configInstanceOrParentLocator
      */
-    public function __construct($configOrContainerInstance, array $config = [])
+    public function __construct($configInstanceOrParentLocator = null, array $config = [])
     {
         $this->addInitializer([$this, 'injectEventManager']);
         $this->addInitializer([$this, 'injectPluginManager']);
-        parent::__construct($configOrContainerInstance, $config);
+        parent::__construct($configInstanceOrParentLocator, $config);
     }
 
     /**
@@ -56,7 +56,7 @@ class ControllerManager extends AbstractPluginManager
      *
      * {@inheritDoc}
      */
-    public function validate($plugin)
+    public function validate(mixed $plugin)
     {
         if (! $plugin instanceof $this->instanceOf) {
             throw new InvalidServiceException(sprintf(

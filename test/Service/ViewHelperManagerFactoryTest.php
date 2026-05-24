@@ -53,9 +53,9 @@ class ViewHelperManagerFactoryTest extends TestCase
     {
         $this->services->setService('config', $config);
         $manager = $this->factory->__invoke($this->services, 'doctype');
-        $this->assertInstanceof(HelperPluginManager::class, $manager);
+        self::assertInstanceof(HelperPluginManager::class, $manager);
         $doctype = $manager->get('doctype');
-        $this->assertInstanceof(Doctype::class, $doctype);
+        self::assertInstanceof(Doctype::class, $doctype);
     }
 
     public static function urlHelperNames(): array
@@ -97,8 +97,8 @@ class ViewHelperManagerFactoryTest extends TestCase
         $manager = $this->factory->__invoke($this->services, HelperPluginManager::class);
         $helper  = $manager->get($name);
 
-        $this->assertAttributeSame($routeMatch, 'routeMatch', $helper, 'Route match was not injected');
-        $this->assertAttributeSame($router, 'router', $helper, 'Router was not injected');
+        self::assertAttributeSame($routeMatch, 'routeMatch', $helper, 'Route match was not injected');
+        self::assertAttributeSame($router, 'router', $helper, 'Router was not injected');
     }
 
     public static function basePathConfiguration(): iterable
@@ -158,8 +158,8 @@ class ViewHelperManagerFactoryTest extends TestCase
 
         $plugins = $this->factory->__invoke($this->services, HelperPluginManager::class);
         $helper  = $plugins->get($name);
-        $this->assertInstanceof(BasePath::class, $helper);
-        $this->assertEquals($expected, $helper());
+        self::assertInstanceof(BasePath::class, $helper);
+        self::assertEquals($expected, $helper());
     }
 
     public static function doctypeHelperNames(): array
@@ -186,7 +186,7 @@ class ViewHelperManagerFactoryTest extends TestCase
 
         $plugins = $this->factory->__invoke($this->services, HelperPluginManager::class);
         $helper  = $plugins->get($name);
-        $this->assertInstanceof(Doctype::class, $helper);
-        $this->assertEquals('<!DOCTYPE html>', (string) $helper);
+        self::assertInstanceof(Doctype::class, $helper);
+        self::assertEquals('<!DOCTYPE html>', (string) $helper);
     }
 }

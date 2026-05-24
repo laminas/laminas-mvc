@@ -13,8 +13,8 @@ final class ReachedFinalHandlerExceptionTest extends TestCase
     {
         $exception = ReachedFinalHandlerException::create();
 
-        $this->assertInstanceOf(ReachedFinalHandlerException::class, $exception);
-        $this->assertSame(
+        self::assertInstanceOf(ReachedFinalHandlerException::class, $exception);
+        self::assertSame(
             'Reached the final handler for middleware pipe - check the pipe configuration',
             $exception->getMessage()
         );

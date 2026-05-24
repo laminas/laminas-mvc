@@ -39,8 +39,8 @@ class InitializationIntegrationTest extends TestCase
         $content = ob_get_clean();
 
         $response = $application->getResponse();
-        $this->assertStringContainsString(PathController::class, $response->getContent());
-        $this->assertStringContainsString(PathController::class, $content);
-        $this->assertStringContainsString(MvcEvent::EVENT_DISPATCH, $response->toString());
+        self::assertStringContainsString(PathController::class, $response->getContent());
+        self::assertStringContainsString(PathController::class, $content);
+        self::assertStringContainsString(MvcEvent::EVENT_DISPATCH, $response->toString());
     }
 }

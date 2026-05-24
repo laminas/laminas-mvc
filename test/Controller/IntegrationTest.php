@@ -48,14 +48,14 @@ class IntegrationTest extends TestCase
 
         $first  = $controllers->get('first');
         $second = $controllers->get('second');
-        $this->assertNotSame($first, $second);
+        self::assertNotSame($first, $second);
 
         $plugin1 = $first->plugin('url');
-        $this->assertSame($first, $plugin1->getController());
+        self::assertSame($first, $plugin1->getController());
 
         $plugin2 = $second->plugin('url');
-        $this->assertSame($second, $plugin2->getController());
+        self::assertSame($second, $plugin2->getController());
 
-        $this->assertSame($plugin1, $plugin2);
+        self::assertSame($plugin1, $plugin2);
     }
 }

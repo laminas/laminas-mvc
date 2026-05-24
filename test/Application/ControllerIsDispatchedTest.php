@@ -16,7 +16,7 @@ class ControllerIsDispatchedTest extends TestCase
         $application = $this->prepareApplication();
 
         $response = $application->run()->getResponse();
-        $this->assertStringContainsString('PathController', $response->getContent());
-        $this->assertStringContainsString(MvcEvent::EVENT_DISPATCH, $response->toString());
+        self::assertStringContainsString('PathController', $response->getContent());
+        self::assertStringContainsString(MvcEvent::EVENT_DISPATCH, $response->toString());
     }
 }

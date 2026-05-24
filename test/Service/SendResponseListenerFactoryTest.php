@@ -62,7 +62,7 @@ class SendResponseListenerFactoryTest extends TestCase
 
         $factory  = new SendResponseListenerFactory();
         $listener = $factory($container);
-        $this->assertInstanceOf(SendResponseListener::class, $listener);
-        $this->assertSame($events, $listener->getEventManager());
+        self::assertInstanceOf(SendResponseListener::class, $listener);
+        self::assertSame($events, $listener->getEventManager());
     }
 }

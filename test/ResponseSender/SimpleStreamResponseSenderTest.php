@@ -25,7 +25,7 @@ class SimpleStreamResponseSenderTest extends TestCase
         ob_start();
         $responseSender($mockSendResponseEvent);
         $body = ob_get_clean();
-        $this->assertEquals('', $body);
+        self::assertEquals('', $body);
     }
 
     public function testSendResponseTwoTimesPrintsResponseOnlyOnce(): void
@@ -39,12 +39,12 @@ class SimpleStreamResponseSenderTest extends TestCase
         $responseSender($mockSendResponseEvent);
         $body     = ob_get_clean();
         $expected = file_get_contents(__DIR__ . '/TestAsset/sample-stream-file.txt');
-        $this->assertEquals($expected, $body);
+        self::assertEquals($expected, $body);
 
         ob_start();
         $responseSender($mockSendResponseEvent);
         $body = ob_get_clean();
-        $this->assertEquals('', $body);
+        self::assertEquals('', $body);
     }
 
     protected function getSendResponseEventMock(ResponseInterface $response): SendResponseEvent

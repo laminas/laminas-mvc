@@ -179,8 +179,8 @@ class ForwardTest extends TestCase
     public function testPluginDispatchsRequestedControllerWhenFound(): void
     {
         $result = $this->plugin->dispatch('forward');
-        $this->assertIsArray($result);
-        $this->assertEquals(
+        self::assertIsArray($result);
+        self::assertEquals(
             ['content' => 'LaminasTest\Mvc\Controller\TestAsset\ForwardController::testAction'],
             $result
         );
@@ -204,8 +204,8 @@ class ForwardTest extends TestCase
         $event->setApplication($application);
 
         $result = $this->plugin->dispatch('forward');
-        $this->assertIsArray($result);
-        $this->assertEquals(
+        self::assertIsArray($result);
+        self::assertEquals(
             ['content' => 'LaminasTest\Mvc\Controller\TestAsset\ForwardController::testAction'],
             $result
         );
@@ -287,11 +287,11 @@ class ForwardTest extends TestCase
             'action' => 'test-matches',
             'param1' => 'foobar',
         ]);
-        $this->assertIsArray($result);
-        $this->assertTrue(isset($result['action']));
-        $this->assertEquals('test-matches', $result['action']);
-        $this->assertTrue(isset($result['param1']));
-        $this->assertEquals('foobar', $result['param1']);
+        self::assertIsArray($result);
+        self::assertTrue(isset($result['action']));
+        self::assertEquals('test-matches', $result['action']);
+        self::assertTrue(isset($result['param1']));
+        self::assertEquals('foobar', $result['param1']);
     }
 
     public function testRouteMatchObjectRemainsSameFollowingForwardDispatch(): void
@@ -307,19 +307,19 @@ class ForwardTest extends TestCase
         $testParams            = $testMatch->getParams();
         $testMatchedRouteName  = $testMatch->getMatchedRouteName();
 
-        $this->assertSame($routeMatch, $testMatch);
-        $this->assertEquals($matchParams, $testParams);
-        $this->assertEquals($matchMatchedRouteName, $testMatchedRouteName);
+        self::assertSame($routeMatch, $testMatch);
+        self::assertEquals($matchParams, $testParams);
+        self::assertEquals($matchMatchedRouteName, $testMatchedRouteName);
     }
 
     public function testAllowsPassingEmptyArrayOfRouteParams(): void
     {
         $result = $this->plugin->dispatch('forward', []);
-        $this->assertIsArray($result);
-        $this->assertTrue(isset($result['status']));
-        $this->assertEquals('not-found', $result['status']);
-        $this->assertTrue(isset($result['params']));
-        $this->assertEquals([], $result['params']);
+        self::assertIsArray($result);
+        self::assertTrue(isset($result['status']));
+        self::assertEquals('not-found', $result['status']);
+        self::assertTrue(isset($result['params']));
+        self::assertEquals([], $result['params']);
     }
 
     /**
@@ -327,6 +327,6 @@ class ForwardTest extends TestCase
      */
     public function testSetListenersToDetachIsFluent(): void
     {
-        $this->assertSame($this->plugin, $this->plugin->setListenersToDetach([]));
+        self::assertSame($this->plugin, $this->plugin->setListenersToDetach([]));
     }
 }

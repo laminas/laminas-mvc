@@ -37,7 +37,7 @@ class InjectViewModelListenerTest extends TestCase
         $this->event->setResult($childModel);
 
         $this->listener->injectViewModel($this->event);
-        $this->assertSame($childModel, $this->event->getViewModel());
+        self::assertSame($childModel, $this->event->getViewModel());
     }
 
     public function testAddsViewModelAsChildOfEventViewModelWhenChildIsNotTerminal(): void
@@ -47,35 +47,35 @@ class InjectViewModelListenerTest extends TestCase
 
         $this->listener->injectViewModel($this->event);
         $model = $this->event->getViewModel();
-        $this->assertNotSame($childModel, $model);
-        $this->assertTrue($model->hasChildren());
-        $this->assertEquals(1, count($model));
+        self::assertNotSame($childModel, $model);
+        self::assertTrue($model->hasChildren());
+        self::assertEquals(1, count($model));
         $child = false;
         foreach ($model as $child) {
             break;
         }
-        $this->assertSame($childModel, $child);
+        self::assertSame($childModel, $child);
     }
 
     public function testLackOfViewModelInResultBypassesViewModelInjection(): void
     {
-        $this->assertNull($this->listener->injectViewModel($this->event));
-        $this->assertNull($this->event->getResult());
-        $this->assertFalse($this->event->getViewModel()->hasChildren());
+        self::assertNull($this->listener->injectViewModel($this->event));
+        self::assertNull($this->event->getResult());
+        self::assertFalse($this->event->getViewModel()->hasChildren());
     }
 
     public function testAttachesListenersAtExpectedPriorities(): void
     {
         $events = new EventManager();
         $this->listener->attach($events);
-        $this->assertListenerAtPriority(
+        self::assertListenerAtPriority(
             [$this->listener, 'injectViewModel'],
             -100,
             MvcEvent::EVENT_DISPATCH,
             $events
         );
 
-        $this->assertListenerAtPriority(
+        self::assertListenerAtPriority(
             [$this->listener, 'injectViewModel'],
             -100,
             MvcEvent::EVENT_DISPATCH_ERROR,
@@ -89,14 +89,14 @@ class InjectViewModelListenerTest extends TestCase
         $this->listener->attach($events);
 
         $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_DISPATCH, $events);
-        $this->assertCount(1, $listeners);
+        self::assertCount(1, $listeners);
         $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_DISPATCH_ERROR, $events);
-        $this->assertCount(1, $listeners);
+        self::assertCount(1, $listeners);
 
         $this->listener->detach($events);
         $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_DISPATCH, $events);
-        $this->assertCount(0, $listeners);
+        self::assertCount(0, $listeners);
         $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_DISPATCH_ERROR, $events);
-        $this->assertCount(0, $listeners);
+        self::assertCount(0, $listeners);
     }
 }

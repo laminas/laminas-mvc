@@ -33,7 +33,7 @@ class InjectTemplateListenerFactoryTest extends TestCase
             ],
         ]);
 
-        $this->assertEquals('some/module', $listener->mapController("SomeModule"));
+        self::assertEquals('some/module', $listener->mapController("SomeModule"));
     }
 
     public function testFactoryCanSetControllerMapViaArrayAccessVM()
@@ -47,7 +47,7 @@ class InjectTemplateListenerFactoryTest extends TestCase
             ]),
         ]);
 
-        $this->assertEquals('some/module', $listener->mapController("SomeModule"));
+        self::assertEquals('some/module', $listener->mapController("SomeModule"));
     }
 
     /**
@@ -61,7 +61,7 @@ class InjectTemplateListenerFactoryTest extends TestCase
         $factory  = new InjectTemplateListenerFactory();
         $listener = $factory($serviceLocator, 'InjectTemplateListener');
 
-        $this->assertInstanceOf(InjectTemplateListener::class, $listener);
+        self::assertInstanceOf(InjectTemplateListener::class, $listener);
 
         return $listener;
     }

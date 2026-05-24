@@ -18,8 +18,8 @@ class HttpMethodListenerFactoryTest extends TestCase
         $serviceLocator = $this->createMock(ServiceLocatorInterface::class);
         $factory        = new HttpMethodListenerFactory();
         $listener       = $factory($serviceLocator, 'HttpMethodListener');
-        $this->assertTrue($listener->isEnabled());
-        $this->assertNotEmpty($listener->getAllowedMethods());
+        self::assertTrue($listener->isEnabled());
+        self::assertNotEmpty($listener->getAllowedMethods());
     }
 
     public function testCreateWithConfig()
@@ -39,7 +39,7 @@ class HttpMethodListenerFactoryTest extends TestCase
 
         $listenerConfig = $config['http_methods_listener'];
 
-        $this->assertSame($listenerConfig['enabled'], $listener->isEnabled());
-        $this->assertSame($listenerConfig['allowed_methods'], $listener->getAllowedMethods());
+        self::assertSame($listenerConfig['enabled'], $listener->isEnabled());
+        self::assertSame($listenerConfig['allowed_methods'], $listener->getAllowedMethods());
     }
 }

@@ -58,8 +58,8 @@ class ControllerManagerTest extends TestCase
         // instance, which means we need to check that that instance gets injected
         // with the shared EM instance.
         $events = $controller->getEventManager();
-        $this->assertInstanceOf(EventManagerInterface::class, $events);
-        $this->assertSame($this->sharedEvents, $events->getSharedManager());
+        self::assertInstanceOf(EventManagerInterface::class, $events);
+        self::assertSame($this->sharedEvents, $events->getSharedManager());
     }
 
     public function testCanInjectPluginManager()
@@ -68,7 +68,7 @@ class ControllerManagerTest extends TestCase
 
         $this->controllers->injectPluginManager($this->services, $controller);
 
-        $this->assertSame($this->services->get('ControllerPluginManager'), $controller->getPluginManager());
+        self::assertSame($this->services->get('ControllerPluginManager'), $controller->getPluginManager());
     }
 
     public function testInjectEventManagerWillNotOverwriteExistingEventManagerIfItAlreadyHasASharedManager()
@@ -79,8 +79,8 @@ class ControllerManagerTest extends TestCase
 
         $this->controllers->injectEventManager($this->services, $controller);
 
-        $this->assertSame($events, $controller->getEventManager());
-        $this->assertSame($this->sharedEvents, $events->getSharedManager());
+        self::assertSame($events, $controller->getEventManager());
+        self::assertSame($this->sharedEvents, $events->getSharedManager());
     }
 
     /**
@@ -89,7 +89,7 @@ class ControllerManagerTest extends TestCase
      */
     public function testDoNotUsePeeringServiceManagers()
     {
-        $this->assertFalse($this->controllers->has('EventManager'));
+        self::assertFalse($this->controllers->has('EventManager'));
         $this->expectException(ServiceNotFoundException::class);
         $this->controllers->get('EventManager');
     }

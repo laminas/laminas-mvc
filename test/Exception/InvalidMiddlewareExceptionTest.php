@@ -16,23 +16,23 @@ final class InvalidMiddlewareExceptionTest extends TestCase
         $middlewareName = uniqid('middlewareName', true);
         $exception      = InvalidMiddlewareException::fromMiddlewareName($middlewareName);
 
-        $this->assertInstanceOf(InvalidMiddlewareException::class, $exception);
-        $this->assertSame('Cannot dispatch middleware ' . $middlewareName, $exception->getMessage());
-        $this->assertSame($middlewareName, $exception->toMiddlewareName());
+        self::assertInstanceOf(InvalidMiddlewareException::class, $exception);
+        self::assertSame('Cannot dispatch middleware ' . $middlewareName, $exception->getMessage());
+        self::assertSame($middlewareName, $exception->toMiddlewareName());
     }
 
     public function testToMiddlewareNameWhenNotSet()
     {
         $exception = new InvalidMiddlewareException();
-        $this->assertSame('', $exception->toMiddlewareName());
+        self::assertSame('', $exception->toMiddlewareName());
     }
 
     public function testFromNull()
     {
         $exception = InvalidMiddlewareException::fromNull();
 
-        $this->assertInstanceOf(InvalidMiddlewareException::class, $exception);
-        $this->assertSame('Middleware name cannot be null', $exception->getMessage());
-        $this->assertSame('', $exception->toMiddlewareName());
+        self::assertInstanceOf(InvalidMiddlewareException::class, $exception);
+        self::assertSame('Middleware name cannot be null', $exception->getMessage());
+        self::assertSame('', $exception->toMiddlewareName());
     }
 }

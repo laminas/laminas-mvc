@@ -23,8 +23,8 @@ class CreateHttpNotFoundModelTest extends TestCase
 
         $model = $plugin->__invoke($response);
 
-        $this->assertInstanceOf(ViewModel::class, $model);
-        $this->assertSame('Page not found', $model->getVariable('content'));
-        $this->assertSame(404, $response->getStatusCode());
+        self::assertInstanceOf(ViewModel::class, $model);
+        self::assertSame('Page not found', $model->getVariable('content'));
+        self::assertSame(404, $response->getStatusCode());
     }
 }

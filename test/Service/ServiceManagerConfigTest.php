@@ -48,9 +48,9 @@ class ServiceManagerConfigTest extends TestCase
         $this->services->setFactory(EventManagerAwareObject::class, InvokableFactory::class);
 
         $instance = $this->services->get('EventManagerAwareObject');
-        $this->assertInstanceOf(EventManagerAwareObject::class, $instance);
-        $this->assertSame($events, $instance->getEventManager());
-        $this->assertSame($this->services->get('SharedEventManager'), $events->getSharedManager());
+        self::assertInstanceOf(EventManagerAwareObject::class, $instance);
+        self::assertSame($events, $instance->getEventManager());
+        self::assertSame($this->services->get('SharedEventManager'), $events->getSharedManager());
     }
 
     public function testCanMergeCustomConfigWithDefaultConfig(): void
@@ -67,9 +67,9 @@ class ServiceManagerConfigTest extends TestCase
         $sm = new ServiceManager();
         (new ServiceManagerConfig($custom))->configureServiceManager($sm);
 
-        $this->assertTrue($sm->has('foo'));
-        $this->assertTrue($sm->has('bar'));
-        $this->assertTrue($sm->has('ModuleManager'));
+        self::assertTrue($sm->has('foo'));
+        self::assertTrue($sm->has('bar'));
+        self::assertTrue($sm->has('ModuleManager'));
     }
 
     public function testCanOverrideDefaultConfigWithCustomConfig(): void
@@ -86,10 +86,10 @@ class ServiceManagerConfigTest extends TestCase
         $sm = new ServiceManager();
         (new ServiceManagerConfig($custom))->configureServiceManager($sm);
 
-        $this->assertTrue($sm->has('foo'));
-        $this->assertTrue($sm->has('ModuleManager'));
+        self::assertTrue($sm->has('foo'));
+        self::assertTrue($sm->has('ModuleManager'));
 
-        $this->assertInstanceOf(stdClass::class, $sm->get('ModuleManager'));
+        self::assertInstanceOf(stdClass::class, $sm->get('ModuleManager'));
     }
 
     public function testCanAddDelegators(): void
@@ -119,8 +119,8 @@ class ServiceManagerConfigTest extends TestCase
         (new ServiceManagerConfig($config))->configureServiceManager($sm);
 
         $std = $sm->get('foo');
-        $this->assertInstanceOf(stdClass::class, $std);
-        $this->assertEquals('baz', $std->bar);
+        self::assertInstanceOf(stdClass::class, $std);
+        self::assertEquals('baz', $std->bar);
     }
 
     public function testEventManagerInitializerCanBeReplaced(): void
@@ -154,7 +154,7 @@ class ServiceManagerConfigTest extends TestCase
         $config         = new ServiceManagerConfig();
         $config->configureServiceManager($serviceManager);
 
-        $this->assertTrue($serviceManager->has('ServiceManager'), 'Missing ServiceManager service!');
-        $this->assertSame($serviceManager, $serviceManager->get('ServiceManager'));
+        self::assertTrue($serviceManager->has('ServiceManager'), 'Missing ServiceManager service!');
+        self::assertSame($serviceManager, $serviceManager->get('ServiceManager'));
     }
 }

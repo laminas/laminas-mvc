@@ -17,6 +17,6 @@ class ResponseFactoryTest extends TestCase
         $container = $this->createMock(ContainerInterface::class);
         $factory   = new ResponseFactory();
         $response  = $factory($container, 'Response');
-        $this->assertInstanceOf(HttpResponse::class, $response);
+        self::assertInstanceOf(HttpResponse::class, $response);
     }
 }

@@ -25,6 +25,6 @@ class ViewJsonStrategyFactoryTest extends TestCase
     {
         $factory = new ViewJsonStrategyFactory();
         $result  = $factory($this->createContainer(), 'ViewJsonStrategy');
-        $this->assertInstanceOf(JsonStrategy::class, $result);
+        self::assertInstanceOf(JsonStrategy::class, $result);
     }
 }

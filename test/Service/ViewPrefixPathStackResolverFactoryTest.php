@@ -25,6 +25,6 @@ class ViewPrefixPathStackResolverFactoryTest extends TestCase
         $factory  = new ViewPrefixPathStackResolverFactory();
         $resolver = $factory($serviceLocator, 'ViewPrefixPathStackResolver');
 
-        $this->assertInstanceOf(PrefixPathStackResolver::class, $resolver);
+        self::assertInstanceOf(PrefixPathStackResolver::class, $resolver);
     }
 }

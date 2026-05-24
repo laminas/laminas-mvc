@@ -25,6 +25,6 @@ class ViewFeedStrategyFactoryTest extends TestCase
     {
         $factory = new ViewFeedStrategyFactory();
         $result  = $factory($this->createContainer(), 'ViewFeedStrategy');
-        $this->assertInstanceOf(FeedStrategy::class, $result);
+        self::assertInstanceOf(FeedStrategy::class, $result);
     }
 }

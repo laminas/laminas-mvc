@@ -115,13 +115,13 @@ class ApplicationTest extends TestCase
     public function testRequestIsPopulatedFromServiceManager(): void
     {
         $request = $this->serviceManager->get('Request');
-        $this->assertSame($request, $this->application->getRequest());
+        self::assertSame($request, $this->application->getRequest());
     }
 
     public function testResponseIsPopulatedFromServiceManager(): void
     {
         $response = $this->serviceManager->get('Response');
-        $this->assertSame($response, $this->application->getResponse());
+        self::assertSame($response, $this->application->getResponse());
     }
 
     public function testEventManagerIsPopulated(): void
@@ -129,9 +129,9 @@ class ApplicationTest extends TestCase
         $events       = $this->serviceManager->get('EventManager');
         $sharedEvents = $events->getSharedManager();
         $appEvents    = $this->application->getEventManager();
-        $this->assertInstanceOf(EventManager::class, $appEvents);
-        $this->assertNotSame($events, $appEvents);
-        $this->assertSame($sharedEvents, $appEvents->getSharedManager());
+        self::assertInstanceOf(EventManager::class, $appEvents);
+        self::assertNotSame($events, $appEvents);
+        self::assertSame($sharedEvents, $appEvents->getSharedManager());
     }
 
     public function testEventManagerListensOnApplicationContext(): void
@@ -139,19 +139,19 @@ class ApplicationTest extends TestCase
         $events      = $this->application->getEventManager();
         $identifiers = $events->getIdentifiers();
         $expected    = [Application::class];
-        $this->assertEquals($expected, array_values($identifiers));
+        self::assertEquals($expected, array_values($identifiers));
     }
 
     public function testServiceManagerIsPopulated(): void
     {
-        $this->assertSame($this->serviceManager, $this->application->getServiceManager());
+        self::assertSame($this->serviceManager, $this->application->getServiceManager());
     }
 
     public function testConfigIsPopulated(): void
     {
         $smConfig  = $this->serviceManager->get('config');
         $appConfig = $this->application->getConfig();
-        $this->assertEquals(
+        self::assertEquals(
             $smConfig,
             $appConfig,
             sprintf('SM config: %s; App config: %s', var_export($smConfig, true), var_export($appConfig, true))
@@ -162,11 +162,11 @@ class ApplicationTest extends TestCase
     {
         $events           = $this->application->getEventManager();
         $registeredEvents = $this->getEventsFromEventManager($events);
-        $this->assertEquals([], $registeredEvents);
+        self::assertEquals([], $registeredEvents);
 
         $sharedEvents = $events->getSharedManager();
-        $this->assertInstanceOf(SharedEventManager::class, $sharedEvents);
-        $this->assertSame([], $this->getIdentifiersFromSharedEventManager($sharedEvents));
+        self::assertInstanceOf(SharedEventManager::class, $sharedEvents);
+        self::assertSame([], $this->getIdentifiersFromSharedEventManager($sharedEvents));
     }
 
     private function getIdentifiersFromSharedEventManager(SharedEventManager $events): array
@@ -190,7 +190,7 @@ class ApplicationTest extends TestCase
         $events = $this->application->getEventManager();
 
         $listeners = $this->getArrayOfListenersForEvent($event, $events);
-        $this->assertContains([$listenerService, $method], $listeners);
+        self::assertContains([$listenerService, $method], $listeners);
     }
 
     public static function bootstrapRegistersListenersProvider(): array
@@ -233,27 +233,27 @@ class ApplicationTest extends TestCase
         }
 
         foreach ($defaultListeners as $defaultListener) {
-            $this->assertContains($defaultListener, $registeredListeners);
+            self::assertContains($defaultListener, $registeredListeners);
         }
     }
 
     public function testBootstrapRegistersConfiguredMvcEvent(): void
     {
-        $this->assertNull($this->application->getMvcEvent());
+        self::assertNull($this->application->getMvcEvent());
         $this->application->bootstrap();
         $event = $this->application->getMvcEvent();
-        $this->assertInstanceOf(MvcEvent::class, $event);
+        self::assertInstanceOf(MvcEvent::class, $event);
 
         $request  = $this->application->getRequest();
         $response = $this->application->getResponse();
         $router   = $this->serviceManager->get('HttpRouter');
 
-        $this->assertFalse($event->isError());
-        $this->assertSame($request, $event->getRequest());
-        $this->assertSame($response, $event->getResponse());
-        $this->assertSame($router, $event->getRouter());
-        $this->assertSame($this->application, $event->getApplication());
-        $this->assertSame($this->application, $event->getTarget());
+        self::assertFalse($event->isError());
+        self::assertSame($request, $event->getRequest());
+        self::assertSame($response, $event->getResponse());
+        self::assertSame($router, $event->getRouter());
+        self::assertSame($this->application, $event->getApplication());
+        self::assertSame($this->application, $event->getTarget());
     }
 
     public function setupPathController(bool $addService = true): ApplicationInterface
@@ -345,7 +345,7 @@ class ApplicationTest extends TestCase
         $application->getEventManager()->attach(MvcEvent::EVENT_FINISH, static fn($e) =>
             $e->getResponse()->setContent($e->getResponse()->getBody() . 'foobar'));
         $application->run();
-        $this->assertStringContainsString(
+        self::assertStringContainsString(
             'foobar',
             $this->application->getResponse()->getBody(),
             'The "finish" event was not triggered ("foobar" not in response)'
@@ -371,8 +371,8 @@ class ApplicationTest extends TestCase
         });
 
         $application->run();
-        $this->assertTrue($event->isError());
-        $this->assertStringContainsString(Application::ERROR_ROUTER_NO_MATCH, $response->getContent());
+        self::assertTrue($event->isError());
+        self::assertStringContainsString(Application::ERROR_ROUTER_NO_MATCH, $response->getContent());
     }
 
     /**
@@ -386,8 +386,8 @@ class ApplicationTest extends TestCase
         $application->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, static fn($e): Response => $response);
 
         $result = $application->run();
-        $this->assertSame($application, $result, $result::class);
-        $this->assertSame($response, $result->getResponse(), $result::class);
+        self::assertSame($application, $result, $result::class);
+        self::assertSame($response, $result->getResponse(), $result::class);
     }
 
     /**
@@ -406,7 +406,7 @@ class ApplicationTest extends TestCase
         });
 
         $this->application->run();
-        $this->assertStringContainsString('Raised an error', $response->getContent());
+        self::assertStringContainsString('Raised an error', $response->getContent());
     }
 
     /**
@@ -428,8 +428,8 @@ class ApplicationTest extends TestCase
         });
 
         $application->run();
-        $this->assertTrue($event->isError());
-        $this->assertEquals(Application::ERROR_ROUTER_NO_MATCH, $event->getError());
+        self::assertTrue($event->isError());
+        self::assertEquals(Application::ERROR_ROUTER_NO_MATCH, $event->getError());
     }
 
     /**
@@ -448,8 +448,8 @@ class ApplicationTest extends TestCase
         });
 
         $this->application->run();
-        $this->assertTrue(isset($token->foo));
-        $this->assertEquals('bar', $token->foo);
+        self::assertTrue(isset($token->foo));
+        self::assertEquals('bar', $token->foo);
     }
 
     /**
@@ -469,8 +469,8 @@ class ApplicationTest extends TestCase
         });
 
         $this->application->run();
-        $this->assertTrue(isset($token->foo));
-        $this->assertEquals('bar', $token->foo);
+        self::assertTrue(isset($token->foo));
+        self::assertEquals('bar', $token->foo);
     }
 
     public function testApplicationShouldBeEventTargetAtFinishEvent(): void
@@ -485,7 +485,7 @@ class ApplicationTest extends TestCase
         });
 
         $application->run();
-        $this->assertStringContainsString(Application::class, $response->getContent());
+        self::assertStringContainsString(Application::class, $response->getContent());
     }
 
     public function testOnDispatchErrorEventPassedToTriggersShouldBeTheOriginalOne(): void
@@ -502,7 +502,7 @@ class ApplicationTest extends TestCase
 
         $application->run();
         $event = $application->getMvcEvent();
-        $this->assertInstanceOf(ViewModel::class, $event->getResult());
+        self::assertInstanceOf(ViewModel::class, $event->getResult());
     }
 
     public function testReturnsResponseFromListenerWhenRouteEventShortCircuits(): void
@@ -519,12 +519,12 @@ class ApplicationTest extends TestCase
 
         $triggered = false;
         $events->attach(MvcEvent::EVENT_FINISH, function ($e) use ($testResponse, &$triggered): void {
-            $this->assertSame($testResponse, $e->getResponse());
+            self::assertSame($testResponse, $e->getResponse());
             $triggered = true;
         });
 
         $this->application->run();
-        $this->assertTrue($triggered);
+        self::assertTrue($triggered);
     }
 
     public function testReturnsResponseFromListenerWhenDispatchEventShortCircuits(): void
@@ -541,12 +541,12 @@ class ApplicationTest extends TestCase
 
         $triggered = false;
         $events->attach(MvcEvent::EVENT_FINISH, function ($e) use ($testResponse, &$triggered): void {
-            $this->assertSame($testResponse, $e->getResponse());
+            self::assertSame($testResponse, $e->getResponse());
             $triggered = true;
         });
 
         $this->application->run();
-        $this->assertTrue($triggered);
+        self::assertTrue($triggered);
     }
 
     public function testCompleteRequestShouldReturnApplicationInstance(): void
@@ -557,7 +557,7 @@ class ApplicationTest extends TestCase
         $this->application->bootstrap();
         $event  = $this->application->getMvcEvent();
         $result = $r->invoke($this->application, $event);
-        $this->assertSame($this->application, $result);
+        self::assertSame($this->application, $result);
     }
 
     public function testFailedRoutingShouldBePreventable(): void
@@ -593,7 +593,7 @@ class ApplicationTest extends TestCase
         $this->application->getEventManager()->attach(MvcEvent::EVENT_FINISH, $finishMock, 100);
 
         $this->application->run();
-        $this->assertSame($response, $this->application->getMvcEvent()->getResponse());
+        self::assertSame($response, $this->application->getMvcEvent()->getResponse());
     }
 
     public function testCanRecoverFromApplicationError(): void
@@ -642,7 +642,7 @@ class ApplicationTest extends TestCase
         $this->application->getEventManager()->attach(MvcEvent::EVENT_FINISH, $finishMock, 100);
 
         $this->application->run();
-        $this->assertSame($response, $this->application->getMvcEvent()->getResponse());
+        self::assertSame($response, $this->application->getMvcEvent()->getResponse());
     }
 
     public static function eventPropagation(): array
@@ -688,7 +688,7 @@ class ApplicationTest extends TestCase
         $this->application->run();
 
         foreach ($events as $event) {
-            $this->assertFalse($marker->{$event}, sprintf('Assertion failed for event "%s"', $event));
+            self::assertFalse($marker->{$event}, sprintf('Assertion failed for event "%s"', $event));
         }
     }
 }

@@ -41,7 +41,7 @@ class LayoutTest extends TestCase
         $this->event->setViewModel($model);
 
         $this->plugin->setTemplate('alternate/layout');
-        $this->assertEquals('alternate/layout', $model->getTemplate());
+        self::assertEquals('alternate/layout', $model->getTemplate());
     }
 
     public function testInvokeProxiesToSetTemplate(): void
@@ -52,7 +52,7 @@ class LayoutTest extends TestCase
 
         $plugin = $this->plugin;
         $plugin('alternate/layout');
-        $this->assertEquals('alternate/layout', $model->getTemplate());
+        self::assertEquals('alternate/layout', $model->getTemplate());
     }
 
     public function testCallingInvokeWithNoArgumentsReturnsViewModel(): void
@@ -63,6 +63,6 @@ class LayoutTest extends TestCase
 
         $plugin = $this->plugin;
         $result = $plugin();
-        $this->assertSame($model, $result);
+        self::assertSame($model, $result);
     }
 }

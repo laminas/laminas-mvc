@@ -66,9 +66,9 @@ class DispatchListenerTest extends TestCase
 
         $return = $listener->onDispatch($event);
 
-        $this->assertEmpty($log, var_export($log, true));
-        $this->assertSame($event->getResponse(), $return);
-        $this->assertSame(200, $return->getStatusCode());
+        self::assertEmpty($log, var_export($log, true));
+        self::assertSame($event->getResponse(), $return);
+        self::assertSame(200, $return->getStatusCode());
     }
 
     public function testUnlocatableControllerViaAbstractFactory(): void
@@ -92,8 +92,8 @@ class DispatchListenerTest extends TestCase
 
         $return = $listener->onDispatch($event);
 
-        $this->assertArrayHasKey('error', $log);
-        $this->assertSame('error-controller-not-found', $log['error']);
+        self::assertArrayHasKey('error', $log);
+        self::assertSame('error-controller-not-found', $log['error']);
     }
 
     /**

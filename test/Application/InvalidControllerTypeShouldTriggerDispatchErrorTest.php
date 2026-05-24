@@ -30,7 +30,7 @@ class InvalidControllerTypeShouldTriggerDispatchErrorTest extends TestCase
         });
 
         $application->run();
-        $this->assertStringContainsString(Application::ERROR_CONTROLLER_INVALID, $response->getContent());
-        $this->assertStringContainsString('bad', $response->getContent());
+        self::assertStringContainsString(Application::ERROR_CONTROLLER_INVALID, $response->getContent());
+        self::assertStringContainsString('bad', $response->getContent());
     }
 }

@@ -56,19 +56,19 @@ class RedirectTest extends TestCase
     public function testPluginCanRedirectToRouteWhenProperlyConfigured(): void
     {
         $response = $this->plugin->toRoute('home');
-        $this->assertTrue($response->isRedirect());
+        self::assertTrue($response->isRedirect());
         $headers  = $response->getHeaders();
         $location = $headers->get('Location');
-        $this->assertEquals('/', $location->getFieldValue());
+        self::assertEquals('/', $location->getFieldValue());
     }
 
     public function testPluginCanRedirectToUrlWhenProperlyConfigured(): void
     {
         $response = $this->plugin->toUrl('/foo');
-        $this->assertTrue($response->isRedirect());
+        self::assertTrue($response->isRedirect());
         $headers  = $response->getHeaders();
         $location = $headers->get('Location');
-        $this->assertEquals('/foo', $location->getFieldValue());
+        self::assertEquals('/foo', $location->getFieldValue());
     }
 
     public function testPluginWithoutControllerRaisesDomainException(): void
@@ -126,7 +126,7 @@ class RedirectTest extends TestCase
         $response = $this->plugin->toRoute();
         $headers  = $response->getHeaders();
         $location = $headers->get('Location');
-        $this->assertEquals('/', $location->getFieldValue());
+        self::assertEquals('/', $location->getFieldValue());
     }
 
     public function testCanReuseMatchedParameters(): void
@@ -145,7 +145,7 @@ class RedirectTest extends TestCase
         $response = $this->plugin->toRoute('replace', ['action' => 'bar'], [], true);
         $headers  = $response->getHeaders();
         $location = $headers->get('Location');
-        $this->assertEquals('/foo/bar', $location->getFieldValue());
+        self::assertEquals('/foo/bar', $location->getFieldValue());
     }
 
     public function testCanPassBooleanValueForThirdArgumentToAllowReusingRouteMatches(): void
@@ -164,26 +164,26 @@ class RedirectTest extends TestCase
         $response = $this->plugin->toRoute('replace', ['action' => 'bar'], true);
         $headers  = $response->getHeaders();
         $location = $headers->get('Location');
-        $this->assertEquals('/foo/bar', $location->getFieldValue());
+        self::assertEquals('/foo/bar', $location->getFieldValue());
     }
 
     public function testPluginCanRefreshToRouteWhenProperlyConfigured(): void
     {
         $this->event->setRouteMatch($this->routeMatch);
         $response = $this->plugin->refresh();
-        $this->assertTrue($response->isRedirect());
+        self::assertTrue($response->isRedirect());
         $headers  = $response->getHeaders();
         $location = $headers->get('Location');
-        $this->assertEquals('/', $location->getFieldValue());
+        self::assertEquals('/', $location->getFieldValue());
     }
 
     public function testPluginCanRedirectToRouteWithNullWhenProperlyConfigured(): void
     {
         $this->event->setRouteMatch($this->routeMatch);
         $response = $this->plugin->toRoute();
-        $this->assertTrue($response->isRedirect());
+        self::assertTrue($response->isRedirect());
         $headers  = $response->getHeaders();
         $location = $headers->get('Location');
-        $this->assertEquals('/', $location->getFieldValue());
+        self::assertEquals('/', $location->getFieldValue());
     }
 }

@@ -57,7 +57,7 @@ class DefaultRendereringStrategyTest extends TestCase
         $events = [MvcEvent::EVENT_RENDER, MvcEvent::EVENT_RENDER_ERROR];
 
         foreach ($events as $event) {
-            $this->assertListenerAtPriority(
+            self::assertListenerAtPriority(
                 [$this->strategy, 'render'],
                 -10000,
                 $event,
@@ -72,11 +72,11 @@ class DefaultRendereringStrategyTest extends TestCase
         $events = new EventManager();
         $this->strategy->attach($events);
         $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_RENDER, $events);
-        $this->assertCount(1, $listeners);
+        self::assertCount(1, $listeners);
 
         $this->strategy->detach($events);
         $listeners = $this->getArrayOfListenersForEvent(MvcEvent::EVENT_RENDER, $events);
-        $this->assertCount(0, $listeners);
+        self::assertCount(0, $listeners);
     }
 
     public function testWillRenderAlternateStrategyWhenSelected(): void
@@ -88,20 +88,20 @@ class DefaultRendereringStrategyTest extends TestCase
         $this->event->setResult($model);
 
         $result = $this->strategy->render($this->event);
-        $this->assertSame($this->response, $result);
+        self::assertSame($this->response, $result);
 
         $expected = sprintf('content (%s): %s', json_encode(['template' => 'content']), json_encode(['foo' => 'bar']));
     }
 
     public function testLayoutTemplateIsLayoutByDefault(): void
     {
-        $this->assertEquals('layout', $this->strategy->getLayoutTemplate());
+        self::assertEquals('layout', $this->strategy->getLayoutTemplate());
     }
 
     public function testLayoutTemplateIsMutable(): void
     {
         $this->strategy->setLayoutTemplate('alternate/layout');
-        $this->assertEquals('alternate/layout', $this->strategy->getLayoutTemplate());
+        self::assertEquals('alternate/layout', $this->strategy->getLayoutTemplate());
     }
 
     public function testBypassesRenderingIfResultIsAResponse(): void
@@ -114,7 +114,7 @@ class DefaultRendereringStrategyTest extends TestCase
         $this->event->setResult($this->response);
 
         $result = $this->strategy->render($this->event);
-        $this->assertSame($this->response, $result);
+        self::assertSame($this->response, $result);
     }
 
     public function testTriggersRenderErrorEventInCaseOfRenderingException(): void
@@ -162,9 +162,9 @@ class DefaultRendereringStrategyTest extends TestCase
 
         $this->strategy->render($this->event);
 
-        $this->assertTrue($test->flag);
-        $this->assertEquals(Application::ERROR_EXCEPTION, $test->error);
-        $this->assertInstanceOf('Exception', $test->exception);
-        $this->assertStringContainsString('script', $test->exception->getMessage());
+        self::assertTrue($test->flag);
+        self::assertEquals(Application::ERROR_EXCEPTION, $test->error);
+        self::assertInstanceOf('Exception', $test->exception);
+        self::assertStringContainsString('script', $test->exception->getMessage());
     }
 }
