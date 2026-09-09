@@ -41,7 +41,7 @@
     "require-dev": {
         "laminas/laminas-coding-standard": "^3.0.1",
         "phpunit/phpunit": "^10.5.38",
-        "webmozart/assert": "^1.11"
+        "webmozart/assert": "^2.0"
     },
     "suggest": {
         "laminas/laminas-log": "^2.9.1  To provide log functionality via LogFilterManager, LogFormatterManager, and LogProcessorManager",
